@@ -1,30 +1,67 @@
 package cofh.thermalexpansion.block;
 
 import cofh.api.tileentity.IReconfigurableFacing;
-import cofh.api.tileentity.IReconfigurableSides;
-import cofh.api.tileentity.ISidedTexture;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.render.ISidedTexture;
+import cofh.core.util.tileentity.IReconfigurableSides;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class TileReconfigurable extends TilePowered implements IReconfigurableFacing, IReconfigurableSides, ISidedTexture {
+public abstract class TileReconfigurable extends TileInventory implements IReconfigurableFacing, IReconfigurableSides, ISidedInventory, ISidedTexture {
+
+	protected SideConfig sideConfig;
+	protected SlotConfig slotConfig;
 
 	protected byte facing = 3;
 	public byte[] sideCache = { 0, 0, 0, 0, 0, 0 };
 
+	public int[] allSlots = new int[] {};
+
 	@Override
-	public boolean onWrench(EntityPlayer player, int hitSide) {
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		int storedFacing = ReconfigurableHelper.getFacingFromNBT(tag);
+		byte[] storedSideCache = ReconfigurableHelper.getSideCacheFromNBT(tag, getDefaultSides());
+
+		sideCache[0] = storedSideCache[0];
+		sideCache[1] = storedSideCache[1];
+		sideCache[facing] = storedSideCache[storedFacing];
+		sideCache[BlockHelper.getLeftSide(facing)] = storedSideCache[BlockHelper.getLeftSide(storedFacing)];
+		sideCache[BlockHelper.getRightSide(facing)] = storedSideCache[BlockHelper.getRightSide(storedFacing)];
+		sideCache[BlockHelper.getOppositeSide(facing)] = storedSideCache[BlockHelper.getOppositeSide(storedFacing)];
+
+		for (int i = 0; i < 6; i++) {
+			if (sideCache[i] >= getNumConfig(i)) {
+				sideCache[i] = 0;
+			}
+		}
+		return super.readPortableTagInternal(player, tag);
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		ReconfigurableHelper.setItemStackTagReconfig(tag, this);
+
+		return super.writePortableTagInternal(player, tag);
+	}
+
+	@Override
+	public boolean onWrench(EntityPlayer player, EnumFacing side) {
 
 		return rotateBlock();
 	}
 
 	public byte[] getDefaultSides() {
 
-		return new byte[] { 0, 0, 0, 0, 0, 0 };
+		return sideConfig.defaultSides.clone();
 	}
 
 	public void setDefaultSides() {
@@ -32,11 +69,20 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 		sideCache = getDefaultSides();
 	}
 
+	public void createAllSlots(int size) {
+
+		allSlots = new int[size];
+
+		for (int i = 0; i < size; i++) {
+			allSlots[i] = i;
+		}
+	}
+
 	/* GUI METHODS */
-	public final boolean hasSide(int side) {
+	public final boolean hasSideType(int type) {
 
 		for (int i = 0; i < 6; i++) {
-			if (sideCache[i] == side) {
+			if (sideConfig.sideTypes[sideCache[i]] == type) {
 				return true;
 			}
 		}
@@ -59,19 +105,50 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setByte("Facing", facing);
 		nbt.setByteArray("SideCache", sideCache);
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getConfigPacket() {
+
+		PacketCoFHBase payload = super.getConfigPacket();
+
+		payload.addByteArray(sideCache);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleConfigPacket(PacketCoFHBase payload) {
+
+		super.handleConfigPacket(payload);
+
+		payload.getByteArray(sideCache);
+
+		for (int i = 0; i < 6; i++) {
+			if (sideCache[i] >= getNumConfig(i)) {
+				sideCache[i] = 0;
+			}
+		}
+
+		callBlockUpdate();
+		callNeighborTileChange();
+	}
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
 
 		payload.addByteArray(sideCache);
 		payload.addByte(facing);
@@ -79,7 +156,6 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 		return payload;
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
@@ -92,11 +168,8 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 				sideCache[i] = 0;
 			}
 		}
-		if (!isServer) {
-			facing = payload.getByte();
-		} else {
-			payload.getByte();
-		}
+		facing = payload.getByte();
+
 		callNeighborTileChange();
 	}
 
@@ -120,42 +193,42 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 			byte[] tempCache = new byte[6];
 
 			switch (facing) {
-			case 0:
-				for (int i = 0; i < 6; i++) {
-					tempCache[i] = sideCache[BlockHelper.INVERT_AROUND_X[i]];
-				}
-				break;
-			case 1:
-				for (int i = 0; i < 6; i++) {
-					tempCache[i] = sideCache[BlockHelper.ROTATE_CLOCK_X[i]];
-				}
-				break;
-			case 2:
-				for (int i = 0; i < 6; i++) {
-					tempCache[i] = sideCache[BlockHelper.INVERT_AROUND_Y[i]];
-				}
-				break;
-			case 3:
-				for (int i = 0; i < 6; i++) {
-					tempCache[i] = sideCache[BlockHelper.ROTATE_CLOCK_Y[i]];
-				}
-				break;
-			case 4:
-				for (int i = 0; i < 6; i++) {
-					tempCache[i] = sideCache[BlockHelper.INVERT_AROUND_Z[i]];
-				}
-				break;
-			case 5:
-				for (int i = 0; i < 6; i++) {
-					tempCache[i] = sideCache[BlockHelper.ROTATE_CLOCK_Z[i]];
-				}
-				break;
+				case 0:
+					for (int i = 0; i < 6; i++) {
+						tempCache[i] = sideCache[BlockHelper.INVERT_AROUND_X[i]];
+					}
+					break;
+				case 1:
+					for (int i = 0; i < 6; i++) {
+						tempCache[i] = sideCache[BlockHelper.ROTATE_CLOCK_X[i]];
+					}
+					break;
+				case 2:
+					for (int i = 0; i < 6; i++) {
+						tempCache[i] = sideCache[BlockHelper.INVERT_AROUND_Y[i]];
+					}
+					break;
+				case 3:
+					for (int i = 0; i < 6; i++) {
+						tempCache[i] = sideCache[BlockHelper.ROTATE_CLOCK_Y[i]];
+					}
+					break;
+				case 4:
+					for (int i = 0; i < 6; i++) {
+						tempCache[i] = sideCache[BlockHelper.INVERT_AROUND_Z[i]];
+					}
+					break;
+				case 5:
+					for (int i = 0; i < 6; i++) {
+						tempCache[i] = sideCache[BlockHelper.ROTATE_CLOCK_Z[i]];
+					}
+					break;
 			}
 			sideCache = tempCache.clone();
 			facing++;
 			facing %= 6;
-			markDirty();
-			sendUpdatePacket(Side.CLIENT);
+			markChunkDirty();
+			sendTilePacket(Side.CLIENT);
 			return true;
 		}
 		if (isActive) {
@@ -167,8 +240,8 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 		}
 		sideCache = tempCache.clone();
 		facing = BlockHelper.SIDE_LEFT[facing];
-		markDirty();
-		sendUpdatePacket(Side.CLIENT);
+		markChunkDirty();
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 
@@ -182,8 +255,8 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 			return false;
 		}
 		facing = (byte) side;
-		markDirty();
-		sendUpdatePacket(Side.CLIENT);
+		markChunkDirty();
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 
@@ -196,7 +269,7 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 		}
 		sideCache[side] += getNumConfig(side) - 1;
 		sideCache[side] %= getNumConfig(side);
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -208,7 +281,7 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 		}
 		sideCache[side] += 1;
 		sideCache[side] %= getNumConfig(side);
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -219,7 +292,7 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 			return false;
 		}
 		sideCache[side] = (byte) config;
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -234,16 +307,47 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 			}
 		}
 		if (update) {
-			sendUpdatePacket(Side.SERVER);
+			sendConfigPacket();
 		}
 		return update;
 	}
 
 	@Override
-	public abstract int getNumConfig(int side);
+	public int getNumConfig(int side) {
+
+		return sideConfig.numConfig;
+	}
+
+	/* ISidedInventory */
+	@Override
+	public int[] getSlotsForFace(EnumFacing side) {
+
+		if (side == null) {
+			return allSlots;
+		}
+		return sideConfig.slotGroups[sideCache[side.ordinal()]];
+	}
+
+	@Override
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
+
+		if (side == null) {
+			return true;
+		}
+		return allowInsertion(sideConfig.sideTypes[sideCache[side.ordinal()]]) && slotConfig.allowInsertionSlot[slot] && isItemValidForSlot(slot, stack);
+	}
+
+	@Override
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
+
+		if (side == null) {
+			return true;
+		}
+		return allowExtraction(sideConfig.sideTypes[sideCache[side.ordinal()]]) && slotConfig.allowExtractionSlot[slot];
+	}
 
 	/* ISidedTexture */
 	@Override
-	public abstract IIcon getTexture(int side, int pass);
+	public abstract TextureAtlasSprite getTexture(int side, int pass);
 
 }

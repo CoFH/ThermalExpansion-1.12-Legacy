@@ -1,120 +1,103 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.CoreUtils;
-import cofh.core.util.fluid.FluidTankAdv;
-import cofh.lib.util.helpers.MathHelper;
-import cofh.lib.util.helpers.ServerHelper;
+import cofh.core.util.helpers.AugmentHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
 import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
-import cofh.thermalexpansion.util.crafting.InsolatorManager;
-import cofh.thermalexpansion.util.crafting.InsolatorManager.RecipeInsolator;
-import cpw.mods.fml.common.registry.GameRegistry;
-
+import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager.RecipeInsolator;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class TileInsolator extends TileMachineBase implements IFluidHandler {
+import javax.annotation.Nullable;
+import java.util.HashSet;
+
+public class TileInsolator extends TileMachineBase {
+
+	private static final int TYPE = BlockMachine.Type.INSOLATOR.getMetadata();
+	public static int basePower = 20;
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.INSOLATOR.ordinal();
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 9;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 }, { 0, 1, 2, 3 }, { 0, 1, 2, 3 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 8;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 }, { 0, 1, 2, 3 } };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, false, false, true, true, true };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, true, true, true, true, false, false, true };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, true, false, false, false };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, true, true, true, false };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
 
-		String category = "Machine.Insolator";
-		int basePower = MathHelper.clamp(ThermalExpansion.config.get(category, "BasePower", 20), 10, 500);
-		ThermalExpansion.config.set(category, "BasePower", basePower);
-		defaultEnergyConfig[type] = new EnergyConfig();
-		defaultEnergyConfig[type].setParamsPower(basePower);
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_MYCELIUM);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_NETHER);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_END);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_TREE);
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineInsolator");
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
 
-		GameRegistry.registerTileEntity(TileInsolator.class, "thermalexpansion.Insolator");
+		LIGHT_VALUES[TYPE] = 14;
+
+		GameRegistry.registerTileEntity(TileInsolator.class, "thermalexpansion:machine_insolator");
+
+		config();
 	}
 
-	int inputTrackerPrimary;
-	int inputTrackerSecondary;
-	int outputTrackerPrimary;
-	int outputTrackerSecondary;
+	public static void config() {
+
+		String category = "Machine.Insolator";
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
+	}
+
+	private int inputTrackerPrimary;
+	private int inputTrackerSecondary;
+	private int outputTrackerPrimary;
+	private int outputTrackerSecondary;
 
 	public boolean lockPrimary = false;
 
-	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
+
+	/* AUGMENTS */
+	protected boolean augmentMycelium;
+	protected boolean augmentNether;
+	protected boolean augmentEnd;
+	protected boolean augmentTree;
 
 	public TileInsolator() {
 
-		super(Types.INSOLATOR);
+		super();
 		inventory = new ItemStack[2 + 1 + 1 + 1];
+		createAllSlots(inventory.length);
 		tank.setLock(FluidRegistry.WATER);
 	}
 
 	@Override
-	public void updateEntity() {
+	public int getType() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
-		}
-		boolean curActive = isActive;
-
-		if (isActive) {
-			if (processRem > 0) {
-				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy * energyMod);
-				processRem -= energy * processMod;
-				tank.drain(energy * processMod / 10, true);
-			}
-			if (canFinish()) {
-				processFinish();
-				transferOutput();
-				transferInput();
-				energyStorage.modifyEnergyStored(-processRem * energyMod / processMod);
-
-				if (!redstoneControlOrDisable() || !canStart()) {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
-				} else {
-					processStart();
-				}
-			}
-		} else if (redstoneControlOrDisable()) {
-			if (timeCheck()) {
-				transferOutput();
-				transferInput();
-			}
-			if (timeCheckEighth() && canStart()) {
-				processStart();
-				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy * energyMod);
-				processRem -= energy * processMod;
-				tank.drain(energy * processMod / 10, true);
-				isActive = true;
-			}
-		}
-		updateIfChanged(curActive);
-		chargeEnergy();
+		return TYPE;
 	}
 
 	@Override
@@ -126,13 +109,25 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null && inventory[1] == null) {
+		if (inventory[0] == null || inventory[1] == null || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		RecipeInsolator recipe = InsolatorManager.getRecipe(inventory[0], inventory[1]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy() * energyMod / processMod || tank.getFluidAmount() < recipe.getEnergy() / 10) {
+		if (recipe == null || tank.getFluidAmount() < recipe.getEnergy() / 10) {
 			return false;
+		}
+		Type substrate = recipe.getType();
+		if (substrate != Type.STANDARD) {
+			if (substrate == Type.MYCELIUM && !augmentMycelium) {
+				return false;
+			} else if (substrate == Type.NETHER && !augmentNether) {
+				return false;
+			} else if (substrate == Type.END && !augmentEnd) {
+				return false;
+			} else if (substrate == Type.TREE && !augmentTree) {
+				return false;
+			}
 		}
 		if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
 			if (recipe.getPrimaryInput().stackSize > inventory[1].stackSize || recipe.getSecondaryInput().stackSize > inventory[0].stackSize) {
@@ -146,21 +141,15 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		if (!augmentSecondaryNull && secondaryItem != null && inventory[3] != null) {
-			if (!inventory[3].isItemEqual(secondaryItem)) {
+		if (secondaryItem != null && inventory[3] != null) {
+			if (!augmentSecondaryNull && !inventory[3].isItemEqual(secondaryItem)) {
 				return false;
 			}
-			if (inventory[3].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
+			if (!augmentSecondaryNull && inventory[3].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
 				return false;
 			}
 		}
-		if (inventory[2] == null) {
-			return true;
-		}
-		if (!inventory[2].isItemEqual(primaryItem)) {
-			return false;
-		}
-		return inventory[2].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
+		return inventory[2] == null || inventory[2].isItemEqual(primaryItem) && inventory[2].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
 	}
 
 	@Override
@@ -186,7 +175,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 	@Override
 	protected void processStart() {
 
-		processMax = InsolatorManager.getRecipe(inventory[0], inventory[1]).getEnergy();
+		processMax = InsolatorManager.getRecipe(inventory[0], inventory[1]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
@@ -196,32 +185,31 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		RecipeInsolator recipe = InsolatorManager.getRecipe(inventory[0], inventory[1]);
 
 		if (recipe == null) {
-			isActive = false;
-			wasActive = true;
-			tracker.markTime(worldObj);
-			processRem = 0;
+			processOff();
 			return;
 		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 		if (inventory[2] == null) {
-			inventory[2] = primaryItem;
+			inventory[2] = ItemHelper.cloneStack(primaryItem);
 		} else {
 			inventory[2].stackSize += primaryItem.stackSize;
 		}
 		if (secondaryItem != null) {
-			int recipeChance = recipe.getSecondaryOutputChance();
-			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
-				if (inventory[3] == null) {
-					inventory[3] = secondaryItem;
+			int modifiedChance = secondaryChance;
 
-					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
+			int recipeChance = recipe.getSecondaryOutputChance();
+			if (recipeChance >= 100 || worldObj.rand.nextInt(modifiedChance) < recipeChance) {
+				if (inventory[3] == null) {
+					inventory[3] = ItemHelper.cloneStack(secondaryItem);
+
+					if (worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
 						inventory[3].stackSize += secondaryItem.stackSize;
 					}
 				} else if (inventory[3].isItemEqual(secondaryItem)) {
 					inventory[3].stackSize += secondaryItem.stackSize;
 
-					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
+					if (worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
 						inventory[3].stackSize += secondaryItem.stackSize;
 					}
 				}
@@ -246,16 +234,27 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
+	protected int processTick() {
+
+		int energy = calcEnergy();
+		energyStorage.modifyEnergyStored(-energy);
+		processRem -= energy;
+		tank.drain(energy / 10, true);
+
+		return energy;
+	}
+
+	@Override
 	protected void transferInput() {
 
-		if (!augmentAutoInput) {
+		if (!enableAutoInput) {
 			return;
 		}
 		int side;
 		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1 || sideCache[side] == 5) {
-				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
+				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTrackerPrimary = side;
 					break;
 				}
@@ -263,8 +262,8 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		}
 		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1 || sideCache[side] == 6) {
-				if (extractItem(1, AUTO_TRANSFER[level], side)) {
+			if (isSecondaryInput(sideConfig.sideTypes[sideCache[side]])) {
+				if (extractItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTrackerSecondary = side;
 					break;
 				}
@@ -275,16 +274,15 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 	@Override
 	protected void transferOutput() {
 
-		if (!augmentAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		int side;
 		if (inventory[2] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
-
-				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(2, AUTO_TRANSFER[level], side)) {
+				if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
+					if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 						outputTrackerPrimary = side;
 						break;
 					}
@@ -296,22 +294,13 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(3, AUTO_TRANSFER[level], side)) {
+			if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {
+				if (transferItem(3, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTrackerSecondary = side;
 					break;
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void onLevelChange() {
-
-		super.onLevelChange();
-
-		tank.setCapacity(TEProps.MAX_FLUID_LARGE * FLUID_CAPACITY[level]);
 	}
 
 	@Override
@@ -348,20 +337,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public void receiveGuiNetworkData(int i, int j) {
-
-	}
-
-	@Override
-	public void sendGuiNetworkData(Container container, ICrafting player) {
-
-		super.sendGuiNetworkData(container, player);
-
-		player.sendProgressBarUpdate(container, 0, tank.getFluidAmount());
-	}
-
-	@Override
-	public FluidTankAdv getTank() {
+	public FluidTankCore getTank() {
 
 		return tank;
 	}
@@ -370,6 +346,14 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 	public FluidStack getTankFluid() {
 
 		return tank.getFluid();
+	}
+
+	public void setMode(boolean mode) {
+
+		boolean lastMode = lockPrimary;
+		lockPrimary = mode;
+		sendModePacket();
+		lockPrimary = lastMode;
 	}
 
 	/* NBT METHODS */
@@ -387,7 +371,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -397,9 +381,33 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		nbt.setInteger("Tracker2", outputTrackerSecondary);
 		nbt.setBoolean("SlotLock", lockPrimary);
 		tank.writeToNBT(nbt);
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
+
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addBool(lockPrimary);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		lockPrimary = payload.getBool();
+
+		callNeighborTileChange();
+	}
+
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
@@ -407,16 +415,6 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 
 		payload.addBool(lockPrimary);
 		payload.addInt(tank.getFluidAmount());
-
-		return payload;
-	}
-
-	@Override
-	public PacketCoFHBase getModePacket() {
-
-		PacketCoFHBase payload = super.getModePacket();
-
-		payload.addBool(lockPrimary);
 
 		return payload;
 	}
@@ -430,22 +428,44 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		tank.getFluid().amount = payload.getInt();
 	}
 
+	/* HELPERS */
 	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
+	protected void preAugmentInstall() {
 
-		super.handleModePacket(payload);
+		super.preAugmentInstall();
 
-		lockPrimary = payload.getBool();
-		markDirty();
-		callNeighborTileChange();
+		augmentMycelium = false;
+		augmentNether = false;
+		augmentEnd = false;
+		augmentTree = false;
 	}
 
-	public void setMode(boolean mode) {
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
 
-		boolean lastMode = lockPrimary;
-		lockPrimary = mode;
-		sendModePacket();
-		lockPrimary = lastMode;
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentMycelium && TEProps.MACHINE_INSOLATOR_MYCELIUM.equals(id)) {
+			augmentMycelium = true;
+			hasModeAugment = true;
+			return true;
+		}
+		if (!augmentNether && TEProps.MACHINE_INSOLATOR_NETHER.equals(id)) {
+			augmentNether = true;
+			hasModeAugment = true;
+			return true;
+		}
+		if (!augmentEnd && TEProps.MACHINE_INSOLATOR_END.equals(id)) {
+			augmentEnd = true;
+			hasModeAugment = true;
+			return true;
+		}
+		if (!augmentTree && TEProps.MACHINE_INSOLATOR_TREE.equals(id)) {
+			augmentTree = true;
+			hasModeAugment = true;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* IInventory */
@@ -460,44 +480,53 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 				return !InsolatorManager.isItemFertilizer(stack) && InsolatorManager.isItemValid(stack);
 			}
 		}
-		return slot <= 1 ? InsolatorManager.isItemValid(stack) : true;
+		return slot > 1 || InsolatorManager.isItemValid(stack);
 	}
 
-	/* IFluidHandler */
+	/* CAPABILITIES */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-		return tank.fill(resource, doFill);
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-
-		return null;
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
-		return null;
-	}
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
 
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+					FluidTankInfo info = tank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, false) };
+				}
 
-		return true;
-	}
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
 
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return 0;
+					}
+					return tank.fill(resource, doFill);
+				}
 
-		return false;
-	}
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+					return null;
+				}
 
-		return new FluidTankInfo[] { tank.getInfo() };
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					return null;
+				}
+			});
+		}
+		return super.getCapability(capability, from);
 	}
 
 }

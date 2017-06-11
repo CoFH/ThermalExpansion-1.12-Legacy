@@ -1,107 +1,62 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.core.item.ItemBlockBase;
-import cofh.lib.util.helpers.AugmentHelper;
+import cofh.core.util.helpers.RedstoneControlHelper;
+import cofh.core.util.helpers.SecurityHelper;
+import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.RedstoneControlHelper;
-import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-
-public class ItemBlockMachine extends ItemBlockBase {
-
-	public static ItemStack setDefaultTag(ItemStack container) {
-
-		return setDefaultTag(container, (byte) 0);
-	}
-
-	public static ItemStack setDefaultTag(ItemStack container, byte level) {
-
-		ReconfigurableHelper.setFacing(container, 3);
-		ReconfigurableHelper.setSideCache(container, TileMachineBase.defaultSideConfig[container.getItemDamage()].defaultSides);
-		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
-		EnergyHelper.setDefaultEnergyTag(container, 0);
-		container.stackTagCompound.setByte("Level", level);
-		AugmentHelper.writeAugments(container, BlockMachine.defaultAugments);
-
-		return container;
-	}
-
-	public static byte getLevel(ItemStack container) {
-
-		if (container.stackTagCompound == null) {
-			setDefaultTag(container);
-		}
-		return container.stackTagCompound.getByte("Level");
-	}
+public class ItemBlockMachine extends ItemBlockTEBase {
 
 	public ItemBlockMachine(Block block) {
 
 		super(block);
-		setHasSubtypes(true);
-		setMaxDamage(0);
-		setNoRepair();
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
+	public ItemStack setDefaultTag(ItemStack stack, int level) {
 
-		String unloc = getUnlocalizedNameInefficiently(stack);
-		String unloc2 = '.' + NAMES[getLevel(stack)];
+		ReconfigurableHelper.setFacing(stack, 3);
+		ReconfigurableHelper.setSideCache(stack, TileMachineBase.SIDE_CONFIGS[ItemHelper.getItemDamage(stack)].defaultSides);
+		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
+		EnergyHelper.setDefaultEnergyTag(stack, 0);
+		stack.getTagCompound().setByte("Level", (byte) level);
 
-		if (StatCollector.canTranslate(unloc + unloc2 + ".name")) {
-			return StringHelper.localize(unloc + unloc2 + ".name");
-		}
-
-		return StringHelper.localize(unloc + ".name") + " (" + StringHelper.localize("info.thermalexpansion" + unloc2) + ")";
+		return stack;
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.machine." + BlockMachine.NAMES[ItemHelper.getItemDamage(stack)];
+		return "tile.thermalexpansion.machine." + BlockMachine.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
-		switch (getLevel(stack)) {
-		case 3:
-			return EnumRarity.rare;
-		case 2:
-			return EnumRarity.uncommon;
-		default:
-			return EnumRarity.common;
-		}
-	}
-
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
-
-		SecurityHelper.addOwnerInformation(stack, list);
+		SecurityHelper.addOwnerInformation(stack, tooltip);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForDetails());
+			tooltip.add(StringHelper.shiftForDetails());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-		SecurityHelper.addAccessInformation(stack, list);
+		SecurityHelper.addAccessInformation(stack, tooltip);
 
-		list.add(StringHelper.getInfoText("info.thermalexpansion.machine." + BlockMachine.NAMES[ItemHelper.getItemDamage(stack)]));
+		String name = BlockMachine.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.machine." + name));
 
-		RedstoneControlHelper.addRSControlInformation(stack, list);
+		if (getLevel(stack) >= 2) {
+			RedstoneControlHelper.addRSControlInformation(stack, tooltip);
+		}
 	}
-
-	public static final String[] NAMES = { "basic", "hardened", "reinforced", "resonant" };
 
 }

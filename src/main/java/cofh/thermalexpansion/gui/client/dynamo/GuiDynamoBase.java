@@ -1,47 +1,47 @@
 package cofh.thermalexpansion.gui.client.dynamo;
 
-import cofh.core.gui.GuiBaseAdv;
-import cofh.core.gui.element.TabAugment;
-import cofh.core.gui.element.TabEnergy;
-import cofh.core.gui.element.TabInfo;
-import cofh.core.gui.element.TabRedstone;
-import cofh.core.gui.element.TabSecurity;
-import cofh.core.gui.element.TabTutorial;
+import cofh.core.gui.GuiCore;
+import cofh.core.gui.element.*;
+import cofh.core.util.helpers.SecurityHelper;
 import cofh.lib.gui.container.IAugmentableContainer;
 import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.gui.element.TabBase;
-import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
-
-import java.util.UUID;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class GuiDynamoBase extends GuiBaseAdv {
+import java.util.UUID;
 
-	protected TileDynamoBase myTile;
+public abstract class GuiDynamoBase extends GuiCore {
+
+	protected TileDynamoBase baseTile;
 	protected UUID playerName;
 
-	public String myInfo = "";
-	public String myTutorial = StringHelper.tutorialTabAugment();
+	protected String myTutorial = "";
 
+	protected TabBase augmentTab;
 	protected TabBase redstoneTab;
+	protected TabBase securityTab;
 
 	public GuiDynamoBase(Container container, TileEntity tile, EntityPlayer player, ResourceLocation texture) {
 
 		super(container, texture);
 
-		myTile = (TileDynamoBase) tile;
-		name = myTile.getInventoryName();
+		baseTile = (TileDynamoBase) tile;
+		name = baseTile.getName();
 		playerName = SecurityHelper.getID(player);
 
-		if (myTile.augmentRedstoneControl) {
-			myTutorial += "\n\n" + StringHelper.tutorialTabRedstone();
+		if (baseTile.isAugmentable()) {
+			myTutorial = StringHelper.tutorialTabAugment() + "\n\n";
+		}
+		if (baseTile.enableSecurity() && baseTile.isSecured()) {
+			myTutorial += StringHelper.tutorialTabSecurity() + "\n\n";
+		}
+		if (baseTile.hasRedstoneControl()) {
+			myTutorial += StringHelper.tutorialTabRedstone();
 		}
 	}
 
@@ -50,19 +50,27 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 
 		super.initGui();
 
-		addElement(new ElementEnergyStored(this, 80, 18, myTile.getEnergyStorage()));
+		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
 
-		addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
-		if (myTile.enableSecurity() && myTile.isSecured()) {
-			addTab(new TabSecurity(this, myTile, playerName));
+		// Right Side
+		if (baseTile.isAugmentable()) {
+			addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
 		}
-		redstoneTab = addTab(new TabRedstone(this, myTile));
+		redstoneTab = addTab(new TabRedstoneControl(this, baseTile));
+		redstoneTab.setVisible(baseTile.hasRedstoneControl());
 
-		if (myTile.getMaxEnergyStored(ForgeDirection.UNKNOWN) > 0) {
-			addTab(new TabEnergy(this, myTile, true));
+		// Left Side
+		securityTab = addTab(new TabSecurity(this, baseTile, playerName));
+		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
+
+		if (baseTile.getMaxEnergyStored(null) > 0) {
+			addTab(new TabEnergy(this, baseTile, true));
 		}
 		addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.0")));
-		addTab(new TabTutorial(this, myTutorial));
+
+		if (!myTutorial.isEmpty()) {
+			addTab(new TabTutorial(this, myTutorial));
+		}
 	}
 
 	@Override
@@ -70,17 +78,12 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 
 		super.updateScreen();
 
-		if (!myTile.canAccess()) {
+		if (!baseTile.canAccess()) {
 			this.mc.thePlayer.closeScreen();
 		}
-	}
+		redstoneTab.setVisible(baseTile.hasRedstoneControl());
 
-	@Override
-	protected void updateElementInformation() {
-
-		super.updateElementInformation();
-
-		redstoneTab.setVisible(myTile.augmentRedstoneControl);
+		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 	}
 
 }

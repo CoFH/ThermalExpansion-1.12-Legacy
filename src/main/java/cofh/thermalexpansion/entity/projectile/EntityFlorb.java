@@ -1,39 +1,43 @@
 package cofh.thermalexpansion.entity.projectile;
 
-import cofh.core.CoFHProps;
-import cofh.core.util.CoreUtils;
+import cofh.core.init.CoreProps;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.ItemFlorb;
-import cpw.mods.fml.common.registry.EntityRegistry;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public class EntityFlorb extends EntityThrowable {
 
-	public static void initialize() {
+	private static DataParameter<String> FLUID = EntityDataManager.createKey(EntityFlorb.class, DataSerializers.STRING);
 
-		EntityRegistry.registerModEntity(EntityFlorb.class, "florb", CoreUtils.getEntityId(), ThermalExpansion.instance, CoFHProps.ENTITY_TRACKING_DISTANCE, 1,
-				true);
-	}
+	protected static ItemStack blockCheck = new ItemStack(Blocks.STONE);
 
-	public static ItemStack blockCheck = new ItemStack(Blocks.stone);
-
-	protected Fluid fluid;
 	protected float gravity = 0.03F;
+	protected Fluid fluid;
+
+	public static void initialize(int id) {
+
+		EntityRegistry.registerModEntity(EntityFlorb.class, "florb", id, ThermalExpansion.instance, CoreProps.ENTITY_TRACKING_DISTANCE, 1, true);
+	}
 
 	/* Required Constructor */
 	public EntityFlorb(World world) {
@@ -55,6 +59,8 @@ public class EntityFlorb extends EntityThrowable {
 
 		super(world, entity);
 		this.fluid = fluid;
+
+		setHeadingFromThrower(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 1.5F, 1.0F);
 
 		setGravity();
 		setSyncFluid();
@@ -88,43 +94,53 @@ public class EntityFlorb extends EntityThrowable {
 		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, velocity, 1.0F);
 	}
 
-	protected void setGravity() {
+	public EntityFlorb setFluid(Fluid fluid) {
+
+		this.fluid = fluid;
+
+		return this;
+	}
+
+	private void setGravity() {
 
 		if (fluid.getDensity() < 0) {
 			this.gravity = cofh.lib.util.helpers.MathHelper.minF(0.01F, 0.03F + 0.03F * fluid.getDensity() / 1000F);
 		}
 	}
 
-	@Override
-	protected void entityInit() {
+	private void setSyncFluid() {
 
-		this.dataWatcher.addObject(16, Integer.valueOf(0));
+		this.dataManager.set(FLUID, fluid.getName());
 	}
 
-	public void setSyncFluid() {
+	private Fluid getSyncFluid() {
 
-		this.dataWatcher.updateObject(16, Integer.valueOf(fluid.getID()));
-	}
-
-	public Fluid getSyncFluid() {
-
-		return FluidRegistry.getFluid(dataWatcher.getWatchableObjectInt(16));
-	}
-
-	public Fluid getFluid() {
-
-		return fluid;
-	}
-
-	public void setFluid(Fluid fluid) {
-
-		this.fluid = fluid;
+		return FluidRegistry.getFluid(dataManager.get(FLUID));
 	}
 
 	@Override
-	protected float getGravityVelocity() {
+	protected void doBlockCollisions() {
 
-		return gravity;
+		int i = MathHelper.floor_double(this.getEntityBoundingBox().minX + 0.001D);
+		int j = MathHelper.floor_double(this.getEntityBoundingBox().minY + 0.001D);
+		int k = MathHelper.floor_double(this.getEntityBoundingBox().minZ + 0.001D);
+		int l = MathHelper.floor_double(this.getEntityBoundingBox().maxX - 0.001D);
+		int i1 = MathHelper.floor_double(this.getEntityBoundingBox().maxY - 0.001D);
+		int j1 = MathHelper.floor_double(this.getEntityBoundingBox().maxZ - 0.001D);
+
+		if (this.worldObj.isAreaLoaded(new BlockPos(i, j, k), new BlockPos(l, i1, j1))) {
+			for (int k1 = i; k1 <= l; k1++) {
+				for (int l1 = j; l1 <= i1; l1++) {
+					for (int i2 = k; i2 <= j1; i2++) {
+						IBlockState state = this.worldObj.getBlockState(new BlockPos(k1, l1, i2));
+
+						if (state != null) {
+							state.getBlock().onEntityCollidedWithBlock(this.worldObj, new BlockPos(k1, l1, i2), state, this);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -137,91 +153,59 @@ public class EntityFlorb extends EntityThrowable {
 	}
 
 	@Override
-	protected void func_145775_I() {
+	protected void onImpact(RayTraceResult traceResult) {
 
-		int i = MathHelper.floor_double(this.boundingBox.minX + 0.001D);
-		int j = MathHelper.floor_double(this.boundingBox.minY + 0.001D);
-		int k = MathHelper.floor_double(this.boundingBox.minZ + 0.001D);
-		int l = MathHelper.floor_double(this.boundingBox.maxX - 0.001D);
-		int i1 = MathHelper.floor_double(this.boundingBox.maxY - 0.001D);
-		int j1 = MathHelper.floor_double(this.boundingBox.maxZ - 0.001D);
+		BlockPos pos = traceResult.getBlockPos();
 
-		if (this.worldObj.checkChunksExist(i, j, k, l, i1, j1)) {
-			for (int k1 = i; k1 <= l; k1++) {
-				for (int l1 = j; l1 <= i1; l1++) {
-					for (int i2 = k; i2 <= j1; i2++) {
-						Block block = this.worldObj.getBlock(k1, l1, i2);
-
-						if (block != null) {
-							block.onEntityCollidedWithBlock(this.worldObj, k1, l1, i2, this);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	@Override
-	protected void onImpact(MovingObjectPosition pos) {
-
-		int x = pos.blockX;
-		int y = pos.blockY;
-		int z = pos.blockZ;
-
-		if (pos.entityHit != null) {
-			x = (int) pos.entityHit.posX;
-			y = (int) pos.entityHit.posY + 1;
-			z = (int) pos.entityHit.posZ;
-
-			pos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0F);
+		if (traceResult.entityHit != null) {
+			pos = traceResult.entityHit.getPosition().add(0, 1, 0);
+			traceResult.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0F);
 		}
 
-		if (worldObj.getBlock(x, y, z) != Blocks.snow_layer) {
-			switch (pos.sideHit) {
-			case 0:
-				--y;
-				break;
-			case 1:
-				++y;
-				break;
-			case 2:
-				--z;
-				break;
-			case 3:
-				++z;
-				break;
-			case 4:
-				--x;
-				break;
-			case 5:
-				++x;
-				break;
-			default:
-			}
+		if (traceResult.sideHit != null && worldObj.getBlockState(pos).getBlock() != Blocks.SNOW_LAYER) {
+			pos = pos.offset(traceResult.sideHit);
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			if (getThrower() instanceof EntityPlayer && !((EntityPlayer) getThrower()).canPlayerEdit(x, y, z, pos.sideHit, blockCheck)) {
-				ItemFlorb.dropFlorb(getFluid(), worldObj, x, y, z);
+			if (traceResult.sideHit != null && getThrower() instanceof EntityPlayer && !((EntityPlayer) getThrower()).canPlayerEdit(pos, traceResult.sideHit, blockCheck)) {
+				ItemFlorb.dropFlorb(getFluid(), worldObj, pos);
 				this.setDead();
 				return;
 			}
 			Block block = fluid.getBlock();
+			IBlockState state = worldObj.getBlockState(pos);
 
-			if (fluid.getName() == "water") {
-				block = Blocks.flowing_water;
-			} else if (fluid.getName() == "lava") {
-				block = Blocks.flowing_lava;
+			if ("water".equals(fluid.getName())) {
+				block = Blocks.FLOWING_WATER;
+			} else if ("lava".equals(fluid.getName())) {
+				block = Blocks.FLOWING_LAVA;
 			}
-			if (worldObj.isAirBlock(x, y, z) || worldObj.getBlock(x, y, z).getMaterial() == Material.fire || worldObj.getBlock(x, y, z) == Blocks.snow_layer) {
-				// if (fluid.getName() != "water" || !worldObj.getBiomeGenForCoords(x / 16, z / 16).biomeName.toLowerCase().equals("hell")) {
-				worldObj.setBlock(x, y, z, block, 0, 3);
-				worldObj.markBlockForUpdate(x, y, z);
-				// }
+			if (worldObj.isAirBlock(pos) || state.getMaterial() == Material.FIRE || state.getBlock() == Blocks.SNOW_LAYER) {
+				if (!fluid.getName().equals("water") || !worldObj.getBiome(pos).getBiomeName().toLowerCase().equals("hell")) {
+					worldObj.setBlockState(pos, block.getDefaultState(), 3);
+					worldObj.notifyBlockUpdate(pos, state, state, 3);
+				}
 			} else {
-				ItemFlorb.dropFlorb(getFluid(), worldObj, x, y, z);
+				ItemFlorb.dropFlorb(getFluid(), worldObj, pos);
 			}
 		}
 		this.setDead();
+	}
+
+	@Override
+	protected void entityInit() {
+
+		dataManager.register(FLUID, "");
+	}
+
+	@Override
+	protected float getGravityVelocity() {
+
+		return gravity;
+	}
+
+	public Fluid getFluid() {
+
+		return fluid;
 	}
 
 	/* NBT METHODS */

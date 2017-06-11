@@ -1,309 +1,62 @@
-﻿achievement.thermalexpansion.base=Welkom bij Thermal Expansion!
-achievement.thermalexpansion.base.desc=En zo begint het.
-achievement.thermalexpansion.machineFrame=Framed!
-achievement.thermalexpansion.machineFrame.desc=Je zal waarschijnlijk veel van deze gaan maken.
+#nl_NL
 
-achievement.thermalexpansion.furnace=Kolen zijn Voor Sukkels
-achievement.thermalexpansion.furnace.desc=Smelt dingen in stijl!
-achievement.thermalexpansion.pulverizer=MACHINALE VERPLETTERING!
-achievement.thermalexpansion.pulverizer.desc=Nietige erts.
-achievement.thermalexpansion.sawmill=Haat bomen, Houd van hout
-achievement.thermalexpansion.sawmill.desc=Net als tegen bomen slaan, maar dan beter.
-achievement.thermalexpansion.smelter=Twee stafen gaan naar binnen, eentje komt eruit
-achievement.thermalexpansion.smelter.desc=Absoluut niet voor eten.
-achievement.thermalexpansion.crucible=Smelt alles.
-achievement.thermalexpansion.crucible.desc=Ja, het kan lava maken. Jij monster.
-achievement.thermalexpansion.transposer=(Bijna) Gratis Hervullen
-achievement.thermalexpansion.transposer.desc=Emmers vullen met de hand is hard werk.
-achievement.thermalexpansion.precipitator=Sneeuwballengevecht!
-achievement.thermalexpansion.precipitator.desc=Zal geen gele sneeuw maken.
-achievement.thermalexpansion.extruder=Dit ding is geweldig!
-achievement.thermalexpansion.extruder.desc=Het maakt ook obsidian!
-achievement.thermalexpansion.accumulator=Water, Water Overal
-achievement.thermalexpansion.accumulator.desc=Nee, het werkt niet met lava. Jij monster.
-achievement.thermalexpansion.assembler=Een visieuze cirkel
-achievement.thermalexpansion.assembler.desc=No, het kan dat niet vervaardigen.
-#Couldn't translate below joke
-achievement.thermalexpansion.charger=What The Flux?
-achievement.thermalexpansion.charger.desc=Vloeimiddel kent geen grenzen. Dus kijk uit voor je handen.
-achievement.thermalexpansion.insolator=Zon in een doos!
-achievement.thermalexpansion.insolator.desc=Sowieso niet organisch.
-
-achievement.thermalexpansion.wrench=Lijkt op een Spijker!
-achievement.thermalexpansion.wrench.desc=Elk gereedschap is een hamer als je er *echt* een nodig hebt.
-achievement.thermalexpansion.multimeter=B.S.E.E.
-#Couldnt translate below joke(Flukes are a brand multimeter)
-achievement.thermalexpansion.multimeter.desc=There are no accidents, only Flukes.
-achievement.thermalexpansion.schematic=Nee geen Bekokstoving erbij betrokken
-achievement.thermalexpansion.schematic.desc=Het is meer een plan
-achievement.thermalexpansion.florb=Ik kan dit gooien?!
 achievement.thermalexpansion.florb.desc=Bevat een vloeistof. Je kan het gooien.
-achievement.thermalexpansion.florbMagmatic=Zie de Wereld Branden
+achievement.thermalexpansion.florb=Ik kan dit gooien?!
 achievement.thermalexpansion.florbMagmatic.desc=Florb. Ja, het bevat lava. Jij monster.
+achievement.thermalexpansion.florbMagmatic=Zie de Wereld Branden
 
-achievement.thermalexpansion.capacitorPotato=Half gebakken Idee!
-achievement.thermalexpansion.capacitorPotato.desc=Aard-app-el
-
-achievement.thermalexpansion.fluidRedstone=Redstone Revolutie!
-achievement.thermalexpansion.fluidRedstone.desc=Omhoog is nog steeds omhoog, omlaag is nog steeds omlaag. En dit is nog steeds geweldig.
-achievement.thermalexpansion.fluidGlowstone=Het stroomt naar boven?!
-achievement.thermalexpansion.fluidGlowstone.desc=Dus dat is hoe die formaties ontstaan! Het maakt alles onlogisch!
-achievement.thermalexpansion.fluidEnder=Wiebel-Wobbel, Tijd-Weid.
-achievement.thermalexpansion.fluidEnder.desc=Het einde is eigenlijk gewoon het begin.
-achievement.thermalexpansion.fluidPyrotheum=OH GOD WAAROM?!
-achievement.thermalexpansion.fluidPyrotheum.desc=Dit is eigenlijk nog slechter dan lava. Jij monster.
-achievement.thermalexpansion.fluidCryotheum=Winter is Komt
-achievement.thermalexpansion.fluidCryotheum.desc=Dit is ook slechter dan lava, alleen dan koud. Jij yeti.
-achievement.thermalexpansion.fluidMana=Als Magie Technologie Ontmoet.
-achievement.thermalexpansion.fluidMana.desc=Wat is dit?
-achievement.thermalexpansion.fluidCoal=Vloeibaarheid is Verlossing!
-achievement.thermalexpansion.fluidCoal.desc=Dit kon *nooit* goed zijn voor het milieu.
-
-chat.thermalexpansion.light.0=Mode: Geschakeld; Standaard: Uit
-chat.thermalexpansion.light.1=Mode: Geschakeld; Standaard: Aan
-chat.thermalexpansion.light.2=Mode: Geschaald (Proportioneel)
-chat.thermalexpansion.light.3=Mode: Geschaald (Omgekeerd)
-chat.thermalexpansion.light.4=Mode: Altijd Uit
-chat.thermalexpansion.light.5=Mode: Altijd Aan
-
-#Cell
-info.thermalexpansion.decRecv=Verlaag RF Invoer met
-info.thermalexpansion.decSend=Verlaag RF Uitvoer met
-info.thermalexpansion.incRecv=Verhoog RF Invoer met
-info.thermalexpansion.incSend=Verhoog RF Uitvoer met
-info.thermalexpansion.maxIn=Max. Invoer
-info.thermalexpansion.maxOut=Max. Uitvoer
-
-#Workbench
-info.thermalexpansion.gridClear=Wis Vervaardigings Rooster
-info.thermalexpansion.gridSet=Zet Vervaardigings Rooster Vanuit Bouwschema
-info.thermalexpansion.noRecipe=Geen Recept
-info.thermalexpansion.noSchematic=Geen Bouwschema
-info.thermalexpansion.writeSchematic=Schrijf Bouwschema
-
-#Activator
-info.thermalexpansion.angleLevel=Mik Vlak
-info.thermalexpansion.angleLow=Mik Laag
-info.thermalexpansion.angleHigh=Mik Hoog
-info.thermalexpansion.clickLeft=Links Klik
-info.thermalexpansion.clickRight=Rechts Klik
-info.thermalexpansion.slotsFirst=Aleen de eerste slot
-info.thermalexpansion.slotsRand=Gebruik items willekeurig
-info.thermalexpansion.slotsRR=Ga items één voor één langs
-info.thermalexpansion.sneakOff=Niet sluipend
-info.thermalexpansion.sneakOn=Sluipend
-
-#Tesseract
-info.thermalexpansion.inactive=Inactief
-info.thermalexpansion.modeBlocked=Geblokkeerd
-info.thermalexpansion.modeEnergy=Energie Modus
-info.thermalexpansion.modeFluid=Vloeistof Modus
-info.thermalexpansion.modeItem=Item Modus
-info.thermalexpansion.modeRecv=Alleen Ontvangen
-info.thermalexpansion.modeSend=Alleen Verzenden
-info.thermalexpansion.modeSendRecv=Verzenden/Ontvangen
-
-#Transposer
-info.thermalexpansion.transposer.toggleEmpty=Schakel: Leeg
-info.thermalexpansion.transposer.toggleFill=Schakel: Vul
-info.thermalexpansion.transposer.toggleWait=Geschakeld
-
-#Plates
-info.thermalexpansion.distance=Afstand
-info.thermalexpansion.intensitySignal=Signaal Sterkte
-info.thermalexpansion.intensityImpulse=Afschiet Kracht
-info.thermalexpansion.duration=Tijd
-
-#Tier Localization
-info.thermalexpansion.creative=Creative
-info.thermalexpansion.basic=Basis
-info.thermalexpansion.hardened=Verhard
-info.thermalexpansion.reinforced=Versterkt
-info.thermalexpansion.resonant=Resonerend
-
-info.thermalexpansion.augment=Aanpassing
-info.thermalexpansion.augment.energyProduced=Energie Vervaardigt
-info.thermalexpansion.augment.energyUsed=Energie Verbruikt
-info.thermalexpansion.augment.fuelConsumed=Brandstof Verbruikt
-info.thermalexpansion.augment.fuelEnergy=Basis Brandstof Energie
-info.thermalexpansion.augment.levels.0=Vorige levels moeten eerst geïnstalleerd zijn.
-info.thermalexpansion.augment.levels.1=Hoogste level aanpassing is gebruikt.
-info.thermalexpansion.augment.machine.0=Benodigt een
-info.thermalexpansion.augment.machine.1=Machine
-info.thermalexpansion.augment.secondaryChance=Tweede Kans
-info.thermalexpansion.augment.speed=Snelheid
-
-info.thermalexpansion.augment.dynamoCoilDuct=Dynamo: Zijde Toegankelijkheid
 info.thermalexpansion.augment.dynamoCoilDuct.0=Staat invoer en uitvoer van items en vloeistoffen toe door de spoel van een dynamo.
-info.thermalexpansion.augment.dynamoEfficiency=Dynamo: Brandstof Efficiëntie
-info.thermalexpansion.augment.dynamoOutput=Dynamo: Energie Uitvoer
-info.thermalexpansion.augment.dynamoThrottle=Dynamo: Geanvanceerde schakeling
+
 info.thermalexpansion.augment.dynamoThrottle.0=Verbeter de schakeling van een dynamo zodat de energie outvoer kan worden verlaagt naar 0 RF/t.
 
-info.thermalexpansion.augment.generalAutoOutput=Geautomatiseerde Uitvoer
-info.thermalexpansion.augment.generalAutoOutput.0=Staat items en vloeistoffen to om automatisch out de machine te worden getransporteerd.
-info.thermalexpansion.augment.generalReconfigSides=Herinstelbare Zijdes
-info.thermalexpansion.augment.generalReconfigSides.0=Staat het herinstellen van de zijdes van een machine toe.
-info.thermalexpansion.augment.generalRedstoneControl=Redstone Besturing
-info.thermalexpansion.augment.generalRedstoneControl.0=Staat het toepassen van redstone instellingen op een machine toe.
-
-info.thermalexpansion.augment.machineSecondary=Machine: Secundaire Uitvoer
-info.thermalexpansion.augment.machineSpeed=Machine: Verwerkings Snelheid
-
-info.thermalexpansion.capacitor.0=Activeer om items die vast worden gehouden op te laden.
-info.thermalexpansion.capacitor.1=Gebruik tijdens het sluipen om te activeren.
-info.thermalexpansion.capacitor.2=Vast gehouden items opladen.
-info.thermalexpansion.capacitor.3=Gebruik tijdens het sluipen om te deactiveren.
-info.thermalexpansion.capacitor.4=Moet op de hotbar blijven.
-info.thermalexpansion.capacitor.potato=Slim! Maar niet oplaadbaar.
-
-info.thermalexpansion.device.activator=Doet meer dan dat een tooltip kan vertellen.
-info.thermalexpansion.device.breaker=Breekt blokken. Simpel Genoeg.
-info.thermalexpansion.device.nullifier=Verwijdert dingen uit hun bestaan.
-
-info.thermalexpansion.diagram.0=Gebruik tijdens het sluipen om te legen.
-info.thermalexpansion.diagram.1=Gebruik op een apparaat om zijn instellingen te kopiëren.
-info.thermalexpansion.diagram.2=Gebruik op een apparaat om de opgeslagen instellingen erop te laden.
-
-info.thermalexpansion.dynamo.generate=Genereert Energie (Redstone Flux).
-info.thermalexpansion.dynamo.steam=Vereist water en vaste brandstof.
-info.thermalexpansion.dynamo.steam.0=Stoom mag daarvoor in de plaats worden binnengepompt.
-info.thermalexpansion.dynamo.magmatic=Vereist hete vloeistoffen.
 info.thermalexpansion.dynamo.compression=Vereist vloeibare brandstof end koelvloeistof.
-info.thermalexpansion.dynamo.reactant=Vereist vloeibare brandstof en vaste reagent.
 info.thermalexpansion.dynamo.enervation=Ontrekt flux vanuit diverse objecten.
+info.thermalexpansion.dynamo.magmatic=Vereist hete vloeistoffen.
+info.thermalexpansion.dynamo.reactant=Vereist vloeibare brandstof en vaste reagent.
+info.thermalexpansion.dynamo.steam=Vereist water en vaste brandstof.
 
+info.thermalexpansion.machine.charger=Laad items op met RF.
+info.thermalexpansion.machine.crucible=Smelt items tot vloeistoffen.
+info.thermalexpansion.machine.extruder=Mixt hete en koude vloeistoffen.
 info.thermalexpansion.machine.furnace=Smelt items.
+info.thermalexpansion.machine.insolator=Doordrenkt planten met 'zon' en RF.
+info.thermalexpansion.machine.precipitator=Bevriest vloeistoffen tot vaste stoffen.
 info.thermalexpansion.machine.pulverizer=Verpulverd items.
 info.thermalexpansion.machine.sawmill=Voorziet van extra hout.
 info.thermalexpansion.machine.smelter=Smelt legeringen en metalen. Twee invoer slots.
-info.thermalexpansion.machine.crucible=Smelt items tot vloeistoffen.
 info.thermalexpansion.machine.transposer=Manipuleert vloeistoffen en vloeistof houders.
-info.thermalexpansion.machine.precipitator=Bevriest vloeistoffen tot vaste stoffen.
-info.thermalexpansion.machine.extruder=Mixt hete en koude vloeistoffen.
-info.thermalexpansion.machine.accumulator=Ontrekt water vanuit de omgeving.
-info.thermalexpansion.machine.assembler=Vervaardigt items.
-info.thermalexpansion.machine.charger=Laad items op met RF.
-info.thermalexpansion.machine.insolator=Doordrenkt planten met 'zon' en RF.
 
-info.thermalexpansion.workbench=Vervaardigt dingen; kan bouwschema's gebruiken.
-
-info.thermalexpansion.florb.0=Bevat 1000 mB van de meeste vloeistoffen.
-info.thermalexpansion.florb.1=Bevat 1000 mB van de meeste hete vloeistoffen.
-info.thermalexpansion.florb.2=Vul met een
-info.thermalexpansion.florb.3=Ja, Je kan het gooien.
-info.thermalexpansion.florb.4=Deze vloeistof is lichter dan lucht.
-info.thermalexpansion.florb.5=De Florb zal verder komen.
-
-info.thermalexpansion.tool.battleWrench=90% hamer, 10% moersleutel.
-info.thermalexpansion.tool.wrench.0=Zeker, het is een moersleutel.
-info.thermalexpansion.tool.wrench.1=Maar al het gereedschap kan een hamer zijn
-info.thermalexpansion.tool.wrench.2=als dat nodig is.
-
-info.thermalexpansion.securable=Beveiligbaar met een slot.
-info.thermalexpansion.storage.enchant=Kan betoverd worden om meer items te bevatten.
-info.thermalexpansion.wrench=Moersleutel tijdens het sluipen om te demonteren.
-
-#Items
 item.thermalexpansion.augment.dynamoCoilDuct.name=Transmissie Spoel Kanalisering
-item.thermalexpansion.augment.dynamoEfficiency0.name=Secundaire tandwieldoos
-item.thermalexpansion.augment.dynamoEfficiency1.name=Flux Verbinding Optimalisatie
-item.thermalexpansion.augment.dynamoEfficiency2.name=BevrorenSpoel Regulator
-item.thermalexpansion.augment.dynamoOutput0.name=Secundaire Transmissie Spoel
-item.thermalexpansion.augment.dynamoOutput1.name=Flux Modulatie Versterker
-item.thermalexpansion.augment.dynamoOutput2.name=BevrorenSpoel Flux Versterker
 item.thermalexpansion.augment.dynamoThrottle.name=Opwekveld begrenzer
-
-item.thermalexpansion.augment.generalAutoOutput.name=Integrated Servo Mechanism
-item.thermalexpansion.augment.generalReconfigSides.name=Integrated Modular Framework
-item.thermalexpansion.augment.generalRedstoneControl.name=Integrated Redstone Circuit
-
-item.thermalexpansion.augment.machineSecondary0.name=Secundaire Zeef
-item.thermalexpansion.augment.machineSecondary1.name=Gestabiliseerd Frame
-item.thermalexpansion.augment.machineSecondary2.name=GyroServo Terugkoppeling
-item.thermalexpansion.augment.machineSpeed0.name=Secundaire Ontvangst Spoel
-item.thermalexpansion.augment.machineSpeed1.name=Overgeclockte Uitbreibare Tandwieldoos
-item.thermalexpansion.augment.machineSpeed2.name=Ruimte-Tijd Flux Vereniger
-
-item.thermalexpansion.capacitor.creative.name=Creative Flux Condensator
-item.thermalexpansion.capacitor.potato.name=Tuberoze Flux Condensator
-item.thermalexpansion.capacitor.basic.name=Loodsteen Flux Condensator
-item.thermalexpansion.capacitor.hardened.name=Verharde Flux Condensator
-item.thermalexpansion.capacitor.reinforced.name=Redstone Flux Condensator
-item.thermalexpansion.capacitor.resonant.name=Resonerende Flux Condensator
-
-item.thermalexpansion.diagram.schematic.name=Bouwschema
-item.thermalexpansion.diagram.redprint.name=Redprint
 
 item.thermalexpansion.florb.florb.name=Florb
 item.thermalexpansion.florb.florbMagmatic.name=Magmatische Florb
 
-item.thermalexpansion.material.pneumaticServo.name=Luchtdruk Servo
-item.thermalexpansion.material.powerCoilGold.name=Redstone Ontvangst Spoel
-item.thermalexpansion.material.powerCoilSilver.name=Redstone Transmissie Spoel
-item.thermalexpansion.material.powerCoilElectrum.name=Redstone Geleiding Spoel
-item.thermalexpansion.material.lock.name=Signalum Beveiligings Slot
-
-item.thermalexpansion.material.dustWood.name=Zaagsel
-item.thermalexpansion.material.dustWoodCompressed.name=Samengeperst zaagsel
-item.thermalexpansion.material.slag.name=Metaalschuim
-item.thermalexpansion.material.slagRich.name=Rijk Metaalschuim
-item.thermalexpansion.material.fertilizer.name=Fyto-Gro
-item.thermalexpansion.material.fertilizerRich.name=Rijke Fyto-Gro
-
-item.thermalexpansion.satchel.creative.name=Creative Tas
-item.thermalexpansion.satchel.basic.name=Tas
-item.thermalexpansion.satchel.hardened.name=Verharde Tas
-item.thermalexpansion.satchel.reinforced.name=Versterkte Tas
-item.thermalexpansion.satchel.resonant.name=Resonerende Tas
-
-item.thermalexpansion.tool.wrench.name=Maansikkel Hamer
-item.thermalexpansion.tool.battleWrench.name=GevechtsMoersleutel
-item.thermalexpansion.tool.multimeter.name=Multimeter
-item.thermalexpansion.tool.debugger.name=Debugger
-item.thermalexpansion.tool.igniter.name=Flux Ontsteker
-
-itemGroup.thermalexpansion.creativeTab=Thermal Expansion
-itemGroup.thermalexpansion.creativeTabBlocks=Thermal Expansion: Blokken
-itemGroup.thermalexpansion.creativeTabTools=Thermal Expansion: Gereedschap
-itemGroup.thermalexpansion.creativeTabItems=Thermal Expansion: Items
-itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florbs
-
-#NEI Recipe
-recipe.thermalexpansion.upgrade=Verbetering Vervaardiging
-
-#Info Tabs
-tab.thermalexpansion.cell.0=Slaat Redstone Flux op.
-tab.thermalexpansion.cell.1=Houd Shift of Ctrl in om de energie controle te verfijnen.
-
-tab.thermalexpansion.device.lexicon.0=
-tab.thermalexpansion.device.activator.0=Het snijd! Het hakt fijn! Het giet dingen, Het gooit dingen!
-tab.thermalexpansion.device.activator.1=Misschien is het willekeurig, misschien ook niet. Misschien is het gluiperig, mischien niet.
-tab.thermalexpansion.device.activator.2=Bedriegelijk veelzijdig!
-tab.thermalexpansion.device.breaker.0=Breekt alle dingen!
-tab.thermalexpansion.device.breaker.1=Houd je gezicht er weg van.
 tab.thermalexpansion.device.nullifier.0=Stuurt alles naar /dev/null!
 tab.thermalexpansion.device.nullifier.1=Het is een vreselijke plek, zelfs vloeistoffen kunnen er niet uit ontsnapppen.
 
 tab.thermalexpansion.dynamo.0=Generatie snelheid varieert als de vraag naar energie stijgt.
-tab.thermalexpansion.dynamo.steam.0=Genereert Redstone Flux met Stoom.
-tab.thermalexpansion.dynamo.steam.1=vaste Brandstoffen en Water kan gebruikt worden om stoom te genereren.
-tab.thermalexpansion.dynamo.magmatic.0=Generereert Redstone Flux met extreem hete vloeistoffen.
 tab.thermalexpansion.dynamo.compression.0=Genereert Redstone Flux met vloeibare brandstoffen.
+tab.thermalexpansion.dynamo.enervation.0=Ontrekt Redstone Flux direct uit natuurlijke bronnen of ui objecten die het opslaan.
+tab.thermalexpansion.dynamo.magmatic.0=Generereert Redstone Flux met extreem hete vloeistoffen.
 tab.thermalexpansion.dynamo.reactant.0=Genereert Redstone Flux met chemische reacties.
 tab.thermalexpansion.dynamo.reactant.1=Een vaste reagent en vloeibare brandstof moet voorzijn zijn.
-tab.thermalexpansion.dynamo.enervation.0=Ontrekt Redstone Flux direct uit natuurlijke bronnen of ui objecten die het opslaan.
+tab.thermalexpansion.dynamo.steam.0=Genereert Redstone Flux met Stoom.
+tab.thermalexpansion.dynamo.steam.1=vaste Brandstoffen en Water kan gebruikt worden om stoom te genereren.
 
-tab.thermalexpansion.ender.tesseract.0=Gebruik deze om direct dingen te transporteren over lange afstanden of naar ander dimensies.
-tab.thermalexpansion.ender.tesseract.1=Stem de Ender Frequentie af om verbindingen te bepalen.
-
-tab.thermalexpansion.light.0=Zeer uitgebreide lamp, reageert op redstone.
-tab.thermalexpansion.light.1=Kleur en modus kan worden aangepast met schuivers.
-tab.thermalexpansion.light.2=Vervang de duisternis door geweldigheid!
-
+tab.thermalexpansion.machine.charger.0=Vul compatibele items met energie.
+tab.thermalexpansion.machine.charger.1=Oplaad snelheid kan gelimiteerd zijn door de item.
+tab.thermalexpansion.machine.charger.2=Voel het brommen.
+tab.thermalexpansion.machine.crucible.0=Verandert vaste materialen in vloeistoffen!
+tab.thermalexpansion.machine.crucible.1=Erg handig voor het bouwen van geanvanceerde apparaten.
+tab.thermalexpansion.machine.crucible.2=Hou weg van kleine kinderen en huisdieren.
+tab.thermalexpansion.machine.extruder.0=Mixt water en lava om verschillende soorten vurig steen.
+tab.thermalexpansion.machine.extruder.1=Het geselecteerde item is wat je zal krijgen, als er genoeg water en lava in de reservoirs zit.
+tab.thermalexpansion.machine.extruder.2=Minecraft natuurkunde is leuk!
 tab.thermalexpansion.machine.furnace.0=Smelt dingen met Redstone Flux.
 tab.thermalexpansion.machine.furnace.1=Gebruik erg weinig energie om eten te koken.
 tab.thermalexpansion.machine.furnace.2=Om nom nom.
+tab.thermalexpansion.machine.precipitator.0=Gebruikt Redstone Flux om diverse vloeistoffen te bevriezen!
 tab.thermalexpansion.machine.pulverizer.0=Verpulverd dingen tot andere dingen.
 tab.thermalexpansion.machine.pulverizer.1=Bruikbaar voor de verwerking van erts or het converteren van items.
 tab.thermalexpansion.machine.pulverizer.2=Dit is meestal niet terug te draaien.
@@ -311,146 +64,25 @@ tab.thermalexpansion.machine.sawmill.0=Hakt boomstammen tot planken en herverwer
 tab.thermalexpansion.machine.sawmill.1=Erg handig om het uiterste uit een boom te halen.
 tab.thermalexpansion.machine.sawmill.2=Kijk uit met je handen.
 tab.thermalexpansion.machine.smelter.0=Smelt metalen en dingen die hoge temperaturen nodig hebben.
-tab.thermalexpansion.machine.smelter.1=Handig voor het verwerken van erts en het bouwen van geanvanceerde apparaten.
-tab.thermalexpansion.machine.smelter.2=Zal absoluut geen eten koken.
-tab.thermalexpansion.machine.crucible.0=Verandert vaste materialen in vloeistoffen!
-tab.thermalexpansion.machine.crucible.1=Erg handig voor het bouwen van geanvanceerde apparaten.
-tab.thermalexpansion.machine.crucible.2=Hou weg van kleine kinderen en huisdieren.
 tab.thermalexpansion.machine.transposer.0=Vult of leegt dingen die vloeistoffen bevatten.
 tab.thermalexpansion.machine.transposer.1=Druk op de knop om te wisselen tussen Vullen en Ontrekken.
 tab.thermalexpansion.machine.transposer.2=Meestal terugdraaibaar.
-tab.thermalexpansion.machine.precipitator.0=Gebruikt Redstone Flux om diverse vloeistoffen te bevriezen!
-tab.thermalexpansion.machine.precipitator.1=The selected item is what you'll get, if there is enough fluid in the tank.
-tab.thermalexpansion.machine.precipitator.2=Have a snowball fight.
-tab.thermalexpansion.machine.extruder.0=Mixt water en lava om verschillende soorten vurig steen.
-tab.thermalexpansion.machine.extruder.1=Het geselecteerde item is wat je zal krijgen, als er genoeg water en lava in de reservoirs zit.
-tab.thermalexpansion.machine.extruder.2=Minecraft natuurkunde is leuk!
-tab.thermalexpansion.machine.accumulator.0=Ontrekt water uit zijn omgeving.
-tab.thermalexpansion.machine.accumulator.1=Plaats in een poel water om dit te versnellen.
-tab.thermalexpansion.machine.accumulator.2=Verdrink niet.
-tab.thermalexpansion.machine.assembler.0=Vervaardigt recepten opgeslagen in Bouwschemas.
-tab.thermalexpansion.machine.assembler.1=Gebruikt 20 Redstone Flux per item.
-tab.thermalexpansion.machine.assembler.2=Nee, het maakt dat niet.
-tab.thermalexpansion.machine.charger.0=Vul compatibele items met energie.
-tab.thermalexpansion.machine.charger.1=Oplaad snelheid kan gelimiteerd zijn door de item.
-tab.thermalexpansion.machine.charger.2=Voel het brommen.
-tab.thermalexpansion.machine.insolator.0=Doordrenk planten met voedingstoffen en licht met RF.
-tab.thermalexpansion.machine.insolator.1=Niet echt 'organisch' boeren.
-tab.thermalexpansion.machine.insolator.2=Glorieus gloeiend!
 
-tab.thermalexpansion.plate.signal.0=Zend een redstone signaal op afstand bij contact.
-tab.thermalexpansion.plate.signal.1=Signaal parameters kunnen worden ingesteld.
-tab.thermalexpansion.plate.impulse.0=Verleent snelheid bij contact.
-tab.thermalexpansion.plate.impulse.1=Stertkte en hoek kunnen worden ingesteld.
-tab.thermalexpansion.plate.translocate.0=Verplaatst objecten en entiteiten bij contact.
-tab.thermalexpansion.plate.translocate.1=Afstamd kan worden ingesteld.
-
-tab.thermalexpansion.satchel.0=Het is een tas. Zal niks opslaan.
-tab.thermalexpansion.satchel.1=Geen terugbetalingen.
-tab.thermalexpansion.satchel.creative=Bevat maar één ding...zo'n beetje.
-
-tab.thermalexpansion.storage.enchant=Can worden betoverd om meer items op te slaan!
-
-tab.thermalexpansion.strongbox.0=Het is een doos! Het slaat dingen op. Nou ja, de meeste dingen.
-tab.thermalexpansion.strongbox.creative=Bevat een oneindige hoeveelheid van één ding!
-
-tab.thermalexpansion.workbench.0=Vervaardigt dingen!
-tab.thermalexpansion.workbench.1=Een vervaardigings recept kan vanuit een Bouwschema worden ingelezen.
-tab.thermalexpansion.workbench.2=Shift + Rechts Klik op een Bouwschema om het opgeslagen recept direct te vervaardigen.
-
-#Blocks
-tile.thermalexpansion.cache.creative.name=Creative Cache
-tile.thermalexpansion.cache.basic.name=Cache
-tile.thermalexpansion.cache.hardened.name=Verharde Cache
-tile.thermalexpansion.cache.reinforced.name=Versterkte Cache
-tile.thermalexpansion.cache.resonant.name=Resonerende Cache
-
-tile.thermalexpansion.cell=Energie Cel
-tile.thermalexpansion.cell.creative.name=Creative Energie Cel
-tile.thermalexpansion.cell.basic.name=Loodsteen Energie Cel
-tile.thermalexpansion.cell.hardened.name=Verharde Energie Cel
-tile.thermalexpansion.cell.reinforced.name=Redstone Energie Cel
-tile.thermalexpansion.cell.resonant.name=Resonerende Energie Cel
-
-tile.thermalexpansion.device.workbench.name=Machinist zijn Werkbank
-tile.thermalexpansion.device.lexicon.name=Forge Lexicon
-tile.thermalexpansion.device.activator.name=Autonome Activator
-tile.thermalexpansion.device.breaker.name=Terrein Vernietiger
 tile.thermalexpansion.device.nullifier.name=Vernietiger
 
-tile.thermalexpansion.dynamo=Dynamo
-tile.thermalexpansion.dynamo.steam.name=Stoom Dynamo
-tile.thermalexpansion.dynamo.magmatic.name=Magmatische Dynamo
 tile.thermalexpansion.dynamo.compression.name=Compressie Dynamo
-tile.thermalexpansion.dynamo.reactant.name=Reagent Dynamo
 tile.thermalexpansion.dynamo.enervation.name=Slapheid Dynamo
+tile.thermalexpansion.dynamo.magmatic.name=Magmatische Dynamo
+tile.thermalexpansion.dynamo.reactant.name=Reagent Dynamo
+tile.thermalexpansion.dynamo.steam.name=Stoom Dynamo
 
-tile.thermalexpansion.ender.tesseract.name=Tesseract
-
-tile.thermalexpansion.frame.machineBasic.name=Machine Frame (Basis)
-tile.thermalexpansion.frame.machineHardened.name=Machine Frame (Verhard)
-tile.thermalexpansion.frame.machineReinforced.name=Machine Frame (Versterkt)
-tile.thermalexpansion.frame.machineResonant.name=Machine Frame (Resonerend)
-tile.thermalexpansion.frame.cellBasic.name=Loodsteen Energie Cel Frame
-tile.thermalexpansion.frame.cellReinforcedEmpty.name=Redstone Energie Cel Frame (Leeg)
-tile.thermalexpansion.frame.cellReinforcedFull.name=Redstone Energie Cel Frame (Vol)
-tile.thermalexpansion.frame.tesseractEmpty.name=Tesseract Frame (Leeg)
-tile.thermalexpansion.frame.tesseractFull.name=Tesseract Frame (Vol)
-tile.thermalexpansion.frame.illuminator.name=Verlichter Frame
-
-tile.thermalexpansion.glass.name=Verhard Glass
-
-tile.thermalexpansion.light.name=6-Modus Verlichting
-tile.thermalexpansion.light.illuminator.name=Gloeisteen Verlichter
-tile.thermalexpansion.light.lampLumiumRadiant.name=Stralende Lumium Lamp
-tile.thermalexpansion.light.lampLumium.name=Lumium Lamp
-
+tile.thermalexpansion.machine.charger.name=Energetische Doordrenker
+tile.thermalexpansion.machine.crucible.name=Magma Smeltkroes
+tile.thermalexpansion.machine.extruder.name=Vuur Extrusiemachine
 tile.thermalexpansion.machine.furnace.name=Redstone Fornuis
+tile.thermalexpansion.machine.insolator.name=Fytogenische Isolator
+tile.thermalexpansion.machine.precipitator.name=Glaciale Afscheider
 tile.thermalexpansion.machine.pulverizer.name=Verpulveraar
 tile.thermalexpansion.machine.sawmill.name=Houtzager
 tile.thermalexpansion.machine.smelter.name=Inductie Smelter
-tile.thermalexpansion.machine.crucible.name=Magma Smeltkroes
 tile.thermalexpansion.machine.transposer.name=Vloeistor Transpositeur
-tile.thermalexpansion.machine.precipitator.name=Glaciale Afscheider
-tile.thermalexpansion.machine.extruder.name=Vuur Extrusiemachine
-tile.thermalexpansion.machine.accumulator.name=Water Verzamelaar
-tile.thermalexpansion.machine.assembler.name=Cyclische Assembleur
-tile.thermalexpansion.machine.charger.name=Energetische Doordrenker
-tile.thermalexpansion.machine.insolator.name=Fytogenische Isolator
-
-tile.thermalexpansion.plate.frame.name=Plaat
-tile.thermalexpansion.plate.impulse.name=Impuls Plaat
-tile.thermalexpansion.plate.signal.name=Redstone Plaat
-tile.thermalexpansion.plate.translocate.name=Verplaatsing Plaat
-
-tile.thermalexpansion.rockwool.black.name=Zwarte Steenwol
-tile.thermalexpansion.rockwool.red.name=Rode Steenwol
-tile.thermalexpansion.rockwool.green.name=Groene Steenwol
-tile.thermalexpansion.rockwool.brown.name=Bruine Steenwol
-tile.thermalexpansion.rockwool.blue.name=Blauwe Steenwol
-tile.thermalexpansion.rockwool.purple.name=Paarse Steenwol
-tile.thermalexpansion.rockwool.cyan.name=Cyaan Steenwol
-tile.thermalexpansion.rockwool.silver.name=Licht Grijs Steenwol
-tile.thermalexpansion.rockwool.gray.name=Grijs Steenwol
-tile.thermalexpansion.rockwool.pink.name=Roze Steenwol
-tile.thermalexpansion.rockwool.lime.name=Limoenkleurige Steenwol
-tile.thermalexpansion.rockwool.yellow.name=Gele Steenwol
-tile.thermalexpansion.rockwool.lightBlue.name=Licht Blauw Steenwol
-tile.thermalexpansion.rockwool.magenta.name=Magenta Steenwol
-tile.thermalexpansion.rockwool.orange.name=Oranje Steenwol
-tile.thermalexpansion.rockwool.white.name=Wit Steenwol
-
-tile.thermalexpansion.sponge.creative.name=Creative Spons
-tile.thermalexpansion.sponge.basic.name=Gewone Spons
-tile.thermalexpansion.sponge.magmatic.name=Magmatische Spons
-
-tile.thermalexpansion.strongbox.creative.name=Creative Brandkast
-tile.thermalexpansion.strongbox.basic.name=Brandkast
-tile.thermalexpansion.strongbox.hardened.name=Verharde Brandkast
-tile.thermalexpansion.strongbox.reinforced.name=Versterkte Brandkast
-tile.thermalexpansion.strongbox.resonant.name=Resonerende Brandkast
-tile.thermalexpansion.tank.creative.name=Creative Draagbaar Reservoir
-tile.thermalexpansion.tank.basic.name=Draagbaar Reservoir
-tile.thermalexpansion.tank.hardened.name=Verharde Draagbaar Reservoir
-tile.thermalexpansion.tank.reinforced.name=Versterkt Draagbaar Reservoir
-tile.thermalexpansion.tank.resonant.name=Resonerend Draagbaar Reservoir

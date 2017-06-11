@@ -1,20 +1,29 @@
 package cofh.thermalexpansion.item.tool;
 
+import codechicken.lib.raytracer.RayTracer;
+import codechicken.lib.util.SoundUtils;
+import codechicken.lib.vec.Vector3;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class ItemChiller extends ItemEnergyContainerBase {
 
@@ -26,49 +35,52 @@ public class ItemChiller extends ItemEnergyContainerBase {
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 
 		if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {
-			return stack;
+			return new ActionResult<>(EnumActionResult.PASS, stack);
 		}
-		MovingObjectPosition pos = player.isSneaking() ? BlockHelper.getCurrentMovingObjectPosition(player, true) : BlockHelper.getCurrentMovingObjectPosition(
-				player, range, true);
+		RayTraceResult traceResult = player.isSneaking() ? RayTracer.retrace(player, true) : RayTracer.retrace(player, range, true);
 
-		if (pos != null) {
+		if (traceResult != null) {
 			boolean success = false;
-			int[] coords = BlockHelper.getAdjacentCoordinatesForSide(pos);
-			world.playSoundEffect(coords[0] + 0.5D, coords[1] + 0.5D, coords[2] + 0.5D, "random.orb", 0.2F, MathHelper.RANDOM.nextFloat() * 0.4F + 0.8F);
+			BlockPos pos = traceResult.getBlockPos();
+			BlockPos offsetPos = traceResult.getBlockPos().offset(traceResult.sideHit);
+
+			int[] coords = BlockHelper.getAdjacentCoordinatesForSide(traceResult);
+			SoundUtils.playSoundAt(new Vector3(offsetPos).add(0.5), world, SoundCategory.BLOCKS, SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, 0.2F, MathHelper.RANDOM.nextFloat() * 0.4F + 0.8F);
 
 			if (ServerHelper.isServerWorld(world)) {
-				AxisAlignedBB axisalignedbb = BlockHelper.getAdjacentAABBForSide(pos);
+				AxisAlignedBB axisalignedbb = BlockHelper.getAdjacentAABBForSide(traceResult);
 				List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
 				if (!list.isEmpty()) {
-					for (int i = 0; i < list.size(); i++) {
-						list.get(i).extinguish();
+					for (EntityLivingBase livingBase : list) {
+						livingBase.extinguish();
 					}
 					success = true;
 				} else {
-					Block block = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+					IBlockState state = world.getBlockState(pos);
+					Block block = state.getBlock();
 
-					if (world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
-						success = world.setBlock(pos.blockX, pos.blockY, pos.blockZ, Blocks.ice, 0, 3);
-					} else if (world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && (block == Blocks.lava || block == Blocks.flowing_lava)) {
-						success = world.setBlock(pos.blockX, pos.blockY, pos.blockZ, Blocks.obsidian, 0, 3);
-					} else if (block != Blocks.snow_layer && Blocks.snow_layer.canPlaceBlockAt(world, coords[0], coords[1], coords[2])) {
-						success = world.setBlock(coords[0], coords[1], coords[2], Blocks.snow_layer, 0, 3);
+					if ((block == Blocks.WATER || block == Blocks.FLOWING_WATER) && block.getMetaFromState(state) == 0) {
+						success = world.setBlockState(pos, Blocks.ICE.getDefaultState(), 3);
+					} else if ((block == Blocks.LAVA || block == Blocks.FLOWING_LAVA) && block.getMetaFromState(state) == 0) {
+						success = world.setBlockState(pos, Blocks.OBSIDIAN.getDefaultState(), 3);
+					} else if (block != Blocks.SNOW_LAYER && Blocks.SNOW_LAYER.canPlaceBlockAt(world, offsetPos)) {
+						success = world.setBlockState(offsetPos, Blocks.SNOW_LAYER.getDefaultState(), 3);
 					}
 				}
 				if (success) {
 					player.openContainer.detectAndSendChanges();
-					((EntityPlayerMP) player).sendContainerAndContentsToPlayer(player.openContainer, player.openContainer.getInventory());
+					((EntityPlayerMP) player).updateCraftingInventory(player.openContainer, player.openContainer.getInventory());
 
 					if (!player.capabilities.isCreativeMode) {
 						extractEnergy(stack, energyPerUse, false);
 					}
 				}
 			}
-			player.swingItem();
+			player.swingArm(hand);
 		}
-		return stack;
+		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 }

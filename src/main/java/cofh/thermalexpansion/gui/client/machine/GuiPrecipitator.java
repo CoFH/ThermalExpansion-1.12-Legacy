@@ -1,37 +1,37 @@
 package cofh.thermalexpansion.gui.client.machine;
 
-import cofh.lib.gui.element.ElementBase;
-import cofh.lib.gui.element.ElementDualScaled;
-import cofh.lib.gui.element.ElementEnergyStored;
-import cofh.lib.gui.element.ElementFluid;
-import cofh.lib.gui.element.ElementFluidTank;
+import cofh.lib.gui.element.*;
 import cofh.thermalexpansion.block.machine.TilePrecipitator;
-import cofh.thermalexpansion.core.TEProps;
-import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
+import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
-
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotType;
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiPrecipitator extends GuiAugmentableBase {
+import java.io.IOException;
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Precipitator.png");
+public class GuiPrecipitator extends GuiPoweredBase {
 
-	TilePrecipitator myTile;
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "precipitator.png");
 
-	ElementBase slotInput;
-	ElementBase slotOutput;
-	ElementFluid progressFluid;
-	ElementDualScaled progressOverlay;
-	ElementDualScaled speed;
+	private TilePrecipitator myTile;
+
+	private ElementBase slotInput;
+	private ElementBase slotOutput;
+	private ElementFluid progressFluid;
+	private ElementDualScaled progressOverlay;
+	private ElementDualScaled speed;
 
 	public GuiPrecipitator(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerPrecipitator(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.precipitator", 3);
+		generateInfo("tab.thermalexpansion.machine.precipitator");
 
 		myTile = (TilePrecipitator) tile;
 	}
@@ -41,14 +41,13 @@ public class GuiPrecipitator extends GuiAugmentableBase {
 
 		super.initGui();
 
-		slotInput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(0, 3, 2));
-		slotOutput = addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(3, 1, 2));
+		slotInput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.BLUE, SlotType.TANK, SlotRender.FULL));
+		slotOutput = addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setAlwaysShow(true));
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 112, 49).setFluid(myTile.getTankFluid()).setSize(24, 16));
-		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16)
-				.setTexture(TEX_DROP_LEFT, 64, 16));
+		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_LEFT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 49).setSize(16, 16).setTexture(TEX_SNOWFLAKE, 32, 16));
 	}
 
@@ -57,8 +56,8 @@ public class GuiPrecipitator extends GuiAugmentableBase {
 
 		super.updateElementInformation();
 
-		slotInput.setVisible(myTile.hasSide(1));
-		slotOutput.setVisible(myTile.hasSide(2));
+		slotInput.setVisible(myTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotOutput.setVisible(myTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
 		progressFluid.setPosition(112 + PROGRESS - myTile.getScaledProgress(PROGRESS), 49);
 		progressFluid.setSize(myTile.getScaledProgress(PROGRESS), 16);
@@ -77,7 +76,7 @@ public class GuiPrecipitator extends GuiAugmentableBase {
 	}
 
 	@Override
-	protected void mouseClicked(int mX, int mY, int mButton) {
+	protected void mouseClicked(int mX, int mY, int mButton) throws IOException {
 
 		if (48 <= mouseX && mouseX < 128 && 18 <= mouseY && mouseY < 36) {
 			if (49 <= mouseX && mouseX < 67) {
@@ -92,37 +91,37 @@ public class GuiPrecipitator extends GuiAugmentableBase {
 		}
 	}
 
-	protected void drawCurSelection() {
+	private void drawCurSelection() {
 
 		int offset = 32;
 		if (myTile.getPrevSelection() == myTile.getCurSelection() && myTile.isActive) {
 			offset = 64;
 		}
 		switch (myTile.getCurSelection()) {
-		case 0:
-			drawTexturedModalRect(guiLeft + 42, guiTop + 11, 192, offset, 32, 32);
-			break;
-		case 1:
-			drawTexturedModalRect(guiLeft + 72, guiTop + 11, 192, offset, 32, 32);
-			break;
-		case 2:
-			drawTexturedModalRect(guiLeft + 102, guiTop + 11, 192, offset, 32, 32);
-			break;
+			case 0:
+				drawTexturedModalRect(guiLeft + 42, guiTop + 11, 192, offset, 32, 32);
+				break;
+			case 1:
+				drawTexturedModalRect(guiLeft + 72, guiTop + 11, 192, offset, 32, 32);
+				break;
+			case 2:
+				drawTexturedModalRect(guiLeft + 102, guiTop + 11, 192, offset, 32, 32);
+				break;
 		}
 	}
 
-	protected void drawPrevSelection() {
+	private void drawPrevSelection() {
 
 		switch (myTile.getPrevSelection()) {
-		case 0:
-			drawTexturedModalRect(guiLeft + 42, guiTop + 11, 224, 32, 32, 32);
-			break;
-		case 1:
-			drawTexturedModalRect(guiLeft + 72, guiTop + 11, 224, 32, 32, 32);
-			break;
-		case 2:
-			drawTexturedModalRect(guiLeft + 102, guiTop + 11, 224, 32, 32, 32);
-			break;
+			case 0:
+				drawTexturedModalRect(guiLeft + 42, guiTop + 11, 224, 32, 32, 32);
+				break;
+			case 1:
+				drawTexturedModalRect(guiLeft + 72, guiTop + 11, 224, 32, 32, 32);
+				break;
+			case 2:
+				drawTexturedModalRect(guiLeft + 102, guiTop + 11, 224, 32, 32, 32);
+				break;
 		}
 	}
 

@@ -1,28 +1,28 @@
 package cofh.thermalexpansion.block;
 
-import cofh.api.tileentity.IPortableData;
-import cofh.core.block.TileCoFHBase;
+import cofh.api.core.IPortableData;
+import cofh.core.block.TileCore;
+import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.ITileInfoPacketHandler;
 import cofh.core.network.ITilePacketHandler;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
-import cofh.core.network.PacketTileInfo;
-import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.GuiHandler;
-import cpw.mods.fml.relauncher.Side;
-
+import mcjty.theoneprobe.api.IProbeInfo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacketHandler, ITilePacketHandler, IPortableData {
+public abstract class TileTEBase extends TileCore implements ITileInfoPacketHandler, ITilePacketHandler, IPortableData {
 
 	protected String tileName = "";
 
-	public boolean setInvName(String name) {
+	protected boolean setName(String name) {
 
 		if (name.isEmpty()) {
 			return false;
@@ -33,17 +33,27 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 
 	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
-		return false;
+		return true;
 	}
 
 	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
-		return false;
+		return true;
 	}
 
 	/* GUI METHODS */
 	@Override
 	public int getInvSlotCount() {
+
+		return 0;
+	}
+
+	public int getScaledProgress(int scale) {
+
+		return 0;
+	}
+
+	public int getScaledSpeed(int scale) {
 
 		return 0;
 	}
@@ -57,21 +67,31 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 	public boolean openGui(EntityPlayer player) {
 
 		if (hasGui()) {
-			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
+			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public void sendGuiNetworkData(Container container, ICrafting iCrafting) {
+	public void sendGuiNetworkData(Container container, IContainerListener listener) {
 
-		if (iCrafting instanceof EntityPlayer) {
+		if (listener instanceof EntityPlayer) {
 			PacketCoFHBase guiPacket = getGuiPacket();
 			if (guiPacket != null) {
-				PacketHandler.sendTo(guiPacket, (EntityPlayer) iCrafting);
+				PacketHandler.sendTo(guiPacket, (EntityPlayer) listener);
 			}
 		}
+	}
+
+	public FluidTankCore getTank() {
+
+		return null;
+	}
+
+	public FluidStack getTankFluid() {
+
+		return null;
 	}
 
 	/* NBT METHODS */
@@ -86,97 +106,58 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
-		nbt.setString("Version", ThermalExpansion.version);
+		nbt.setString("Version", ThermalExpansion.VERSION);
 
 		if (!tileName.isEmpty()) {
 			nbt.setString("Name", tileName);
 		}
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
+
+	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getPacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+		PacketCoFHBase payload = super.getTilePacket();
+
 		payload.addString(tileName);
+
 		return payload;
 	}
 
-	public PacketCoFHBase getGuiPacket() {
-
-		PacketCoFHBase payload = PacketTileInfo.newPacket(this);
-		payload.addByte(TEProps.PacketID.GUI.ordinal());
-		return payload;
-	}
-
-	public PacketCoFHBase getFluidPacket() {
-
-		PacketCoFHBase payload = PacketTileInfo.newPacket(this);
-		payload.addByte(TEProps.PacketID.FLUID.ordinal());
-		return payload;
-	}
-
-	public PacketCoFHBase getModePacket() {
-
-		PacketCoFHBase payload = PacketTileInfo.newPacket(this);
-		payload.addByte(TEProps.PacketID.MODE.ordinal());
-		return payload;
-	}
-
-	protected void handleGuiPacket(PacketCoFHBase payload) {
-
-	}
-
-	protected void handleFluidPacket(PacketCoFHBase payload) {
-
-	}
-
-	protected void handleModePacket(PacketCoFHBase payload) {
-
-		markChunkDirty();
-	}
-
-	public void sendFluidPacket() {
-
-		PacketHandler.sendToDimension(getFluidPacket(), worldObj.provider.dimensionId);
-	}
-
-	public void sendModePacket() {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(getModePacket());
-		}
-	}
-
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
-			tileName = payload.getString();
-		} else {
-			payload.getString();
-		}
+		tileName = payload.getString();
+		worldObj.checkLight(pos);
 	}
 
 	/* ITileInfoPacketHandler */
 	@Override
 	public void handleTileInfoPacket(PacketCoFHBase payload, boolean isServer, EntityPlayer thePlayer) {
 
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			handleGuiPacket(payload);
-			return;
-		case FLUID:
-			handleFluidPacket(payload);
-			return;
-		case MODE:
-			handleModePacket(payload);
-			return;
-		default:
+		switch (TilePacketID.values()[payload.getByte()]) {
+			case S_GUI:
+				handleGuiPacket(payload);
+				return;
+			case S_FLUID:
+				handleFluidPacket(payload);
+				return;
+			case C_ACCESS:
+				handleAccessPacket(payload);
+				return;
+			case C_CONFIG:
+				handleConfigPacket(payload);
+				return;
+			case C_MODE:
+				handleModePacket(payload);
+				return;
+			default:
 		}
 	}
 
@@ -184,7 +165,7 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 	@Override
 	public String getDataType() {
 
-		return getName();
+		return getTileName();
 	}
 
 	@Override
@@ -194,8 +175,8 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 			return;
 		}
 		if (readPortableTagInternal(player, tag)) {
-			markDirty();
-			sendUpdatePacket(Side.CLIENT);
+			markChunkDirty();
+			sendTilePacket(Side.CLIENT);
 		}
 	}
 
@@ -205,19 +186,23 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 		if (!canPlayerAccess(player)) {
 			return;
 		}
-		if (writePortableTagInternal(player, tag)) {
-
-		}
-
+		writePortableTagInternal(player, tag);
 	}
 
-	/* Energy Config Class */
+	/* PLUGIN METHODS */
+	public void provideInfo(IProbeInfo info, EnumFacing facing, EntityPlayer player) {
+
+		info.text("Progress: ");
+		info.progress(getScaledProgress(100), 100);
+	}
+
+	/* ENERGY CONFIG */
 	public static class EnergyConfig {
 
 		public int minPower = 8;
 		public int maxPower = 80;
-		public int maxEnergy = 40000;
-		public int minPowerLevel = 1 * maxEnergy / 10;
+		public int maxEnergy = 20000;
+		public int minPowerLevel = maxEnergy / 10;
 		public int maxPowerLevel = 9 * maxEnergy / 10;
 		public int energyRamp = maxPowerLevel / maxPower;
 
@@ -240,81 +225,83 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 			return new EnergyConfig(this);
 		}
 
-		public boolean setParams(int minPower, int maxPower, int maxEnergy) {
+		public boolean setDefaultParams(int basePower) {
 
-			this.minPower = minPower;
-			this.maxPower = maxPower;
-			this.maxEnergy = maxEnergy;
-			this.maxPowerLevel = maxEnergy * 8 / 10;
-			this.energyRamp = maxPower > 0 ? maxPowerLevel / maxPower : 0;
-			this.minPowerLevel = minPower * energyRamp;
-
-			return true;
-		}
-
-		public boolean setParamsPower(int maxPower) {
-
-			return setParams(maxPower / 4, maxPower, maxPower * 1200);
-		}
-
-		public boolean setParamsPower(int maxPower, int scale) {
-
-			return setParams(maxPower / 4, maxPower, maxPower * 1200 * scale);
-		}
-
-		public boolean setParamsEnergy(int maxEnergy) {
-
-			return setParams(maxEnergy / 4800, maxEnergy / 1200, maxEnergy);
-		}
-
-		public boolean setParamsEnergy(int maxEnergy, int scale) {
-
-			maxEnergy *= scale;
-			return setParams(maxEnergy / 4800, maxEnergy / 1200, maxEnergy);
-		}
-
-		public boolean setParamsDefault(int maxPower) {
-
-			this.maxPower = maxPower;
-			minPower = maxPower / 10;
-			maxEnergy = maxPower * 500;
-			minPowerLevel = 1 * maxEnergy / 10;
+			maxPower = basePower;
+			minPower = basePower / 10;
+			maxEnergy = basePower * 1000;
 			maxPowerLevel = 9 * maxEnergy / 10;
-			energyRamp = maxPowerLevel / maxPower;
+			minPowerLevel = maxPowerLevel / 10;
+			energyRamp = maxPowerLevel / basePower;
 
 			return true;
 		}
 
 	}
 
-	/* Side Config Class */
-	// TODO - this is raw yet super efficient.
-	// Is it worth changing?
+	/* SIDE CONFIG */
 	public static class SideConfig {
 
 		/* Number of Side Configs */
 		public int numConfig;
 
+		/* Side Types - Determines Texture & Behavior */
+		public int[] sideTypes;
+
 		/* Slot Groups accessibble per Config */
 		public int[][] slotGroups;
 
-		/* Whether or not the SIDE allows insertion */
-		public boolean[] allowInsertionSide;
+		/* Default Side configuration for freshly placed block */
+		public byte[] defaultSides;
+	}
 
-		/* Whether or not the SIDE allows extraction */
-		public boolean[] allowExtractionSide;
+	public boolean allowInsertion(int type) {
+
+		return SIDE_INSERTION[type];
+	}
+
+	public boolean allowExtraction(int type) {
+
+		return SIDE_EXTRACTION[type];
+	}
+
+	public boolean isPrimaryInput(int type) {
+
+		return SIDE_INPUT_PRIMARY[type];
+	}
+
+	public boolean isSecondaryInput(int type) {
+
+		return SIDE_INPUT_SECONDARY[type];
+	}
+
+	public boolean isPrimaryOutput(int type) {
+
+		return SIDE_OUTPUT_PRIMARY[type];
+	}
+
+	public boolean isSecondaryOutput(int type) {
+
+		return SIDE_OUTPUT_SECONDARY[type];
+	}
+
+	/* SIDE CONFIG HELPERS */
+	public static boolean[] SIDE_INSERTION = { false, true, false, false, false, true, true, true, true };
+	public static boolean[] SIDE_EXTRACTION = { false, true, true, true, true, true, true, true, true };
+
+	public static boolean[] SIDE_INPUT_PRIMARY = { false, true, false, false, false, true, false, false, true };
+	public static boolean[] SIDE_INPUT_SECONDARY = { false, true, false, false, false, false, true, false, true };
+	public static boolean[] SIDE_OUTPUT_PRIMARY = { false, false, true, false, true, false, false, false, true };
+	public static boolean[] SIDE_OUTPUT_SECONDARY = { false, false, false, true, true, false, false, false, true };
+
+	/* SLOT CONFIG */
+	public static class SlotConfig {
 
 		/* Whether or not the SLOT allows input */
 		public boolean[] allowInsertionSlot;
 
 		/* Whether or not the SLOT allows extraction */
 		public boolean[] allowExtractionSlot;
-
-		/* Config Textures to use on Sides */
-		public int[] sideTex;
-
-		/* Default Side configuration for freshly placed block */
-		public byte[] defaultSides;
 	}
 
 }

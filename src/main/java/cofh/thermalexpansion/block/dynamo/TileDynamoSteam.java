@@ -1,56 +1,76 @@
 package cofh.thermalexpansion.block.dynamo;
 
-import cofh.core.CoFHProps;
+import codechicken.lib.texture.TextureUtils;
+import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankAdv;
-import cofh.lib.inventory.ComparableItemStack;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
-import cofh.thermalexpansion.util.FuelManager;
-import cofh.thermalfoundation.fluid.TFFluids;
-import cpw.mods.fml.common.registry.GameRegistry;
-
-import gnu.trove.map.hash.TObjectIntHashMap;
-
-import net.minecraft.block.material.Material;
+import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.util.managers.dynamo.SteamManager;
+import cofh.thermalfoundation.init.TFFluids;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
+import javax.annotation.Nullable;
+import java.util.HashSet;
 
-	static final int TYPE = BlockDynamo.Types.STEAM.ordinal();
+public class TileDynamoSteam extends TileDynamoBase {
+
+	private static final int TYPE = BlockDynamo.Type.STEAM.getMetadata();
+	public static int basePower = 40;
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion.DynamoSteam");
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_STEAM_TURBINE);
+
+		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion.dynamo_steam");
+
+		config();
 	}
 
-	static final int STEAM_MIN = 2000;
+	public static void config() {
 
-	FluidTankAdv steamTank = new FluidTankAdv(MAX_FLUID);
-	FluidTankAdv waterTank = new FluidTankAdv(MAX_FLUID);
+		String category = "Dynamo.Steam";
+		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-	int currentFuelRF = getEnergyValue(coal);
-	int steamAmount = defaultEnergyConfig[TYPE].maxPower / 2;
+		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
+		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
+	}
 
-	FluidStack steam = new FluidStack(FluidRegistry.getFluid("steam"), steamAmount);
+	private static final int STEAM_HIGH = TEProps.MAX_FLUID_SMALL * 3 / 4;
+
+	private FluidTankCore steamTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private FluidTankCore waterTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+
+	private int waterRF;
+	private int currentFuelRF = 0;
+
+	/* AUGMENTS */
+	protected boolean augmentTurbine;
 
 	public TileDynamoSteam() {
 
 		super();
 		inventory = new ItemStack[1];
+		steamTank.setLock(TFFluids.fluidSteam);
+		waterTank.setLock(FluidRegistry.WATER);
 	}
 
 	@Override
@@ -59,76 +79,66 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		return TYPE;
 	}
 
-	@Override
-	protected boolean canGenerate() {
+	protected boolean canStart() {
 
-		if (steamTank.getFluidAmount() > STEAM_MIN) {
-			return true;
+		if (augmentTurbine) {
+			return steamTank.getFluidAmount() > STEAM_HIGH;
 		}
-		if (waterTank.getFluidAmount() < config.maxPower) {
-			return false;
-		}
-		if (fuelRF > 0) {
-			return true;
-		}
-		return getEnergyValue(inventory[0]) > 0;
+		return steamTank.getFluidAmount() > STEAM_HIGH || (waterRF > 0 || waterTank.getFluidAmount() > 50) && (fuelRF > 0 || SteamManager.getFuelEnergy(inventory[0]) > 0);
 	}
 
 	@Override
-	public void attenuate() {
+	protected boolean canFinish() {
 
-		if (timeCheck()) {
-			fuelRF -= 10;
-
-			if (fuelRF < 0) {
-				fuelRF = 0;
-			}
-			steamTank.drain(config.minPower, true);
-		}
+		return steamTank.getFluidAmount() <= STEAM_HIGH;
 	}
 
 	@Override
-	public void generate() {
+	protected void processStart() {
 
-		if (steamTank.getFluidAmount() >= STEAM_MIN + steamAmount * energyMod) {
-			int energy = calcEnergy() * energyMod;
-			energyStorage.modifyEnergyStored(energy);
-			steamTank.drain(energy >> 1, true);
-		} else {
-			if (fuelRF <= 0 && inventory[0] != null) {
-				int energy = getEnergyValue(inventory[0]) * fuelMod / FUEL_MOD;
-				fuelRF += energy;
-				currentFuelRF = energy;
-				inventory[0] = ItemHelper.consumeItem(inventory[0]);
-			}
-			if (fuelRF > 0) {
-				int filled = steamTank.fill(steam, true);
-				fuelRF -= filled << 1;
-				if (timeCheck()) {
-					waterTank.drain(filled, true);
-				}
-			}
-			if (steamTank.getFluidAmount() > STEAM_MIN) {
-				int energy = Math.min((steamTank.getFluidAmount() - STEAM_MIN) << 1, calcEnergy());
-				energy *= energyMod;
-				energyStorage.modifyEnergyStored(energy);
-				steamTank.drain(energy >> 1, true);
-			}
+		if (augmentTurbine) {
 			return;
 		}
-		if (fuelRF > 0) {
-			int filled = steamTank.fill(steam, true);
-			fuelRF -= filled << 1;
-			if (timeCheck()) {
-				waterTank.drain(filled, true);
-			}
+		if (fuelRF <= 0) {
+			currentFuelRF = SteamManager.getFuelEnergy(inventory[0]) * energyMod / ENERGY_BASE;
+			fuelRF += currentFuelRF;
+			inventory[0] = ItemHelper.consumeItem(inventory[0]);
+		}
+		if (waterRF <= 0) {
+			waterRF += 8000;
+			waterTank.modifyFluidStored(-50);
 		}
 	}
 
 	@Override
-	public IIcon getActiveIcon() {
+	protected int processTick() {
 
-		return TFFluids.fluidSteam.getIcon();
+		int energy = calcEnergy();
+
+		if (steamTank.getFluidAmount() > STEAM_HIGH) {
+			energyStorage.modifyEnergyStored(energy);
+			steamTank.modifyFluidStored(-energy / 2);
+		}
+		if (fuelRF > 0) {
+			fuelRF -= energy;
+			waterRF -= energy;
+			steamTank.modifyFluidStored(energy);
+		}
+		transferEnergy();
+
+		return energy;
+	}
+
+	@Override
+	protected void processIdle() {
+
+		steamTank.modifyFluidStored(-50);
+	}
+
+	@Override
+	public TextureAtlasSprite getActiveIcon() {
+
+		return TextureUtils.getTexture(TFFluids.fluidSteam.getStill());
 	}
 
 	/* GUI METHODS */
@@ -148,13 +158,13 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = coalRF;
+			currentFuelRF = Math.max(fuelRF, SteamManager.DEFAULT_ENERGY);
 		}
 		return fuelRF * scale / currentFuelRF;
 	}
 
 	@Override
-	public FluidTankAdv getTank(int tankIndex) {
+	public FluidTankCore getTank(int tankIndex) {
 
 		if (tankIndex == 0) {
 			return steamTank;
@@ -173,27 +183,30 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		waterTank.readFromNBT(nbt.getCompoundTag("WaterTank"));
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = coalRF;
+			currentFuelRF = Math.max(fuelRF, SteamManager.DEFAULT_ENERGY);
 		}
-		steam.amount = steamAmount * energyMod;
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("FuelMax", currentFuelRF);
 		nbt.setTag("SteamTank", steamTank.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("WaterTank", waterTank.writeToNBT(new NBTTagCompound()));
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
+
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
+		payload.addBool(augmentTurbine);
 		payload.addInt(currentFuelRF);
 		payload.addFluidStack(steamTank.getFluid());
 		payload.addFluidStack(waterTank.getFluid());
@@ -206,146 +219,109 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 
 		super.handleGuiPacket(payload);
 
+		augmentTurbine = payload.getBool();
 		currentFuelRF = payload.getInt();
 		steamTank.setFluid(payload.getFluidStack());
 		waterTank.setFluid(payload.getFluidStack());
 	}
 
-	/* AUGMENT HELPERS */
+	/* HELPERS */
 	@Override
-	protected void onInstalled() {
+	protected void preAugmentInstall() {
 
-		super.onInstalled();
-		steam.amount = steamAmount * energyMod;
+		super.preAugmentInstall();
+
+		augmentTurbine = false;
 	}
 
 	@Override
-	protected void resetAugments() {
+	protected boolean installAugmentToSlot(int slot) {
 
-		super.resetAugments();
-		steam.amount = steamAmount;
-	}
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-	/* IEnergyInfo */
-	@Override
-	public int getInfoEnergyPerTick() {
-
-		return steamTank.getFluidAmount() >= STEAM_MIN ? calcEnergy() * energyMod : 0;
-	}
-
-	/* IFluidHandler */
-	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-
-		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
-			return 0;
+		if (!augmentTurbine && TEProps.DYNAMO_STEAM_TURBINE.equals(id)) {
+			augmentTurbine = true;
+			hasModeAugment = true;
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 3));
+			fuelRF = 0;
+			waterRF = 0;
+			return true;
 		}
-		if (resource.getFluid() == steam.getFluid()) {
-			return steamTank.fill(resource, doFill);
-		}
-		if (resource.getFluid() == FluidRegistry.WATER) {
-			return waterTank.fill(resource, doFill);
-		}
-		return 0;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-
-		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
-			return null;
-		}
-		if (resource.getFluid() == FluidRegistry.WATER) {
-			return waterTank.drain(resource.amount, doDrain);
-		}
-		return null;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-
-		if (!augmentCoilDuct && from.ordinal() == facing) {
-			return null;
-		}
-		return waterTank.drain(maxDrain, doDrain);
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-
-		return new FluidTankInfo[] { steamTank.getInfo(), waterTank.getInfo() };
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* IInventory */
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return getEnergyValue(stack) > 0;
+		return !augmentTurbine && SteamManager.getFuelEnergy(stack) > 0;
 	}
 
 	/* ISidedInventory */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getSlotsForFace(EnumFacing side) {
 
-		return side != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
+		return side == null || side.ordinal() != facing || augmentCoilDuct ? CoreProps.SINGLE_INVENTORY : CoreProps.EMPTY_INVENTORY;
 	}
 
-	/* FUEL MANAGER */
-	static int coalRF = 48000;
-	static int charcoalRF = 32000;
-	static int woodRF = 4500;
-	static int blockCoalRF = coalRF * 10;
-	static int otherRF = woodRF / 3;
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-	static ItemStack coal = new ItemStack(Items.coal, 1, 0);
-	static ItemStack charcoal = new ItemStack(Items.coal, 1, 1);
-	static ItemStack blockCoal = new ItemStack(Blocks.coal_block);
-
-	static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<ComparableItemStack>();
-
-	static {
-		String category = "Fuels.Steam";
-		FuelManager.configFuels.getCategory(category).setComment(
-				"You can adjust fuel values for the Steam Dynamo in this section. New fuels cannot be added at this time.");
-		coalRF = FuelManager.configFuels.get(category, "coal", coalRF);
-		charcoalRF = FuelManager.configFuels.get(category, "charcoal", charcoalRF);
-		woodRF = FuelManager.configFuels.get(category, "wood", woodRF);
-		blockCoalRF = coalRF * 10;
-		otherRF = woodRF / 3;
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 
-	public static boolean addFuel(ItemStack stack, int energy) {
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
-		if (stack == null || energy < 640 || energy > 200000000) {
-			return false;
-		}
-		fuels.put(new ComparableItemStack(stack), energy);
-		return true;
-	}
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
 
-	public static int getEnergyValue(ItemStack stack) {
+					return FluidTankProperties.convert(new FluidTankInfo[] { steamTank.getInfo(), waterTank.getInfo() });
+				}
 
-		if (stack == null) {
-			return 0;
-		}
-		if (stack.isItemEqual(coal)) {
-			return coalRF;
-		}
-		if (stack.isItemEqual(charcoal)) {
-			return charcoalRF;
-		}
-		if (stack.isItemEqual(blockCoal)) {
-			return blockCoalRF;
-		}
-		Item item = stack.getItem();
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
 
-		if (stack.getItem() instanceof ItemBlock && ((ItemBlock) item).field_150939_a.getMaterial() == Material.wood) {
-			return woodRF;
+					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
+						return 0;
+					}
+					if (augmentTurbine && resource.getFluid() == TFFluids.fluidSteam) {
+						return steamTank.fill(resource, doFill);
+					}
+					if (resource.getFluid() == FluidRegistry.WATER) {
+						return waterTank.fill(resource, doFill);
+					}
+					return 0;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					if (resource == null || from == null || !augmentCoilDuct && from.ordinal() == facing) {
+						return null;
+					}
+					if (resource.getFluid() == FluidRegistry.WATER) {
+						return waterTank.drain(resource.amount, doDrain);
+					}
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					if (!augmentCoilDuct && from.ordinal() == facing) {
+						return null;
+					}
+					return waterTank.drain(maxDrain, doDrain);
+				}
+			});
 		}
-		if (item == Items.stick || item instanceof ItemBlock && ((ItemBlock) item).field_150939_a == Blocks.sapling) {
-			return otherRF;
-		}
-		return GameRegistry.getFuelValue(stack) * CoFHProps.RF_PER_MJ * 3 / 2;
+		return super.getCapability(capability, from);
 	}
 
 }

@@ -1,114 +1,275 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.render.IconRegistry;
-import cofh.core.util.CoreUtils;
-import cofh.core.util.fluid.FluidTankAdv;
-import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.gui.container.machine.ContainerTransposer;
-import cofh.thermalexpansion.util.crafting.TransposerManager;
-import cofh.thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
-import cpw.mods.fml.common.registry.GameRegistry;
-
+import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TESounds;
+import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager.RecipeTransposer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class TileTransposer extends TileMachineBase implements IFluidHandler {
+import javax.annotation.Nullable;
+import java.util.HashSet;
+
+public class TileTransposer extends TileMachineBase {
+
+	private static final int TYPE = BlockMachine.Type.TRANSPOSER.getMetadata();
+	public static int basePower = 20;
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.TRANSPOSER.ordinal();
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 7;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 2 }, {}, { 2 }, { 0, 2 }, { 0, 2 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 2, 3, 4, 7, 8 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 6;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0 }, { 2 }, {}, { 2 }, { 0, 2 } };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, true, true, false, true, true };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, false, false, false };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, false, true, false };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
 
-		String category = "Machine.Transposer";
-		int basePower = MathHelper.clamp(ThermalExpansion.config.get(category, "BasePower", 40), 10, 500);
-		ThermalExpansion.config.set(category, "BasePower", basePower);
-		defaultEnergyConfig[type] = new EnergyConfig();
-		defaultEnergyConfig[type].setParamsPower(basePower);
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineTransposer");
+		SOUNDS[TYPE] = TESounds.MACHINE_TRANSPOSER;
 
-		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion.Transposer");
+		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion:machine_transposer");
+
+		config();
 	}
 
-	int inputTracker;
-	int outputTracker;
-	int outputTrackerFluid;
+	public static void config() {
 
-	FluidStack outputBuffer;
-	FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
-	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
-	IFluidContainerItem containerItem = null;
+		String category = "Machine.Transposer";
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-	public boolean reverseFlag;
-	public boolean reverse;
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
+	}
+
+	private int inputTracker;
+	private int outputTracker;
+	private int outputTrackerFluid;
+
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
+	private FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
+	private boolean hasFluidHandler = false;
+
+	// TODO : Use this instead of reverse?
+	public byte mode;
+	public byte modeFlag;
+
+	public boolean extractMode;
+	public boolean extractFlag;
 
 	public TileTransposer() {
 
-		super(Types.TRANSPOSER);
+		super();
 		inventory = new ItemStack[1 + 1 + 1 + 1];
+		createAllSlots(inventory.length);
 	}
 
 	@Override
-	public void updateEntity() {
+	public int getType() {
+
+		return TYPE;
+	}
+
+	/* HANDLER */
+	private void updateHandler() {
+
+		boolean curActive = isActive;
+
+		if (isActive) {
+			processTick();
+
+			if (processRem <= 0) {
+				if (processFinishHandler()) {
+					transferHandler();
+					transferOutput();
+					transferInput();
+				}
+				energyStorage.modifyEnergyStored(-processRem);
+
+				if (!redstoneControlOrDisable() || !canStartHandler()) {
+					processOff();
+				} else {
+					processStartHandler();
+				}
+			}
+		} else if (redstoneControlOrDisable()) {
+			if (timeCheck()) {
+				transferOutput();
+				transferInput();
+			}
+			if (timeCheckEighth() && canStartHandler()) {
+				processStartHandler();
+				processTick();
+				isActive = true;
+			}
+		}
+		updateIfChanged(curActive);
+		chargeEnergy();
+	}
+
+	private boolean canStartHandler() {
+
+		if (!FluidHelper.isFluidHandler(inventory[1])) {
+			hasFluidHandler = false;
+			return false;
+		}
+		if (energyStorage.getEnergyStored() < TransposerManager.DEFAULT_ENERGY) {
+			return false;
+		}
+		if (inventory[2] != null) {
+			return false;
+		}
+		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+
+		if (!extractMode) {
+			if (tank.getFluid() == null || tank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
+				return false;
+			}
+			return handler.fill(new FluidStack(tank.getFluid(), Fluid.BUCKET_VOLUME), false) > 0;
+		} else {
+			if (tank.getSpace() < Fluid.BUCKET_VOLUME) {
+				return false;
+			}
+			FluidStack drain = handler.drain(Fluid.BUCKET_VOLUME, false);
+			return tank.fill(drain, false) > 0;
+		}
+	}
+
+	private void processStartHandler() {
+
+		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+		IFluidTankProperties[] tankProperties = handler.getTankProperties();
+
+		FluidStack handlerStack = tankProperties[0].getContents();
+		String prevID = renderFluid.getFluid().getName();
+
+		if (!extractMode) {
+			renderFluid = tank.getFluid() == null ? null : tank.getFluid().copy();
+		} else {
+			renderFluid = tank.getFluid() == null ? handlerStack == null ? null : handlerStack.copy() : tank.getFluid().copy();
+		}
+		if (renderFluid == null) {
+			renderFluid = new FluidStack(FluidRegistry.WATER, 0);
+		} else {
+			renderFluid.amount = 0;
+		}
+		processMax = TransposerManager.DEFAULT_ENERGY * energyMod / ENERGY_BASE;
+		processRem = processMax;
+
+		if (!prevID.equals(renderFluid.getFluid().getName())) {
+			sendFluidPacket();
+		}
+	}
+
+	private boolean processFinishHandler() {
+
+		if (!extractMode) {
+			return fillHandler();
+		} else {
+			return emptyHandler();
+		}
+	}
+
+	private boolean fillHandler() {
+
+		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+		int filled = tank.getFluid() == null ? 0 : handler.fill(new FluidStack(tank.getFluid(), Fluid.BUCKET_VOLUME), true);
+
+		IFluidTankProperties[] tankProperties = handler.getTankProperties();
+
+		if (tankProperties == null || tankProperties.length < 1) {
+			return true;
+		}
+		if (filled > 0) {
+			tank.drain(filled, true);
+			if (tankProperties[0].getContents().amount >= tankProperties[0].getCapacity()) {
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+
+	private boolean emptyHandler() {
+
+		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+		FluidStack drainStack = handler.drain(Fluid.BUCKET_VOLUME, true);
+		int drained = drainStack == null ? 0 : drainStack.amount;
+
+		IFluidTankProperties[] tankProperties = handler.getTankProperties();
+
+		if (tankProperties == null || tankProperties.length < 1) {
+			return true;
+		}
+		if (drained > 0) {
+			tank.fill(drainStack, true);
+			if (tankProperties[0].getContents() == null) {
+				if (inventory[1].stackSize <= 0) {
+					inventory[1] = null;
+				}
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+
+	/* STANDARD */
+	@Override
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			if (inventory[1] == null) {
-				processRem = 0;
-				containerItem = null;
-			} else if (FluidHelper.isFluidContainerItem(inventory[1])) {
-				containerItem = (IFluidContainerItem) inventory[1].getItem();
-			}
 			return;
 		}
-		if (containerItem == null) {
-			if (FluidHelper.isFluidContainerItem(inventory[1])) {
-				updateContainerItem();
-			}
-		}
-		if (reverse) {
+		//		if (ServerHelper.isClientWorld(worldObj)) {
+		//			if (inventory[1] == null) {
+		//				processRem = 0;
+		//				hasFluidHandler = false;
+		//			} else if (FluidHelper.isFluidHandler(inventory[1])) {
+		//				hasFluidHandler = true;
+		//			}
+		//			return;
+		//		}
+		if (extractMode) {
 			transferOutputFluid();
 		}
-		if (containerItem != null) {
-			boolean curActive = isActive;
-			processContainerItem();
-			updateIfChanged(curActive);
-			chargeEnergy();
+		if (hasFluidHandler) {
+			updateHandler();
 		} else {
-			super.updateEntity();
+			super.update();
 		}
 	}
 
 	@Override
 	public int getLightValue() {
 
-		return super.getLightValue() != 0 ? renderFluid.getFluid().getLuminosity(renderFluid) : 0;
+		return isActive ? renderFluid.getFluid().getLuminosity(renderFluid) : 0;
 	}
 
 	@Override
@@ -121,19 +282,20 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null) {
+		if (inventory[0] == null || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		if (FluidHelper.isFluidContainerItem(inventory[0])) {
+		if (!hasFluidHandler && FluidHelper.isFluidHandler(inventory[0])) {
 			inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
 			inventory[0].stackSize--;
 
 			if (inventory[0].stackSize <= 0) {
 				inventory[0] = null;
 			}
+			hasFluidHandler = true;
 			return false;
 		}
-		if (!reverse) {
+		if (!extractMode) {
 			if (tank.getFluidAmount() <= 0) {
 				return false;
 			}
@@ -156,7 +318,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 			int result = inventory[2].stackSize + output.stackSize;
 			return result <= output.getMaxStackSize();
 		} else {
-			RecipeTransposer recipe = TransposerManager.getExtractionRecipe(inventory[0]);
+			RecipeTransposer recipe = TransposerManager.getExtractRecipe(inventory[0]);
 
 			if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy()) {
 				return false;
@@ -185,15 +347,15 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	@Override
 	protected boolean hasValidInput() {
 
-		if (containerItem != null) {
+		if (hasFluidHandler) {
 			return true;
 		}
 		RecipeTransposer recipe;
 
-		if (!reverse) {
+		if (!extractMode) {
 			recipe = TransposerManager.getFillRecipe(inventory[1], tank.getFluid());
 		} else {
-			recipe = TransposerManager.getExtractionRecipe(inventory[1]);
+			recipe = TransposerManager.getExtractRecipe(inventory[1]);
 		}
 		if (recipe == null) {
 			return false;
@@ -204,17 +366,17 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	@Override
 	protected void processStart() {
 
-		int prevID = renderFluid.getFluidID();
+		String prevID = renderFluid.getFluid().getName();
 		RecipeTransposer recipe;
 
-		if (!reverse) {
+		if (!extractMode) {
 			recipe = TransposerManager.getFillRecipe(inventory[0], tank.getFluid());
-			processMax = recipe.getEnergy();
+			processMax = recipe.getEnergy() * energyMod / ENERGY_BASE;
 			renderFluid = tank.getFluid().copy();
 		} else {
-			recipe = TransposerManager.getExtractionRecipe(inventory[0]);
-			processMax = recipe.getEnergy();
-			renderFluid = recipe.getFluid();
+			recipe = TransposerManager.getExtractRecipe(inventory[0]);
+			processMax = recipe.getEnergy() * energyMod / ENERGY_BASE;
+			renderFluid = recipe.getFluid().copy();
 		}
 		renderFluid.amount = 0;
 		processRem = processMax;
@@ -225,7 +387,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		if (inventory[0].stackSize <= 0) {
 			inventory[0] = null;
 		}
-		if (prevID != renderFluid.getFluidID()) {
+		if (!prevID.equals(renderFluid.getFluid().getName())) {
 			sendFluidPacket();
 		}
 	}
@@ -233,39 +395,33 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	@Override
 	protected void processFinish() {
 
-		if (!reverse) {
+		if (!extractMode) {
 			RecipeTransposer recipe = TransposerManager.getFillRecipe(inventory[1], tank.getFluid());
 
 			if (recipe == null) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-				processRem = 0;
+				processOff();
 				return;
 			}
 			ItemStack output = recipe.getOutput();
 			if (inventory[2] == null) {
-				inventory[2] = output;
+				inventory[2] = ItemHelper.cloneStack(output);
 			} else {
 				inventory[2].stackSize += output.stackSize;
 			}
 			inventory[1] = null;
 			tank.drain(recipe.getFluid().amount, true);
 		} else {
-			RecipeTransposer recipe = TransposerManager.getExtractionRecipe(inventory[1]);
+			RecipeTransposer recipe = TransposerManager.getExtractRecipe(inventory[1]);
 
 			if (recipe == null) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-				processRem = 0;
+				processOff();
 				return;
 			}
 			ItemStack output = recipe.getOutput();
 			int recipeChance = recipe.getChance();
 			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
 				if (inventory[2] == null) {
-					inventory[2] = output;
+					inventory[2] = ItemHelper.cloneStack(output);
 				} else {
 					inventory[2].stackSize += output.stackSize;
 				}
@@ -273,20 +429,19 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 			inventory[1] = null;
 			tank.fill(recipe.getFluid(), true);
 		}
-		reverse = reverseFlag;
 	}
 
 	@Override
 	protected void transferInput() {
 
-		if (!augmentAutoInput) {
+		if (!enableAutoInput) {
 			return;
 		}
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1) {
-				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
+				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
 				}
@@ -297,37 +452,14 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	@Override
 	protected void transferOutput() {
 
-		if (!augmentAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
-		}
-		if (containerItem != null) {
-			if (inventory[2] == null) {
-				inventory[2] = ItemHelper.cloneStack(inventory[1], 1);
-				inventory[1] = null;
-				containerItem = null;
-			} else {
-				if (inventory[1].getMaxStackSize() > 1 && ItemHelper.itemsIdentical(inventory[1], inventory[2])
-						&& inventory[2].stackSize + 1 <= inventory[2].getMaxStackSize()) {
-					inventory[2].stackSize++;
-					inventory[1] = null;
-					containerItem = null;
-				}
-			}
-		}
-		if (containerItem == null && FluidHelper.isFluidContainerItem(inventory[0])) {
-			inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
-			inventory[0].stackSize--;
-
-			if (inventory[0].stackSize <= 0) {
-				inventory[0] = null;
-			}
 		}
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 2 || sideCache[side] == 4) {
-				if (transferItem(2, AUTO_TRANSFER[level], side)) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
+				if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}
@@ -335,22 +467,17 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		}
 	}
 
-	protected void transferOutputFluid() {
+	private void transferOutputFluid() {
 
-		if (!augmentAutoOutput) {
-			return;
-		}
-		if (tank.getFluidAmount() <= 0) {
+		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
-		outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), RATE));
+		FluidStack outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), FLUID_TRANSFER[level]));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, side, outputBuffer, true);
-
+			if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {
+				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], outputBuffer, true);
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);
 					outputTrackerFluid = side;
@@ -360,131 +487,29 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		}
 	}
 
-	@Override
-	protected void onLevelChange() {
+	private void transferHandler() {
 
-		super.onLevelChange();
-
-		tank.setCapacity(TEProps.MAX_FLUID_LARGE * FLUID_CAPACITY[level]);
-	}
-
-	protected void processContainerItem() {
-
-		if (isActive) {
-			int energy = Math.min(energyStorage.getEnergyStored(), calcEnergy() * energyMod);
-
-			if (!reverse) {
-				updateContainerFill(energy * processMod);
+		if (hasFluidHandler) {
+			if (inventory[2] == null) {
+				inventory[2] = ItemHelper.cloneStack(inventory[1], 1);
+				inventory[1] = null;
+				hasFluidHandler = false;
 			} else {
-				updateContainerEmpty(energy * processMod);
-			}
-			if (!redstoneControlOrDisable()) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-			} else {
-				if (containerItem == null) {
-					if (FluidHelper.isFluidContainerItem(inventory[1])) {
-						updateContainerItem();
-						isActive = true;
-					} else {
-						isActive = false;
-						wasActive = true;
-						tracker.markTime(worldObj);
-					}
-				}
-			}
-		} else if (redstoneControlOrDisable()) {
-			if (timeCheck()) {
-				transferOutput();
-			}
-			if (containerItem == null) {
-				if (FluidHelper.isFluidContainerItem(inventory[1])) {
-					updateContainerItem();
-				}
-			}
-			if (containerItem != null) {
-				isActive = true;
-			}
-		}
-	}
-
-	protected void updateContainerItem() {
-
-		containerItem = (IFluidContainerItem) inventory[1].getItem();
-		FluidStack containerStack = FluidHelper.getFluidStackFromContainerItem(inventory[1]);
-		int prevID = renderFluid.getFluidID();
-
-		if (!reverse) {
-			renderFluid = tank.getFluid() == null ? null : tank.getFluid().copy();
-		} else {
-			renderFluid = tank.getFluid() == null ? containerStack == null ? null : containerStack.copy() : tank.getFluid().copy();
-		}
-		if (renderFluid == null) {
-			renderFluid = new FluidStack(FluidRegistry.WATER, 0);
-		} else {
-			renderFluid.amount = 0;
-		}
-		if (!reverse) {
-			processMax = containerItem.getCapacity(inventory[1])
-					- (containerItem.getFluid(inventory[1]) == null ? 0 : containerItem.getFluid(inventory[1]).amount);
-			processRem = processMax;
-		} else {
-			processMax = containerItem.getFluid(inventory[1]) == null ? 0 : containerItem.getFluid(inventory[1]).amount;
-			processRem = processMax;
-		}
-		if (prevID != renderFluid.getFluidID()) {
-			sendFluidPacket();
-		}
-	}
-
-	protected void updateContainerFill(int energy) {
-
-		if (energy <= 0) {
-			return;
-		}
-		int amount = Math.min(tank.getFluidAmount(), energy);
-		int filled = tank.getFluid() == null ? 0 : containerItem.fill(inventory[1], new FluidStack(tank.getFluid(), amount), true);
-
-		if (containerItem.getFluid(inventory[1]) != null) {
-			processRem -= filled;
-			tank.drain(filled, true);
-			energyStorage.modifyEnergyStored(-filled);
-
-			if (containerItem.getFluid(inventory[1]).amount >= containerItem.getCapacity(inventory[1])) {
-				transferOutput();
-				reverse = reverseFlag;
-
-				if (!redstoneControlOrDisable()) {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
+				if (ItemHelper.itemsIdentical(inventory[1], inventory[2]) && inventory[1].getMaxStackSize() > 1 && inventory[2].stackSize + 1 <= inventory[2].getMaxStackSize()) {
+					inventory[2].stackSize++;
+					inventory[1] = null;
+					hasFluidHandler = false;
 				}
 			}
 		}
-	}
+		if (!hasFluidHandler && FluidHelper.isFluidHandler(inventory[0])) {
+			inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
+			inventory[0].stackSize--;
 
-	protected void updateContainerEmpty(int energy) {
-
-		if (energy <= 0) {
-			return;
-		}
-		int amount = Math.min(tank.getSpace(), energy);
-		FluidStack drainStack = containerItem.drain(inventory[1], amount, true);
-		int drained = drainStack == null ? 0 : drainStack.amount;
-		processRem -= drained;
-		tank.fill(drainStack, true);
-		energyStorage.modifyEnergyStored(-drained);
-
-		if (processRem <= 0) {
-			transferOutput();
-			reverse = reverseFlag;
-
-			if (!redstoneControlOrDisable()) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
+			if (inventory[0].stackSize <= 0) {
+				inventory[0] = null;
 			}
+			hasFluidHandler = true;
 		}
 	}
 
@@ -502,7 +527,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public FluidTankAdv getTank() {
+	public FluidTankCore getTank() {
 
 		return tank;
 	}
@@ -511,6 +536,12 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	public FluidStack getTankFluid() {
 
 		return tank.getFluid();
+	}
+
+	public void setMode(boolean mode) {
+
+		extractMode = mode;
+		sendModePacket();
 	}
 
 	/* NBT METHODS */
@@ -523,56 +554,62 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		outputTracker = nbt.getInteger("TrackOut1");
 		outputTrackerFluid = nbt.getInteger("TrackOut2");
 
-		reverse = nbt.getBoolean("Rev");
-		reverseFlag = reverse;
+		if (inventory[1] != null && inventory[1].hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+			hasFluidHandler = true;
+		}
+		extractMode = nbt.getByte("Mode") == 1;
+		extractFlag = extractMode;
 		tank.readFromNBT(nbt);
 
 		if (tank.getFluid() != null) {
-			renderFluid = tank.getFluid();
-		} else if (TransposerManager.getExtractionRecipe(inventory[1]) != null) {
-			renderFluid = TransposerManager.getExtractionRecipe(inventory[1]).getFluid();
+			renderFluid = tank.getFluid().copy();
+		} else if (TransposerManager.getExtractRecipe(inventory[1]) != null) {
+			renderFluid = TransposerManager.getExtractRecipe(inventory[1]).getFluid().copy();
 			renderFluid.amount = 0;
 		}
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut1", outputTracker);
 		nbt.setInteger("TrackOut2", outputTrackerFluid);
-		nbt.setBoolean("Rev", reverse);
+		nbt.setByte("Mode", extractMode ? (byte) 1 : 0);
 		tank.writeToNBT(nbt);
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
+
+	/* CLIENT -> SERVER */
 	@Override
-	public PacketCoFHBase getPacket() {
+	public PacketCoFHBase getModePacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+		PacketCoFHBase payload = super.getModePacket();
 
-		payload.addFluidStack(renderFluid);
+		payload.addBool(extractMode);
+
 		return payload;
 	}
 
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	protected void handleModePacket(PacketCoFHBase payload) {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		super.handleModePacket(payload);
 
-		payload.addBool(reverse);
-		payload.addBool(reverseFlag);
+		extractMode = payload.getBool();
+		extractFlag = extractMode;
 
-		if (tank.getFluid() == null) {
-			payload.addFluidStack(renderFluid);
-		} else {
-			payload.addFluidStack(tank.getFluid());
+		if (isActive) {
+			processOff();
 		}
-		return payload;
+		callNeighborTileChange();
 	}
 
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getFluidPacket() {
 
@@ -584,23 +621,28 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public PacketCoFHBase getModePacket() {
+	public PacketCoFHBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getModePacket();
+		PacketCoFHBase payload = super.getGuiPacket();
 
-		payload.addBool(reverseFlag);
+		payload.addBool(extractMode);
+		payload.addBool(extractFlag);
 
+		if (tank.getFluid() == null) {
+			payload.addFluidStack(renderFluid);
+		} else {
+			payload.addFluidStack(tank.getFluid());
+		}
 		return payload;
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	public PacketCoFHBase getTilePacket() {
 
-		super.handleGuiPacket(payload);
+		PacketCoFHBase payload = super.getTilePacket();
 
-		reverse = payload.getBool();
-		reverseFlag = payload.getBool();
-		tank.setFluid(payload.getFluidStack());
+		payload.addFluidStack(renderFluid);
+		return payload;
 	}
 
 	@Override
@@ -609,41 +651,27 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		super.handleFluidPacket(payload);
 
 		renderFluid = payload.getFluidStack();
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
+		callBlockUpdate();
 	}
 
 	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketCoFHBase payload) {
 
-		super.handleModePacket(payload);
+		super.handleGuiPacket(payload);
 
-		reverseFlag = payload.getBool();
-		if (!isActive) {
-			reverse = reverseFlag;
-		}
-		markDirty();
-		callNeighborTileChange();
+		extractMode = payload.getBool();
+		extractFlag = payload.getBool();
+		tank.setFluid(payload.getFluidStack());
 	}
 
-	public void setMode(boolean mode) {
-
-		boolean lastFlag = reverseFlag;
-		reverseFlag = mode;
-		sendModePacket();
-		reverseFlag = lastFlag;
-	}
-
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
+		renderFluid = payload.getFluidStack();
+
 	}
 
 	/* IInventory */
@@ -654,12 +682,8 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 
 		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
 			if (isActive && (inventory[slot] == null || !hasValidInput())) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-				processRem = 0;
-				containerItem = null;
-				reverse = reverseFlag;
+				processOff();
+				hasFluidHandler = false;
 			}
 		}
 		return stack;
@@ -671,14 +695,10 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
 			if (isActive && inventory[slot] != null) {
 				if (stack == null || !stack.isItemEqual(inventory[slot]) || !hasValidInput()) {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
-					processRem = 0;
+					processOff();
 				}
 			}
-			containerItem = null;
-			reverse = reverseFlag;
+			hasFluidHandler = false;
 		}
 		inventory[slot] = stack;
 
@@ -688,97 +708,78 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public void markDirty() {
-
-		if (isActive && !hasValidInput()) {
-			containerItem = null;
-			reverse = reverseFlag;
-		}
-		super.markDirty();
-	}
-
-	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot == 0 ? FluidHelper.isFluidContainerItem(stack) || TransposerManager.isItemValid(stack) : true;
-	}
-
-	/* IFluidHandler */
-	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-
-		if (reverse || from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] != 1) {
-			return 0;
-		}
-		return tank.fill(resource, doFill);
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-
-		if (!reverse || from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] != 3) {
-			return null;
-		}
-		return tank.drain(resource, doDrain);
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-
-		if (!reverse || from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] != 3) {
-			return null;
-		}
-		return tank.drain(maxDrain, doDrain);
-	}
-
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-
-		if (from == ForgeDirection.UNKNOWN) {
-			return false;
-		}
-		return !reverse && sideCache[from.ordinal()] == 1;
-	}
-
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-
-		if (from == ForgeDirection.UNKNOWN) {
-			return false;
-		}
-		return reverse && sideCache[from.ordinal()] == 3;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-
-		// if (reverse) {
-		// if (sideCache[from.ordinal()] != 3) {
-		// return CoFHProps.EMPTY_TANK_INFO;
-		// }
-		// } else {
-		// if (sideCache[from.ordinal()] != 1) {
-		// return CoFHProps.EMPTY_TANK_INFO;
-		// }
-		// }
-		return new FluidTankInfo[] { tank.getInfo() };
+		return slot != 0 || (FluidHelper.isFluidHandler(stack) || TransposerManager.isItemValid(stack));
 	}
 
 	/* ISidedTexture */
 	@Override
-	public IIcon getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			if (side == 0) {
-				return BlockMachine.machineBottom;
+				return TETextures.MACHINE_BOTTOM;
 			} else if (side == 1) {
-				return BlockMachine.machineTop;
+				return TETextures.MACHINE_TOP;
 			}
-			return side != facing ? BlockMachine.machineSide : isActive ? RenderHelper.getFluidTexture(renderFluid) : BlockMachine.machineFace[type];
-		} else {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]])
-					: isActive ? BlockMachine.machineActive[type] : BlockMachine.machineFace[type];
+			return side != facing ? TETextures.MACHINE_SIDE : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.MACHINE_FACE[TYPE];
+		} else if (side < 6) {
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
 		}
+		return TETextures.MACHINE_SIDE;
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
+
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
+
+					FluidTankInfo info = tank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, true) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					if (extractMode || from == null || sideCache[from.ordinal()] != 1) {
+						return 0;
+					}
+					return tank.fill(resource, doFill);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					if (!extractMode || from == null || sideCache[from.ordinal()] != 3) {
+						return null;
+					}
+					return tank.drain(resource, doDrain);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					if (!extractMode || from == null || sideCache[from.ordinal()] != 3) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
+				}
+			});
+		}
+		return super.getCapability(capability, from);
 	}
 
 }

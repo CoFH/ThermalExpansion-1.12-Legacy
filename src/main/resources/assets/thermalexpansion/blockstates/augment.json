@@ -1,0 +1,184 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "builtin/generated",
+		"textures": {
+			"layer0": "thermalexpansion:items/augment/placeholder"
+		},
+		"transform": "forge:default-item"
+	},
+	"variants": {
+		"type": {
+			"machinepower": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_power"
+				}
+			},
+			"machinesecondary": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_secondary"
+				}
+			},
+			"machinesecondarynull": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_secondary_null"
+				}
+			},
+			"machinefurnacefood": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_furnace_food"
+				}
+			},
+			"machinefurnaceore": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_furnace_ore"
+				}
+			},
+			"machinefurnacepyrolysis": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_furnace_pyrolysis"
+				}
+			},
+			"machinepulverizergeode": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_pulverizer_geode"
+				}
+			},
+			"machinepulverizerpetrotheum": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_pulverizer_petrotheum"
+				}
+			},
+			"machinesawmilltapper": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_sawmill_tapper"
+				}
+			},
+			"machinesmelterpyrotheum": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_smelter_pyrotheum"
+				}
+			},
+			"machineinsolatormycelium": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_insolator_mycelium"
+				}
+			},
+			"machineinsolatornether": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_insolator_nether"
+				}
+			},
+			"machineinsolatorend": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_insolator_end"
+				}
+			},
+			"machineinsolatortree": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_insolator_tree"
+				}
+			},
+			"machinecompactormint": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_compactor_mint"
+				}
+			},
+			"machinecruciblealloy": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machinechargerthroughput": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_charger_throughput"
+				}
+			},
+			"machineprecipitatorsnowlayer": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_precipitator_snow_layer"
+				}
+			},
+			"machineprecipitatorpackedice": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_precipitator_packed_ice"
+				}
+			},
+			"machineextrudernowater": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_extruder_no_water"
+				}
+			},
+			"machineextrudergranite": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_extruder_granite"
+				}
+			},
+			"machineextruderdiorite": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_extruder_diorite"
+				}
+			},
+			"machineextruderandesite": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_extruder_andesite"
+				}
+			},
+			"dynamopower": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_power"
+				}
+			},
+			"dynamoefficiency": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_efficiency"
+				}
+			},
+			"dynamocoilduct": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_coil_duct"
+				}
+			},
+			"dynamothrottle": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_throttle"
+				}
+			},
+			"dynamosteamturbine": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_steam_turbine"
+				}
+			},
+			"dynamomagmaticcoolant": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_magmatic_coolant"
+				}
+			},
+			"dynamocompressioncoolant": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_compression_coolant"
+				}
+			},
+			"dynamocompressionfuel": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_compression_fuel"
+				}
+			},
+			"dynamoreactantelemental": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_reactant_elemental"
+				}
+			},
+			"apparatusdepth": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"apparatusradius": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			}
+		}
+	}
+}

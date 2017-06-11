@@ -1,64 +1,62 @@
 package cofh.thermalexpansion.block.dynamo;
 
-import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.core.item.ItemBlockBase;
-import cofh.lib.util.helpers.AugmentHelper;
+import cofh.core.util.helpers.RedstoneControlHelper;
+import cofh.core.util.helpers.SecurityHelper;
+import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.RedstoneControlHelper;
-import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockDynamo extends ItemBlockBase {
+import java.util.List;
 
-	public static ItemStack setDefaultTag(ItemStack container) {
-
-		ReconfigurableHelper.setFacing(container, 1);
-		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
-		EnergyHelper.setDefaultEnergyTag(container, 0);
-		AugmentHelper.writeAugments(container, BlockDynamo.defaultAugments);
-
-		return container;
-	}
+public class ItemBlockDynamo extends ItemBlockTEBase {
 
 	public ItemBlockDynamo(Block block) {
 
 		super(block);
-		setHasSubtypes(true);
-		setMaxDamage(0);
-		setNoRepair();
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack item) {
+	public ItemStack setDefaultTag(ItemStack stack, int level) {
 
-		return "tile.thermalexpansion.dynamo." + BlockDynamo.NAMES[ItemHelper.getItemDamage(item)] + ".name";
+		ReconfigurableHelper.setFacing(stack, 1);
+		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
+		EnergyHelper.setDefaultEnergyTag(stack, 0);
+		stack.getTagCompound().setByte("Level", (byte) level);
+
+		return stack;
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+	public String getUnlocalizedName(ItemStack stack) {
 
-		SecurityHelper.addOwnerInformation(stack, list);
+		return "tile.thermalexpansion.dynamo." + BlockDynamo.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+
+		SecurityHelper.addOwnerInformation(stack, tooltip);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForDetails());
+			tooltip.add(StringHelper.shiftForDetails());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-		SecurityHelper.addAccessInformation(stack, list);
+		SecurityHelper.addAccessInformation(stack, tooltip);
 
-		list.add(StringHelper.localize("info.thermalexpansion.dynamo.generate"));
-		list.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + BlockDynamo.NAMES[ItemHelper.getItemDamage(stack)]));
+		tooltip.add(StringHelper.localize("info.thermalexpansion.dynamo.0"));
+		String name = BlockDynamo.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + name));
 
-		if (ItemHelper.getItemDamage(stack) == BlockDynamo.Types.STEAM.ordinal()) {
-			list.add(StringHelper.getNoticeText("info.thermalexpansion.dynamo.steam.0"));
+		if (getLevel(stack) >= 2) {
+			RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 		}
-		RedstoneControlHelper.addRSControlInformation(stack, list);
 	}
 
 }

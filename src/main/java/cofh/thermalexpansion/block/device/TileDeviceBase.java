@@ -1,72 +1,53 @@
 package cofh.thermalexpansion.block.device;
 
-import cofh.core.render.IconRegistry;
-import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.block.device.BlockDevice.Types;
-import cofh.thermalexpansion.core.TEProps;
-import cpw.mods.fml.relauncher.Side;
-
-import net.minecraft.entity.Entity;
+import cofh.thermalexpansion.block.TilePowered;
+import cofh.thermalexpansion.block.machine.BlockMachine;
+import cofh.thermalexpansion.init.TETextures;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.SoundEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class TileDeviceBase extends TileAugmentable {
+public abstract class TileDeviceBase extends TilePowered {
 
-	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockDevice.Types.values().length];
-	public static final boolean[] enableSecurity = new boolean[BlockDevice.Types.values().length];
+	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[BlockDevice.Type.values().length];
+	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[BlockDevice.Type.values().length];
+	public static final int[] LIGHT_VALUES = new int[BlockDevice.Type.values().length];
 
-	public static void configure() {
+	public static final SoundEvent[] SOUNDS = new SoundEvent[BlockMachine.Type.values().length];
 
-		for (int i = 0; i < BlockDevice.Types.values().length; i++) {
-			String name = StringHelper.titleCase(BlockDevice.NAMES[i]);
-			String comment = "Enable this to allow for " + name + "s to be securable.";
-			enableSecurity[i] = ThermalExpansion.config.get("Security", "Device." + name + ".Securable", true, comment);
-		}
-		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.WORKBENCH_FALSE.ordinal()])
-				+ ".Securable");
-		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.PUMP.ordinal()]) + ".Securable");
-		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.EXTENDER.ordinal()]) + ".Securable");
+	private static boolean enableSecurity = true;
+
+	public static void config() {
+
+		String comment = "Enable this to allow for Devices to be securable.";
+		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Device.Securable", true, comment);
 	}
-
-	protected final byte type;
 
 	public TileDeviceBase() {
 
-		this(Types.BREAKER);
-		if (getClass() != TileDeviceBase.class) {
-			throw new IllegalArgumentException();
-		}
-	}
-
-	public TileDeviceBase(Types type) {
-
-		this.type = (byte) type.ordinal();
-
-		sideConfig = defaultSideConfig[this.type];
+		sideConfig = SIDE_CONFIGS[this.getType()];
+		slotConfig = SLOT_CONFIGS[this.getType()];
 		setDefaultSides();
-
-		augmentStatus = new boolean[4];
-		augments = new ItemStack[4];
+		hasRedstoneControl = true;
 	}
 
 	@Override
-	public int getType() {
+	public String getTileName() {
 
-		return type;
+		return "tile.thermalexpansion.device." + BlockDevice.Type.byMetadata(getType()).getName() + ".name";
 	}
 
-	@Override
-	public String getName() {
+	public boolean isAugmentable() {
 
-		return "tile.thermalexpansion.device." + BlockDevice.NAMES[getType()] + ".name";
+		return false;
 	}
 
 	@Override
 	public boolean enableSecurity() {
 
-		return enableSecurity[getType()];
+		return enableSecurity;
 	}
 
 	@Override
@@ -75,41 +56,91 @@ public abstract class TileDeviceBase extends TileAugmentable {
 		return true;
 	}
 
-	public void onEntityCollidedWithBlock(Entity entity) {
+	@Override
+	public void setDefaultSides() {
 
+		sideCache = getDefaultSides();
+		sideCache[facing] = 0;
+	}
+
+	@Override
+	protected boolean setLevel(int level) {
+
+		return false;
+	}
+
+	@Override
+	protected void setLevelFlags() {
+
+		level = 0;
+		hasRedstoneControl = true;
+	}
+
+	protected void updateIfChanged(boolean curActive) {
+
+		if (curActive != isActive) {
+			if (LIGHT_VALUES[getType()] != 0) {
+				updateLighting();
+			}
+			sendTilePacket(Side.CLIENT);
+		}
 	}
 
 	/* IReconfigurableFacing */
 	@Override
-	public boolean allowYAxisFacing() {
-
-		return true;
-	}
-
-	@Override
 	public boolean setFacing(int side) {
 
-		if (side < 0 || side > 5) {
+		if (side < 2 || side > 5) {
 			return false;
 		}
 		facing = (byte) side;
 		sideCache[facing] = 0;
-		sideCache[facing ^ 1] = 1;
-		markDirty();
-		sendUpdatePacket(Side.CLIENT);
+		markChunkDirty();
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 
 	/* ISidedTexture */
 	@Override
-	public IIcon getTexture(int side, int pass) {
+	public int getNumPasses() {
+
+		return 2;
+	}
+
+	@Override
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? BlockDevice.deviceSide : redstoneControlOrDisable() ? BlockDevice.deviceActive[type] : BlockDevice.deviceFace[type];
+			if (side == 0) {
+				return TETextures.DEVICE_BOTTOM;
+			} else if (side == 1) {
+				return TETextures.DEVICE_TOP;
+			}
+			return side != facing ? TETextures.DEVICE_SIDE : isActive ? TETextures.DEVICE_ACTIVE[getType()] : TETextures.DEVICE_FACE[getType()];
 		} else if (side < 6) {
-			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
+			return TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]];
 		}
-		return BlockDevice.deviceSide;
+		return TETextures.DEVICE_SIDE;
+	}
+
+	/* IUpgradeable */
+	@Override
+	public boolean canUpgrade(ItemStack upgrade) {
+
+		return false;
+	}
+
+	@Override
+	public boolean installUpgrade(ItemStack upgrade) {
+
+		return false;
+	}
+
+	/* ISoundSource */
+	@Override
+	public SoundEvent getSoundEvent() {
+
+		return SOUNDS[getType()];
 	}
 
 }

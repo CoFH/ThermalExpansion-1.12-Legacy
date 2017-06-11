@@ -1,136 +1,115 @@
 package cofh.thermalexpansion.render;
 
-import cofh.core.render.RenderUtils;
-import cofh.lib.render.RenderHelper;
-import cofh.repack.codechicken.lib.lighting.LightModel;
-import cofh.repack.codechicken.lib.render.CCModel;
-import cofh.repack.codechicken.lib.render.CCRenderState;
-import cofh.repack.codechicken.lib.vec.Cuboid6;
-import cofh.repack.codechicken.lib.vec.Translation;
-import cofh.thermalexpansion.block.TEBlocks;
-import cofh.thermalexpansion.block.simple.BlockFrame;
-import cofh.thermalexpansion.core.TEProps;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.item.Item;
+import codechicken.lib.model.PerspectiveAwareModelProperties;
+import codechicken.lib.model.bakery.PlanarFaceBakery;
+import codechicken.lib.model.blockbakery.IItemBakery;
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.buffer.BakingVertexBuffer;
+import codechicken.lib.texture.TextureUtils;
+import codechicken.lib.vec.uv.IconTransformation;
+import cofh.thermalexpansion.init.TETextures;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraft.util.EnumFacing;
 
-import org.lwjgl.opengl.GL11;
+import java.util.List;
 
-public class RenderFrame implements ISimpleBlockRenderingHandler, IItemRenderer {
+public class RenderFrame implements IItemBakery {
 
-	public static final RenderFrame instance = new RenderFrame();
+	public static final RenderFrame INSTANCE = new RenderFrame();
 
-	static CCModel modelCenter = CCModel.quadModel(24);
-	static CCModel modelFrame = CCModel.quadModel(48);
+	@Override
+	public List<BakedQuad> bakeItemQuads(EnumFacing dir, ItemStack stack) {
 
-	static {
-		TEProps.renderIdFrame = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(instance);
-
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockFrame), instance);
-
-		modelCenter.generateBlock(0, 0.15, 0.15, 0.15, 0.85, 0.85, 0.85).computeNormals();
-
-		Cuboid6 box = new Cuboid6(0, 0, 0, 1, 1, 1);
-		double inset = 0.1875;
-		modelFrame = CCModel.quadModel(48).generateBlock(0, box);
-		CCModel.generateBackface(modelFrame, 0, modelFrame, 24, 24);
-		modelFrame.computeNormals();
-		for (int i = 24; i < 48; i++) {
-			modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));
+		if (dir == null) {
+			BakingVertexBuffer buffer = BakingVertexBuffer.create();
+			buffer.begin(0x07, DefaultVertexFormats.ITEM);
+			CCRenderState ccrs = CCRenderState.instance();
+			ccrs.reset();
+			ccrs.bind(buffer);
+			for (EnumFacing face : EnumFacing.VALUES) {
+				int i = face.ordinal();
+				RenderCell.modelFrame.render(ccrs, i * 4, i * 4 + 4, new IconTransformation(getFrameTexture(face, stack)));
+				TextureAtlasSprite inner = getInnerTexture(face, stack);
+				if (inner != null) {
+					RenderCell.modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, new IconTransformation(inner));
+				}
+			}
+			//			TextureAtlasSprite center = getCenterTexture(stack);
+			//			if (center != null) {
+			//				RenderCell.modelCenter.render(ccrs, new IconTransformation(center));
+			//			}
+			buffer.finishDrawing();
+			return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
 		}
-		modelFrame.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
+		return ImmutableList.of();
 	}
 
-	public static void initialize() {
+	@Override
+	public PerspectiveAwareModelProperties getModelProperties(ItemStack stack) {
 
+		return PerspectiveAwareModelProperties.DEFAULT_BLOCK;
 	}
 
-	public void renderCenter(Block block, int metadata, double x, double y, double z) {
+	private TextureAtlasSprite getFrameTexture(EnumFacing face, ItemStack stack) {
 
-		modelCenter.render(x, y, z, RenderUtils.getIconTransformation(block.getIcon(7, metadata)));
-	}
-
-	public void renderFrame(Block block, int metadata, double x, double y, double z) {
-
-		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
-		for (int i = 0; i < 6; i++) {
-			modelFrame.render(i * 4, i * 4 + 4, trans, RenderUtils.getIconTransformation(block.getIcon(i, metadata)));
-			modelFrame.render(i * 4 + 24, i * 4 + 28, trans, RenderUtils.getIconTransformation(block.getIcon(6, metadata)));
+		switch (stack.getMetadata()) {
+			case 0: // Machine
+				if (face == EnumFacing.UP) {
+					return TETextures.MACHINE_FRAME_TOP;
+				} else if (face == EnumFacing.DOWN) {
+					return TETextures.MACHINE_FRAME_BOTTOM;
+				} else {
+					return TETextures.MACHINE_FRAME_SIDE;
+				}
+			case 64: // Device
+				if (face == EnumFacing.UP) {
+					return TETextures.DEVICE_FRAME_TOP;
+				} else if (face == EnumFacing.DOWN) {
+					return TETextures.DEVICE_FRAME_BOTTOM;
+				} else {
+					return TETextures.DEVICE_FRAME_SIDE;
+				}
+			case 128: // Cell
+				return TETextures.CELL_SIDE_0;
+			case 160: // Illuminator
+				return TETextures.ILLUMINATOR_FRAME;
+			default:
+				return TextureUtils.getMissingSprite();
 		}
 	}
 
-	/* ISimpleBlockRenderingHandler */
-	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
+	private TextureAtlasSprite getInnerTexture(EnumFacing face, ItemStack stack) {
 
-	}
-
-	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-
-		int metadata = world.getBlockMetadata(x, y, z);
-
-		RenderUtils.preWorldRender(world, x, y, z);
-		if (BlockFrame.renderPass == 0) {
-			renderFrame(block, metadata, x, y, z);
-		} else {
-			renderCenter(block, metadata, x, y, z);
+		switch (stack.getMetadata()) {
+			case 0: // Machine
+				return TETextures.MACHINE_FRAME_INNER;
+			case 64: // Device
+				return TETextures.DEVICE_FRAME_INNER;
+			case 128: // Cell
+				return TETextures.CELL_INNER_0;
+			case 160: // Illuminator
+			default:
+				return null;
 		}
-		return true;
 	}
 
-	@Override
-	public boolean shouldRender3DInInventory(int modelId) {
+	private TextureAtlasSprite getCenterTexture(ItemStack stack) {
 
-		return true;
-	}
-
-	@Override
-	public int getRenderId() {
-
-		return TEProps.renderIdFrame;
-	}
-
-	/* IItemRenderer */
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-
-		return true;
-	}
-
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-
-		return true;
-	}
-
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-
-		GL11.glPushMatrix();
-		double offset = -0.5;
-		if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
-			offset = 0;
+		switch (stack.getMetadata()) {
+			case 0:
+				return TextureUtils.getBlockTexture("thermalfoundation:storage/block_tin");
+			case 64:
+				return TextureUtils.getBlockTexture("thermalfoundation:storage/block_copper");
+			case 128: // Cell
+				return TextureUtils.getBlockTexture("thermalfoundation:storage/block_lead");
+			case 160: // Illuminator
+			default:
+				return null;
 		}
-		Block block = Block.getBlockFromItem(item.getItem());
-		int metadata = item.getItemDamage();
-		RenderUtils.preItemRender();
-
-		CCRenderState.startDrawing();
-		renderFrame(block, metadata, offset, offset, offset);
-		renderCenter(block, metadata, offset, offset, offset);
-		CCRenderState.draw();
-
-		RenderUtils.postItemRender();
-		GL11.glPopMatrix();
 	}
 
 }

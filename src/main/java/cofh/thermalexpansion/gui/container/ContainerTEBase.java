@@ -1,17 +1,16 @@
 package cofh.thermalexpansion.gui.container;
 
-import cofh.api.tileentity.IAugmentable;
-import cofh.core.block.TileCoFHBase;
+import cofh.api.core.IAugmentable;
+import cofh.core.block.TileCore;
 import cofh.core.gui.slot.SlotAugment;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.gui.container.ContainerBase;
 import cofh.lib.gui.container.IAugmentableContainer;
-import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.network.PacketTEBase;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -19,7 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerTEBase extends ContainerBase implements IAugmentableContainer {
 
-	public final TileCoFHBase baseTile;
+	protected final TileCore baseTile;
 
 	protected Slot[] augmentSlots = new Slot[0];
 	protected boolean[] augmentStatus = new boolean[0];
@@ -36,7 +35,7 @@ public class ContainerTEBase extends ContainerBase implements IAugmentableContai
 
 	public ContainerTEBase(TileEntity tile) {
 
-		baseTile = (TileCoFHBase) tile;
+		baseTile = (TileCore) tile;
 	}
 
 	public ContainerTEBase(InventoryPlayer inventory, TileEntity tile) {
@@ -46,8 +45,8 @@ public class ContainerTEBase extends ContainerBase implements IAugmentableContai
 
 	public ContainerTEBase(InventoryPlayer inventory, TileEntity tile, boolean augSlots, boolean playerInvSlots) {
 
-		if (tile instanceof TileCoFHBase) {
-			baseTile = (TileCoFHBase) tile;
+		if (tile instanceof TileCore) {
+			baseTile = (TileCore) tile;
 		} else {
 			baseTile = null;
 		}
@@ -93,7 +92,7 @@ public class ContainerTEBase extends ContainerBase implements IAugmentableContai
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 
-		return baseTile == null ? true : baseTile.isUseable(player);
+		return baseTile == null || baseTile.isUsable(player);
 	}
 
 	@Override
@@ -104,8 +103,8 @@ public class ContainerTEBase extends ContainerBase implements IAugmentableContai
 		if (baseTile == null) {
 			return;
 		}
-		for (int i = 0; i < crafters.size(); i++) {
-			baseTile.sendGuiNetworkData(this, (ICrafting) crafters.get(i));
+		for (IContainerListener listener : listeners) {
+			baseTile.sendGuiNetworkData(this, listener);
 		}
 	}
 
@@ -143,7 +142,7 @@ public class ContainerTEBase extends ContainerBase implements IAugmentableContai
 
 		augmentLock = lock;
 
-		if (ServerHelper.isClientWorld(baseTile.getWorldObj())) {
+		if (ServerHelper.isClientWorld(baseTile.getWorld())) {
 			PacketTEBase.sendTabAugmentPacketToServer(lock);
 		}
 	}

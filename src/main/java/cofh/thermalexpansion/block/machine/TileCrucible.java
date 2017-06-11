@@ -1,82 +1,118 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.render.IconRegistry;
-import cofh.core.util.CoreUtils;
-import cofh.core.util.fluid.FluidTankAdv;
-import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
-import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrucible;
-import cofh.thermalexpansion.util.crafting.CrucibleManager;
-import cofh.thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
-import cpw.mods.fml.common.registry.GameRegistry;
-
+import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TESounds;
+import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
+import cofh.thermalexpansion.util.managers.machine.CrucibleManager.RecipeCrucible;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class TileCrucible extends TileMachineBase implements IFluidHandler {
+import javax.annotation.Nullable;
+import java.util.HashSet;
+
+public class TileCrucible extends TileMachineBase {
+
+	private static final int TYPE = BlockMachine.Type.CRUCIBLE.getMetadata();
+	public static int basePower = 50;
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.CRUCIBLE.ordinal();
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 5;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 }, { 0 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 4;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0 }, {}, { 0 } };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, false };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, false };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
-		String category = "Machine.Crucible";
-		int basePower = MathHelper.clamp(ThermalExpansion.config.get(category, "BasePower", 400), 10, 500);
-		ThermalExpansion.config.set(category, "BasePower", basePower);
-		defaultEnergyConfig[type] = new EnergyConfig();
-		defaultEnergyConfig[type].setParams(basePower / 10, basePower, Math.max(400000, basePower * 1000));
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineCrucible");
+		LIGHT_VALUES[TYPE] = 14;
 
-		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion.Crucible");
+		SOUNDS[TYPE] = TESounds.MACHINE_CRUCIBLE;
+
+		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion:machine_crucible");
+
+		config();
 	}
 
-	int inputTracker;
-	int outputTrackerFluid;
+	public static void config() {
 
-	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
-	FluidStack outputBuffer;
-	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, 0);
+		String category = "Machine.Crucible";
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
+	}
+
+	private int inputTracker;
+	private int outputTrackerFluid;
+
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
+	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, 0);
 
 	public TileCrucible() {
 
-		super(Types.CRUCIBLE);
+		super();
 		inventory = new ItemStack[1 + 1];
+		createAllSlots(inventory.length);
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
+	}
+
+	@Override
+	public void update() {
+
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return;
+		}
+		transferOutputFluid();
+
+		super.update();
+	}
+
+	@Override
+	public int getLightValue() {
+
+		return isActive ? renderFluid.getFluid().getLuminosity(renderFluid) : 0;
 	}
 
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null) {
+		if (inventory[0] == null || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy() * energyMod / processMod) {
+		if (recipe == null) {
 			return false;
 		}
 		if (inventory[0].stackSize < recipe.getInput().stackSize) {
@@ -90,20 +126,20 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	protected boolean hasValidInput() {
 
 		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);
-		return recipe == null ? false : recipe.getInput().stackSize <= inventory[0].stackSize;
+		return recipe != null && recipe.getInput().stackSize <= inventory[0].stackSize;
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = CrucibleManager.getRecipe(inventory[0]).getEnergy();
+		processMax = CrucibleManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
-		int prevID = renderFluid.getFluidID();
-		renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput();
+		String prevID = renderFluid.getFluid().getName();
+		renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput().copy();
 		renderFluid.amount = 0;
 
-		if (prevID != renderFluid.getFluidID()) {
+		if (!prevID.equals(renderFluid.getFluid().getName())) {
 			sendFluidPacket();
 		}
 	}
@@ -114,10 +150,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
-			isActive = false;
-			wasActive = true;
-			tracker.markTime(worldObj);
-			processRem = 0;
+			processOff();
 			return;
 		}
 		tank.fill(recipe.getOutput(), true);
@@ -131,14 +164,14 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	@Override
 	protected void transferInput() {
 
-		if (!augmentAutoInput) {
+		if (!enableAutoInput) {
 			return;
 		}
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1) {
-				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
+				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
 				}
@@ -146,22 +179,17 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		}
 	}
 
-	protected void transferOutputFluid() {
+	private void transferOutputFluid() {
 
-		if (!augmentAutoOutput) {
-			return;
-		}
-		if (tank.getFluidAmount() <= 0) {
+		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
-		outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), RATE));
+		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), FLUID_TRANSFER[level]));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 2) {
-				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, side, outputBuffer, true);
-
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
+				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);
 					outputTrackerFluid = side;
@@ -169,25 +197,6 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 				}
 			}
 		}
-	}
-
-	@Override
-	public void updateEntity() {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
-		}
-		transferOutputFluid();
-
-		super.updateEntity();
-	}
-
-	@Override
-	protected void onLevelChange() {
-
-		super.onLevelChange();
-
-		tank.setCapacity(TEProps.MAX_FLUID_LARGE * FLUID_CAPACITY[level]);
 	}
 
 	/* GUI METHODS */
@@ -204,7 +213,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public FluidTankAdv getTank() {
+	public FluidTankCore getTank() {
 
 		return tank;
 	}
@@ -226,28 +235,33 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		tank.readFromNBT(nbt);
 
 		if (tank.getFluid() != null) {
-			renderFluid = tank.getFluid();
+			renderFluid = tank.getFluid().copy();
 		} else if (CrucibleManager.getRecipe(inventory[0]) != null) {
-			renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput();
+			renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput().copy();
 		}
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTrackerFluid);
 		tank.writeToNBT(nbt);
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getFluidPacket() {
+
+		PacketCoFHBase payload = super.getFluidPacket();
+
 		payload.addFluidStack(renderFluid);
+
 		return payload;
 	}
 
@@ -255,6 +269,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
+
 		if (tank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
 		} else {
@@ -264,113 +279,115 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public PacketCoFHBase getFluidPacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getFluidPacket();
+		PacketCoFHBase payload = super.getTilePacket();
+
 		payload.addFluidStack(renderFluid);
+
 		return payload;
-	}
-
-	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
-
-		super.handleGuiPacket(payload);
-		tank.setFluid(payload.getFluidStack());
 	}
 
 	@Override
 	protected void handleFluidPacket(PacketCoFHBase payload) {
 
 		super.handleFluidPacket(payload);
+
 		renderFluid = payload.getFluidStack();
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
+		callBlockUpdate();
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		tank.setFluid(payload.getFluidStack());
+	}
+
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		renderFluid = payload.getFluidStack();
 	}
 
 	/* IInventory */
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot == 0 ? CrucibleManager.recipeExists(stack) : true;
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
-	}
-
-	/* IFluidHandler */
-	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-
-		return 0;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-
-		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] != 2) {
-			return null;
-		}
-		if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
-			return null;
-		}
-		return tank.drain(resource.amount, doDrain);
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-
-		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] != 2) {
-			return null;
-		}
-		return tank.drain(maxDrain, doDrain);
-	}
-
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-
-		return false;
-	}
-
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-
-		// return sideCache[from.ordinal()] == 2;
-		return true;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-
-		// if (sideCache[from.ordinal()] != 2) {
-		// return CoFHProps.EMPTY_TANK_INFO;
-		// }
-		return new FluidTankInfo[] { tank.getInfo() };
+		return slot != 0 || CrucibleManager.recipeExists(stack);
 	}
 
 	/* ISidedTexture */
 	@Override
-	public IIcon getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			if (side == 0) {
-				return BlockMachine.machineBottom;
+				return TETextures.MACHINE_BOTTOM;
 			} else if (side == 1) {
-				return BlockMachine.machineTop;
+				return TETextures.MACHINE_TOP;
 			}
-			return side != facing ? BlockMachine.machineSide : isActive ? RenderHelper.getFluidTexture(renderFluid) : BlockMachine.machineFace[type];
-		} else {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]])
-					: isActive ? BlockMachine.machineActive[type] : BlockMachine.machineFace[type];
+			return side != facing ? TETextures.MACHINE_SIDE : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.MACHINE_FACE[TYPE];
+		} else if (side < 6) {
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
 		}
+		return TETextures.MACHINE_SIDE;
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
+
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
+
+					FluidTankInfo info = tank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, false, true) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					return 0;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return null;
+					}
+					if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
+						return null;
+					}
+					return tank.drain(resource.amount, doDrain);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
+				}
+			});
+		}
+		return super.getCapability(capability, from);
 	}
 
 }

@@ -1,104 +1,48 @@
 package cofh.thermalexpansion.render.entity;
 
-import cofh.core.render.IconRegistry;
-import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-
-import net.minecraft.client.renderer.Tessellator;
+import cofh.thermalexpansion.init.TEFlorbs;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.Fluid;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+public class RenderEntityFlorb extends Render<EntityFlorb> {
 
-public class RenderEntityFlorb extends Render {
+	public RenderEntityFlorb(RenderManager renderManager) {
 
-	public static final RenderEntityFlorb instance = new RenderEntityFlorb();
-
-	static {
-		RenderingRegistry.registerEntityRenderingHandler(EntityFlorb.class, instance);
-	}
-
-	public static void initialize() {
-
+		super(renderManager);
 	}
 
 	@Override
-	public void doRender(Entity entity, double d0, double d1, double d2, float f, float f1) {
+	protected ResourceLocation getEntityTexture(EntityFlorb entity) {
 
-		doRenderFlorb((EntityFlorb) entity, d0, d1, d2, f, f1);
+		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) {
-
-		return TextureMap.locationItemsTexture;
-	}
-
-	protected void doRenderFlorb(EntityFlorb florb, double d0, double d1, double d2, float f, float f1) {
+	public void doRender(EntityFlorb florb, double d0, double d1, double d2, float f, float f1) {
 
 		if (florb.getFluid() == null) {
 			return;
 		}
-		GL11.glPushMatrix();
-		GL11.glTranslated(d0, d1, d2);
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glScalef(0.5F, 0.5F, 0.5F);
+		Fluid fluid = florb.getFluid();
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(d0, d1, d2);
+		GlStateManager.enableRescaleNormal();
+		GlStateManager.scale(0.5F, 0.5F, 0.5F);
 
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glDisable(GL11.GL_CULL_FACE);
+		GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotate(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 
-		GL11.glRotatef(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-		GL11.glRotatef(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+		//K, So the entity has been thrown, Fluid isn't null, This HAS to be a florb. Ignore null return.
+		Minecraft.getMinecraft().getRenderItem().renderItem(TEFlorbs.getFlorb(fluid), TransformType.GROUND);
 
-		RenderHelper.setItemTextureSheet();
-		this.renderIcon(Tessellator.instance, IconRegistry.getIcon("FlorbMask"));
-
-		GL11.glDepthFunc(GL11.GL_EQUAL);
-		GL11.glDepthMask(false);
-
-		RenderHelper.setBlockTextureSheet();
-		this.renderIcon(Tessellator.instance, florb.getFluid().getIcon());
-
-		GL11.glDepthMask(true);
-		GL11.glDepthFunc(GL11.GL_LEQUAL);
-
-		RenderHelper.setItemTextureSheet();
-		this.renderIcon(Tessellator.instance, IconRegistry.getIcon("FlorbOutline"));
-
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_CULL_FACE);
-		GL11.glColor4f(1, 1, 1, 1);
-
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		GL11.glPopMatrix();
+		GlStateManager.disableRescaleNormal();
+		GlStateManager.popMatrix();
 	}
-
-	private void renderIcon(Tessellator tessellator, IIcon icon) {
-
-		if (icon == null) {
-			icon = FluidRegistry.WATER.getIcon();
-		}
-		float minU = icon.getMinU();
-		float maxU = icon.getMaxU();
-		float minV = icon.getMinV();
-		float maxV = icon.getMaxV();
-		float f4 = 1.0F;
-		float f5 = 0.5F;
-		float f6 = 0.25F;
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		tessellator.addVertexWithUV(0f - f5, 0f - f6, 0.0D, minU, maxV);
-		tessellator.addVertexWithUV(f4 - f5, 0f - f6, 0.0D, maxU, maxV);
-		tessellator.addVertexWithUV(f4 - f5, f4 - f6, 0.0D, maxU, minV);
-		tessellator.addVertexWithUV(0f - f5, f4 - f6, 0.0D, minU, minV);
-		tessellator.draw();
-	}
-
 }

@@ -1,151 +1,149 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.api.core.ICustomInventory;
-import cofh.api.item.IAugmentItem;
+import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankAdv;
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
+import cofh.core.util.helpers.AugmentHelper;
+import cofh.lib.gui.container.ICustomInventory;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
-import cofh.thermalexpansion.item.TEAugments;
-import cpw.mods.fml.common.registry.GameRegistry;
-
+import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TETextures;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
-public class TileExtruder extends TileMachineBase implements ICustomInventory, IFluidHandler {
+import javax.annotation.Nullable;
+import java.util.HashSet;
 
-	public byte processLevel;
+public class TileExtruder extends TileMachineBase implements ICustomInventory {
+
+	private static final int TYPE = BlockMachine.Type.EXTRUDER.getMetadata();
+	public static int basePower = 20;
+
+	public static ItemStack ANDESITE;
+	public static ItemStack DIORITE;
+	public static ItemStack GRANITE;
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.EXTRUDER.ordinal();
-
 		processItems = new ItemStack[3];
 
-		processItems[0] = new ItemStack(Blocks.cobblestone);
-		processItems[1] = new ItemStack(Blocks.stone);
-		processItems[2] = new ItemStack(Blocks.obsidian);
+		processItems[0] = new ItemStack(Blocks.COBBLESTONE);
+		processItems[1] = new ItemStack(Blocks.STONE);
+		processItems[2] = new ItemStack(Blocks.OBSIDIAN);
 
-		String category = "RecipeManagers.Extruder.Recipes";
+		GRANITE = new ItemStack(Blocks.STONE, 1, 1);
+		DIORITE = new ItemStack(Blocks.STONE, 1, 3);
+		ANDESITE = new ItemStack(Blocks.STONE, 1, 5);
 
-		processLava[0] = MathHelper.clamp(ThermalExpansion.config.get(category, "Cobblestone.Lava", processLava[0]), 0, TEProps.MAX_FLUID_SMALL);
-		processLava[1] = MathHelper.clamp(ThermalExpansion.config.get(category, "Stone.Lava", processLava[1]), 0, TEProps.MAX_FLUID_SMALL);
-		processLava[2] = MathHelper.clamp(ThermalExpansion.config.get(category, "Obsidian.Lava", processLava[2]), 0, TEProps.MAX_FLUID_SMALL);
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 5;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 }, { 0 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		processWater[0][0] = MathHelper.clamp(ThermalExpansion.config.get(category, "Cobblestone.Water", processWater[0][0]), 0, TEProps.MAX_FLUID_SMALL);
-		processWater[0][1] = MathHelper.clamp(ThermalExpansion.config.get(category, "Stone.Water", processWater[0][1]), 0, TEProps.MAX_FLUID_SMALL);
-		processWater[0][2] = MathHelper.clamp(ThermalExpansion.config.get(category, "Obsidian.Water", processWater[0][2]), 0, TEProps.MAX_FLUID_SMALL);
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
-		for (int i = 1; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				processWater[i][j] = processWater[i - 1][j] / 2;
-			}
-		}
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_NO_WATER);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_ANDESITE);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_DIORITE);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_GRANITE);
 
-		ThermalExpansion.config.removeProperty(category, "Cobblestone.Time");
-		ThermalExpansion.config.removeProperty(category, "Stone.Time");
-		ThermalExpansion.config.removeProperty(category, "Obsidian.Time");
+		LIGHT_VALUES[TYPE] = 14;
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 4;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, {}, { 0 }, { 0 } };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false, true, true };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { false, false };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, false };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion:machine_extruder");
 
-		defaultEnergyConfig[type] = new EnergyConfig();
-		defaultEnergyConfig[type].setParamsPower(0);
-
-		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion.Extruder");
+		config();
 	}
 
-	static int[] processLava = { 0, 0, 1000 };
-	static int[][] processWater = { { 0, 1000, 1000 }, { 0, 500, 500 }, { 0, 250, 250 }, { 0, 125, 125 } };
-	static int[][] processTime = { { 40, 80, 120 }, { 40, 80, 60 }, { 40, 80, 30 }, { 40, 80, 15 } };
-	static ItemStack[] processItems = new ItemStack[3];
+	public static void config() {
 
-	ItemStack[] outputItems = new ItemStack[3];
+		String category = "Machine.Extruder";
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-	int outputTracker;
-	byte curSelection;
-	byte prevSelection;
-	FluidStack hotRenderFluid = new FluidStack(FluidRegistry.LAVA, 0);
-	FluidStack coldRenderFluid = new FluidStack(FluidRegistry.WATER, 0);
-	FluidTankAdv hotTank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
-	FluidTankAdv coldTank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
+
+	}
+
+	private static int[] processLava = { 0, 0, 1000 };
+	private static int[] processWater = { 0, 1000, 1000 };
+	private static int[] processEnergy = { 400, 800, 1600 };
+	private static ItemStack[] processItems;
+
+	private int outputTracker;
+	private byte curSelection;
+	private byte prevSelection;
+
+	private ItemStack[] outputItems = new ItemStack[3];
+	private FluidTankCore hotTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private FluidTankCore coldTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+
+	/* AUGMENTS */
+	protected boolean augmentNoWater;
+	protected boolean augmentAndesite;
+	protected boolean augmentDiorite;
+	protected boolean augmentGranite;
+
+	protected boolean flagNoWater;
 
 	public TileExtruder() {
 
-		super(Types.EXTRUDER);
-		inventory = new ItemStack[1];
+		super();
+		inventory = new ItemStack[1 + 1];
+		createAllSlots(inventory.length);
 
 		for (int i = 0; i < 3; i++) {
 			outputItems[i] = processItems[i].copy();
 		}
+		hotTank.setLock(FluidRegistry.LAVA);
+		coldTank.setLock(FluidRegistry.WATER);
 	}
 
 	@Override
-	public void updateEntity() {
+	public int getType() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
-		}
-		boolean curActive = isActive;
+		return TYPE;
+	}
 
-		if (isActive) {
-			if (processRem > 0) {
-				processRem -= processMod;
-			}
-			if (canFinish()) {
-				processFinish();
-				transferOutput();
-				processRem = processMax;
+	@Override
+	protected int getMaxInputSlot() {
 
-				if (!redstoneControlOrDisable() || !canStart()) {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
-				} else {
-					processStart();
-				}
-			}
-		} else if (redstoneControlOrDisable()) {
-			if (timeCheck()) {
-				transferOutput();
-			}
-			if (timeCheckEighth() && canStart()) {
-				processStart();
-				processRem -= processMod;
-				isActive = true;
-			}
-		}
-		updateIfChanged(curActive);
+		// This is a hack to prevent super() logic from working.
+		return -1;
 	}
 
 	@Override
 	protected boolean canStart() {
 
-		if (hotTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME / 8, processLava[curSelection])
-				|| coldTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME / 8, processWater[processLevel][curSelection])) {
+		if (hotTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
+			return false;
+		}
+		if (!augmentNoWater && coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
+			return false;
+		}
+		if (energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		if (inventory[0] == null) {
@@ -154,7 +152,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		if (!inventory[0].isItemEqual(outputItems[curSelection])) {
 			return false;
 		}
-		return inventory[0].stackSize != outputItems[curSelection].getMaxStackSize();
+		return inventory[0].stackSize + outputItems[curSelection].stackSize <= outputItems[prevSelection].getMaxStackSize();
 	}
 
 	@Override
@@ -166,7 +164,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	@Override
 	protected void processStart() {
 
-		processMax = processTime[processLevel][curSelection];
+		processMax = processEnergy[curSelection] * energyMod / ENERGY_BASE;
 		processRem = processMax;
 		prevSelection = curSelection;
 	}
@@ -174,30 +172,23 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	@Override
 	protected void processFinish() {
 
-		int maxCreate = Math.min(
-				outputItems[prevSelection].stackSize,
-				Math.min(hotTank.getFluidAmount() / Math.max(1, processLava[prevSelection]),
-						coldTank.getFluidAmount() / Math.max(1, processWater[processLevel][prevSelection])));
-
 		if (inventory[0] == null) {
-			inventory[0] = ItemHelper.cloneStack(outputItems[prevSelection], maxCreate);
+			inventory[0] = outputItems[prevSelection].copy();
 		} else {
-			inventory[0].stackSize += maxCreate;
-			int maxStack = inventory[0].getMaxStackSize();
-			if (inventory[0].stackSize > maxStack) {
-				maxCreate -= inventory[0].stackSize - maxStack;
-				inventory[0].stackSize = maxStack;
-			}
+			inventory[0].stackSize += outputItems[prevSelection].stackSize;
 		}
-		hotTank.drain(processLava[prevSelection] * maxCreate, true);
-		coldTank.drain(processWater[processLevel][prevSelection] * maxCreate, true);
+		hotTank.drain(processLava[prevSelection], true);
+
+		if (!augmentNoWater) {
+			coldTank.drain(processWater[prevSelection], true);
+		}
 		prevSelection = curSelection;
 	}
 
 	@Override
 	protected void transferOutput() {
 
-		if (!augmentAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		if (inventory[0] == null) {
@@ -206,23 +197,13 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 2) {
-				if (transferItem(0, AUTO_TRANSFER[level], side)) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
+				if (transferItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void onLevelChange() {
-
-		super.onLevelChange();
-
-		hotTank.setCapacity(TEProps.MAX_FLUID_SMALL * FLUID_CAPACITY[level]);
-		coldTank.setCapacity(TEProps.MAX_FLUID_SMALL * FLUID_CAPACITY[level]);
 	}
 
 	@Override
@@ -250,6 +231,15 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		return true;
 	}
 
+	@Override
+	protected void setLevelFlags() {
+
+		super.setLevelFlags();
+
+		hasAutoInput = false;
+		enableAutoInput = false;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -273,7 +263,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		return prevSelection;
 	}
 
-	public FluidTankAdv getTank(int tankIndex) {
+	public FluidTankCore getTank(int tankIndex) {
 
 		if (tankIndex == 0) {
 			return hotTank;
@@ -289,13 +279,26 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		return coldTank.getFluid();
 	}
 
+	public boolean augmentNoWater() {
+
+		return augmentNoWater && flagNoWater;
+	}
+
+	public void setMode(int selection) {
+
+		byte lastSelection = curSelection;
+		curSelection = (byte) selection;
+		sendModePacket();
+		curSelection = lastSelection;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
 
-		outputTracker = nbt.getInteger("Tracker");
+		outputTracker = nbt.getInteger("TrackOut");
 		prevSelection = nbt.getByte("Prev");
 		curSelection = nbt.getByte("Sel");
 
@@ -304,55 +307,77 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("Tracker", outputTracker);
+		nbt.setInteger("TrackOut", outputTracker);
 		nbt.setByte("Prev", prevSelection);
 		nbt.setByte("Sel", curSelection);
 
 		nbt.setTag("HotTank", hotTank.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("ColdTank", coldTank.writeToNBT(new NBTTagCompound()));
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
-		payload.addByte(curSelection);
-		payload.addByte(prevSelection);
-
-		if (hotTank.getFluid() == null) {
-			payload.addFluidStack(hotRenderFluid);
-		} else {
-			payload.addFluidStack(hotTank.getFluid());
-		}
-		if (coldTank.getFluid() == null) {
-			payload.addFluidStack(coldRenderFluid);
-		} else {
-			payload.addFluidStack(coldTank.getFluid());
-		}
-		payload.addByte(processLevel);
-		return payload;
-	}
-
-	@Override
-	public PacketCoFHBase getFluidPacket() {
-
-		PacketCoFHBase payload = super.getFluidPacket();
-		payload.addFluidStack(hotRenderFluid);
-		payload.addFluidStack(coldRenderFluid);
-		return payload;
-	}
-
+	/* CLIENT -> SERVER */
 	@Override
 	public PacketCoFHBase getModePacket() {
 
 		PacketCoFHBase payload = super.getModePacket();
+
 		payload.addByte(curSelection);
+
 		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		curSelection = payload.getByte();
+
+		if (!isActive) {
+			prevSelection = curSelection;
+		}
+		callNeighborTileChange();
+	}
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addBool(augmentNoWater);
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addByte(curSelection);
+		payload.addByte(prevSelection);
+		payload.addInt(hotTank.getFluidAmount());
+		payload.addInt(coldTank.getFluidAmount());
+
+		payload.addBool(augmentNoWater);
+
+		return payload;
+	}
+
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		augmentNoWater = payload.getBool();
+		flagNoWater = augmentNoWater;
 	}
 
 	@Override
@@ -362,98 +387,71 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 
 		curSelection = payload.getByte();
 		prevSelection = payload.getByte();
-		hotTank.setFluid(payload.getFluidStack());
-		coldTank.setFluid(payload.getFluidStack());
+		hotTank.getFluid().amount = payload.getInt();
+		coldTank.getFluid().amount = payload.getInt();
 
-		byte tempLevel = processLevel;
+		augmentNoWater = payload.getBool();
+		flagNoWater = augmentNoWater;
+	}
 
-		processLevel = payload.getByte();
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
 
-		if (tempLevel != processLevel) {
-			for (int i = 0; i < 3; i++) {
-				outputItems[i].stackSize = TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[i][processLevel];
-			}
+		super.preAugmentInstall();
+
+		outputItems[1] = processItems[1].copy();
+
+		if (worldObj != null && ServerHelper.isServerWorld(worldObj)) {
+			flagNoWater = augmentNoWater;
+		}
+		augmentNoWater = false;
+		augmentGranite = false;
+		augmentDiorite = false;
+		augmentAndesite = false;
+	}
+
+	@Override
+	protected void postAugmentInstall() {
+
+		super.postAugmentInstall();
+
+		if (!augmentNoWater && isActive && coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
+			processOff();
+		}
+		if (worldObj != null && ServerHelper.isServerWorld(worldObj) && flagNoWater != augmentNoWater) {
+			sendTilePacket(Side.CLIENT);
 		}
 	}
 
 	@Override
-	protected void handleFluidPacket(PacketCoFHBase payload) {
+	protected boolean installAugmentToSlot(int slot) {
 
-		super.handleFluidPacket(payload);
-		hotRenderFluid = payload.getFluidStack();
-		coldRenderFluid = payload.getFluidStack();
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-	}
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
-
-		super.handleModePacket(payload);
-		curSelection = payload.getByte();
-		if (!isActive) {
-			prevSelection = curSelection;
+		if (!augmentNoWater && TEProps.MACHINE_EXTRUDER_NO_WATER.equals(id)) {
+			augmentNoWater = true;
+			return true;
 		}
-	}
-
-	public void setMode(int i) {
-
-		byte lastSelection = curSelection;
-		curSelection = (byte) i;
-		sendModePacket();
-		curSelection = lastSelection;
-	}
-
-	/* AUGMENT HELPERS */
-	@Override
-	protected boolean installAugment(int slot) {
-
-		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
-		boolean installed = false;
-
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SPEED) > 0) {
-			return false;
+		if (!augmentGranite && TEProps.MACHINE_EXTRUDER_GRANITE.equals(id)) {
+			outputItems[1] = GRANITE.copy();
+			augmentGranite = true;
+			hasModeAugment = true;
+			return true;
 		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_EXTRUDER_BOOST) > 0) {
-			int augLevel = augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_EXTRUDER_BOOST);
-
-			if (augLevel > level) {
-				return false;
-			}
-			if (hasDuplicateAugment(TEAugments.MACHINE_EXTRUDER_BOOST, augLevel, slot)) {
-				return false;
-			}
-			if (hasAugmentChain(TEAugments.MACHINE_EXTRUDER_BOOST, augLevel)) {
-				processLevel = (byte) Math.max(augLevel, processLevel);
-				for (int i = 0; i < 3; i++) {
-					outputItems[i].stackSize = TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[i][processLevel];
-				}
-			} else {
-				return false;
-			}
-			installed = true;
+		if (!augmentDiorite && TEProps.MACHINE_EXTRUDER_DIORITE.equals(id)) {
+			outputItems[1] = DIORITE.copy();
+			augmentDiorite = true;
+			hasModeAugment = true;
+			return true;
 		}
-		return installed ? true : super.installAugment(slot);
-	}
-
-	@Override
-	protected void onInstalled() {
-
-		super.onInstalled();
-
-		for (int i = 0; i < 3; i++) {
-			outputItems[i].stackSize = TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[i][processLevel];
+		if (!augmentAndesite && TEProps.MACHINE_EXTRUDER_ANDESITE.equals(id)) {
+			outputItems[1] = ANDESITE.copy();
+			augmentAndesite = true;
+			hasModeAugment = true;
+			return true;
 		}
-	}
-
-	@Override
-	protected void resetAugments() {
-
-		super.resetAugments();
-
-		processLevel = 0;
-		for (int i = 0; i < 3; i++) {
-			outputItems[i].stackSize = 1;
-		}
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* ICustomInventory */
@@ -472,52 +470,76 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	@Override
 	public void onSlotUpdate() {
 
-		markDirty();
+		markChunkDirty();
 	}
 
-	/* IFluidHandler */
+	/* ISidedTexture */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
-		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] != 1) {
-			return 0;
+		if (pass == 0) {
+			if (side == 0) {
+				return TETextures.MACHINE_BOTTOM;
+			} else if (side == 1) {
+				return TETextures.MACHINE_TOP;
+			}
+			return side != facing ? TETextures.MACHINE_SIDE : isActive ? augmentNoWater ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.MACHINE_ACTIVE_EXTRUDER_UNDERLAY : TETextures.MACHINE_FACE[TYPE];
+		} else if (side < 6) {
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
 		}
-		if (resource.getFluid() == FluidRegistry.LAVA) {
-			return hotTank.fill(resource, doFill);
-		} else if (resource.getFluid() == FluidRegistry.WATER) {
-			return coldTank.fill(resource, doFill);
+		return TETextures.MACHINE_SIDE;
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
+
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
+
+					FluidTankInfo hotInfo = hotTank.getInfo();
+					FluidTankInfo coldInfo = coldTank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(hotInfo.fluid, hotInfo.capacity, true, false), new FluidTankProperties(coldInfo.fluid, coldInfo.capacity, true, false) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return 0;
+					}
+					if (resource.getFluid() == FluidRegistry.LAVA) {
+						return hotTank.fill(resource, doFill);
+					} else if (resource.getFluid() == FluidRegistry.WATER) {
+						return coldTank.fill(resource, doFill);
+					}
+					return 0;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					return null;
+				}
+			});
 		}
-		return 0;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-
-		return null;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-
-		return null;
-	}
-
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-
-		return true;
-	}
-
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-
-		return false;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-
-		return new FluidTankInfo[] { hotTank.getInfo(), coldTank.getInfo() };
+		return super.getCapability(capability, from);
 	}
 
 }

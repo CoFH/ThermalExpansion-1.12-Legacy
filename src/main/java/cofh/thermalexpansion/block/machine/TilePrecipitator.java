@@ -1,87 +1,132 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.api.core.ICustomInventory;
+import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankAdv;
-import cofh.lib.util.helpers.MathHelper;
+import cofh.core.util.helpers.AugmentHelper;
+import cofh.lib.gui.container.ICustomInventory;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiPrecipitator;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;
-import cpw.mods.fml.common.registry.GameRegistry;
-
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class TilePrecipitator extends TileMachineBase implements ICustomInventory, IFluidHandler {
+import javax.annotation.Nullable;
+import java.util.HashSet;
+
+public class TilePrecipitator extends TileMachineBase implements ICustomInventory {
+
+	private static final int TYPE = BlockMachine.Type.PRECIPITATOR.getMetadata();
+	public static int basePower = 20;
+
+	public static ItemStack SNOW_LAYER;
+	public static ItemStack PACKED_ICE;
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.PRECIPITATOR.ordinal();
+		processItems = new ItemStack[3];
 
-		processItems[0] = new ItemStack(Items.snowball, 4, 0);
-		processItems[1] = new ItemStack(Blocks.snow);
-		processItems[2] = new ItemStack(Blocks.ice);
+		processItems[0] = new ItemStack(Items.SNOWBALL, 4, 0);
+		processItems[1] = new ItemStack(Blocks.SNOW);
+		processItems[2] = new ItemStack(Blocks.ICE);
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 4;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, {}, { 0 }, { 0 } };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false, true, true };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { false, false };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, false };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		SNOW_LAYER = new ItemStack(Blocks.SNOW_LAYER, 2, 0);
+		PACKED_ICE = new ItemStack(Blocks.PACKED_ICE);
 
-		String category = "Machine.Precipitator";
-		int basePower = MathHelper.clamp(ThermalExpansion.config.get(category, "BasePower", 20), 10, 500);
-		ThermalExpansion.config.set(category, "BasePower", basePower);
-		defaultEnergyConfig[type] = new EnergyConfig();
-		defaultEnergyConfig[type].setParamsPower(basePower);
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 5;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 }, { 0 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion.Precipitator");
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
+
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_PRECIPITATOR_PACKED_ICE);
+
+		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion:machine_precipitator");
+
+		config();
 	}
 
-	static int[] processWater = { 500, 500, 1000 };
-	static int[] processEnergy = { 800, 800, 1600 };
-	static ItemStack[] processItems = new ItemStack[3];
+	public static void config() {
 
-	int outputTracker;
-	byte curSelection;
-	byte prevSelection;
-	FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
-	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
+		String category = "Machine.Precipitator";
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
+	}
+
+	private static int[] processWater = { 500, 500, 1000 };
+	private static int[] processEnergy = { 800, 800, 1600 };
+	private static ItemStack[] processItems;
+
+	private int outputTracker;
+	private byte curSelection;
+	private byte prevSelection;
+
+	private ItemStack[] outputItems = new ItemStack[3];
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
+
+	/* AUGMENTS */
+	protected boolean augmentSnowLayer;
+	protected boolean augmentPackedIce;
 
 	public TilePrecipitator() {
 
-		super(Types.PRECIPITATOR);
+		super();
 		inventory = new ItemStack[1 + 1];
+		createAllSlots(inventory.length);
+
+		for (int i = 0; i < 3; i++) {
+			outputItems[i] = processItems[i].copy();
+		}
+		tank.setLock(FluidRegistry.WATER);
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
+	}
+
+	@Override
+	protected int getMaxInputSlot() {
+
+		// This is a hack to prevent super() logic from working.
+		return -1;
 	}
 
 	@Override
 	protected boolean canStart() {
 
-		if (energyStorage.getEnergyStored() < processEnergy[curSelection] || tank.getFluidAmount() < processWater[curSelection]) {
+		if (tank.getFluidAmount() < processWater[curSelection] || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		if (inventory[0] == null) {
 			return true;
 		}
-		if (!inventory[0].isItemEqual(processItems[curSelection])) {
+		if (!inventory[0].isItemEqual(outputItems[curSelection])) {
 			return false;
 		}
-		return inventory[0].stackSize + processItems[curSelection].stackSize <= processItems[prevSelection].getMaxStackSize();
+		return inventory[0].stackSize + outputItems[curSelection].stackSize <= outputItems[prevSelection].getMaxStackSize();
 	}
 
 	@Override
@@ -93,7 +138,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected void processStart() {
 
-		processMax = processEnergy[curSelection];
+		processMax = processEnergy[curSelection] * energyMod / ENERGY_BASE;
 		processRem = processMax;
 		prevSelection = curSelection;
 	}
@@ -102,9 +147,9 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	protected void processFinish() {
 
 		if (inventory[0] == null) {
-			inventory[0] = processItems[prevSelection].copy();
+			inventory[0] = outputItems[prevSelection].copy();
 		} else {
-			inventory[0].stackSize += processItems[prevSelection].stackSize;
+			inventory[0].stackSize += outputItems[prevSelection].stackSize;
 		}
 		tank.drain(processWater[prevSelection], true);
 		prevSelection = curSelection;
@@ -113,7 +158,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected void transferOutput() {
 
-		if (!augmentAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		if (inventory[0] == null) {
@@ -122,22 +167,13 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 2) {
-				if (transferItem(0, AUTO_TRANSFER[level], side)) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
+				if (transferItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void onLevelChange() {
-
-		super.onLevelChange();
-
-		tank.setCapacity(TEProps.MAX_FLUID_SMALL * FLUID_CAPACITY[level]);
 	}
 
 	@Override
@@ -165,6 +201,15 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		return true;
 	}
 
+	@Override
+	protected void setLevelFlags() {
+
+		super.setLevelFlags();
+
+		hasAutoInput = false;
+		enableAutoInput = false;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -178,18 +223,6 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		return new ContainerPrecipitator(inventory, this);
 	}
 
-	@Override
-	public FluidTankAdv getTank() {
-
-		return tank;
-	}
-
-	@Override
-	public FluidStack getTankFluid() {
-
-		return tank.getFluid();
-	}
-
 	public int getCurSelection() {
 
 		return curSelection;
@@ -200,70 +233,55 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		return prevSelection;
 	}
 
+	@Override
+	public FluidTankCore getTank() {
+
+		return tank;
+	}
+
+	@Override
+	public FluidStack getTankFluid() {
+
+		return tank.getFluid();
+	}
+
+	public void setMode(int selection) {
+
+		byte lastSelection = curSelection;
+		curSelection = (byte) selection;
+		sendModePacket();
+		curSelection = lastSelection;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
 
-		outputTracker = nbt.getInteger("Tracker");
+		outputTracker = nbt.getInteger("TrackOut");
 		prevSelection = nbt.getByte("Prev");
 		curSelection = nbt.getByte("Sel");
 
 		tank.readFromNBT(nbt);
-
-		if (tank.getFluid() != null) {
-			renderFluid = tank.getFluid();
-		}
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("Tracker", outputTracker);
+		nbt.setInteger("TrackOut", outputTracker);
 		nbt.setByte("Prev", prevSelection);
 		nbt.setByte("Sel", curSelection);
+
 		tank.writeToNBT(nbt);
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
-
-		payload.addFluidStack(renderFluid);
-		return payload;
-	}
-
-	@Override
-	public PacketCoFHBase getGuiPacket() {
-
-		PacketCoFHBase payload = super.getGuiPacket();
-
-		payload.addByte(curSelection);
-		payload.addByte(prevSelection);
-
-		if (tank.getFluid() == null) {
-			payload.addFluidStack(renderFluid);
-		} else {
-			payload.addFluidStack(tank.getFluid());
-		}
-		return payload;
-	}
-
-	@Override
-	public PacketCoFHBase getFluidPacket() {
-
-		PacketCoFHBase payload = super.getFluidPacket();
-
-		payload.addFluidStack(renderFluid);
-
-		return payload;
-	}
-
+	/* CLIENT -> SERVER */
 	@Override
 	public PacketCoFHBase getModePacket() {
 
@@ -272,25 +290,6 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		payload.addByte(curSelection);
 
 		return payload;
-	}
-
-	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
-
-		super.handleGuiPacket(payload);
-
-		curSelection = payload.getByte();
-		prevSelection = payload.getByte();
-		tank.setFluid(payload.getFluidStack());
-	}
-
-	@Override
-	protected void handleFluidPacket(PacketCoFHBase payload) {
-
-		super.handleFluidPacket(payload);
-
-		renderFluid = payload.getFluidStack();
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	@Override
@@ -304,32 +303,65 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		}
 	}
 
-	public void setMode(int i) {
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getGuiPacket() {
 
-		byte lastSelection = curSelection;
-		curSelection = (byte) i;
-		sendModePacket();
-		curSelection = lastSelection;
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addByte(curSelection);
+		payload.addByte(prevSelection);
+		payload.addInt(tank.getFluidAmount());
+
+		return payload;
 	}
 
-	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+	protected void handleGuiPacket(PacketCoFHBase payload) {
 
-		super.handleTilePacket(payload, isServer);
+		super.handleGuiPacket(payload);
 
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
+		curSelection = payload.getByte();
+		prevSelection = payload.getByte();
+		tank.getFluid().amount = payload.getInt();
+	}
+
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		outputItems[1] = processItems[1].copy();
+		outputItems[2] = processItems[2].copy();
+
+		augmentSnowLayer = false;
+		augmentPackedIce = false;
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentSnowLayer && TEProps.MACHINE_PRECIPITATOR_SNOW_LAYER.equals(id)) {
+			outputItems[1] = SNOW_LAYER.copy();
+			hasModeAugment = true;
+			return true;
 		}
+		if (!augmentPackedIce && TEProps.MACHINE_PRECIPITATOR_PACKED_ICE.equals(id)) {
+			outputItems[2] = PACKED_ICE.copy();
+			hasModeAugment = true;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* ICustomInventory */
 	@Override
 	public ItemStack[] getInventorySlots(int inventoryIndex) {
 
-		return processItems;
+		return outputItems;
 	}
 
 	@Override
@@ -341,50 +373,56 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	public void onSlotUpdate() {
 
-		markDirty();
+		markChunkDirty();
 	}
 
-	/* IFluidHandler */
+	/* CAPABILITIES */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] != 1) {
-			return 0;
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
+
+					FluidTankInfo info = tank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, false) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return 0;
+					}
+					if (resource.getFluid() != FluidRegistry.WATER) {
+						return 0;
+					}
+					return tank.fill(resource, doFill);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					return null;
+				}
+			});
 		}
-		if (resource.getFluid() != FluidRegistry.WATER) {
-			return 0;
-		}
-		return tank.fill(resource, doFill);
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-
-		return null;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-
-		return null;
-	}
-
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-
-		return true;
-	}
-
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-
-		return false;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-
-		return new FluidTankInfo[] { tank.getInfo() };
+		return super.getCapability(capability, from);
 	}
 
 }

@@ -2,16 +2,15 @@ package cofh.thermalexpansion.gui.client.dynamo;
 
 import cofh.lib.gui.element.ElementFluidTank;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiDynamoCompression extends GuiDynamoBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "DynamoCompression.png");
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "compression.png");
 
 	public GuiDynamoCompression(InventoryPlayer inventory, TileEntity tile) {
 
@@ -25,8 +24,8 @@ public class GuiDynamoCompression extends GuiDynamoBase {
 
 		super.initGui();
 
-		addElement(new ElementFluidTank(this, 8, 9, myTile.getTank(0)));
-		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)));
+		addElement(new ElementFluidTank(this, 8, 9, baseTile.getTank(0)));
+		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank(1)));
 	}
 
 }

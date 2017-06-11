@@ -1,41 +1,64 @@
 package cofh.thermalexpansion.block;
 
-import cofh.api.tileentity.IRedstoneControl;
+import codechicken.lib.vec.Vector3;
 import cofh.asm.relauncher.CoFHSide;
-import cofh.asm.relauncher.Implementable;
 import cofh.asm.relauncher.Strippable;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.helpers.RedstoneControlHelper;
+import cofh.core.util.tileentity.IRedstoneControl;
 import cofh.lib.audio.ISoundSource;
 import cofh.lib.audio.SoundTile;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.SoundHelper;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.network.PacketTEBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.client.audio.ISound;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Implementable("buildcraft.api.tiles.IHasWork")
-@Strippable(value = "cofh.lib.audio.ISoundSource", side = CoFHSide.SERVER)
-public abstract class TileRSControl extends TileInventory implements IRedstoneControl, ISoundSource {
+@Strippable (value = "cofh.lib.audio.ISoundSource", side = CoFHSide.SERVER)
+public abstract class TileRSControl extends TileTEBase implements IRedstoneControl, ISoundSource {
 
 	public boolean isActive;
+
+	/* REDSTONE CONTROL */
+	protected int powerLevel;
 	protected boolean isPowered;
 	protected boolean wasPowered;
 
 	protected ControlMode rsMode = ControlMode.DISABLED;
 
 	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		rsMode = RedstoneControlHelper.getControlFromNBT(tag);
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		RedstoneControlHelper.setItemStackTagRS(tag, this);
+		return true;
+	}
+
+	@Override
 	public void onNeighborBlockChange() {
 
 		wasPowered = isPowered;
-		isPowered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+		powerLevel = worldObj.isBlockIndirectlyGettingPowered(pos);
+		isPowered = powerLevel > 0;
 
 		if (wasPowered != isPowered && sendRedstoneUpdates()) {
-			PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, xCoord, yCoord, zCoord);
+			PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, pos);
 			onRedstoneUpdate();
 		}
+	}
+
+	public void onRedstoneUpdate() {
+
 	}
 
 	protected boolean sendRedstoneUpdates() {
@@ -48,10 +71,6 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		return rsMode.isDisabled() || isPowered == rsMode.getState();
 	}
 
-	public void onRedstoneUpdate() {
-
-	}
-
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -62,11 +81,12 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		NBTTagCompound rsTag = nbt.getCompoundTag("RS");
 
 		isPowered = rsTag.getBoolean("Power");
+		powerLevel = rsTag.getByte("Level");
 		rsMode = ControlMode.values()[rsTag.getByte("Mode")];
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -74,15 +94,19 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		NBTTagCompound rsTag = new NBTTagCompound();
 
 		rsTag.setBoolean("Power", isPowered);
+		rsTag.setByte("Level", (byte) powerLevel);
 		rsTag.setByte("Mode", (byte) rsMode.ordinal());
 		nbt.setTag("RS", rsTag);
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
 
 		payload.addBool(isPowered);
 		payload.addByte(rsMode.ordinal());
@@ -91,7 +115,6 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		return payload;
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
@@ -100,18 +123,13 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		isPowered = payload.getBool();
 		rsMode = ControlMode.values()[payload.getByte()];
 
-		if (!isServer) {
-			boolean prevActive = isActive;
+		boolean prevActive = isActive;
+		isActive = payload.getBool();
 
-			isActive = payload.getBool();
-
-			if (isActive && !prevActive) {
-				if (getSoundName() != null && !getSoundName().isEmpty()) {
-					SoundHelper.playSound(getSound());
-				}
+		if (isActive && !prevActive) {
+			if (getSoundEvent() != null && TEProps.enableSounds) {
+				SoundHelper.playSound(getSound());
 			}
-		} else {
-			payload.getBool();
 		}
 	}
 
@@ -122,7 +140,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		wasPowered = this.isPowered;
 		this.isPowered = isPowered;
 		if (ServerHelper.isClientWorld(worldObj)) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			callBlockUpdate();
 		}
 	}
 
@@ -133,14 +151,13 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	}
 
 	@Override
-	public final void setControl(ControlMode control) {
+	public final boolean setControl(ControlMode control) {
 
 		rsMode = control;
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketTEBase.sendRSConfigUpdatePacketToServer(this, this.xCoord, this.yCoord, this.zCoord);
-		} else {
-			sendUpdatePacket(Side.CLIENT);
+			PacketTEBase.sendRSConfigUpdatePacketToServer(this, pos);
 		}
+		return true;
 	}
 
 	@Override
@@ -151,15 +168,10 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 
 	/* ISoundSource */
 	@Override
-	@SideOnly(Side.CLIENT)
-	public ISound getSound() {
+	@SideOnly (Side.CLIENT)
+	public Object getSound() {
 
-		return new SoundTile(this, getSoundName(), 1.0F, 1.0F, true, 0, xCoord, yCoord, zCoord);
-	}
-
-	public String getSoundName() {
-
-		return "";
+		return new SoundTile(this, getSoundEvent(), getVolume(), 1.0F, true, 0, Vector3.fromTileCenter(this).vec3());
 	}
 
 	@Override
@@ -168,10 +180,15 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		return !tileEntityInvalid && isActive;
 	}
 
-	/* IHasWork */
-	public boolean hasWork() {
+	/* HELPERS */
+	protected float getVolume() {
 
-		return isActive;
+		return 1.0F;
+	}
+
+	protected SoundEvent getSoundEvent() {
+
+		return null;
 	}
 
 }

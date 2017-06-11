@@ -1,72 +1,72 @@
 package cofh.thermalexpansion.block.device;
 
-import cofh.core.CoFHProps;
-import cofh.core.render.IconRegistry;
-import cofh.lib.render.RenderHelper;
+import cofh.core.init.CoreProps;
 import cofh.lib.util.helpers.FluidHelper;
-import cofh.thermalexpansion.block.device.BlockDevice.Types;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.lib.util.helpers.RenderHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiNullifier;
 import cofh.thermalexpansion.gui.container.device.ContainerNullifier;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-
+import cofh.thermalexpansion.init.TETextures;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class TileNullifier extends TileDeviceBase implements IFluidHandler {
+import javax.annotation.Nullable;
+
+public class TileNullifier extends TileDeviceBase {
+
+	private static final int TYPE = BlockDevice.Type.NULLIFIER.getMetadata();
 
 	public static void initialize() {
 
-		int type = BlockDevice.Types.NULLIFIER.ordinal();
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 2;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {} };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 2;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0 }, {} };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, false, false };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false, false };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { false };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4 };
-		defaultSideConfig[type].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false };
 
-		GameRegistry.registerTileEntity(TileNullifier.class, "thermalexpansion.Nullifier");
+		GameRegistry.registerTileEntity(TileNullifier.class, "thermalexpansion:device_nullifier");
+
+		config();
 	}
 
-	protected static final int[] SLOTS = { 0 };
-	protected static final Fluid renderFluid = FluidRegistry.LAVA;
+	public static void config() {
+
+		String category = "Device.Nullifier";
+		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+	}
+
+	private static final int[] SLOTS = { 0 };
 
 	public TileNullifier() {
 
-		super(Types.NULLIFIER);
+		super();
 		inventory = new ItemStack[1];
 	}
 
 	@Override
-	public boolean canUpdate() {
+	public int getType() {
 
-		return false;
-	}
-
-	@Override
-	public void setDefaultSides() {
-
-		sideCache = getDefaultSides();
-		sideCache[facing] = 1;
+		return TYPE;
 	}
 
 	@Override
 	public int getLightValue() {
 
-		return FluidHelper.getFluidLuminosity(renderFluid);
+		return redstoneControlOrDisable() ? FluidHelper.getFluidLuminosity(FluidRegistry.LAVA) : 0;
 	}
 
 	@Override
@@ -75,9 +75,9 @@ public class TileNullifier extends TileDeviceBase implements IFluidHandler {
 		return true;
 	}
 
-	protected boolean isSideAccessible(int side) {
+	protected boolean isSideAccessible(EnumFacing side) {
 
-		return sideCache[side] == 1 && redstoneControlOrDisable();
+		return side == null || allowInsertion(sideConfig.sideTypes[sideCache[side.ordinal()]]) && redstoneControlOrDisable();
 	}
 
 	/* GUI METHODS */
@@ -102,43 +102,6 @@ public class TileNullifier extends TileDeviceBase implements IFluidHandler {
 	@Override
 	public void writeInventoryToNBT(NBTTagCompound nbt) {
 
-	}
-
-	/* IFluidHandler */
-	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-
-		return isSideAccessible(from.ordinal()) ? resource.amount : 0;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-
-		return null;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-
-		return null;
-	}
-
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-
-		return true;
-	}
-
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-
-		return false;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-
-		return null;
 	}
 
 	/* IInventory */
@@ -166,7 +129,7 @@ public class TileNullifier extends TileDeviceBase implements IFluidHandler {
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot) {
+	public ItemStack removeStackFromSlot(int slot) {
 
 		if (inventory[slot] == null) {
 			return null;
@@ -189,51 +152,83 @@ public class TileNullifier extends TileDeviceBase implements IFluidHandler {
 		}
 	}
 
-	/* IReconfigurableFacing */
-	@Override
-	public boolean setFacing(int side) {
-
-		if (side < 0 || side > 5) {
-			return false;
-		}
-		facing = (byte) side;
-		sideCache[facing] = 1;
-		markDirty();
-		sendUpdatePacket(Side.CLIENT);
-		return true;
-	}
-
 	/* ISidedTexture */
 	@Override
-	public IIcon getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? BlockDevice.deviceSide : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid)
-					: BlockDevice.deviceFace[type];
+			if (side == 0) {
+				return TETextures.DEVICE_BOTTOM;
+			} else if (side == 1) {
+				return TETextures.DEVICE_TOP;
+			}
+			return side != facing ? TETextures.DEVICE_SIDE : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.DEVICE_FACE[TYPE];
 		} else if (side < 6) {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]])
-					: redstoneControlOrDisable() ? BlockDevice.deviceActive[type] : BlockDevice.deviceFace[type];
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : redstoneControlOrDisable() ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
-		return BlockDevice.deviceSide;
+		return TETextures.DEVICE_SIDE;
 	}
 
 	/* ISidedInventory */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getSlotsForFace(EnumFacing side) {
 
-		return isSideAccessible(side) ? SLOTS : CoFHProps.EMPTY_INVENTORY;
+		return isSideAccessible(side) ? SLOTS : CoreProps.EMPTY_INVENTORY;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
 
 		return isSideAccessible(side);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
 		return false;
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
+
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing facing) {
+
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new net.minecraftforge.fluids.capability.IFluidHandler() {
+
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
+
+					return new IFluidTankProperties[] { new FluidTankProperties(null, Integer.MAX_VALUE, true, false) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					return isSideAccessible(facing) ? resource.amount : 0;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					return null;
+				}
+			});
+		}
+		return super.getCapability(capability, facing);
 	}
 
 }

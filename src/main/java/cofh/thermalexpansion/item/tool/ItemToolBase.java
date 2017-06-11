@@ -1,26 +1,24 @@
 package cofh.thermalexpansion.item.tool;
 
 import cofh.api.item.IMultiModeItem;
-import cofh.core.util.KeyBindingMultiMode;
-import cofh.lib.util.helpers.SecurityHelper;
+import cofh.core.key.KeyBindingItemMultiMode;
+import cofh.core.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.ThermalExpansion;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import java.util.List;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.input.Keyboard;
+
+import java.util.List;
 
 public abstract class ItemToolBase extends Item implements IMultiModeItem {
 
@@ -32,11 +30,11 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 		super();
 		this.itemName = name;
 		setMaxStackSize(1);
-		setCreativeTab(ThermalExpansion.tabTools);
+		//setCreativeTab(ThermalExpansion.tabTools);
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean check) {
 
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
 			list.add(StringHelper.shiftForDetails());
@@ -47,8 +45,7 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 		addInformationDelegate(stack, player, list, check);
 
 		if (getNumModes(stack) > 0) {
-			list.add(StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("info.cofh.press") + " "
-					+ Keyboard.getKeyName(KeyBindingMultiMode.instance.getKey()) + " " + StringHelper.localize("info.cofh.modeChange") + StringHelper.END);
+			list.add(StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("info.cofh.press") + " " + Keyboard.getKeyName(KeyBindingItemMultiMode.instance.getKey()) + " " + StringHelper.localize("info.cofh.modeChange") + StringHelper.END);
 		}
 	}
 
@@ -64,9 +61,9 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
-		return false;
+		return EnumActionResult.PASS;
 	}
 
 	@Override
@@ -78,7 +75,7 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return new StringBuilder().append(getUnlocalizedName()).append('.').append(itemName).toString();
+		return getUnlocalizedName() + '.' + itemName;
 	}
 
 	@Override
@@ -107,34 +104,33 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 		return super.setUnlocalizedName(textureName);
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister ir) {
-
-		this.itemIcon = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + StringHelper.titleCase(itemName));
-	}
+	//@Override
+	//@SideOnly(Side.CLIENT)
+	//public void registerIcons(IIconRegister ir) {
+	//	this.itemIcon = ir.registerIcon(MOD_NAME + ":" + getUnlocalizedName().replace("item." + MOD_NAME + ".", "") + "/" + StringHelper.titleCase(itemName));
+	//}
 
 	/* IMultiModeItem */
 	@Override
 	public int getMode(ItemStack stack) {
 
-		return stack.stackTagCompound == null ? 0 : stack.stackTagCompound.getInteger("Mode");
+		return stack.getTagCompound() == null ? 0 : stack.getTagCompound().getInteger("Mode");
 	}
 
 	@Override
 	public boolean setMode(ItemStack stack, int mode) {
 
-		if (stack.stackTagCompound == null) {
+		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
-		stack.stackTagCompound.setInteger("Mode", mode);
+		stack.getTagCompound().setInteger("Mode", mode);
 		return false;
 	}
 
 	@Override
 	public boolean incrMode(ItemStack stack) {
 
-		if (stack.stackTagCompound == null) {
+		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
 		int curMode = getMode(stack);
@@ -142,14 +138,14 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 		if (curMode >= getNumModes(stack)) {
 			curMode = 0;
 		}
-		stack.stackTagCompound.setInteger("Mode", curMode);
+		stack.getTagCompound().setInteger("Mode", curMode);
 		return true;
 	}
 
 	@Override
 	public boolean decrMode(ItemStack stack) {
 
-		if (stack.stackTagCompound == null) {
+		if (stack.getTagCompound() == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
 		int curMode = getMode(stack);
@@ -157,7 +153,7 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 		if (curMode <= 0) {
 			curMode = getNumModes(stack) - 1;
 		}
-		stack.stackTagCompound.setInteger("Mode", curMode);
+		stack.getTagCompound().setInteger("Mode", curMode);
 		return true;
 	}
 

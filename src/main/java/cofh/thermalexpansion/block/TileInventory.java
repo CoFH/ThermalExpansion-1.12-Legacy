@@ -1,70 +1,28 @@
 package cofh.thermalexpansion.block;
 
-import cofh.api.tileentity.ISecurable;
-import cofh.core.CoFHProps;
-import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.SecurityHelper;
-import cofh.lib.util.helpers.ServerHelper;
-import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.util.Utils;
-import com.google.common.base.Strings;
-import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.relauncher.Side;
-
-import java.util.UUID;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
-public abstract class TileInventory extends TileTEBase implements IInventory, ISecurable {
-
-	protected GameProfile owner = CoFHProps.DEFAULT_OWNER;
-	protected AccessMode access = AccessMode.PUBLIC;
-	protected boolean canAccess = true;
-	protected boolean inWorld = false;
+public abstract class TileInventory extends TileAugmentableSecure implements IInventory {
 
 	public ItemStack[] inventory = new ItemStack[0];
 
-	public void cofh_validate() {
-
-		inWorld = true;
-	}
-
-	public void cofh_invalidate() {
-
-		inWorld = false;
-	}
-
-	public boolean canAccess() {
-
-		return canAccess;
-	}
-
-	public boolean isSecured() {
-
-		return !SecurityHelper.isDefaultUUID(owner.getId());
-	}
-
-	public boolean enableSecurity() {
-
-		return true;
-	}
-
-	public boolean extractItem(int slot, int amount, int side) {
+	/* ITEM TRANSFER */
+	public boolean extractItem(int slot, int amount, EnumFacing side) {
 
 		if (slot > inventory.length) {
 			return false;
@@ -79,78 +37,28 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		TileEntity adjInv = BlockHelper.getAdjacentTileEntity(this, side);
 
 		if (Utils.isAccessibleInput(adjInv, side)) {
-			if (adjInv instanceof ISidedInventory) {
-				ISidedInventory sidedInv = (ISidedInventory) adjInv;
-				int slots[] = sidedInv.getAccessibleSlotsFromSide(BlockHelper.SIDE_OPPOSITE[side]);
+			IItemHandler inv = adjInv.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.getOpposite());
 
-				if (slots == null) {
-					return false;
+			if (inv == null) {
+				return false;
+			}
+			for (int i = 0; i < inv.getSlots() && amount > 0; i++) {
+				ItemStack queryStack = inv.extractItem(i, amount, true);
+				if (queryStack == null) {
+					continue;
 				}
-				for (int i = 0; i < slots.length && amount > 0; i++) {
-					ItemStack queryStack = sidedInv.getStackInSlot(slots[i]);
-					if (queryStack == null) {
-						continue;
-					}
-					if (sidedInv.canExtractItem(slots[i], queryStack, side ^ 1)) {
-						if (stack == null) {
-							if (isItemValidForSlot(slot, queryStack)) {
-								int toExtract = Math.min(amount, queryStack.stackSize);
-								stack = ItemHelper.cloneStack(queryStack, toExtract);
-								queryStack.stackSize -= toExtract;
-
-								if (queryStack.stackSize <= 0) {
-									sidedInv.setInventorySlotContents(slots[i], null);
-								} else {
-									sidedInv.setInventorySlotContents(slots[i], queryStack);
-								}
-								amount -= toExtract;
-							}
-						} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack, true)) {
-							int toExtract = Math.min(stack.getMaxStackSize() - stack.stackSize, Math.min(amount, queryStack.stackSize));
-							stack.stackSize += toExtract;
-							queryStack.stackSize -= toExtract;
-
-							if (queryStack.stackSize <= 0) {
-								sidedInv.setInventorySlotContents(slots[i], null);
-							} else {
-								sidedInv.setInventorySlotContents(slots[i], queryStack);
-							}
-							amount -= toExtract;
-						}
-					}
-				}
-			} else {
-				IInventory inv = (IInventory) adjInv;
-				for (int i = 0; i < inv.getSizeInventory() && amount > 0; i++) {
-					ItemStack queryStack = inv.getStackInSlot(i);
-					if (queryStack == null) {
-						continue;
-					}
-					if (stack == null) {
-						if (isItemValidForSlot(slot, queryStack)) {
-							int toExtract = Math.min(amount, queryStack.stackSize);
-							stack = ItemHelper.cloneStack(queryStack, toExtract);
-							queryStack.stackSize -= toExtract;
-
-							if (queryStack.stackSize <= 0) {
-								inv.setInventorySlotContents(i, null);
-							} else {
-								inv.setInventorySlotContents(i, queryStack);
-							}
-							amount -= toExtract;
-						}
-					} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack, true)) {
-						int toExtract = Math.min(stack.getMaxStackSize() - stack.stackSize, Math.min(amount, queryStack.stackSize));
-						stack.stackSize += toExtract;
-						queryStack.stackSize -= toExtract;
-
-						if (queryStack.stackSize <= 0) {
-							inv.setInventorySlotContents(i, null);
-						} else {
-							inv.setInventorySlotContents(i, queryStack);
-						}
+				if (stack == null) {
+					if (isItemValidForSlot(slot, queryStack)) {
+						int toExtract = Math.min(amount, queryStack.stackSize);
+						stack = inv.extractItem(i, toExtract, false);
 						amount -= toExtract;
 					}
+				} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack, true)) {
+					int toExtract = Math.min(stack.getMaxStackSize() - stack.stackSize, Math.min(amount, queryStack.stackSize));
+					ItemStack extracted = inv.extractItem(i, toExtract, false);
+					toExtract = Math.min(toExtract, extracted == null ? 0 : extracted.stackSize);
+					stack.stackSize += toExtract;
+					amount -= toExtract;
 				}
 			}
 			if (initialAmount != amount) {
@@ -162,7 +70,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		return false;
 	}
 
-	public boolean transferItem(int slot, int amount, int side) {
+	public boolean transferItem(int slot, int amount, EnumFacing side) {
 
 		if (inventory[slot] == null || slot > inventory.length) {
 			return false;
@@ -170,7 +78,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		ItemStack stack = inventory[slot].copy();
 		amount = Math.min(amount, stack.stackSize);
 		stack.stackSize = amount;
-		int added = 0;
+		int added;
 
 		TileEntity curTile = BlockHelper.getAdjacentTileEntity(this, side);
 		/* Add to Adjacent Inventory */
@@ -180,19 +88,6 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 				return false;
 			}
 			inventory[slot].stackSize -= amount - added;
-			if (inventory[slot].stackSize <= 0) {
-				inventory[slot] = null;
-			}
-			return true;
-		}
-		added = 0;
-		/* Add to Adjacent Pipe */
-		if (Utils.isPipeTile(curTile)) {
-			added = Utils.addToPipeTile(curTile, side, stack);
-			if (added <= 0) {
-				return false;
-			}
-			inventory[slot].stackSize -= added;
 			if (inventory[slot].stackSize <= 0) {
 				inventory[slot] = null;
 			}
@@ -214,72 +109,20 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		return true;
 	}
 
-	@Override
-	public boolean openGui(EntityPlayer player) {
-
-		if (canPlayerAccess(player)) {
-			if (hasGui()) {
-				player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-			}
-			return hasGui();
-		}
-		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentTranslation("chat.cofh.secure", getOwnerName()));
-		}
-		return false;
-	}
-
-	@Override
-	public void receiveGuiNetworkData(int i, int j) {
-
-		if (j == 0) {
-			canAccess = false;
-		} else {
-			canAccess = true;
-		}
-	}
-
-	@Override
-	public void sendGuiNetworkData(Container container, ICrafting player) {
-
-		super.sendGuiNetworkData(container, player);
-
-		player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player)) ? 1 : 0);
-	}
-
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
-
-		owner = CoFHProps.DEFAULT_OWNER;
-		access = AccessMode.values()[nbt.getByte("Access")];
-
-		String uuid = nbt.getString("OwnerUUID");
-		String name = nbt.getString("Owner");
-		if (!Strings.isNullOrEmpty(uuid)) {
-			setOwner(new GameProfile(UUID.fromString(uuid), name));
-		} else {
-			setOwnerName(name);
-		}
-
-		if (!enableSecurity()) {
-			access = AccessMode.PUBLIC;
-		}
 		readInventoryFromNBT(nbt);
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
-
-		nbt.setByte("Access", (byte) access.ordinal());
-		nbt.setString("OwnerUUID", owner.getId().toString());
-		nbt.setString("Owner", owner.getName());
-
 		writeInventoryToNBT(nbt);
+		return nbt;
 	}
 
 	public void readInventoryFromNBT(NBTTagCompound nbt) {
@@ -315,36 +158,6 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		}
 	}
 
-	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
-
-		PacketCoFHBase payload = super.getPacket();
-
-		payload.addByte((byte) access.ordinal());
-		payload.addUUID(owner.getId());
-		payload.addString(owner.getName());
-
-		return payload;
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		access = ISecurable.AccessMode.values()[payload.getByte()];
-
-		if (!isServer) {
-			owner = CoFHProps.DEFAULT_OWNER;
-			setOwner(new GameProfile(payload.getUUID(), payload.getString()));
-		} else {
-			payload.getUUID();
-			payload.getString();
-		}
-	}
-
 	/* IInventory */
 	@Override
 	public int getSizeInventory() {
@@ -376,7 +189,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot) {
+	public ItemStack removeStackFromSlot(int slot) {
 
 		if (inventory[slot] == null) {
 			return null;
@@ -394,21 +207,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
 			stack.stackSize = getInventoryStackLimit();
 		}
-		if (inWorld) {
-			markChunkDirty();
-		}
-	}
-
-	@Override
-	public String getInventoryName() {
-
-		return tileName.isEmpty() ? getName() : tileName;
-	}
-
-	@Override
-	public boolean hasCustomInventoryName() {
-
-		return !tileName.isEmpty();
+		markChunkDirty();
 	}
 
 	@Override
@@ -420,16 +219,16 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
 
-		return isUseable(player);
+		return isUsable(player);
 	}
 
 	@Override
-	public void openInventory() {
+	public void openInventory(EntityPlayer player) {
 
 	}
 
 	@Override
-	public void closeInventory() {
+	public void closeInventory(EntityPlayer player) {
 
 	}
 
@@ -439,76 +238,46 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		return true;
 	}
 
-	/* ISecurable */
 	@Override
-	public boolean setAccess(AccessMode access) {
+	public int getField(int id) {
 
-		this.access = access;
-		sendUpdatePacket(Side.SERVER);
-		return true;
+		return 0;
 	}
 
 	@Override
-	public AccessMode getAccess() {
+	public void setField(int id, int value) {
 
-		return access;
 	}
 
 	@Override
-	public boolean setOwnerName(String name) {
+	public int getFieldCount() {
 
-		if (MinecraftServer.getServer() == null) {
-			return false;
-		}
-		if (Strings.isNullOrEmpty(name) || CoFHProps.DEFAULT_OWNER.getName().equalsIgnoreCase(name)) {
-			return false;
-		}
-		String uuid = PreYggdrasilConverter.func_152719_a(name);
-		if (Strings.isNullOrEmpty(uuid)) {
-			return false;
-		}
-		return setOwner(new GameProfile(UUID.fromString(uuid), name));
+		return 0;
 	}
 
 	@Override
-	public boolean setOwner(GameProfile profile) {
+	public void clear() {
 
-		if (SecurityHelper.isDefaultUUID(owner.getId())) {
-			owner = profile;
-			if (!SecurityHelper.isDefaultUUID(owner.getId())) {
-				if (MinecraftServer.getServer() != null) {
-					new Thread("CoFH User Loader") {
+	}
 
-						@Override
-						public void run() {
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-							owner = SecurityHelper.getProfile(owner.getId(), owner.getName());
-						}
-					}.start();
-				}
-				if (inWorld) {
-					markChunkDirty();
-				}
-				return true;
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, from);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			if (this instanceof ISidedInventory && facing != null) {
+				return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new SidedInvWrapper(((ISidedInventory) this), facing));
+			} else {
+				return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new InvWrapper(this));
 			}
 		}
-		return false;
-	}
-
-	@Override
-	public GameProfile getOwner() {
-
-		return owner;
-	}
-
-	@Override
-	public String getOwnerName() {
-
-		String name = owner.getName();
-		if (name == null) {
-			return StringHelper.localize("info.cofh.anotherplayer");
-		}
-		return name;
+		return super.getCapability(capability, facing);
 	}
 
 }

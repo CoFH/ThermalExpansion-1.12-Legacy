@@ -1,60 +1,58 @@
 package cofh.thermalexpansion.block.device;
 
-import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.core.item.ItemBlockBase;
-import cofh.lib.util.helpers.AugmentHelper;
+import cofh.core.block.ItemBlockCore;
+import cofh.core.util.helpers.RedstoneControlHelper;
+import cofh.core.util.helpers.SecurityHelper;
+import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.RedstoneControlHelper;
-import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockDevice extends ItemBlockBase {
+import java.util.List;
 
-	public static ItemStack setDefaultTag(ItemStack container) {
-
-		ReconfigurableHelper.setFacing(container, 3);
-		ReconfigurableHelper.setSideCache(container, TileDeviceBase.defaultSideConfig[container.getItemDamage()].defaultSides);
-		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
-		EnergyHelper.setDefaultEnergyTag(container, 0);
-		AugmentHelper.writeAugments(container, BlockDevice.defaultAugments);
-
-		return container;
-	}
+public class ItemBlockDevice extends ItemBlockCore {
 
 	public ItemBlockDevice(Block block) {
 
 		super(block);
 	}
 
-	@Override
-	public String getUnlocalizedName(ItemStack stack) {
+	public ItemStack setDefaultTag(ItemStack stack) {
 
-		return "tile.thermalexpansion.device." + BlockDevice.NAMES[ItemHelper.getItemDamage(stack)] + ".name";
+		ReconfigurableHelper.setFacing(stack, 3);
+		ReconfigurableHelper.setSideCache(stack, TileDeviceBase.SIDE_CONFIGS[ItemHelper.getItemDamage(stack)].defaultSides);
+		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
+		EnergyHelper.setDefaultEnergyTag(stack, 0);
+
+		return stack;
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+	public String getUnlocalizedName(ItemStack stack) {
 
-		SecurityHelper.addOwnerInformation(stack, list);
+		return "tile.thermalexpansion.device." + BlockDevice.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+
+		SecurityHelper.addOwnerInformation(stack, tooltip);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForDetails());
+			tooltip.add(StringHelper.shiftForDetails());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-		SecurityHelper.addAccessInformation(stack, list);
-		list.add(StringHelper.getInfoText("info.thermalexpansion.device." + BlockDevice.NAMES[ItemHelper.getItemDamage(stack)]));
+		SecurityHelper.addAccessInformation(stack, tooltip);
 
-		if (ItemHelper.getItemDamage(stack) == BlockDevice.Types.WORKBENCH_FALSE.ordinal()) {
-			ItemHelper.addInventoryInformation(stack, list, 0, 20);
-		}
+		String name = BlockDevice.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.device." + name));
 
+		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}
 
 }

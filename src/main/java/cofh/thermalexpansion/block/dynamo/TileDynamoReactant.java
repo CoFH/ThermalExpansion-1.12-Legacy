@@ -1,44 +1,68 @@
 package cofh.thermalexpansion.block.dynamo;
 
-import cofh.core.CoFHProps;
+import codechicken.lib.texture.TextureUtils;
+import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankAdv;
-import cofh.lib.inventory.ComparableItemStack;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
-import cpw.mods.fml.common.registry.GameRegistry;
-
-import gnu.trove.map.hash.TObjectIntHashMap;
-
+import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.util.managers.dynamo.ReactantManager;
+import cofh.thermalexpansion.util.managers.dynamo.ReactantManager.Reaction;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler {
+import javax.annotation.Nullable;
+import java.util.HashSet;
 
-	static final int TYPE = BlockDynamo.Types.REACTANT.ordinal();
+public class TileDynamoReactant extends TileDynamoBase {
+
+	private static final int TYPE = BlockDynamo.Type.REACTANT.getMetadata();
+	public static int basePower = 40;
+	public static int fluidAmount = 100;
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.DynamoReactant");
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_REACTANT_ELEMENTAL);
+
+		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.dynamo_reactant");
+
+		config();
 	}
 
-	FluidTankAdv tank = new FluidTankAdv(MAX_FLUID);
+	public static void config() {
 
-	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
-	int reactantRF;
-	int currentReactantRF;
-	int reactantMod = FUEL_MOD;
+		String category = "Dynamo.Reactant";
+		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
+		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
+	}
+
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
+
+	private int currentFuelRF = 0;
+
+	/* AUGMENTS */
+	public boolean augmentElemental;
 
 	public TileDynamoReactant() {
 
@@ -53,43 +77,38 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	}
 
 	@Override
-	protected boolean canGenerate() {
+	protected boolean canStart() {
 
 		if (fuelRF > 0) {
-			return reactantRF > 0 || getReactantEnergy(inventory[0]) > 0;
+			return true;
 		}
-		if (reactantRF > 0) {
-			return tank.getFluidAmount() >= 50;
+		if (inventory[0] == null || tank.getFluidAmount() < fluidAmount) {
+			return false;
 		}
-		return tank.getFluidAmount() >= 50 && getReactantEnergy(inventory[0]) > 0;
+		if (augmentElemental) {
+			if (!ReactantManager.validReactantElemental(inventory[0]) || !ReactantManager.validFluidElemental(tank.getFluid())) {
+				return false;
+			}
+		}
+		return ReactantManager.reactionExists(inventory[0], tank.getFluid());
 	}
 
 	@Override
-	protected void generate() {
+	protected void processStart() {
 
-		int energy;
+		Reaction reaction = ReactantManager.getReaction(inventory[0], tank.getFluid());
 
-		if (fuelRF <= 0) {
-			fuelRF = getFuelEnergy(tank.getFluid()) * reactantMod / FUEL_MOD * fuelMod / FUEL_MOD;
-			tank.drain(50, true);
-		}
-		if (reactantRF <= 0) {
-			energy = (getReactantEnergy(inventory[0]) / FUEL_MOD) * fuelMod;
-			reactantMod = getReactantMod(inventory[0]);
-			reactantRF += energy;
-			currentReactantRF = energy;
-			inventory[0] = ItemHelper.consumeItem(inventory[0]);
-		}
-		energy = calcEnergy() * energyMod;
-		energyStorage.modifyEnergyStored(energy);
-		fuelRF -= energy;
-		reactantRF -= energy;
+		currentFuelRF = reaction.getEnergy() * energyMod / ENERGY_BASE;
+		fuelRF += currentFuelRF;
+
+		inventory[0] = ItemHelper.consumeItem(inventory[0]);
+		tank.drain(fluidAmount, true);
 	}
 
 	@Override
-	public IIcon getActiveIcon() {
+	public TextureAtlasSprite getActiveIcon() {
 
-		return renderFluid.getFluid().getIcon();
+		return TextureUtils.getTexture(renderFluid.getFluid().getStill());
 	}
 
 	/* GUI METHODS */
@@ -108,14 +127,14 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public int getScaledDuration(int scale) {
 
-		if (currentReactantRF <= 0) {
-			currentReactantRF = sugarRF;
+		if (currentFuelRF <= 0) {
+			currentFuelRF = Math.max(fuelRF, ReactantManager.DEFAULT_ENERGY);
 		}
-		return reactantRF * scale / currentReactantRF;
+		return fuelRF * scale / currentFuelRF;
 	}
 
 	@Override
-	public FluidTankAdv getTank(int tankIndex) {
+	public FluidTankCore getTank(int tankIndex) {
 
 		return tank;
 	}
@@ -126,50 +145,50 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 
 		super.readFromNBT(nbt);
 
-		currentReactantRF = nbt.getInteger("ReactMax");
-		reactantRF = nbt.getInteger("React");
+		currentFuelRF = nbt.getInteger("FuelMax");
 		tank.readFromNBT(nbt);
 
-		if (!isValidFuel(tank.getFluid())) {
+		if (currentFuelRF <= 0) {
+			currentFuelRF = Math.max(fuelRF, ReactantManager.DEFAULT_ENERGY);
+		}
+		if (!ReactantManager.validFluid(tank.getFluid())) {
 			tank.setFluid(null);
 		}
 		if (tank.getFluid() != null) {
 			renderFluid = tank.getFluid();
 		}
-		if (currentReactantRF <= 0) {
-			currentReactantRF = sugarRF;
-		}
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("ReactMax", currentReactantRF);
-		nbt.setInteger("React", reactantRF);
+		nbt.setInteger("FuelMax", currentFuelRF);
 		tank.writeToNBT(nbt);
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
+
+	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getPacket() {
+	public PacketCoFHBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+		PacketCoFHBase payload = super.getGuiPacket();
 
+		payload.addInt(currentFuelRF);
 		payload.addFluidStack(tank.getFluid());
 
 		return payload;
 	}
 
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketCoFHBase payload = super.getTilePacket();
 
 		payload.addFluidStack(tank.getFluid());
-		payload.addInt(reactantRF);
-		payload.addInt(currentReactantRF);
 
 		return payload;
 	}
@@ -179,151 +198,122 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 
 		super.handleGuiPacket(payload);
 
+		currentFuelRF = payload.getInt();
 		tank.setFluid(payload.getFluidStack());
-		reactantRF = payload.getInt();
-		currentReactantRF = payload.getInt();
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
-		renderFluid = payload.getFluidStack();
-		if (renderFluid == null) {
-			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
+		FluidStack tempRender = payload.getFluidStack();
+		if (tempRender == null) {
+			renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
+		} else {
+			renderFluid = tempRender;
 		}
 	}
 
-	/* IFluidHandler */
+	/* HELPERS */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	protected void preAugmentInstall() {
 
-		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
-			return 0;
-		}
-		if (isValidFuel(resource)) {
-			return tank.fill(resource, doFill);
-		}
-		return 0;
+		super.preAugmentInstall();
+
+		augmentElemental = false;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	protected boolean installAugmentToSlot(int slot) {
 
-		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
-			return null;
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentElemental && TEProps.DYNAMO_REACTANT_ELEMENTAL.equals(id)) {
+			augmentElemental = true;
+			hasModeAugment = true;
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 3));
+			energyMod += 25;
+			return true;
 		}
-		if (isValidFuel(resource)) {
-			return tank.drain(resource.amount, doDrain);
-		}
-		return null;
-	}
-
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-
-		if (!augmentCoilDuct && from.ordinal() == facing) {
-			return null;
-		}
-		return tank.drain(maxDrain, doDrain);
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-
-		return new FluidTankInfo[] { tank.getInfo() };
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* IInventory */
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return getReactantEnergy(stack) > 0;
+		return augmentElemental ? ReactantManager.validReactantElemental(stack) : ReactantManager.validReactant(stack);
 	}
 
 	/* ISidedInventory */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getSlotsForFace(EnumFacing side) {
 
-		return side != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
+		return side.ordinal() != facing || augmentCoilDuct ? CoreProps.SINGLE_INVENTORY : CoreProps.EMPTY_INVENTORY;
 	}
 
-	/* FUEL MANAGER */
-	static int sugarRF = 16000;
-	static int gunpowderRF = 160000;
-	static int blazePowderRF = 640000;
-	static int ghastTearRF = 1600000;
-	static int netherStarRF = 6400000;
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
-	static TObjectIntHashMap<ComparableItemStack> reactants = new TObjectIntHashMap<ComparableItemStack>();
-
-	static {
-		addReactant(new ItemStack(Items.sugar, 1, 0), 16000);
-		addReactant(new ItemStack(Items.gunpowder, 1, 0), 160000);
-		addReactant(new ItemStack(Items.blaze_powder, 1, 0), 640000);
-		addReactant(new ItemStack(Items.ghast_tear, 1, 0), 1600000);
-		addReactant(new ItemStack(Items.nether_star, 1, 0), 6400000);
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 
-	public static boolean isValidFuel(FluidStack stack) {
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
-		return stack == null ? false : fuels.containsKey(stack.getFluid());
-	}
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
 
-	public static boolean isValidReactant(ItemStack stack) {
+					return FluidTankProperties.convert(new FluidTankInfo[] { tank.getInfo() });
+				}
 
-		return stack == null ? false : reactants.containsKey(new ComparableItemStack(stack));
-	}
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
 
-	public static boolean addFuel(Fluid fluid, int energy) {
+					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
+						return 0;
+					}
+					if (augmentElemental) {
+						if (ReactantManager.validFluidElemental(resource)) {
+							return tank.fill(resource, doFill);
+						}
+						return 0;
+					}
+					if (ReactantManager.validFluid(resource)) {
+						return tank.fill(resource, doFill);
+					}
+					return 0;
+				}
 
-		if (fluid == null || energy < 10000 || energy > 200000000) {
-			return false;
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
+						return null;
+					}
+					if (resource.equals(tank.getFluid())) {
+						return tank.drain(resource.amount, doDrain);
+					}
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					if (!augmentCoilDuct && from.ordinal() == facing) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
+				}
+			});
 		}
-		fuels.put(fluid, energy / 20);
-		return true;
-	}
-
-	public static boolean addReactant(ItemStack stack, int energy) {
-
-		if (stack == null || energy < 10000 || energy > 200000000) {
-			return false;
-		}
-		reactants.put(new ComparableItemStack(stack), energy);
-		return true;
-	}
-
-	public static boolean removeFuel(Fluid fluid) {
-
-		fuels.remove(fluid);
-		return true;
-	}
-
-	public static boolean removeReactant(ItemStack stack) {
-
-		reactants.remove(stack);
-		return true;
-	}
-
-	public static int getFuelEnergy(FluidStack stack) {
-
-		return stack == null ? 0 : fuels.get(stack.getFluid());
-	}
-
-	public static int getReactantEnergy(ItemStack stack) {
-
-		return stack == null ? 0 : reactants.get(new ComparableItemStack(stack));
-	}
-
-	public static int getReactantMod(ItemStack stack) {
-
-		if (stack == null) {
-			return 0;
-		}
-		return FUEL_MOD;
+		return super.getCapability(capability, from);
 	}
 
 }

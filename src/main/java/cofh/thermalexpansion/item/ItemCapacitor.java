@@ -1,131 +1,173 @@
 package cofh.thermalexpansion.item;
 
 import cofh.api.energy.IEnergyContainerItem;
-import cofh.core.item.ItemBase;
+import cofh.api.item.IMultiModeItem;
+import cofh.core.init.CoreEnchantments;
+import cofh.core.item.IEnchantableItem;
+import cofh.core.item.ItemMulti;
+import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
+import cofh.core.util.core.IInitializer;
+import cofh.core.util.crafting.RecipeUpgrade;
+import cofh.core.util.helpers.ChatHelper;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-
-import java.util.List;
-
+import gnu.trove.map.hash.TIntObjectHashMap;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
+import javax.annotation.Nonnull;
+import java.util.List;
+import java.util.Map;
+
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+import static cofh.lib.util.helpers.ItemHelper.addRecipe;
+
+public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem {
 
 	public ItemCapacitor() {
 
 		super("thermalexpansion");
-		setMaxDamage(1);
+
 		setMaxStackSize(1);
-		setCreativeTab(ThermalExpansion.tabTools);
+		setUnlocalizedName("capacitor");
+		setCreativeTab(ThermalExpansion.tabItems);
+
+		addPropertyOverride(new ResourceLocation("active"), (stack, world, entity) -> ItemCapacitor.this.getEnergyStored(stack) > 0 && ItemCapacitor.this.isActive(stack) ? 1F : 0F);
+		addPropertyOverride(new ResourceLocation("mode"), (stack, world, entity) -> ItemCapacitor.this.getMode(stack));
 	}
 
-	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List list) {
+	public int getSend(ItemStack stack) {
 
-		if (ENABLE[0]) {
-			list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, Types.CREATIVE.ordinal()), CAPACITY[Types.CREATIVE.ordinal()]));
+		if (!capacitorMap.containsKey(ItemHelper.getItemDamage(stack))) {
+			return 0;
 		}
-		list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, Types.POTATO.ordinal()), CAPACITY[Types.POTATO.ordinal()]));
-		for (int i = 2; i < Types.values().length; i++) {
-			list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, i), 0));
-			list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, i), CAPACITY[i]));
+		return capacitorMap.get(ItemHelper.getItemDamage(stack)).send;
+	}
+
+	public int getRecv(ItemStack stack) {
+
+		if (!capacitorMap.containsKey(ItemHelper.getItemDamage(stack))) {
+			return 0;
 		}
+		return capacitorMap.get(ItemHelper.getItemDamage(stack)).recv;
+	}
+
+	public int getCapacity(ItemStack stack) {
+
+		if (!capacitorMap.containsKey(ItemHelper.getItemDamage(stack))) {
+			return 0;
+		}
+		int capacity = capacitorMap.get(ItemHelper.getItemDamage(stack)).capacity;
+		int enchant = EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
+
+		return capacity + capacity * enchant / 2;
+	}
+
+	public int getBaseCapacity(int metadata) {
+
+		if (!capacitorMap.containsKey(metadata)) {
+			return 0;
+		}
+		return capacitorMap.get(metadata).capacity;
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack item) {
-
-		return "item.thermalexpansion.capacitor." + NAMES[ItemHelper.getItemDamage(item)];
-	}
-
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+	@SideOnly (Side.CLIENT)
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForDetails());
-		}
-		if (stack.stackTagCompound == null) {
-			EnergyHelper.setDefaultEnergyTag(stack, 0);
+			tooltip.add(StringHelper.shiftForDetails());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-		if (ItemHelper.getItemDamage(stack) == Types.CREATIVE.ordinal()) {
-			list.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
-			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[Types.CREATIVE.ordinal()]
-					+ " RF/t");
-		} else {
-			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.stackTagCompound.getInteger("Energy")) + " / "
-					+ StringHelper.getScaledNumber(CAPACITY[ItemHelper.getItemDamage(stack)]) + " RF");
-			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[ItemHelper.getItemDamage(stack)]
-					+ "/" + RECEIVE[ItemHelper.getItemDamage(stack)] + " RF/t");
-		}
 		if (isActive(stack)) {
-			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.2"));
-			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.4"));
-			list.add(StringHelper.getDeactivationText("info.thermalexpansion.capacitor.3"));
+			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.a." + getMode(stack)));
+			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.instance.getKey())));
+			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.c.0"));
+			tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.capacitor.d.0"));
 		} else {
-			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.0"));
-			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.4"));
-			list.add(StringHelper.getActivationText("info.thermalexpansion.capacitor.1"));
+			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.instance.getKey())));
+			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.c.1"));
+			tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.capacitor.d.0"));
 		}
-		if (ItemHelper.getItemDamage(stack) == Types.POTATO.ordinal()) {
-			list.add(StringHelper.getFlavorText("info.thermalexpansion.capacitor.potato"));
+		if (ItemHelper.getItemDamage(stack) == CREATIVE) {
+			tooltip.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
+			tooltip.add(StringHelper.localize("info.cofh.send") + ": " + StringHelper.formatNumber(getSend(stack)) + " RF/t");
+		} else {
+			tooltip.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(getEnergyStored(stack)) + " / " + StringHelper.getScaledNumber(getMaxEnergyStored(stack)) + " RF");
+			tooltip.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + StringHelper.formatNumber(getSend(stack)) + "/" + StringHelper.formatNumber(getRecv(stack)) + " RF/t");
+		}
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void getSubItems(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
+
+		for (int metadata : itemList) {
+			if (metadata != CREATIVE) {
+				list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, metadata), 0));
+				list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, metadata), getBaseCapacity(metadata)));
+			} else {
+				list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, metadata), getBaseCapacity(metadata)));
+			}
 		}
 	}
 
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isCurrentItem) {
 
-		if (slot > 8 || !isActive(stack) || isCurrentItem) {
+		if (CoreUtils.isFakePlayer(entity)) {
 			return;
 		}
-		InventoryPlayer playerInv = ((EntityPlayer) entity).inventory;
-		IEnergyContainerItem containerItem;
-		int toSend = Math.min(getEnergyStored(stack), SEND[ItemHelper.getItemDamage(stack)]);
-
-		ItemStack currentItem = playerInv.getCurrentItem();
-
-		if (EnergyHelper.isEnergyContainerItem(currentItem)) {
-			containerItem = (IEnergyContainerItem) currentItem.getItem();
-			extractEnergy(stack, containerItem.receiveEnergy(currentItem, toSend, false), false);
+		if (slot > 8 || !isActive(stack)) {
+			return;
 		}
-	}
+		EntityPlayer player = (EntityPlayer) entity;
+		Iterable<ItemStack> equipment;
 
-	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-
-		if (CoreUtils.isFakePlayer(player)) {
-			return stack;
+		switch (getMode(stack)) {
+			case 0:
+				equipment = player.getHeldEquipment();
+				break;
+			case 1:
+				equipment = player.getArmorInventoryList();
+				break;
+			default:
+				equipment = player.getEquipmentAndArmor();
 		}
-		if (player.isSneaking()) {
-			if (setActiveState(stack, !isActive(stack))) {
-				if (isActive(stack)) {
-					player.worldObj.playSoundAtEntity(player, "random.orb", 0.2F, 0.8F);
-				} else {
-					player.worldObj.playSoundAtEntity(player, "random.orb", 0.2F, 0.5F);
-				}
+		for (ItemStack equipmentStack : equipment) {
+			if (EnergyHelper.isEnergyContainerItem(equipmentStack)) {
+				extractEnergy(stack, ((IEnergyContainerItem) equipmentStack.getItem()).receiveEnergy(equipmentStack, Math.min(getEnergyStored(stack), getSend(stack)), false), false);
 			}
 		}
-		player.swingItem();
-		return stack;
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack stack) {
+	public boolean isDamaged(ItemStack stack) {
 
-		return isActive(stack);
+		return true;
 	}
 
 	@Override
@@ -137,53 +179,173 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	@Override
 	public boolean isItemTool(ItemStack stack) {
 
-		return false;
+		return true;
 	}
 
 	@Override
-	public boolean isDamaged(ItemStack stack) {
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 
-		return ItemHelper.getItemDamage(stack) != Types.CREATIVE.ordinal();
+		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
+	public boolean showDurabilityBar(ItemStack stack) {
 
-		return false;
+		return ItemHelper.getItemDamage(stack) != CREATIVE;
 	}
 
 	@Override
-	public int getDisplayDamage(ItemStack stack) {
+	public int getItemEnchantability() {
 
-		if (stack.stackTagCompound == null) {
-			return CAPACITY[ItemHelper.getItemDamage(stack)];
+		return 10;
+	}
+
+	@Override
+	public double getDurabilityForDisplay(ItemStack stack) {
+
+		if (stack.getTagCompound() == null) {
+			EnergyHelper.setDefaultEnergyTag(stack, 0);
 		}
-		return CAPACITY[ItemHelper.getItemDamage(stack)] - stack.stackTagCompound.getInteger("Energy");
+		return 1D - ((double) stack.getTagCompound().getInteger("Energy") / (double) getMaxEnergyStored(stack));
 	}
 
 	@Override
-	public int getMaxDamage(ItemStack stack) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
 
-		return CAPACITY[ItemHelper.getItemDamage(stack)];
+		if (CoreUtils.isFakePlayer(player)) {
+			return new ActionResult<>(EnumActionResult.FAIL, itemStack);
+		}
+		if (player.isSneaking()) {
+			if (setActiveState(itemStack, !isActive(itemStack))) {
+				if (isActive(itemStack)) {
+					player.worldObj.playSound(null, player.getPosition(), SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, SoundCategory.PLAYERS, 0.2F, 0.8F);
+				} else {
+					player.worldObj.playSound(null, player.getPosition(), SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, SoundCategory.PLAYERS, 0.2F, 0.5F);
+				}
+			}
+		}
+		player.swingArm(hand);
+		return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
+	}
+
+	@Override
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
+		return EnumActionResult.FAIL;
+	}
+
+	/* HELPERS */
+	public boolean isActive(ItemStack stack) {
+
+		return stack.getTagCompound() != null && stack.getTagCompound().getBoolean("Active");
+	}
+
+	public boolean setActiveState(ItemStack stack, boolean state) {
+
+		if (getEnergyStored(stack) > 0) {
+			stack.getTagCompound().setBoolean("Active", state);
+			return true;
+		}
+		stack.getTagCompound().setBoolean("Active", false);
+		return false;
+	}
+
+	/* IMultiModeItem */
+	@Override
+	public int getMode(ItemStack stack) {
+
+		return !stack.hasTagCompound() ? 0 : stack.getTagCompound().getInteger("Mode");
+	}
+
+	@Override
+	public boolean setMode(ItemStack stack, int mode) {
+
+		if (!stack.hasTagCompound()) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		stack.getTagCompound().setInteger("Mode", mode);
+		return false;
+	}
+
+	@Override
+	public boolean incrMode(ItemStack stack) {
+
+		if (!stack.hasTagCompound()) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		int curMode = getMode(stack);
+		curMode++;
+		if (curMode >= getNumModes(stack)) {
+			curMode = 0;
+		}
+		stack.getTagCompound().setInteger("Mode", curMode);
+		return true;
+	}
+
+	@Override
+	public boolean decrMode(ItemStack stack) {
+
+		if (!stack.hasTagCompound()) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		int curMode = getMode(stack);
+		curMode--;
+		if (curMode <= 0) {
+			curMode = getNumModes(stack) - 1;
+		}
+		stack.getTagCompound().setInteger("Mode", curMode);
+		return true;
+	}
+
+	@Override
+	public int getNumModes(ItemStack stack) {
+
+		return 3;
+	}
+
+	@Override
+	public void onModeChange(EntityPlayer player, ItemStack stack) {
+
+		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.capacitor.a." + getMode(stack)));
+	}
+
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+
+		ModelLoader.setCustomMeshDefinition(this, new CapacitorMeshDefinition());
+
+		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
+			ModelResourceLocation texture = new ModelResourceLocation(modName + ":" + name + "_" + entry.getValue().name, "inventory");
+			textureMap.put(entry.getKey(), texture);
+			ModelBakery.registerItemVariants(this, texture);
+		}
+	}
+
+	/* ITEM MESH DEFINITION */
+	@SideOnly (Side.CLIENT)
+	public class CapacitorMeshDefinition implements ItemMeshDefinition {
+
+		public ModelResourceLocation getModelLocation(ItemStack stack) {
+
+			return textureMap.get(ItemHelper.getItemDamage(stack));
+		}
 	}
 
 	/* IEnergyContainerItem */
 	@Override
 	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
 
-		int metadata = ItemHelper.getItemDamage(container);
-		if (metadata <= Types.POTATO.ordinal()) {
-			return 0;
-		}
-		if (container.stackTagCompound == null) {
+		if (container.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
-		int stored = container.stackTagCompound.getInteger("Energy");
-		int receive = Math.min(maxReceive, Math.min(CAPACITY[metadata] - stored, RECEIVE[metadata]));
+		int stored = container.getTagCompound().getInteger("Energy");
+		int receive = Math.min(maxReceive, Math.min(getMaxEnergyStored(container) - stored, getRecv(container)));
 
-		if (!simulate && container.getItemDamage() != Types.CREATIVE.ordinal()) {
+		if (!simulate && ItemHelper.getItemDamage(container) != CREATIVE) {
 			stored += receive;
-			container.stackTagCompound.setInteger("Energy", stored);
+			container.getTagCompound().setInteger("Energy", stored);
 		}
 		return receive;
 	}
@@ -191,19 +353,15 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	@Override
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
-		if (container.stackTagCompound == null) {
+		if (container.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
-		int stored = container.stackTagCompound.getInteger("Energy");
-		int extract = Math.min(maxExtract, Math.min(stored, SEND[ItemHelper.getItemDamage(container)]));
+		int stored = container.getTagCompound().getInteger("Energy");
+		int extract = Math.min(maxExtract, Math.min(stored, getSend(container)));
 
-		if (!simulate && container.getItemDamage() != Types.CREATIVE.ordinal()) {
+		if (!simulate && ItemHelper.getItemDamage(container) != CREATIVE) {
 			stored -= extract;
-			container.stackTagCompound.setInteger("Energy", stored);
-
-			if (stored == 0 && container.getItemDamage() == Types.POTATO.ordinal()) {
-				container.func_150996_a(Items.baked_potato);
-			}
+			container.getTagCompound().setInteger("Energy", stored);
 		}
 		return extract;
 	}
@@ -211,83 +369,168 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	@Override
 	public int getEnergyStored(ItemStack container) {
 
-		if (container.stackTagCompound == null) {
+		if (container.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
-		return container.stackTagCompound.getInteger("Energy");
+		return container.getTagCompound().getInteger("Energy");
 	}
 
 	@Override
 	public int getMaxEnergyStored(ItemStack container) {
 
-		return CAPACITY[container.getItemDamage()];
+		return getCapacity(container);
 	}
 
-	/* HELPERS */
-	public boolean isActive(ItemStack stack) {
+	/* IEnchantableItem */
+	@Override
+	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
 
-		return stack.stackTagCompound == null ? false : stack.stackTagCompound.getBoolean("Active");
-	}
-
-	public boolean setActiveState(ItemStack stack, boolean state) {
-
-		if (getEnergyStored(stack) > 0) {
-			stack.stackTagCompound.setBoolean("Active", state);
-			return true;
+		if (!capacitorMap.containsKey(ItemHelper.getItemDamage(stack))) {
+			return false;
 		}
-		stack.stackTagCompound.setBoolean("Active", false);
-		return false;
+		return capacitorMap.get(ItemHelper.getItemDamage(stack)).enchantable && enchantment == CoreEnchantments.holding;
 	}
 
-	public static enum Types {
-		CREATIVE, POTATO, BASIC, HARDENED, REINFORCED, RESONANT
+	/* IInitializer */
+	@Override
+	public boolean preInit() {
+
+		capacitorBasic = addCapacitorItem(0, "standard0", SEND[0], RECV[0], CAPACITY[0], EnumRarity.COMMON);
+		capacitorHardened = addCapacitorItem(1, "standard1", SEND[1], RECV[1], CAPACITY[1], EnumRarity.COMMON);
+		capacitorReinforced = addCapacitorItem(2, "standard2", SEND[2], RECV[2], CAPACITY[2], EnumRarity.UNCOMMON);
+		capacitorSignalum = addCapacitorItem(3, "standard3", SEND[3], RECV[3], CAPACITY[3], EnumRarity.UNCOMMON);
+		capacitorResonant = addCapacitorItem(4, "standard4", SEND[4], RECV[4], CAPACITY[4], EnumRarity.RARE);
+
+		capacitorCreative = addCapacitorItem(CREATIVE, "creative", SEND[4], 0, CAPACITY[4], EnumRarity.EPIC);
+
+		ThermalExpansion.proxy.addIModelRegister(this);
+
+		return true;
 	}
 
-	public static final String[] NAMES = { "creative", "potato", "basic", "hardened", "reinforced", "resonant" };
+	@Override
+	public boolean initialize() {
 
-	public static boolean[] ENABLE = { true, true, true, true, true, true };
-	public static int[] SEND = { 100000, 160, 80, 400, 4000, 16000 };
-	public static int[] RECEIVE = { 0, 0, 200, 800, 8000, 32000 };
-	public static int[] CAPACITY = { 100000, 32000, 80000, 400000, 4000000, 20000000 };
+		// @formatter:off
+
+		addRecipe(ShapedRecipe(capacitorBasic,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotLead",
+				'R', "dustRedstone",
+				'X', "ingotCopper",
+				'Y', "dustSulfur"
+		));
+		addRecipe(new RecipeUpgrade(capacitorHardened,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotInvar",
+				'R', "dustRedstone",
+				'X', capacitorBasic,
+				'Y', "ingotTin"
+		));
+		addRecipe(new RecipeUpgrade(capacitorReinforced,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotElectrum",
+				'R', "dustRedstone",
+				'X', capacitorHardened,
+				'Y', "blockGlassHardened"
+		));
+		addRecipe(new RecipeUpgrade(capacitorSignalum,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotSignalum",
+				'R', "dustRedstone",
+				'X', capacitorReinforced,
+				'Y', "dustCryotheum"
+		));
+		addRecipe(new RecipeUpgrade(capacitorResonant,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotEnderium",
+				'R', "dustRedstone",
+				'X', capacitorSignalum,
+				'Y', "dustPyrotheum"
+		));
+
+		// @formatter:on
+
+		return true;
+	}
+
+	@Override
+	public boolean postInit() {
+
+		return true;
+	}
+
+	/* ENTRY */
+	public class CapacitorEntry {
+
+		public final String name;
+		public final int send;
+		public final int recv;
+		public final int capacity;
+		public final boolean enchantable;
+
+		CapacitorEntry(String name, int send, int recv, int capacity, boolean enchantable) {
+
+			this.name = name;
+			this.send = send;
+			this.recv = recv;
+			this.capacity = capacity;
+			this.enchantable = enchantable;
+		}
+	}
+
+	private void addCapacitorEntry(int metadata, String name, int send, int recv, int capacity, boolean enchantable) {
+
+		capacitorMap.put(metadata, new CapacitorEntry(name, send, recv, capacity, enchantable));
+	}
+
+	private ItemStack addCapacitorItem(int metadata, String name, int send, int recv, int capacity, EnumRarity rarity, boolean enchantable) {
+
+		addCapacitorEntry(metadata, name, send, recv, capacity, enchantable);
+		return addItem(metadata, name, rarity);
+	}
+
+	private ItemStack addCapacitorItem(int metadata, String name, int send, int recv, int capacity, EnumRarity rarity) {
+
+		addCapacitorEntry(metadata, name, send, recv, capacity, true);
+		return addItem(metadata, name, rarity);
+	}
+
+	private TIntObjectHashMap<CapacitorEntry> capacitorMap = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<ModelResourceLocation> textureMap = new TIntObjectHashMap<>();
+
+	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
+	public static final int[] SEND = { 1, 4, 9, 16, 25 };
+	public static final int[] RECV = { 1, 4, 9, 16, 25 };
 
 	static {
-		String category2 = "Item.Capacitor.";
-		String category = category2 + StringHelper.titleCase(NAMES[0]);
-		ENABLE[0] = ThermalExpansion.config.get(category, "Enable", ENABLE[0]);
-
-		for (int i = 1; i < Types.values().length; i++) {
-			category = category2 + StringHelper.titleCase(NAMES[i]);
-			ENABLE[i] = ThermalExpansion.config.get(category, "Recipe", ENABLE[i]);
+		for (int i = 0; i < CAPACITY.length; i++) {
+			CAPACITY[i] *= 1000000;
+			SEND[i] *= 500;
+			RECV[i] *= 2000;
 		}
-
-		category = category2 + StringHelper.titleCase(NAMES[5]);
-		CAPACITY[5] = MathHelper.clamp(ThermalExpansion.config.get(category, "Capacity", CAPACITY[5]), CAPACITY[5] / 10, 1000000 * 1000);
-		SEND[5] = MathHelper.clamp(ThermalExpansion.config.get(category, "Send", SEND[5]), SEND[5] / 10, SEND[5] * 1000);
-		RECEIVE[5] = MathHelper.clamp(ThermalExpansion.config.get(category, "Receive", RECEIVE[5]), RECEIVE[5] / 10, RECEIVE[4] * 1000);
-
-		category = category2 + StringHelper.titleCase(NAMES[4]);
-		CAPACITY[4] = MathHelper.clamp(ThermalExpansion.config.get(category, "Capacity", CAPACITY[4]), CAPACITY[4] / 10, CAPACITY[5]);
-		SEND[4] = MathHelper.clamp(ThermalExpansion.config.get(category, "Send", SEND[4]), SEND[4] / 10, SEND[4] * 1000);
-		RECEIVE[4] = MathHelper.clamp(ThermalExpansion.config.get(category, "Receive", RECEIVE[4]), RECEIVE[4] / 10, RECEIVE[4] * 1000);
-
-		category = category2 + StringHelper.titleCase(NAMES[3]);
-		CAPACITY[3] = MathHelper.clamp(ThermalExpansion.config.get(category, "Capacity", CAPACITY[3]), CAPACITY[3] / 10, CAPACITY[4]);
-		SEND[3] = MathHelper.clamp(ThermalExpansion.config.get(category, "Send", SEND[3]), SEND[3] / 10, SEND[3] * 1000);
-		RECEIVE[3] = MathHelper.clamp(ThermalExpansion.config.get(category, "Receive", RECEIVE[3]), RECEIVE[3] / 10, RECEIVE[3] * 1000);
-
-		category = category2 + StringHelper.titleCase(NAMES[2]);
-		CAPACITY[2] = MathHelper.clamp(ThermalExpansion.config.get(category, "Capacity", CAPACITY[2]), CAPACITY[2] / 10, CAPACITY[3]);
-		RECEIVE[2] = MathHelper.clamp(ThermalExpansion.config.get(category, "Receive", RECEIVE[2]), RECEIVE[2] / 10, RECEIVE[2] * 1000);
-		SEND[2] = MathHelper.clamp(ThermalExpansion.config.get(category, "Send", SEND[2]), SEND[2] / 10, SEND[2] * 1000);
-
-		category = category2 + StringHelper.titleCase(NAMES[1]);
-		CAPACITY[1] = MathHelper.clamp(ThermalExpansion.config.get(category, "Capacity", CAPACITY[1]), CAPACITY[1] / 10, CAPACITY[2]);
-		SEND[1] = MathHelper.clamp(ThermalExpansion.config.get(category, "Send", SEND[1]), SEND[1] / 10, SEND[1] * 1000);
-		// RECEIVE[1] = MathHelper.clamp(ThermalExpansion.config.get(category, "Receive", RECEIVE[1]), RECEIVE[1] / 10, RECEIVE[1] * 1000);
-
-		category = category2 + StringHelper.titleCase(NAMES[0]);
-		SEND[0] = MathHelper.clamp(ThermalExpansion.config.get(category, "Send", SEND[0]), SEND[0] / 10, SEND[0] * 1000);
-		CAPACITY[0] = SEND[0];
 	}
+
+	public final int CREATIVE = 32000;
+
+	/* REFERENCES */
+	public static ItemStack capacitorBasic;
+	public static ItemStack capacitorHardened;
+	public static ItemStack capacitorReinforced;
+	public static ItemStack capacitorSignalum;
+	public static ItemStack capacitorResonant;
+
+	public static ItemStack capacitorCreative;
+	public static ItemStack capacitorPotato;
 
 }

@@ -1,47 +1,136 @@
 buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-    }
+	repositories {
+		jcenter()
+		maven {
+			name = "forge"
+			url = "http://files.minecraftforge.net/maven"
+		}
+	}
+	dependencies {
+		classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+	}
 }
 
-apply plugin: 'forge'
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven'
 
-version = "1.7.10R4.0.3"
-group = "thermalexpansion"
+group = "cofh"
 archivesBaseName = "ThermalExpansion"
 
-minecraft {
-    version = "1.7.10-10.13.4.1448"
-    runDir = "eclipse/assets"
+targetCompatibility = "1.8"
+sourceCompatibility = "1.8"
+
+// Define properties file
+ext.configFile = file "build.properties"
+
+configFile.withReader {
+	// Load config.  It shall from now be referenced as simply config or project.config
+	def prop = new Properties()
+	prop.load(it)
+	project.ext.config = new ConfigSlurper().parse prop
 }
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+repositories {
+	maven {
+		name = "ChickenBones Maven"
+		url = "http://chickenbones.net/maven/"
+	}
+	maven {
+		name = "Covers Maven"
+		url = "http://maven.covers1624.net"
+	}
+	maven {
+		name = "JEI Maven"
+		url = "http://dvs1.progwml6.com/files/maven"
+	}
+}
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+dependencies {
+	compile "codechicken:CodeChickenLib:${config.mc_version}-${config.ccl_version}:deobf"
+	compile "cofh:CoFHCore:${config.mc_version}-${config.cofhcore_version}:deobf"
+	compile "cofh:ThermalFoundation:${config.mc_version}-${config.tf_version}:deobf"
+}
+
+version = "${project.config.mod_version}." + (System.getenv("BUILD_NUMBER") ?: "1")
+
+println config.mc_version + "-" + config.forge_version
+// Setup the forge minecraft plugin data. Specify the preferred forge/minecraft version here
+minecraft {
+	version = config.mc_version + "-" + config.forge_version
+	mappings = config.mappings
+	runDir = "run"
+	replace '${mod_version}', project.config.mod_version
+	makeObfSourceJar = false
+}
+
+processResources {
+	inputs.property "version", project.version
+	inputs.property "mc_version", project.config.mc_version
+
+	from(sourceSets.main.resources.srcDirs) {
+		include 'mcmod.info'
+		expand 'version': project.version, 'mc_version': project.config.mc_version
+	}
+	rename '(.+_at.cfg)', 'META-INF/$1'
+}
+
+version = "${project.minecraft.version}-${project.version}"
+def commonManifest = {
+	attributes 'FMLAT': 'cofh_at.cfg'
+}
+
+jar {
+	classifier = 'universal'
+	manifest commonManifest
+}
+
+task deobfJar(type: Jar) {
+	from sourceSets.main.output
+	classifier = 'deobf'
+	manifest commonManifest
+}
+
+task srcJar(type: Jar) {
+	from sourceSets.main.allSource
+	classifier = 'sources'
+	manifest commonManifest
+}
+
+// Tell the artifact system about our extra jars
+artifacts {
+	archives deobfJar
+	archives srcJar
+}
+
+// Configure an upload task.
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			if (project.hasProperty("local_maven")) {
+				repository(url: "file://${local_maven}")
+				pom {
+					groupId = project.group
+					// Force the maven upload to use the <mcversion>-<version> syntax preferred at files
+					artifactId = project.archivesBaseName
+					project {
+						name project.archivesBaseName
+						packaging 'jar'
+						description 'ThermalExpansion'
+						url 'https://github.com/TheCBProject/CodeChickenLib'
+
+						scm {
+							url 'https://github.com/TheCBProject/ThermalExpansion'
+							connection 'scm:git:git://github.com/TheCBProject/ThermalExpansion.git'
+							developerConnection 'scm:git:git@github.com:TheCBProject/ThermalExpansion.git'
+						}
+
+						issueManagement {
+							system 'github'
+							url 'https://github.com/TheCBProject/ThermalExpansion/issues'
+						}
+					}
+				}
+			}
+		}
+	}
 }
