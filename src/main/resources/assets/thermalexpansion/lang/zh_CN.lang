@@ -45,6 +45,7 @@ gui.thermalexpansion.machine.compactor.modeStorage=压缩模式
 
 gui.thermalexpansion.machine.insolator.modeLocked=肥料槽已解锁
 gui.thermalexpansion.machine.insolator.modeUnlocked=肥料槽已锁定
+
 gui.thermalexpansion.machine.smelter.modeLocked=流量槽已锁定
 gui.thermalexpansion.machine.smelter.modeUnlocked=流量槽已解锁
 
@@ -306,7 +307,7 @@ item.thermalexpansion.capacitor.standard0.name=通量电容 (基础)
 item.thermalexpansion.capacitor.standard1.name=通量电容 (硬化)
 item.thermalexpansion.capacitor.standard2.name=通量电容 (强化)
 item.thermalexpansion.capacitor.standard3.name=通量电容 (信素)
-item.thermalexpansion.capacitor.standard4.name=Flux Capacitor (谐振)
+item.thermalexpansion.capacitor.standard4.name=通量电容 (谐振)
 
 item.thermalexpansion.florb.florb.name=流体球
 item.thermalexpansion.florb.florbMagmatic.name=熔岩流体球
@@ -375,7 +376,6 @@ tab.thermalexpansion.machine.brewer.2=WIP
 tab.thermalexpansion.machine.centrifuge.0=WIP
 tab.thermalexpansion.machine.centrifuge.1=WIP
 tab.thermalexpansion.machine.centrifuge.2=WIP
-
 tab.thermalexpansion.machine.charger.0=给可储存RF的物品充能。
 tab.thermalexpansion.machine.charger.1=充能速度受物品限制。
 tab.thermalexpansion.machine.charger.2=嗡嗡嗡，嗡嗡嗡...

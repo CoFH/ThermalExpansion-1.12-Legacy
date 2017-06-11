@@ -1,9 +1,11 @@
 package cofh.thermalexpansion.plugins.jei.crafting.crucible;
 
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.machine.TileCrucible;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
+import cofh.thermalexpansion.util.managers.machine.CrucibleManager.ComparableItemStackCrucible;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager.RecipeCrucible;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -13,6 +15,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +37,13 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeInputs = new ArrayList<>();
 		List<FluidStack> recipeOutputFluids = new ArrayList<>();
 
-		recipeInputs.add(recipe.getInput());
+		if (ComparableItemStackCrucible.getOreID(recipe.getInput()) != -1) {
+			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()), false)) {
+				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().stackSize));
+			}
+		} else {
+			recipeInputs.add(recipe.getInput());
+		}
 		recipeOutputFluids.add(recipe.getOutput());
 
 		inputs = Collections.singletonList(recipeInputs);

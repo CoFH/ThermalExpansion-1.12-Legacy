@@ -70,7 +70,7 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 
 		guiItemStacks.init(0, true, 30, 10);
 		guiItemStacks.init(1, false, 30, 41);
-		guiFluidStacks.init(0, true, 103, 1, 16, 60, 1000, false, tankOverlay);
+		guiFluidStacks.init(0, true, 103, 1, 16, 60, 2000, false, tankOverlay);
 
 		guiItemStacks.set(0, inputs.get(0));
 		guiItemStacks.set(1, outputs.get(0));

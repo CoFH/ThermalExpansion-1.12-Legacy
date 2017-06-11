@@ -2,6 +2,7 @@ package cofh.thermalexpansion.init;
 
 import cofh.thermalexpansion.plugins.forestry.ForestryPlugin;
 import cofh.thermalexpansion.plugins.natura.NaturaPlugin;
+import cofh.thermalexpansion.plugins.tconstruct.TinkersConstructPlugin;
 
 public class TEPlugins {
 
@@ -21,6 +22,7 @@ public class TEPlugins {
 
 		ForestryPlugin.initialize();
 		NaturaPlugin.initialize();
+		TinkersConstructPlugin.initialize();
 	}
 
 }

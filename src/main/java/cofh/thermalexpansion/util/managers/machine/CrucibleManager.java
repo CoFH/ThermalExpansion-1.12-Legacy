@@ -1,7 +1,8 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.init.CoreProps;
-import cofh.lib.inventory.ComparableItemStackSafe;
+import cofh.core.util.oredict.OreDictionaryArbiter;
+import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -14,19 +15,20 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 public class CrucibleManager {
 
-	private static Map<ComparableItemStackSafe, RecipeCrucible> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackCrucible, RecipeCrucible> recipeMap = new THashMap<>();
 
 	static final int DEFAULT_ENERGY = 8000;
 
 	public static RecipeCrucible getRecipe(ItemStack input) {
 
-		return input == null ? null : recipeMap.get(new ComparableItemStackSafe(input));
+		return input == null ? null : recipeMap.get(new ComparableItemStackCrucible(input));
 	}
 
 	public static boolean recipeExists(ItemStack input) {
@@ -86,12 +88,12 @@ public class CrucibleManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackSafe, RecipeCrucible> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStackCrucible, RecipeCrucible> tempMap = new THashMap<>(recipeMap.size());
 		RecipeCrucible tempRecipe;
 
-		for (Entry<ComparableItemStackSafe, RecipeCrucible> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackCrucible, RecipeCrucible> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			tempMap.put(new ComparableItemStackSafe(tempRecipe.input), tempRecipe);
+			tempMap.put(new ComparableItemStackCrucible(tempRecipe.input), tempRecipe);
 		}
 		recipeMap.clear();
 		recipeMap = tempMap;
@@ -104,14 +106,14 @@ public class CrucibleManager {
 			return null;
 		}
 		RecipeCrucible recipe = new RecipeCrucible(input, output, energy);
-		recipeMap.put(new ComparableItemStackSafe(input), recipe);
+		recipeMap.put(new ComparableItemStackCrucible(input), recipe);
 		return recipe;
 	}
 
 	/* REMOVE RECIPES */
 	public static RecipeCrucible removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackSafe(input));
+		return recipeMap.remove(new ComparableItemStackCrucible(input));
 	}
 
 	/* HELPERS */
@@ -151,6 +153,52 @@ public class CrucibleManager {
 		public int getEnergy() {
 
 			return energy;
+		}
+	}
+
+	/* ITEMSTACK CLASS */
+	public static class ComparableItemStackCrucible extends ComparableItemStack {
+
+		public static final String NUGGET = "nugget";
+		public static final String INGOT = "ingot";
+		public static final String ORE = "ore";
+		public static final String BLOCK = "block";
+		public static final String DUST = "dust";
+		public static final String PLATE = "plate";
+
+		public static boolean safeOreType(String oreName) {
+
+			return  oreName.startsWith(INGOT) || oreName.startsWith(ORE) || oreName.startsWith(NUGGET) || oreName.startsWith(BLOCK) || oreName.startsWith(DUST) || oreName.equals(PLATE);
+		}
+
+		public static int getOreID(ItemStack stack) {
+
+			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
+
+			if (ids != null) {
+				for (int i = 0, e = ids.size(); i < e; ) {
+					int id = ids.get(i++);
+					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
+						return id;
+					}
+				}
+			}
+			return -1;
+		}
+
+		public ComparableItemStackCrucible(ItemStack stack) {
+
+			super(stack);
+			oreID = getOreID(stack);
+		}
+
+		@Override
+		public ComparableItemStackCrucible set(ItemStack stack) {
+
+			super.set(stack);
+			oreID = getOreID(stack);
+
+			return this;
 		}
 	}
 
