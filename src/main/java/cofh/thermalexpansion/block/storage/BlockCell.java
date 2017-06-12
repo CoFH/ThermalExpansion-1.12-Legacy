@@ -9,6 +9,7 @@ import cofh.core.init.CoreEnchantments;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.StateMapper;
 import cofh.lib.util.helpers.BlockHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.ItemFrame;
@@ -228,6 +229,8 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		itemBlock = new ItemBlockCell(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
+
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		return true;
 	}

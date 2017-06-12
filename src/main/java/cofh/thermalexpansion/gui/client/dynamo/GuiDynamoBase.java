@@ -34,9 +34,8 @@ public abstract class GuiDynamoBase extends GuiCore {
 		name = baseTile.getName();
 		playerName = SecurityHelper.getID(player);
 
-		if (baseTile.isAugmentable()) {
-			myTutorial = StringHelper.tutorialTabAugment() + "\n\n";
-		}
+		myTutorial = StringHelper.tutorialTabAugment() + "\n\n";
+
 		if (baseTile.enableSecurity() && baseTile.isSecured()) {
 			myTutorial += StringHelper.tutorialTabSecurity() + "\n\n";
 		}
@@ -53,9 +52,8 @@ public abstract class GuiDynamoBase extends GuiCore {
 		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
 
 		// Right Side
-		if (baseTile.isAugmentable()) {
-			addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
-		}
+		augmentTab = addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
+
 		redstoneTab = addTab(new TabRedstoneControl(this, baseTile));
 		redstoneTab.setVisible(baseTile.hasRedstoneControl());
 
@@ -63,9 +61,7 @@ public abstract class GuiDynamoBase extends GuiCore {
 		securityTab = addTab(new TabSecurity(this, baseTile, playerName));
 		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 
-		if (baseTile.getMaxEnergyStored(null) > 0) {
-			addTab(new TabEnergy(this, baseTile, true));
-		}
+		addTab(new TabEnergy(this, baseTile, true));
 		addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.0")));
 
 		if (!myTutorial.isEmpty()) {

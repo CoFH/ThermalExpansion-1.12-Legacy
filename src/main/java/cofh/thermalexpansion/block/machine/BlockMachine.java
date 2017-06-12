@@ -10,6 +10,7 @@ import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
@@ -331,6 +332,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		itemBlock = new ItemBlockMachine(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
+
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		return true;
 	}

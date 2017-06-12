@@ -8,6 +8,7 @@ import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
@@ -223,6 +224,8 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		itemBlock = new ItemBlockApparatus(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
+
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		return true;
 	}

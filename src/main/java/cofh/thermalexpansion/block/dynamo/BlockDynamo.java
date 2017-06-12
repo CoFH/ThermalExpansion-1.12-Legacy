@@ -12,6 +12,7 @@ import codechicken.lib.vec.Vector3;
 import cofh.core.render.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.RenderDynamo;
@@ -310,6 +311,8 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		itemBlock = new ItemBlockDynamo(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
+
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		return true;
 	}

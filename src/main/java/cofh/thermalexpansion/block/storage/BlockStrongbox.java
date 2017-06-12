@@ -5,6 +5,7 @@ import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.render.IModelRegister;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.RenderStrongbox;
@@ -196,6 +197,8 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister, IWorl
 		itemBlock = new ItemBlockStrongbox(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
+
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		return true;
 	}

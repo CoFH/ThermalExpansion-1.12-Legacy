@@ -2,6 +2,7 @@ package cofh.thermalexpansion.gui.client.dynamo;
 
 import cofh.lib.gui.element.ElementDualScaled;
 import cofh.lib.gui.element.ElementFluidTank;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
 import cofh.thermalexpansion.init.TEProps;
@@ -12,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 public class GuiDynamoSteam extends GuiDynamoBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "steam.png");
+	public static final ResourceLocation STEAM_TEXTURE = new ResourceLocation("thermalfoundation:blocks/fluid/steam_still");
 
 	private ElementDualScaled duration;
 
@@ -27,7 +29,7 @@ public class GuiDynamoSteam extends GuiDynamoBase {
 
 		super.initGui();
 
-		addElement(new ElementFluidTank(this, 8, 9, baseTile.getTank(0)));
+		addElement(new ElementFluidTank(this, 8, 9, baseTile.getTank(0)).setFluidTextureOverride(RenderHelper.getTexture(STEAM_TEXTURE)));
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank(1)));
 		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
 	}

@@ -12,6 +12,7 @@ import cofh.core.util.StateMapper;
 import cofh.lib.util.RayTracer;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
@@ -360,6 +361,8 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		itemBlock = new ItemBlockCache(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
+
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		return true;
 	}

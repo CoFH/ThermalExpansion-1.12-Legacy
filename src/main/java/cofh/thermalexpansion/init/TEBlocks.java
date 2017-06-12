@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.init;
 
 import cofh.core.util.core.IInitializer;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.apparatus.BlockApparatus;
 import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
@@ -40,16 +39,6 @@ public class TEBlocks {
 		initList.add(blockTank);
 		initList.add(blockCache);
 		initList.add(blockStrongbox);
-
-		ThermalExpansion.proxy.addIModelRegister(blockMachine);
-		ThermalExpansion.proxy.addIModelRegister(blockApparatus);
-		ThermalExpansion.proxy.addIModelRegister(blockDevice);
-		ThermalExpansion.proxy.addIModelRegister(blockDynamo);
-
-		ThermalExpansion.proxy.addIModelRegister(blockCell);
-		ThermalExpansion.proxy.addIModelRegister(blockTank);
-		ThermalExpansion.proxy.addIModelRegister(blockCache);
-		ThermalExpansion.proxy.addIModelRegister(blockStrongbox);
 
 		for (IInitializer init : initList) {
 			init.preInit();

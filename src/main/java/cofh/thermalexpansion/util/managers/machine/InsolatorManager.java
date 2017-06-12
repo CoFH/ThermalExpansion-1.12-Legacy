@@ -133,12 +133,12 @@ public class InsolatorManager {
 
 		/* TREE */
 		{
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 0), new ItemStack(Blocks.LOG, 5, 0), new ItemStack(Blocks.SAPLING, 1, 0), 100, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 1), new ItemStack(Blocks.LOG, 5, 1), new ItemStack(Blocks.SAPLING, 1, 1), 100, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 2), new ItemStack(Blocks.LOG, 5, 2), new ItemStack(Blocks.SAPLING, 1, 2), 100, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 3), new ItemStack(Blocks.LOG, 5, 3), new ItemStack(Blocks.SAPLING, 1, 3), 100, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.LOG2, 5, 0), new ItemStack(Blocks.SAPLING, 1, 4), 100, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 5), new ItemStack(Blocks.LOG2, 5, 1), new ItemStack(Blocks.SAPLING, 1, 5), 100, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 0), new ItemStack(Blocks.LOG, 5, 0), new ItemStack(Blocks.SAPLING, 1, 0), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 1), new ItemStack(Blocks.LOG, 5, 1), new ItemStack(Blocks.SAPLING, 1, 1), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 2), new ItemStack(Blocks.LOG, 5, 2), new ItemStack(Blocks.SAPLING, 1, 2), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 3), new ItemStack(Blocks.LOG, 5, 3), new ItemStack(Blocks.SAPLING, 1, 3), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.LOG2, 5, 0), new ItemStack(Blocks.SAPLING, 1, 4), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 5), new ItemStack(Blocks.LOG2, 5, 1), new ItemStack(Blocks.SAPLING, 1, 5), 50, false, Type.TREE);
 		}
 		/* LOAD RECIPES */
 		loadRecipes();

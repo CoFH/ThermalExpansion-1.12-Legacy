@@ -4,6 +4,7 @@ import cofh.core.init.CoreProps;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.thermalfoundation.block.BlockOreFluid;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
@@ -78,6 +79,15 @@ public class CrucibleManager {
 			addRecipe(8000, ItemMaterial.dustAerotheum, new FluidStack(TFFluids.fluidAerotheum, 250));
 			addRecipe(8000, ItemMaterial.dustPetrotheum, new FluidStack(TFFluids.fluidPetrotheum, 250));
 		}
+
+		/* TF FLUID ORES */
+		{
+			addRecipe(4000, BlockOreFluid.oreFluidCrudeOil, new FluidStack(TFFluids.fluidCrudeOil, 500));
+			addRecipe(4000, BlockOreFluid.oreFluidRedstone, new FluidStack(TFFluids.fluidRedstone, 500));
+			addRecipe(4000, BlockOreFluid.oreFluidGlowstone, new FluidStack(TFFluids.fluidGlowstone, 500));
+			addRecipe(4000, BlockOreFluid.oreFluidEnder, new FluidStack(TFFluids.fluidEnder, 500));
+		}
+
 		/* LOAD RECIPES */
 		loadRecipes();
 	}
