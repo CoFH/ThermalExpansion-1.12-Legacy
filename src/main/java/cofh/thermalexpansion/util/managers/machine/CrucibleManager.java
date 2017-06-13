@@ -88,7 +88,8 @@ public class CrucibleManager {
 
 		/* TF FLUID ORES */
 		{
-			addRecipe(4000, BlockOreFluid.oreFluidCrudeOil, new FluidStack(TFFluids.fluidCrudeOil, 1000));
+			addRecipe(4000, BlockOreFluid.oreFluidCrudeOilSand, new FluidStack(TFFluids.fluidCrudeOil, 1000));
+			addRecipe(4000, BlockOreFluid.oreFluidCrudeOilGravel, new FluidStack(TFFluids.fluidCrudeOil, 1000));
 			addRecipe(4000, BlockOreFluid.oreFluidRedstone, new FluidStack(TFFluids.fluidRedstone, 1000));
 			addRecipe(4000, BlockOreFluid.oreFluidGlowstone, new FluidStack(TFFluids.fluidGlowstone, 1000));
 			addRecipe(4000, BlockOreFluid.oreFluidEnder, new FluidStack(TFFluids.fluidEnder, 1000));

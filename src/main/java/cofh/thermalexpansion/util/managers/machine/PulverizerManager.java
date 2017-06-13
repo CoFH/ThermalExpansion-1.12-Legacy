@@ -158,7 +158,8 @@ public class PulverizerManager {
 			addOreToDustRecipe(energy, "oreIridium", ItemMaterial.dustIridium, ItemMaterial.dustPlatinum, 10);
 			addOreToDustRecipe(energy, "oreMithril", ItemMaterial.dustMithril, ItemMaterial.dustGold, 10);
 
-			addRecipe(energy, BlockOreFluid.oreFluidCrudeOil, ItemHelper.cloneStack(ItemMaterial.crystalCrudeOil, 3), ItemMaterial.globTar, 50);
+			addRecipe(energy, BlockOreFluid.oreFluidCrudeOilSand, ItemHelper.cloneStack(ItemMaterial.crystalCrudeOil, 3), ItemMaterial.globTar, 50);
+			addRecipe(energy, BlockOreFluid.oreFluidCrudeOilGravel, ItemHelper.cloneStack(ItemMaterial.crystalCrudeOil, 3), new ItemStack(Items.FLINT), 50);
 			addRecipe(energy, BlockOreFluid.oreFluidRedstone, ItemHelper.cloneStack(ItemMaterial.crystalRedstone, 3), ItemMaterial.crystalCinnabar, 50);
 			addRecipe(energy, BlockOreFluid.oreFluidGlowstone, ItemHelper.cloneStack(ItemMaterial.crystalGlowstone, 3), ItemMaterial.dustSulfur, 30);
 			addRecipe(energy, BlockOreFluid.oreFluidEnder, ItemHelper.cloneStack(ItemMaterial.crystalEnder, 3));
