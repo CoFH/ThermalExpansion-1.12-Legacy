@@ -18,6 +18,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class EnervationFuelCategory extends BaseFuelCategory<EnervationFuelWrapp
 			if (item instanceof IEnergyContainerItem) {
 				try {
 					HashSet<ComparableItemStack> processedStacks = new HashSet<>();
-					List<ItemStack> list = new ArrayList<>();
+					NonNullList<ItemStack> list = NonNullList.create();
 					item.getSubItems(item, item.getCreativeTab(), list);
 					for (ItemStack fuel : list) {
 						IEnergyContainerItem energyContainerItem = (IEnergyContainerItem) item;
@@ -93,6 +94,11 @@ public class EnervationFuelCategory extends BaseFuelCategory<EnervationFuelWrapp
 	public String getUid() {
 
 		return RecipeUidsTE.DYNAMO_ENERVATION;
+	}
+
+	@Override
+	public String getModName() {
+		return "ThermalExpansion";
 	}
 
 	@Override

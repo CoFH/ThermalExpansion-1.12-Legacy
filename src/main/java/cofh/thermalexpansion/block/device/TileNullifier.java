@@ -22,6 +22,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 
 public class TileNullifier extends TileDeviceBase {
 
@@ -56,6 +57,7 @@ public class TileNullifier extends TileDeviceBase {
 
 		super();
 		inventory = new ItemStack[1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 	}
 
 	@Override
@@ -115,16 +117,16 @@ public class TileNullifier extends TileDeviceBase {
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
 
-		if (inventory[slot] == null) {
-			return null;
+		if (inventory[slot].isEmpty()) {
+			return ItemStack.EMPTY;
 		}
-		if (inventory[slot].stackSize <= amount) {
-			amount = inventory[slot].stackSize;
+		if (inventory[slot].getCount() <= amount) {
+			amount = inventory[slot].getCount();
 		}
 		ItemStack stack = inventory[slot].splitStack(amount);
 
-		if (inventory[slot].stackSize <= 0) {
-			inventory[slot] = null;
+		if (inventory[slot].getCount() <= 0) {
+			inventory[slot] = ItemStack.EMPTY;
 		}
 		return stack;
 	}
@@ -132,11 +134,11 @@ public class TileNullifier extends TileDeviceBase {
 	@Override
 	public ItemStack removeStackFromSlot(int slot) {
 
-		if (inventory[slot] == null) {
-			return null;
+		if (inventory[slot].isEmpty()) {
+			return ItemStack.EMPTY;
 		}
 		ItemStack stack = inventory[slot];
-		inventory[slot] = null;
+		inventory[slot] = ItemStack.EMPTY;
 		return stack;
 	}
 
@@ -148,8 +150,8 @@ public class TileNullifier extends TileDeviceBase {
 		}
 		inventory[slot] = stack;
 
-		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-			stack.stackSize = getInventoryStackLimit();
+		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
+			stack.setCount(getInventoryStackLimit());
 		}
 	}
 

@@ -16,13 +16,6 @@ public class InsolatorRecipeHandler implements IRecipeHandler<InsolatorRecipeWra
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return null;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull InsolatorRecipeWrapper recipe) {
 
 		return recipe.getUid();

@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block;
 
 import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +18,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
+import java.util.Arrays;
+
 public abstract class TileInventory extends TileAugmentableSecure implements IInventory {
 
 	public ItemStack[] inventory = new ItemStack[0];
@@ -29,8 +32,8 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 		}
 		ItemStack stack = inventory[slot];
 
-		if (stack != null) {
-			amount = Math.min(amount, stack.getMaxStackSize() - stack.stackSize);
+		if (!stack.isEmpty()) {
+			amount = Math.min(amount, stack.getMaxStackSize() - stack.getCount());
 			stack = inventory[slot].copy();
 		}
 		int initialAmount = amount;
@@ -44,20 +47,20 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 			}
 			for (int i = 0; i < inv.getSlots() && amount > 0; i++) {
 				ItemStack queryStack = inv.extractItem(i, amount, true);
-				if (queryStack == null) {
+				if (queryStack.isEmpty()) {
 					continue;
 				}
-				if (stack == null) {
+				if (stack.isEmpty()) {
 					if (isItemValidForSlot(slot, queryStack)) {
-						int toExtract = Math.min(amount, queryStack.stackSize);
+						int toExtract = Math.min(amount, queryStack.getCount());
 						stack = inv.extractItem(i, toExtract, false);
 						amount -= toExtract;
 					}
 				} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack, true)) {
-					int toExtract = Math.min(stack.getMaxStackSize() - stack.stackSize, Math.min(amount, queryStack.stackSize));
+					int toExtract = Math.min(stack.getMaxStackSize() - stack.getCount(), Math.min(amount, queryStack.getCount()));
 					ItemStack extracted = inv.extractItem(i, toExtract, false);
-					toExtract = Math.min(toExtract, extracted == null ? 0 : extracted.stackSize);
-					stack.stackSize += toExtract;
+					toExtract = Math.min(toExtract, extracted.isEmpty() ? 0 : extracted.getCount());
+					stack.grow(toExtract);
 					amount -= toExtract;
 				}
 			}
@@ -72,12 +75,12 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 
 	public boolean transferItem(int slot, int amount, EnumFacing side) {
 
-		if (inventory[slot] == null || slot > inventory.length) {
+		if (inventory[slot].isEmpty() || slot > inventory.length) {
 			return false;
 		}
 		ItemStack stack = inventory[slot].copy();
-		amount = Math.min(amount, stack.stackSize);
-		stack.stackSize = amount;
+		amount = Math.min(amount, stack.getCount());
+		stack.setCount(amount);
 		int added;
 
 		TileEntity curTile = BlockHelper.getAdjacentTileEntity(this, side);
@@ -87,9 +90,9 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 			if (added >= amount) {
 				return false;
 			}
-			inventory[slot].stackSize -= amount - added;
-			if (inventory[slot].stackSize <= 0) {
-				inventory[slot] = null;
+			inventory[slot].shrink(amount - added);
+			if (inventory[slot].getCount() <= 0) {
+				inventory[slot] = ItemStack.EMPTY;
 			}
 			return true;
 		}
@@ -129,12 +132,13 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 
 		NBTTagList list = nbt.getTagList("Inventory", 10);
 		inventory = new ItemStack[inventory.length];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);
 			int slot = tag.getInteger("Slot");
 
 			if (slot >= 0 && slot < inventory.length) {
-				inventory[slot] = ItemStack.loadItemStackFromNBT(tag);
+				inventory[slot] = new ItemStack(tag);
 			}
 		}
 	}
@@ -146,7 +150,7 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 		}
 		NBTTagList list = new NBTTagList();
 		for (int i = 0; i < inventory.length; i++) {
-			if (inventory[i] != null) {
+			if (!inventory[i].isEmpty()) {
 				NBTTagCompound tag = new NBTTagCompound();
 				tag.setInteger("Slot", i);
 				inventory[i].writeToNBT(tag);
@@ -166,6 +170,11 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 	}
 
 	@Override
+	public boolean isEmpty() {
+		return InventoryHelper.isEmpty(inventory);
+	}
+
+	@Override
 	public ItemStack getStackInSlot(int slot) {
 
 		return inventory[slot];
@@ -174,16 +183,16 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
 
-		if (inventory[slot] == null) {
-			return null;
+		if (inventory[slot].isEmpty()) {
+			return ItemStack.EMPTY;
 		}
-		if (inventory[slot].stackSize <= amount) {
-			amount = inventory[slot].stackSize;
+		if (inventory[slot].getCount() <= amount) {
+			amount = inventory[slot].getCount();
 		}
 		ItemStack stack = inventory[slot].splitStack(amount);
 
-		if (inventory[slot].stackSize <= 0) {
-			inventory[slot] = null;
+		if (inventory[slot].getCount() <= 0) {
+			inventory[slot] = ItemStack.EMPTY;
 		}
 		return stack;
 	}
@@ -191,11 +200,11 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 	@Override
 	public ItemStack removeStackFromSlot(int slot) {
 
-		if (inventory[slot] == null) {
-			return null;
+		if (inventory[slot].isEmpty()) {
+			return ItemStack.EMPTY;
 		}
 		ItemStack stack = inventory[slot];
-		inventory[slot] = null;
+		inventory[slot] = ItemStack.EMPTY;
 		return stack;
 	}
 
@@ -204,8 +213,8 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 
 		inventory[slot] = stack;
 
-		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-			stack.stackSize = getInventoryStackLimit();
+		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
+			stack.setCount(getInventoryStackLimit());
 		}
 		markChunkDirty();
 	}
@@ -217,7 +226,7 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
+	public boolean isUsableByPlayer(EntityPlayer player) {
 
 		return isUsable(player);
 	}

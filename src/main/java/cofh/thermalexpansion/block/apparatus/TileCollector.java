@@ -19,6 +19,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,6 +62,7 @@ public class TileCollector extends TileApparatusBase implements IInventoryConnec
 
 		super();
 		inventory = new ItemStack[1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 
 		radius = 1;
 		depth = 1;
@@ -100,16 +102,16 @@ public class TileCollector extends TileApparatusBase implements IInventoryConnec
 				area = new AxisAlignedBB(pos.add(1, -radius, -radius), pos.add(2 + depth, 1 + radius, 1 + radius));
 				break;
 		}
-		List<EntityItem> entityItems = worldObj.getEntitiesWithinAABB(EntityItem.class, area);
+		List<EntityItem> entityItems = world.getEntitiesWithinAABB(EntityItem.class, area);
 		for (EntityItem item : entityItems) {
-			if (item.isDead || item.getEntityItem().stackSize <= 0) {
+			if (item.isDead || item.getEntityItem().getCount() <= 0) {
 				continue;
 			}
 			stuffedItems.add(item.getEntityItem());
-			item.worldObj.removeEntity(item);
+			item.world.removeEntity(item);
 		}
 		if (augmentEntityCollection) {
-			List<EntityLivingBase> entityLiving = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, area);
+			List<EntityLivingBase> entityLiving = world.getEntitiesWithinAABB(EntityLivingBase.class, area);
 			for (EntityLivingBase entity : entityLiving) {
 				float[] dropChances = DEFAULT_DROP_CHANCES;
 				if (entity instanceof EntityLiving) {
@@ -123,9 +125,9 @@ public class TileCollector extends TileApparatusBase implements IInventoryConnec
 				for (int i = 0; i < 6; i++) {
 					EntityEquipmentSlot slot = EntityEquipmentSlot.values()[i];
 					ItemStack equipmentInSlot = entity.getItemStackFromSlot(slot);
-					if (equipmentInSlot != null && dropChances[i] >= 1.0F) {
+					if (!equipmentInSlot.isEmpty() && dropChances[i] >= 1.0F) {
 						stuffedItems.add(equipmentInSlot);
-						entity.setItemStackToSlot(slot, null);
+						entity.setItemStackToSlot(slot, ItemStack.EMPTY);
 					}
 				}
 			}

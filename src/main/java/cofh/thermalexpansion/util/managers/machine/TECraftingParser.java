@@ -176,8 +176,8 @@ public class TECraftingParser {
 			return false;
 		}
 		ItemStack input = parseItemStack(templateObject.get("input"));
-		ItemStack primaryOutput = null;
-		ItemStack secondaryOutput = null;
+		ItemStack primaryOutput = ItemStack.EMPTY;
+		ItemStack secondaryOutput = ItemStack.EMPTY;
 		int energy = PulverizerManager.DEFAULT_ENERGY;
 		int secondaryChance = 100;
 
@@ -232,8 +232,8 @@ public class TECraftingParser {
 			return false;
 		}
 		ItemStack input = parseItemStack(templateObject.get("input"));
-		ItemStack primaryOutput = null;
-		ItemStack secondaryOutput = null;
+		ItemStack primaryOutput = ItemStack.EMPTY;
+		ItemStack secondaryOutput = ItemStack.EMPTY;
 		int energy = SawmillManager.DEFAULT_ENERGY;
 		int secondaryChance = 100;
 
@@ -287,10 +287,10 @@ public class TECraftingParser {
 		if (!templateObject.has("output") && !templateObject.has("primaryOutput")) {
 			return false;
 		}
-		ItemStack primaryInput = null;
-		ItemStack secondaryInput = null;
-		ItemStack primaryOutput = null;
-		ItemStack secondaryOutput = null;
+		ItemStack primaryInput = ItemStack.EMPTY;
+		ItemStack secondaryInput = ItemStack.EMPTY;
+		ItemStack primaryOutput = ItemStack.EMPTY;
+		ItemStack secondaryOutput = ItemStack.EMPTY;
 		int energy = SmelterManager.DEFAULT_ENERGY;
 		int secondaryChance = 100;
 
@@ -365,10 +365,10 @@ public class TECraftingParser {
 		if (!templateObject.has("output") && !templateObject.has("primaryOutput")) {
 			return false;
 		}
-		ItemStack primaryInput = null;
-		ItemStack secondaryInput = null;
-		ItemStack primaryOutput = null;
-		ItemStack secondaryOutput = null;
+		ItemStack primaryInput = ItemStack.EMPTY;
+		ItemStack secondaryInput = ItemStack.EMPTY;
+		ItemStack primaryOutput = ItemStack.EMPTY;
+		ItemStack secondaryOutput = ItemStack.EMPTY;
 		int energy = InsolatorManager.DEFAULT_ENERGY;
 		int secondaryChance = 100;
 
@@ -554,8 +554,8 @@ public class TECraftingParser {
 		if (!templateObject.has("input") && !templateObject.has("primaryInput")) {
 			return false;
 		}
-		ItemStack primaryInput = null;
-		ItemStack secondaryInput = null;
+		ItemStack primaryInput = ItemStack.EMPTY;
+		ItemStack secondaryInput = ItemStack.EMPTY;
 
 		if (templateObject.has("input")) {
 			JsonElement element = templateObject.get("input");
@@ -586,8 +586,8 @@ public class TECraftingParser {
 		if (!templateObject.has("input") && !templateObject.has("primaryInput")) {
 			return false;
 		}
-		ItemStack primaryInput = null;
-		ItemStack secondaryInput = null;
+		ItemStack primaryInput = ItemStack.EMPTY;
+		ItemStack secondaryInput = ItemStack.EMPTY;
 
 		if (templateObject.has("input")) {
 			JsonElement element = templateObject.get("input");
@@ -654,7 +654,7 @@ public class TECraftingParser {
 	private static ItemStack parseItemStack(JsonElement itemElement) {
 
 		if (itemElement.isJsonNull()) {
-			return null;
+			return ItemStack.EMPTY;
 		}
 		int metadata = 0, stackSize = 1;
 		ItemStack stack;
@@ -684,7 +684,7 @@ public class TECraftingParser {
 			} else {
 				if (!item.has("name")) {
 					ThermalExpansion.LOG.error("Item entry missing valid name or oreName!");
-					return null;
+					return ItemStack.EMPTY;
 				}
 				stack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(item.get("name").getAsString())), stackSize, metadata);
 			}
@@ -701,8 +701,8 @@ public class TECraftingParser {
 				}
 			}
 		}
-		if (stack.getItem() == null) {
-			return null;
+		if (stack.isEmpty()) {
+			return ItemStack.EMPTY;
 		}
 		return stack;
 	}

@@ -17,6 +17,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -36,7 +37,7 @@ public class EntityFlorb extends EntityThrowable {
 
 	public static void initialize(int id) {
 
-		EntityRegistry.registerModEntity(EntityFlorb.class, "florb", id, ThermalExpansion.instance, CoreProps.ENTITY_TRACKING_DISTANCE, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("thermalexpansion:florb"), EntityFlorb.class, "florb", id, ThermalExpansion.instance, CoreProps.ENTITY_TRACKING_DISTANCE, 1, true);
 	}
 
 	/* Required Constructor */
@@ -121,21 +122,21 @@ public class EntityFlorb extends EntityThrowable {
 	@Override
 	protected void doBlockCollisions() {
 
-		int i = MathHelper.floor_double(this.getEntityBoundingBox().minX + 0.001D);
-		int j = MathHelper.floor_double(this.getEntityBoundingBox().minY + 0.001D);
-		int k = MathHelper.floor_double(this.getEntityBoundingBox().minZ + 0.001D);
-		int l = MathHelper.floor_double(this.getEntityBoundingBox().maxX - 0.001D);
-		int i1 = MathHelper.floor_double(this.getEntityBoundingBox().maxY - 0.001D);
-		int j1 = MathHelper.floor_double(this.getEntityBoundingBox().maxZ - 0.001D);
+		int i = MathHelper.floor(this.getEntityBoundingBox().minX + 0.001D);
+		int j = MathHelper.floor(this.getEntityBoundingBox().minY + 0.001D);
+		int k = MathHelper.floor(this.getEntityBoundingBox().minZ + 0.001D);
+		int l = MathHelper.floor(this.getEntityBoundingBox().maxX - 0.001D);
+		int i1 = MathHelper.floor(this.getEntityBoundingBox().maxY - 0.001D);
+		int j1 = MathHelper.floor(this.getEntityBoundingBox().maxZ - 0.001D);
 
-		if (this.worldObj.isAreaLoaded(new BlockPos(i, j, k), new BlockPos(l, i1, j1))) {
+		if (this.world.isAreaLoaded(new BlockPos(i, j, k), new BlockPos(l, i1, j1))) {
 			for (int k1 = i; k1 <= l; k1++) {
 				for (int l1 = j; l1 <= i1; l1++) {
 					for (int i2 = k; i2 <= j1; i2++) {
-						IBlockState state = this.worldObj.getBlockState(new BlockPos(k1, l1, i2));
+						IBlockState state = this.world.getBlockState(new BlockPos(k1, l1, i2));
 
 						if (state != null) {
-							state.getBlock().onEntityCollidedWithBlock(this.worldObj, new BlockPos(k1, l1, i2), state, this);
+							state.getBlock().onEntityCollidedWithBlock(this.world, new BlockPos(k1, l1, i2), state, this);
 						}
 					}
 				}
@@ -146,7 +147,7 @@ public class EntityFlorb extends EntityThrowable {
 	@Override
 	public void onEntityUpdate() {
 
-		if (fluid == null && ServerHelper.isClientWorld(worldObj)) {
+		if (fluid == null && ServerHelper.isClientWorld(world)) {
 			fluid = getSyncFluid();
 		}
 		super.onEntityUpdate();
@@ -162,30 +163,30 @@ public class EntityFlorb extends EntityThrowable {
 			traceResult.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0F);
 		}
 
-		if (traceResult.sideHit != null && worldObj.getBlockState(pos).getBlock() != Blocks.SNOW_LAYER) {
+		if (traceResult.sideHit != null && world.getBlockState(pos).getBlock() != Blocks.SNOW_LAYER) {
 			pos = pos.offset(traceResult.sideHit);
 		}
-		if (ServerHelper.isServerWorld(worldObj)) {
+		if (ServerHelper.isServerWorld(world)) {
 			if (traceResult.sideHit != null && getThrower() instanceof EntityPlayer && !((EntityPlayer) getThrower()).canPlayerEdit(pos, traceResult.sideHit, blockCheck)) {
-				ItemFlorb.dropFlorb(getFluid(), worldObj, pos);
+				ItemFlorb.dropFlorb(getFluid(), world, pos);
 				this.setDead();
 				return;
 			}
 			Block block = fluid.getBlock();
-			IBlockState state = worldObj.getBlockState(pos);
+			IBlockState state = world.getBlockState(pos);
 
 			if ("water".equals(fluid.getName())) {
 				block = Blocks.FLOWING_WATER;
 			} else if ("lava".equals(fluid.getName())) {
 				block = Blocks.FLOWING_LAVA;
 			}
-			if (worldObj.isAirBlock(pos) || state.getMaterial() == Material.FIRE || state.getBlock() == Blocks.SNOW_LAYER) {
-				if (!fluid.getName().equals("water") || !worldObj.getBiome(pos).getBiomeName().toLowerCase().equals("hell")) {
-					worldObj.setBlockState(pos, block.getDefaultState(), 3);
-					worldObj.notifyBlockUpdate(pos, state, state, 3);
+			if (world.isAirBlock(pos) || state.getMaterial() == Material.FIRE || state.getBlock() == Blocks.SNOW_LAYER) {
+				if (!fluid.getName().equals("water") || !world.getBiome(pos).getBiomeName().toLowerCase().equals("hell")) {
+					world.setBlockState(pos, block.getDefaultState(), 3);
+					world.notifyBlockUpdate(pos, state, state, 3);
 				}
 			} else {
-				ItemFlorb.dropFlorb(getFluid(), worldObj, pos);
+				ItemFlorb.dropFlorb(getFluid(), world, pos);
 			}
 		}
 		this.setDead();

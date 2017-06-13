@@ -24,6 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -35,6 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
@@ -55,7 +57,7 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister, IWorl
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
+	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
 
 		if (enable) {
 			if (TEProps.creativeTabShowAllLevels) {
@@ -144,7 +146,9 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister, IWorl
 
 		TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileStrongbox) {
-			((TileStrongbox) tile).inventory = new ItemStack[((TileStrongbox) tile).inventory.length];
+			TileStrongbox strongbox = (TileStrongbox) tile;
+			strongbox.inventory = new ItemStack[strongbox.inventory.length];
+			Arrays.fill(strongbox.inventory, ItemStack.EMPTY);
 		}
 		return dismantleDelegate(retTag, world, pos, player, returnDrops, false);
 	}

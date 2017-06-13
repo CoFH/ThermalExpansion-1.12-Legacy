@@ -35,6 +35,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.Set;
 
 public class TileTapper extends TileDeviceBase implements ITickable {
@@ -92,6 +93,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 		super();
 		inventory = new ItemStack[1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 
 		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
@@ -135,7 +137,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		if (!timeCheckOffset()) {
@@ -160,9 +162,9 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 						tank.fill(new FluidStack(genFluid, genFluid.amount * boostMult), true);
 						boostTime = BOOST_TIME - 1;
 
-						inventory[0].stackSize--;
-						if (inventory[0].stackSize <= 0) {
-							inventory[0] = null;
+						inventory[0].shrink(1);
+						if (inventory[0].getCount() <= 0) {
+							inventory[0] = ItemStack.EMPTY;
 						}
 					} else {
 						tank.fill(genFluid, true);
@@ -224,16 +226,16 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 	protected void updateValidity() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		if (validTree) {
 			if (isTrunkBase(trunkPos)) {
-				Set<BlockWrapper> leafSet = TapperManager.getLeaf(worldObj.getBlockState(trunkPos));
+				Set<BlockWrapper> leafSet = TapperManager.getLeaf(world.getBlockState(trunkPos));
 				int leafCount = 0;
 
 				for (int i = 0; i < NUM_LEAVES; i++) {
-					IBlockState state = worldObj.getBlockState(leafPos[i]);
+					IBlockState state = world.getBlockState(leafPos[i]);
 					BlockWrapper target = new BlockWrapper(state.getBlock(), state.getBlock().getMetaFromState(state));
 
 					if (leafSet.contains(target)) {
@@ -244,7 +246,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 					Iterable<BlockPos.MutableBlockPos> trunk = BlockPos.getAllInBoxMutable(trunkPos, trunkPos.add(0, leafPos[0].getY(), 0));
 
 					for (BlockPos scan : trunk) {
-						IBlockState state = worldObj.getBlockState(scan);
+						IBlockState state = world.getBlockState(scan);
 						Material material = state.getMaterial();
 
 						if (material == Material.GROUND || material == Material.GRASS) {
@@ -253,7 +255,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 						}
 					}
 					cached = true;
-					genFluid = TapperManager.getFluid(worldObj.getBlockState(trunkPos));
+					genFluid = TapperManager.getFluid(world.getBlockState(trunkPos));
 					return;
 				}
 			}
@@ -275,11 +277,11 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		}
 		Iterable<BlockPos.MutableBlockPos> area = BlockPos.getAllInBoxMutable(pos.add(-1, 0, -1), pos.add(1, Math.min(256 - pos.getY(), 40), 1));
 
-		Set<BlockWrapper> leafSet = TapperManager.getLeaf(worldObj.getBlockState(trunkPos));
+		Set<BlockWrapper> leafSet = TapperManager.getLeaf(world.getBlockState(trunkPos));
 		int leafCount = 0;
 
 		for (BlockPos scan : area) {
-			IBlockState state = worldObj.getBlockState(scan);
+			IBlockState state = world.getBlockState(scan);
 			BlockWrapper target = new BlockWrapper(state.getBlock(), state.getBlock().getMetaFromState(state));
 
 			if (leafSet.contains(target)) {
@@ -294,7 +296,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			Iterable<BlockPos.MutableBlockPos> trunk = BlockPos.getAllInBoxMutable(trunkPos, trunkPos.add(0, leafPos[0].getY(), 0));
 
 			for (BlockPos scan : trunk) {
-				IBlockState state = worldObj.getBlockState(scan);
+				IBlockState state = world.getBlockState(scan);
 				Material material = state.getMaterial();
 
 				if (material == Material.GROUND || material == Material.GRASS) {
@@ -303,25 +305,25 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 				}
 			}
 			validTree = true;
-			genFluid = TapperManager.getFluid(worldObj.getBlockState(trunkPos));
+			genFluid = TapperManager.getFluid(world.getBlockState(trunkPos));
 		}
 		cached = true;
 	}
 
 	protected boolean timeCheckOffset() {
 
-		return (worldObj.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
+		return (world.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
 	}
 
 	private boolean isTrunkBase(BlockPos checkPos) {
 
-		IBlockState state = worldObj.getBlockState(checkPos.down());
+		IBlockState state = world.getBlockState(checkPos.down());
 		Material material = state.getMaterial();
 
 		if (material != Material.GROUND && material != Material.GRASS) {
 			return false;
 		}
-		return TapperManager.mappingExists(worldObj.getBlockState(checkPos));
+		return TapperManager.mappingExists(world.getBlockState(checkPos));
 	}
 
 	public int getBoostMult() {

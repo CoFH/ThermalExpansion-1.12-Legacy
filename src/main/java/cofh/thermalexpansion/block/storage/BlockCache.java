@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.block.storage;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.blockbakery.BlockBakery;
-import codechicken.lib.model.blockbakery.BlockBakeryProperties;
-import codechicken.lib.model.blockbakery.CCBakeryModel;
+import codechicken.lib.model.bakery.BlockBakeryProperties;
+import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.init.CoreEnchantments;
@@ -31,10 +31,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -82,7 +79,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
+	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
 
 		if (enable) {
 			if (TEProps.creativeTabShowAllLevels) {
@@ -117,17 +114,17 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 		int extractAmount = !player.isSneaking() && !player.capabilities.isCreativeMode ? 1 : 64;
 		ItemStack extract = tile.extractItem(null, extractAmount, true);
-		if (extract == null) {
+		if (extract.isEmpty()) {
 			return;
 		}
 		if (!player.capabilities.isCreativeMode) {
 			if (!player.inventory.addItemStackToInventory(extract)) {
 				// apparently this returns false if it succeeds but doesn't have room for all.
 				// apparently designed for inserts of single items but supports > 1 inserts because notch
-				if (extract.stackSize == extractAmount) {
+				if (extract.getCount() == extractAmount) {
 					return;
 				}
-				extractAmount -= extract.stackSize;
+				extractAmount -= extract.getCount();
 			}
 			tile.extractItem(null, extractAmount, false);
 		} else {
@@ -150,7 +147,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 			if (stack.getTagCompound().hasKey("Item")) {
 				ItemStack stored = ItemHelper.readItemStackFromNBT(stack.getTagCompound().getCompoundTag("Item"));
-				tile.setStoredItemType(stored, stored.stackSize);
+				tile.setStoredItemType(stored, stored.getCount());
 			}
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
@@ -181,9 +178,9 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-		if (super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ)) {
+		if (super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ)) {
 			if (Utils.isHoldingUsableWrench(player, RayTracer.retrace(player))) {
 				return true;
 			}
@@ -202,7 +199,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 				}
 				return true;
 			}
-			if (tile.getStoredItemType() != null) {
+			if (!tile.getStoredItemType().isEmpty()) {
 				insertAllItemsFromPlayer(tile, player);
 			}
 			return true;
@@ -217,12 +214,12 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 				player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
 				playSound = true;
 			}
-			if (tile.getStoredItemType() != null && currentTime - time < 15) {
+			if (!tile.getStoredItemType().isEmpty() && currentTime - time < 15) {
 				playSound &= !insertAllItemsFromPlayer(tile, player);
 			}
 		}
 		if (playSound) {
-			world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, SoundCategory.BLOCKS, 0.1F, 0.7F);
+			world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.1F, 0.7F);
 		}
 		return true;
 	}
@@ -249,7 +246,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 			}
 		}
 		if (playSound) {
-			tile.getWorld().playSound(null, tile.getPos(), SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, SoundCategory.BLOCKS, 0.1F, 0.7F);
+			tile.getWorld().playSound(null, tile.getPos(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.1F, 0.7F);
 		}
 		return playSound;
 	}
@@ -258,7 +255,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
 
 		ItemStack stack = player.getHeldItemMainhand();
-		if (stack == null || !ForgeHooks.isToolEffective(world, pos, stack)) {
+		if (stack.isEmpty() || !ForgeHooks.isToolEffective(world, pos, stack)) {
 			return -1;
 		}
 		return super.getPlayerRelativeBlockHardness(state, player, world, pos);
@@ -275,7 +272,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 			if (tile.enchantHolding > 0) {
 				CoreEnchantments.addEnchantment(retTag, CoreEnchantments.holding, tile.enchantHolding);
 			}
-			if (tile.storedStack != null) {
+			if (!tile.storedStack.isEmpty()) {
 				retTag.setBoolean("Lock", tile.locked);
 				retTag.setTag("Item", ItemHelper.writeItemStackToNBT(tile.storedStack, tile.getStoredCount(), new NBTTagCompound()));
 			}
@@ -295,7 +292,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 	@SideOnly (Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 
-		return BlockBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world.getTileEntity(pos));
+		return ModelBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world, pos);
 	}
 
 	@Override // Inventory
@@ -337,9 +334,9 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
 		ModelRegistryHelper.register(mapper.location, new CCBakeryModel("thermalexpansion:blocks/storage/cache_top_0"));
 
-		BlockBakery.registerBlockKeyGenerator(this, state -> {
+		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
+			StringBuilder builder = new StringBuilder(ModelBakery.defaultBlockKeyGenerator.generateKey(state));
 			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
 			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
 			builder.append(",holding=").append(state.getValue(TEProps.HOLDING));
@@ -348,7 +345,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 			return builder.toString();
 		});
 
-		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + itemBlock.isCreative(stack) + ",level=" + itemBlock.getLevel(stack));
+		ModelBakery.registerItemKeyGenerator(itemBlock, stack -> ModelBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + itemBlock.isCreative(stack) + ",level=" + itemBlock.getLevel(stack));
 	}
 
 	/* IInitializer */

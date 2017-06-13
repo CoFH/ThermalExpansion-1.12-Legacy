@@ -1,10 +1,10 @@
 package cofh.thermalexpansion.item;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.blockbakery.BlockBakery;
-import codechicken.lib.model.blockbakery.CCBakeryModel;
-import codechicken.lib.model.blockbakery.IBakeryItem;
-import codechicken.lib.model.blockbakery.IItemBakery;
+import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.IBakeryProvider;
+import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.generation.IBakery;
 import cofh.core.item.ItemMulti;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ItemHelper;
@@ -22,10 +22,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -36,7 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemFlorb extends ItemMulti implements IBakeryItem {
+public class ItemFlorb extends ItemMulti implements IBakeryProvider {
 
 	public static ItemStack setTag(ItemStack container, Fluid fluid) {
 
@@ -61,7 +58,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
 
 		list.add(new ItemStack(item, 1, 0));
 		list.add(new ItemStack(item, 1, 1));
@@ -127,13 +124,14 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 
+		ItemStack stack = player.getHeldItem(hand);
 		if (stack.getTagCompound() == null) {
 			return new ActionResult<>(EnumActionResult.PASS, stack);
 		}
 		if (!player.capabilities.isCreativeMode) {
-			--stack.stackSize;
+			stack.shrink(1);
 		}
 		Fluid fluid = FluidRegistry.getFluid(stack.getTagCompound().getString("Fluid"));
 
@@ -141,7 +139,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
 			if (ServerHelper.isServerWorld(world)) {
-				world.spawnEntityInWorld(new EntityFlorb(world, player, fluid));
+				world.spawnEntity(new EntityFlorb(world, player, fluid));
 			}
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
@@ -156,19 +154,19 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 		ModelLoader.setCustomMeshDefinition(this, stack -> location);
 		ModelLoader.setCustomModelResourceLocation(this, 0, location);
 		ModelRegistryHelper.register(location, new CCBakeryModel(""));
-		BlockBakery.registerItemKeyGenerator(this, stack -> {
+		ModelBakery.registerItemKeyGenerator(this, stack -> {
 
 			String fluid = "";
 			if (stack.getTagCompound() != null) {
 				fluid = "," + stack.getTagCompound().getString("Fluid");
 			}
-			return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + fluid;
+			return ModelBakery.defaultItemKeyGenerator.generateKey(stack) + fluid;
 		});
 	}
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public IItemBakery getBakery() {
+	public IBakery getBakery() {
 
 		return ModelFlorb.INSTANCE;
 	}

@@ -16,13 +16,6 @@ public class CompactorRecipeHandler implements IRecipeHandler<CompactorRecipeWra
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return null;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull CompactorRecipeWrapper recipe) {
 
 		return recipe.getUid();

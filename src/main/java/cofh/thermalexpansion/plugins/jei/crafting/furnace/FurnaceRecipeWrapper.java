@@ -50,7 +50,7 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 
 		if (ComparableItemStackFurnace.getOreID(recipe.getInput()) != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()), false)) {
-				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().stackSize));
+				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));
 			}
 		} else {
 			recipeInputs.add(recipe.getInput());
@@ -58,7 +58,7 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 		switch (uId) {
 			case RecipeUidsTE.FURNACE_FOOD:
 			case RecipeUidsTE.FURNACE_ORE:
-				recipeOutputs.add(ItemHelper.cloneStack(recipe.getOutput(), recipe.getOutput().stackSize + 1));
+				recipeOutputs.add(ItemHelper.cloneStack(recipe.getOutput(), recipe.getOutput().getCount() + 1));
 				outputFluids = Collections.emptyList();
 				energy = recipe.getEnergy() * 3 / 2;
 				break;

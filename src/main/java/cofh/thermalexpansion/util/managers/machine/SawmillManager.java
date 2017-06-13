@@ -27,7 +27,7 @@ public class SawmillManager {
 
 	public static RecipeSawmill getRecipe(ItemStack input) {
 
-		if (input == null) {
+		if (input.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackSawmill query = new ComparableItemStackSawmill(input);
@@ -210,7 +210,7 @@ public class SawmillManager {
 	/* ADD RECIPES */
 	public static RecipeSawmill addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
-		if (input == null || primaryOutput == null || energy <= 0 || recipeExists(input)) {
+		if (input.isEmpty() || primaryOutput.isEmpty() || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
 		RecipeSawmill recipe = new RecipeSawmill(input, primaryOutput, secondaryOutput, secondaryChance, energy);
@@ -225,7 +225,7 @@ public class SawmillManager {
 
 	public static RecipeSawmill addRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
 
-		return addRecipe(energy, input, primaryOutput, null, 0);
+		return addRecipe(energy, input, primaryOutput, ItemStack.EMPTY, 0);
 	}
 
 	/* REMOVE RECIPES */
@@ -249,7 +249,7 @@ public class SawmillManager {
 		InventoryCrafting tempCrafting = new InventoryCrafting(tempContainer, 3, 3);
 
 		for (int i = 0; i < 9; i++) {
-			tempCrafting.setInventorySlotContents(i, null);
+			tempCrafting.setInventorySlotContents(i, ItemStack.EMPTY);
 		}
 		List<ItemStack> registeredOres = OreDictionary.getOres("logWood", false);
 
@@ -261,9 +261,9 @@ public class SawmillManager {
 					tempCrafting.setInventorySlotContents(0, log);
 					ItemStack resultEntry = ItemHelper.findMatchingRecipe(tempCrafting, null);
 
-					if (resultEntry != null) {
+					if (!resultEntry.isEmpty()) {
 						ItemStack result = resultEntry.copy();
-						result.stackSize *= LOG_MULTIPLIER;
+						result.setCount((int) (result.getCount() * LOG_MULTIPLIER));
 						addRecipe(DEFAULT_ENERGY / 2, log, result, ItemMaterial.dustWood);
 					}
 				}
@@ -272,9 +272,9 @@ public class SawmillManager {
 				tempCrafting.setInventorySlotContents(0, log);
 				ItemStack resultEntry = ItemHelper.findMatchingRecipe(tempCrafting, null);
 
-				if (resultEntry != null) {
+				if (!resultEntry.isEmpty()) {
 					ItemStack result = resultEntry.copy();
-					result.stackSize *= LOG_MULTIPLIER;
+					result.setCount((int) (result.getCount() * LOG_MULTIPLIER));
 					addRecipe(DEFAULT_ENERGY / 2, log, result, ItemMaterial.dustWood);
 				}
 			}
@@ -298,14 +298,14 @@ public class SawmillManager {
 			this.secondaryChance = secondaryChance;
 			this.energy = energy;
 
-			if (input.stackSize <= 0) {
-				input.stackSize = 1;
+			if (input.getCount() <= 0) {
+				input.setCount(1);
 			}
-			if (primaryOutput.stackSize <= 0) {
-				primaryOutput.stackSize = 1;
+			if (primaryOutput.getCount() <= 0) {
+				primaryOutput.setCount(1);
 			}
-			if (secondaryOutput != null && secondaryOutput.stackSize <= 0) {
-				secondaryOutput.stackSize = 1;
+			if (!secondaryOutput.isEmpty() && secondaryOutput.getCount() <= 0) {
+				secondaryOutput.setCount(1);
 			}
 		}
 

@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class TileCompactor extends TileMachineBase {
@@ -71,6 +72,7 @@ public class TileCompactor extends TileMachineBase {
 
 		super();
 		inventory = new ItemStack[1 + 1 + 1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 	}
 
@@ -83,7 +85,7 @@ public class TileCompactor extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null || energyStorage.getEnergyStored() <= 0) {
+		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
@@ -91,12 +93,12 @@ public class TileCompactor extends TileMachineBase {
 		if (recipe == null) {
 			return false;
 		}
-		if (inventory[0].stackSize < recipe.getInput().stackSize) {
+		if (inventory[0].getCount() < recipe.getInput().getCount()) {
 			return false;
 		}
 		ItemStack output = recipe.getOutput();
 
-		return inventory[1] == null || inventory[1].isItemEqual(output) && inventory[1].stackSize + output.stackSize <= output.getMaxStackSize();
+		return inventory[1].isEmpty() || inventory[1].isItemEqual(output) && inventory[1].getCount() + output.getCount() <= output.getMaxStackSize();
 	}
 
 	@Override
@@ -104,7 +106,7 @@ public class TileCompactor extends TileMachineBase {
 
 		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
 
-		return recipe != null && recipe.getInput().stackSize <= inventory[0].stackSize;
+		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 	}
 
 	@Override
@@ -124,15 +126,15 @@ public class TileCompactor extends TileMachineBase {
 			return;
 		}
 		ItemStack output = recipe.getOutput();
-		if (inventory[1] == null) {
+		if (inventory[1].isEmpty()) {
 			inventory[1] = ItemHelper.cloneStack(output);
 		} else {
-			inventory[1].stackSize += output.stackSize;
+			inventory[1].grow(output.getCount());
 		}
-		inventory[0].stackSize -= recipe.getInput().stackSize;
+		inventory[0].shrink(recipe.getInput().getCount());
 
-		if (inventory[0].stackSize <= 0) {
-			inventory[0] = null;
+		if (inventory[0].getCount() <= 0) {
+			inventory[0] = ItemStack.EMPTY;
 		}
 	}
 
@@ -160,7 +162,7 @@ public class TileCompactor extends TileMachineBase {
 		if (!enableAutoOutput) {
 			return;
 		}
-		if (inventory[1] == null) {
+		if (inventory[1].isEmpty()) {
 			return;
 		}
 		int side;

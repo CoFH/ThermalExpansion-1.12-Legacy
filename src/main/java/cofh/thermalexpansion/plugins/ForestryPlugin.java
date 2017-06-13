@@ -41,7 +41,7 @@ public class ForestryPlugin {
 		Fluid seed_oil = FluidRegistry.getFluid("seed.oil");
 
 		if (honey != null) {
-			TransposerManager.addExtractRecipe(4800, honeydew, null, new FluidStack(honey, 100), 0, false);
+			TransposerManager.addExtractRecipe(4800, honeydew, ItemStack.EMPTY, new FluidStack(honey, 100), 0, false);
 			TransposerManager.addExtractRecipe(4800, honeyDrop, propolis, new FluidStack(honey, 100), 5, false);
 		}
 
@@ -54,9 +54,9 @@ public class ForestryPlugin {
 		}
 
 		if (seed_oil != null) {
-			TransposerManager.addExtractRecipe(2400, ItemHelper.cloneStack(Items.WHEAT_SEEDS, 1), null, new FluidStack(seed_oil, 10), 0, false);
-			TransposerManager.addExtractRecipe(2400, ItemHelper.cloneStack(Items.PUMPKIN_SEEDS, 1), null, new FluidStack(seed_oil, 10), 0, false);
-			TransposerManager.addExtractRecipe(2400, ItemHelper.cloneStack(Items.MELON_SEEDS, 1), null, new FluidStack(seed_oil, 10), 0, false);
+			TransposerManager.addExtractRecipe(2400, ItemHelper.cloneStack(Items.WHEAT_SEEDS, 1), ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
+			TransposerManager.addExtractRecipe(2400, ItemHelper.cloneStack(Items.PUMPKIN_SEEDS, 1), ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
+			TransposerManager.addExtractRecipe(2400, ItemHelper.cloneStack(Items.MELON_SEEDS, 1), ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
 			TransposerManager.addExtractRecipe(2400, ItemHelper.cloneStack(ItemHelper.getOre("cropCherry"), 1), mulch, new FluidStack(seed_oil, 50), 5, false);
 			TransposerManager.addExtractRecipe(2400, ItemHelper.cloneStack(ItemHelper.getOre("cropChestnut"), 1), mulch, new FluidStack(seed_oil, 220), 2, false);
 			TransposerManager.addExtractRecipe(2400, ItemHelper.cloneStack(ItemHelper.getOre("cropWalnut"), 1), mulch, new FluidStack(seed_oil, 180), 5, false);

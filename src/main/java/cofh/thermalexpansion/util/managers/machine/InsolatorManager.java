@@ -29,7 +29,7 @@ public class InsolatorManager {
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
 
-		if (primaryInput == null || secondaryInput == null) {
+		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return false;
 		}
 		ComparableItemStackInsolator query = new ComparableItemStackInsolator(primaryInput);
@@ -41,7 +41,7 @@ public class InsolatorManager {
 
 	public static RecipeInsolator getRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
-		if (primaryInput == null || secondaryInput == null) {
+		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackInsolator query = new ComparableItemStackInsolator(primaryInput);
@@ -70,12 +70,12 @@ public class InsolatorManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return input != null && validationSet.contains(new ComparableItemStackInsolator(input));
+		return !input.isEmpty() && validationSet.contains(new ComparableItemStackInsolator(input));
 	}
 
 	public static boolean isItemFertilizer(ItemStack input) {
 
-		return input != null && lockSet.contains(new ComparableItemStackInsolator(input));
+		return !input.isEmpty() && lockSet.contains(new ComparableItemStackInsolator(input));
 	}
 
 	public static void initialize() {
@@ -92,14 +92,14 @@ public class InsolatorManager {
 			addDefaultRecipe(new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.WHEAT), new ItemStack(Items.WHEAT_SEEDS), 150);
 			addDefaultRecipe(new ItemStack(Items.BEETROOT_SEEDS), new ItemStack(Items.BEETROOT), new ItemStack(Items.BEETROOT_SEEDS), 150);
 			addDefaultRecipe(new ItemStack(Items.POTATO), new ItemStack(Items.POTATO, 3), new ItemStack(Items.POISONOUS_POTATO), 5);
-			addDefaultRecipe(new ItemStack(Items.CARROT), new ItemStack(Items.CARROT, 3), null, 0);
-			addDefaultRecipe(new ItemStack(Items.DYE, 1, 3), new ItemStack(Items.DYE, 3, 3), null, 0);
-			addDefaultRecipe(new ItemStack(Items.REEDS), new ItemStack(Items.REEDS, 2), null, 0);
-			addDefaultRecipe(new ItemStack(Blocks.CACTUS), new ItemStack(Blocks.CACTUS, 2), null, 0);
-			addDefaultRecipe(new ItemStack(Blocks.VINE), new ItemStack(Blocks.VINE, 2), null, 0);
-			addDefaultRecipe(new ItemStack(Blocks.WATERLILY), new ItemStack(Blocks.WATERLILY, 2), null, 0);
-			addDefaultRecipe(new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Blocks.PUMPKIN), null, 0);
-			addDefaultRecipe(new ItemStack(Items.MELON_SEEDS), new ItemStack(Blocks.MELON_BLOCK), null, 0);
+			addDefaultRecipe(new ItemStack(Items.CARROT), new ItemStack(Items.CARROT, 3), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Items.DYE, 1, 3), new ItemStack(Items.DYE, 3, 3), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Items.REEDS), new ItemStack(Items.REEDS, 2), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.CACTUS), new ItemStack(Blocks.CACTUS, 2), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.VINE), new ItemStack(Blocks.VINE, 2), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.WATERLILY), new ItemStack(Blocks.WATERLILY, 2), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Blocks.PUMPKIN), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Items.MELON_SEEDS), new ItemStack(Blocks.MELON_BLOCK), ItemStack.EMPTY, 0);
 		}
 
 		/* MYCELIUM */
@@ -109,7 +109,7 @@ public class InsolatorManager {
 			crops.add(new ItemStack(Blocks.RED_MUSHROOM));
 
 			for (ItemStack input : crops) {
-				addDefaultRecipe(input, ItemHelper.cloneStack(input, 2), null, 0, false, Type.MYCELIUM);
+				addDefaultRecipe(input, ItemHelper.cloneStack(input, 2), ItemStack.EMPTY, 0, false, Type.MYCELIUM);
 			}
 		}
 
@@ -119,7 +119,7 @@ public class InsolatorManager {
 			crops.add(new ItemStack(Items.NETHER_WART));
 
 			for (ItemStack input : crops) {
-				addDefaultRecipe(input, ItemHelper.cloneStack(input, 2), null, 0, false, Type.NETHER);
+				addDefaultRecipe(input, ItemHelper.cloneStack(input, 2), ItemStack.EMPTY, 0, false, Type.NETHER);
 			}
 		}
 
@@ -189,7 +189,7 @@ public class InsolatorManager {
 	/* ADD RECIPES */
 	public static RecipeInsolator addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
 
-		if (primaryInput == null || secondaryInput == null || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
+		if (primaryInput.isEmpty() || secondaryInput.isEmpty() || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
 			return null;
 		}
 		RecipeInsolator recipe = new RecipeInsolator(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy, copyNBT, type);
@@ -211,7 +211,7 @@ public class InsolatorManager {
 
 	public static RecipeInsolator addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
 
-		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, null, 0);
+		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, ItemStack.EMPTY, 0);
 	}
 
 	/* REMOVE RECIPES */
@@ -256,7 +256,7 @@ public class InsolatorManager {
 		ItemStack crop = ItemHelper.cloneStack(registeredCrops.get(0), isTuber ? 3 : 1);
 
 		if (isBlock || isTuber) {
-			addDefaultRecipe(seed, crop, null, 0);
+			addDefaultRecipe(seed, crop, ItemStack.EMPTY, 0);
 		} else {
 			addDefaultRecipe(seed, crop, seed, 150);
 		}
@@ -264,27 +264,27 @@ public class InsolatorManager {
 
 	private static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
 
-		if (secondaryOutput != null) {
+		if (!secondaryOutput.isEmpty()) {
 			addRecipe(DEFAULT_ENERGY, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, secondaryOutput, secondaryChance, copyNBT, type);
-			addRecipe(DEFAULT_ENERGY_RICH, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * CROP_MULTIPLIER_RICH), secondaryOutput, secondaryChance < 100 ? 100 : secondaryChance, copyNBT, type);
-			addRecipe(DEFAULT_ENERGY_FLUX, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * CROP_MULTIPLIER_FLUX), secondaryOutput, secondaryChance < 150 ? 150 : secondaryChance, copyNBT, type);
+			addRecipe(DEFAULT_ENERGY_RICH, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), secondaryOutput, secondaryChance < 100 ? 100 : secondaryChance, copyNBT, type);
+			addRecipe(DEFAULT_ENERGY_FLUX, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), secondaryOutput, secondaryChance < 150 ? 150 : secondaryChance, copyNBT, type);
 		} else {
-			addRecipe(DEFAULT_ENERGY, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, null, 0, copyNBT, type);
-			addRecipe(DEFAULT_ENERGY_RICH, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * CROP_MULTIPLIER_RICH), null, 0, copyNBT, type);
-			addRecipe(DEFAULT_ENERGY_FLUX, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * CROP_MULTIPLIER_FLUX), null, 0, copyNBT, type);
+			addRecipe(DEFAULT_ENERGY, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, ItemStack.EMPTY, 0, copyNBT, type);
+			addRecipe(DEFAULT_ENERGY_RICH, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), ItemStack.EMPTY, 0, copyNBT, type);
+			addRecipe(DEFAULT_ENERGY_FLUX, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), ItemStack.EMPTY, 0, copyNBT, type);
 		}
 	}
 
 	private static void addDefaultTreeRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
 
-		if (secondaryOutput != null) {
+		if (!secondaryOutput.isEmpty()) {
 			addRecipe(DEFAULT_ENERGY * 2, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, secondaryOutput, secondaryChance, copyNBT, type);
-			addRecipe(DEFAULT_ENERGY_RICH * 2, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * CROP_MULTIPLIER_RICH), secondaryOutput, secondaryChance < 100 ? 100 : secondaryChance, copyNBT, type);
-			addRecipe(DEFAULT_ENERGY_FLUX * 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * CROP_MULTIPLIER_FLUX), secondaryOutput, secondaryChance < 150 ? 150 : secondaryChance, copyNBT, type);
+			addRecipe(DEFAULT_ENERGY_RICH * 2, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), secondaryOutput, secondaryChance < 100 ? 100 : secondaryChance, copyNBT, type);
+			addRecipe(DEFAULT_ENERGY_FLUX * 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), secondaryOutput, secondaryChance < 150 ? 150 : secondaryChance, copyNBT, type);
 		} else {
-			addRecipe(DEFAULT_ENERGY * 2, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, null, 0, copyNBT, type);
-			addRecipe(DEFAULT_ENERGY_RICH * 2, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * CROP_MULTIPLIER_RICH), null, 0, copyNBT, type);
-			addRecipe(DEFAULT_ENERGY_FLUX * 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * CROP_MULTIPLIER_FLUX), null, 0, copyNBT, type);
+			addRecipe(DEFAULT_ENERGY * 2, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, ItemStack.EMPTY, 0, copyNBT, type);
+			addRecipe(DEFAULT_ENERGY_RICH * 2, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), ItemStack.EMPTY, 0, copyNBT, type);
+			addRecipe(DEFAULT_ENERGY_FLUX * 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), ItemStack.EMPTY, 0, copyNBT, type);
 		}
 	}
 
@@ -316,17 +316,17 @@ public class InsolatorManager {
 			this.copyNBT = copyNBT;
 			this.type = type;
 
-			if (primaryInput.stackSize <= 0) {
-				primaryInput.stackSize = 1;
+			if (primaryInput.getCount() <= 0) {
+				primaryInput.setCount(1);
 			}
-			if (secondaryInput.stackSize <= 0) {
-				secondaryInput.stackSize = 1;
+			if (secondaryInput.getCount() <= 0) {
+				secondaryInput.setCount(1);
 			}
-			if (primaryOutput.stackSize <= 0) {
-				primaryOutput.stackSize = 1;
+			if (primaryOutput.getCount() <= 0) {
+				primaryOutput.setCount(1);
 			}
-			if (secondaryOutput != null && secondaryOutput.stackSize <= 0) {
-				secondaryOutput.stackSize = 1;
+			if (!secondaryOutput.isEmpty() && secondaryOutput.getCount() <= 0) {
+				secondaryOutput.setCount(1);
 			}
 		}
 

@@ -1,10 +1,10 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.blockbakery.BlockBakery;
-import codechicken.lib.model.blockbakery.CCBakeryModel;
-import codechicken.lib.model.blockbakery.IBakeryBlock;
-import codechicken.lib.model.blockbakery.ICustomBlockBakery;
+import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.IBakeryProvider;
+import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.generation.IBakery;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Rotation;
@@ -30,10 +30,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -55,7 +52,7 @@ import java.util.List;
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
-public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegister {
+public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelRegister {
 
 	public static final PropertyEnum<BlockDynamo.Type> VARIANT = PropertyEnum.create("type", Type.class);
 
@@ -106,7 +103,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
+	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
 
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
@@ -170,7 +167,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 
 	/* BLOCK METHODS */
 	@Override
-	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean b) {
 
 		int facing = ((TileDynamoBase) world.getTileEntity(pos)).facing;
 
@@ -232,17 +229,17 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
 
 		if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-			if (FluidHelper.drainItemToHandler(heldItem, handler, player, hand)) {
+			if (FluidHelper.drainItemToHandler(player.getHeldItem(hand), handler, player, hand)) {
 				return true;
 			}
 		}
-		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
+		return super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
 	}
 
 	@Nullable
@@ -263,12 +260,12 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	@SideOnly (Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 
-		return BlockBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world.getTileEntity(pos));
+		return ModelBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world, pos);
 	}
 
 	/* IBakeryBlock */
 	@Override
-	public ICustomBlockBakery getCustomBakery() {
+	public IBakery getBakery() {
 
 		return RenderDynamo.INSTANCE;
 	}
@@ -288,7 +285,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		}
 		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/dynamo/dynamo_coil_redstone"));
 
-		BlockBakery.registerBlockKeyGenerator(this, state -> {
+		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
 			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
 			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
@@ -298,7 +295,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 			return builder.toString();
 		});
 
-		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + itemBlock.isCreative(stack) + ",level=" + itemBlock.getLevel(stack));
+		ModelBakery.registerItemKeyGenerator(itemBlock, stack -> ModelBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + itemBlock.isCreative(stack) + ",level=" + itemBlock.getLevel(stack));
 	}
 
 	/* IInitializer */

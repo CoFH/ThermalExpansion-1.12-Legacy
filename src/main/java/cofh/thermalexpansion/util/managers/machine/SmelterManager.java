@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
@@ -36,7 +35,7 @@ public class SmelterManager {
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
 
-		if (primaryInput == null || secondaryInput == null) {
+		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return false;
 		}
 		ComparableItemStackSmelter query = new ComparableItemStackSmelter(primaryInput);
@@ -48,7 +47,7 @@ public class SmelterManager {
 
 	public static RecipeSmelter getRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
-		if (primaryInput == null || secondaryInput == null) {
+		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackSmelter query = new ComparableItemStackSmelter(primaryInput);
@@ -77,12 +76,12 @@ public class SmelterManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return input != null && validationSet.contains(new ComparableItemStackSmelter(input));
+		return !input.isEmpty() && validationSet.contains(new ComparableItemStackSmelter(input));
 	}
 
 	public static boolean isItemFlux(ItemStack input) {
 
-		return input != null && lockSet.contains(new ComparableItemStackSmelter(input));
+		return !input.isEmpty() && lockSet.contains(new ComparableItemStackSmelter(input));
 	}
 
 	public static void initialize() {
@@ -182,7 +181,7 @@ public class SmelterManager {
 		/* ORES */
 		{
 			addDefaultOreDictionaryRecipe("oreIron", "dustIron", ItemMaterial.ingotIron, ItemMaterial.ingotNickel);
-			addDefaultOreDictionaryRecipe("oreGold", "dustGold", ItemMaterial.ingotGold, null, 20, 75, 25);
+			addDefaultOreDictionaryRecipe("oreGold", "dustGold", ItemMaterial.ingotGold, ItemStack.EMPTY, 20, 75, 25);
 
 			addDefaultOreDictionaryRecipe("oreCopper", "dustCopper", ItemMaterial.ingotCopper, ItemMaterial.ingotGold);
 			addDefaultOreDictionaryRecipe("oreTin", "dustTin", ItemMaterial.ingotTin, ItemMaterial.ingotIron);
@@ -413,7 +412,7 @@ public class SmelterManager {
 	/* ADD RECIPES */
 	public static RecipeSmelter addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
-		if (primaryInput == null || secondaryInput == null || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
+		if (primaryInput.isEmpty() || secondaryInput.isEmpty() || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
 			return null;
 		}
 		RecipeSmelter recipe = new RecipeSmelter(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy);
@@ -430,7 +429,7 @@ public class SmelterManager {
 
 	public static RecipeSmelter addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
 
-		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, null, 0);
+		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, ItemStack.EMPTY, 0);
 	}
 
 	/* REMOVE RECIPES */
@@ -447,7 +446,7 @@ public class SmelterManager {
 
 	private static void addDefaultOreDictionaryRecipe(String oreName, String dustName, ItemStack ingot, ItemStack ingotRelated, int richSlagChance, int slagOreChance, int slagDustChance) {
 
-		if (ingot == null) {
+		if (ingot.isEmpty()) {
 			return;
 		}
 		if (oreName != null) {
@@ -485,11 +484,11 @@ public class SmelterManager {
 		if (registeredIngot.isEmpty()) {
 			return;
 		}
-		ItemStack ingot = ItemStackRegistry.findItemStack("thermalfoundation", ingotName, 1);
-		if (ingot != null && !OreDictionaryArbiter.getAllOreNames(ingot).contains(ingotName)) {
-			ingot = null;
+		ItemStack ingot = ItemStack.EMPTY;
+		if (!ingot.isEmpty() && !OreDictionaryArbiter.getAllOreNames(ingot).contains(ingotName)) {
+			ingot = ItemStack.EMPTY;
 		}
-		if (ingot == null) {
+		if (ingot.isEmpty()) {
 			ingot = registeredIngot.get(0);
 		}
 		if (registeredOre.isEmpty()) {
@@ -498,14 +497,8 @@ public class SmelterManager {
 		if (registeredDust.isEmpty()) {
 			dustName = null;
 		}
-		ItemStack related = null;
-		if (relatedName != null) {
-			related = ItemStackRegistry.findItemStack("thermalfoundation", relatedName, 1);
-			if (related != null && !OreDictionaryArbiter.getAllOreNames(related).contains(relatedName)) {
-				related = null;
-			}
-		}
-		if (related == null && !registeredRelated.isEmpty()) {
+		ItemStack related = ItemStack.EMPTY;
+		if (related.isEmpty() && !registeredRelated.isEmpty()) {
 			related = registeredRelated.get(0);
 		}
 		addDefaultOreDictionaryRecipe(oreName, dustName, ingot, related, 5, 75, 25);
@@ -513,7 +506,7 @@ public class SmelterManager {
 
 	private static void addDefaultOreDictionaryRecipe(String oreName, String dustName, ItemStack ingot) {
 
-		addDefaultOreDictionaryRecipe(oreName, dustName, ingot, null, 5, 75, 25);
+		addDefaultOreDictionaryRecipe(oreName, dustName, ingot, ItemStack.EMPTY, 5, 75, 25);
 	}
 
 	private static void addDefaultOreDictionaryRecipe(String oreName, String dustName, ItemStack ingot, ItemStack ingotRelated) {
@@ -530,7 +523,7 @@ public class SmelterManager {
 			addRecipe(energy, ore, BLOCK_SAND, ingot2, ItemMaterial.crystalSlagRich, richSlagChance);
 			addRecipe(energy, ore, ItemMaterial.crystalSlagRich, ingot3, ItemMaterial.crystalSlag, slagOreChance);
 
-			if (ingotSecondary != null) {
+			if (!ingotSecondary.isEmpty()) {
 				addRecipe(energy, ore, ItemMaterial.crystalCinnabar, ingot3, ingotSecondary, 100);
 			} else {
 				addRecipe(energy, ore, ItemMaterial.crystalCinnabar, ingot3, ItemMaterial.crystalSlagRich, 75);
@@ -559,7 +552,7 @@ public class SmelterManager {
 
 	private static void addAlloyRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
 
-		addRecipe(energy, primaryInput, secondaryInput, primaryOutput, null, 0);
+		addRecipe(energy, primaryInput, secondaryInput, primaryOutput, ItemStack.EMPTY, 0);
 	}
 
 	private static RecipeSmelter addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
@@ -591,17 +584,17 @@ public class SmelterManager {
 			this.secondaryChance = secondaryChance;
 			this.energy = energy;
 
-			if (primaryInput.stackSize <= 0) {
-				primaryInput.stackSize = 1;
+			if (primaryInput.getCount() <= 0) {
+				primaryInput.setCount(1);
 			}
-			if (secondaryInput.stackSize <= 0) {
-				secondaryInput.stackSize = 1;
+			if (secondaryInput.getCount() <= 0) {
+				secondaryInput.setCount(1);
 			}
-			if (primaryOutput.stackSize <= 0) {
-				primaryOutput.stackSize = 1;
+			if (primaryOutput.getCount() <= 0) {
+				primaryOutput.setCount(1);
 			}
-			if (secondaryOutput != null && secondaryOutput.stackSize <= 0) {
-				secondaryOutput.stackSize = 1;
+			if (!secondaryOutput.isEmpty() && secondaryOutput.getCount() <= 0) {
+				secondaryOutput.setCount(1);
 			}
 		}
 

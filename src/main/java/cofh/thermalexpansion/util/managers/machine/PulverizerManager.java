@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ColorHelper;
@@ -30,7 +29,7 @@ public class PulverizerManager {
 
 	public static RecipePulverizer getRecipe(ItemStack input) {
 
-		if (input == null) {
+		if (input.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackPulverizer query = new ComparableItemStackPulverizer(input);
@@ -321,7 +320,7 @@ public class PulverizerManager {
 	/* ADD RECIPES */
 	public static RecipePulverizer addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
-		if (input == null || primaryOutput == null || energy <= 0 || recipeExists(input)) {
+		if (input.isEmpty() || primaryOutput.isEmpty() || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
 		RecipePulverizer recipe = new RecipePulverizer(input, primaryOutput, secondaryOutput, secondaryChance, energy);
@@ -336,7 +335,7 @@ public class PulverizerManager {
 
 	public static RecipePulverizer addRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
 
-		return addRecipe(energy, input, primaryOutput, null, 0);
+		return addRecipe(energy, input, primaryOutput, ItemStack.EMPTY, 0);
 	}
 
 	/* REMOVE RECIPES */
@@ -387,14 +386,8 @@ public class PulverizerManager {
 		if (registeredCluster.isEmpty()) {
 			clusterName = null;
 		}
-		ItemStack related = null;
-		if (relatedName != null) {
-			related = ItemStackRegistry.findItemStack("thermalfoundation", relatedName, 1);
-			if (related != null && !OreDictionaryArbiter.getAllOreNames(related).contains(relatedName)) {
-				related = null;
-			}
-		}
-		if (related == null && !registeredRelated.isEmpty()) {
+		ItemStack related = ItemStack.EMPTY;
+		if (related.isEmpty() && !registeredRelated.isEmpty()) {
 			related = registeredRelated.get(0);
 		}
 		addOreToDustRecipe(4000, oreName, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, 5);
@@ -433,7 +426,7 @@ public class PulverizerManager {
 			return;
 		}
 		ItemStack gem = registeredGem.get(0);
-		ItemStack dust = null;
+		ItemStack dust = ItemStack.EMPTY;
 
 		if (!registeredDust.isEmpty()) {
 			dust = registeredDust.get(0);
@@ -444,14 +437,8 @@ public class PulverizerManager {
 		if (registeredCluster.isEmpty()) {
 			clusterName = null;
 		}
-		ItemStack related = null;
-		if (relatedName != null) {
-			related = ItemStackRegistry.findItemStack("thermalfoundation", relatedName, 1);
-			if (related != null && !OreDictionaryArbiter.getAllOreNames(related).contains(relatedName)) {
-				related = null;
-			}
-		}
-		if (related == null && !registeredRelated.isEmpty()) {
+		ItemStack related = ItemStack.EMPTY;
+		if (related.isEmpty() && !registeredRelated.isEmpty()) {
 			related = registeredRelated.get(0);
 		}
 		addOreToDustRecipe(DEFAULT_ENERGY, oreName, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, 5);
@@ -461,7 +448,7 @@ public class PulverizerManager {
 
 	private static void addOreToDustRecipe(int energy, String oreName, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
-		if (primaryOutput == null || oreName == null) {
+		if (primaryOutput.isEmpty() || oreName == null) {
 			return;
 		}
 		List<ItemStack> registeredOres = OreDictionary.getOres(oreName, false);
@@ -473,13 +460,13 @@ public class PulverizerManager {
 
 	private static void addIngotToDustRecipe(int energy, String ingotName, ItemStack dust) {
 
-		if (dust == null || ingotName == null) {
+		if (dust.isEmpty() || ingotName == null) {
 			return;
 		}
 		List<ItemStack> registeredOres = OreDictionary.getOres(ingotName, false);
 
 		if (!registeredOres.isEmpty() && !recipeExists(OreDictionary.getOres(ingotName, false).get(0))) {
-			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), dust, null, 0);
+			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), dust, ItemStack.EMPTY, 0);
 		}
 	}
 
@@ -500,14 +487,14 @@ public class PulverizerManager {
 			this.secondaryChance = secondaryChance;
 			this.energy = energy;
 
-			if (input.stackSize <= 0) {
-				input.stackSize = 1;
+			if (input.getCount() <= 0) {
+				input.setCount(1);
 			}
-			if (primaryOutput.stackSize <= 0) {
-				primaryOutput.stackSize = 1;
+			if (primaryOutput.getCount() <= 0) {
+				primaryOutput.setCount(1);
 			}
-			if (secondaryOutput != null && secondaryOutput.stackSize <= 0) {
-				secondaryOutput.stackSize = 1;
+			if (!secondaryOutput.isEmpty() && secondaryOutput.getCount() <= 0) {
+				secondaryOutput.setCount(1);
 			}
 		}
 

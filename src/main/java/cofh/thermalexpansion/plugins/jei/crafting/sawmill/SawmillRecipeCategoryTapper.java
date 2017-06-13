@@ -79,7 +79,7 @@ public class SawmillRecipeCategoryTapper extends SawmillRecipeCategory {
 
 		super.setRecipe(recipeLayout, recipeWrapper, ingredients);
 
-		List<FluidStack> outputFluids = ingredients.getOutputs(FluidStack.class);
+		List<List<FluidStack>> outputFluids = ingredients.getOutputs(FluidStack.class);
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 		guiFluidStacks.init(0, true, 141, 1, 16, 60, 100, false, tankOverlay);

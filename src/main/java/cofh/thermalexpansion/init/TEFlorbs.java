@@ -2,6 +2,7 @@ package cofh.thermalexpansion.init;
 
 import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
+import cofh.lib.util.DefaultedHashMap;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.ItemFlorb;
@@ -17,6 +18,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
@@ -108,9 +110,9 @@ public class TEFlorbs {
 	 * Attempts to get a Florb ItemStack from the given fluid.
 	 *
 	 * @param fluid The fluid a Florb is being requested for.
-	 * @return The ItemStack. Will be null if a florb doesn't exist.
+	 * @return The ItemStack.
 	 */
-	@Nullable
+	@Nonnull
 	public static ItemStack getFlorb(Fluid fluid) {
 
 		return florbMap.get(fluid.getName());
@@ -118,7 +120,7 @@ public class TEFlorbs {
 
 	public static boolean enable = true;
 	public static ArrayList<ItemStack> florbList = new ArrayList<>();
-	public static Map<String, ItemStack> florbMap = new HashMap<>();
+	public static Map<String, ItemStack> florbMap = new DefaultedHashMap<String, ItemStack>(ItemStack.EMPTY);
 
 	public static final ConfigHandler CONFIG_FLORBS = new ConfigHandler(ThermalExpansion.VERSION);
 

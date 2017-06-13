@@ -106,7 +106,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		if (!timeCheckOffset()) {
@@ -120,7 +120,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 			if (adjacentSources >= 2) {
 				tank.modifyFluidStored(genRate * (adjacentSources - 1));
 			} else {
-				if (worldObj.isRaining() && worldObj.canSeeSky(getPos())) {
+				if (world.isRaining() && world.canSeeSky(getPos())) {
 					tank.modifyFluidStored(genRate);
 				} else if (passiveGen) {
 					tank.modifyFluidStored(genRatePassive);
@@ -140,25 +140,25 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 	protected void updateValidity() {
 
-		inHell = worldObj.getBiome(getPos()) == Biomes.HELL;
+		inHell = world.getBiome(getPos()) == Biomes.HELL;
 		adjacentSources = 0;
 
-		if (isWater(worldObj.getBlockState(getPos().down()))) {
+		if (isWater(world.getBlockState(getPos().down()))) {
 			adjacentSources++;
 		}
-		if (isWater(worldObj.getBlockState(getPos().up()))) {
+		if (isWater(world.getBlockState(getPos().up()))) {
 			adjacentSources++;
 		}
-		if (isWater(worldObj.getBlockState(getPos().west()))) {
+		if (isWater(world.getBlockState(getPos().west()))) {
 			adjacentSources++;
 		}
-		if (isWater(worldObj.getBlockState(getPos().east()))) {
+		if (isWater(world.getBlockState(getPos().east()))) {
 			adjacentSources++;
 		}
-		if (isWater(worldObj.getBlockState(getPos().north()))) {
+		if (isWater(world.getBlockState(getPos().north()))) {
 			adjacentSources++;
 		}
-		if (isWater(worldObj.getBlockState(getPos().south()))) {
+		if (isWater(world.getBlockState(getPos().south()))) {
 			adjacentSources++;
 		}
 	}
@@ -190,7 +190,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 	protected boolean timeCheckOffset() {
 
-		return (worldObj.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
+		return (world.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
 	}
 
 	/* GUI METHODS */

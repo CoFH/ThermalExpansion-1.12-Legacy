@@ -85,7 +85,7 @@ public class GuiStrongbox extends GuiCore {
 		super.updateScreen();
 
 		if (!baseTile.canAccess()) {
-			this.mc.thePlayer.closeScreen();
+			this.mc.player.closeScreen();
 		}
 		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 	}

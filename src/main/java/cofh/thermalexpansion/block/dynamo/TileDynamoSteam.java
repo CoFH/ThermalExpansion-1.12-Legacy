@@ -28,6 +28,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class TileDynamoSteam extends TileDynamoBase {
@@ -69,6 +70,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 		super();
 		inventory = new ItemStack[1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 		steamTank.setLock(TFFluids.fluidSteam);
 		waterTank.setLock(FluidRegistry.WATER);
 	}

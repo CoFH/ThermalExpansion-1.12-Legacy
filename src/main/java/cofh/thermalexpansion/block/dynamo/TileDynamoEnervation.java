@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class TileDynamoEnervation extends TileDynamoBase {
@@ -49,6 +50,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 		super();
 		inventory = new ItemStack[1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 	}
 
 	@Override

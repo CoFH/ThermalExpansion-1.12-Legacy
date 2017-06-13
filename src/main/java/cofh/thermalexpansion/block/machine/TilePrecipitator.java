@@ -26,6 +26,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class TilePrecipitator extends TileMachineBase implements ICustomInventory {
@@ -93,6 +94,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		super();
 		inventory = new ItemStack[1 + 1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 
 		for (int i = 0; i < 3; i++) {
@@ -120,13 +122,13 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		if (tank.getFluidAmount() < processWater[curSelection] || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		if (inventory[0] == null) {
+		if (inventory[0].isEmpty()) {
 			return true;
 		}
 		if (!inventory[0].isItemEqual(outputItems[curSelection])) {
 			return false;
 		}
-		return inventory[0].stackSize + outputItems[curSelection].stackSize <= outputItems[prevSelection].getMaxStackSize();
+		return inventory[0].getCount() + outputItems[curSelection].getCount() <= outputItems[prevSelection].getMaxStackSize();
 	}
 
 	@Override
@@ -146,10 +148,10 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected void processFinish() {
 
-		if (inventory[0] == null) {
+		if (inventory[0].isEmpty()) {
 			inventory[0] = outputItems[prevSelection].copy();
 		} else {
-			inventory[0].stackSize += outputItems[prevSelection].stackSize;
+			inventory[0].grow(outputItems[prevSelection].getCount());
 		}
 		tank.drain(processWater[prevSelection], true);
 		prevSelection = curSelection;
@@ -161,7 +163,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		if (!enableAutoOutput) {
 			return;
 		}
-		if (inventory[0] == null) {
+		if (inventory[0].isEmpty()) {
 			return;
 		}
 		int side;

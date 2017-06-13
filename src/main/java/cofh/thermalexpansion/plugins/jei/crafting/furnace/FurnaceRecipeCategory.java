@@ -80,6 +80,11 @@ public class FurnaceRecipeCategory extends BlankRecipeCategory<FurnaceRecipeWrap
 		return localizedName;
 	}
 
+	@Override
+	public String getModName() {
+		return "ThermalExpansion";
+	}
+
 	@Nonnull
 	@Override
 	public IDrawable getBackground() {
@@ -97,7 +102,7 @@ public class FurnaceRecipeCategory extends BlankRecipeCategory<FurnaceRecipeWrap
 	public void setRecipe(IRecipeLayout recipeLayout, FurnaceRecipeWrapper recipeWrapper, IIngredients ingredients) {
 
 		List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
-		List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class);
+		List<List<ItemStack>> outputs = ingredients.getOutputs(ItemStack.class);
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 

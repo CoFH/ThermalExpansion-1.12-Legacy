@@ -108,22 +108,22 @@ public class TinkersConstructPlugin {
 		ItemStack dust = ItemHelper.getOre(dustName);
 		ItemStack plate = ItemHelper.getOre(plateName);
 
-		if (nugget != null) {
+		if (!nugget.isEmpty()) {
 			CrucibleManager.addRecipe(energy / 8, nugget, new FluidStack(fluid, fluidIngot / 9));
 		}
-		if (ingot != null) {
+		if (ingot.isEmpty()) {
 			CrucibleManager.addRecipe(energy, ingot, new FluidStack(fluid, fluidIngot));
 		}
-		if (ore != null) {
+		if (!ore.isEmpty()) {
 			CrucibleManager.addRecipe(energy * 2, ore, new FluidStack(fluid, fluidIngot * 2));
 		}
-		if (block != null) {
+		if (!block.isEmpty()) {
 			CrucibleManager.addRecipe(energy * 8, block, new FluidStack(fluid, fluidIngot * 9));
 		}
-		if (dust != null) {
+		if (!dust.isEmpty()) {
 			CrucibleManager.addRecipe(energy / 2, dust, new FluidStack(fluid, fluidIngot));
 		}
-		if (plate != null) {
+		if (!plate.isEmpty()) {
 			CrucibleManager.addRecipe(energy, plate, new FluidStack(fluid, fluidIngot));
 		}
 		return true;

@@ -78,6 +78,11 @@ public class SawmillRecipeCategory extends BlankRecipeCategory<SawmillRecipeWrap
 		return localizedName;
 	}
 
+	@Override
+	public String getModName() {
+		return "ThermalExpansion";
+	}
+
 	@Nonnull
 	@Override
 	public IDrawable getBackground() {
@@ -95,7 +100,7 @@ public class SawmillRecipeCategory extends BlankRecipeCategory<SawmillRecipeWrap
 	public void setRecipe(IRecipeLayout recipeLayout, SawmillRecipeWrapper recipeWrapper, IIngredients ingredients) {
 
 		List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
-		List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class);
+		List<List<ItemStack>> outputs = ingredients.getOutputs(ItemStack.class);
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 

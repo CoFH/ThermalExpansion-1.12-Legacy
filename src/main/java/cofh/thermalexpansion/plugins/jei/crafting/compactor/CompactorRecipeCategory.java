@@ -53,6 +53,11 @@ public abstract class CompactorRecipeCategory extends BlankRecipeCategory<Compac
 		return localizedName;
 	}
 
+	@Override
+	public String getModName() {
+		return "ThermalExpansion";
+	}
+
 	@Nonnull
 	@Override
 	public IDrawable getBackground() {
@@ -76,7 +81,7 @@ public abstract class CompactorRecipeCategory extends BlankRecipeCategory<Compac
 	public void setRecipe(IRecipeLayout recipeLayout, CompactorRecipeWrapper recipeWrapper, IIngredients ingredients) {
 
 		List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
-		List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class);
+		List<List<ItemStack>> outputs = ingredients.getOutputs(ItemStack.class);
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 

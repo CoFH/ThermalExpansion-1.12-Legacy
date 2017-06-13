@@ -84,6 +84,11 @@ public class RefineryRecipeCategory extends BlankRecipeCategory<RefineryRecipeWr
 		return localizedName;
 	}
 
+	@Override
+	public String getModName() {
+		return "ThermalExpansion";
+	}
+
 	@Nonnull
 	@Override
 	public IDrawable getBackground() {
@@ -104,8 +109,8 @@ public class RefineryRecipeCategory extends BlankRecipeCategory<RefineryRecipeWr
 	public void setRecipe(IRecipeLayout recipeLayout, RefineryRecipeWrapper recipeWrapper, IIngredients ingredients) {
 
 		List<List<FluidStack>> inputs = ingredients.getInputs(FluidStack.class);
-		List<ItemStack> outputItems = ingredients.getOutputs(ItemStack.class);
-		List<FluidStack> outputFluids = ingredients.getOutputs(FluidStack.class);
+		List<List<ItemStack>> outputItems = ingredients.getOutputs(ItemStack.class);
+		List<List<FluidStack>> outputFluids = ingredients.getOutputs(FluidStack.class);
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();

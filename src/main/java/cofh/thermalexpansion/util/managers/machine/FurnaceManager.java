@@ -30,7 +30,7 @@ public class FurnaceManager {
 
 	public static RecipeFurnace getRecipe(ItemStack input) {
 
-		if (input == null) {
+		if (input.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
@@ -46,7 +46,7 @@ public class FurnaceManager {
 
 	public static RecipeFurnace getRecipePyrolysis(ItemStack input) {
 
-		if (input == null) {
+		if (input.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
@@ -82,7 +82,7 @@ public class FurnaceManager {
 
 	public static boolean isFood(ItemStack input) {
 
-		if (input == null) {
+		if (input.isEmpty()) {
 			return false;
 		}
 		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
@@ -96,7 +96,7 @@ public class FurnaceManager {
 
 	public static boolean isOre(ItemStack input) {
 
-		if (input == null) {
+		if (input.isEmpty()) {
 			return false;
 		}
 		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
@@ -246,11 +246,11 @@ public class FurnaceManager {
 		handledBlocks.add(Blocks.QUARTZ_ORE);
 
 		for (ItemStack key : smeltingList.keySet()) {
-			if (key == null || key.getItem() == null || recipeExists(key)) {
+			if (key.isEmpty() || recipeExists(key)) {
 				continue;
 			}
 			output = smeltingList.get(key);
-			if (output == null || handledBlocks.contains(Block.getBlockFromItem(key.getItem()))) {
+			if (output.isEmpty() || handledBlocks.contains(Block.getBlockFromItem(key.getItem()))) {
 				continue;
 			}
 			int energy = DEFAULT_ENERGY;
@@ -320,7 +320,7 @@ public class FurnaceManager {
 	/* ADD RECIPES */
 	public static RecipeFurnace addRecipe(int energy, ItemStack input, ItemStack output) {
 
-		if (input == null || output == null || energy <= 0 || recipeExists(input)) {
+		if (input.isEmpty() || output.isEmpty() || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
 		RecipeFurnace recipe = new RecipeFurnace(input, output, energy);
@@ -330,7 +330,7 @@ public class FurnaceManager {
 
 	public static RecipeFurnace addRecipePyrolysis(int energy, ItemStack input, ItemStack output, int creosote) {
 
-		if (input == null || output == null || energy <= 0 || recipeExistsPyrolysis(input)) {
+		if (input.isEmpty() || output.isEmpty() || energy <= 0 || recipeExistsPyrolysis(input)) {
 			return null;
 		}
 		RecipeFurnace recipe = new RecipeFurnace(input, output, energy, creosote);
@@ -381,11 +381,11 @@ public class FurnaceManager {
 			this.energy = energy;
 			this.creosote = creosote;
 
-			if (input.stackSize <= 0) {
-				input.stackSize = 1;
+			if (input.getCount() <= 0) {
+				input.setCount(1);
 			}
-			if (output.stackSize <= 0) {
-				output.stackSize = 1;
+			if (output.getCount() <= 0) {
+				output.setCount(1);
 			}
 		}
 

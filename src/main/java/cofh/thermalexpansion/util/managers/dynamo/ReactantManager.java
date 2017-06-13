@@ -35,12 +35,12 @@ public class ReactantManager {
 
 	public static Reaction getReaction(ItemStack reactant, FluidStack fluid) {
 
-		return reactant == null || fluid == null ? null : reactionMap.get(Arrays.asList(new ComparableItemStack(reactant).hashCode(), fluid.getFluid().hashCode()));
+		return reactant.isEmpty() || fluid == null ? null : reactionMap.get(Arrays.asList(new ComparableItemStack(reactant).hashCode(), fluid.getFluid().hashCode()));
 	}
 
 	public static Reaction getReaction(ItemStack reactant, Fluid fluid) {
 
-		return reactant == null || fluid == null ? null : reactionMap.get(Arrays.asList(new ComparableItemStack(reactant).hashCode(), fluid.hashCode()));
+		return reactant.isEmpty() || fluid == null ? null : reactionMap.get(Arrays.asList(new ComparableItemStack(reactant).hashCode(), fluid.hashCode()));
 	}
 
 	public static boolean reactionExists(ItemStack reactant, FluidStack fluid) {
@@ -131,7 +131,7 @@ public class ReactantManager {
 	/* ADD REACTIONS */
 	public static boolean addReaction(ItemStack reactant, Fluid fluid, int energy) {
 
-		if (reactant == null || fluid == null || energy < 10000) {
+		if (reactant.isEmpty() || fluid == null || energy < 10000) {
 			return false;
 		}
 		if (reactionExists(reactant, fluid)) {

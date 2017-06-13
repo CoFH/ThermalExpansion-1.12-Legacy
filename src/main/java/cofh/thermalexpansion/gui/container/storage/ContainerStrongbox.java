@@ -95,7 +95,7 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		return stack != null && (!(stack.getItem() instanceof IInventoryContainerItem) || ((IInventoryContainerItem) stack.getItem()).getSizeInventory(stack) <= 0);
+		return !stack.isEmpty() && (!(stack.getItem() instanceof IInventoryContainerItem) || ((IInventoryContainerItem) stack.getItem()).getSizeInventory(stack) <= 0);
 	}
 
 }

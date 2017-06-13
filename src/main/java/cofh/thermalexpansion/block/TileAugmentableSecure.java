@@ -36,6 +36,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IWorldNameable;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 public abstract class TileAugmentableSecure extends TileRSControl implements IAugmentable, ISecurable, ITransferControl, IUpgradeable, IWorldNameable {
@@ -96,15 +97,17 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		if (augments.length > 0) {
 			ItemStack[] tempAugments = new ItemStack[augments.length];
 			for (int i = 0; i < augments.length; i++) {
-				tempAugments[i] = augments[i] == null ? null : augments[i].copy();
+				tempAugments[i] = augments[i].isEmpty() ? ItemStack.EMPTY : augments[i].copy();
 			}
 			augments = new ItemStack[getNumAugmentSlots(level)];
+			Arrays.fill(augments, ItemStack.EMPTY);
 			for (int i = 0; i < tempAugments.length; i++) {
-				augments[i] = tempAugments[i] == null ? null : tempAugments[i].copy();
+				augments[i] = tempAugments[i].isEmpty() ? ItemStack.EMPTY : tempAugments[i].copy();
 			}
 			augmentStatus = new boolean[getNumAugmentSlots(level)];
 		} else {
 			augments = new ItemStack[getNumAugmentSlots(level)];
+			Arrays.fill(augments, ItemStack.EMPTY);
 			augmentStatus = new boolean[getNumAugmentSlots(level)];
 		}
 		setLevelFlags();
@@ -168,12 +171,12 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 		if (canPlayerAccess(player)) {
 			if (hasGui()) {
-				player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			}
 			return hasGui();
 		}
-		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new TextComponentTranslation("chat.cofh.secure", getOwnerName()));
+		if (ServerHelper.isServerWorld(world)) {
+			player.sendMessage(new TextComponentTranslation("chat.cofh.secure", getOwnerName()));
 		}
 		return false;
 	}
@@ -237,7 +240,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 			NBTTagCompound tag = list.getCompoundTagAt(i);
 			int slot = tag.getInteger("Slot");
 			if (slot >= 0 && slot < augments.length) {
-				augments[slot] = ItemStack.loadItemStackFromNBT(tag);
+				augments[slot] = new ItemStack(tag);
 			}
 		}
 	}
@@ -249,7 +252,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		}
 		NBTTagList list = new NBTTagList();
 		for (int i = 0; i < augments.length; i++) {
-			if (augments[i] != null) {
+			if (!augments[i].isEmpty()) {
 				NBTTagCompound tag = new NBTTagCompound();
 				tag.setInteger("Slot", i);
 				augments[i].writeToNBT(tag);
@@ -356,7 +359,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 			return false;
 		}
 		for (int i = 0; i < augments.length; i++) {
-			if (augments[i] == null) {
+			if (augments[i].isEmpty()) {
 				augments[i] = ItemHelper.cloneStack(augment, 1);
 				updateAugmentStatus();
 				markChunkDirty();
@@ -400,7 +403,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 		this.access = access;
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			sendAccessPacket();
 		}
 		return true;
@@ -445,7 +448,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 						}
 					}.start();
 				}
-				if (worldObj != null) {
+				if (world != null) {
 					markChunkDirty();
 					sendTilePacket(Side.CLIENT);
 				}
@@ -509,7 +512,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 			return false;
 		}
 		enableAutoInput = input;
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			PacketTEBase.sendTransferUpdatePacketToServer(this, pos);
 		} else {
 			sendTilePacket(Side.CLIENT);
@@ -524,7 +527,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 			return false;
 		}
 		enableAutoOutput = output;
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			PacketTEBase.sendTransferUpdatePacketToServer(this, pos);
 		} else {
 			sendTilePacket(Side.CLIENT);

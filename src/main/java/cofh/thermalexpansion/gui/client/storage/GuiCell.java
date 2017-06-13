@@ -99,7 +99,7 @@ public class GuiCell extends GuiCore {
 		super.updateScreen();
 
 		if (!baseTile.canAccess()) {
-			this.mc.thePlayer.closeScreen();
+			this.mc.player.closeScreen();
 		}
 		redstoneTab.setVisible(baseTile.hasRedstoneControl());
 

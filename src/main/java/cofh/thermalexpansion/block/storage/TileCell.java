@@ -140,7 +140,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 			if (isCreative) {
 				energyStorage.setEnergyStored(energyStorage.getMaxEnergyStored());
 			}
-			if (worldObj != null) {
+			if (world != null) {
 				updateTrackers();
 			}
 			return true;
@@ -175,7 +175,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		if (redstoneControlOrDisable()) {

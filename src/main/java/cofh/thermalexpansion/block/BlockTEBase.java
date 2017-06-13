@@ -76,10 +76,10 @@ public abstract class BlockTEBase extends BlockCoreTile {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		RayTraceResult traceResult = RayTracer.retrace(player);
-		PlayerInteractEvent event = new PlayerInteractEvent.RightClickBlock(player, hand, heldItem, pos, side, traceResult.hitVec);
+		PlayerInteractEvent event = new PlayerInteractEvent.RightClickBlock(player, hand, pos, side, traceResult.hitVec);
 		if (MinecraftForge.EVENT_BUS.post(event) || event.getResult() == Result.DENY) {
 			return false;
 		}
@@ -232,7 +232,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 					dropEntity.setOwner(player.getName());
 					// Set Owner - ensures dismantling player can pick it up first.
 				}
-				world.spawnEntityInWorld(dropEntity);
+				world.spawnEntity(dropEntity);
 
 				if (player != null) {
 					CoreUtils.dismantleLog(player.getName(), state.getBlock(), meta, pos);

@@ -7,6 +7,7 @@ import cofh.api.energy.IEnergyStorage;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.EnergyHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -41,8 +42,8 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 		if (EnergyHelper.isEnergyContainerItem(inventory[chargeSlot])) {
 			int energyRequest = Math.min(energyStorage.getMaxReceive(), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
 			energyStorage.receiveEnergy(((IEnergyContainerItem) inventory[chargeSlot].getItem()).extractEnergy(inventory[chargeSlot], energyRequest, false), false);
-			if (inventory[chargeSlot].stackSize <= 0) {
-				inventory[chargeSlot] = null;
+			if (inventory[chargeSlot].getCount() <= 0) {
+				inventory[chargeSlot] = ItemStack.EMPTY;
 			}
 		}
 	}

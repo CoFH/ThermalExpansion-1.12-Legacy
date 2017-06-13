@@ -16,13 +16,6 @@ public class TransposerRecipeHandler implements IRecipeHandler<TransposerRecipeW
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return null;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull TransposerRecipeWrapper recipe) {
 
 		return recipe.getUid();

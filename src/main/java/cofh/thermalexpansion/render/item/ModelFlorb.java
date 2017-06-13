@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.render.item;
 
+import codechicken.lib.model.ItemQuadBakery;
 import codechicken.lib.model.PerspectiveAwareModelProperties;
-import codechicken.lib.model.bakery.ItemModelBakery;
-import codechicken.lib.model.blockbakery.IItemBakery;
+import codechicken.lib.model.bakery.generation.IItemBakery;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import com.google.common.collect.ImmutableList;
@@ -47,7 +47,7 @@ public final class ModelFlorb implements IItemBakery, IIconRegister {
 				fluid = FluidRegistry.getFluid(stack.getTagCompound().getString("Fluid"));
 			}
 
-			quads.addAll(ItemModelBakery.bakeItem(ImmutableList.of(magmatic ? MAGMATIC_BASE : BASE)));
+			quads.addAll(ItemQuadBakery.bakeItem(ImmutableList.of(magmatic ? MAGMATIC_BASE : BASE)));
 
 			if (fluid != null) {
 				TextureAtlasSprite fluidSprite = TextureUtils.getTexture(fluid.getStill(new FluidStack(fluid, 1)));

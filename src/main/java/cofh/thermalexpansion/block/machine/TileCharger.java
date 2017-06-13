@@ -21,6 +21,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class TileCharger extends TileMachineBase {
@@ -77,6 +78,8 @@ public class TileCharger extends TileMachineBase {
 
 		super();
 		inventory = new ItemStack[1 + 1 + 1 + 1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
+
 		createAllSlots(inventory.length);
 	}
 
@@ -209,7 +212,7 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		//		if (ServerHelper.isClientWorld(worldObj)) {
@@ -247,15 +250,15 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null || energyStorage.getEnergyStored() <= 0) {
+		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		if (!hasContainerItem && EnergyHelper.isEnergyContainerItem(inventory[0])) {
 			inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
-			inventory[0].stackSize--;
+			inventory[0].shrink(1);
 
-			if (inventory[0].stackSize <= 0) {
-				inventory[0] = null;
+			if (inventory[0].getCount() <= 0) {
+				inventory[0] = ItemStack.EMPTY;
 			}
 			containerItem = (IEnergyContainerItem) inventory[1].getItem();
 			hasContainerItem = true;
@@ -263,10 +266,10 @@ public class TileCharger extends TileMachineBase {
 		}
 		if (!hasEnergyHandler && EnergyHelper.isEnergyHandler(inventory[0])) {
 			inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
-			inventory[0].stackSize--;
+			inventory[0].shrink(1);
 
-			if (inventory[0].stackSize <= 0) {
-				inventory[0] = null;
+			if (inventory[0].getCount() <= 0) {
+				inventory[0] = ItemStack.EMPTY;
 			}
 			handler = inventory[1].getCapability(CapabilityEnergy.ENERGY, null);
 			hasEnergyHandler = true;
@@ -277,12 +280,12 @@ public class TileCharger extends TileMachineBase {
 		if (recipe == null) {
 			return false;
 		}
-		if (inventory[0].stackSize < recipe.getInput().stackSize) {
+		if (inventory[0].getCount() < recipe.getInput().getCount()) {
 			return false;
 		}
 		ItemStack output = recipe.getOutput();
 
-		return inventory[2] == null || inventory[2].isItemEqual(output) && inventory[2].stackSize + output.stackSize <= output.getMaxStackSize();
+		return inventory[2].isEmpty() || inventory[2].isItemEqual(output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
 	}
 
 	@Override
@@ -292,7 +295,7 @@ public class TileCharger extends TileMachineBase {
 			return true;
 		}
 		RecipeCharger recipe = ChargerManager.getRecipe(inventory[1]);
-		return recipe != null && recipe.getInput().stackSize <= inventory[1].stackSize;
+		return recipe != null && recipe.getInput().getCount() <= inventory[1].getCount();
 	}
 
 	@Override
@@ -302,11 +305,11 @@ public class TileCharger extends TileMachineBase {
 		processMax = recipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
-		inventory[1] = ItemHelper.cloneStack(inventory[0], recipe.getInput().stackSize);
-		inventory[0].stackSize -= recipe.getInput().stackSize;
+		inventory[1] = ItemHelper.cloneStack(inventory[0], recipe.getInput().getCount());
+		inventory[0].shrink(recipe.getInput().getCount());
 
-		if (inventory[0].stackSize <= 0) {
-			inventory[0] = null;
+		if (inventory[0].getCount() <= 0) {
+			inventory[0] = ItemStack.EMPTY;
 		}
 	}
 
@@ -320,12 +323,12 @@ public class TileCharger extends TileMachineBase {
 			return;
 		}
 		ItemStack output = recipe.getOutput();
-		if (inventory[2] == null) {
+		if (inventory[2].isEmpty()) {
 			inventory[2] = ItemHelper.cloneStack(output);
 		} else {
-			inventory[2].stackSize += output.stackSize;
+			inventory[2].grow(output.getCount());
 		}
-		inventory[1] = null;
+		inventory[1] = ItemStack.EMPTY;
 	}
 
 	@Override
@@ -370,15 +373,15 @@ public class TileCharger extends TileMachineBase {
 	private void transferContainerItem() {
 
 		if (hasContainerItem) {
-			if (inventory[2] == null) {
+			if (inventory[2].isEmpty()) {
 				inventory[2] = ItemHelper.cloneStack(inventory[1], 1);
-				inventory[1] = null;
+				inventory[1] = ItemStack.EMPTY;
 				containerItem = null;
 				hasContainerItem = false;
 			} else {
-				if (ItemHelper.itemsIdentical(inventory[1], inventory[2]) && inventory[1].getMaxStackSize() > 1 && inventory[2].stackSize + 1 <= inventory[2].getMaxStackSize()) {
-					inventory[2].stackSize++;
-					inventory[1] = null;
+				if (ItemHelper.itemsIdentical(inventory[1], inventory[2]) && inventory[1].getMaxStackSize() > 1 && inventory[2].getCount() + 1 <= inventory[2].getMaxStackSize()) {
+					inventory[2].grow(1);
+					inventory[1] = ItemStack.EMPTY;
 					containerItem = null;
 					hasContainerItem = false;
 				}
@@ -386,10 +389,10 @@ public class TileCharger extends TileMachineBase {
 		}
 		if (!hasContainerItem && EnergyHelper.isEnergyContainerItem(inventory[0])) {
 			inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
-			inventory[0].stackSize--;
+			inventory[0].shrink(1);
 
-			if (inventory[0].stackSize <= 0) {
-				inventory[0] = null;
+			if (inventory[0].getCount() <= 0) {
+				inventory[0] = ItemStack.EMPTY;
 			}
 			containerItem = (IEnergyContainerItem) inventory[1].getItem();
 			hasContainerItem = true;
@@ -399,15 +402,15 @@ public class TileCharger extends TileMachineBase {
 	private void transferHandler() {
 
 		if (hasEnergyHandler) {
-			if (inventory[2] == null) {
+			if (inventory[2].isEmpty()) {
 				inventory[2] = ItemHelper.cloneStack(inventory[1], 1);
-				inventory[1] = null;
+				inventory[1] = ItemStack.EMPTY;
 				handler = null;
 				hasEnergyHandler = false;
 			} else {
-				if (ItemHelper.itemsIdentical(inventory[1], inventory[2]) && inventory[1].getMaxStackSize() > 1 && inventory[2].stackSize + 1 <= inventory[2].getMaxStackSize()) {
-					inventory[2].stackSize++;
-					inventory[1] = null;
+				if (ItemHelper.itemsIdentical(inventory[1], inventory[2]) && inventory[1].getMaxStackSize() > 1 && inventory[2].getCount() + 1 <= inventory[2].getMaxStackSize()) {
+					inventory[2].grow(1);
+					inventory[1] = ItemStack.EMPTY;
 					handler = null;
 					hasEnergyHandler = false;
 				}
@@ -415,10 +418,10 @@ public class TileCharger extends TileMachineBase {
 		}
 		if (!hasEnergyHandler && EnergyHelper.isEnergyHandler(inventory[0])) {
 			inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
-			inventory[0].stackSize--;
+			inventory[0].shrink(1);
 
-			if (inventory[0].stackSize <= 0) {
-				inventory[0] = null;
+			if (inventory[0].getCount() <= 0) {
+				inventory[0] = ItemStack.EMPTY;
 			}
 			handler = inventory[1].getCapability(CapabilityEnergy.ENERGY, null);
 			hasEnergyHandler = true;
@@ -447,7 +450,7 @@ public class TileCharger extends TileMachineBase {
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
 
-		if (inventory[1] != null && EnergyHelper.isEnergyContainerItem(inventory[1])) {
+		if (!inventory[1].isEmpty() && EnergyHelper.isEnergyContainerItem(inventory[1])) {
 			containerItem = (IEnergyContainerItem) inventory[1].getItem();
 			hasContainerItem = true;
 		} else if (EnergyHelper.isEnergyHandler(inventory[1])) {
@@ -556,8 +559,8 @@ public class TileCharger extends TileMachineBase {
 
 		ItemStack stack = super.decrStackSize(slot, amount);
 
-		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
-			if (isActive && (inventory[slot] == null || !hasValidInput())) {
+		if (ServerHelper.isServerWorld(world) && slot == 1) {
+			if (isActive && (inventory[slot].isEmpty() || !hasValidInput())) {
 				processOff();
 				containerItem = null;
 				hasContainerItem = false;
@@ -570,12 +573,12 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 
-		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
-			if (isActive && inventory[slot] != null) {
-				if (stack == null || !stack.isItemEqual(inventory[slot]) || !hasValidInput()) {
+		if (ServerHelper.isServerWorld(world) && slot == 1) {
+			if (isActive && !inventory[slot].isEmpty()) {
+				if (stack.isEmpty() || !stack.isItemEqual(inventory[slot]) || !hasValidInput()) {
 					isActive = false;
 					wasActive = true;
-					tracker.markTime(worldObj);
+					tracker.markTime(world);
 					processRem = 0;
 				}
 			}
@@ -585,8 +588,8 @@ public class TileCharger extends TileMachineBase {
 		}
 		inventory[slot] = stack;
 
-		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-			stack.stackSize = getInventoryStackLimit();
+		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
+			stack.setCount(getInventoryStackLimit());
 		}
 	}
 

@@ -36,7 +36,7 @@ public class CompactorManager {
 
 	public static RecipeCompactor getRecipe(ItemStack input, Mode mode) {
 
-		if (input == null) {
+		if (input.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackCompactor query = new ComparableItemStackCompactor(input);
@@ -89,7 +89,7 @@ public class CompactorManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return input != null && validationSet.contains(new ComparableItemStackCompactor(input));
+		return !input.isEmpty() && validationSet.contains(new ComparableItemStackCompactor(input));
 	}
 
 	public static void initialize() {
@@ -331,7 +331,7 @@ public class CompactorManager {
 	/* ADD RECIPES */
 	public static RecipeCompactor addRecipe(int energy, ItemStack input, ItemStack output, Mode mode) {
 
-		if (input == null || output == null || energy <= 0 || recipeExists(input, mode)) {
+		if (input.isEmpty() || output.isEmpty() || energy <= 0 || recipeExists(input, mode)) {
 			return null;
 		}
 		RecipeCompactor recipe = new RecipeCompactor(input, output, energy);
@@ -407,11 +407,11 @@ public class CompactorManager {
 			this.output = output;
 			this.energy = energy;
 
-			if (input.stackSize <= 0) {
-				input.stackSize = 1;
+			if (input.getCount() <= 0) {
+				input.setCount(1);
 			}
-			if (output.stackSize <= 0) {
-				output.stackSize = 1;
+			if (output.getCount() <= 0) {
+				output.setCount(1);
 			}
 		}
 

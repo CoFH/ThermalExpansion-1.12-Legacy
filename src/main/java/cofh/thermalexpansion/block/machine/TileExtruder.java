@@ -31,6 +31,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class TileExtruder extends TileMachineBase implements ICustomInventory {
@@ -112,6 +113,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		super();
 		inventory = new ItemStack[1 + 1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 
 		for (int i = 0; i < 3; i++) {
@@ -146,13 +148,13 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		if (energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		if (inventory[0] == null) {
+		if (inventory[0].isEmpty()) {
 			return true;
 		}
 		if (!inventory[0].isItemEqual(outputItems[curSelection])) {
 			return false;
 		}
-		return inventory[0].stackSize + outputItems[curSelection].stackSize <= outputItems[prevSelection].getMaxStackSize();
+		return inventory[0].getCount() + outputItems[curSelection].getCount() <= outputItems[prevSelection].getMaxStackSize();
 	}
 
 	@Override
@@ -172,10 +174,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected void processFinish() {
 
-		if (inventory[0] == null) {
+		if (inventory[0].isEmpty()) {
 			inventory[0] = outputItems[prevSelection].copy();
 		} else {
-			inventory[0].stackSize += outputItems[prevSelection].stackSize;
+			inventory[0].grow(outputItems[prevSelection].getCount());
 		}
 		hotTank.drain(processLava[prevSelection], true);
 
@@ -191,7 +193,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		if (!enableAutoOutput) {
 			return;
 		}
-		if (inventory[0] == null) {
+		if (inventory[0].isEmpty()) {
 			return;
 		}
 		int side;
@@ -402,7 +404,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		outputItems[1] = processItems[1].copy();
 
-		if (worldObj != null && ServerHelper.isServerWorld(worldObj)) {
+		if (world != null && ServerHelper.isServerWorld(world)) {
 			flagNoWater = augmentNoWater;
 		}
 		augmentNoWater = false;
@@ -419,7 +421,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		if (!augmentNoWater && isActive && coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
 			processOff();
 		}
-		if (worldObj != null && ServerHelper.isServerWorld(worldObj) && flagNoWater != augmentNoWater) {
+		if (world != null && ServerHelper.isServerWorld(world) && flagNoWater != augmentNoWater) {
 			sendTilePacket(Side.CLIENT);
 		}
 	}

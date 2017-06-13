@@ -54,11 +54,11 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 	public void onNeighborBlockChange() {
 
 		wasPowered = isPowered;
-		powerLevel = worldObj.isBlockIndirectlyGettingPowered(pos);
+		powerLevel = world.isBlockIndirectlyGettingPowered(pos);
 		isPowered = powerLevel > 0;
 
 		if (wasPowered != isPowered && sendRedstoneUpdates()) {
-			PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, pos);
+			PacketTEBase.sendRSPowerUpdatePacketToClients(this, world, pos);
 			onRedstoneUpdate();
 		}
 	}
@@ -145,7 +145,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 
 		wasPowered = this.isPowered;
 		this.isPowered = isPowered;
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			callBlockUpdate();
 		}
 	}
@@ -160,7 +160,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 	public final boolean setControl(ControlMode control) {
 
 		rsMode = control;
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			PacketTEBase.sendRSConfigUpdatePacketToServer(this, pos);
 		}
 		return true;

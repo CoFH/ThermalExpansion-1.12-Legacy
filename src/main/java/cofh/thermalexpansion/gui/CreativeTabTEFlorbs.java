@@ -32,9 +32,9 @@ public class CreativeTabTEFlorbs extends CreativeTabs {
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public Item getTabIconItem() {
+	public ItemStack getTabIconItem() {
 
-		return getIconItemStack().getItem();
+		return getIconItemStack();
 	}
 
 	@Override

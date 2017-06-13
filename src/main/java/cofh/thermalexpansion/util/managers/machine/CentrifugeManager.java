@@ -22,8 +22,8 @@ public class CentrifugeManager {
 			this.output = output;
 			this.energy = energy;
 
-			if (input.stackSize <= 0) {
-				input.stackSize = 1;
+			if (input.getCount() <= 0) {
+				input.setCount(1);
 			}
 		}
 

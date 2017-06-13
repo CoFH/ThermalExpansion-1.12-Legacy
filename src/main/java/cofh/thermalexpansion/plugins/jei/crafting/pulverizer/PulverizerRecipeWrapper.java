@@ -53,7 +53,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 
 		if (ComparableItemStackPulverizer.getOreID(recipe.getInput()) != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()), false)) {
-				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().stackSize));
+				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));
 			}
 		} else {
 			recipeInputs.add(recipe.getInput());
@@ -61,7 +61,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 		if (uId.equals(RecipeUidsTE.PULVERIZER_PETROTHEUM)) {
 			recipeInputFluids.add(new FluidStack(TFFluids.fluidPetrotheum, TilePulverizer.fluidAmount));
 			inputFluids = Collections.singletonList(recipeInputFluids);
-			recipeOutputs.add(ItemHelper.cloneStack(recipe.getPrimaryOutput(), recipe.getPrimaryOutput().stackSize + 1));
+			recipeOutputs.add(ItemHelper.cloneStack(recipe.getPrimaryOutput(), recipe.getPrimaryOutput().getCount() + 1));
 			energy = recipe.getEnergy() * 3 / 2;
 		} else {
 			inputFluids = Collections.emptyList();

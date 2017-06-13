@@ -18,6 +18,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.Arrays;
+
 public class TileFisher extends TileDeviceBase implements ITickable {
 
 	private static final int TYPE = BlockDevice.Type.FISHER.getMetadata();
@@ -61,7 +63,9 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	public TileFisher() {
 
 		super();
+
 		inventory = new ItemStack[10];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 
 		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
@@ -100,7 +104,7 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		if (!timeCheckOffset()) {
@@ -127,7 +131,7 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 	protected void updateValidity() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		targetWater = 0;
@@ -135,7 +139,7 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		Iterable<BlockPos> area = BlockPos.getAllInBox(pos.add(-2, -1, -2), pos.add(2, -1, 2));
 
 		for (BlockPos query : area) {
-			if (isWater(worldObj.getBlockState(query))) {
+			if (isWater(world.getBlockState(query))) {
 				targetWater++;
 			}
 		}
@@ -182,7 +186,7 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 	protected boolean timeCheckOffset() {
 
-		return (worldObj.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
+		return (world.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
 	}
 
 	/* GUI METHODS */

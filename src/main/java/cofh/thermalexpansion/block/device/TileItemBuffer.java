@@ -14,6 +14,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.Arrays;
+
 public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 	private static final int TYPE = BlockDevice.Type.ITEM_BUFFER.getMetadata();
@@ -51,6 +53,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		super();
 		inventory = new ItemStack[9];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 
 		hasAutoInput = true;
@@ -69,10 +72,10 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
-		if (worldObj.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF != 0) {
+		if (world.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF != 0) {
 			return;
 		}
 		boolean curActive = isActive;

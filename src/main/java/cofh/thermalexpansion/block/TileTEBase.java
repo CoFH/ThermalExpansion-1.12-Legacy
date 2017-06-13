@@ -67,7 +67,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	public boolean openGui(EntityPlayer player) {
 
 		if (hasGui()) {
-			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
 		return false;
@@ -134,7 +134,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		tileName = payload.getString();
-		worldObj.checkLight(pos);
+		world.checkLight(pos);
 	}
 
 	/* ITileInfoPacketHandler */

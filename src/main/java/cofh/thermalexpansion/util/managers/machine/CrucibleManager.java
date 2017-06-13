@@ -29,7 +29,7 @@ public class CrucibleManager {
 
 	public static RecipeCrucible getRecipe(ItemStack input) {
 
-		return input == null ? null : recipeMap.get(new ComparableItemStackCrucible(input));
+		return input.isEmpty() ? null : recipeMap.get(new ComparableItemStackCrucible(input));
 	}
 
 	public static boolean recipeExists(ItemStack input) {
@@ -119,7 +119,7 @@ public class CrucibleManager {
 	/* ADD RECIPES */
 	public static RecipeCrucible addRecipe(int energy, ItemStack input, FluidStack output) {
 
-		if (input == null || output == null || output.amount <= 0 || energy <= 0 || recipeExists(input)) {
+		if (input.isEmpty() || output == null || output.amount <= 0 || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
 		RecipeCrucible recipe = new RecipeCrucible(input, output, energy);

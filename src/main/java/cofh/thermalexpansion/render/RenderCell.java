@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.render;
 
-import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
+import codechicken.lib.model.bakery.generation.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
@@ -16,9 +16,10 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -86,9 +87,9 @@ public class RenderCell implements ILayeredBlockBakery {
 
 	/* ICustomBlockBakery */
 	@Override
-	public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
+	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess world, BlockPos pos) {
 
-		TileCell cell = (TileCell) tileEntity;
+		TileCell cell = (TileCell) world.getTileEntity(pos);
 
 		if (cell == null) {
 			return null;
@@ -105,7 +106,7 @@ public class RenderCell implements ILayeredBlockBakery {
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
 
-		if (face == null && stack != null) {
+		if (face == null && !stack.isEmpty()) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);
 			CCRenderState ccrs = CCRenderState.instance();

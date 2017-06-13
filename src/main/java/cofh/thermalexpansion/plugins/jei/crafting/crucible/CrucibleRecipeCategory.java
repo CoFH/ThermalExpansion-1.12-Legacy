@@ -81,6 +81,11 @@ public class CrucibleRecipeCategory extends BlankRecipeCategory<CrucibleRecipeWr
 		return localizedName;
 	}
 
+	@Override
+	public String getModName() {
+		return "ThermalExpansion";
+	}
+
 	@Nonnull
 	@Override
 	public IDrawable getBackground() {
@@ -100,7 +105,7 @@ public class CrucibleRecipeCategory extends BlankRecipeCategory<CrucibleRecipeWr
 	public void setRecipe(IRecipeLayout recipeLayout, CrucibleRecipeWrapper recipeWrapper, IIngredients ingredients) {
 
 		List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
-		List<FluidStack> outputs = ingredients.getOutputs(FluidStack.class);
+		List<List<FluidStack>> outputs = ingredients.getOutputs(FluidStack.class);
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();

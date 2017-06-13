@@ -17,16 +17,9 @@ public class ReactantFuelHandler implements IRecipeHandler<ReactantFuelWrapper> 
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return RecipeUidsTE.DYNAMO_REACTANT;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull ReactantFuelWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return  RecipeUidsTE.DYNAMO_REACTANT;
 	}
 
 	@Nonnull

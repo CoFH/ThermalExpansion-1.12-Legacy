@@ -34,17 +34,17 @@ public class PacketTEBase extends PacketCoFHBase {
 			switch (PacketTypes.values()[type]) {
 				case RS_POWER_UPDATE:
 					BlockPos pos = getCoords();
-					IRedstoneControl rs = (IRedstoneControl) player.worldObj.getTileEntity(pos);
+					IRedstoneControl rs = (IRedstoneControl) player.world.getTileEntity(pos);
 					rs.setPowered(getBool());
 					return;
 				case RS_CONFIG_UPDATE:
 					pos = getCoords();
-					rs = (IRedstoneControl) player.worldObj.getTileEntity(pos);
+					rs = (IRedstoneControl) player.world.getTileEntity(pos);
 					rs.setControl(ControlMode.values()[getByte()]);
 					return;
 				case TRANSFER_UPDATE:
 					pos = getCoords();
-					ITransferControl transfer = (ITransferControl) player.worldObj.getTileEntity(pos);
+					ITransferControl transfer = (ITransferControl) player.world.getTileEntity(pos);
 					transfer.setTransferIn(getBool());
 					transfer.setTransferOut(getBool());
 				case SECURITY_UPDATE:

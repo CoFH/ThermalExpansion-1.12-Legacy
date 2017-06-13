@@ -17,16 +17,9 @@ public class NumismaticFuelHandler implements IRecipeHandler<NumismaticFuelWrapp
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return RecipeUidsTE.DYNAMO_NUMISMATIC;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull NumismaticFuelWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return RecipeUidsTE.DYNAMO_NUMISMATIC;
 	}
 
 	@Nonnull

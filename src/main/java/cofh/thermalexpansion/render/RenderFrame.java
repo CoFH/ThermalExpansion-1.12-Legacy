@@ -1,8 +1,7 @@
 package cofh.thermalexpansion.render;
 
 import codechicken.lib.model.PerspectiveAwareModelProperties;
-import codechicken.lib.model.bakery.PlanarFaceBakery;
-import codechicken.lib.model.blockbakery.IItemBakery;
+import codechicken.lib.model.bakery.generation.IItemBakery;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.texture.TextureUtils;
@@ -43,7 +42,7 @@ public class RenderFrame implements IItemBakery {
 			//				RenderCell.modelCenter.render(ccrs, new IconTransformation(center));
 			//			}
 			buffer.finishDrawing();
-			return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
+			return buffer.bake();
 		}
 		return ImmutableList.of();
 	}

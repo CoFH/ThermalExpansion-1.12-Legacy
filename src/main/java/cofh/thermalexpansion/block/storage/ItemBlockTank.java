@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.storage;
 
+import cofh.api.fluid.IFluidContainerItem;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.item.IEnchantableItem;
 import cofh.core.util.helpers.RedstoneControlHelper;
@@ -17,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
 
 import java.util.List;
 
@@ -89,7 +89,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	}
 
 	@Override
-	public boolean isItemTool(ItemStack stack) {
+	public boolean isEnchantable(ItemStack stack) {
 
 		return true;
 	}
@@ -119,7 +119,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	@Override
 	public int fill(ItemStack container, FluidStack resource, boolean doFill) {
 
-		if (resource == null || container.stackSize > 1 || isCreative(container)) {
+		if (resource == null || container.getCount() > 1 || isCreative(container)) {
 			return 0;
 		}
 		int capacity = getCapacity(container);
@@ -171,7 +171,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	@Override
 	public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
 
-		if (!container.getTagCompound().hasKey("Fluid") || maxDrain == 0 || container.stackSize > 1) {
+		if (!container.getTagCompound().hasKey("Fluid") || maxDrain == 0 || container.getCount() > 1) {
 			return null;
 		}
 		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));

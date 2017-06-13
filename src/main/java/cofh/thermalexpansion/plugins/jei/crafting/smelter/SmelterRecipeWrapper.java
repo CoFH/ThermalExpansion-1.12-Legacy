@@ -56,14 +56,14 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 
 		if (ComparableItemStackSmelter.getOreID(recipe.getPrimaryInput()) != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getPrimaryInput()), false)) {
-				recipeInputsPrimary.add(ItemHelper.cloneStack(ore, recipe.getPrimaryInput().stackSize));
+				recipeInputsPrimary.add(ItemHelper.cloneStack(ore, recipe.getPrimaryInput().getCount()));
 			}
 		} else {
 			recipeInputsPrimary.add(recipe.getPrimaryInput());
 		}
 		if (ComparableItemStackSmelter.getOreID(recipe.getSecondaryInput()) != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getSecondaryInput()), false)) {
-				recipeInputsSecondary.add(ItemHelper.cloneStack(ore, recipe.getSecondaryInput().stackSize));
+				recipeInputsSecondary.add(ItemHelper.cloneStack(ore, recipe.getSecondaryInput().getCount()));
 			}
 		} else {
 			recipeInputsSecondary.add(recipe.getSecondaryInput());
@@ -74,7 +74,7 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 		if (uId.equals(RecipeUidsTE.SMELTER_PYROTHEUM)) {
 			recipeInputFluids.add(new FluidStack(TFFluids.fluidPyrotheum, TileSmelter.fluidAmount));
 			inputFluids = Collections.singletonList(recipeInputFluids);
-			recipeOutputs.add(ItemHelper.cloneStack(recipe.getPrimaryOutput(), recipe.getPrimaryOutput().stackSize + 1));
+			recipeOutputs.add(ItemHelper.cloneStack(recipe.getPrimaryOutput(), recipe.getPrimaryOutput().getCount() + 1));
 			energy = recipe.getEnergy() * 3 / 2;
 		} else {
 			inputFluids = Collections.emptyList();

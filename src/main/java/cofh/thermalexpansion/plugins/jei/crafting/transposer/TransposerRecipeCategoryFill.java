@@ -59,10 +59,15 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 	}
 
 	@Override
+	public String getModName() {
+		return "ThermalExpansion";
+	}
+
+	@Override
 	public void setRecipe(IRecipeLayout recipeLayout, TransposerRecipeWrapper recipeWrapper, IIngredients ingredients) {
 
 		List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
-		List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class);
+		List<List<ItemStack>> outputs = ingredients.getOutputs(ItemStack.class);
 		List<List<FluidStack>> fluids = ingredients.getInputs(FluidStack.class);
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();

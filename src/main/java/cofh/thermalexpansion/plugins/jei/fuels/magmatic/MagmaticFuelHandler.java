@@ -17,16 +17,9 @@ public class MagmaticFuelHandler implements IRecipeHandler<MagmaticFuelWrapper> 
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return RecipeUidsTE.DYNAMO_MAGMATIC;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull MagmaticFuelWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return RecipeUidsTE.DYNAMO_MAGMATIC;
 	}
 
 	@Nonnull

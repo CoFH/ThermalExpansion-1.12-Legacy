@@ -16,13 +16,6 @@ public class SawmillRecipeHandler implements IRecipeHandler<SawmillRecipeWrapper
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return null;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull SawmillRecipeWrapper recipe) {
 
 		return recipe.getUid();

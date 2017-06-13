@@ -74,6 +74,11 @@ public class ReactantFuelCategory extends BaseFuelCategory<ReactantFuelWrapper> 
 	}
 
 	@Override
+	public String getModName() {
+		return "ThermalExpansion";
+	}
+
+	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
 		energyMeter.draw(minecraft, 71, 7);

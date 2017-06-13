@@ -42,7 +42,7 @@ public class TapperManager {
 
 	public static FluidStack getFluid(ItemStack stack) {
 
-		return stack == null ? null : itemMap.get(new ItemWrapper(stack.getItem(), ItemHelper.getItemDamage(stack)));
+		return stack.isEmpty() ? null : itemMap.get(new ItemWrapper(stack.getItem(), ItemHelper.getItemDamage(stack)));
 	}
 
 	public static boolean mappingExists(ItemStack stack) {
@@ -57,7 +57,7 @@ public class TapperManager {
 
 	public static int getFertilizerMultiplier(ItemStack stack) {
 
-		if (stack == null) {
+		if (stack.isEmpty()) {
 			return 0;
 		}
 		return fertilizerMap.get(new ComparableItemStack(stack));
@@ -102,7 +102,7 @@ public class TapperManager {
 	/* ADD MAPPING */
 	public static boolean addMapping(ItemStack item, FluidStack fluid) {
 
-		if (item == null || fluid == null) {
+		if (item.isEmpty() || fluid == null) {
 			return false;
 		}
 		if (item.getItem() instanceof ItemBlock) {
@@ -114,7 +114,7 @@ public class TapperManager {
 
 	public static boolean addLeafMapping(ItemStack log, ItemStack leaf) {
 
-		if (log == null || leaf == null) {
+		if (log.isEmpty() || leaf == null) {
 			return false;
 		}
 		leafMap.put(new BlockWrapper(((ItemBlock) log.getItem()).getBlock(), ItemHelper.getItemDamage(log)), new BlockWrapper(((ItemBlock) leaf.getItem()).getBlock(), ItemHelper.getItemDamage(leaf)));

@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.item;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.blockbakery.CCBakeryModel;
-import codechicken.lib.model.blockbakery.IBakeryItem;
-import codechicken.lib.model.blockbakery.IItemBakery;
+import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.IBakeryProvider;
+import codechicken.lib.model.bakery.generation.IBakery;
 import cofh.core.item.ItemMulti;
 import cofh.core.util.core.IInitializer;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -20,7 +20,7 @@ import java.util.List;
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
-public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
+public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvider {
 
 	public ItemFrame() {
 
@@ -44,7 +44,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
 	/* IBakeryItem */
 	@Override
 	@SideOnly (Side.CLIENT)
-	public IItemBakery getBakery() {
+	public IBakery getBakery() {
 
 		return RenderFrame.INSTANCE;
 	}

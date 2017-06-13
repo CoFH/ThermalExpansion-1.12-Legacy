@@ -17,16 +17,9 @@ public class CrucibleRecipeHandler implements IRecipeHandler<CrucibleRecipeWrapp
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return RecipeUidsTE.CRUCIBLE;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull CrucibleRecipeWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return RecipeUidsTE.CRUCIBLE;
 	}
 
 	@Nonnull

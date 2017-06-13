@@ -173,7 +173,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		boolean curActive = isActive;
@@ -255,7 +255,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		isActive = false;
 		wasActive = true;
-		tracker.markTime(worldObj);
+		tracker.markTime(world);
 	}
 
 	protected int processTick() {
@@ -281,7 +281,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	protected void updateAdjacentHandlers() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		TileEntity tile = BlockHelper.getAdjacentTileEntity(this, facing);
@@ -304,7 +304,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (curActive != isActive && !wasActive) {
 			updateLighting();
 			sendTilePacket(Side.CLIENT);
-		} else if (wasActive && tracker.hasDelayPassed(worldObj, 100)) {
+		} else if (wasActive && tracker.hasDelayPassed(world, 100)) {
 			wasActive = false;
 			updateLighting();
 			sendTilePacket(Side.CLIENT);
@@ -550,7 +550,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public boolean rotateBlock() {
 
-		if (worldObj.getEntitiesWithinAABB(Entity.class, getBlockType().getBoundingBox(worldObj.getBlockState(pos), worldObj, pos)).size() != 0) {
+		if (world.getEntitiesWithinAABB(Entity.class, getBlockType().getBoundingBox(world.getBlockState(pos), world, pos)).size() != 0) {
 			return false;
 		}
 		facing++;

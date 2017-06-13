@@ -17,16 +17,9 @@ public class EnervationFuelHandler implements IRecipeHandler<EnervationFuelWrapp
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return RecipeUidsTE.DYNAMO_ENERVATION;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull EnervationFuelWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return RecipeUidsTE.DYNAMO_ENERVATION;
 	}
 
 	@Nonnull

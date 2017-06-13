@@ -76,14 +76,14 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 			if (isCreative(stack)) {
 				tooltip.add("    " + StringHelper.ORANGE + StringHelper.getItemName(stored));
 			} else {
-				tooltip.add("    " + StringHelper.ORANGE + StringHelper.formatNumber(stored.stackSize) + " " + StringHelper.getItemName(stored));
+				tooltip.add("    " + StringHelper.ORANGE + StringHelper.formatNumber(stored.getCount()) + " " + StringHelper.getItemName(stored));
 			}
 		}
 		// RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}
 
 	@Override
-	public boolean isItemTool(ItemStack stack) {
+	public boolean isEnchantable(ItemStack stack) {
 
 		return true;
 	}

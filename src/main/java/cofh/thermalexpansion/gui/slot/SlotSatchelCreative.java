@@ -29,10 +29,10 @@ public class SlotSatchelCreative extends Slot {
 	@Override
 	public void putStack(ItemStack stack) {
 
-		if (stack == null) {
+		if (stack.isEmpty()) {
 			return;
 		}
-		stack.stackSize = stack.getMaxStackSize();
+		stack.setCount(stack.getMaxStackSize());
 		this.inventory.setInventorySlotContents(this.getSlotIndex(), stack);
 		this.onSlotChanged();
 	}

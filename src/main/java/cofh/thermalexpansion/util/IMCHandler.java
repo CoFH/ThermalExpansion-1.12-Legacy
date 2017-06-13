@@ -31,108 +31,108 @@ public class IMCHandler {
 				switch (operation) {
 					/* ADD RECIPES */
 					case ADD_FURNACE_RECIPE:
-						FurnaceManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("output")));
+						FurnaceManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("output")));
 						continue;
 					case ADD_PULVERIZER_RECIPE:
 						if (nbt.hasKey("secondaryChance")) {
-							PulverizerManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryOutput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryOutput")), nbt.getInteger("secondaryChance"));
+							PulverizerManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("primaryOutput")), new ItemStack(nbt.getCompoundTag("secondaryOutput")), nbt.getInteger("secondaryChance"));
 						} else if (nbt.hasKey("secondaryOutput")) {
-							PulverizerManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryOutput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryOutput")));
+							PulverizerManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("primaryOutput")), new ItemStack(nbt.getCompoundTag("secondaryOutput")));
 						} else {
-							PulverizerManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryOutput")));
+							PulverizerManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("primaryOutput")));
 						}
 						continue;
 					case ADD_SAWMILL_RECIPE:
 						if (nbt.hasKey("secondaryChance")) {
-							SawmillManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryOutput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryOutput")), nbt.getInteger("secondaryChance"));
+							SawmillManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("primaryOutput")), new ItemStack(nbt.getCompoundTag("secondaryOutput")), nbt.getInteger("secondaryChance"));
 						} else if (nbt.hasKey("secondaryOutput")) {
-							SawmillManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryOutput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryOutput")));
+							SawmillManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("primaryOutput")), new ItemStack(nbt.getCompoundTag("secondaryOutput")));
 						} else {
-							SawmillManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryOutput")));
+							SawmillManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("primaryOutput")));
 						}
 						continue;
 					case ADD_SMELTER_RECIPE:
 						if (nbt.hasKey("secondaryChance")) {
-							SmelterManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryOutput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryOutput")), nbt.getInteger("secondaryChance"));
+							SmelterManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("primaryInput")), new ItemStack(nbt.getCompoundTag("secondaryInput")), new ItemStack(nbt.getCompoundTag("primaryOutput")), new ItemStack(nbt.getCompoundTag("secondaryOutput")), nbt.getInteger("secondaryChance"));
 						} else if (nbt.hasKey("secondaryOutput")) {
-							SmelterManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryOutput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryOutput")));
+							SmelterManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("primaryInput")), new ItemStack(nbt.getCompoundTag("secondaryInput")), new ItemStack(nbt.getCompoundTag("primaryOutput")), new ItemStack(nbt.getCompoundTag("secondaryOutput")));
 						} else {
-							SmelterManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryOutput")));
+							SmelterManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("primaryInput")), new ItemStack(nbt.getCompoundTag("secondaryInput")), new ItemStack(nbt.getCompoundTag("primaryOutput")));
 						}
 						continue;
 					case ADD_INSOLATOR_RECIPE:
 						if (nbt.hasKey("secondaryChance")) {
-							InsolatorManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryOutput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryOutput")), nbt.getInteger("secondaryChance"));
+							InsolatorManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("primaryInput")), new ItemStack(nbt.getCompoundTag("secondaryInput")), new ItemStack(nbt.getCompoundTag("primaryOutput")), new ItemStack(nbt.getCompoundTag("secondaryOutput")), nbt.getInteger("secondaryChance"));
 						} else if (nbt.hasKey("secondaryOutput")) {
-							InsolatorManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryOutput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryOutput")));
+							InsolatorManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("primaryInput")), new ItemStack(nbt.getCompoundTag("secondaryInput")), new ItemStack(nbt.getCompoundTag("primaryOutput")), new ItemStack(nbt.getCompoundTag("secondaryOutput")));
 						} else {
-							InsolatorManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryOutput")));
+							InsolatorManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("primaryInput")), new ItemStack(nbt.getCompoundTag("secondaryInput")), new ItemStack(nbt.getCompoundTag("primaryOutput")));
 						}
 						continue;
 					case ADD_COMPACTOR_PRESS_RECIPE:
-						CompactorManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("output")), Mode.PRESS);
+						CompactorManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("output")), Mode.PRESS);
 						continue;
 					case ADD_COMPACTOR_STORAGE_RECIPE:
-						CompactorManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("output")), Mode.STORAGE);
+						CompactorManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("output")), Mode.STORAGE);
 						continue;
 					case ADD_COMPACTOR_MINT_RECIPE:
-						CompactorManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("output")), Mode.MINT);
+						CompactorManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("output")), Mode.MINT);
 						continue;
 					case ADD_CRUCIBLE_RECIPE:
-						CrucibleManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("output")));
+						CrucibleManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("output")));
 						continue;
 					case ADD_REFINERY_RECIPE:
-						RefineryManager.addRecipe(nbt.getInteger("energy"), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("input")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("output")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("outputItem")));
+						RefineryManager.addRecipe(nbt.getInteger("energy"), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("input")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("output")), new ItemStack(nbt.getCompoundTag("outputItem")));
 						continue;
 					case ADD_TRANSPOSER_FILL_RECIPE:
-						TransposerManager.addFillRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("output")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("fluid")), nbt.getBoolean("reversible"));
+						TransposerManager.addFillRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("output")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("fluid")), nbt.getBoolean("reversible"));
 						continue;
 					case ADD_TRANSPOSER_EXTRACT_RECIPE:
-						TransposerManager.addExtractRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("output")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("fluid")), nbt.getInteger("chance"), nbt.getBoolean("reversible"));
+						TransposerManager.addExtractRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("output")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("fluid")), nbt.getInteger("chance"), nbt.getBoolean("reversible"));
 						continue;
 					case ADD_CHARGER_RECIPE:
-						ChargerManager.addRecipe(nbt.getInteger("energy"), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("output")));
+						ChargerManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("output")));
 						continue;
 
 					/* REMOVE RECIPES */
 					case REMOVE_FURNACE_RECIPE:
-						FurnaceManager.removeRecipe(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")));
+						FurnaceManager.removeRecipe(new ItemStack(nbt.getCompoundTag("input")));
 						continue;
 					case REMOVE_PULVERIZER_RECIPE:
-						PulverizerManager.removeRecipe(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")));
+						PulverizerManager.removeRecipe(new ItemStack(nbt.getCompoundTag("input")));
 						continue;
 					case REMOVE_SAWMILL_RECIPE:
-						SawmillManager.removeRecipe(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")));
+						SawmillManager.removeRecipe(new ItemStack(nbt.getCompoundTag("input")));
 						continue;
 					case REMOVE_SMELTER_RECIPE:
-						SmelterManager.removeRecipe(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryInput")));
+						SmelterManager.removeRecipe(new ItemStack(nbt.getCompoundTag("primaryInput")), new ItemStack(nbt.getCompoundTag("secondaryInput")));
 						continue;
 					case REMOVE_INSOLATOR_RECIPE:
-						InsolatorManager.removeRecipe(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("primaryInput")), ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("secondaryInput")));
+						InsolatorManager.removeRecipe(new ItemStack(nbt.getCompoundTag("primaryInput")), new ItemStack(nbt.getCompoundTag("secondaryInput")));
 						continue;
 					case REMOVE_COMPACTOR_PRESS_RECIPE:
-						CompactorManager.removeRecipe(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), Mode.PRESS);
+						CompactorManager.removeRecipe(new ItemStack(nbt.getCompoundTag("input")), Mode.PRESS);
 						continue;
 					case REMOVE_COMPACTOR_STORAGE_RECIPE:
-						CompactorManager.removeRecipe(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), Mode.STORAGE);
+						CompactorManager.removeRecipe(new ItemStack(nbt.getCompoundTag("input")), Mode.STORAGE);
 						continue;
 					case REMOVE_COMPACTOR_MINT_RECIPE:
-						CompactorManager.removeRecipe(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), Mode.MINT);
+						CompactorManager.removeRecipe(new ItemStack(nbt.getCompoundTag("input")), Mode.MINT);
 						continue;
 					case REMOVE_CRUCIBLE_RECIPE:
-						CrucibleManager.removeRecipe(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")));
+						CrucibleManager.removeRecipe(new ItemStack(nbt.getCompoundTag("input")));
 						continue;
 					case REMOVE_REFINERY_RECIPE:
 						RefineryManager.removeRecipe(FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("input")));
 						continue;
 					case REMOVE_TRANSPOSER_FILL_RECIPE:
-						TransposerManager.removeFillRecipe(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("fluid")));
+						TransposerManager.removeFillRecipe(new ItemStack(nbt.getCompoundTag("input")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("fluid")));
 						continue;
 					case REMOVE_TRANSPOSER_EXTRACT_RECIPE:
-						TransposerManager.removeExtractRecipe(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")));
+						TransposerManager.removeExtractRecipe(new ItemStack(nbt.getCompoundTag("input")));
 						continue;
 					case REMOVE_CHARGER_RECIPE:
-						ChargerManager.removeRecipe(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("input")));
+						ChargerManager.removeRecipe(new ItemStack(nbt.getCompoundTag("input")));
 						continue;
 
 					/* FUELS */

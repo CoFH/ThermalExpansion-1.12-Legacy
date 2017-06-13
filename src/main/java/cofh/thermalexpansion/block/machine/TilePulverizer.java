@@ -26,6 +26,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class TilePulverizer extends TileMachineBase {
@@ -86,6 +87,7 @@ public class TilePulverizer extends TileMachineBase {
 
 		super();
 		inventory = new ItemStack[1 + 1 + 1 + 1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 		tank.setLock(TFFluids.fluidPetrotheum);
 	}
@@ -99,7 +101,7 @@ public class TilePulverizer extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null || energyStorage.getEnergyStored() <= 0) {
+		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		RecipePulverizer recipe = PulverizerManager.getRecipe(inventory[0]);
@@ -107,34 +109,34 @@ public class TilePulverizer extends TileMachineBase {
 		if (recipe == null) {
 			return false;
 		}
-		if (inventory[0].stackSize < recipe.getInput().stackSize) {
+		if (inventory[0].getCount() < recipe.getInput().getCount()) {
 			return false;
 		}
 		if (recipe == null) {
 			return false;
 		}
-		if (inventory[0].stackSize < recipe.getInput().stackSize) {
+		if (inventory[0].getCount() < recipe.getInput().getCount()) {
 			return false;
 		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		if (secondaryItem != null && inventory[2] != null) {
+		if (!secondaryItem.isEmpty() && !inventory[2].isEmpty()) {
 			if (!augmentSecondaryNull && !inventory[2].isItemEqual(secondaryItem)) {
 				return false;
 			}
-			if (!augmentSecondaryNull && inventory[2].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
+			if (!augmentSecondaryNull && inventory[2].getCount() + secondaryItem.getCount() > secondaryItem.getMaxStackSize()) {
 				return false;
 			}
 		}
-		return inventory[1] == null || inventory[1].isItemEqual(primaryItem) && inventory[1].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
+		return inventory[1].isEmpty() || inventory[1].isItemEqual(primaryItem) && inventory[1].getCount() + primaryItem.getCount() <= primaryItem.getMaxStackSize();
 	}
 
 	@Override
 	protected boolean hasValidInput() {
 
 		RecipePulverizer recipe = PulverizerManager.getRecipe(inventory[0]);
-		return recipe != null && recipe.getInput().stackSize <= inventory[0].stackSize;
+		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 	}
 
 	@Override
@@ -156,47 +158,47 @@ public class TilePulverizer extends TileMachineBase {
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		if (inventory[1] == null) {
+		if (inventory[1].isEmpty()) {
 			inventory[1] = ItemHelper.cloneStack(primaryItem);
 		} else {
-			inventory[1].stackSize += primaryItem.stackSize;
+			inventory[1].grow(primaryItem.getCount());
 		}
 		boolean augmentPetrotheumCheck = augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() >= fluidAmount;
 
 		if (augmentPetrotheumCheck) {
 			tank.modifyFluidStored(-fluidAmount);
 
-			if (inventory[1].stackSize < inventory[1].getMaxStackSize()) {
-				inventory[1].stackSize++;
+			if (inventory[1].getCount() < inventory[1].getMaxStackSize()) {
+				inventory[1].grow(1);
 			}
 		}
-		if (secondaryItem != null) {
+		if (!secondaryItem.isEmpty()) {
 			int modifiedChance = augmentPetrotheumCheck ? secondaryChance - 25 : secondaryChance;
 
 			int recipeChance = recipe.getSecondaryOutputChance();
-			if (recipeChance >= 100 || worldObj.rand.nextInt(modifiedChance) < recipeChance) {
-				if (inventory[2] == null) {
+			if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
+				if (inventory[2].isEmpty()) {
 					inventory[2] = ItemHelper.cloneStack(secondaryItem);
 
-					if (recipeChance > modifiedChance && worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-						inventory[2].stackSize += secondaryItem.stackSize;
+					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+						inventory[2].grow(secondaryItem.getCount());
 					}
 				} else if (inventory[2].isItemEqual(secondaryItem)) {
-					inventory[2].stackSize += secondaryItem.stackSize;
+					inventory[2].grow(secondaryItem.getCount());
 
-					if (recipeChance > modifiedChance && worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-						inventory[2].stackSize += secondaryItem.stackSize;
+					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+						inventory[2].grow(secondaryItem.getCount());
 					}
 				}
-				if (inventory[2].stackSize > inventory[2].getMaxStackSize()) {
-					inventory[2].stackSize = inventory[2].getMaxStackSize();
+				if (inventory[2].getCount() > inventory[2].getMaxStackSize()) {
+					inventory[2].setCount(inventory[2].getMaxStackSize());
 				}
 			}
 		}
-		inventory[0].stackSize -= recipe.getInput().stackSize;
+		inventory[0].shrink(recipe.getInput().getCount());
 
-		if (inventory[0].stackSize <= 0) {
-			inventory[0] = null;
+		if (inventory[0].getCount() <= 0) {
+			inventory[0] = ItemStack.EMPTY;
 		}
 	}
 
@@ -225,7 +227,7 @@ public class TilePulverizer extends TileMachineBase {
 			return;
 		}
 		int side;
-		if (inventory[1] != null) {
+		if (!inventory[1].isEmpty()) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
 				if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
@@ -236,7 +238,7 @@ public class TilePulverizer extends TileMachineBase {
 				}
 			}
 		}
-		if (inventory[2] == null) {
+		if (inventory[2].isEmpty()) {
 			return;
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {

@@ -17,16 +17,9 @@ public class CompressionFuelHandler implements IRecipeHandler<CompressionFuelWra
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return RecipeUidsTE.DYNAMO_COMPRESSION;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull CompressionFuelWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return RecipeUidsTE.DYNAMO_COMPRESSION;
 	}
 
 	@Nonnull

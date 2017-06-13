@@ -29,6 +29,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class TileRefinery extends TileMachineBase {
@@ -77,6 +78,7 @@ public class TileRefinery extends TileMachineBase {
 
 		super();
 		inventory = new ItemStack[1 + 1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 	}
 
@@ -89,7 +91,7 @@ public class TileRefinery extends TileMachineBase {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		transferOutputFluid();
@@ -127,11 +129,11 @@ public class TileRefinery extends TileMachineBase {
 		FluidStack outputFluid = recipe.getOutputFluid();
 		ItemStack outputItem = recipe.getOutputItem();
 
-		if (outputItem != null && inventory[0] != null) {
+		if (!outputItem.isEmpty() && !inventory[0].isEmpty()) {
 			if (!augmentSecondaryNull && !inventory[0].isItemEqual(outputItem)) {
 				return false;
 			}
-			if (!augmentSecondaryNull && inventory[0].stackSize + outputItem.stackSize > outputItem.getMaxStackSize()) {
+			if (!augmentSecondaryNull && inventory[0].getCount() + outputItem.getCount() > outputItem.getMaxStackSize()) {
 				return false;
 			}
 		}
@@ -172,14 +174,14 @@ public class TileRefinery extends TileMachineBase {
 
 		ItemStack outputItem = recipe.getOutputItem();
 
-		if (outputItem != null) {
-			if (inventory[0] == null) {
+		if (!outputItem.isEmpty()) {
+			if (inventory[0].isEmpty()) {
 				inventory[0] = ItemHelper.cloneStack(outputItem);
 			} else {
-				inventory[0].stackSize += outputItem.stackSize;
+				inventory[0].grow(outputItem.getCount());
 			}
-			if (inventory[0].stackSize > inventory[0].getMaxStackSize()) {
-				inventory[0].stackSize = inventory[0].getMaxStackSize();
+			if (inventory[0].getCount() > inventory[0].getMaxStackSize()) {
+				inventory[0].setCount(inventory[0].getMaxStackSize());
 			}
 		}
 		inputTank.drain(recipe.getInput().amount, true);
@@ -192,7 +194,7 @@ public class TileRefinery extends TileMachineBase {
 			return;
 		}
 		int side;
-		if (inventory[0] != null) {
+		if (!inventory[0].isEmpty()) {
 			for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 				side = i % 6;
 				if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {

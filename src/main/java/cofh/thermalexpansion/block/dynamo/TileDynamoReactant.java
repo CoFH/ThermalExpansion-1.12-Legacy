@@ -29,6 +29,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class TileDynamoReactant extends TileDynamoBase {
@@ -68,6 +69,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 		super();
 		inventory = new ItemStack[1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 	}
 
 	@Override

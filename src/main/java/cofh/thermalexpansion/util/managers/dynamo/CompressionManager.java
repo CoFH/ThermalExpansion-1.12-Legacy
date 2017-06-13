@@ -19,19 +19,19 @@ public class CompressionManager {
 		return ImmutableSet.copyOf(fuelMap.keySet());
 	}
 
-	public static boolean isValidFuel(FluidStack stack) {
+	public static boolean isValidFuel(FluidStack fluid) {
 
-		return stack != null && fuelMap.containsKey(stack.getFluid());
+		return fluid != null && fuelMap.containsKey(fluid.getFluid());
 	}
 
-	public static int getFuelEnergy(FluidStack stack) {
+	public static int getFuelEnergy(FluidStack fluid) {
 
-		return stack == null ? 0 : fuelMap.get(stack.getFluid());
+		return fluid == null ? 0 : fuelMap.get(fluid.getFluid());
 	}
 
-	public static int getFuelEnergy100mB(FluidStack stack) {
+	public static int getFuelEnergy100mB(FluidStack fluid) {
 
-		return stack == null ? 0 : fuelMap.get(stack.getFluid()) / 10;
+		return fluid == null ? 0 : fuelMap.get(fluid.getFluid()) / 10;
 	}
 
 	public static void initialize() {

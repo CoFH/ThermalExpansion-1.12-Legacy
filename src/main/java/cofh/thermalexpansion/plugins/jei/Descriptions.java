@@ -43,7 +43,7 @@ public class Descriptions {
 
 	public static void addDescription(ItemStack stack, String loc) {
 
-		if (stack == null || loc == null) {
+		if (stack.isEmpty() || loc == null) {
 			return;
 		}
 		descMap.put(stack, loc);

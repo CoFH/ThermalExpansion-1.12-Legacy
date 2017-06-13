@@ -17,16 +17,9 @@ public class ChargerRecipeHandler implements IRecipeHandler<ChargerRecipeWrapper
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return RecipeUidsTE.CHARGER;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull ChargerRecipeWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return RecipeUidsTE.CHARGER;
 	}
 
 	@Nonnull

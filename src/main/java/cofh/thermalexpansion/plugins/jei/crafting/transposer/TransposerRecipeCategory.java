@@ -49,7 +49,7 @@ public abstract class TransposerRecipeCategory extends BlankRecipeCategory<Trans
 
 		List<TransposerRecipeWrapper> recipes = new ArrayList<>();
 
-		ImmutableList<ItemStack> ingredients = ingredientRegistry.getIngredients(ItemStack.class);
+		List<ItemStack> ingredients = ingredientRegistry.getIngredients(ItemStack.class);
 
 		for (ItemStack ingredient : ingredients) {
 			if (ingredient.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
@@ -59,10 +59,10 @@ public abstract class TransposerRecipeCategory extends BlankRecipeCategory<Trans
 				drain = emptyCapability.drain(Fluid.BUCKET_VOLUME, true);
 
 				if (drain != null) {
-					if (emptyStack.stackSize == 0) {
-						emptyStack = null;
+					if (emptyStack.getCount() == 0) {
+						emptyStack = ItemStack.EMPTY;
 					}
-					RecipeTransposer recipe = new RecipeTransposer(ingredient, emptyStack, drain, TransposerManager.DEFAULT_ENERGY, emptyStack == null ? 0 : 100);
+					RecipeTransposer recipe = new RecipeTransposer(ingredient, emptyStack, drain, TransposerManager.DEFAULT_ENERGY, emptyStack.isEmpty() ? 0 : 100);
 					recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_EXTRACT));
 					addFillRecipe(ingredient, drain.getFluid(), recipes, guiHelper);
 				} else {

@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.render;
 
-import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
+import codechicken.lib.model.bakery.generation.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
@@ -21,6 +21,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
 import java.util.ArrayList;
@@ -132,9 +134,9 @@ public class RenderDynamo implements ILayeredBlockBakery {
 
 	/* ICustomBlockBakery */
 	@Override
-	public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tile) {
+	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess world, BlockPos pos) {
 
-		TileDynamoBase dynamo = (TileDynamoBase) tile;
+		TileDynamoBase dynamo = (TileDynamoBase) world.getTileEntity(pos);
 
 		if (dynamo == null) {
 			return null;
@@ -151,7 +153,7 @@ public class RenderDynamo implements ILayeredBlockBakery {
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
 
-		if (face == null && stack != null) {
+		if (face == null && !stack.isEmpty()) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);
 			CCRenderState ccrs = CCRenderState.instance();

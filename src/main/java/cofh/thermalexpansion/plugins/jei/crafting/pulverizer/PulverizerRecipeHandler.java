@@ -16,13 +16,6 @@ public class PulverizerRecipeHandler implements IRecipeHandler<PulverizerRecipeW
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return null;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull PulverizerRecipeWrapper recipe) {
 
 		return recipe.getUid();

@@ -29,6 +29,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class TileCrucible extends TileMachineBase {
@@ -78,6 +79,7 @@ public class TileCrucible extends TileMachineBase {
 
 		super();
 		inventory = new ItemStack[1 + 1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 	}
 
@@ -90,7 +92,7 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		transferOutputFluid();
@@ -107,7 +109,7 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null || energyStorage.getEnergyStored() <= 0) {
+		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);
@@ -115,7 +117,7 @@ public class TileCrucible extends TileMachineBase {
 		if (recipe == null) {
 			return false;
 		}
-		if (inventory[0].stackSize < recipe.getInput().stackSize) {
+		if (inventory[0].getCount() < recipe.getInput().getCount()) {
 			return false;
 		}
 		FluidStack output = recipe.getOutput();
@@ -126,7 +128,7 @@ public class TileCrucible extends TileMachineBase {
 	protected boolean hasValidInput() {
 
 		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);
-		return recipe != null && recipe.getInput().stackSize <= inventory[0].stackSize;
+		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 	}
 
 	@Override
@@ -154,10 +156,10 @@ public class TileCrucible extends TileMachineBase {
 			return;
 		}
 		tank.fill(recipe.getOutput(), true);
-		inventory[0].stackSize--;
+		inventory[0].shrink(1);
 
-		if (inventory[0].stackSize <= 0) {
-			inventory[0] = null;
+		if (inventory[0].getCount() <= 0) {
+			inventory[0] = ItemStack.EMPTY;
 		}
 	}
 

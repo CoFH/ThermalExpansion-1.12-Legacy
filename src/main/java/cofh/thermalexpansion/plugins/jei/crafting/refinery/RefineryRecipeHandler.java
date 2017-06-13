@@ -17,16 +17,9 @@ public class RefineryRecipeHandler implements IRecipeHandler<RefineryRecipeWrapp
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return RecipeUidsTE.REFINERY;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull RefineryRecipeWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return RecipeUidsTE.REFINERY;
 	}
 
 	@Nonnull

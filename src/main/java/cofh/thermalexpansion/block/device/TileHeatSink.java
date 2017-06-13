@@ -96,7 +96,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		if (!timeCheckOffset()) {
@@ -164,7 +164,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 	protected boolean timeCheckOffset() {
 
-		return (worldObj.getTotalWorldTime() + offset) % (coolantFactor) == 0;
+		return (world.getTotalWorldTime() + offset) % (coolantFactor) == 0;
 	}
 
 	/* GUI METHODS */

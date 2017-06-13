@@ -76,7 +76,7 @@ public class FurnaceRecipeCategoryPyrolysis extends FurnaceRecipeCategory {
 
 		super.setRecipe(recipeLayout, recipeWrapper, ingredients);
 
-		List<FluidStack> outputFluids = ingredients.getOutputs(FluidStack.class);
+		List<List<FluidStack>> outputFluids = ingredients.getOutputs(FluidStack.class);
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 		guiFluidStacks.init(0, true, 141, 1, 16, 60, 1000, false, tankOverlay);

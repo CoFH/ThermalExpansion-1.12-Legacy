@@ -82,8 +82,9 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 	}
 
 	@Override
-	public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 
+		ItemStack stack = player.getHeldItem(hand);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
@@ -102,7 +103,7 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 			if (ServerHelper.isServerWorld(world)) { // Server
 				if (((IUpgradeable) tile).installUpgrade(stack)) {
 					if (!player.capabilities.isCreativeMode) {
-						stack.stackSize--;
+						stack.shrink(1);
 					}
 					ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.thermalexpansion.upgrade.install.success"));
 				} else {
@@ -112,7 +113,7 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 			} else { // Client
 				if (((IUpgradeable) tile).installUpgrade(stack)) {
 					if (!player.capabilities.isCreativeMode) {
-						stack.stackSize--;
+						stack.shrink(1);
 					}
 					ServerHelper.sendItemUsePacket(world, pos, side, hand, hitX, hitY, hitZ);
 					return EnumActionResult.SUCCESS;

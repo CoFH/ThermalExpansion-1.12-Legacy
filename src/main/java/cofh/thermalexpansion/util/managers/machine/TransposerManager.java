@@ -27,12 +27,12 @@ public class TransposerManager {
 
 	public static RecipeTransposer getFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return input == null || fluid == null ? null : recipeMapFill.get(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()));
+		return input.isEmpty() || fluid == null ? null : recipeMapFill.get(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()));
 	}
 
 	public static RecipeTransposer getExtractRecipe(ItemStack input) {
 
-		return input == null ? null : recipeMapExtract.get(new ComparableItemStackTransposer(input));
+		return input.isEmpty() ? null : recipeMapExtract.get(new ComparableItemStackTransposer(input));
 	}
 
 	public static boolean fillRecipeExists(ItemStack input, FluidStack fluid) {
@@ -57,7 +57,7 @@ public class TransposerManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return input != null && validationSet.contains(new ComparableItemStackTransposer(input));
+		return !input.isEmpty() && validationSet.contains(new ComparableItemStackTransposer(input));
 	}
 
 	public static void initialize() {
@@ -124,7 +124,7 @@ public class TransposerManager {
 	/* ADD RECIPES */
 	public static RecipeTransposer addFillRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible) {
 
-		if (input == null || output == null || fluid == null || fluid.amount <= 0 || energy <= 0) {
+		if (input.isEmpty() || output.isEmpty() || fluid == null || fluid.amount <= 0 || energy <= 0) {
 			return null;
 		}
 		if (fillRecipeExists(input, fluid)) {
@@ -142,13 +142,13 @@ public class TransposerManager {
 
 	public static RecipeTransposer addExtractRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible) {
 
-		if (input == null || fluid == null || fluid.amount <= 0 || energy <= 0) {
+		if (input.isEmpty() || fluid == null || fluid.amount <= 0 || energy <= 0) {
 			return null;
 		}
 		if (extractRecipeExists(input, fluid)) {
 			return null;
 		}
-		if (output == null && reversible || output == null && chance != 0) {
+		if (output == null && reversible || output.isEmpty() && chance != 0) {
 			return null;
 		}
 		RecipeTransposer recipeExtraction = new RecipeTransposer(input, output, fluid, energy, chance);

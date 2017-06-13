@@ -18,14 +18,14 @@ public class Utils {
 	public static int addToInsertion(TileEntity theTile, EnumFacing from, ItemStack stack) {
 
 		stack = InventoryHelper.addToInsertion(theTile, from, stack);
-		return stack == null ? 0 : stack.stackSize;
+		return stack.isEmpty() ? 0 : stack.getCount();
 	}
 
 	public static int addToInsertion(BlockPos pos, World worldObj, EnumFacing from, ItemStack stack) {
 
 		TileEntity theTile = worldObj.getTileEntity(pos);
 		stack = InventoryHelper.addToInsertion(theTile, from, stack);
-		return stack == null ? 0 : stack.stackSize;
+		return stack.isEmpty() ? 0 : stack.getCount();
 	}
 
 	/* QUERY FUNCTIONS */
@@ -65,11 +65,11 @@ public class Utils {
 
 		EnumHand hand = EnumHand.MAIN_HAND;
 		ItemStack stack = player.getHeldItem(hand);
-		if (stack == null) {
+		if (stack.isEmpty()) {
 			hand = EnumHand.OFF_HAND;
 			stack = player.getHeldItem(hand);
 		}
-		if (stack == null) {
+		if (stack.isEmpty()) {
 			return false;
 		}
 		if (stack.getItem() instanceof IToolHammer) {
@@ -85,11 +85,11 @@ public class Utils {
 
 		EnumHand hand = EnumHand.MAIN_HAND;
 		ItemStack stack = player.getHeldItem(hand);
-		if (stack == null) {
+		if (stack.isEmpty()) {
 			hand = EnumHand.OFF_HAND;
 			stack = player.getHeldItem(hand);
 		}
-		if (stack == null) {
+		if (stack.isEmpty()) {
 			return;
 		}
 		if (stack.getItem() instanceof IToolHammer) {

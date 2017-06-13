@@ -17,16 +17,9 @@ public class SteamFuelHandler implements IRecipeHandler<SteamFuelWrapper> {
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return RecipeUidsTE.DYNAMO_STEAM;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull SteamFuelWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return RecipeUidsTE.DYNAMO_STEAM;
 	}
 
 	@Nonnull

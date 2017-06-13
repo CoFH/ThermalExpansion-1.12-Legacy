@@ -27,6 +27,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class TileSmelter extends TileMachineBase {
@@ -88,6 +89,7 @@ public class TileSmelter extends TileMachineBase {
 
 		super();
 		inventory = new ItemStack[2 + 1 + 1 + 1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 		tank.setLock(TFFluids.fluidPyrotheum);
 	}
@@ -107,7 +109,7 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null || inventory[1] == null || energyStorage.getEnergyStored() <= 0) {
+		if (inventory[0].isEmpty() || inventory[1].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		RecipeSmelter recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
@@ -116,26 +118,26 @@ public class TileSmelter extends TileMachineBase {
 			return false;
 		}
 		if (SmelterManager.isRecipeReversed(inventory[0], inventory[1])) {
-			if (recipe.getPrimaryInput().stackSize > inventory[1].stackSize || recipe.getSecondaryInput().stackSize > inventory[0].stackSize) {
+			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
 				return false;
 			}
 		} else {
-			if (recipe.getPrimaryInput().stackSize > inventory[0].stackSize || recipe.getSecondaryInput().stackSize > inventory[1].stackSize) {
+			if (recipe.getPrimaryInput().getCount() > inventory[0].getCount() || recipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
 				return false;
 			}
 		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		if (secondaryItem != null && inventory[3] != null) {
+		if (!secondaryItem.isEmpty() && !inventory[3].isEmpty()) {
 			if (!augmentSecondaryNull && !inventory[3].isItemEqual(secondaryItem)) {
 				return false;
 			}
-			if (!augmentSecondaryNull && inventory[3].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
+			if (!augmentSecondaryNull && inventory[3].getCount() + secondaryItem.getCount() > secondaryItem.getMaxStackSize()) {
 				return false;
 			}
 		}
-		return inventory[2] == null || inventory[2].isItemEqual(primaryItem) && inventory[2].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
+		return inventory[2].isEmpty() || inventory[2].isItemEqual(primaryItem) && inventory[2].getCount() + primaryItem.getCount() <= primaryItem.getMaxStackSize();
 	}
 
 	@Override
@@ -147,11 +149,11 @@ public class TileSmelter extends TileMachineBase {
 			return false;
 		}
 		if (SmelterManager.isRecipeReversed(inventory[0], inventory[1])) {
-			if (recipe.getPrimaryInput().stackSize > inventory[1].stackSize || recipe.getSecondaryInput().stackSize > inventory[0].stackSize) {
+			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
 				return false;
 			}
 		} else {
-			if (recipe.getPrimaryInput().stackSize > inventory[0].stackSize || recipe.getSecondaryInput().stackSize > inventory[1].stackSize) {
+			if (recipe.getPrimaryInput().getCount() > inventory[0].getCount() || recipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
 				return false;
 			}
 		}
@@ -177,54 +179,54 @@ public class TileSmelter extends TileMachineBase {
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		if (inventory[2] == null) {
+		if (inventory[2].isEmpty()) {
 			inventory[2] = ItemHelper.cloneStack(primaryItem);
 		} else {
-			inventory[2].stackSize += primaryItem.stackSize;
+			inventory[2].grow(primaryItem.getCount());
 		}
 		boolean augmentPyrotheumCheck = augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() >= fluidAmount;
 
 		if (augmentPyrotheumCheck) {
 			tank.modifyFluidStored(-fluidAmount);
-			if (inventory[2].stackSize < inventory[2].getMaxStackSize()) {
-				inventory[2].stackSize++;
+			if (inventory[2].getCount() < inventory[2].getMaxStackSize()) {
+				inventory[2].grow(1);
 			}
 		}
-		if (secondaryItem != null) {
+		if (!secondaryItem.isEmpty()) {
 			int modifiedChance = augmentPyrotheumCheck ? secondaryChance - 25 : secondaryChance;
 
 			int recipeChance = recipe.getSecondaryOutputChance();
-			if (recipeChance >= 100 || worldObj.rand.nextInt(modifiedChance) < recipeChance) {
-				if (inventory[3] == null) {
+			if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
+				if (inventory[3].isEmpty()) {
 					inventory[3] = ItemHelper.cloneStack(secondaryItem);
 
-					if (recipeChance > modifiedChance && worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-						inventory[3].stackSize += secondaryItem.stackSize;
+					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+						inventory[3].grow(secondaryItem.getCount());
 					}
 				} else if (inventory[3].isItemEqual(secondaryItem)) {
-					inventory[3].stackSize += secondaryItem.stackSize;
+					inventory[3].grow(secondaryItem.getCount());
 
-					if (recipeChance > modifiedChance && worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-						inventory[3].stackSize += secondaryItem.stackSize;
+					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+						inventory[3].grow(secondaryItem.getCount());
 					}
 				}
-				if (inventory[3].stackSize > inventory[3].getMaxStackSize()) {
-					inventory[3].stackSize = inventory[3].getMaxStackSize();
+				if (inventory[3].getCount() > inventory[3].getMaxStackSize()) {
+					inventory[3].setCount(inventory[3].getMaxStackSize());
 				}
 			}
 		}
 		if (SmelterManager.isRecipeReversed(inventory[0], inventory[1])) {
-			inventory[1].stackSize -= recipe.getPrimaryInput().stackSize;
-			inventory[0].stackSize -= recipe.getSecondaryInput().stackSize;
+			inventory[1].shrink(recipe.getPrimaryInput().getCount());
+			inventory[0].shrink(recipe.getSecondaryInput().getCount());
 		} else {
-			inventory[0].stackSize -= recipe.getPrimaryInput().stackSize;
-			inventory[1].stackSize -= recipe.getSecondaryInput().stackSize;
+			inventory[0].shrink(recipe.getPrimaryInput().getCount());
+			inventory[1].shrink(recipe.getSecondaryInput().getCount());
 		}
-		if (inventory[0].stackSize <= 0) {
-			inventory[0] = null;
+		if (inventory[0].getCount() <= 0) {
+			inventory[0] = ItemStack.EMPTY;
 		}
-		if (inventory[1].stackSize <= 0) {
-			inventory[1] = null;
+		if (inventory[1].getCount() <= 0) {
+			inventory[1] = ItemStack.EMPTY;
 		}
 	}
 
@@ -262,7 +264,7 @@ public class TileSmelter extends TileMachineBase {
 			return;
 		}
 		int side;
-		if (inventory[2] != null) {
+		if (!inventory[2].isEmpty()) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
 				if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
@@ -273,7 +275,7 @@ public class TileSmelter extends TileMachineBase {
 				}
 			}
 		}
-		if (inventory[3] == null) {
+		if (!inventory[3].isEmpty()) {
 			return;
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {

@@ -28,7 +28,7 @@ import javax.vecmath.Matrix4f;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> implements IItemRenderer, IPerspectiveAwareModel {
+public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> implements IItemRenderer {
 
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[6];
 
@@ -74,67 +74,27 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 
 	/* IItemRenderer */
 	@Override
-	public void renderItem(ItemStack item) {
+	public void renderItem(ItemStack stack, TransformType transformType) {
 
 		double offset = 0;
 		int access = 0;
 
-		if (item.getTagCompound() != null) {
-			access = item.getTagCompound().getByte("Access");
+		if (stack.getTagCompound() != null) {
+			access = stack.getTagCompound().getByte("Access");
 		}
 		model.boxLid.rotateAngleX = 0;
-		boolean isCreative = BlockStrongbox.itemBlock.isCreative(item);
-		int level = isCreative ? 5 : BlockStrongbox.itemBlock.getLevel(item);
+		boolean isCreative = BlockStrongbox.itemBlock.isCreative(stack);
+		int level = isCreative ? 5 : BlockStrongbox.itemBlock.getLevel(stack);
 		render(level, access, 2, offset, offset, offset);
 	}
 
 	@Override
-	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
-
-		return MapWrapper.handlePerspective(this, TransformUtils.DEFAULT_BLOCK, cameraTransformType);
-	}
-
-	/* IBakedModel */
-	@Override
-	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-
-		return new ArrayList<>();
-	}
-
-	@Override
 	public boolean isAmbientOcclusion() {
-
 		return true;
 	}
 
 	@Override
 	public boolean isGui3d() {
-
 		return true;
 	}
-
-	@Override
-	public boolean isBuiltInRenderer() {
-
-		return true;
-	}
-
-	@Override
-	public TextureAtlasSprite getParticleTexture() {
-
-		return TextureUtils.getMissingSprite();
-	}
-
-	@Override
-	public ItemCameraTransforms getItemCameraTransforms() {
-
-		return ItemCameraTransforms.DEFAULT;
-	}
-
-	@Override
-	public ItemOverrideList getOverrides() {
-
-		return ItemOverrideList.NONE;
-	}
-
 }

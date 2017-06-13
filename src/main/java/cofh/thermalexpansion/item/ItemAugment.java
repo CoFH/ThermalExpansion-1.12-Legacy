@@ -125,8 +125,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	}
 
 	@Override
-	public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 
+		ItemStack stack = player.getHeldItem(hand);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
@@ -145,7 +146,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 			if (ServerHelper.isServerWorld(world)) { // Server
 				if (((IAugmentable) tile).installAugment(stack)) {
 					if (!player.capabilities.isCreativeMode) {
-						stack.stackSize--;
+						stack.shrink(1);
 					}
 					ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.thermalexpansion.augment.install.success"));
 				} else {
@@ -155,7 +156,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 			} else { // Client
 				if (((IAugmentable) tile).installAugment(stack)) {
 					if (!player.capabilities.isCreativeMode) {
-						stack.stackSize--;
+						stack.shrink(1);
 					}
 					ServerHelper.sendItemUsePacket(world, pos, side, hand, hitX, hitY, hitZ);
 					return EnumActionResult.SUCCESS;

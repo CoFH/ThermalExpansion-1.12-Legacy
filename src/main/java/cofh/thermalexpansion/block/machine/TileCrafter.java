@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.machine;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.inventory.InventoryCraftingFalse;
+import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -17,11 +18,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class TileCrafter extends TileMachineBase {
@@ -74,6 +75,8 @@ public class TileCrafter extends TileMachineBase {
 
 		super();
 		inventory = new ItemStack[1 + 1 + 1 + 18];
+		Arrays.fill(inventory, ItemStack.EMPTY);
+
 		createAllSlots(inventory.length);
 	}
 
@@ -86,7 +89,7 @@ public class TileCrafter extends TileMachineBase {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		boolean curActive = isActive;
@@ -114,7 +117,7 @@ public class TileCrafter extends TileMachineBase {
 		if (!enableAutoOutput) {
 			return;
 		}
-		if (inventory[1] == null) {
+		if (inventory[1].isEmpty()) {
 			return;
 		}
 		int side;
@@ -138,7 +141,7 @@ public class TileCrafter extends TileMachineBase {
 
 	private boolean canCreate(ItemStack recipe) {
 
-		return recipe != null && (inventory[1] == null || recipe.isItemEqual(inventory[1]) && inventory[1].stackSize + recipe.stackSize <= recipe.getMaxStackSize());
+		return recipe != null && (inventory[1].isEmpty() || recipe.isItemEqual(inventory[1]) && inventory[1].getCount() + recipe.getCount() <= recipe.getMaxStackSize());
 	}
 
 	private boolean createItem() {
@@ -163,26 +166,26 @@ public class TileCrafter extends TileMachineBase {
 					}
 				}
 			}
-			if (recipeSlot[i] != null) {
+			if (!recipeSlot[i].isEmpty()) {
 				for (int j = 2; j < invCopy.length; j++) {
-					if (invCopy[j] != null && ItemHelper.craftingEquivalent(invCopy[j], recipeSlot[i], recipeOre[i], recipeOutput)) {
+					if (!invCopy[j].isEmpty() && ItemHelper.craftingEquivalent(invCopy[j], recipeSlot[i], recipeOre[i], recipeOutput)) {
 						crafting.setInventorySlotContents(i, invCopy[j].copy());
-						invCopy[j].stackSize--;
+						invCopy[j].shrink(1);
 
 						if (invCopy[j].getItem().hasContainerItem(invCopy[j])) {
 							ItemStack containerStack = invCopy[j].getItem().getContainerItem(invCopy[j]);
 
-							if (containerStack == null) {
+							if (containerStack.isEmpty()) {
 								// this is absolutely stupid and nobody should ever make a container item where this gets called
 							} else {
 								if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
-									containerStack = null;
+									containerStack = ItemStack.EMPTY;
 								}
-								if (containerStack != null && (/*!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) ||*/ !InventoryHelper.addItemStackToInventory(invCopy, containerStack, 3))) {
-									if (invCopy[j].stackSize <= 0) {
+								if (!containerStack.isEmpty() && (/*!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) ||*/ !InventoryHelper.addItemStackToInventory(invCopy, containerStack, 3))) {
+									if (invCopy[j].getCount() <= 0) {
 										invCopy[j] = containerStack;
-										if (containerStack.stackSize <= 0) {
-											invCopy[j].stackSize = 1;
+										if (containerStack.getCount() <= 0) {
+											invCopy[j].setCount(1);
 										}
 									} else {
 										return false;
@@ -190,8 +193,8 @@ public class TileCrafter extends TileMachineBase {
 								}
 							}
 						}
-						if (invCopy[j].stackSize <= 0) {
-							invCopy[j] = null;
+						if (invCopy[j].getCount() <= 0) {
+							invCopy[j] = ItemStack.EMPTY;
 						}
 						found = true;
 						break;
@@ -203,7 +206,7 @@ public class TileCrafter extends TileMachineBase {
 
 				found = false;
 			} else {
-				crafting.setInventorySlotContents(i, null);
+				crafting.setInventorySlotContents(i, ItemStack.EMPTY);
 			}
 		}
 		// Craftable - Update inventories.
@@ -219,28 +222,28 @@ public class TileCrafter extends TileMachineBase {
 
 	private void updateOutput() {
 
-		if (inventory[0] != null) {
+		if (!inventory[0].isEmpty()) {
 			if (needsCache) {
-				recipeOutput = SchematicHelper.getOutput(inventory[0], worldObj);
+				recipeOutput = SchematicHelper.getOutput(inventory[0], world);
 				for (int i = 0; i < 9; i++) {
 					recipeSlot[i] = SchematicHelper.getSchematicSlot(inventory[0], i);
-					filledContainer[i] = FluidContainerRegistry.getFluidForFilledItem(recipeSlot[i]);
+					filledContainer[i] = FluidHelper.getFluidForFilledItem(recipeSlot[i]);
 					recipeOre[i] = SchematicHelper.getSchematicOreSlot(inventory[0], i);
 				}
 				needsCache = false;
 			}
-			if (recipeOutput == null) {
+			if (recipeOutput.isEmpty()) {
 				isActive = false;
 				return;
 			}
 			if (canCreate(recipeOutput)) {
 				if (createItem()) {
-					recipeOutput = ItemHelper.findMatchingRecipe(crafting, worldObj);
-					if (recipeOutput != null) {
-						if (inventory[1] == null) {
+					recipeOutput = ItemHelper.findMatchingRecipe(crafting, world);
+					if (!recipeOutput.isEmpty()) {
+						if (inventory[1].isEmpty()) {
 							inventory[1] = recipeOutput.copy();
 						} else {
-							inventory[1].stackSize += recipeOutput.stackSize;
+							inventory[1].grow(recipeOutput.getCount());
 						}
 						transferOutput();
 						isActive = true;
@@ -352,8 +355,8 @@ public class TileCrafter extends TileMachineBase {
 
 		inventory[slot] = stack;
 
-		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-			stack.stackSize = getInventoryStackLimit();
+		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
+			stack.setCount(getInventoryStackLimit());
 		}
 	}
 

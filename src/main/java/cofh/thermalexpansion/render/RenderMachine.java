@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.render;
 
-import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
+import codechicken.lib.model.bakery.generation.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
@@ -19,9 +19,10 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
 import java.util.ArrayList;
@@ -77,9 +78,9 @@ public class RenderMachine implements ILayeredBlockBakery {
 
 	/* ICustomBlockBakery */
 	@Override
-	public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
+	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess world, BlockPos pos) {
 
-		TileMachineBase machineBase = ((TileMachineBase) tileEntity);
+		TileMachineBase machineBase = ((TileMachineBase) world.getTileEntity(pos));
 
 		if (machineBase == null) {
 			return null;
@@ -98,7 +99,7 @@ public class RenderMachine implements ILayeredBlockBakery {
 
 		List<BakedQuad> quads = new ArrayList<>();
 
-		if (face != null && stack != null) {
+		if (face != null && !stack.isEmpty()) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			CCRenderState ccrs = CCRenderState.instance();
 			buffer.begin(0x07, DefaultVertexFormats.ITEM);

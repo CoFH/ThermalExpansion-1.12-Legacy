@@ -18,7 +18,7 @@ public class ChargerManager {
 
 	public static RecipeCharger getRecipe(ItemStack input) {
 
-		if (input == null) {
+		if (input.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackSafe query = new ComparableItemStackSafe(input);
@@ -77,7 +77,7 @@ public class ChargerManager {
 	/* ADD RECIPES */
 	public static RecipeCharger addRecipe(int energy, ItemStack input, ItemStack output) {
 
-		if (input == null || output == null || energy <= 0 || recipeExists(input)) {
+		if (input.isEmpty() || output.isEmpty() || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
 		RecipeCharger recipe = new RecipeCharger(input, output, energy);

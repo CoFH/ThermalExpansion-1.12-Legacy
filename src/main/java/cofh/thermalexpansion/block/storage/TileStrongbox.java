@@ -30,6 +30,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.Arrays;
+
 public class TileStrongbox extends TileInventory implements ITickable, ISidedInventory, IReconfigurableFacing, IInventoryRetainer {
 
 	private static boolean enableSecurity = true;
@@ -93,11 +95,11 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 			if (inventory.length != CoreProps.STORAGE_SIZE[getStorageIndex()]) {
 				ItemStack[] tempInv = new ItemStack[inventory.length];
 				for (int i = 0; i < tempInv.length && i < inventory.length; i++) {
-					tempInv[i] = inventory[i] == null ? null : inventory[i].copy();
+					tempInv[i] = inventory[i].isEmpty() ? ItemStack.EMPTY : inventory[i].copy();
 				}
 				createInventory();
 				for (int i = 0; i < tempInv.length && i < inventory.length; i++) {
-					inventory[i] = tempInv[i] == null ? null : tempInv[i].copy();
+					inventory[i] = tempInv[i].isEmpty() ? ItemStack.EMPTY : tempInv[i].copy();
 				}
 			}
 			return true;
@@ -132,16 +134,16 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 		getNumPlayers();
 
-		if (numUsingPlayers > 0 && !worldObj.isRemote && worldObj.getTotalWorldTime() % 200 == 0) {
-			worldObj.addBlockEvent(pos, getBlockType(), 1, numUsingPlayers);
+		if (numUsingPlayers > 0 && !world.isRemote && world.getTotalWorldTime() % 200 == 0) {
+			world.addBlockEvent(pos, getBlockType(), 1, numUsingPlayers);
 		}
 		prevLidAngle = lidAngle;
 		lidAngle = MathHelper.approachLinear(lidAngle, numUsingPlayers > 0 ? 1F : 0F, 0.1F);
 
 		if (prevLidAngle >= 0.5 && lidAngle < 0.5) {
-			worldObj.playSound(null, pos, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
+			world.playSound(null, pos, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
 		} else if (prevLidAngle == 0 && lidAngle > 0) {
-			worldObj.playSound(null, pos, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
+			world.playSound(null, pos, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, world.rand.nextFloat() * 0.1F + 0.9F);
 		}
 	}
 
@@ -154,18 +156,19 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	public void createInventory() {
 
 		inventory = new ItemStack[CoreProps.STORAGE_SIZE[getStorageIndex()]];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 	}
 
 	public void getNumPlayers() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
-		if (numUsingPlayers != 0 && (worldObj.getTotalWorldTime() + offset) % TIME_CONSTANT == 0) {
+		if (numUsingPlayers != 0 && (world.getTotalWorldTime() + offset) % TIME_CONSTANT == 0) {
 			numUsingPlayers = 0;
 			float dist = 5.0F;
 
-			for (EntityPlayer player : worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos.getX() - dist, pos.getY() - dist, pos.getZ() - dist, pos.getX() + 1 + dist, pos.getY() + 1 + dist, pos.getZ() + 1 + dist))) {
+			for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos.getX() - dist, pos.getY() - dist, pos.getZ() - dist, pos.getX() + 1 + dist, pos.getY() + 1 + dist, pos.getZ() + 1 + dist))) {
 				if (player.openContainer instanceof ContainerStrongbox) {
 					TileStrongbox box = ((ContainerStrongbox) player.openContainer).getTile();
 					if (box == this) {
@@ -291,11 +294,11 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 
 		if (isCreative) {
-			if (stack == null) {
+			if (stack.isEmpty()) {
 				return;
 			}
 			inventory[slot] = stack;
-			inventory[slot].stackSize = stack.getMaxStackSize();
+			inventory[slot].setCount(stack.getMaxStackSize());
 			return;
 		}
 		super.setInventorySlotContents(slot, stack);
@@ -311,7 +314,7 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 			numUsingPlayers = 0;
 		}
 		++numUsingPlayers;
-		worldObj.addBlockEvent(pos, getBlockType(), 1, numUsingPlayers);
+		world.addBlockEvent(pos, getBlockType(), 1, numUsingPlayers);
 		callNeighborStateChange();
 	}
 
@@ -323,7 +326,7 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 		}
 		if (getBlockType() instanceof BlockStrongbox) {
 			--numUsingPlayers;
-			worldObj.addBlockEvent(pos, getBlockType(), 1, numUsingPlayers);
+			world.addBlockEvent(pos, getBlockType(), 1, numUsingPlayers);
 			callNeighborStateChange();
 		}
 	}

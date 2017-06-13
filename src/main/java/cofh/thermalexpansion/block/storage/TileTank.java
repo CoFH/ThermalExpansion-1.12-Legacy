@@ -139,7 +139,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		transferFluid();
@@ -219,7 +219,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 	protected void updateAdjacentHandlers(boolean packet) {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		boolean curAutoOutput = enableAutoOutput;
@@ -392,7 +392,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 						if (amount != resource.amount) {
 							FluidStack remaining = resource.copy();
 							remaining.amount -= amount;
-							return amount + FluidHelper.insertFluidIntoAdjacentFluidHandler(worldObj, pos, EnumFacing.UP, remaining, doFill);
+							return amount + FluidHelper.insertFluidIntoAdjacentFluidHandler(world, pos, EnumFacing.UP, remaining, doFill);
 						}
 					}
 					return amount;

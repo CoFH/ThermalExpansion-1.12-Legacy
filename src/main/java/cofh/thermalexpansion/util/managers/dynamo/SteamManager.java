@@ -27,7 +27,7 @@ public class SteamManager {
 
 	public static int getFuelEnergy(ItemStack stack) {
 
-		if (stack == null) {
+		if (stack.isEmpty()) {
 			return 0;
 		}
 		if (stack.getItem().hasContainerItem(stack)) {
@@ -67,7 +67,7 @@ public class SteamManager {
 	/* ADD FUELS */
 	public static boolean addFuel(ItemStack stack, int energy) {
 
-		if (stack == null || energy < 1000 || energy > 200000000) {
+		if (stack.isEmpty() || energy < 1000 || energy > 200000000) {
 			return false;
 		}
 		fuelMap.put(new ComparableItemStack(stack), energy);

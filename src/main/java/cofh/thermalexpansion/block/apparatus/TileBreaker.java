@@ -19,6 +19,8 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.Arrays;
+
 public class TileBreaker extends TileApparatusBase implements IInventoryConnection, ITickable {
 
 	private static final int TYPE = BlockApparatus.Type.BREAKER.getMetadata();
@@ -53,6 +55,7 @@ public class TileBreaker extends TileApparatusBase implements IInventoryConnecti
 
 		super();
 		inventory = new ItemStack[1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
 
 		radius = 0;
 		depth = 0;
@@ -95,20 +98,20 @@ public class TileBreaker extends TileApparatusBase implements IInventoryConnecti
 		}
 		for (BlockPos target : area) {
 			if (augmentFluid) {
-				FluidStack stack = augmentFluid ? FluidHelper.getFluidFromWorld(worldObj, target, true) : null;
+				FluidStack stack = augmentFluid ? FluidHelper.getFluidFromWorld(world, target, true) : null;
 				if (stack != null) {
 					for (int i = 0; i < 6 && stack.amount > 0; i++) {
 						if (sideCache[i] == 1) {
 							stack.amount -= FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[i], stack, true);
 						}
 					}
-					worldObj.setBlockToAir(target);
+					world.setBlockToAir(target);
 					continue;
 				}
 			}
-			if (CoFHFakePlayer.isBlockBreakable(fakePlayer, worldObj, target)) {
-				IBlockState state = worldObj.getBlockState(target);
-				stuffedItems.addAll(BlockHelper.breakBlock(worldObj, fakePlayer, target, state, 0, true, false));
+			if (CoFHFakePlayer.isBlockBreakable(fakePlayer, world, target)) {
+				IBlockState state = world.getBlockState(target);
+				stuffedItems.addAll(BlockHelper.breakBlock(world, fakePlayer, target, state, 0, true, false));
 			}
 		}
 	}

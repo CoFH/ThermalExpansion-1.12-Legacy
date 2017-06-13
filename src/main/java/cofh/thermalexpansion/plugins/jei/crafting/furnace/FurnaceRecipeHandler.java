@@ -16,13 +16,6 @@ public class FurnaceRecipeHandler implements IRecipeHandler<FurnaceRecipeWrapper
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return null;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull FurnaceRecipeWrapper recipe) {
 
 		return recipe.getUid();

@@ -15,6 +15,7 @@ import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.Utils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -68,8 +69,8 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	@Override
 	public void onLoad() {
 
-		if (ServerHelper.isServerWorld(worldObj)) {
-			fakePlayer = new CoFHFakePlayer((WorldServer) worldObj);
+		if (ServerHelper.isServerWorld(world)) {
+			fakePlayer = new CoFHFakePlayer((WorldServer) world);
 		}
 	}
 
@@ -110,14 +111,14 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
-		if (worldObj.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
-			if (!isEmpty()) {
+		if (world.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
+			if (!isStuffingEmpty()) {
 				outputBuffer();
 			}
-			if (isEmpty()) {
+			if (isStuffingEmpty()) {
 				activate();
 			}
 		}
@@ -128,7 +129,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 
 	}
 
-	protected boolean isEmpty() {
+	protected boolean isStuffingEmpty() {
 
 		return stuffedItems.isEmpty();
 	}
@@ -144,12 +145,12 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 					if (Utils.isAccessibleOutput(curTile, side)) {
 						LinkedList<ItemStack> newStuffed = new LinkedList<>();
 						for (ItemStack curItem : stuffedItems) {
-							if (curItem == null || curItem.getItem() == null) {
-								curItem = null;
+							if (curItem.isEmpty()) {
+								curItem = ItemStack.EMPTY;
 							} else {
 								curItem = InventoryHelper.addToInsertion(curTile, side, curItem);
 							}
-							if (curItem != null) {
+							if (!curItem.isEmpty()) {
 								newStuffed.add(curItem);
 							}
 						}
@@ -158,7 +159,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 				}
 			}
 		}
-		return isEmpty();
+		return isStuffingEmpty();
 	}
 
 	/* NBT METHODS */
@@ -171,7 +172,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 		stuffedItems.clear();
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound compound = list.getCompoundTagAt(i);
-			stuffedItems.add(ItemStack.loadItemStackFromNBT(compound));
+			stuffedItems.add(new ItemStack(compound));
 		}
 	}
 
@@ -182,7 +183,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 
 		NBTTagList list = new NBTTagList();
 		for (ItemStack item : stuffedItems) {
-			if (item != null) {
+			if (!item.isEmpty()) {
 				NBTTagCompound compound = new NBTTagCompound();
 				item.writeToNBT(compound);
 				list.appendTag(compound);

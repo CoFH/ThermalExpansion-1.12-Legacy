@@ -17,16 +17,9 @@ public class CoolantHandler implements IRecipeHandler<CoolantWrapper> {
 
 	@Nonnull
 	@Override
-	public String getRecipeCategoryUid() {
-
-		return RecipeUidsTE.COOLANT;
-	}
-
-	@Nonnull
-	@Override
 	public String getRecipeCategoryUid(@Nonnull CoolantWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return RecipeUidsTE.COOLANT;
 	}
 
 	@Nonnull

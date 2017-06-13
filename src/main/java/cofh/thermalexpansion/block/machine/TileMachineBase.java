@@ -103,7 +103,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		boolean curActive = isActive;
@@ -191,8 +191,8 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		isActive = false;
 		wasActive = true;
 
-		if (worldObj != null) {
-			tracker.markTime(worldObj);
+		if (world != null) {
+			tracker.markTime(world);
 		}
 	}
 
@@ -223,7 +223,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 				updateLighting();
 			}
 			sendTilePacket(Side.CLIENT);
-		} else if (wasActive && tracker.hasDelayPassed(worldObj, 100)) {
+		} else if (wasActive && tracker.hasDelayPassed(world, 100)) {
 			wasActive = false;
 			if (LIGHT_VALUES[getType()] != 0) {
 				updateLighting();
@@ -368,8 +368,8 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 		ItemStack stack = super.decrStackSize(slot, amount);
 
-		if (ServerHelper.isServerWorld(worldObj) && slot <= getMaxInputSlot()) {
-			if (isActive && (inventory[slot] == null || !hasValidInput())) {
+		if (ServerHelper.isServerWorld(world) && slot <= getMaxInputSlot()) {
+			if (isActive && (inventory[slot].isEmpty() || !hasValidInput())) {
 				processOff();
 			}
 		}
@@ -379,9 +379,9 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 
-		if (ServerHelper.isServerWorld(worldObj) && slot <= getMaxInputSlot()) {
-			if (isActive && inventory[slot] != null) {
-				if (stack == null || !stack.isItemEqual(inventory[slot]) || !hasValidInput()) {
+		if (ServerHelper.isServerWorld(world) && slot <= getMaxInputSlot()) {
+			if (isActive && !inventory[slot].isEmpty()) {
+				if (stack.isEmpty() || !stack.isItemEqual(inventory[slot]) || !hasValidInput()) {
 					processOff();
 				}
 			}

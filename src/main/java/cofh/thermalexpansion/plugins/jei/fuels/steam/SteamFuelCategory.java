@@ -78,6 +78,11 @@ public class SteamFuelCategory extends BaseFuelCategory<SteamFuelWrapper> {
 	}
 
 	@Override
+	public String getModName() {
+		return "ThermalExpansion";
+	}
+
+	@Override
 	public void setRecipe(IRecipeLayout recipeLayout, SteamFuelWrapper recipeWrapper, IIngredients ingredients) {
 
 		List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);

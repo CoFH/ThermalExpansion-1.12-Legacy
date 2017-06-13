@@ -8,6 +8,7 @@ import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.container.ISchematicContainer;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalfoundation.init.TFItems;
+import cofh.thermalfoundation.item.ItemDiagram;
 import cofh.thermalfoundation.util.helpers.SchematicHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -34,7 +35,7 @@ public class ContainerCrafter extends ContainerTEBase implements ISchematicConta
 				addSlotToContainer(new Slot(myTile, 3 + j + i * 9, 8 + j * 18, 74 + i * 18));
 			}
 		}
-		addSlotToContainer(new SlotSpecificItem(myTile, 0, 56, 34, TFItems.itemDiagram.schematic).setSlotStackLimit(1));
+		addSlotToContainer(new SlotSpecificItem(myTile, 0, 56, 34, ItemDiagram.schematic).setSlotStackLimit(1));
 		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 116, 35));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 
@@ -76,21 +77,21 @@ public class ContainerCrafter extends ContainerTEBase implements ISchematicConta
 
 		ItemStack schematic = myTile.getStackInSlot(0);
 
-		if (schematic != null && resultSlot.getHasStack()) {
+		if (!schematic.isEmpty() && resultSlot.getHasStack()) {
 			ItemStack newSchematic = SchematicHelper.writeNBTToSchematic(schematic, SchematicHelper.getNBTForSchematic(craftMatrix, myTile.getWorld(), craftResult.getStackInSlot(0)));
-			newSchematic.stackSize = schematic.stackSize;
+			newSchematic.setCount(schematic.getCount());
 			myTile.setInventorySlotContents(0, newSchematic);
 			for (int i = 0; i < 9; i++) {
-				craftSlots[i].putStack(null);
+				craftSlots[i].putStack(ItemStack.EMPTY);
 			}
-			resultSlot.putStack(null);
+			resultSlot.putStack(ItemStack.EMPTY);
 		}
 	}
 
 	@Override
 	public boolean canWriteSchematic() {
 
-		return SchematicHelper.isSchematic(myTile.getStackInSlot(0)) && craftResult.getStackInSlot(0) != null;
+		return SchematicHelper.isSchematic(myTile.getStackInSlot(0)) && !craftResult.getStackInSlot(0).isEmpty();
 	}
 
 	@Override
