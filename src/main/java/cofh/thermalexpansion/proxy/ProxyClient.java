@@ -38,6 +38,7 @@ public class ProxyClient extends Proxy {
 	public void initialize(FMLInitializationEvent event) {
 
 		super.initialize(event);
+
 		RenderCache.initialize();
 		RenderStrongbox.initialize();
 	}

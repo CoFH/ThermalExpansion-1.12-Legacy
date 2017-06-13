@@ -11,7 +11,8 @@ public class TESounds {
 
 	}
 
-	static {
+	public static void initialize() {
+
 		MACHINE_FURNACE = getRegisteredSoundEvent("machine_furnace");
 		MACHINE_PULVERIZER = getRegisteredSoundEvent("machine_pulverizer");
 		MACHINE_SAWMILL = getRegisteredSoundEvent("machine_sawmill");
@@ -30,13 +31,13 @@ public class TESounds {
 		return sound;
 	}
 
-	public static final SoundEvent MACHINE_FURNACE;
-	public static final SoundEvent MACHINE_PULVERIZER;
-	public static final SoundEvent MACHINE_SAWMILL;
-	public static final SoundEvent MACHINE_SMELTER;
-	public static final SoundEvent MACHINE_CRUCIBLE;
-	public static final SoundEvent MACHINE_TRANSPOSER;
+	public static SoundEvent MACHINE_FURNACE;
+	public static SoundEvent MACHINE_PULVERIZER;
+	public static SoundEvent MACHINE_SAWMILL;
+	public static SoundEvent MACHINE_SMELTER;
+	public static SoundEvent MACHINE_CRUCIBLE;
+	public static SoundEvent MACHINE_TRANSPOSER;
 
-	public static final SoundEvent DEVICE_WATER_GEN;
+	public static SoundEvent DEVICE_WATER_GEN;
 
 }
