@@ -6,6 +6,7 @@ import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ColorHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalfoundation.block.BlockOreFluid;
 import cofh.thermalfoundation.init.TFEquipment;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
@@ -156,6 +157,11 @@ public class PulverizerManager {
 			addOreToDustRecipe(energy, "orePlatinum", ItemMaterial.dustPlatinum, ItemMaterial.dustIridium, 5);
 			addOreToDustRecipe(energy, "oreIridium", ItemMaterial.dustIridium, ItemMaterial.dustPlatinum, 10);
 			addOreToDustRecipe(energy, "oreMithril", ItemMaterial.dustMithril, ItemMaterial.dustGold, 10);
+
+			addRecipe(energy, BlockOreFluid.oreFluidCrudeOil, ItemHelper.cloneStack(ItemMaterial.crystalCrudeOil, 3), ItemMaterial.globTar, 50);
+			addRecipe(energy, BlockOreFluid.oreFluidRedstone, ItemHelper.cloneStack(ItemMaterial.crystalRedstone, 3), ItemMaterial.crystalCinnabar, 50);
+			addRecipe(energy, BlockOreFluid.oreFluidGlowstone, ItemHelper.cloneStack(ItemMaterial.crystalGlowstone, 3), ItemMaterial.dustSulfur, 30);
+			addRecipe(energy, BlockOreFluid.oreFluidEnder, ItemHelper.cloneStack(ItemMaterial.crystalEnder, 3));
 		}
 
 		/* DUSTS */

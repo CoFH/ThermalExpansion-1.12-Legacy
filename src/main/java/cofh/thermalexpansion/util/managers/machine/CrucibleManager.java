@@ -74,6 +74,12 @@ public class CrucibleManager {
 		{
 			addRecipe(2000, ItemMaterial.globTar, new FluidStack(TFFluids.fluidCreosote, 100));
 			addRecipe(4000, ItemMaterial.dustCoal, new FluidStack(TFFluids.fluidCoal, 100));
+
+			addRecipe(2000, ItemMaterial.crystalCrudeOil, new FluidStack(TFFluids.fluidCrudeOil, 250));
+			addRecipe(2000, ItemMaterial.crystalRedstone, new FluidStack(TFFluids.fluidRedstone, 250));
+			addRecipe(2000, ItemMaterial.crystalGlowstone, new FluidStack(TFFluids.fluidGlowstone, 250));
+			addRecipe(2000, ItemMaterial.crystalEnder, new FluidStack(TFFluids.fluidEnder, 250));
+
 			addRecipe(8000, ItemMaterial.dustPyrotheum, new FluidStack(TFFluids.fluidPyrotheum, 250));
 			addRecipe(8000, ItemMaterial.dustCryotheum, new FluidStack(TFFluids.fluidCryotheum, 250));
 			addRecipe(8000, ItemMaterial.dustAerotheum, new FluidStack(TFFluids.fluidAerotheum, 250));
@@ -82,10 +88,10 @@ public class CrucibleManager {
 
 		/* TF FLUID ORES */
 		{
-			addRecipe(4000, BlockOreFluid.oreFluidCrudeOil, new FluidStack(TFFluids.fluidCrudeOil, 500));
-			addRecipe(4000, BlockOreFluid.oreFluidRedstone, new FluidStack(TFFluids.fluidRedstone, 500));
-			addRecipe(4000, BlockOreFluid.oreFluidGlowstone, new FluidStack(TFFluids.fluidGlowstone, 500));
-			addRecipe(4000, BlockOreFluid.oreFluidEnder, new FluidStack(TFFluids.fluidEnder, 500));
+			addRecipe(4000, BlockOreFluid.oreFluidCrudeOil, new FluidStack(TFFluids.fluidCrudeOil, 1000));
+			addRecipe(4000, BlockOreFluid.oreFluidRedstone, new FluidStack(TFFluids.fluidRedstone, 1000));
+			addRecipe(4000, BlockOreFluid.oreFluidGlowstone, new FluidStack(TFFluids.fluidGlowstone, 1000));
+			addRecipe(4000, BlockOreFluid.oreFluidEnder, new FluidStack(TFFluids.fluidEnder, 1000));
 		}
 
 		/* LOAD RECIPES */

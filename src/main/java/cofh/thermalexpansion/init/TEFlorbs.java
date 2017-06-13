@@ -5,8 +5,10 @@ import cofh.core.util.ConfigHandler;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.ItemFlorb;
+import cofh.thermalexpansion.util.BehaviorFlorbDispense;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalfoundation.item.ItemMaterial;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
@@ -50,6 +52,8 @@ public class TEFlorbs {
 	public static void postInit() {
 
 		parseFlorbs();
+
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(itemFlorb, new BehaviorFlorbDispense());
 
 		CONFIG_FLORBS.cleanUp(false, false);
 	}
