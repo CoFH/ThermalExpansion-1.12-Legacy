@@ -33,6 +33,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -160,6 +161,11 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		for (ItemStack equipmentStack : equipment) {
 			if (EnergyHelper.isEnergyContainerItem(equipmentStack)) {
 				extractEnergy(stack, ((IEnergyContainerItem) equipmentStack.getItem()).receiveEnergy(equipmentStack, Math.min(getEnergyStored(stack), getSend(stack)), false), false);
+			} else if (EnergyHelper.isEnergyHandler(equipmentStack)) {
+				IEnergyStorage handler = EnergyHelper.getEnergyHandler(equipmentStack);
+				if (handler != null) {
+					extractEnergy(stack, handler.receiveEnergy(Math.min(getEnergyStored(stack), getSend(stack)), false), false);
+				}
 			}
 		}
 	}
