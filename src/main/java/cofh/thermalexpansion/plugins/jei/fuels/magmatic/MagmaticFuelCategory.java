@@ -72,11 +72,6 @@ public class MagmaticFuelCategory extends BaseFuelCategory<MagmaticFuelWrapper> 
 	}
 
 	@Override
-	public String getModName() {
-		return "ThermalExpansion";
-	}
-
-	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
 		super.drawExtras(minecraft);

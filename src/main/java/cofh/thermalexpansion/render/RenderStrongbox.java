@@ -2,31 +2,16 @@ package cofh.thermalexpansion.render;
 
 import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.texture.TextureUtils;
-import codechicken.lib.util.TransformUtils;
 import cofh.core.render.RenderUtils;
 import cofh.thermalexpansion.block.storage.BlockStrongbox;
 import cofh.thermalexpansion.block.storage.TileStrongbox;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.model.ModelStrongbox;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
-import org.apache.commons.lang3.tuple.Pair;
-
-import javax.annotation.Nullable;
-import javax.vecmath.Matrix4f;
-import java.util.ArrayList;
-import java.util.List;
 
 public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> implements IItemRenderer {
 
@@ -90,11 +75,13 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 
 	@Override
 	public boolean isAmbientOcclusion() {
+
 		return true;
 	}
 
 	@Override
 	public boolean isGui3d() {
+
 		return true;
 	}
 }

@@ -1,23 +1,26 @@
-package cofh.thermalexpansion.plugins.jei.fuels;
+package cofh.thermalexpansion.plugins.jei.crafting;
 
 import cofh.thermalexpansion.ThermalExpansion;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableStatic;
-import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import net.minecraft.client.Minecraft;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.List;
 
-public abstract class BaseFuelCategory<T extends IRecipeWrapper> extends BlankRecipeCategory<T> implements IRecipeCategory<T> {
+public abstract class BaseRecipeCategory<T extends IRecipeWrapper> implements IRecipeCategory<T> {
 
 	protected IDrawableStatic background;
 	protected IDrawableStatic energyMeter;
-	protected IDrawableStatic durationEmpty;
 	protected IDrawableStatic icon;
 	protected String localizedName;
+
+	public BaseRecipeCategory() {
+
+	}
 
 	@Nonnull
 	@Override
@@ -47,10 +50,9 @@ public abstract class BaseFuelCategory<T extends IRecipeWrapper> extends BlankRe
 	}
 
 	@Override
-	public void drawExtras(@Nonnull Minecraft minecraft) {
+	public List<String> getTooltipStrings(int mouseX, int mouseY) {
 
-		energyMeter.draw(minecraft, 71, 7);
-		durationEmpty.draw(minecraft, 34, 43);
+		return Collections.emptyList();
 	}
 
 }

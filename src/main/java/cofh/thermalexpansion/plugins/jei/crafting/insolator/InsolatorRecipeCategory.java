@@ -5,14 +5,17 @@ import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
+import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.gui.*;
+import mezz.jei.api.gui.IDrawableStatic;
+import mezz.jei.api.gui.IGuiFluidStackGroup;
+import mezz.jei.api.gui.IGuiItemStackGroup;
+import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,7 +24,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipeWrapper> {
+public class InsolatorRecipeCategory extends BaseRecipeCategory<InsolatorRecipeWrapper> {
 
 	public static boolean enable = true;
 
@@ -58,11 +61,8 @@ public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipe
 		return recipes;
 	}
 
-	IDrawableStatic background;
 	IDrawableStatic tank;
 	IDrawableStatic tankOverlay;
-	IDrawableStatic energyMeter;
-	String localizedName;
 
 	public InsolatorRecipeCategory(IGuiHelper guiHelper) {
 
@@ -78,25 +78,6 @@ public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipe
 	public String getUid() {
 
 		return RecipeUidsTE.INSOLATOR;
-	}
-
-	@Nonnull
-	@Override
-	public String getTitle() {
-
-		return localizedName;
-	}
-
-	@Override
-	public String getModName() {
-		return "ThermalExpansion";
-	}
-
-	@Nonnull
-	@Override
-	public IDrawable getBackground() {
-
-		return background;
 	}
 
 	@Override

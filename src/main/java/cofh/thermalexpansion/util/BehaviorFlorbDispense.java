@@ -24,8 +24,8 @@ public class BehaviorFlorbDispense extends BehaviorDefaultDispenseItem {
 		if (fluid != null) {
 			EntityFlorb florb = new EntityFlorb(world, pos.getX(), pos.getY(), pos.getZ(), fluid);
 			florb.setThrowableHeading((double) facing.getFrontOffsetX(), (double) ((float) facing.getFrontOffsetY() + 0.1F), (double) facing.getFrontOffsetZ(), getProjectileVelocity(), getProjectileInaccuracy());
-			world.spawnEntityInWorld(florb);
-			stack.stackSize--;
+			world.spawnEntity(florb);
+			stack.shrink(1);
 		} else {
 			BehaviorDefaultDispenseItem.doDispense(world, stack.splitStack(1), 6, facing, pos);
 		}

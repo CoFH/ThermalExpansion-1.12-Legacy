@@ -74,11 +74,6 @@ public class CoolantCategory extends BaseFuelCategory<CoolantWrapper> {
 	}
 
 	@Override
-	public String getModName() {
-		return "ThermalExpansion";
-	}
-
-	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
 		super.drawExtras(minecraft);
@@ -90,6 +85,7 @@ public class CoolantCategory extends BaseFuelCategory<CoolantWrapper> {
 	public void setRecipe(IRecipeLayout recipeLayout, CoolantWrapper recipeWrapper, IIngredients ingredients) {
 
 		List<List<FluidStack>> inputs = ingredients.getInputs(FluidStack.class);
+
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 		guiFluidStacks.init(0, true, 34, 8, 16, 30, 1000, false, null);

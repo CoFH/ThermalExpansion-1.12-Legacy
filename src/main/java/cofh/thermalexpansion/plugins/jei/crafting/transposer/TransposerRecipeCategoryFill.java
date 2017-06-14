@@ -60,6 +60,7 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 
 	@Override
 	public String getModName() {
+
 		return "ThermalExpansion";
 	}
 

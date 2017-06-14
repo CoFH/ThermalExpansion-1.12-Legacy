@@ -97,11 +97,6 @@ public class EnervationFuelCategory extends BaseFuelCategory<EnervationFuelWrapp
 	}
 
 	@Override
-	public String getModName() {
-		return "ThermalExpansion";
-	}
-
-	@Override
 	public void setRecipe(IRecipeLayout recipeLayout, EnervationFuelWrapper recipeWrapper, IIngredients ingredients) {
 
 		List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);

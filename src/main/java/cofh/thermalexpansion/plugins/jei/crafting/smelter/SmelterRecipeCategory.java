@@ -5,16 +5,14 @@ import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiSmelter;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
+import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
@@ -22,7 +20,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SmelterRecipeCategory extends BlankRecipeCategory<SmelterRecipeWrapper> {
+public class SmelterRecipeCategory extends BaseRecipeCategory<SmelterRecipeWrapper> {
 
 	public static boolean enable = true;
 
@@ -53,10 +51,6 @@ public class SmelterRecipeCategory extends BlankRecipeCategory<SmelterRecipeWrap
 		return recipes;
 	}
 
-	IDrawableStatic background;
-	IDrawableStatic energyMeter;
-	String localizedName;
-
 	public SmelterRecipeCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiSmelter.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
@@ -69,25 +63,6 @@ public class SmelterRecipeCategory extends BlankRecipeCategory<SmelterRecipeWrap
 	public String getUid() {
 
 		return RecipeUidsTE.SMELTER;
-	}
-
-	@Nonnull
-	@Override
-	public String getTitle() {
-
-		return localizedName;
-	}
-
-	@Override
-	public String getModName() {
-		return "ThermalExpansion";
-	}
-
-	@Nonnull
-	@Override
-	public IDrawable getBackground() {
-
-		return background;
 	}
 
 	@Override

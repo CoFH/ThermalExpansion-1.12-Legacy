@@ -171,6 +171,7 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 
 	@Override
 	public boolean isEmpty() {
+
 		return InventoryHelper.isEmpty(inventory);
 	}
 

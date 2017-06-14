@@ -66,11 +66,6 @@ public class NumismaticFuelCategory extends BaseFuelCategory<NumismaticFuelWrapp
 	}
 
 	@Override
-	public String getModName() {
-		return "ThermalExpansion";
-	}
-
-	@Override
 	public void setRecipe(IRecipeLayout recipeLayout, NumismaticFuelWrapper recipeWrapper, IIngredients ingredients) {
 
 		List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);

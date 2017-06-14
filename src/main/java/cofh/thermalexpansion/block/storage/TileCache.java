@@ -67,7 +67,6 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	public boolean locked;
 
 	int maxCacheStackSize;
-	//TODO, Some logic in here may fail, as isEmpty returns true for 0 stack size, We may need to keep this null.
 	public ItemStack storedStack = ItemStack.EMPTY;
 
 	public TileCache() {
@@ -106,7 +105,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	protected boolean setLevel(int level) {
 
 		if (super.setLevel(level)) {
-			if (!storedStack.isEmpty()) {
+			if (storedStack != ItemStack.EMPTY) {
 				maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
 			} else {
 				maxCacheStackSize = getCapacity(level, enchantHolding) - 64 * 2;
@@ -146,7 +145,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 	public int getStoredCount() {
 
-		return storedStack.isEmpty() ? 0 : storedStack.getCount() + (inventory[0].isEmpty() ? 0 : inventory[0].getCount()) + (inventory[1].isEmpty() ? 0 : inventory[1].getCount());
+		return storedStack == ItemStack.EMPTY ? 0 : storedStack.getCount() + inventory[0].getCount() + inventory[1].getCount();
 	}
 
 	public ItemStack insertItem(EnumFacing from, ItemStack stack, boolean simulate) {
@@ -160,7 +159,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			}
 			return stack;
 		}
-		if (storedStack.isEmpty()) {
+		if (storedStack == ItemStack.EMPTY) {
 			if (!simulate) {
 				setStoredItemType(stack, stack.getCount());
 			}
@@ -187,7 +186,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 	public ItemStack extractItem(EnumFacing from, int maxExtract, boolean simulate) {
 
-		if (storedStack.isEmpty()) {
+		if (storedStack == ItemStack.EMPTY) {
 			return ItemStack.EMPTY;
 		}
 		ItemStack ret = ItemHelper.cloneStack(storedStack, Math.min(getStoredCount(), Math.min(maxExtract, storedStack.getMaxStackSize())));
@@ -216,7 +215,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			storedStack = ItemStack.EMPTY;
 			sendTilePacket(Side.CLIENT);
 		} else {
-			if (!storedStack.isEmpty()) {
+			if (storedStack != ItemStack.EMPTY) {
 				storedStack.setCount(0);
 			}
 		}
@@ -273,7 +272,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		nbt.setByte("EncHolding", enchantHolding);
 		nbt.setBoolean("Lock", locked);
 
-		if (!storedStack.isEmpty()) {
+		if (storedStack != ItemStack.EMPTY) {
 			nbt.setTag("Item", ItemHelper.writeItemStackToNBT(storedStack, new NBTTagCompound()));
 		}
 		return nbt;
@@ -290,7 +289,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		payload.addBool(locked);
 		payload.addItemStack(storedStack);
 
-		if (!storedStack.isEmpty()) {
+		if (storedStack != ItemStack.EMPTY) {
 			payload.addInt(getStoredCount());
 		}
 		return payload;
@@ -306,7 +305,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		locked = payload.getBool();
 		storedStack = payload.getItemStack();
 
-		if (!storedStack.isEmpty()) {
+		if (storedStack != ItemStack.EMPTY) {
 			storedStack.setCount(payload.getInt());
 			inventory[1] = ItemStack.EMPTY;
 			balanceStacks();
@@ -327,7 +326,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	//@Override
 	public void setStoredItemCount(int amount) {
 
-		if (storedStack.isEmpty()) {
+		if (storedStack == ItemStack.EMPTY) {
 			return;
 		}
 		storedStack.setCount(Math.min(amount, getMaxStoredCount()));
@@ -414,7 +413,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		if (inventory[slot].getCount() <= 0) {
 			inventory[slot] = ItemStack.EMPTY;
 		}
-		storedStack.grow((inventory[0].isEmpty() ? 0 : inventory[0].getCount()) + (inventory[1].isEmpty() ? 0 : inventory[1].getCount()));
+		storedStack.grow(inventory[0].getCount() + inventory[1].getCount());
 
 		if (storedStack.getCount() > 0) {
 			balanceStacks();
@@ -434,22 +433,22 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		}
 		inventory[slot] = stack;
 
-		boolean stackCheck = storedStack.isEmpty();
+		boolean stackCheck = storedStack == ItemStack.EMPTY;
 
 		if (slot == 0) { // insertion!
 			if (inventory[0].isEmpty()) {
 				return;
 			}
-			if (storedStack.isEmpty()) {
+			if (storedStack == ItemStack.EMPTY) {
 				storedStack = inventory[0].copy();
 				inventory[0] = ItemStack.EMPTY;
 				maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
 			} else {
-				storedStack.grow(inventory[0].getCount() + (inventory[1].isEmpty() ? 0 : inventory[1].getCount()));
+				storedStack.grow(inventory[0].getCount() + inventory[1].getCount());
 			}
 			balanceStacks();
 		} else { // extraction!
-			if (storedStack.isEmpty()) {
+			if (storedStack == ItemStack.EMPTY) {
 				if (inventory[1].isEmpty()) {
 					return;
 				}
@@ -457,7 +456,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 				storedStack.setCount(0);
 				maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
 			}
-			storedStack.setCount((inventory[0].isEmpty() ? 0 : inventory[0].getCount()) + (inventory[1].isEmpty() ? 0 : inventory[1].getCount()));
+			storedStack.grow(inventory[0].getCount() + inventory[1].getCount());
 
 			if (storedStack.getCount() > 0) {
 				balanceStacks();
@@ -467,7 +466,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		}
 		updateTrackers();
 		markChunkDirty();
-		if (stackCheck != (storedStack.isEmpty())) {
+		if (stackCheck != (storedStack == ItemStack.EMPTY)) {
 			sendTilePacket(Side.CLIENT);
 		}
 	}
@@ -475,7 +474,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot == 0 && (storedStack.isEmpty() || ItemHelper.itemsIdentical(stack, storedStack));
+		return slot == 0 && (storedStack == ItemStack.EMPTY || ItemHelper.itemsIdentical(stack, storedStack));
 	}
 
 	/* ISidedInventory */
@@ -488,7 +487,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
 
-		return slot == 0 && (storedStack.isEmpty() || ItemHelper.itemsIdentical(stack, storedStack));
+		return slot == 0 && (storedStack == ItemStack.EMPTY || ItemHelper.itemsIdentical(stack, storedStack));
 	}
 
 	@Override
@@ -527,7 +526,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		if (debug) {
 			return;
 		}
-		if (!storedStack.isEmpty()) {
+		if (storedStack != ItemStack.EMPTY) {
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(storedStack)));
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + getCapacity(level, enchantHolding)));
 		} else {

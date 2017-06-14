@@ -6,8 +6,7 @@ public class NaturaPlugin {
 
 	}
 
-	// TODO: 1.11 - lowercase this.
-	public static final String MOD_ID = "Natura";
+	public static final String MOD_ID = "natura";
 	public static final String MOD_NAME = "Natura";
 
 	public static void initialize() {

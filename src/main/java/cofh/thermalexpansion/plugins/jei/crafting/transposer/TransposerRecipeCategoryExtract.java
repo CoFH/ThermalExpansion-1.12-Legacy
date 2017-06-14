@@ -59,6 +59,7 @@ public class TransposerRecipeCategoryExtract extends TransposerRecipeCategory {
 
 	@Override
 	public String getModName() {
+
 		return "ThermalExpansion";
 	}
 

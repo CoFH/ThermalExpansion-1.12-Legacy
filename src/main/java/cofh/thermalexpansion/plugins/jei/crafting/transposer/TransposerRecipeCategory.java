@@ -4,16 +4,14 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
+import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager.RecipeTransposer;
-import com.google.common.collect.ImmutableList;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredientRegistry;
-import mezz.jei.api.recipe.BlankRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -26,7 +24,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class TransposerRecipeCategory extends BlankRecipeCategory<TransposerRecipeWrapper> {
+public abstract class TransposerRecipeCategory extends BaseRecipeCategory<TransposerRecipeWrapper> {
 
 	public static boolean enable = true;
 
@@ -88,12 +86,8 @@ public abstract class TransposerRecipeCategory extends BlankRecipeCategory<Trans
 		}
 	}
 
-	IDrawableStatic background;
-	IDrawableStatic energyMeter;
-	IDrawableStatic icon;
 	IDrawableStatic bubble;
 	IDrawableStatic tankOverlay;
-	String localizedName;
 
 	public TransposerRecipeCategory(IGuiHelper guiHelper) {
 
@@ -102,26 +96,6 @@ public abstract class TransposerRecipeCategory extends BlankRecipeCategory<Trans
 		bubble = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_BUBBLE);
 		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(0);
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.transposer.name");
-	}
-
-	@Nonnull
-	@Override
-	public String getTitle() {
-
-		return localizedName;
-	}
-
-	@Nonnull
-	@Override
-	public IDrawable getBackground() {
-
-		return background;
-	}
-
-	@Override
-	public IDrawable getIcon() {
-
-		return icon;
 	}
 
 	@Override

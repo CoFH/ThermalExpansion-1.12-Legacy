@@ -4,21 +4,20 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.client.machine.GuiCompactor;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
+import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public abstract class CompactorRecipeCategory extends BlankRecipeCategory<CompactorRecipeWrapper> {
+public abstract class CompactorRecipeCategory extends BaseRecipeCategory<CompactorRecipeWrapper> {
 
 	public static boolean enable = true;
 
@@ -34,35 +33,11 @@ public abstract class CompactorRecipeCategory extends BlankRecipeCategory<Compac
 		registry.addRecipeHandlers(new CompactorRecipeHandler());
 	}
 
-	IDrawableStatic background;
-	IDrawableStatic energyMeter;
-	IDrawableStatic icon;
-	String localizedName;
-
 	public CompactorRecipeCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiCompactor.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.compactor.name");
-	}
-
-	@Nonnull
-	@Override
-	public String getTitle() {
-
-		return localizedName;
-	}
-
-	@Override
-	public String getModName() {
-		return "ThermalExpansion";
-	}
-
-	@Nonnull
-	@Override
-	public IDrawable getBackground() {
-
-		return background;
 	}
 
 	@Override

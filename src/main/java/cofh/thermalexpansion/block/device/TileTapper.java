@@ -376,14 +376,6 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
-		// TODO: Temporary - remove in 5.2.
-		if (!nbt.hasKey("TE5.1")) {
-			for (int i = 0; i < 6; i++) {
-				if (sideCache[i] == 1) {
-					sideCache[i] = 2;
-				}
-			}
-		}
 		validTree = nbt.getBoolean("Tree");
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTrackerFluid = nbt.getInteger("TrackOut");
@@ -402,9 +394,6 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
-
-		// TODO: Temporary - remove in 5.2
-		nbt.setBoolean("TE5.1", true);
 
 		nbt.setBoolean("Tree", validTree);
 		nbt.setInteger("TrackIn", inputTracker);

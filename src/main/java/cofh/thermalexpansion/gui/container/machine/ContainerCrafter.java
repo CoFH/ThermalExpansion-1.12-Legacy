@@ -7,7 +7,6 @@ import cofh.thermalexpansion.block.machine.TileCrafter;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.container.ISchematicContainer;
 import cofh.thermalexpansion.network.PacketTEBase;
-import cofh.thermalfoundation.init.TFItems;
 import cofh.thermalfoundation.item.ItemDiagram;
 import cofh.thermalfoundation.util.helpers.SchematicHelper;
 import net.minecraft.entity.player.EntityPlayer;

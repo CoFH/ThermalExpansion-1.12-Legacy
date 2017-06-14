@@ -72,11 +72,6 @@ public class CompressionFuelCategory extends BaseFuelCategory<CompressionFuelWra
 	}
 
 	@Override
-	public String getModName() {
-		return "ThermalExpansion";
-	}
-
-	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
 		super.drawExtras(minecraft);

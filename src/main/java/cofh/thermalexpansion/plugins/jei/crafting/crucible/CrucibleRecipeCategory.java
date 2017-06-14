@@ -5,13 +5,16 @@ import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
+import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.gui.*;
+import mezz.jei.api.gui.IDrawableStatic;
+import mezz.jei.api.gui.IGuiFluidStackGroup;
+import mezz.jei.api.gui.IGuiItemStackGroup;
+import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,7 +23,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CrucibleRecipeCategory extends BlankRecipeCategory<CrucibleRecipeWrapper> {
+public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWrapper> {
 
 	public static boolean enable = true;
 
@@ -49,12 +52,9 @@ public class CrucibleRecipeCategory extends BlankRecipeCategory<CrucibleRecipeWr
 		return recipes;
 	}
 
-	IDrawableStatic background;
-	IDrawableStatic energyMeter;
 	IDrawableStatic drop;
 	IDrawableStatic tank;
 	IDrawableStatic tankOverlay;
-	String localizedName;
 
 	public CrucibleRecipeCategory(IGuiHelper guiHelper) {
 
@@ -72,25 +72,6 @@ public class CrucibleRecipeCategory extends BlankRecipeCategory<CrucibleRecipeWr
 	public String getUid() {
 
 		return RecipeUidsTE.CRUCIBLE;
-	}
-
-	@Nonnull
-	@Override
-	public String getTitle() {
-
-		return localizedName;
-	}
-
-	@Override
-	public String getModName() {
-		return "ThermalExpansion";
-	}
-
-	@Nonnull
-	@Override
-	public IDrawable getBackground() {
-
-		return background;
 	}
 
 	@Override
