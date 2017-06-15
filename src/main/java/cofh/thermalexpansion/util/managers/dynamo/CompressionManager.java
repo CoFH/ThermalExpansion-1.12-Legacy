@@ -48,6 +48,10 @@ public class CompressionManager {
 
 	public static void loadFuels() {
 
+		addFuel("canolaoil", 80000);
+		addFuel("oil", 200000);
+		addFuel("crystaloil", 400000);
+		addFuel("empoweredoil", 700000);
 	}
 
 	/* ADD FUELS */

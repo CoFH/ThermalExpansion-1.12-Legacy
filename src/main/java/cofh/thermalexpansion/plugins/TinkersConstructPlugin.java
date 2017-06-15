@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.plugins.tconstruct;
+package cofh.thermalexpansion.plugins;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;

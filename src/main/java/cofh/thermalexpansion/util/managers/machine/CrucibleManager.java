@@ -185,7 +185,7 @@ public class CrucibleManager {
 
 		public static boolean safeOreType(String oreName) {
 
-			return  oreName.startsWith(INGOT) || oreName.startsWith(ORE) || oreName.startsWith(NUGGET) || oreName.startsWith(BLOCK) || oreName.startsWith(DUST) || oreName.equals(PLATE);
+			return oreName.startsWith(INGOT) || oreName.startsWith(ORE) || oreName.startsWith(NUGGET) || oreName.startsWith(BLOCK) || oreName.startsWith(DUST) || oreName.equals(PLATE);
 		}
 
 		public static int getOreID(ItemStack stack) {

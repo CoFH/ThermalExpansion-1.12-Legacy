@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.plugins.natura;
+package cofh.thermalexpansion.plugins;
 
 public class NaturaPlugin {
 

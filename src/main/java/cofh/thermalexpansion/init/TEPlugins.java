@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.init;
 
-import cofh.thermalexpansion.plugins.forestry.ForestryPlugin;
-import cofh.thermalexpansion.plugins.natura.NaturaPlugin;
-import cofh.thermalexpansion.plugins.tconstruct.TinkersConstructPlugin;
+import cofh.thermalexpansion.plugins.ForestryPlugin;
+import cofh.thermalexpansion.plugins.NaturaPlugin;
+import cofh.thermalexpansion.plugins.TinkersConstructPlugin;
 
 public class TEPlugins {
 

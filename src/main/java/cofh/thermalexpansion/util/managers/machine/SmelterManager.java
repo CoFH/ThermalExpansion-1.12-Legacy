@@ -661,7 +661,7 @@ public class SmelterManager {
 
 		public static boolean safeOreType(String oreName) {
 
-			return EQUALS.contains(oreName) || oreName.startsWith(ORE) || oreName.startsWith(DUST)|| oreName.startsWith(INGOT) || oreName.startsWith(BLOCK) || oreName.startsWith(NUGGET);
+			return EQUALS.contains(oreName) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(BLOCK) || oreName.startsWith(NUGGET);
 		}
 
 		public static int getOreID(ItemStack stack) {

@@ -76,13 +76,13 @@ public class CoolantManager {
 
 		addCoolant("water", 500000, 6);
 		addCoolant("cryotheum", 4000000, 2);
-		addCoolant("ice", 1500000, 3);
 
 		loadMappings();
 	}
 
 	public static void loadMappings() {
 
+		addCoolant("ice", 1500000, 3);
 	}
 
 	/* ADD */

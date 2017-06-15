@@ -45,4 +45,5 @@ public class TopPlugin implements IProbeInfoProvider, Function<ITheOneProbe, Voi
 			tile.provideInfo(iProbeInfo, iProbeHitData.getSideHit(), entityPlayer);
 		}
 	}
+
 }
