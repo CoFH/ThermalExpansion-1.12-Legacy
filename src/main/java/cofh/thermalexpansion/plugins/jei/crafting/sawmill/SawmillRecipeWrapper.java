@@ -53,7 +53,7 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 
 		if (ComparableItemStackSawmill.getOreID(recipe.getInput()) != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()), false)) {
-				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().stackSize));
+				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));
 			}
 		} else {
 			recipeInputs.add(recipe.getInput());
