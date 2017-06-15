@@ -19,7 +19,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -37,7 +36,7 @@ public class EntityFlorb extends EntityThrowable {
 
 	public static void initialize(int id) {
 
-		EntityRegistry.registerModEntity(new ResourceLocation("thermalexpansion:florb"), EntityFlorb.class, "florb", id, ThermalExpansion.instance, CoreProps.ENTITY_TRACKING_DISTANCE, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation("thermalexpansion:florb"), EntityFlorb.class, "florb", id, ThermalExpansion.instance, CoreProps.ENTITY_TRACKING_DISTANCE, 10, true);
 	}
 
 	/* Required Constructor */
@@ -47,21 +46,10 @@ public class EntityFlorb extends EntityThrowable {
 	}
 
 	/* Fluid Constructors */
-	public EntityFlorb(World world, Fluid fluid) {
+	public EntityFlorb(World world, EntityLivingBase thrower, Fluid fluid) {
 
-		super(world);
+		super(world, thrower);
 		this.fluid = fluid;
-
-		setGravity();
-		setSyncFluid();
-	}
-
-	public EntityFlorb(World world, EntityLivingBase entity, Fluid fluid) {
-
-		super(world, entity);
-		this.fluid = fluid;
-
-		setHeadingFromThrower(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 1.5F, 1.0F);
 
 		setGravity();
 		setSyncFluid();
@@ -74,25 +62,6 @@ public class EntityFlorb extends EntityThrowable {
 
 		setGravity();
 		setSyncFluid();
-	}
-
-	/* Velocity Sensitive Constructors */
-	public EntityFlorb(World world, Fluid fluid, int velocity) {
-
-		this(world, fluid);
-		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, velocity, 1.0F);
-	}
-
-	public EntityFlorb(World world, EntityLivingBase entity, Fluid fluid, int velocity) {
-
-		this(world, entity, fluid);
-		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, velocity, 1.0F);
-	}
-
-	public EntityFlorb(World world, double x, double y, double z, Fluid fluid, int velocity) {
-
-		this(world, x, y, z, fluid);
-		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, velocity, 1.0F);
 	}
 
 	public EntityFlorb setFluid(Fluid fluid) {
@@ -120,31 +89,6 @@ public class EntityFlorb extends EntityThrowable {
 	}
 
 	@Override
-	protected void doBlockCollisions() {
-
-		int i = MathHelper.floor(this.getEntityBoundingBox().minX + 0.001D);
-		int j = MathHelper.floor(this.getEntityBoundingBox().minY + 0.001D);
-		int k = MathHelper.floor(this.getEntityBoundingBox().minZ + 0.001D);
-		int l = MathHelper.floor(this.getEntityBoundingBox().maxX - 0.001D);
-		int i1 = MathHelper.floor(this.getEntityBoundingBox().maxY - 0.001D);
-		int j1 = MathHelper.floor(this.getEntityBoundingBox().maxZ - 0.001D);
-
-		if (this.world.isAreaLoaded(new BlockPos(i, j, k), new BlockPos(l, i1, j1))) {
-			for (int k1 = i; k1 <= l; k1++) {
-				for (int l1 = j; l1 <= i1; l1++) {
-					for (int i2 = k; i2 <= j1; i2++) {
-						IBlockState state = this.world.getBlockState(new BlockPos(k1, l1, i2));
-
-						if (state != null) {
-							state.getBlock().onEntityCollidedWithBlock(this.world, new BlockPos(k1, l1, i2), state, this);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	@Override
 	public void onEntityUpdate() {
 
 		if (fluid == null && ServerHelper.isClientWorld(world)) {
@@ -163,7 +107,7 @@ public class EntityFlorb extends EntityThrowable {
 			traceResult.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0F);
 		}
 
-		if (traceResult.sideHit != null && world.getBlockState(pos).getBlock() != Blocks.SNOW_LAYER) {
+		if (traceResult.sideHit != null && !world.getBlockState(pos).getBlock().isReplaceable(world, pos)) {
 			pos = pos.offset(traceResult.sideHit);
 		}
 		if (ServerHelper.isServerWorld(world)) {
@@ -180,7 +124,7 @@ public class EntityFlorb extends EntityThrowable {
 			} else if ("lava".equals(fluid.getName())) {
 				block = Blocks.FLOWING_LAVA;
 			}
-			if (world.isAirBlock(pos) || state.getMaterial() == Material.FIRE || state.getBlock() == Blocks.SNOW_LAYER) {
+			if (world.isAirBlock(pos) || state.getMaterial() == Material.FIRE || state.getBlock().isReplaceable(world, pos)) {
 				if (!fluid.getName().equals("water") || !world.getBiome(pos).getBiomeName().toLowerCase().equals("hell")) {
 					world.setBlockState(pos, block.getDefaultState(), 3);
 					world.notifyBlockUpdate(pos, state, state, 3);
@@ -188,8 +132,8 @@ public class EntityFlorb extends EntityThrowable {
 			} else {
 				ItemFlorb.dropFlorb(getFluid(), world, pos);
 			}
+			this.setDead();
 		}
-		this.setDead();
 	}
 
 	@Override

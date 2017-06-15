@@ -139,7 +139,9 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider {
 			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
 			if (ServerHelper.isServerWorld(world)) {
-				world.spawnEntity(new EntityFlorb(world, player, fluid));
+				EntityFlorb florb = new EntityFlorb(world, player, fluid);
+				florb.setHeadingFromThrower(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
+				world.spawnEntity(florb);
 			}
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
