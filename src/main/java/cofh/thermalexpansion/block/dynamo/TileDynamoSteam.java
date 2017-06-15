@@ -276,6 +276,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+
 				@Override
 				public IFluidTankProperties[] getTankProperties() {
 

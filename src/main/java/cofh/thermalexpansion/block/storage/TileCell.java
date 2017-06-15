@@ -471,12 +471,12 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		return capability != CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && (capability == CapabilityEnergy.ENERGY || super.hasCapability(capability, from));
 	}
 
-	/* CAPABILITIES */
 	@Override
 	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
 		if (capability == CapabilityEnergy.ENERGY) {
 			return CapabilityEnergy.ENERGY.cast(new net.minecraftforge.energy.IEnergyStorage() {
+
 				@Override
 				public int receiveEnergy(int maxReceive, boolean simulate) {
 

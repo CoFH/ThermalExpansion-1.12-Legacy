@@ -37,7 +37,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.HashSet;
 
-public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IEnergyReceiver, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
+public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
 	protected static final EnergyConfig[] DEFAULT_ENERGY_CONFIG = new EnergyConfig[BlockDynamo.Type.values().length];
 	protected static final HashSet<String>[] VALID_AUGMENTS = new HashSet[BlockDynamo.Type.values().length];
@@ -479,13 +479,6 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		return from.ordinal() != facing ? 0 : energyStorage.extractEnergy(Math.min(energyConfig.maxPower * 2, maxExtract), simulate);
 	}
 
-	/* IEnergyReceiver */
-	@Override
-	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-
-		return 0;
-	}
-
 	@Override
 	public int getEnergyStored(EnumFacing from) {
 
@@ -603,6 +596,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		if (capability == CapabilityEnergy.ENERGY) {
 			return CapabilityEnergy.ENERGY.cast(new net.minecraftforge.energy.IEnergyStorage() {
+
 				@Override
 				public int receiveEnergy(int maxReceive, boolean simulate) {
 

@@ -502,6 +502,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+
 				@Override
 				public IFluidTankProperties[] getTankProperties() {
 

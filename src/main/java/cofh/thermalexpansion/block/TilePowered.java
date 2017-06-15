@@ -186,6 +186,7 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 
 		if (capability == CapabilityEnergy.ENERGY) {
 			return CapabilityEnergy.ENERGY.cast(new net.minecraftforge.energy.IEnergyStorage() {
+
 				@Override
 				public int receiveEnergy(int maxReceive, boolean simulate) {
 

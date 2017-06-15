@@ -485,6 +485,7 @@ public class TileSmelter extends TileMachineBase {
 
 		if (augmentPyrotheum && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+
 				@Override
 				public IFluidTankProperties[] getTankProperties() {
 
