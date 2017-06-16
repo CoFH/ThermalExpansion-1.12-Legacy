@@ -117,6 +117,8 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	@Override
 	public void blockPlaced() {
 
+		super.blockPlaced();
+
 		if (validTree && redstoneControlOrDisable()) {
 			isActive = true;
 			sendTilePacket(Side.CLIENT);

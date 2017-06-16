@@ -82,6 +82,8 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	@Override
 	public void blockPlaced() {
 
+		super.blockPlaced();
+
 		if (redstoneControlOrDisable() && targetWater >= 8) {
 			isActive = true;
 			sendTilePacket(Side.CLIENT);

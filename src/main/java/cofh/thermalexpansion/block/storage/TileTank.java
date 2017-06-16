@@ -82,6 +82,8 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	@Override
 	public void blockPlaced() {
 
+		super.blockPlaced();
+
 		sendTilePacket(Side.CLIENT);
 	}
 

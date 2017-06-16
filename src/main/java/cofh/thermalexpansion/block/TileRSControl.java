@@ -45,6 +45,12 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 	}
 
 	@Override
+	public void blockPlaced() {
+
+		onNeighborBlockChange();
+	}
+
+	@Override
 	public void onNeighborBlockChange() {
 
 		wasPowered = isPowered;
