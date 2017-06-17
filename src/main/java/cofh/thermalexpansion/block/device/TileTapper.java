@@ -151,7 +151,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 		if (isActive) {
 			if (validTree) {
-				genFluid = TapperManager.getFluid(worldObj.getBlockState(trunkPos));
+				genFluid = TapperManager.getFluid(world.getBlockState(trunkPos));
 
 				if (boostTime > 0) {
 					tank.fill(new FluidStack(genFluid, genFluid.amount * boostMult), true);
