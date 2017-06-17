@@ -30,7 +30,6 @@ public class SmelterRecipeCategoryPyrotheum extends SmelterRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new SmelterRecipeCategoryPyrotheum(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.SMELTER_PYROTHEUM);
 		registry.addRecipeCatalyst(ItemAugment.machineSmelterPyrotheum, RecipeUidsTE.SMELTER_PYROTHEUM);
 		registry.addRecipeCatalyst(BlockMachine.machineSmelter, RecipeUidsTE.SMELTER_PYROTHEUM);

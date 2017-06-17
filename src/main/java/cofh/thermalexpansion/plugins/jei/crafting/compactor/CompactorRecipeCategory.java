@@ -5,12 +5,16 @@ import cofh.thermalexpansion.gui.client.machine.GuiCompactor;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.pulverizer.PulverizerRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.pulverizer.PulverizerRecipeCategoryPetrotheum;
 import mezz.jei.api.IGuiHelper;
+import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
@@ -20,6 +24,19 @@ import java.util.List;
 public abstract class CompactorRecipeCategory extends BaseRecipeCategory<CompactorRecipeWrapper> {
 
 	public static boolean enable = true;
+
+	public static void register(IRecipeCategoryRegistration registry) {
+
+		if (!enable) {
+			return;
+		}
+		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+
+		registry.addRecipeCategories(new CompactorRecipeCategoryPress(guiHelper));
+		registry.addRecipeCategories(new CompactorRecipeCategoryStorage(guiHelper));
+		registry.addRecipeCategories(new CompactorRecipeCategoryMint(guiHelper));
+	}
 
 	public static void initialize(IModRegistry registry) {
 

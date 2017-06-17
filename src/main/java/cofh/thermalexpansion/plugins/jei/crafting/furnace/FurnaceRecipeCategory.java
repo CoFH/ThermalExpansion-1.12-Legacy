@@ -26,6 +26,20 @@ public class FurnaceRecipeCategory extends BaseRecipeCategory<FurnaceRecipeWrapp
 
 	public static boolean enable = true;
 
+	public static void register(IRecipeCategoryRegistration registry) {
+
+		if (!enable) {
+			return;
+		}
+		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+
+		registry.addRecipeCategories(new FurnaceRecipeCategory(guiHelper));
+		registry.addRecipeCategories(new FurnaceRecipeCategoryFood(guiHelper));
+		registry.addRecipeCategories(new FurnaceRecipeCategoryOre(guiHelper));
+		registry.addRecipeCategories(new FurnaceRecipeCategoryPyrolysis(guiHelper));
+	}
+
 	public static void initialize(IModRegistry registry) {
 
 		if (!enable) {
@@ -34,7 +48,6 @@ public class FurnaceRecipeCategory extends BaseRecipeCategory<FurnaceRecipeWrapp
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new FurnaceRecipeCategory(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.FURNACE);
 		registry.addRecipeClickArea(GuiFurnace.class, 79, 34, 24, 16, RecipeUidsTE.FURNACE, RecipeUidsTE.FURNACE_FOOD, RecipeUidsTE.FURNACE_ORE, RecipeUidsTE.FURNACE_PYROLYSIS);
 		registry.addRecipeCatalyst(BlockMachine.machineFurnace, RecipeUidsTE.FURNACE);

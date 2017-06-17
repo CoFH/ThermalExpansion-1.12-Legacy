@@ -24,10 +24,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.FluidTankProperties;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fluids.capability.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
@@ -143,7 +140,7 @@ public class TileTransposer extends TileMachineBase {
 		if (!inventory[2].isEmpty()) {
 			return false;
 		}
-		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+		IFluidHandlerItem handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 
 		if (!extractMode) {
 			if (tank.getFluid() == null || tank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
@@ -161,7 +158,7 @@ public class TileTransposer extends TileMachineBase {
 
 	private void processStartHandler() {
 
-		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+		IFluidHandlerItem handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 		IFluidTankProperties[] tankProperties = handler.getTankProperties();
 
 		FluidStack handlerStack = tankProperties[0].getContents();
@@ -196,7 +193,7 @@ public class TileTransposer extends TileMachineBase {
 
 	private boolean fillHandler() {
 
-		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+		IFluidHandlerItem handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 		int filled = tank.getFluid() == null ? 0 : handler.fill(new FluidStack(tank.getFluid(), Fluid.BUCKET_VOLUME), true);
 
 		IFluidTankProperties[] tankProperties = handler.getTankProperties();
@@ -206,17 +203,15 @@ public class TileTransposer extends TileMachineBase {
 		}
 		if (filled > 0) {
 			tank.drain(filled, true);
-			if (tankProperties[0].getContents().amount >= tankProperties[0].getCapacity()) {
-				return true;
-			}
-			return false;
+			inventory[1] = handler.getContainer();
+			return tankProperties[0].getContents() != null && tankProperties[0].getContents().amount >= tankProperties[0].getCapacity();
 		}
 		return true;
 	}
 
 	private boolean emptyHandler() {
 
-		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+		IFluidHandlerItem handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 		FluidStack drainStack = handler.drain(Fluid.BUCKET_VOLUME, true);
 		int drained = drainStack == null ? 0 : drainStack.amount;
 
@@ -227,6 +222,7 @@ public class TileTransposer extends TileMachineBase {
 		}
 		if (drained > 0) {
 			tank.fill(drainStack, true);
+			inventory[1] = handler.getContainer();
 			if (tankProperties[0].getContents() == null) {
 				if (inventory[1].getCount() <= 0) {
 					inventory[1] = ItemStack.EMPTY;
@@ -245,15 +241,6 @@ public class TileTransposer extends TileMachineBase {
 		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
-		//		if (ServerHelper.isClientWorld(worldObj)) {
-		//			if (inventory[1].isEmpty()) {
-		//				processRem = 0;
-		//				hasFluidHandler = false;
-		//			} else if (FluidHelper.isFluidHandler(inventory[1])) {
-		//				hasFluidHandler = true;
-		//			}
-		//			return;
-		//		}
 		if (extractMode) {
 			transferOutputFluid();
 		}

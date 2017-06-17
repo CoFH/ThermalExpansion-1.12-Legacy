@@ -6,6 +6,8 @@ import cofh.thermalexpansion.gui.client.machine.GuiSmelter;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.pulverizer.PulverizerRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.pulverizer.PulverizerRecipeCategoryPetrotheum;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager.SmelterRecipe;
 import mezz.jei.api.IGuiHelper;
@@ -26,6 +28,18 @@ public class SmelterRecipeCategory extends BaseRecipeCategory<SmelterRecipeWrapp
 
 	public static boolean enable = true;
 
+	public static void register(IRecipeCategoryRegistration registry) {
+
+		if (!enable) {
+			return;
+		}
+		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+
+		registry.addRecipeCategories(new SmelterRecipeCategory(guiHelper));
+		registry.addRecipeCategories(new SmelterRecipeCategoryPyrotheum(guiHelper));
+	}
+
 	public static void initialize(IModRegistry registry) {
 
 		if (!enable) {
@@ -34,7 +48,6 @@ public class SmelterRecipeCategory extends BaseRecipeCategory<SmelterRecipeWrapp
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new SmelterRecipeCategory(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.SMELTER);
 		registry.addRecipeClickArea(GuiSmelter.class, 79, 34, 24, 16, RecipeUidsTE.SMELTER, RecipeUidsTE.SMELTER_PYROTHEUM);
 		registry.addRecipeCatalyst(BlockMachine.machineSmelter, RecipeUidsTE.SMELTER);

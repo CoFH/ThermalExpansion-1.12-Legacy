@@ -8,6 +8,7 @@ import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
+import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.fuels.BaseFuelCategory;
 import cofh.thermalexpansion.util.managers.dynamo.EnervationManager;
 import mezz.jei.api.IGuiHelper;
@@ -30,6 +31,17 @@ public class EnervationFuelCategory extends BaseFuelCategory<EnervationFuelWrapp
 
 	public static boolean enable = true;
 
+	public static void register(IRecipeCategoryRegistration registry) {
+
+		if (!enable) {
+			return;
+		}
+		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+
+		registry.addRecipeCategories(new EnervationFuelCategory(guiHelper));
+	}
+
 	public static void initialize(IModRegistry registry) {
 
 		if (!enable) {
@@ -38,7 +50,6 @@ public class EnervationFuelCategory extends BaseFuelCategory<EnervationFuelWrapp
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new EnervationFuelCategory(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.DYNAMO_ENERVATION);
 		registry.addRecipeClickArea(GuiDynamoEnervation.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_ENERVATION);
 		registry.addRecipeCatalyst(BlockDynamo.dynamoEnervation, RecipeUidsTE.DYNAMO_ENERVATION);

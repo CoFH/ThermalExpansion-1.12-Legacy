@@ -5,6 +5,7 @@ import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
+import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.fuels.BaseFuelCategory;
 import cofh.thermalexpansion.util.managers.dynamo.CompressionManager;
 import mezz.jei.api.IGuiHelper;
@@ -27,7 +28,7 @@ public class CompressionFuelCategory extends BaseFuelCategory<CompressionFuelWra
 
 	public static boolean enable = true;
 
-	public static void initialize(IModRegistry registry) {
+	public static void register(IRecipeCategoryRegistration registry) {
 
 		if (!enable) {
 			return;
@@ -35,7 +36,17 @@ public class CompressionFuelCategory extends BaseFuelCategory<CompressionFuelWra
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new CompressionFuelCategory(guiHelper));
+		registry.addRecipeCategories(new CompressionFuelCategory(guiHelper));
+	}
+
+	public static void initialize(IModRegistry registry) {
+
+		if (!enable) {
+			return;
+		}
+		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		
 		registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.DYNAMO_COMPRESSION);
 		registry.addRecipeClickArea(GuiDynamoCompression.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_COMPRESSION);
 		registry.addRecipeCatalyst(BlockDynamo.dynamoCompression, RecipeUidsTE.DYNAMO_COMPRESSION);

@@ -6,6 +6,7 @@ import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
+import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.fuels.BaseFuelCategory;
 import cofh.thermalexpansion.util.managers.CoolantManager;
 import mezz.jei.api.IGuiHelper;
@@ -28,6 +29,17 @@ public class CoolantCategory extends BaseFuelCategory<CoolantWrapper> {
 
 	public static boolean enable = true;
 
+	public static void register(IRecipeCategoryRegistration registry) {
+
+		if (!enable) {
+			return;
+		}
+		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+
+		registry.addRecipeCategories(new CoolantCategory(guiHelper));
+	}
+
 	public static void initialize(IModRegistry registry) {
 
 		if (!enable) {
@@ -36,7 +48,6 @@ public class CoolantCategory extends BaseFuelCategory<CoolantWrapper> {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new CoolantCategory(guiHelper));
 		registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.COOLANT);
 		registry.addRecipeCatalyst(BlockDevice.deviceHeatSink, RecipeUidsTE.COOLANT);
 		registry.addRecipeCatalyst(BlockDynamo.dynamoCompression, RecipeUidsTE.COOLANT);

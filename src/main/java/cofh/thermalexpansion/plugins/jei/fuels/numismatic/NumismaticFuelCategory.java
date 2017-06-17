@@ -6,6 +6,7 @@ import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoNumismatic;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
+import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.fuels.BaseFuelCategory;
 import cofh.thermalexpansion.util.managers.dynamo.NumismaticManager;
 import mezz.jei.api.IGuiHelper;
@@ -25,6 +26,17 @@ public class NumismaticFuelCategory extends BaseFuelCategory<NumismaticFuelWrapp
 
 	public static boolean enable = true;
 
+	public static void register(IRecipeCategoryRegistration registry) {
+
+		if (!enable) {
+			return;
+		}
+		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+
+		registry.addRecipeCategories(new NumismaticFuelCategory(guiHelper));
+	}
+
 	public static void initialize(IModRegistry registry) {
 
 		if (!enable) {
@@ -33,7 +45,6 @@ public class NumismaticFuelCategory extends BaseFuelCategory<NumismaticFuelWrapp
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new NumismaticFuelCategory(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.DYNAMO_NUMISMATIC);
 		registry.addRecipeClickArea(GuiDynamoNumismatic.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_NUMISMATIC);
 		registry.addRecipeCatalyst(BlockDynamo.dynamoNumismatic, RecipeUidsTE.DYNAMO_NUMISMATIC);

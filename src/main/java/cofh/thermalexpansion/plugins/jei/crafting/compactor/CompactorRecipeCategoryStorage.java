@@ -23,7 +23,6 @@ public class CompactorRecipeCategoryStorage extends CompactorRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new CompactorRecipeCategoryStorage(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.COMPACTOR_STORAGE);
 		registry.addRecipeCatalyst(BlockMachine.machineCompactor, RecipeUidsTE.COMPACTOR_STORAGE);
 	}

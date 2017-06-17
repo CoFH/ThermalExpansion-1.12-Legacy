@@ -6,6 +6,8 @@ import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.pulverizer.PulverizerRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.pulverizer.PulverizerRecipeCategoryPetrotheum;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.InsolatorRecipe;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
@@ -30,6 +32,21 @@ public class InsolatorRecipeCategory extends BaseRecipeCategory<InsolatorRecipeW
 
 	public static boolean enable = true;
 
+	public static void register(IRecipeCategoryRegistration registry) {
+
+		if (!enable) {
+			return;
+		}
+		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+
+		registry.addRecipeCategories(new InsolatorRecipeCategory(guiHelper));
+		registry.addRecipeCategories(new InsolatorRecipeCategoryMycelium(guiHelper));
+		registry.addRecipeCategories(new InsolatorRecipeCategoryNether(guiHelper));
+		registry.addRecipeCategories(new InsolatorRecipeCategoryEnd(guiHelper));
+		registry.addRecipeCategories(new InsolatorRecipeCategoryTree(guiHelper));
+	}
+
 	public static void initialize(IModRegistry registry) {
 
 		if (!enable) {
@@ -38,7 +55,6 @@ public class InsolatorRecipeCategory extends BaseRecipeCategory<InsolatorRecipeW
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new InsolatorRecipeCategory(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.INSOLATOR);
 		registry.addRecipeClickArea(GuiInsolator.class, 79, 34, 24, 16, RecipeUidsTE.INSOLATOR, RecipeUidsTE.INSOLATOR_MYCELIUM, RecipeUidsTE.INSOLATOR_NETHER, RecipeUidsTE.INSOLATOR_END, RecipeUidsTE.INSOLATOR_TREE);
 		registry.addRecipeCatalyst(BlockMachine.machineInsolator, RecipeUidsTE.INSOLATOR);

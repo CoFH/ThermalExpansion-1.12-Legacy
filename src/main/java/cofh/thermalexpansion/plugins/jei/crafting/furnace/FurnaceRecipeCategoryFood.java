@@ -22,7 +22,6 @@ public class FurnaceRecipeCategoryFood extends FurnaceRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new FurnaceRecipeCategoryFood(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.FURNACE_FOOD);
 		registry.addRecipeCatalyst(ItemAugment.machineFurnaceFood, RecipeUidsTE.FURNACE_FOOD);
 		registry.addRecipeCatalyst(BlockMachine.machineFurnace, RecipeUidsTE.FURNACE_FOOD);

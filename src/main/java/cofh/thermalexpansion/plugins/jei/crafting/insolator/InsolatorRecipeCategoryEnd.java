@@ -23,7 +23,6 @@ public class InsolatorRecipeCategoryEnd extends InsolatorRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new InsolatorRecipeCategoryEnd(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.INSOLATOR_END);
 		registry.addRecipeCatalyst(ItemAugment.machineInsolatorEnd, RecipeUidsTE.INSOLATOR_END);
 		registry.addRecipeCatalyst(BlockMachine.machineInsolator, RecipeUidsTE.INSOLATOR_END);

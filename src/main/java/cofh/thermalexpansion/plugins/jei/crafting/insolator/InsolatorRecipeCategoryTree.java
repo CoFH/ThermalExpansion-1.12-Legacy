@@ -23,7 +23,6 @@ public class InsolatorRecipeCategoryTree extends InsolatorRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new InsolatorRecipeCategoryTree(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.INSOLATOR_TREE);
 		registry.addRecipeCatalyst(ItemAugment.machineInsolatorTree, RecipeUidsTE.INSOLATOR_TREE);
 		registry.addRecipeCatalyst(BlockMachine.machineInsolator, RecipeUidsTE.INSOLATOR_TREE);

@@ -30,7 +30,6 @@ public class SawmillRecipeCategoryTapper extends SawmillRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new SawmillRecipeCategoryTapper(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.SAWMILL_TAPPER);
 		registry.addRecipeCatalyst(ItemAugment.machineSawmillTapper, RecipeUidsTE.SAWMILL_TAPPER);
 		registry.addRecipeCatalyst(BlockMachine.machineSawmill, RecipeUidsTE.SAWMILL_TAPPER);

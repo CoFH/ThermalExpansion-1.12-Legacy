@@ -30,7 +30,6 @@ public class PulverizerRecipeCategoryPetrotheum extends PulverizerRecipeCategory
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new PulverizerRecipeCategoryPetrotheum(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.PULVERIZER_PETROTHEUM);
 		registry.addRecipeCatalyst(ItemAugment.machinePulverizerPetrotheum, RecipeUidsTE.PULVERIZER_PETROTHEUM);
 		registry.addRecipeCatalyst(BlockMachine.machinePulverizer, RecipeUidsTE.PULVERIZER_PETROTHEUM);

@@ -6,6 +6,9 @@ import cofh.thermalexpansion.gui.client.machine.GuiPulverizer;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.furnace.FurnaceRecipeCategoryFood;
+import cofh.thermalexpansion.plugins.jei.crafting.furnace.FurnaceRecipeCategoryOre;
+import cofh.thermalexpansion.plugins.jei.crafting.furnace.FurnaceRecipeCategoryPyrolysis;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager.PulverizerRecipe;
 import mezz.jei.api.IGuiHelper;
@@ -26,6 +29,18 @@ public class PulverizerRecipeCategory extends BaseRecipeCategory<PulverizerRecip
 
 	public static boolean enable = true;
 
+	public static void register(IRecipeCategoryRegistration registry) {
+
+		if (!enable) {
+			return;
+		}
+		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+
+		registry.addRecipeCategories(new PulverizerRecipeCategory(guiHelper));
+		registry.addRecipeCategories(new PulverizerRecipeCategoryPetrotheum(guiHelper));
+	}
+
 	public static void initialize(IModRegistry registry) {
 
 		if (!enable) {
@@ -34,7 +49,6 @@ public class PulverizerRecipeCategory extends BaseRecipeCategory<PulverizerRecip
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new PulverizerRecipeCategory(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.PULVERIZER);
 		registry.addRecipeClickArea(GuiPulverizer.class, 79, 34, 24, 16, RecipeUidsTE.PULVERIZER, RecipeUidsTE.PULVERIZER_PETROTHEUM);
 		registry.addRecipeCatalyst(BlockMachine.machinePulverizer, RecipeUidsTE.PULVERIZER);

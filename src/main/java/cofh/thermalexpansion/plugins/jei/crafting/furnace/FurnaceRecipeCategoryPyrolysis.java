@@ -29,7 +29,6 @@ public class FurnaceRecipeCategoryPyrolysis extends FurnaceRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new FurnaceRecipeCategoryPyrolysis(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.FURNACE_PYROLYSIS);
 		registry.addRecipeCatalyst(ItemAugment.machineFurnacePyrolysis, RecipeUidsTE.FURNACE_PYROLYSIS);
 		registry.addRecipeCatalyst(BlockMachine.machineFurnace, RecipeUidsTE.FURNACE_PYROLYSIS);

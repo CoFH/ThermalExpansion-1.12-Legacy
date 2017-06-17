@@ -6,6 +6,8 @@ import cofh.thermalexpansion.gui.client.machine.GuiRefinery;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.pulverizer.PulverizerRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.pulverizer.PulverizerRecipeCategoryPetrotheum;
 import cofh.thermalexpansion.util.managers.machine.RefineryManager;
 import cofh.thermalexpansion.util.managers.machine.RefineryManager.RefineryRecipe;
 import mezz.jei.api.IGuiHelper;
@@ -29,6 +31,17 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 
 	public static boolean enable = true;
 
+	public static void register(IRecipeCategoryRegistration registry) {
+
+		if (!enable) {
+			return;
+		}
+		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+
+		registry.addRecipeCategories(new RefineryRecipeCategory(guiHelper));
+	}
+
 	public static void initialize(IModRegistry registry) {
 
 		if (!enable) {
@@ -37,7 +50,6 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new RefineryRecipeCategory(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.REFINERY);
 		registry.addRecipeClickArea(GuiRefinery.class, 76, 34, 24, 16, RecipeUidsTE.REFINERY);
 		registry.addRecipeCatalyst(BlockMachine.machineRefinery, RecipeUidsTE.REFINERY);

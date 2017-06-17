@@ -23,7 +23,6 @@ public class CompactorRecipeCategoryPress extends CompactorRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new CompactorRecipeCategoryPress(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.COMPACTOR_PRESS);
 		registry.addRecipeCatalyst(BlockMachine.machineCompactor, RecipeUidsTE.COMPACTOR_PRESS);
 	}

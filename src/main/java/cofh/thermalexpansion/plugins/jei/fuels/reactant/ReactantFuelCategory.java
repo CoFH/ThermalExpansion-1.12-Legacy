@@ -5,6 +5,7 @@ import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
+import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.fuels.BaseFuelCategory;
 import cofh.thermalexpansion.util.managers.dynamo.ReactantManager;
 import mezz.jei.api.IGuiHelper;
@@ -28,6 +29,17 @@ public class ReactantFuelCategory extends BaseFuelCategory<ReactantFuelWrapper> 
 
 	public static boolean enable = true;
 
+	public static void register(IRecipeCategoryRegistration registry) {
+
+		if (!enable) {
+			return;
+		}
+		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+
+		registry.addRecipeCategories(new ReactantFuelCategory(guiHelper));
+	}
+
 	public static void initialize(IModRegistry registry) {
 
 		if (!enable) {
@@ -36,7 +48,6 @@ public class ReactantFuelCategory extends BaseFuelCategory<ReactantFuelWrapper> 
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new ReactantFuelCategory(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.DYNAMO_REACTANT);
 		registry.addRecipeClickArea(GuiDynamoReactant.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_REACTANT);
 		registry.addRecipeCatalyst(BlockDynamo.dynamoReactant, RecipeUidsTE.DYNAMO_REACTANT);

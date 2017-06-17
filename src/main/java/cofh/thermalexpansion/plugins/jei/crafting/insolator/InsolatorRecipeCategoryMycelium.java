@@ -23,7 +23,6 @@ public class InsolatorRecipeCategoryMycelium extends InsolatorRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new InsolatorRecipeCategoryMycelium(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.INSOLATOR_MYCELIUM);
 		registry.addRecipeCatalyst(ItemAugment.machineInsolatorMycelium, RecipeUidsTE.INSOLATOR_MYCELIUM);
 		registry.addRecipeCatalyst(BlockMachine.machineInsolator, RecipeUidsTE.INSOLATOR_MYCELIUM);

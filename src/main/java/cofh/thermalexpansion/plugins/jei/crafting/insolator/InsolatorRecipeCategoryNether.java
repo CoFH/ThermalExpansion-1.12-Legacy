@@ -23,7 +23,6 @@ public class InsolatorRecipeCategoryNether extends InsolatorRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new InsolatorRecipeCategoryNether(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.INSOLATOR_NETHER);
 		registry.addRecipeCatalyst(ItemAugment.machineInsolatorNether, RecipeUidsTE.INSOLATOR_NETHER);
 		registry.addRecipeCatalyst(BlockMachine.machineInsolator, RecipeUidsTE.INSOLATOR_NETHER);

@@ -5,6 +5,7 @@ import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
+import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.fuels.BaseFuelCategory;
 import cofh.thermalexpansion.util.managers.dynamo.MagmaticManager;
 import mezz.jei.api.IGuiHelper;
@@ -27,6 +28,17 @@ public class MagmaticFuelCategory extends BaseFuelCategory<MagmaticFuelWrapper> 
 
 	public static boolean enable = true;
 
+	public static void register(IRecipeCategoryRegistration registry) {
+
+		if (!enable) {
+			return;
+		}
+		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+
+		registry.addRecipeCategories(new MagmaticFuelCategory(guiHelper));
+	}
+
 	public static void initialize(IModRegistry registry) {
 
 		if (!enable) {
@@ -35,7 +47,6 @@ public class MagmaticFuelCategory extends BaseFuelCategory<MagmaticFuelWrapper> 
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new MagmaticFuelCategory(guiHelper));
 		registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.DYNAMO_MAGMATIC);
 		registry.addRecipeClickArea(GuiDynamoMagmatic.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_MAGMATIC);
 		registry.addRecipeCatalyst(BlockDynamo.dynamoMagmatic, RecipeUidsTE.DYNAMO_MAGMATIC);

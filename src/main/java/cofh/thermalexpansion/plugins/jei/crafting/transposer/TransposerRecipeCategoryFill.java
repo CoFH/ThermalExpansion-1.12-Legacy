@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -33,7 +34,6 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new TransposerRecipeCategoryFill(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper, registry.getIngredientRegistry()), RecipeUidsTE.TRANSPOSER_FILL);
 		registry.addRecipeCatalyst(BlockMachine.machineTransposer, RecipeUidsTE.TRANSPOSER_FILL);
 	}
@@ -45,7 +45,30 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 		for (TransposerRecipe recipe : TransposerManager.getFillRecipeList()) {
 			recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_FILL));
 		}
+		List<ItemStack> ingredients = ingredientRegistry.getIngredients(ItemStack.class);
+
+		for (ItemStack ingredient : ingredients) {
+			if (ingredient.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+				for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
+					addFillRecipe(ingredient, fluid, recipes, guiHelper);
+				}
+			}
+		}
 		return recipes;
+	}
+
+	private static void addFillRecipe(ItemStack baseStack, Fluid fluid, List<TransposerRecipeWrapper> recipes, IGuiHelper guiHelper) {
+
+		ItemStack filledStack = baseStack.copy();
+		IFluidHandlerItem handler = filledStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+		int fill = handler.fill(new FluidStack(fluid, Fluid.BUCKET_VOLUME), true);
+
+		if (fill > 0) {
+			FluidStack filledFluid = new FluidStack(fluid, fill);
+			filledStack = handler.getContainer();
+			TransposerRecipe recipe = new TransposerRecipe(baseStack, filledStack, filledFluid, TransposerManager.DEFAULT_ENERGY, 100);
+			recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_FILL));
+		}
 	}
 
 	public TransposerRecipeCategoryFill(IGuiHelper guiHelper) {

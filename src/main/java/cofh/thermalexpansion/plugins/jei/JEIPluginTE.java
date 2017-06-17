@@ -42,6 +42,25 @@ public class JEIPluginTE extends BlankModPlugin {
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registry) {
 
+		FurnaceRecipeCategory.register(registry);
+		PulverizerRecipeCategory.register(registry);
+		SawmillRecipeCategory.register(registry);
+		SmelterRecipeCategory.register(registry);
+		InsolatorRecipeCategory.register(registry);
+		CompactorRecipeCategory.register(registry);
+		CrucibleRecipeCategory.register(registry);
+		RefineryRecipeCategory.register(registry);
+		TransposerRecipeCategory.register(registry);
+		ChargerRecipeCategory.register(registry);
+
+		SteamFuelCategory.register(registry);
+		MagmaticFuelCategory.register(registry);
+		CompressionFuelCategory.register(registry);
+		ReactantFuelCategory.register(registry);
+		EnervationFuelCategory.register(registry);
+		NumismaticFuelCategory.register(registry);
+
+		CoolantCategory.register(registry);
 	}
 
 	@Override

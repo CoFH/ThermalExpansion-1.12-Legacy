@@ -23,7 +23,6 @@ public class CompactorRecipeCategoryMint extends CompactorRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		((IRecipeCategoryRegistration) registry).addRecipeCategories(new CompactorRecipeCategoryMint(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.COMPACTOR_MINT);
 		registry.addRecipeCatalyst(ItemAugment.machineCompactorMint, RecipeUidsTE.COMPACTOR_MINT);
 		registry.addRecipeCatalyst(BlockMachine.machineCompactor, RecipeUidsTE.COMPACTOR_MINT);
