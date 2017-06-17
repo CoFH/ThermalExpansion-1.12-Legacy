@@ -6,6 +6,7 @@ import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager.FurnaceRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
@@ -13,6 +14,7 @@ import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -27,17 +29,17 @@ public class FurnaceRecipeCategoryPyrolysis extends FurnaceRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new FurnaceRecipeCategoryPyrolysis(guiHelper));
-		registry.addRecipes(getRecipes(guiHelper));
-		registry.addRecipeCategoryCraftingItem(ItemAugment.machineFurnacePyrolysis, RecipeUidsTE.FURNACE_PYROLYSIS);
-		registry.addRecipeCategoryCraftingItem(BlockMachine.machineFurnace, RecipeUidsTE.FURNACE_PYROLYSIS);
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new FurnaceRecipeCategoryPyrolysis(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.FURNACE_PYROLYSIS);
+		registry.addRecipeCatalyst(ItemAugment.machineFurnacePyrolysis, RecipeUidsTE.FURNACE_PYROLYSIS);
+		registry.addRecipeCatalyst(BlockMachine.machineFurnace, RecipeUidsTE.FURNACE_PYROLYSIS);
 	}
 
 	public static List<FurnaceRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<FurnaceRecipeWrapper> recipes = new ArrayList<>();
 
-		for (FurnaceManager.RecipeFurnace recipe : FurnaceManager.getRecipeListPyrolysis()) {
+		for (FurnaceRecipe recipe : FurnaceManager.getRecipeListPyrolysis()) {
 			recipes.add(new FurnaceRecipeWrapper(guiHelper, recipe, RecipeUidsTE.FURNACE_PYROLYSIS));
 		}
 		return recipes;

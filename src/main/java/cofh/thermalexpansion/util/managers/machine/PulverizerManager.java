@@ -22,19 +22,19 @@ import java.util.Map.Entry;
 
 public class PulverizerManager {
 
-	private static Map<ComparableItemStackPulverizer, RecipePulverizer> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackPulverizer, PulverizerRecipe> recipeMap = new THashMap<>();
 
 	static final int ORE_MULTIPLIER = 2;
 	static final int DEFAULT_ENERGY = 4000;
 
-	public static RecipePulverizer getRecipe(ItemStack input) {
+	public static PulverizerRecipe getRecipe(ItemStack input) {
 
 		if (input.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackPulverizer query = new ComparableItemStackPulverizer(input);
 
-		RecipePulverizer recipe = recipeMap.get(query);
+		PulverizerRecipe recipe = recipeMap.get(query);
 
 		if (recipe == null) {
 			query.metadata = OreDictionary.WILDCARD_VALUE;
@@ -48,9 +48,9 @@ public class PulverizerManager {
 		return getRecipe(input) != null;
 	}
 
-	public static RecipePulverizer[] getRecipeList() {
+	public static PulverizerRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipePulverizer[recipeMap.size()]);
+		return recipeMap.values().toArray(new PulverizerRecipe[recipeMap.size()]);
 	}
 
 	public static void initialize() {
@@ -306,10 +306,10 @@ public class PulverizerManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackPulverizer, RecipePulverizer> tempMap = new THashMap<>(recipeMap.size());
-		RecipePulverizer tempRecipe;
+		Map<ComparableItemStackPulverizer, PulverizerRecipe> tempMap = new THashMap<>(recipeMap.size());
+		PulverizerRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackPulverizer, RecipePulverizer> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackPulverizer, PulverizerRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
 			tempMap.put(new ComparableItemStackPulverizer(tempRecipe.input), tempRecipe);
 		}
@@ -318,28 +318,28 @@ public class PulverizerManager {
 	}
 
 	/* ADD RECIPES */
-	public static RecipePulverizer addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static PulverizerRecipe addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		if (input.isEmpty() || primaryOutput.isEmpty() || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
-		RecipePulverizer recipe = new RecipePulverizer(input, primaryOutput, secondaryOutput, secondaryChance, energy);
+		PulverizerRecipe recipe = new PulverizerRecipe(input, primaryOutput, secondaryOutput, secondaryChance, energy);
 		recipeMap.put(new ComparableItemStackPulverizer(input), recipe);
 		return recipe;
 	}
 
-	public static RecipePulverizer addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
+	public static PulverizerRecipe addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
 
 		return addRecipe(energy, input, primaryOutput, secondaryOutput, 100);
 	}
 
-	public static RecipePulverizer addRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
+	public static PulverizerRecipe addRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
 
 		return addRecipe(energy, input, primaryOutput, ItemStack.EMPTY, 0);
 	}
 
 	/* REMOVE RECIPES */
-	public static RecipePulverizer removeRecipe(ItemStack input) {
+	public static PulverizerRecipe removeRecipe(ItemStack input) {
 
 		return recipeMap.remove(new ComparableItemStackPulverizer(input));
 	}
@@ -471,7 +471,7 @@ public class PulverizerManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipePulverizer {
+	public static class PulverizerRecipe {
 
 		final ItemStack input;
 		final ItemStack primaryOutput;
@@ -479,7 +479,7 @@ public class PulverizerManager {
 		final int secondaryChance;
 		final int energy;
 
-		RecipePulverizer(ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy) {
+		PulverizerRecipe(ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy) {
 
 			this.input = input;
 			this.primaryOutput = primaryOutput;

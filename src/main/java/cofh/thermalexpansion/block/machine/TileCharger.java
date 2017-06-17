@@ -12,7 +12,7 @@ import cofh.thermalexpansion.gui.client.machine.GuiCharger;
 import cofh.thermalexpansion.gui.container.machine.ContainerCharger;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.machine.ChargerManager;
-import cofh.thermalexpansion.util.managers.machine.ChargerManager.RecipeCharger;
+import cofh.thermalexpansion.util.managers.machine.ChargerManager.ChargerRecipe;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -59,7 +59,6 @@ public class TileCharger extends TileMachineBase {
 
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
-
 	}
 
 	private int inputTracker;
@@ -275,7 +274,7 @@ public class TileCharger extends TileMachineBase {
 			hasEnergyHandler = true;
 			return false;
 		}
-		RecipeCharger recipe = ChargerManager.getRecipe(inventory[0]);
+		ChargerRecipe recipe = ChargerManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
 			return false;
@@ -294,14 +293,14 @@ public class TileCharger extends TileMachineBase {
 		if (hasContainerItem || hasEnergyHandler) {
 			return true;
 		}
-		RecipeCharger recipe = ChargerManager.getRecipe(inventory[1]);
+		ChargerRecipe recipe = ChargerManager.getRecipe(inventory[1]);
 		return recipe != null && recipe.getInput().getCount() <= inventory[1].getCount();
 	}
 
 	@Override
 	protected void processStart() {
 
-		RecipeCharger recipe = ChargerManager.getRecipe(inventory[0]);
+		ChargerRecipe recipe = ChargerManager.getRecipe(inventory[0]);
 		processMax = recipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
@@ -316,7 +315,7 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		RecipeCharger recipe = ChargerManager.getRecipe(inventory[1]);
+		ChargerRecipe recipe = ChargerManager.getRecipe(inventory[1]);
 
 		if (recipe == null) {
 			processOff();

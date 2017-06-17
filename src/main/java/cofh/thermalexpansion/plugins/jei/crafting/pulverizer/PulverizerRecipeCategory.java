@@ -7,12 +7,14 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
+import cofh.thermalexpansion.util.managers.machine.PulverizerManager.PulverizerRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
@@ -32,11 +34,10 @@ public class PulverizerRecipeCategory extends BaseRecipeCategory<PulverizerRecip
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new PulverizerRecipeCategory(guiHelper));
-		registry.addRecipeHandlers(new PulverizerRecipeHandler());
-		registry.addRecipes(getRecipes(guiHelper));
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new PulverizerRecipeCategory(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.PULVERIZER);
 		registry.addRecipeClickArea(GuiPulverizer.class, 79, 34, 24, 16, RecipeUidsTE.PULVERIZER, RecipeUidsTE.PULVERIZER_PETROTHEUM);
-		registry.addRecipeCategoryCraftingItem(BlockMachine.machinePulverizer, RecipeUidsTE.PULVERIZER);
+		registry.addRecipeCatalyst(BlockMachine.machinePulverizer, RecipeUidsTE.PULVERIZER);
 
 		PulverizerRecipeCategoryPetrotheum.initialize(registry);
 	}
@@ -45,7 +46,7 @@ public class PulverizerRecipeCategory extends BaseRecipeCategory<PulverizerRecip
 
 		List<PulverizerRecipeWrapper> recipes = new ArrayList<>();
 
-		for (PulverizerManager.RecipePulverizer recipe : PulverizerManager.getRecipeList()) {
+		for (PulverizerRecipe recipe : PulverizerManager.getRecipeList()) {
 			recipes.add(new PulverizerRecipeWrapper(guiHelper, recipe));
 		}
 		return recipes;

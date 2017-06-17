@@ -10,7 +10,7 @@ import cofh.thermalexpansion.gui.container.machine.ContainerSmelter;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager;
-import cofh.thermalexpansion.util.managers.machine.SmelterManager.RecipeSmelter;
+import cofh.thermalexpansion.util.managers.machine.SmelterManager.SmelterRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -112,7 +112,7 @@ public class TileSmelter extends TileMachineBase {
 		if (inventory[0].isEmpty() || inventory[1].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		RecipeSmelter recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
+		SmelterRecipe recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
 
 		if (recipe == null) {
 			return false;
@@ -143,7 +143,7 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		RecipeSmelter recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
+		SmelterRecipe recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
 
 		if (recipe == null) {
 			return false;
@@ -170,7 +170,7 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		RecipeSmelter recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
+		SmelterRecipe recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
 
 		if (recipe == null) {
 			processOff();

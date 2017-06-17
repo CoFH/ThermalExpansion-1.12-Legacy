@@ -4,8 +4,8 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.machine.TileCompactor;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager.CompactorRecipe;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.ComparableItemStackCompactor;
-import cofh.thermalexpansion.util.managers.machine.CompactorManager.RecipeCompactor;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -29,7 +29,7 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
-	public CompactorRecipeWrapper(IGuiHelper guiHelper, RecipeCompactor recipe, String uIdIn) {
+	public CompactorRecipeWrapper(IGuiHelper guiHelper, CompactorRecipe recipe, String uIdIn) {
 
 		uId = uIdIn;
 

@@ -23,11 +23,11 @@ import java.util.Map.Entry;
 
 public class CrucibleManager {
 
-	private static Map<ComparableItemStackCrucible, RecipeCrucible> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackCrucible, CrucibleRecipe> recipeMap = new THashMap<>();
 
 	static final int DEFAULT_ENERGY = 8000;
 
-	public static RecipeCrucible getRecipe(ItemStack input) {
+	public static CrucibleRecipe getRecipe(ItemStack input) {
 
 		return input.isEmpty() ? null : recipeMap.get(new ComparableItemStackCrucible(input));
 	}
@@ -37,9 +37,9 @@ public class CrucibleManager {
 		return getRecipe(input) != null;
 	}
 
-	public static RecipeCrucible[] getRecipeList() {
+	public static CrucibleRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeCrucible[recipeMap.size()]);
+		return recipeMap.values().toArray(new CrucibleRecipe[recipeMap.size()]);
 	}
 
 	public static void initialize() {
@@ -105,10 +105,10 @@ public class CrucibleManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackCrucible, RecipeCrucible> tempMap = new THashMap<>(recipeMap.size());
-		RecipeCrucible tempRecipe;
+		Map<ComparableItemStackCrucible, CrucibleRecipe> tempMap = new THashMap<>(recipeMap.size());
+		CrucibleRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackCrucible, RecipeCrucible> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackCrucible, CrucibleRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
 			tempMap.put(new ComparableItemStackCrucible(tempRecipe.input), tempRecipe);
 		}
@@ -117,18 +117,18 @@ public class CrucibleManager {
 	}
 
 	/* ADD RECIPES */
-	public static RecipeCrucible addRecipe(int energy, ItemStack input, FluidStack output) {
+	public static CrucibleRecipe addRecipe(int energy, ItemStack input, FluidStack output) {
 
 		if (input.isEmpty() || output == null || output.amount <= 0 || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
-		RecipeCrucible recipe = new RecipeCrucible(input, output, energy);
+		CrucibleRecipe recipe = new CrucibleRecipe(input, output, energy);
 		recipeMap.put(new ComparableItemStackCrucible(input), recipe);
 		return recipe;
 	}
 
 	/* REMOVE RECIPES */
-	public static RecipeCrucible removeRecipe(ItemStack input) {
+	public static CrucibleRecipe removeRecipe(ItemStack input) {
 
 		return recipeMap.remove(new ComparableItemStackCrucible(input));
 	}
@@ -144,13 +144,13 @@ public class CrucibleManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeCrucible {
+	public static class CrucibleRecipe {
 
 		final ItemStack input;
 		final FluidStack output;
 		final int energy;
 
-		RecipeCrucible(ItemStack input, FluidStack output, int energy) {
+		CrucibleRecipe(ItemStack input, FluidStack output, int energy) {
 
 			this.input = input;
 			this.output = output;

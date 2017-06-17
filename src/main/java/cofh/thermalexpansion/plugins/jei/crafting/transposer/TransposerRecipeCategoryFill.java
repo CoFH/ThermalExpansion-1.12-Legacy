@@ -5,6 +5,7 @@ import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager.TransposerRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
@@ -13,8 +14,13 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredientRegistry;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -27,16 +33,16 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new TransposerRecipeCategoryFill(guiHelper));
-		registry.addRecipes(getRecipes(guiHelper, registry.getIngredientRegistry()));
-		registry.addRecipeCategoryCraftingItem(BlockMachine.machineTransposer, RecipeUidsTE.TRANSPOSER_FILL);
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new TransposerRecipeCategoryFill(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper, registry.getIngredientRegistry()), RecipeUidsTE.TRANSPOSER_FILL);
+		registry.addRecipeCatalyst(BlockMachine.machineTransposer, RecipeUidsTE.TRANSPOSER_FILL);
 	}
 
 	public static List<TransposerRecipeWrapper> getRecipes(IGuiHelper guiHelper, IIngredientRegistry ingredientRegistry) {
 
 		List<TransposerRecipeWrapper> recipes = new ArrayList<>();
 
-		for (TransposerManager.RecipeTransposer recipe : TransposerManager.getFillRecipeList()) {
+		for (TransposerRecipe recipe : TransposerManager.getFillRecipeList()) {
 			recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_FILL));
 		}
 		return recipes;
@@ -56,12 +62,6 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 	public String getUid() {
 
 		return RecipeUidsTE.TRANSPOSER_FILL;
-	}
-
-	@Override
-	public String getModName() {
-
-		return "ThermalExpansion";
 	}
 
 	@Override

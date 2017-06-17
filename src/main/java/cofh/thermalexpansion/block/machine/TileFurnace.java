@@ -12,7 +12,7 @@ import cofh.thermalexpansion.gui.container.machine.ContainerFurnace;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
-import cofh.thermalexpansion.util.managers.machine.FurnaceManager.RecipeFurnace;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager.FurnaceRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -128,7 +128,7 @@ public class TileFurnace extends TileMachineBase {
 		if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !FurnaceManager.isOre(inventory[0])) {
 			return false;
 		}
-		RecipeFurnace recipe = augmentPyrolysis ? FurnaceManager.getRecipePyrolysis(inventory[0]) : FurnaceManager.getRecipe(inventory[0]);
+		FurnaceRecipe recipe = augmentPyrolysis ? FurnaceManager.getRecipePyrolysis(inventory[0]) : FurnaceManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
 			return false;
@@ -144,7 +144,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		RecipeFurnace recipe;
+		FurnaceRecipe recipe;
 
 		if (augmentPyrolysis) {
 			recipe = FurnaceManager.getRecipePyrolysis(inventory[0]);
@@ -167,7 +167,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		RecipeFurnace recipe = augmentPyrolysis ? FurnaceManager.getRecipePyrolysis(inventory[0]) : FurnaceManager.getRecipe(inventory[0]);
+		FurnaceRecipe recipe = augmentPyrolysis ? FurnaceManager.getRecipePyrolysis(inventory[0]) : FurnaceManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
 			processOff();

@@ -13,7 +13,7 @@ import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.util.managers.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
-import cofh.thermalexpansion.util.managers.machine.SawmillManager.RecipeSawmill;
+import cofh.thermalexpansion.util.managers.machine.SawmillManager.SawmillRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -42,7 +42,7 @@ public class TileSawmill extends TileMachineBase {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 7;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 2 }, { 1, 2, }, { 0, 1, 2 }, { 0, 1, 2 } };
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 2 }, { 1, 2 }, { 0, 1, 2 }, { 0, 1, 2 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 2, 3, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
@@ -116,7 +116,7 @@ public class TileSawmill extends TileMachineBase {
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		RecipeSawmill recipe = SawmillManager.getRecipe(inventory[0]);
+		SawmillRecipe recipe = SawmillManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
 			return false;
@@ -141,7 +141,7 @@ public class TileSawmill extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		RecipeSawmill recipe = SawmillManager.getRecipe(inventory[0]);
+		SawmillRecipe recipe = SawmillManager.getRecipe(inventory[0]);
 		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 	}
 
@@ -158,7 +158,7 @@ public class TileSawmill extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		RecipeSawmill recipe = SawmillManager.getRecipe(inventory[0]);
+		SawmillRecipe recipe = SawmillManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
 			processOff();

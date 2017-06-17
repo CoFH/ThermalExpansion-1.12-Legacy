@@ -7,6 +7,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
+import cofh.thermalexpansion.util.managers.machine.CrucibleManager.CrucibleRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
@@ -15,6 +16,7 @@ import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,18 +37,17 @@ public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWra
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new CrucibleRecipeCategory(guiHelper));
-		registry.addRecipeHandlers(new CrucibleRecipeHandler());
-		registry.addRecipes(getRecipes(guiHelper));
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new CrucibleRecipeCategory(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.CRUCIBLE);
 		registry.addRecipeClickArea(GuiCrucible.class, 103, 34, 24, 16, RecipeUidsTE.CRUCIBLE);
-		registry.addRecipeCategoryCraftingItem(BlockMachine.machineCrucible, RecipeUidsTE.CRUCIBLE);
+		registry.addRecipeCatalyst(BlockMachine.machineCrucible, RecipeUidsTE.CRUCIBLE);
 	}
 
 	public static List<CrucibleRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<CrucibleRecipeWrapper> recipes = new ArrayList<>();
 
-		for (CrucibleManager.RecipeCrucible recipe : CrucibleManager.getRecipeList()) {
+		for (CrucibleRecipe recipe : CrucibleManager.getRecipeList()) {
 			recipes.add(new CrucibleRecipeWrapper(guiHelper, recipe));
 		}
 		return recipes;

@@ -6,7 +6,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager.ComparableItemStackCrucible;
-import cofh.thermalexpansion.util.managers.machine.CrucibleManager.RecipeCrucible;
+import cofh.thermalexpansion.util.managers.machine.CrucibleManager.CrucibleRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -32,7 +32,7 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
-	public CrucibleRecipeWrapper(IGuiHelper guiHelper, RecipeCrucible recipe) {
+	public CrucibleRecipeWrapper(IGuiHelper guiHelper, CrucibleRecipe recipe) {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 		List<FluidStack> recipeOutputFluids = new ArrayList<>();

@@ -7,6 +7,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager.InsolatorRecipe;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
@@ -16,6 +17,7 @@ import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,11 +38,10 @@ public class InsolatorRecipeCategory extends BaseRecipeCategory<InsolatorRecipeW
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new InsolatorRecipeCategory(guiHelper));
-		registry.addRecipeHandlers(new InsolatorRecipeHandler());
-		registry.addRecipes(getRecipes(guiHelper));
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new InsolatorRecipeCategory(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.INSOLATOR);
 		registry.addRecipeClickArea(GuiInsolator.class, 79, 34, 24, 16, RecipeUidsTE.INSOLATOR, RecipeUidsTE.INSOLATOR_MYCELIUM, RecipeUidsTE.INSOLATOR_NETHER, RecipeUidsTE.INSOLATOR_END, RecipeUidsTE.INSOLATOR_TREE);
-		registry.addRecipeCategoryCraftingItem(BlockMachine.machineInsolator, RecipeUidsTE.INSOLATOR);
+		registry.addRecipeCatalyst(BlockMachine.machineInsolator, RecipeUidsTE.INSOLATOR);
 
 		InsolatorRecipeCategoryMycelium.initialize(registry);
 		InsolatorRecipeCategoryNether.initialize(registry);
@@ -52,7 +53,7 @@ public class InsolatorRecipeCategory extends BaseRecipeCategory<InsolatorRecipeW
 
 		List<InsolatorRecipeWrapper> recipes = new ArrayList<>();
 
-		for (InsolatorManager.RecipeInsolator recipe : InsolatorManager.getRecipeList()) {
+		for (InsolatorRecipe recipe : InsolatorManager.getRecipeList()) {
 
 			if (recipe.getType() == Type.STANDARD) {
 				recipes.add(new InsolatorRecipeWrapper(guiHelper, recipe));

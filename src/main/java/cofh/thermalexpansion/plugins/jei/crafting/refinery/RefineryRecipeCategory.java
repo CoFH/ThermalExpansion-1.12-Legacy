@@ -7,6 +7,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
 import cofh.thermalexpansion.util.managers.machine.RefineryManager;
+import cofh.thermalexpansion.util.managers.machine.RefineryManager.RefineryRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
@@ -15,6 +16,7 @@ import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,18 +37,17 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new RefineryRecipeCategory(guiHelper));
-		registry.addRecipeHandlers(new RefineryRecipeHandler());
-		registry.addRecipes(getRecipes(guiHelper));
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new RefineryRecipeCategory(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.REFINERY);
 		registry.addRecipeClickArea(GuiRefinery.class, 76, 34, 24, 16, RecipeUidsTE.REFINERY);
-		registry.addRecipeCategoryCraftingItem(BlockMachine.machineRefinery, RecipeUidsTE.REFINERY);
+		registry.addRecipeCatalyst(BlockMachine.machineRefinery, RecipeUidsTE.REFINERY);
 	}
 
 	public static List<RefineryRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<RefineryRecipeWrapper> recipes = new ArrayList<>();
 
-		for (RefineryManager.RecipeRefinery recipe : RefineryManager.getRecipeList()) {
+		for (RefineryRecipe recipe : RefineryManager.getRecipeList()) {
 			recipes.add(new RefineryRecipeWrapper(guiHelper, recipe));
 		}
 		return recipes;

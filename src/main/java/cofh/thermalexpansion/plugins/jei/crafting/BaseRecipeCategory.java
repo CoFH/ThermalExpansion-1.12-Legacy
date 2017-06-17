@@ -29,7 +29,7 @@ public abstract class BaseRecipeCategory<T extends IRecipeWrapper> implements IR
 		return localizedName;
 	}
 
-	// @Override
+	@Override
 	public String getModName() {
 
 		return ThermalExpansion.MOD_NAME;

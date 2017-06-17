@@ -14,6 +14,7 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -33,11 +34,10 @@ public class SteamFuelCategory extends BaseFuelCategory<SteamFuelWrapper> {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new SteamFuelCategory(guiHelper));
-		registry.addRecipeHandlers(new SteamFuelHandler());
-		registry.addRecipes(getRecipes(registry, guiHelper));
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new SteamFuelCategory(guiHelper));
+		registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.DYNAMO_STEAM);
 		registry.addRecipeClickArea(GuiDynamoSteam.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_STEAM);
-		registry.addRecipeCategoryCraftingItem(BlockDynamo.dynamoSteam, RecipeUidsTE.DYNAMO_STEAM);
+		registry.addRecipeCatalyst(BlockDynamo.dynamoSteam, RecipeUidsTE.DYNAMO_STEAM);
 	}
 
 	public static List<SteamFuelWrapper> getRecipes(IModRegistry registry, IGuiHelper guiHelper) {

@@ -8,7 +8,7 @@ import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager.ComparableItemStackPulverizer;
-import cofh.thermalexpansion.util.managers.machine.PulverizerManager.RecipePulverizer;
+import cofh.thermalexpansion.util.managers.machine.PulverizerManager.PulverizerRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -38,12 +38,12 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
-	public PulverizerRecipeWrapper(IGuiHelper guiHelper, RecipePulverizer recipe) {
+	public PulverizerRecipeWrapper(IGuiHelper guiHelper, PulverizerRecipe recipe) {
 
 		this(guiHelper, recipe, RecipeUidsTE.PULVERIZER);
 	}
 
-	public PulverizerRecipeWrapper(IGuiHelper guiHelper, RecipePulverizer recipe, String uIdIn) {
+	public PulverizerRecipeWrapper(IGuiHelper guiHelper, PulverizerRecipe recipe, String uIdIn) {
 
 		uId = uIdIn;
 

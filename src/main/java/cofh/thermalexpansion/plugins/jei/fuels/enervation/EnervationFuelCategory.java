@@ -16,6 +16,7 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -37,11 +38,10 @@ public class EnervationFuelCategory extends BaseFuelCategory<EnervationFuelWrapp
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new EnervationFuelCategory(guiHelper));
-		registry.addRecipeHandlers(new EnervationFuelHandler());
-		registry.addRecipes(getRecipes(guiHelper));
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new EnervationFuelCategory(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.DYNAMO_ENERVATION);
 		registry.addRecipeClickArea(GuiDynamoEnervation.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_ENERVATION);
-		registry.addRecipeCategoryCraftingItem(BlockDynamo.dynamoEnervation, RecipeUidsTE.DYNAMO_ENERVATION);
+		registry.addRecipeCatalyst(BlockDynamo.dynamoEnervation, RecipeUidsTE.DYNAMO_ENERVATION);
 	}
 
 	public static List<EnervationFuelWrapper> getRecipes(IGuiHelper guiHelper) {
@@ -58,9 +58,11 @@ public class EnervationFuelCategory extends BaseFuelCategory<EnervationFuelWrapp
 					HashSet<ComparableItemStack> processedStacks = new HashSet<>();
 					NonNullList<ItemStack> list = NonNullList.create();
 					item.getSubItems(item, item.getCreativeTab(), list);
+
 					for (ItemStack fuel : list) {
 						IEnergyContainerItem energyContainerItem = (IEnergyContainerItem) item;
 						int maxEnergyStored = energyContainerItem.getMaxEnergyStored(fuel);
+
 						if (maxEnergyStored != 0) {
 							energyContainerItem.receiveEnergy(fuel, Integer.MAX_VALUE, false);
 
@@ -68,6 +70,7 @@ public class EnervationFuelCategory extends BaseFuelCategory<EnervationFuelWrapp
 								continue;
 							}
 							int energy = EnervationManager.getFuelEnergy(fuel);
+
 							if (energy > 0) {
 								recipes.add(new EnervationFuelWrapper(guiHelper, fuel, energy, maxEnergyStored));
 							}

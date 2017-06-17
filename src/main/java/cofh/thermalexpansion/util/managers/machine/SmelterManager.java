@@ -22,7 +22,7 @@ import java.util.Map.Entry;
 
 public class SmelterManager {
 
-	private static Map<List<ComparableItemStackSmelter>, RecipeSmelter> recipeMap = new THashMap<>();
+	private static Map<List<ComparableItemStackSmelter>, SmelterRecipe> recipeMap = new THashMap<>();
 	private static Set<ComparableItemStackSmelter> validationSet = new THashSet<>();
 	private static Set<ComparableItemStackSmelter> lockSet = new THashSet<>();
 
@@ -41,11 +41,11 @@ public class SmelterManager {
 		ComparableItemStackSmelter query = new ComparableItemStackSmelter(primaryInput);
 		ComparableItemStackSmelter querySecondary = new ComparableItemStackSmelter(secondaryInput);
 
-		RecipeSmelter recipe = recipeMap.get(Arrays.asList(query, querySecondary));
+		SmelterRecipe recipe = recipeMap.get(Arrays.asList(query, querySecondary));
 		return recipe == null && recipeMap.get(Arrays.asList(querySecondary, query)) != null;
 	}
 
-	public static RecipeSmelter getRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
+	public static SmelterRecipe getRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
 		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return null;
@@ -53,7 +53,7 @@ public class SmelterManager {
 		ComparableItemStackSmelter query = new ComparableItemStackSmelter(primaryInput);
 		ComparableItemStackSmelter querySecondary = new ComparableItemStackSmelter(secondaryInput);
 
-		RecipeSmelter recipe = recipeMap.get(Arrays.asList(query, querySecondary));
+		SmelterRecipe recipe = recipeMap.get(Arrays.asList(query, querySecondary));
 
 		if (recipe == null) {
 			recipe = recipeMap.get(Arrays.asList(querySecondary, query));
@@ -69,9 +69,9 @@ public class SmelterManager {
 		return getRecipe(primaryInput, secondaryInput) != null;
 	}
 
-	public static RecipeSmelter[] getRecipeList() {
+	public static SmelterRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeSmelter[recipeMap.size()]);
+		return recipeMap.values().toArray(new SmelterRecipe[recipeMap.size()]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {
@@ -382,11 +382,11 @@ public class SmelterManager {
 
 	public static void refresh() {
 
-		Map<List<ComparableItemStackSmelter>, RecipeSmelter> tempMap = new THashMap<>(recipeMap.size());
+		Map<List<ComparableItemStackSmelter>, SmelterRecipe> tempMap = new THashMap<>(recipeMap.size());
 		Set<ComparableItemStackSmelter> tempSet = new THashSet<>();
-		RecipeSmelter tempRecipe;
+		SmelterRecipe tempRecipe;
 
-		for (Entry<List<ComparableItemStackSmelter>, RecipeSmelter> entry : recipeMap.entrySet()) {
+		for (Entry<List<ComparableItemStackSmelter>, SmelterRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
 			ComparableItemStackSmelter primary = new ComparableItemStackSmelter(tempRecipe.primaryInput);
 			ComparableItemStackSmelter secondary = new ComparableItemStackSmelter(tempRecipe.secondaryInput);
@@ -410,30 +410,30 @@ public class SmelterManager {
 	}
 
 	/* ADD RECIPES */
-	public static RecipeSmelter addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static SmelterRecipe addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		if (primaryInput.isEmpty() || secondaryInput.isEmpty() || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
 			return null;
 		}
-		RecipeSmelter recipe = new RecipeSmelter(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy);
+		SmelterRecipe recipe = new SmelterRecipe(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy);
 		recipeMap.put(Arrays.asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput)), recipe);
 		validationSet.add(new ComparableItemStackSmelter(primaryInput));
 		validationSet.add(new ComparableItemStackSmelter(secondaryInput));
 		return recipe;
 	}
 
-	public static RecipeSmelter addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
+	public static SmelterRecipe addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
 
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, 100);
 	}
 
-	public static RecipeSmelter addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
+	public static SmelterRecipe addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
 
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, ItemStack.EMPTY, 0);
 	}
 
 	/* REMOVE RECIPES */
-	public static RecipeSmelter removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
+	public static SmelterRecipe removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
 		return recipeMap.remove(Arrays.asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput)));
 	}
@@ -555,7 +555,7 @@ public class SmelterManager {
 		addRecipe(energy, primaryInput, secondaryInput, primaryOutput, ItemStack.EMPTY, 0);
 	}
 
-	private static RecipeSmelter addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
+	private static SmelterRecipe addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
 
 		return addRecipe(energy, input, BLOCK_SAND, ItemHelper.cloneStack(output, outputSize), ItemMaterial.crystalSlag, outputSize * 5 + 5);
 	}
@@ -566,7 +566,7 @@ public class SmelterManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeSmelter {
+	public static class SmelterRecipe {
 
 		final ItemStack primaryInput;
 		final ItemStack secondaryInput;
@@ -575,7 +575,7 @@ public class SmelterManager {
 		final int secondaryChance;
 		final int energy;
 
-		RecipeSmelter(ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy) {
+		SmelterRecipe(ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy) {
 
 			this.primaryInput = primaryInput;
 			this.secondaryInput = secondaryInput;

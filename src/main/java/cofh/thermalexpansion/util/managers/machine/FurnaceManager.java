@@ -21,21 +21,21 @@ import java.util.Set;
 
 public class FurnaceManager {
 
-	private static Map<ComparableItemStackFurnace, RecipeFurnace> recipeMap = new THashMap<>();
-	private static Map<ComparableItemStackFurnace, RecipeFurnace> recipeMapPyrolysis = new THashMap<>();
+	private static Map<ComparableItemStackFurnace, FurnaceRecipe> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackFurnace, FurnaceRecipe> recipeMapPyrolysis = new THashMap<>();
 	private static Set<ComparableItemStackFurnace> foodSet = new THashSet<>();
 	private static Set<ComparableItemStackFurnace> oreSet = new THashSet<>();
 
 	static final int DEFAULT_ENERGY = 2000;
 
-	public static RecipeFurnace getRecipe(ItemStack input) {
+	public static FurnaceRecipe getRecipe(ItemStack input) {
 
 		if (input.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
 
-		RecipeFurnace recipe = recipeMap.get(query);
+		FurnaceRecipe recipe = recipeMap.get(query);
 
 		if (recipe == null) {
 			query.metadata = OreDictionary.WILDCARD_VALUE;
@@ -44,14 +44,14 @@ public class FurnaceManager {
 		return recipe;
 	}
 
-	public static RecipeFurnace getRecipePyrolysis(ItemStack input) {
+	public static FurnaceRecipe getRecipePyrolysis(ItemStack input) {
 
 		if (input.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
 
-		RecipeFurnace recipe = recipeMapPyrolysis.get(query);
+		FurnaceRecipe recipe = recipeMapPyrolysis.get(query);
 
 		if (recipe == null) {
 			query.metadata = OreDictionary.WILDCARD_VALUE;
@@ -70,14 +70,14 @@ public class FurnaceManager {
 		return getRecipePyrolysis(input) != null;
 	}
 
-	public static RecipeFurnace[] getRecipeList() {
+	public static FurnaceRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeFurnace[recipeMap.size()]);
+		return recipeMap.values().toArray(new FurnaceRecipe[recipeMap.size()]);
 	}
 
-	public static RecipeFurnace[] getRecipeListPyrolysis() {
+	public static FurnaceRecipe[] getRecipeListPyrolysis() {
 
-		return recipeMapPyrolysis.values().toArray(new RecipeFurnace[recipeMapPyrolysis.size()]);
+		return recipeMapPyrolysis.values().toArray(new FurnaceRecipe[recipeMapPyrolysis.size()]);
 	}
 
 	public static boolean isFood(ItemStack input) {
@@ -225,6 +225,7 @@ public class FurnaceManager {
 			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Blocks.CACTUS, 4), charcoal, 50);
 			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Items.COAL), ItemMaterial.gemCoke, 250);
 		}
+
 		/* LOAD RECIPES */
 		loadRecipes();
 	}
@@ -282,17 +283,17 @@ public class FurnaceManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackFurnace, RecipeFurnace> tempMap = new THashMap<>(recipeMap.size());
-		Map<ComparableItemStackFurnace, RecipeFurnace> tempMapPyrolysis = new THashMap<>(recipeMapPyrolysis.size());
+		Map<ComparableItemStackFurnace, FurnaceRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStackFurnace, FurnaceRecipe> tempMapPyrolysis = new THashMap<>(recipeMapPyrolysis.size());
 		Set<ComparableItemStackFurnace> tempFood = new THashSet<>();
 		Set<ComparableItemStackFurnace> tempOre = new THashSet<>();
-		RecipeFurnace tempRecipe;
+		FurnaceRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackFurnace, RecipeFurnace> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackFurnace, FurnaceRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
 			tempMap.put(new ComparableItemStackFurnace(tempRecipe.input), tempRecipe);
 		}
-		for (Entry<ComparableItemStackFurnace, RecipeFurnace> entry : recipeMapPyrolysis.entrySet()) {
+		for (Entry<ComparableItemStackFurnace, FurnaceRecipe> entry : recipeMapPyrolysis.entrySet()) {
 			tempRecipe = entry.getValue();
 			tempMapPyrolysis.put(new ComparableItemStackFurnace(tempRecipe.input), tempRecipe);
 		}
@@ -318,33 +319,33 @@ public class FurnaceManager {
 	}
 
 	/* ADD RECIPES */
-	public static RecipeFurnace addRecipe(int energy, ItemStack input, ItemStack output) {
+	public static FurnaceRecipe addRecipe(int energy, ItemStack input, ItemStack output) {
 
 		if (input.isEmpty() || output.isEmpty() || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
-		RecipeFurnace recipe = new RecipeFurnace(input, output, energy);
+		FurnaceRecipe recipe = new FurnaceRecipe(input, output, energy);
 		recipeMap.put(new ComparableItemStackFurnace(input), recipe);
 		return recipe;
 	}
 
-	public static RecipeFurnace addRecipePyrolysis(int energy, ItemStack input, ItemStack output, int creosote) {
+	public static FurnaceRecipe addRecipePyrolysis(int energy, ItemStack input, ItemStack output, int creosote) {
 
 		if (input.isEmpty() || output.isEmpty() || energy <= 0 || recipeExistsPyrolysis(input)) {
 			return null;
 		}
-		RecipeFurnace recipe = new RecipeFurnace(input, output, energy, creosote);
+		FurnaceRecipe recipe = new FurnaceRecipe(input, output, energy, creosote);
 		recipeMapPyrolysis.put(new ComparableItemStackFurnace(input), recipe);
 		return recipe;
 	}
 
 	/* REMOVE RECIPES */
-	public static RecipeFurnace removeRecipe(ItemStack input) {
+	public static FurnaceRecipe removeRecipe(ItemStack input) {
 
 		return recipeMap.remove(new ComparableItemStackFurnace(input));
 	}
 
-	public static RecipeFurnace removeRecipePyrolysis(ItemStack input) {
+	public static FurnaceRecipe removeRecipePyrolysis(ItemStack input) {
 
 		return recipeMapPyrolysis.remove(new ComparableItemStackFurnace(input));
 	}
@@ -362,19 +363,19 @@ public class FurnaceManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeFurnace {
+	public static class FurnaceRecipe {
 
 		final ItemStack input;
 		final ItemStack output;
 		final int energy;
 		final int creosote;
 
-		RecipeFurnace(ItemStack input, ItemStack output, int energy) {
+		FurnaceRecipe(ItemStack input, ItemStack output, int energy) {
 
 			this(input, output, energy, 0);
 		}
 
-		RecipeFurnace(ItemStack input, ItemStack output, int energy, int creosote) {
+		FurnaceRecipe(ItemStack input, ItemStack output, int energy, int creosote) {
 
 			this.input = input;
 			this.output = output;

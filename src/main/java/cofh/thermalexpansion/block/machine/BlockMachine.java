@@ -159,8 +159,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 				return new TileTransposer();
 			case CHARGER:
 				return new TileCharger();
-			case CENTRIFUGE:                    // TODO
-				return null;
+			case CENTRIFUGE:
+				return new TileCentrifuge();
 			case CRAFTER:                       // TODO
 				return null;
 			case BREWER:                        // TODO
@@ -348,7 +348,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		TileRefinery.initialize();
 		TileTransposer.initialize();
 		TileCharger.initialize();
-		// centrifuge
+		TileCentrifuge.initialize();
 		// crafter
 		// brewer
 		// enchanter
@@ -365,7 +365,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		machineRefinery = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.REFINERY.getMetadata()));
 		machineTransposer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));
 		machineCharger = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
-		// centrifuge
+		machineCentrifuge = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CENTRIFUGE.getMetadata()));
 		// machineCrafter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
 		// brewer
 		// enchanter
@@ -530,6 +530,20 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		} else {
 			ChargerRecipeCategory.enable = false;
 		}
+//		if (enable[Type.CENTRIFUGE.getMetadata()]) {
+//			addRecipe(ShapedRecipe(machineCentrifuge,
+//					" X ",
+//					"YCY",
+//					"IPI",
+//					'C', ItemFrame.frameMachine,
+//					'I', copperPart,
+//					'P', ItemMaterial.powerCoilGold,
+//					'X', ItemMaterial.powerCoilElectrum,
+//					'Y', ItemMaterial.powerCoilSilver
+//			));
+//		} else {
+//			CentrifugeRecipeCategory.enable = false;
+//		}
 //		if (enable[Type.CRAFTER.getMetadata()]) {
 //			addRecipe(ShapedRecipe(machineCrafter,
 //					" X ",

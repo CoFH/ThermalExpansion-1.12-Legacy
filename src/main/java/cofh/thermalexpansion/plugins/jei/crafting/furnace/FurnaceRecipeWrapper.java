@@ -7,7 +7,7 @@ import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.machine.FurnaceManager.ComparableItemStackFurnace;
-import cofh.thermalexpansion.util.managers.machine.FurnaceManager.RecipeFurnace;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager.FurnaceRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -35,12 +35,12 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
-	public FurnaceRecipeWrapper(IGuiHelper guiHelper, RecipeFurnace recipe) {
+	public FurnaceRecipeWrapper(IGuiHelper guiHelper, FurnaceRecipe recipe) {
 
 		this(guiHelper, recipe, RecipeUidsTE.FURNACE);
 	}
 
-	public FurnaceRecipeWrapper(IGuiHelper guiHelper, RecipeFurnace recipe, String uIdIn) {
+	public FurnaceRecipeWrapper(IGuiHelper guiHelper, FurnaceRecipe recipe, String uIdIn) {
 
 		uId = uIdIn;
 

@@ -15,6 +15,7 @@ import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,12 +36,11 @@ public class CoolantCategory extends BaseFuelCategory<CoolantWrapper> {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new CoolantCategory(guiHelper));
-		registry.addRecipeHandlers(new CoolantHandler());
-		registry.addRecipes(getRecipes(registry, guiHelper));
-		registry.addRecipeCategoryCraftingItem(BlockDevice.deviceHeatSink, RecipeUidsTE.COOLANT);
-		registry.addRecipeCategoryCraftingItem(BlockDynamo.dynamoCompression, RecipeUidsTE.COOLANT);
-		registry.addRecipeCategoryCraftingItem(ItemAugment.dynamoMagmaticCoolant, RecipeUidsTE.COOLANT);
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new CoolantCategory(guiHelper));
+		registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.COOLANT);
+		registry.addRecipeCatalyst(BlockDevice.deviceHeatSink, RecipeUidsTE.COOLANT);
+		registry.addRecipeCatalyst(BlockDynamo.dynamoCompression, RecipeUidsTE.COOLANT);
+		registry.addRecipeCatalyst(ItemAugment.dynamoMagmaticCoolant, RecipeUidsTE.COOLANT);
 	}
 
 	public static List<CoolantWrapper> getRecipes(IModRegistry registry, IGuiHelper guiHelper) {

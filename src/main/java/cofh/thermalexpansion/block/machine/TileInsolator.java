@@ -9,7 +9,7 @@ import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
 import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.RecipeInsolator;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager.InsolatorRecipe;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -114,7 +114,7 @@ public class TileInsolator extends TileMachineBase {
 		if (inventory[0].isEmpty() || inventory[1].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		RecipeInsolator recipe = InsolatorManager.getRecipe(inventory[0], inventory[1]);
+		InsolatorRecipe recipe = InsolatorManager.getRecipe(inventory[0], inventory[1]);
 
 		if (recipe == null || tank.getFluidAmount() < recipe.getEnergy() / 10) {
 			return false;
@@ -157,7 +157,7 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		RecipeInsolator recipe = InsolatorManager.getRecipe(inventory[0], inventory[1]);
+		InsolatorRecipe recipe = InsolatorManager.getRecipe(inventory[0], inventory[1]);
 
 		if (recipe == null) {
 			return false;
@@ -184,7 +184,7 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		RecipeInsolator recipe = InsolatorManager.getRecipe(inventory[0], inventory[1]);
+		InsolatorRecipe recipe = InsolatorManager.getRecipe(inventory[0], inventory[1]);
 
 		if (recipe == null) {
 			processOff();

@@ -5,9 +5,11 @@ import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager.FurnaceRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -20,17 +22,17 @@ public class FurnaceRecipeCategoryOre extends FurnaceRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new FurnaceRecipeCategoryOre(guiHelper));
-		registry.addRecipes(getRecipes(guiHelper));
-		registry.addRecipeCategoryCraftingItem(ItemAugment.machineFurnaceOre, RecipeUidsTE.FURNACE_ORE);
-		registry.addRecipeCategoryCraftingItem(BlockMachine.machineFurnace, RecipeUidsTE.FURNACE_ORE);
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new FurnaceRecipeCategoryOre(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.FURNACE_ORE);
+		registry.addRecipeCatalyst(ItemAugment.machineFurnaceOre, RecipeUidsTE.FURNACE_ORE);
+		registry.addRecipeCatalyst(BlockMachine.machineFurnace, RecipeUidsTE.FURNACE_ORE);
 	}
 
 	public static List<FurnaceRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<FurnaceRecipeWrapper> recipes = new ArrayList<>();
 
-		for (FurnaceManager.RecipeFurnace recipe : FurnaceManager.getRecipeList()) {
+		for (FurnaceRecipe recipe : FurnaceManager.getRecipeList()) {
 			if (FurnaceManager.isOre(recipe.getInput())) {
 				recipes.add(new FurnaceRecipeWrapper(guiHelper, recipe, RecipeUidsTE.FURNACE_ORE));
 			}

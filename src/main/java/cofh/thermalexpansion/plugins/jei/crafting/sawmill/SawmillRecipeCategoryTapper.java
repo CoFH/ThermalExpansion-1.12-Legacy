@@ -7,6 +7,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.managers.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
+import cofh.thermalexpansion.util.managers.machine.SawmillManager.SawmillRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
@@ -14,6 +15,7 @@ import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -28,17 +30,17 @@ public class SawmillRecipeCategoryTapper extends SawmillRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new SawmillRecipeCategoryTapper(guiHelper));
-		registry.addRecipes(getRecipes(guiHelper));
-		registry.addRecipeCategoryCraftingItem(ItemAugment.machineSawmillTapper, RecipeUidsTE.SAWMILL_TAPPER);
-		registry.addRecipeCategoryCraftingItem(BlockMachine.machineSawmill, RecipeUidsTE.SAWMILL_TAPPER);
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new SawmillRecipeCategoryTapper(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.SAWMILL_TAPPER);
+		registry.addRecipeCatalyst(ItemAugment.machineSawmillTapper, RecipeUidsTE.SAWMILL_TAPPER);
+		registry.addRecipeCatalyst(BlockMachine.machineSawmill, RecipeUidsTE.SAWMILL_TAPPER);
 	}
 
 	public static List<SawmillRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<SawmillRecipeWrapper> recipes = new ArrayList<>();
 
-		for (SawmillManager.RecipeSawmill recipe : SawmillManager.getRecipeList()) {
+		for (SawmillRecipe recipe : SawmillManager.getRecipeList()) {
 			if (TapperManager.mappingExists(recipe.getInput())) {
 				recipes.add(new SawmillRecipeWrapper(guiHelper, recipe, RecipeUidsTE.SAWMILL_TAPPER));
 			}

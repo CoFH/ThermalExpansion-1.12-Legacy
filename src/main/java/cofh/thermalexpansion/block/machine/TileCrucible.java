@@ -12,7 +12,7 @@ import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
-import cofh.thermalexpansion.util.managers.machine.CrucibleManager.RecipeCrucible;
+import cofh.thermalexpansion.util.managers.machine.CrucibleManager.CrucibleRecipe;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -112,7 +112,7 @@ public class TileCrucible extends TileMachineBase {
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);
+		CrucibleRecipe recipe = CrucibleManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
 			return false;
@@ -127,7 +127,7 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);
+		CrucibleRecipe recipe = CrucibleManager.getRecipe(inventory[0]);
 		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 	}
 
@@ -149,7 +149,7 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);
+		CrucibleRecipe recipe = CrucibleManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
 			processOff();

@@ -9,7 +9,7 @@ import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager.ComparableItemStackSawmill;
-import cofh.thermalexpansion.util.managers.machine.SawmillManager.RecipeSawmill;
+import cofh.thermalexpansion.util.managers.machine.SawmillManager.SawmillRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -38,12 +38,12 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
-	public SawmillRecipeWrapper(IGuiHelper guiHelper, RecipeSawmill recipe) {
+	public SawmillRecipeWrapper(IGuiHelper guiHelper, SawmillRecipe recipe) {
 
 		this(guiHelper, recipe, RecipeUidsTE.SAWMILL);
 	}
 
-	public SawmillRecipeWrapper(IGuiHelper guiHelper, RecipeSawmill recipe, String uIdIn) {
+	public SawmillRecipeWrapper(IGuiHelper guiHelper, SawmillRecipe recipe, String uIdIn) {
 
 		uId = uIdIn;
 

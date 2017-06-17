@@ -9,7 +9,7 @@ import cofh.thermalexpansion.gui.container.machine.ContainerCompactor;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
-import cofh.thermalexpansion.util.managers.machine.CompactorManager.RecipeCompactor;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager.CompactorRecipe;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -88,7 +88,7 @@ public class TileCompactor extends TileMachineBase {
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
+		CompactorRecipe recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
 
 		if (recipe == null) {
 			return false;
@@ -104,7 +104,7 @@ public class TileCompactor extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
+		CompactorRecipe recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
 
 		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 	}
@@ -119,7 +119,7 @@ public class TileCompactor extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
+		CompactorRecipe recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
 
 		if (recipe == null) {
 			processOff();

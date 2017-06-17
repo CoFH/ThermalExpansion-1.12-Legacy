@@ -12,18 +12,18 @@ import java.util.Map.Entry;
 
 public class ChargerManager {
 
-	private static Map<ComparableItemStackSafe, RecipeCharger> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackSafe, ChargerRecipe> recipeMap = new THashMap<>();
 
 	static final int DEFAULT_ENERGY = 3200;
 
-	public static RecipeCharger getRecipe(ItemStack input) {
+	public static ChargerRecipe getRecipe(ItemStack input) {
 
 		if (input.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackSafe query = new ComparableItemStackSafe(input);
 
-		RecipeCharger recipe = recipeMap.get(query);
+		ChargerRecipe recipe = recipeMap.get(query);
 
 		if (recipe == null) {
 			query.metadata = OreDictionary.WILDCARD_VALUE;
@@ -37,9 +37,9 @@ public class ChargerManager {
 		return getRecipe(input) != null;
 	}
 
-	public static RecipeCharger[] getRecipeList() {
+	public static ChargerRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeCharger[recipeMap.size()]);
+		return recipeMap.values().toArray(new ChargerRecipe[recipeMap.size()]);
 	}
 
 	public static void initialize() {
@@ -63,10 +63,10 @@ public class ChargerManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackSafe, RecipeCharger> tempMap = new THashMap<>(recipeMap.size());
-		RecipeCharger tempRecipe;
+		Map<ComparableItemStackSafe, ChargerRecipe> tempMap = new THashMap<>(recipeMap.size());
+		ChargerRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackSafe, RecipeCharger> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackSafe, ChargerRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
 			tempMap.put(new ComparableItemStackSafe(tempRecipe.input), tempRecipe);
 		}
@@ -75,18 +75,18 @@ public class ChargerManager {
 	}
 
 	/* ADD RECIPES */
-	public static RecipeCharger addRecipe(int energy, ItemStack input, ItemStack output) {
+	public static ChargerRecipe addRecipe(int energy, ItemStack input, ItemStack output) {
 
 		if (input.isEmpty() || output.isEmpty() || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
-		RecipeCharger recipe = new RecipeCharger(input, output, energy);
+		ChargerRecipe recipe = new ChargerRecipe(input, output, energy);
 		recipeMap.put(new ComparableItemStackSafe(input), recipe);
 		return recipe;
 	}
 
 	/* REMOVE RECIPES */
-	public static RecipeCharger removeRecipe(ItemStack input) {
+	public static ChargerRecipe removeRecipe(ItemStack input) {
 
 		return recipeMap.remove(new ComparableItemStackSafe(input));
 	}
@@ -105,13 +105,13 @@ public class ChargerManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeCharger {
+	public static class ChargerRecipe {
 
 		final ItemStack input;
 		final ItemStack output;
 		final int energy;
 
-		RecipeCharger(ItemStack input, ItemStack output, int energy) {
+		public ChargerRecipe(ItemStack input, ItemStack output, int energy) {
 
 			this.input = input;
 			this.output = output;

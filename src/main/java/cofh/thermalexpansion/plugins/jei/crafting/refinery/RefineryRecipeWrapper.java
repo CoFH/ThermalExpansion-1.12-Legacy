@@ -4,7 +4,7 @@ import cofh.thermalexpansion.block.machine.TileRefinery;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
-import cofh.thermalexpansion.util.managers.machine.RefineryManager.RecipeRefinery;
+import cofh.thermalexpansion.util.managers.machine.RefineryManager.RefineryRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -30,7 +30,7 @@ public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
-	public RefineryRecipeWrapper(IGuiHelper guiHelper, RecipeRefinery recipe) {
+	public RefineryRecipeWrapper(IGuiHelper guiHelper, RefineryRecipe recipe) {
 
 		List<FluidStack> recipeInputFluids = new ArrayList<>();
 		recipeInputFluids.add(recipe.getInput());

@@ -3,7 +3,7 @@ package cofh.thermalexpansion.plugins.jei.crafting.charger;
 import cofh.thermalexpansion.block.machine.TileCharger;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
-import cofh.thermalexpansion.util.managers.machine.ChargerManager.RecipeCharger;
+import cofh.thermalexpansion.util.managers.machine.ChargerManager.ChargerRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -25,7 +25,7 @@ public class ChargerRecipeWrapper extends BaseRecipeWrapper {
 	/* Animation */
 	final IDrawableAnimated progress;
 
-	public ChargerRecipeWrapper(IGuiHelper guiHelper, RecipeCharger recipe) {
+	public ChargerRecipeWrapper(IGuiHelper guiHelper, ChargerRecipe recipe) {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 		recipeInputs.add(recipe.getInput());

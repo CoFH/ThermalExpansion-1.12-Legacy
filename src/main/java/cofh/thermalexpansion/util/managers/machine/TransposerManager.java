@@ -19,18 +19,18 @@ import java.util.Map.Entry;
 
 public class TransposerManager {
 
-	private static Map<List<Integer>, RecipeTransposer> recipeMapFill = new THashMap<>();
-	private static Map<ComparableItemStackTransposer, RecipeTransposer> recipeMapExtract = new THashMap<>();
+	private static Map<List<Integer>, TransposerRecipe> recipeMapFill = new THashMap<>();
+	private static Map<ComparableItemStackTransposer, TransposerRecipe> recipeMapExtract = new THashMap<>();
 	private static Set<ComparableItemStackTransposer> validationSet = new THashSet<>();
 
 	public static final int DEFAULT_ENERGY = 400;
 
-	public static RecipeTransposer getFillRecipe(ItemStack input, FluidStack fluid) {
+	public static TransposerRecipe getFillRecipe(ItemStack input, FluidStack fluid) {
 
 		return input.isEmpty() || fluid == null ? null : recipeMapFill.get(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()));
 	}
 
-	public static RecipeTransposer getExtractRecipe(ItemStack input) {
+	public static TransposerRecipe getExtractRecipe(ItemStack input) {
 
 		return input.isEmpty() ? null : recipeMapExtract.get(new ComparableItemStackTransposer(input));
 	}
@@ -45,14 +45,14 @@ public class TransposerManager {
 		return getExtractRecipe(input) != null;
 	}
 
-	public static RecipeTransposer[] getFillRecipeList() {
+	public static TransposerRecipe[] getFillRecipeList() {
 
-		return recipeMapFill.values().toArray(new RecipeTransposer[recipeMapFill.size()]);
+		return recipeMapFill.values().toArray(new TransposerRecipe[recipeMapFill.size()]);
 	}
 
-	public static RecipeTransposer[] getExtractRecipeList() {
+	public static TransposerRecipe[] getExtractRecipeList() {
 
-		return recipeMapExtract.values().toArray(new RecipeTransposer[recipeMapExtract.size()]);
+		return recipeMapExtract.values().toArray(new TransposerRecipe[recipeMapExtract.size()]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {
@@ -93,19 +93,19 @@ public class TransposerManager {
 
 	public static void refresh() {
 
-		Map<List<Integer>, RecipeTransposer> tempFill = new THashMap<>(recipeMapFill.size());
-		Map<ComparableItemStackTransposer, RecipeTransposer> tempExtract = new THashMap<>(recipeMapExtract.size());
+		Map<List<Integer>, TransposerRecipe> tempFill = new THashMap<>(recipeMapFill.size());
+		Map<ComparableItemStackTransposer, TransposerRecipe> tempExtract = new THashMap<>(recipeMapExtract.size());
 		Set<ComparableItemStackTransposer> tempSet = new THashSet<>();
-		RecipeTransposer tempRecipe;
+		TransposerRecipe tempRecipe;
 
-		for (Entry<List<Integer>, RecipeTransposer> entry : recipeMapFill.entrySet()) {
+		for (Entry<List<Integer>, TransposerRecipe> entry : recipeMapFill.entrySet()) {
 			tempRecipe = entry.getValue();
 			ComparableItemStackTransposer input = new ComparableItemStackTransposer(tempRecipe.input);
 			FluidStack fluid = tempRecipe.fluid.copy();
 			tempFill.put(Arrays.asList(input.hashCode(), fluid.getFluid().hashCode()), tempRecipe);
 			tempSet.add(input);
 		}
-		for (Entry<ComparableItemStackTransposer, RecipeTransposer> entry : recipeMapExtract.entrySet()) {
+		for (Entry<ComparableItemStackTransposer, TransposerRecipe> entry : recipeMapExtract.entrySet()) {
 			tempRecipe = entry.getValue();
 			ComparableItemStackTransposer input = new ComparableItemStackTransposer(tempRecipe.input);
 			tempExtract.put(input, tempRecipe);
@@ -122,7 +122,7 @@ public class TransposerManager {
 	}
 
 	/* ADD RECIPES */
-	public static RecipeTransposer addFillRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible) {
+	public static TransposerRecipe addFillRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible) {
 
 		if (input.isEmpty() || output.isEmpty() || fluid == null || fluid.amount <= 0 || energy <= 0) {
 			return null;
@@ -130,7 +130,7 @@ public class TransposerManager {
 		if (fillRecipeExists(input, fluid)) {
 			return null;
 		}
-		RecipeTransposer recipeFill = new RecipeTransposer(input, output, fluid, energy, 100);
+		TransposerRecipe recipeFill = new TransposerRecipe(input, output, fluid, energy, 100);
 		recipeMapFill.put(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()), recipeFill);
 		validationSet.add(new ComparableItemStackTransposer(input));
 
@@ -140,7 +140,7 @@ public class TransposerManager {
 		return recipeFill;
 	}
 
-	public static RecipeTransposer addExtractRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible) {
+	public static TransposerRecipe addExtractRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible) {
 
 		if (input.isEmpty() || fluid == null || fluid.amount <= 0 || energy <= 0) {
 			return null;
@@ -151,7 +151,7 @@ public class TransposerManager {
 		if (output == null && reversible || output.isEmpty() && chance != 0) {
 			return null;
 		}
-		RecipeTransposer recipeExtraction = new RecipeTransposer(input, output, fluid, energy, chance);
+		TransposerRecipe recipeExtraction = new TransposerRecipe(input, output, fluid, energy, chance);
 		recipeMapExtract.put(new ComparableItemStackTransposer(input), recipeExtraction);
 		validationSet.add(new ComparableItemStackTransposer(input));
 
@@ -162,18 +162,18 @@ public class TransposerManager {
 	}
 
 	/* REMOVE RECIPES */
-	public static RecipeTransposer removeFillRecipe(ItemStack input, FluidStack fluid) {
+	public static TransposerRecipe removeFillRecipe(ItemStack input, FluidStack fluid) {
 
 		return recipeMapFill.remove(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()));
 	}
 
-	public static RecipeTransposer removeExtractRecipe(ItemStack input) {
+	public static TransposerRecipe removeExtractRecipe(ItemStack input) {
 
 		return recipeMapExtract.remove(new ComparableItemStackTransposer(input));
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeTransposer {
+	public static class TransposerRecipe {
 
 		final ItemStack input;
 		final ItemStack output;
@@ -181,7 +181,7 @@ public class TransposerManager {
 		final int energy;
 		final int chance;
 
-		public RecipeTransposer(ItemStack input, ItemStack output, FluidStack fluid, int energy, int chance) {
+		public TransposerRecipe(ItemStack input, ItemStack output, FluidStack fluid, int energy, int chance) {
 
 			this.input = input;
 			this.output = output;

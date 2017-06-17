@@ -10,7 +10,7 @@ import cofh.thermalexpansion.gui.container.machine.ContainerPulverizer;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
-import cofh.thermalexpansion.util.managers.machine.PulverizerManager.RecipePulverizer;
+import cofh.thermalexpansion.util.managers.machine.PulverizerManager.PulverizerRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -39,7 +39,7 @@ public class TilePulverizer extends TileMachineBase {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 7;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 2 }, { 1, 2, }, { 0, 1, 2 }, { 0, 1, 2 } };
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 2 }, { 1, 2 }, { 0, 1, 2 }, { 0, 1, 2 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 2, 3, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
@@ -104,14 +104,8 @@ public class TilePulverizer extends TileMachineBase {
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		RecipePulverizer recipe = PulverizerManager.getRecipe(inventory[0]);
+		PulverizerRecipe recipe = PulverizerManager.getRecipe(inventory[0]);
 
-		if (recipe == null) {
-			return false;
-		}
-		if (inventory[0].getCount() < recipe.getInput().getCount()) {
-			return false;
-		}
 		if (recipe == null) {
 			return false;
 		}
@@ -135,7 +129,7 @@ public class TilePulverizer extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		RecipePulverizer recipe = PulverizerManager.getRecipe(inventory[0]);
+		PulverizerRecipe recipe = PulverizerManager.getRecipe(inventory[0]);
 		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 	}
 
@@ -149,7 +143,7 @@ public class TilePulverizer extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		RecipePulverizer recipe = PulverizerManager.getRecipe(inventory[0]);
+		PulverizerRecipe recipe = PulverizerManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
 			processOff();

@@ -8,7 +8,7 @@ import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.ComparableItemStackInsolator;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.RecipeInsolator;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager.InsolatorRecipe;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -41,12 +41,12 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
-	public InsolatorRecipeWrapper(IGuiHelper guiHelper, RecipeInsolator recipe) {
+	public InsolatorRecipeWrapper(IGuiHelper guiHelper, InsolatorRecipe recipe) {
 
 		this(guiHelper, recipe, RecipeUidsTE.INSOLATOR);
 	}
 
-	public InsolatorRecipeWrapper(IGuiHelper guiHelper, RecipeInsolator recipe, String uIdIn) {
+	public InsolatorRecipeWrapper(IGuiHelper guiHelper, InsolatorRecipe recipe, String uIdIn) {
 
 		uId = uIdIn;
 

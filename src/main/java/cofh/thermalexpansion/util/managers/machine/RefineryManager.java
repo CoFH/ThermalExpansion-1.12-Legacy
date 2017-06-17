@@ -8,11 +8,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class RefineryManager {
 
-	private static TIntObjectHashMap<RecipeRefinery> recipeMap = new TIntObjectHashMap<>();
+	private static TIntObjectHashMap<RefineryRecipe> recipeMap = new TIntObjectHashMap<>();
 
 	static final int DEFAULT_ENERGY = 5000;
 
-	public static RecipeRefinery getRecipe(FluidStack input) {
+	public static RefineryRecipe getRecipe(FluidStack input) {
 
 		return input == null ? null : recipeMap.get(input.getFluid().hashCode());
 	}
@@ -22,9 +22,9 @@ public class RefineryManager {
 		return getRecipe(input) != null;
 	}
 
-	public static RecipeRefinery[] getRecipeList() {
+	public static RefineryRecipe[] getRecipeList() {
 
-		return recipeMap.values(new RecipeRefinery[recipeMap.size()]);
+		return recipeMap.values(new RefineryRecipe[recipeMap.size()]);
 	}
 
 	public static void initialize() {
@@ -50,18 +50,18 @@ public class RefineryManager {
 	}
 
 	/* ADD RECIPES */
-	public static RecipeRefinery addRecipe(int energy, FluidStack input, FluidStack outputFluid, ItemStack outputItem) {
+	public static RefineryRecipe addRecipe(int energy, FluidStack input, FluidStack outputFluid, ItemStack outputItem) {
 
 		if (input == null || outputFluid == null || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
-		RecipeRefinery recipe = new RecipeRefinery(input, outputFluid, outputItem, energy);
+		RefineryRecipe recipe = new RefineryRecipe(input, outputFluid, outputItem, energy);
 		recipeMap.put(input.getFluid().hashCode(), recipe);
 		return recipe;
 	}
 
 	/* REMOVE RECIPES */
-	public static RecipeRefinery removeRecipe(FluidStack input) {
+	public static RefineryRecipe removeRecipe(FluidStack input) {
 
 		if (input == null) {
 			return null;
@@ -72,14 +72,14 @@ public class RefineryManager {
 	/* HELPERS */
 
 	/* RECIPE CLASS */
-	public static class RecipeRefinery {
+	public static class RefineryRecipe {
 
 		final FluidStack input;
 		final FluidStack outputFluid;
 		final ItemStack outputItem;
 		final int energy;
 
-		RecipeRefinery(FluidStack input, FluidStack outputFluid, ItemStack outputItem, int energy) {
+		RefineryRecipe(FluidStack input, FluidStack outputFluid, ItemStack outputItem, int energy) {
 
 			this.input = input;
 			this.outputFluid = outputFluid;

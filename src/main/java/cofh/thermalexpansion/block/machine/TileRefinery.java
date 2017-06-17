@@ -12,7 +12,7 @@ import cofh.thermalexpansion.gui.container.machine.ContainerRefinery;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.managers.machine.RefineryManager;
-import cofh.thermalexpansion.util.managers.machine.RefineryManager.RecipeRefinery;
+import cofh.thermalexpansion.util.managers.machine.RefineryManager.RefineryRecipe;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -118,7 +118,7 @@ public class TileRefinery extends TileMachineBase {
 		if (energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		RecipeRefinery recipe = RefineryManager.getRecipe(inputTank.getFluid());
+		RefineryRecipe recipe = RefineryManager.getRecipe(inputTank.getFluid());
 
 		if (recipe == null) {
 			return false;
@@ -164,7 +164,7 @@ public class TileRefinery extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		RecipeRefinery recipe = RefineryManager.getRecipe(inputTank.getFluid());
+		RefineryRecipe recipe = RefineryManager.getRecipe(inputTank.getFluid());
 
 		if (recipe == null) {
 			processOff();

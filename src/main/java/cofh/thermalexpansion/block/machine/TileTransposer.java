@@ -13,7 +13,7 @@ import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
-import cofh.thermalexpansion.util.managers.machine.TransposerManager.RecipeTransposer;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager.TransposerRecipe;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -143,7 +143,7 @@ public class TileTransposer extends TileMachineBase {
 		if (!inventory[2].isEmpty()) {
 			return false;
 		}
-		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 
 		if (!extractMode) {
 			if (tank.getFluid() == null || tank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
@@ -161,7 +161,7 @@ public class TileTransposer extends TileMachineBase {
 
 	private void processStartHandler() {
 
-		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 		IFluidTankProperties[] tankProperties = handler.getTankProperties();
 
 		FluidStack handlerStack = tankProperties[0].getContents();
@@ -196,7 +196,7 @@ public class TileTransposer extends TileMachineBase {
 
 	private boolean fillHandler() {
 
-		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 		int filled = tank.getFluid() == null ? 0 : handler.fill(new FluidStack(tank.getFluid(), Fluid.BUCKET_VOLUME), true);
 
 		IFluidTankProperties[] tankProperties = handler.getTankProperties();
@@ -216,7 +216,7 @@ public class TileTransposer extends TileMachineBase {
 
 	private boolean emptyHandler() {
 
-		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 		FluidStack drainStack = handler.drain(Fluid.BUCKET_VOLUME, true);
 		int drained = drainStack == null ? 0 : drainStack.amount;
 
@@ -297,7 +297,7 @@ public class TileTransposer extends TileMachineBase {
 			if (tank.getFluidAmount() <= 0) {
 				return false;
 			}
-			RecipeTransposer recipe = TransposerManager.getFillRecipe(inventory[0], tank.getFluid());
+			TransposerRecipe recipe = TransposerManager.getFillRecipe(inventory[0], tank.getFluid());
 
 			if (recipe == null || tank.getFluidAmount() < recipe.getFluid().amount || energyStorage.getEnergyStored() < recipe.getEnergy()) {
 				return false;
@@ -316,7 +316,7 @@ public class TileTransposer extends TileMachineBase {
 			int result = inventory[2].getCount() + output.getCount();
 			return result <= output.getMaxStackSize();
 		} else {
-			RecipeTransposer recipe = TransposerManager.getExtractRecipe(inventory[0]);
+			TransposerRecipe recipe = TransposerManager.getExtractRecipe(inventory[0]);
 
 			if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy()) {
 				return false;
@@ -348,7 +348,7 @@ public class TileTransposer extends TileMachineBase {
 		if (hasFluidHandler) {
 			return true;
 		}
-		RecipeTransposer recipe;
+		TransposerRecipe recipe;
 
 		if (!extractMode) {
 			recipe = TransposerManager.getFillRecipe(inventory[1], tank.getFluid());
@@ -365,7 +365,7 @@ public class TileTransposer extends TileMachineBase {
 	protected void processStart() {
 
 		String prevID = renderFluid.getFluid().getName();
-		RecipeTransposer recipe;
+		TransposerRecipe recipe;
 
 		if (!extractMode) {
 			recipe = TransposerManager.getFillRecipe(inventory[0], tank.getFluid());
@@ -394,7 +394,7 @@ public class TileTransposer extends TileMachineBase {
 	protected void processFinish() {
 
 		if (!extractMode) {
-			RecipeTransposer recipe = TransposerManager.getFillRecipe(inventory[1], tank.getFluid());
+			TransposerRecipe recipe = TransposerManager.getFillRecipe(inventory[1], tank.getFluid());
 
 			if (recipe == null) {
 				processOff();
@@ -409,7 +409,7 @@ public class TileTransposer extends TileMachineBase {
 			inventory[1] = ItemStack.EMPTY;
 			tank.drain(recipe.getFluid().amount, true);
 		} else {
-			RecipeTransposer recipe = TransposerManager.getExtractRecipe(inventory[1]);
+			TransposerRecipe recipe = TransposerManager.getExtractRecipe(inventory[1]);
 
 			if (recipe == null) {
 				processOff();
@@ -552,7 +552,7 @@ public class TileTransposer extends TileMachineBase {
 		outputTracker = nbt.getInteger("TrackOut1");
 		outputTrackerFluid = nbt.getInteger("TrackOut2");
 
-		if (!inventory[1].isEmpty() && inventory[1].hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+		if (!inventory[1].isEmpty() && inventory[1].hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
 			hasFluidHandler = true;
 		}
 		extractMode = nbt.getByte("Mode") == 1;

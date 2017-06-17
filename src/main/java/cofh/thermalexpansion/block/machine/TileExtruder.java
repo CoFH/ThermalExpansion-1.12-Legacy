@@ -85,7 +85,6 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
-
 	}
 
 	private static int[] processLava = { 0, 0, 1000 };

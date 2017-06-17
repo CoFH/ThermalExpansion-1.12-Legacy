@@ -30,7 +30,6 @@ public abstract class CompactorRecipeCategory extends BaseRecipeCategory<Compact
 		CompactorRecipeCategoryStorage.initialize(registry);
 		CompactorRecipeCategoryMint.initialize(registry);
 		registry.addRecipeClickArea(GuiCompactor.class, 79, 34, 24, 16, RecipeUidsTE.COMPACTOR_PRESS, RecipeUidsTE.COMPACTOR_STORAGE, RecipeUidsTE.COMPACTOR_MINT);
-		registry.addRecipeHandlers(new CompactorRecipeHandler());
 	}
 
 	public CompactorRecipeCategory(IGuiHelper guiHelper) {

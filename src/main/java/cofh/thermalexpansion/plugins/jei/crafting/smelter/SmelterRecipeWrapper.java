@@ -8,7 +8,7 @@ import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager.ComparableItemStackSmelter;
-import cofh.thermalexpansion.util.managers.machine.SmelterManager.RecipeSmelter;
+import cofh.thermalexpansion.util.managers.machine.SmelterManager.SmelterRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -38,12 +38,12 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
-	public SmelterRecipeWrapper(IGuiHelper guiHelper, RecipeSmelter recipe) {
+	public SmelterRecipeWrapper(IGuiHelper guiHelper, SmelterRecipe recipe) {
 
 		this(guiHelper, recipe, RecipeUidsTE.SMELTER);
 	}
 
-	public SmelterRecipeWrapper(IGuiHelper guiHelper, RecipeSmelter recipe, String uIdIn) {
+	public SmelterRecipeWrapper(IGuiHelper guiHelper, SmelterRecipe recipe, String uIdIn) {
 
 		uId = uIdIn;
 

@@ -7,7 +7,7 @@ import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager.ComparableItemStackTransposer;
-import cofh.thermalexpansion.util.managers.machine.TransposerManager.RecipeTransposer;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager.TransposerRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -38,7 +38,7 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
-	public TransposerRecipeWrapper(IGuiHelper guiHelper, RecipeTransposer recipe, String uIdIn) {
+	public TransposerRecipeWrapper(IGuiHelper guiHelper, TransposerRecipe recipe, String uIdIn) {
 
 		uId = uIdIn;
 

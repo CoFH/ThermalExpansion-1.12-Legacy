@@ -7,6 +7,7 @@ import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager;
+import cofh.thermalexpansion.util.managers.machine.SmelterManager.SmelterRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
@@ -14,6 +15,7 @@ import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -28,17 +30,17 @@ public class SmelterRecipeCategoryPyrotheum extends SmelterRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new SmelterRecipeCategoryPyrotheum(guiHelper));
-		registry.addRecipes(getRecipes(guiHelper));
-		registry.addRecipeCategoryCraftingItem(ItemAugment.machineSmelterPyrotheum, RecipeUidsTE.SMELTER_PYROTHEUM);
-		registry.addRecipeCategoryCraftingItem(BlockMachine.machineSmelter, RecipeUidsTE.SMELTER_PYROTHEUM);
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new SmelterRecipeCategoryPyrotheum(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.SMELTER_PYROTHEUM);
+		registry.addRecipeCatalyst(ItemAugment.machineSmelterPyrotheum, RecipeUidsTE.SMELTER_PYROTHEUM);
+		registry.addRecipeCatalyst(BlockMachine.machineSmelter, RecipeUidsTE.SMELTER_PYROTHEUM);
 	}
 
 	public static List<SmelterRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<SmelterRecipeWrapper> recipes = new ArrayList<>();
 
-		for (SmelterManager.RecipeSmelter recipe : SmelterManager.getRecipeList()) {
+		for (SmelterRecipe recipe : SmelterManager.getRecipeList()) {
 			if (ItemHelper.isOre(recipe.getPrimaryInput()) || ItemHelper.isOre(recipe.getSecondaryInput())) {
 				recipes.add(new SmelterRecipeWrapper(guiHelper, recipe, RecipeUidsTE.SMELTER_PYROTHEUM));
 			}

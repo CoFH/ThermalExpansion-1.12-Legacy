@@ -20,19 +20,19 @@ import java.util.Map.Entry;
 
 public class SawmillManager {
 
-	private static Map<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackSawmill, SawmillRecipe> recipeMap = new THashMap<>();
 
 	static final float LOG_MULTIPLIER = 1.5F;
 	static final int DEFAULT_ENERGY = 1600;
 
-	public static RecipeSawmill getRecipe(ItemStack input) {
+	public static SawmillRecipe getRecipe(ItemStack input) {
 
 		if (input.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackSawmill query = new ComparableItemStackSawmill(input);
 
-		RecipeSawmill recipe = recipeMap.get(query);
+		SawmillRecipe recipe = recipeMap.get(query);
 
 		if (recipe == null) {
 			query.metadata = OreDictionary.WILDCARD_VALUE;
@@ -46,9 +46,9 @@ public class SawmillManager {
 		return getRecipe(input) != null;
 	}
 
-	public static RecipeSawmill[] getRecipeList() {
+	public static SawmillRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeSawmill[recipeMap.size()]);
+		return recipeMap.values().toArray(new SawmillRecipe[recipeMap.size()]);
 	}
 
 	public static void initialize() {
@@ -174,6 +174,7 @@ public class SawmillManager {
 			addRecipe(energy, new ItemStack(Items.PAINTING), new ItemStack(Blocks.WOOL, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 			addRecipe(energy, new ItemStack(Items.ITEM_FRAME), new ItemStack(Items.LEATHER, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 		}
+
 		/* LOAD RECIPES */
 		loadRecipes();
 	}
@@ -196,10 +197,10 @@ public class SawmillManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackSawmill, RecipeSawmill> tempMap = new THashMap<>(recipeMap.size());
-		RecipeSawmill tempRecipe;
+		Map<ComparableItemStackSawmill, SawmillRecipe> tempMap = new THashMap<>(recipeMap.size());
+		SawmillRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackSawmill, RecipeSawmill> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackSawmill, SawmillRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
 			tempMap.put(new ComparableItemStackSawmill(tempRecipe.input), tempRecipe);
 		}
@@ -208,28 +209,28 @@ public class SawmillManager {
 	}
 
 	/* ADD RECIPES */
-	public static RecipeSawmill addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static SawmillRecipe addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		if (input.isEmpty() || primaryOutput.isEmpty() || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
-		RecipeSawmill recipe = new RecipeSawmill(input, primaryOutput, secondaryOutput, secondaryChance, energy);
+		SawmillRecipe recipe = new SawmillRecipe(input, primaryOutput, secondaryOutput, secondaryChance, energy);
 		recipeMap.put(new ComparableItemStackSawmill(input), recipe);
 		return recipe;
 	}
 
-	public static RecipeSawmill addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
+	public static SawmillRecipe addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
 
 		return addRecipe(energy, input, primaryOutput, secondaryOutput, 100);
 	}
 
-	public static RecipeSawmill addRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
+	public static SawmillRecipe addRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
 
 		return addRecipe(energy, input, primaryOutput, ItemStack.EMPTY, 0);
 	}
 
 	/* REMOVE RECIPES */
-	public static RecipeSawmill removeRecipe(ItemStack input) {
+	public static SawmillRecipe removeRecipe(ItemStack input) {
 
 		return recipeMap.remove(new ComparableItemStackSawmill(input));
 	}
@@ -282,7 +283,7 @@ public class SawmillManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeSawmill {
+	public static class SawmillRecipe {
 
 		final ItemStack input;
 		final ItemStack primaryOutput;
@@ -290,7 +291,7 @@ public class SawmillManager {
 		final int secondaryChance;
 		final int energy;
 
-		RecipeSawmill(ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy) {
+		SawmillRecipe(ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy) {
 
 			this.input = input;
 			this.primaryOutput = primaryOutput;

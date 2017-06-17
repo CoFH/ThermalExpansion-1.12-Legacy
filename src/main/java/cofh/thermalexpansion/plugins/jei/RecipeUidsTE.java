@@ -27,12 +27,15 @@ public class RecipeUidsTE {
 	public static final String COMPACTOR_MINT = "thermalexpansion.compactor_mint";
 
 	public static final String CRUCIBLE = "thermalexpansion.crucible";
+
 	public static final String REFINERY = "thermalexpansion.refinery";
 
 	public static final String TRANSPOSER_FILL = "thermalexpansion.transposer_fill";
 	public static final String TRANSPOSER_EXTRACT = "thermalexpansion.transposer_extract";
 
 	public static final String CHARGER = "thermalexpansion.charger";
+
+	public static final String CENTRIFUGE = "thermalexpansion.centrifuge";
 
 	public static final String DYNAMO_STEAM = "thermalexpansion.steam";
 	public static final String DYNAMO_MAGMATIC = "thermalexpansion.magmatic";

@@ -7,6 +7,7 @@ import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
+import cofh.thermalexpansion.util.managers.machine.PulverizerManager.PulverizerRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
@@ -14,6 +15,7 @@ import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -28,17 +30,17 @@ public class PulverizerRecipeCategoryPetrotheum extends PulverizerRecipeCategory
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new PulverizerRecipeCategoryPetrotheum(guiHelper));
-		registry.addRecipes(getRecipes(guiHelper));
-		registry.addRecipeCategoryCraftingItem(ItemAugment.machinePulverizerPetrotheum, RecipeUidsTE.PULVERIZER_PETROTHEUM);
-		registry.addRecipeCategoryCraftingItem(BlockMachine.machinePulverizer, RecipeUidsTE.PULVERIZER_PETROTHEUM);
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new PulverizerRecipeCategoryPetrotheum(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.PULVERIZER_PETROTHEUM);
+		registry.addRecipeCatalyst(ItemAugment.machinePulverizerPetrotheum, RecipeUidsTE.PULVERIZER_PETROTHEUM);
+		registry.addRecipeCatalyst(BlockMachine.machinePulverizer, RecipeUidsTE.PULVERIZER_PETROTHEUM);
 	}
 
 	public static List<PulverizerRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<PulverizerRecipeWrapper> recipes = new ArrayList<>();
 
-		for (PulverizerManager.RecipePulverizer recipe : PulverizerManager.getRecipeList()) {
+		for (PulverizerRecipe recipe : PulverizerManager.getRecipeList()) {
 			if (ItemHelper.isOre(recipe.getInput())) {
 				recipes.add(new PulverizerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.PULVERIZER_PETROTHEUM));
 			}

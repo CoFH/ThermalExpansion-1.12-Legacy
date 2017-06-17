@@ -14,6 +14,7 @@ import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,11 +35,10 @@ public class CompressionFuelCategory extends BaseFuelCategory<CompressionFuelWra
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new CompressionFuelCategory(guiHelper));
-		registry.addRecipeHandlers(new CompressionFuelHandler());
-		registry.addRecipes(getRecipes(registry, guiHelper));
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new CompressionFuelCategory(guiHelper));
+		registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.DYNAMO_COMPRESSION);
 		registry.addRecipeClickArea(GuiDynamoCompression.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_COMPRESSION);
-		registry.addRecipeCategoryCraftingItem(BlockDynamo.dynamoCompression, RecipeUidsTE.DYNAMO_COMPRESSION);
+		registry.addRecipeCatalyst(BlockDynamo.dynamoCompression, RecipeUidsTE.DYNAMO_COMPRESSION);
 	}
 
 	public static List<CompressionFuelWrapper> getRecipes(IModRegistry registry, IGuiHelper guiHelper) {

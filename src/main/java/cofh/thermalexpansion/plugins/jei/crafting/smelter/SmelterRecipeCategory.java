@@ -7,12 +7,14 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager;
+import cofh.thermalexpansion.util.managers.machine.SmelterManager.SmelterRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
@@ -32,11 +34,10 @@ public class SmelterRecipeCategory extends BaseRecipeCategory<SmelterRecipeWrapp
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new SmelterRecipeCategory(guiHelper));
-		registry.addRecipeHandlers(new SmelterRecipeHandler());
-		registry.addRecipes(getRecipes(guiHelper));
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new SmelterRecipeCategory(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.SMELTER);
 		registry.addRecipeClickArea(GuiSmelter.class, 79, 34, 24, 16, RecipeUidsTE.SMELTER, RecipeUidsTE.SMELTER_PYROTHEUM);
-		registry.addRecipeCategoryCraftingItem(BlockMachine.machineSmelter, RecipeUidsTE.SMELTER);
+		registry.addRecipeCatalyst(BlockMachine.machineSmelter, RecipeUidsTE.SMELTER);
 
 		SmelterRecipeCategoryPyrotheum.initialize(registry);
 	}
@@ -45,7 +46,7 @@ public class SmelterRecipeCategory extends BaseRecipeCategory<SmelterRecipeWrapp
 
 		List<SmelterRecipeWrapper> recipes = new ArrayList<>();
 
-		for (SmelterManager.RecipeSmelter recipe : SmelterManager.getRecipeList()) {
+		for (SmelterRecipe recipe : SmelterManager.getRecipeList()) {
 			recipes.add(new SmelterRecipeWrapper(guiHelper, recipe));
 		}
 		return recipes;

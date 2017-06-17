@@ -14,6 +14,7 @@ import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,11 +35,10 @@ public class MagmaticFuelCategory extends BaseFuelCategory<MagmaticFuelWrapper> 
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new MagmaticFuelCategory(guiHelper));
-		registry.addRecipeHandlers(new MagmaticFuelHandler());
-		registry.addRecipes(getRecipes(registry, guiHelper));
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new MagmaticFuelCategory(guiHelper));
+		registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.DYNAMO_MAGMATIC);
 		registry.addRecipeClickArea(GuiDynamoMagmatic.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_MAGMATIC);
-		registry.addRecipeCategoryCraftingItem(BlockDynamo.dynamoMagmatic, RecipeUidsTE.DYNAMO_MAGMATIC);
+		registry.addRecipeCatalyst(BlockDynamo.dynamoMagmatic, RecipeUidsTE.DYNAMO_MAGMATIC);
 	}
 
 	public static List<MagmaticFuelWrapper> getRecipes(IModRegistry registry, IGuiHelper guiHelper) {

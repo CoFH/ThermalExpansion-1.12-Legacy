@@ -17,7 +17,7 @@ import java.util.Map.Entry;
 
 public class InsolatorManager {
 
-	private static Map<List<ComparableItemStackInsolator>, RecipeInsolator> recipeMap = new THashMap<>();
+	private static Map<List<ComparableItemStackInsolator>, InsolatorRecipe> recipeMap = new THashMap<>();
 	private static Set<ComparableItemStackInsolator> validationSet = new THashSet<>();
 	private static Set<ComparableItemStackInsolator> lockSet = new THashSet<>();
 
@@ -35,11 +35,11 @@ public class InsolatorManager {
 		ComparableItemStackInsolator query = new ComparableItemStackInsolator(primaryInput);
 		ComparableItemStackInsolator querySecondary = new ComparableItemStackInsolator(secondaryInput);
 
-		RecipeInsolator recipe = recipeMap.get(Arrays.asList(query, querySecondary));
+		InsolatorRecipe recipe = recipeMap.get(Arrays.asList(query, querySecondary));
 		return recipe == null && recipeMap.get(Arrays.asList(querySecondary, query)) != null;
 	}
 
-	public static RecipeInsolator getRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
+	public static InsolatorRecipe getRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
 		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return null;
@@ -47,7 +47,7 @@ public class InsolatorManager {
 		ComparableItemStackInsolator query = new ComparableItemStackInsolator(primaryInput);
 		ComparableItemStackInsolator querySecondary = new ComparableItemStackInsolator(secondaryInput);
 
-		RecipeInsolator recipe = recipeMap.get(Arrays.asList(query, querySecondary));
+		InsolatorRecipe recipe = recipeMap.get(Arrays.asList(query, querySecondary));
 
 		if (recipe == null) {
 			recipe = recipeMap.get(Arrays.asList(querySecondary, query));
@@ -63,9 +63,9 @@ public class InsolatorManager {
 		return getRecipe(primaryInput, secondaryInput) != null;
 	}
 
-	public static RecipeInsolator[] getRecipeList() {
+	public static InsolatorRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeInsolator[recipeMap.size()]);
+		return recipeMap.values().toArray(new InsolatorRecipe[recipeMap.size()]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {
@@ -140,6 +140,7 @@ public class InsolatorManager {
 			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.LOG2, 5, 0), new ItemStack(Blocks.SAPLING, 1, 4), 50, false, Type.TREE);
 			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 5), new ItemStack(Blocks.LOG2, 5, 1), new ItemStack(Blocks.SAPLING, 1, 5), 50, false, Type.TREE);
 		}
+
 		/* LOAD RECIPES */
 		loadRecipes();
 	}
@@ -159,11 +160,11 @@ public class InsolatorManager {
 
 	public static void refresh() {
 
-		Map<List<ComparableItemStackInsolator>, RecipeInsolator> tempMap = new THashMap<>(recipeMap.size());
+		Map<List<ComparableItemStackInsolator>, InsolatorRecipe> tempMap = new THashMap<>(recipeMap.size());
 		Set<ComparableItemStackInsolator> tempSet = new THashSet<>();
-		RecipeInsolator tempRecipe;
+		InsolatorRecipe tempRecipe;
 
-		for (Entry<List<ComparableItemStackInsolator>, RecipeInsolator> entry : recipeMap.entrySet()) {
+		for (Entry<List<ComparableItemStackInsolator>, InsolatorRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
 			ComparableItemStackInsolator primary = new ComparableItemStackInsolator(tempRecipe.primaryInput);
 			ComparableItemStackInsolator secondary = new ComparableItemStackInsolator(tempRecipe.secondaryInput);
@@ -187,35 +188,35 @@ public class InsolatorManager {
 	}
 
 	/* ADD RECIPES */
-	public static RecipeInsolator addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
+	public static InsolatorRecipe addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
 
 		if (primaryInput.isEmpty() || secondaryInput.isEmpty() || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
 			return null;
 		}
-		RecipeInsolator recipe = new RecipeInsolator(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy, copyNBT, type);
+		InsolatorRecipe recipe = new InsolatorRecipe(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy, copyNBT, type);
 		recipeMap.put(Arrays.asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)), recipe);
 		validationSet.add(new ComparableItemStackInsolator(primaryInput));
 		validationSet.add(new ComparableItemStackInsolator(secondaryInput));
 		return recipe;
 	}
 
-	public static RecipeInsolator addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static InsolatorRecipe addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, false, Type.STANDARD);
 	}
 
-	public static RecipeInsolator addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
+	public static InsolatorRecipe addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
 
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, 100);
 	}
 
-	public static RecipeInsolator addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
+	public static InsolatorRecipe addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
 
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, ItemStack.EMPTY, 0);
 	}
 
 	/* REMOVE RECIPES */
-	public static RecipeInsolator removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
+	public static InsolatorRecipe removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
 		return recipeMap.remove(Arrays.asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)));
 	}
@@ -294,7 +295,7 @@ public class InsolatorManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeInsolator {
+	public static class InsolatorRecipe {
 
 		final ItemStack primaryInput;
 		final ItemStack secondaryInput;
@@ -305,7 +306,7 @@ public class InsolatorManager {
 		final boolean copyNBT;
 		final Type type;
 
-		RecipeInsolator(ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy, boolean copyNBT, Type type) {
+		InsolatorRecipe(ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy, boolean copyNBT, Type type) {
 
 			this.primaryInput = primaryInput;
 			this.secondaryInput = secondaryInput;

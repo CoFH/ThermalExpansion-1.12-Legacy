@@ -26,7 +26,7 @@ public abstract class BaseFuelCategory<T extends IRecipeWrapper> extends BlankRe
 		return localizedName;
 	}
 
-	// @Override
+	@Override
 	public String getModName() {
 
 		return ThermalExpansion.MOD_NAME;

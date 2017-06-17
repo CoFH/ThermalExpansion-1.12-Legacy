@@ -6,7 +6,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
-import cofh.thermalexpansion.util.managers.machine.TransposerManager.RecipeTransposer;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager.TransposerRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
@@ -36,11 +36,12 @@ public abstract class TransposerRecipeCategory extends BaseRecipeCategory<Transp
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
+		// TODO: Finish
+
 		TransposerRecipeCategoryFill.initialize(registry);
 		TransposerRecipeCategoryExtract.initialize(registry);
 		registry.addRecipes(getRecipes(guiHelper, registry.getIngredientRegistry()));
 		registry.addRecipeClickArea(GuiTransposer.class, 112, 19, 24, 16, RecipeUidsTE.TRANSPOSER_FILL, RecipeUidsTE.TRANSPOSER_EXTRACT);
-		registry.addRecipeHandlers(new TransposerRecipeHandler());
 	}
 
 	public static List<TransposerRecipeWrapper> getRecipes(IGuiHelper guiHelper, IIngredientRegistry ingredientRegistry) {
@@ -50,17 +51,17 @@ public abstract class TransposerRecipeCategory extends BaseRecipeCategory<Transp
 		List<ItemStack> ingredients = ingredientRegistry.getIngredients(ItemStack.class);
 
 		for (ItemStack ingredient : ingredients) {
-			if (ingredient.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+			if (ingredient.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
 				FluidStack drain;
 				ItemStack emptyStack = ingredient.copy();
-				IFluidHandler emptyCapability = emptyStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+				IFluidHandler emptyCapability = emptyStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 				drain = emptyCapability.drain(Fluid.BUCKET_VOLUME, true);
 
 				if (drain != null) {
 					if (emptyStack.getCount() == 0) {
 						emptyStack = ItemStack.EMPTY;
 					}
-					RecipeTransposer recipe = new RecipeTransposer(ingredient, emptyStack, drain, TransposerManager.DEFAULT_ENERGY, emptyStack.isEmpty() ? 0 : 100);
+					TransposerRecipe recipe = new TransposerRecipe(ingredient, emptyStack, drain, TransposerManager.DEFAULT_ENERGY, emptyStack.isEmpty() ? 0 : 100);
 					recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_EXTRACT));
 					addFillRecipe(ingredient, drain.getFluid(), recipes, guiHelper);
 				} else {
@@ -76,12 +77,12 @@ public abstract class TransposerRecipeCategory extends BaseRecipeCategory<Transp
 	private static void addFillRecipe(ItemStack ingredient, Fluid fluid, List<TransposerRecipeWrapper> recipes, IGuiHelper guiHelper) {
 
 		ItemStack fillStack = ingredient.copy();
-		IFluidHandler fillCapability = fillStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+		IFluidHandler fillCapability = fillStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 		int fill = fillCapability.fill(new FluidStack(fluid, Fluid.BUCKET_VOLUME), true);
 
 		if (fill > 0) {
 			FluidStack filledFluid = new FluidStack(fluid, fill);
-			RecipeTransposer recipe = new RecipeTransposer(ingredient, fillStack, filledFluid, TransposerManager.DEFAULT_ENERGY, 100);
+			TransposerRecipe recipe = new TransposerRecipe(ingredient, fillStack, filledFluid, TransposerManager.DEFAULT_ENERGY, 100);
 			recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_FILL));
 		}
 	}

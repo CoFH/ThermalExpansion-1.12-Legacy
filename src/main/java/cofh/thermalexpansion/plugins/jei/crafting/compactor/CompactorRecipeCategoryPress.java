@@ -5,10 +5,12 @@ import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiCompactor;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager.CompactorRecipe;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -21,16 +23,16 @@ public class CompactorRecipeCategoryPress extends CompactorRecipeCategory {
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new CompactorRecipeCategoryPress(guiHelper));
-		registry.addRecipes(getRecipes(guiHelper));
-		registry.addRecipeCategoryCraftingItem(BlockMachine.machineCompactor, RecipeUidsTE.COMPACTOR_PRESS);
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new CompactorRecipeCategoryPress(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.COMPACTOR_PRESS);
+		registry.addRecipeCatalyst(BlockMachine.machineCompactor, RecipeUidsTE.COMPACTOR_PRESS);
 	}
 
 	public static List<CompactorRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<CompactorRecipeWrapper> recipes = new ArrayList<>();
 
-		for (CompactorManager.RecipeCompactor recipe : CompactorManager.getRecipeList(Mode.PRESS)) {
+		for (CompactorRecipe recipe : CompactorManager.getRecipeList(Mode.PRESS)) {
 			recipes.add(new CompactorRecipeWrapper(guiHelper, recipe, RecipeUidsTE.COMPACTOR_PRESS));
 		}
 		return recipes;

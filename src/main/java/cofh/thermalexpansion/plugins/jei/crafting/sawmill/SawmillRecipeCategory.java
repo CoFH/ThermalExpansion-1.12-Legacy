@@ -7,12 +7,14 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
+import cofh.thermalexpansion.util.managers.machine.SawmillManager.SawmillRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
@@ -32,11 +34,10 @@ public class SawmillRecipeCategory extends BaseRecipeCategory<SawmillRecipeWrapp
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new SawmillRecipeCategory(guiHelper));
-		registry.addRecipeHandlers(new SawmillRecipeHandler());
-		registry.addRecipes(getRecipes(guiHelper));
+		((IRecipeCategoryRegistration) registry).addRecipeCategories(new SawmillRecipeCategory(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.SAWMILL);
 		registry.addRecipeClickArea(GuiSawmill.class, 79, 34, 24, 16, RecipeUidsTE.SAWMILL, RecipeUidsTE.SAWMILL_TAPPER);
-		registry.addRecipeCategoryCraftingItem(BlockMachine.machineSawmill, RecipeUidsTE.SAWMILL);
+		registry.addRecipeCatalyst(BlockMachine.machineSawmill, RecipeUidsTE.SAWMILL);
 
 		SawmillRecipeCategoryTapper.initialize(registry);
 	}
@@ -45,7 +46,7 @@ public class SawmillRecipeCategory extends BaseRecipeCategory<SawmillRecipeWrapp
 
 		List<SawmillRecipeWrapper> recipes = new ArrayList<>();
 
-		for (SawmillManager.RecipeSawmill recipe : SawmillManager.getRecipeList()) {
+		for (SawmillRecipe recipe : SawmillManager.getRecipeList()) {
 			recipes.add(new SawmillRecipeWrapper(guiHelper, recipe));
 		}
 		return recipes;
