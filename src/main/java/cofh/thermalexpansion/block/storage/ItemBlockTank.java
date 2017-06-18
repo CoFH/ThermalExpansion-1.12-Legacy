@@ -104,6 +104,9 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	@Override
 	public FluidStack getFluid(ItemStack container) {
 
+		if (container.getTagCompound() == null) {
+			setDefaultTag(container);
+		}
 		if (!container.getTagCompound().hasKey("Fluid")) {
 			return null;
 		}
@@ -119,6 +122,9 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	@Override
 	public int fill(ItemStack container, FluidStack resource, boolean doFill) {
 
+		if (container.getTagCompound() == null) {
+			setDefaultTag(container);
+		}
 		if (resource == null || container.stackSize > 1 || isCreative(container)) {
 			return 0;
 		}
@@ -171,6 +177,9 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	@Override
 	public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
 
+		if (container.getTagCompound() == null) {
+			setDefaultTag(container);
+		}
 		if (!container.getTagCompound().hasKey("Fluid") || maxDrain == 0 || container.stackSize > 1) {
 			return null;
 		}
