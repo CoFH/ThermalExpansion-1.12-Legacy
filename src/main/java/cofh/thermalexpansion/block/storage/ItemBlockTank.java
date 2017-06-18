@@ -104,6 +104,9 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	@Override
 	public FluidStack getFluid(ItemStack container) {
 
+		if (!container.hasTagCompound()) {
+			return null;
+		}
 		if (!container.getTagCompound().hasKey("Fluid")) {
 			return null;
 		}
@@ -171,6 +174,9 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	@Override
 	public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
 
+		if (!container.hasTagCompound()) {
+			return null;
+		}
 		if (!container.getTagCompound().hasKey("Fluid") || maxDrain == 0 || container.getCount() > 1) {
 			return null;
 		}
