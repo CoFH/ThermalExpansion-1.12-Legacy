@@ -95,13 +95,15 @@ public class TileCharger extends TileMachineBase {
 			processTickContainerItem();
 
 			if (canFinishContainerItem()) {
+				transferContainerItem();
 				transferOutput();
 				transferInput();
-			}
-			if (!redstoneControlOrDisable() || !canStartContainerItem()) {
-				processOff();
-			} else {
-				processTickContainerItem();
+
+				if (!redstoneControlOrDisable() || !canStartContainerItem()) {
+					processOff();
+				} else {
+					processTickContainerItem();
+				}
 			}
 		} else if (redstoneControlOrDisable()) {
 			if (timeCheck()) {
@@ -148,13 +150,15 @@ public class TileCharger extends TileMachineBase {
 			processTickHandler();
 
 			if (canFinishHandler()) {
+				transferHandler();
 				transferOutput();
 				transferInput();
-			}
-			if (!redstoneControlOrDisable() || !canStartHandler()) {
-				processOff();
-			} else {
-				processTickHandler();
+
+				if (!redstoneControlOrDisable() || !canStartHandler()) {
+					processOff();
+				} else {
+					processTickHandler();
+				}
 			}
 		} else if (redstoneControlOrDisable()) {
 			if (timeCheck()) {
@@ -187,7 +191,7 @@ public class TileCharger extends TileMachineBase {
 
 	private int processTickHandler() {
 
-		int energy = handler.receiveEnergy(calcEnergy(), false);
+		int energy = handler.receiveEnergy(calcEnergyItem(), false);
 		energyStorage.modifyEnergyStored(-energy);
 		return energy;
 	}
@@ -212,22 +216,6 @@ public class TileCharger extends TileMachineBase {
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-		//		if (ServerHelper.isClientWorld(worldObj)) {
-		//			if (inventory[1] == null) {
-		//				processRem = 0;
-		//				containerItem = null;
-		//				hasContainerItem = false;
-		//				handler = null;
-		//				hasEnergyHandler = false;
-		//			} else if (EnergyHelper.isEnergyContainerItem(inventory[1])) {
-		//				containerItem = (IEnergyContainerItem) inventory[1].getItem();
-		//				hasContainerItem = true;
-		//			} else if (EnergyHelper.isEnergyHandler(inventory[1])) {
-		//				handler = inventory[1].getCapability(CapabilityEnergy.ENERGY, null);
-		//				hasEnergyHandler = true;
-		//			}
-		//			return;
-		//		}
 		if (hasContainerItem) {
 			updateContainerItem();
 		} else if (hasEnergyHandler) {
@@ -348,9 +336,6 @@ public class TileCharger extends TileMachineBase {
 
 	@Override
 	protected void transferOutput() {
-
-		transferContainerItem();
-		transferHandler();
 
 		if (!enableAutoOutput) {
 			return;
@@ -561,6 +546,8 @@ public class TileCharger extends TileMachineBase {
 				processOff();
 				containerItem = null;
 				hasContainerItem = false;
+
+				handler = null;
 				hasEnergyHandler = false;
 			}
 		}
@@ -581,6 +568,8 @@ public class TileCharger extends TileMachineBase {
 			}
 			containerItem = null;
 			hasContainerItem = false;
+
+			handler = null;
 			hasEnergyHandler = false;
 		}
 		inventory[slot] = stack;
@@ -596,6 +585,7 @@ public class TileCharger extends TileMachineBase {
 		if (isActive && !hasValidInput()) {
 			containerItem = null;
 			hasContainerItem = false;
+
 			handler = null;
 			hasEnergyHandler = false;
 		}

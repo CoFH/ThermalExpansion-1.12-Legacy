@@ -247,15 +247,6 @@ public class TileTransposer extends TileMachineBase {
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-		//		if (ServerHelper.isClientWorld(worldObj)) {
-		//			if (inventory[1] == null) {
-		//				processRem = 0;
-		//				hasFluidHandler = false;
-		//			} else if (FluidHelper.isFluidHandler(inventory[1])) {
-		//				hasFluidHandler = true;
-		//			}
-		//			return;
-		//		}
 		if (extractMode) {
 			transferOutputFluid();
 		}
