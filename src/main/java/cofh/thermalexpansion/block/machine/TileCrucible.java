@@ -18,6 +18,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -27,6 +28,8 @@ import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -52,8 +55,6 @@ public class TileCrucible extends TileMachineBase {
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 
 		LIGHT_VALUES[TYPE] = 14;
-
-		SOUNDS[TYPE] = TESounds.MACHINE_CRUCIBLE;
 
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion:machine_crucible");
 
@@ -309,9 +310,10 @@ public class TileCrucible extends TileMachineBase {
 	}
 
 	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+	@SideOnly (Side.CLIENT)
+	public void handleTilePacket(PacketCoFHBase payload) {
 
-		super.handleTilePacket(payload, isServer);
+		super.handleTilePacket(payload);
 
 		renderFluid = payload.getFluidStack();
 	}
@@ -338,6 +340,13 @@ public class TileCrucible extends TileMachineBase {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
 		}
 		return TETextures.MACHINE_SIDE;
+	}
+
+	/* ISoundSource */
+	@Override
+	public SoundEvent getSoundEvent() {
+
+		return TESounds.MACHINE_CRUCIBLE;
 	}
 
 	/* CAPABILITIES */

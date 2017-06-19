@@ -25,6 +25,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 import java.util.List;
@@ -300,9 +301,10 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	}
 
 	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+	@SideOnly (Side.CLIENT)
+	public void handleTilePacket(PacketCoFHBase payload) {
 
-		super.handleTilePacket(payload, isServer);
+		super.handleTilePacket(payload);
 
 		facing = payload.getByte();
 		enchantHolding = payload.getByte();

@@ -35,6 +35,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IWorldNameable;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -309,9 +310,10 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	}
 
 	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+	@SideOnly(Side.CLIENT)
+	public void handleTilePacket(PacketCoFHBase payload) {
 
-		super.handleTilePacket(payload, isServer);
+		super.handleTilePacket(payload);
 
 		access = ISecurable.AccessMode.values()[payload.getByte()];
 		owner = CoreProps.DEFAULT_OWNER;

@@ -11,6 +11,7 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
@@ -28,8 +29,6 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[BlockMachine.Type.values().length];
 	public static final HashSet<String>[] VALID_AUGMENTS = new HashSet[BlockMachine.Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[BlockMachine.Type.values().length];
-
-	public static final SoundEvent[] SOUNDS = new SoundEvent[BlockMachine.Type.values().length];
 
 	private static boolean enableSecurity = true;
 
@@ -449,13 +448,6 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 			return TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]];
 		}
 		return TETextures.MACHINE_SIDE;
-	}
-
-	/* ISoundSource */
-	@Override
-	public SoundEvent getSoundEvent() {
-
-		return SOUNDS[getType()];
 	}
 
 }

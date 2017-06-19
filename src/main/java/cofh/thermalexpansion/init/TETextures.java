@@ -94,7 +94,7 @@ public class TETextures {
 		DEVICE_BOTTOM =                     register(map, BLOCKS_ + "device/device_bottom");
 		DEVICE_SIDE =						register(map, BLOCKS_ + "device/device_side");
 
-		DEVICE_FACE_WATERGEN =				register(map, DEVICE_FACE_ + "water_gen");
+		DEVICE_FACE_WATER_GEN =				register(map, DEVICE_FACE_ + "water_gen");
 		DEVICE_FACE_NULLIFIER =				register(map, DEVICE_FACE_ + "nullifier");
 		DEVICE_FACE_HEAT_SINK =             register(map, DEVICE_FACE_ + "heat_sink");
 		DEVICE_FACE_TAPPER =                register(map, DEVICE_FACE_ + "tapper");
@@ -103,7 +103,7 @@ public class TETextures {
 		DEVICE_FACE_ITEM_BUFFER =			register(map, DEVICE_FACE_ + "item_buffer");
 		DEVICE_FACE_EXTENDER =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "extender");
 
-		DEVICE_ACTIVE_WATERGEN =			register(map, DEVICE_ACTIVE_ + "water_gen");
+		DEVICE_ACTIVE_WATER_GEN =			register(map, DEVICE_ACTIVE_ + "water_gen");
 		DEVICE_ACTIVE_NULLIFIER =			register(map, DEVICE_ACTIVE_ + "nullifier");
 		DEVICE_ACTIVE_HEAT_SINK =           register(map, DEVICE_ACTIVE_ + "heat_sink");
 		DEVICE_ACTIVE_TAPPER =              register(map, DEVICE_ACTIVE_ + "tapper");
@@ -325,7 +325,7 @@ public class TETextures {
 		};
 
 		DEVICE_FACE = new TextureAtlasSprite[] {
-				DEVICE_FACE_WATERGEN,
+				DEVICE_FACE_WATER_GEN,
 				DEVICE_FACE_NULLIFIER,
 				DEVICE_FACE_HEAT_SINK,
 				DEVICE_FACE_TAPPER,
@@ -339,7 +339,7 @@ public class TETextures {
 		};
 
 		DEVICE_ACTIVE = new TextureAtlasSprite[] {
-				DEVICE_ACTIVE_WATERGEN,
+				DEVICE_ACTIVE_WATER_GEN,
 				DEVICE_ACTIVE_NULLIFIER,
 				DEVICE_ACTIVE_HEAT_SINK,
 				DEVICE_ACTIVE_TAPPER,
@@ -634,7 +634,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_SIDE;
 
 	public static TextureAtlasSprite[] DEVICE_FACE;
-	public static TextureAtlasSprite DEVICE_FACE_WATERGEN;
+	public static TextureAtlasSprite DEVICE_FACE_WATER_GEN;
 	public static TextureAtlasSprite DEVICE_FACE_NULLIFIER;
 	public static TextureAtlasSprite DEVICE_FACE_HEAT_SINK;
 	public static TextureAtlasSprite DEVICE_FACE_TAPPER;
@@ -647,7 +647,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_FACE_ENERGY_BUFFER;
 
 	public static TextureAtlasSprite[] DEVICE_ACTIVE;
-	public static TextureAtlasSprite DEVICE_ACTIVE_WATERGEN;
+	public static TextureAtlasSprite DEVICE_ACTIVE_WATER_GEN;
 	public static TextureAtlasSprite DEVICE_ACTIVE_NULLIFIER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_HEAT_SINK;
 	public static TextureAtlasSprite DEVICE_ACTIVE_TAPPER;

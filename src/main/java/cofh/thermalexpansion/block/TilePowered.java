@@ -12,6 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class TilePowered extends TileReconfigurable implements IEnergyInfo, IEnergyReceiver {
 
@@ -118,9 +120,10 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 	}
 
 	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+	@SideOnly (Side.CLIENT)
+	public void handleTilePacket(PacketCoFHBase payload) {
 
-		super.handleTilePacket(payload, isServer);
+		super.handleTilePacket(payload);
 
 		energyStorage.setEnergyStored(payload.getInt());
 	}

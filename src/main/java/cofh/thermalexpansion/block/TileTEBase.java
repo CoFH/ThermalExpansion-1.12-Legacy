@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class TileTEBase extends TileCore implements ITileInfoPacketHandler, ITilePacketHandler, IPortableData {
 
@@ -131,7 +132,8 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	}
 
 	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+	@SideOnly (Side.CLIENT)
+	public void handleTilePacket(PacketCoFHBase payload) {
 
 		tileName = payload.getString();
 		world.checkLight(pos);

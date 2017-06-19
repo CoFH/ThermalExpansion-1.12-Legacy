@@ -29,6 +29,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -373,9 +374,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	}
 
 	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+	@SideOnly (Side.CLIENT)
+	public void handleTilePacket(PacketCoFHBase payload) {
 
-		super.handleTilePacket(payload, isServer);
+		super.handleTilePacket(payload);
 
 		augmentNoWater = payload.getBool();
 		flagNoWater = augmentNoWater;
