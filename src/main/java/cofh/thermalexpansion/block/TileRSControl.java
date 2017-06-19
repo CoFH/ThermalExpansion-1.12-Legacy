@@ -120,9 +120,10 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 	}
 
 	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+	@SideOnly (Side.CLIENT)
+	public void handleTilePacket(PacketCoFHBase payload) {
 
-		super.handleTilePacket(payload, isServer);
+		super.handleTilePacket(payload);
 
 		isPowered = payload.getBool();
 		rsMode = ControlMode.values()[payload.getByte()];

@@ -2,11 +2,9 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
-import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileDeviceBase extends TilePowered {
