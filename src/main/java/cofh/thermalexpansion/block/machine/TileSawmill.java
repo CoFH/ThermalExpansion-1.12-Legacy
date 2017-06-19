@@ -19,6 +19,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -54,8 +55,6 @@ public class TileSawmill extends TileMachineBase {
 
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
-
-		SOUNDS[TYPE] = TESounds.MACHINE_SAWMILL;
 
 		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion:machine_sawmill");
 
@@ -427,6 +426,13 @@ public class TileSawmill extends TileMachineBase {
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
 		return slot != 0 || SawmillManager.recipeExists(stack);
+	}
+
+	/* ISoundSource */
+	@Override
+	public SoundEvent getSoundEvent() {
+
+		return TESounds.MACHINE_SAWMILL;
 	}
 
 	/* CAPABILITIES */

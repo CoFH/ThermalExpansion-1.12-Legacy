@@ -19,6 +19,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -51,8 +52,6 @@ public class TileTransposer extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
-
-		SOUNDS[TYPE] = TESounds.MACHINE_TRANSPOSER;
 
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion:machine_transposer");
 
@@ -719,6 +718,13 @@ public class TileTransposer extends TileMachineBase {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
 		}
 		return TETextures.MACHINE_SIDE;
+	}
+
+	/* ISoundSource */
+	@Override
+	public SoundEvent getSoundEvent() {
+
+		return TESounds.MACHINE_TRANSPOSER;
 	}
 
 	/* CAPABILITIES */

@@ -17,6 +17,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -54,8 +55,6 @@ public class TileSmelter extends TileMachineBase {
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
 
 		LIGHT_VALUES[TYPE] = 15;
-
-		SOUNDS[TYPE] = TESounds.MACHINE_SMELTER;
 
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion:machine_smelter");
 
@@ -471,6 +470,13 @@ public class TileSmelter extends TileMachineBase {
 			}
 		}
 		return slot > 1 || SmelterManager.isItemValid(stack);
+	}
+
+	/* ISoundSource */
+	@Override
+	public SoundEvent getSoundEvent() {
+
+		return TESounds.MACHINE_SMELTER;
 	}
 
 	/* CAPABILITIES */

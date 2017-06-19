@@ -16,11 +16,12 @@ public class Proxy {
 	public void preInit(FMLPreInitializationEvent event) {
 
 		registerEntities();
+
+		TESounds.initialize();
 	}
 
 	public void initialize(FMLInitializationEvent event) {
 
-		TESounds.initialize();
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {

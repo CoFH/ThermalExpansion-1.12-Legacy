@@ -1,8 +1,6 @@
 package cofh.thermalexpansion.block;
 
 import codechicken.lib.vec.Vector3;
-import cofh.asm.relauncher.CoFHSide;
-import cofh.asm.relauncher.Strippable;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.tileentity.IRedstoneControl;
@@ -12,13 +10,13 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.SoundHelper;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.network.PacketTEBase;
+import net.minecraft.client.audio.ISound;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Strippable (value = "cofh.lib.audio.ISoundSource", side = CoFHSide.SERVER)
 public abstract class TileRSControl extends TileTEBase implements IRedstoneControl, ISoundSource {
 
 	public boolean isActive;
@@ -175,12 +173,13 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 	/* ISoundSource */
 	@Override
 	@SideOnly (Side.CLIENT)
-	public Object getSound() {
+	public ISound getSound() {
 
 		return new SoundTile(this, getSoundEvent(), getVolume(), 1.0F, true, 0, Vector3.fromTileCenter(this).vec3());
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public boolean shouldPlaySound() {
 
 		return !tileEntityInvalid && isActive;

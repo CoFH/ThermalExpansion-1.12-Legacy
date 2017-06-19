@@ -21,6 +21,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -49,8 +50,6 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
-
-		SOUNDS[TYPE] = TESounds.DEVICE_WATER_GEN;
 
 		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion:device_water_gen");
 
@@ -273,6 +272,13 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
+	}
+
+	/* ISoundSource */
+	@Override
+	public SoundEvent getSoundEvent() {
+
+		return TESounds.DEVICE_WATER_GEN;
 	}
 
 	/* CAPABILITIES */

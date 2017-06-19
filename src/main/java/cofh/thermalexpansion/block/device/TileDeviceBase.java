@@ -15,8 +15,6 @@ public abstract class TileDeviceBase extends TilePowered {
 	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[BlockDevice.Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[BlockDevice.Type.values().length];
 
-	public static final SoundEvent[] SOUNDS = new SoundEvent[BlockMachine.Type.values().length];
-
 	private static boolean enableSecurity = true;
 
 	public static void config() {
@@ -134,13 +132,6 @@ public abstract class TileDeviceBase extends TilePowered {
 	public boolean installUpgrade(ItemStack upgrade) {
 
 		return false;
-	}
-
-	/* ISoundSource */
-	@Override
-	public SoundEvent getSoundEvent() {
-
-		return SOUNDS[getType()];
 	}
 
 }

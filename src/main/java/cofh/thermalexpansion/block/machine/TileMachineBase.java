@@ -29,8 +29,6 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public static final HashSet<String>[] VALID_AUGMENTS = new HashSet[BlockMachine.Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[BlockMachine.Type.values().length];
 
-	public static final SoundEvent[] SOUNDS = new SoundEvent[BlockMachine.Type.values().length];
-
 	private static boolean enableSecurity = true;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
@@ -449,13 +447,6 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 			return TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]];
 		}
 		return TETextures.MACHINE_SIDE;
-	}
-
-	/* ISoundSource */
-	@Override
-	public SoundEvent getSoundEvent() {
-
-		return SOUNDS[getType()];
 	}
 
 }
