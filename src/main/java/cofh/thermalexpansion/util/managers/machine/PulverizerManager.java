@@ -66,6 +66,8 @@ public class PulverizerManager {
 			addRecipe(energy, new ItemStack(Blocks.NETHERRACK), new ItemStack(Blocks.GRAVEL), ItemMaterial.dustSulfur, 15);
 			addRecipe(energy, new ItemStack(Blocks.SANDSTONE), ItemHelper.cloneStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 25);
 			addRecipe(energy, new ItemStack(Blocks.RED_SANDSTONE), new ItemStack(Blocks.SAND, 2, 1), ItemMaterial.dustNiter, 25);
+			addRecipe(energy, new ItemStack(Blocks.GLOWSTONE), new ItemStack(Items.GLOWSTONE_DUST, 4));
+			addRecipe(energy, new ItemStack(Blocks.MAGMA), new ItemStack(Items.MAGMA_CREAM, 4));
 
 			addRecipe(energy / 4, new ItemStack(Blocks.STONEBRICK), new ItemStack(Blocks.STONEBRICK, 1, 2));
 			addRecipe(energy * 3 / 2, new ItemStack(Blocks.OBSIDIAN), ItemHelper.cloneStack(ItemMaterial.dustObsidian, 4));
@@ -140,7 +142,6 @@ public class PulverizerManager {
 			addRecipe(energy, new ItemStack(Blocks.COAL_ORE), new ItemStack(Items.COAL, 3, 0), ItemMaterial.dustCoal, 25);
 			addRecipe(energy, new ItemStack(Blocks.DIAMOND_ORE), new ItemStack(Items.DIAMOND, 2, 0));
 			addRecipe(energy, new ItemStack(Blocks.EMERALD_ORE), new ItemStack(Items.EMERALD, 2, 0));
-			addRecipe(energy, new ItemStack(Blocks.GLOWSTONE), new ItemStack(Items.GLOWSTONE_DUST, 4));
 			addRecipe(energy, new ItemStack(Blocks.LAPIS_ORE), new ItemStack(Items.DYE, 12, 4), ItemMaterial.dustSulfur, 20);
 			addRecipe(energy, new ItemStack(Blocks.REDSTONE_ORE), new ItemStack(Items.REDSTONE, 6), ItemMaterial.crystalCinnabar, 25);
 			addRecipe(energy, new ItemStack(Blocks.QUARTZ_ORE), new ItemStack(Items.QUARTZ, 3), ItemMaterial.dustSulfur, 15);
