@@ -310,7 +310,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@SideOnly (Side.CLIENT)
 	public void handleTilePacket(PacketCoFHBase payload) {
 
 		super.handleTilePacket(payload);

@@ -13,7 +13,7 @@
 		"parent": "",
 		"screenshots": [],
 		"dependencies": [
-			"Forge,CodeChickenLib,cofhcore,thermalfoundation"
+			"forge,codechickenlib,cofhcore,thermalfoundation"
 		]
 	}
 ]

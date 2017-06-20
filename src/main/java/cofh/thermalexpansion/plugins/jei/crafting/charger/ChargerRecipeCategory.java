@@ -9,7 +9,6 @@ import cofh.thermalexpansion.gui.client.machine.GuiCharger;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.crafting.crucible.CrucibleRecipeCategory;
 import cofh.thermalexpansion.util.managers.machine.ChargerManager;
 import cofh.thermalexpansion.util.managers.machine.ChargerManager.ChargerRecipe;
 import mezz.jei.api.IGuiHelper;

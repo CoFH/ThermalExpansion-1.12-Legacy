@@ -207,7 +207,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 				callNeighborTileChange();
 			}
 			if (!cached) {
-				onNeighborBlockChange();
+				updateAdjacentHandlers();
 			}
 		}
 		updateIfChanged(curActive);

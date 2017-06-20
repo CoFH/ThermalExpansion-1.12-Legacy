@@ -1,8 +1,6 @@
 package cofh.thermalexpansion.block;
 
 import codechicken.lib.vec.Vector3;
-import cofh.asm.relauncher.CoFHSide;
-import cofh.asm.relauncher.Strippable;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.tileentity.IRedstoneControl;
@@ -122,7 +120,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@SideOnly (Side.CLIENT)
 	public void handleTilePacket(PacketCoFHBase payload) {
 
 		super.handleTilePacket(payload);
@@ -182,7 +180,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@SideOnly (Side.CLIENT)
 	public boolean shouldPlaySound() {
 
 		return !tileEntityInvalid && isActive;

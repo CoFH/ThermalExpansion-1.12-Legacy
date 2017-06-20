@@ -134,7 +134,7 @@ uploadArchives {
 
 						issueManagement {
 							system 'github'
-							url 'https://github.com/TheCBProject/ThermalExpansion/issues'
+							url 'https://github.com/CoFH/Feedback/issues'
 						}
 
 						licenses {

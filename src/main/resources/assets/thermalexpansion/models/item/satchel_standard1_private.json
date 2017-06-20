@@ -1,0 +1,6 @@
+{
+	"parent": "thermalexpansion:item/satchel_standard1",
+	"textures": {
+		"layer1": "thermalexpansion:items/satchel/access_private"
+	}
+}

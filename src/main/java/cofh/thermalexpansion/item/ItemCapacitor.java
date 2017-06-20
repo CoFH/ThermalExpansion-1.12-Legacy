@@ -218,13 +218,13 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 
-		ItemStack itemStack = player.getHeldItem(hand);
+		ItemStack stack = player.getHeldItem(hand);
 		if (CoreUtils.isFakePlayer(player)) {
-			return new ActionResult<>(EnumActionResult.FAIL, itemStack);
+			return new ActionResult<>(EnumActionResult.FAIL, stack);
 		}
 		if (player.isSneaking()) {
-			if (setActiveState(itemStack, !isActive(itemStack))) {
-				if (isActive(itemStack)) {
+			if (setActiveState(stack, !isActive(stack))) {
+				if (isActive(stack)) {
 					player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.2F, 0.8F);
 				} else {
 					player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.2F, 0.5F);
@@ -232,7 +232,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 			}
 		}
 		player.swingArm(hand);
-		return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
+		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
 	@Override
@@ -392,10 +392,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
 
-		if (!capacitorMap.containsKey(ItemHelper.getItemDamage(stack))) {
-			return false;
-		}
-		return capacitorMap.get(ItemHelper.getItemDamage(stack)).enchantable && enchantment == CoreEnchantments.holding;
+		return capacitorMap.containsKey(ItemHelper.getItemDamage(stack)) && capacitorMap.get(ItemHelper.getItemDamage(stack)).enchantable && enchantment == CoreEnchantments.holding;
 	}
 
 	/* IInitializer */
@@ -408,7 +405,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		capacitorSignalum = addCapacitorItem(3, "standard3", SEND[3], RECV[3], CAPACITY[3], EnumRarity.UNCOMMON);
 		capacitorResonant = addCapacitorItem(4, "standard4", SEND[4], RECV[4], CAPACITY[4], EnumRarity.RARE);
 
-		capacitorCreative = addCapacitorItem(CREATIVE, "creative", SEND[4], 0, CAPACITY[4], EnumRarity.EPIC);
+		capacitorCreative = addCapacitorItem(CREATIVE, "creative", SEND[4], 0, CAPACITY[4], EnumRarity.EPIC, false);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -513,8 +510,8 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		return addItem(metadata, name, rarity);
 	}
 
-	private TIntObjectHashMap<CapacitorEntry> capacitorMap = new TIntObjectHashMap<>();
-	private TIntObjectHashMap<ModelResourceLocation> textureMap = new TIntObjectHashMap<>();
+	private static TIntObjectHashMap<CapacitorEntry> capacitorMap = new TIntObjectHashMap<>();
+	private static TIntObjectHashMap<ModelResourceLocation> textureMap = new TIntObjectHashMap<>();
 
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int[] SEND = { 1, 4, 9, 16, 25 };
@@ -528,7 +525,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		}
 	}
 
-	public final int CREATIVE = 32000;
+	public static final int CREATIVE = 32000;
 
 	/* REFERENCES */
 	public static ItemStack capacitorBasic;

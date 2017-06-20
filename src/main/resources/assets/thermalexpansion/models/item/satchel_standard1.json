@@ -1,0 +1,21 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "thermalexpansion:items/satchel/satchel_1",
+		"layer1": "thermalexpansion:items/satchel/access_public"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"access": 1.0
+			},
+			"model": "thermalexpansion:item/satchel_standard1_friends"
+		},
+		{
+			"predicate": {
+				"access": 3.0
+			},
+			"model": "thermalexpansion:item/satchel_standard1_private"
+		}
+	]
+}

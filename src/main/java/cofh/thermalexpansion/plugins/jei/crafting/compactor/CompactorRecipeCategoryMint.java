@@ -10,7 +10,6 @@ import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
