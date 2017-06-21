@@ -37,4 +37,10 @@ public class SlotSatchelCreative extends Slot {
 		this.onSlotChanged();
 	}
 
+	@Override
+	public ItemStack decrStackSize(int amount) {
+
+		return this.inventory.getStackInSlot(this.getSlotIndex()).copy();
+	}
+
 }

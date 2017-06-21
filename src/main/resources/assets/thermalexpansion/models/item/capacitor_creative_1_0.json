@@ -1,6 +1,0 @@
-{
-	"parent": "thermalexpansion:item/capacitor_creative",
-	"textures": {
-		"layer1": "thermalexpansion:items/capacitor/mode_1_0"
-	}
-}

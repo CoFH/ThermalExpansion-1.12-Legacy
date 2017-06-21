@@ -2,6 +2,7 @@ package cofh.thermalexpansion.item;
 
 import cofh.api.core.ISecurable.AccessMode;
 import cofh.api.item.IInventoryContainerItem;
+import cofh.api.item.IMultiModeItem;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
@@ -19,7 +20,6 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
 import com.mojang.authlib.GameProfile;
 import gnu.trove.map.hash.TIntObjectHashMap;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -41,13 +41,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
-public class ItemSatchel extends ItemMulti implements IInitializer, IInventoryContainerItem, IEnchantableItem {
+public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeItem, IInventoryContainerItem, IEnchantableItem {
 
 	public static ItemStack setDefaultInventoryTag(ItemStack container) {
 
@@ -113,13 +114,13 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IInventoryCo
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
 
-		return true;
+		return satchelMap.get(ItemHelper.getItemDamage(stack)).enchantable;
 	}
 
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 
-		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
+		return slotChanged;
 	}
 
 	@Override
@@ -209,27 +210,76 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IInventoryCo
 		return Math.min(1 + level + enchant, CoreProps.STORAGE_SIZE.length - 1);
 	}
 
+	/* IMultiModeItem */
+	@Override
+	public int getMode(ItemStack stack) {
+
+		return !stack.hasTagCompound() ? 0 : stack.getTagCompound().getInteger("Mode");
+	}
+
+	@Override
+	public boolean setMode(ItemStack stack, int mode) {
+
+		if (!stack.hasTagCompound()) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		stack.getTagCompound().setInteger("Mode", mode);
+		return false;
+	}
+
+	@Override
+	public boolean incrMode(ItemStack stack) {
+
+		if (!stack.hasTagCompound()) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		int curMode = getMode(stack);
+		curMode++;
+		if (curMode >= getNumModes(stack)) {
+			curMode = 0;
+		}
+		stack.getTagCompound().setInteger("Mode", curMode);
+		return true;
+	}
+
+	@Override
+	public boolean decrMode(ItemStack stack) {
+
+		if (!stack.hasTagCompound()) {
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		int curMode = getMode(stack);
+		curMode--;
+		if (curMode <= 0) {
+			curMode = getNumModes(stack) - 1;
+		}
+		stack.getTagCompound().setInteger("Mode", curMode);
+		return true;
+	}
+
+	@Override
+	public int getNumModes(ItemStack stack) {
+
+		return 3;
+	}
+
+	@Override
+	public void onModeChange(EntityPlayer player, ItemStack stack) {
+
+		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.satchel.a." + getMode(stack)));
+	}
+
 	/* IModelRegister */
 	@Override
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
-		ModelLoader.setCustomMeshDefinition(this, new SatchelMeshDefinition());
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("access=%s,type=%s", SecurityHelper.getAccess(stack).toString().toLowerCase(Locale.US), satchelMap.get(ItemHelper.getItemDamage(stack)).name)));
 
 		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
-			ModelResourceLocation texture = new ModelResourceLocation(modName + ":" + name + "_" + entry.getValue().name, "inventory");
-			textureMap.put(entry.getKey(), texture);
-			ModelBakery.registerItemVariants(this, texture);
-		}
-	}
-
-	/* ITEM MESH DEFINITION */
-	@SideOnly (Side.CLIENT)
-	public class SatchelMeshDefinition implements ItemMeshDefinition {
-
-		public ModelResourceLocation getModelLocation(ItemStack stack) {
-
-			return textureMap.get(ItemHelper.getItemDamage(stack));
+			for (int i = 0; i < AccessMode.values().length; i++) {
+				ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("access=%s,type=%s", AccessMode.values()[i].toString().toLowerCase(Locale.US), entry.getValue().name)));
+			}
 		}
 	}
 
@@ -362,7 +412,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IInventoryCo
 	}
 
 	private static TIntObjectHashMap<SatchelEntry> satchelMap = new TIntObjectHashMap<>();
-	private static TIntObjectHashMap<ModelResourceLocation> textureMap = new TIntObjectHashMap<>();
 
 	public static final int CREATIVE = 32000;
 

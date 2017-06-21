@@ -64,7 +64,7 @@ public class ItemBlockStrongbox extends ItemBlockTEBase implements IInventoryCon
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
 
-		return true;
+		return !isCreative(stack);
 	}
 
 	@Override

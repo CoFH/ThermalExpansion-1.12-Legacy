@@ -15,7 +15,6 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import gnu.trove.map.hash.TIntObjectHashMap;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -53,9 +52,6 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		setMaxStackSize(1);
 		setUnlocalizedName("capacitor");
 		setCreativeTab(ThermalExpansion.tabItems);
-
-		addPropertyOverride(new ResourceLocation("active"), (stack, world, entity) -> ItemCapacitor.this.getEnergyStored(stack) > 0 && ItemCapacitor.this.isActive(stack) ? 1F : 0F);
-		addPropertyOverride(new ResourceLocation("mode"), (stack, world, entity) -> ItemCapacitor.this.getMode(stack));
 	}
 
 	public int getSend(ItemStack stack) {
@@ -185,7 +181,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
 
-		return true;
+		return capacitorMap.get(ItemHelper.getItemDamage(stack)).enchantable;
 	}
 
 	@Override
@@ -321,22 +317,14 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
-		ModelLoader.setCustomMeshDefinition(this, new CapacitorMeshDefinition());
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.getEnergyStored(stack) > 0 && this.isActive(stack) ? 1 : 0, this.getMode(stack), capacitorMap.get(ItemHelper.getItemDamage(stack)).name)));
 
 		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
-			ModelResourceLocation texture = new ModelResourceLocation(modName + ":" + name + "_" + entry.getValue().name, "inventory");
-			textureMap.put(entry.getKey(), texture);
-			ModelBakery.registerItemVariants(this, texture);
-		}
-	}
-
-	/* ITEM MESH DEFINITION */
-	@SideOnly (Side.CLIENT)
-	public class CapacitorMeshDefinition implements ItemMeshDefinition {
-
-		public ModelResourceLocation getModelLocation(ItemStack stack) {
-
-			return textureMap.get(ItemHelper.getItemDamage(stack));
+			for (int active = 0; active < 2; active++) {
+				for (int mode = 0; mode < 3; mode++) {
+					ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", active, mode, entry.getValue().name)));
+				}
+			}
 		}
 	}
 
@@ -511,7 +499,6 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	private static TIntObjectHashMap<CapacitorEntry> capacitorMap = new TIntObjectHashMap<>();
-	private static TIntObjectHashMap<ModelResourceLocation> textureMap = new TIntObjectHashMap<>();
 
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int[] SEND = { 1, 4, 9, 16, 25 };

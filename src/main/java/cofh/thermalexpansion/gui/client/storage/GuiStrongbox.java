@@ -39,7 +39,7 @@ public class GuiStrongbox extends GuiCore {
 
 		generateInfo("tab.thermalexpansion.storage.strongbox");
 
-		if (baseTile.enchantHolding <= 0) {
+		if (!baseTile.isCreative && baseTile.enchantHolding <= 0) {
 			myInfo += "\n\n" + StringHelper.localize("tab.thermalexpansion.storage.enchant");
 		}
 	}
