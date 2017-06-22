@@ -1,12 +1,11 @@
-package cofh.thermalexpansion.plugins.jei.crafting.crucible;
+package cofh.thermalexpansion.plugins.jei.crafting.centrifuge;
 
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.thermalexpansion.block.machine.TileCrucible;
+import cofh.thermalexpansion.block.machine.TileCentrifuge;
 import cofh.thermalexpansion.plugins.jei.Drawables;
-import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
-import cofh.thermalexpansion.util.managers.machine.CrucibleManager.ComparableItemStackCrucible;
-import cofh.thermalexpansion.util.managers.machine.CrucibleManager.CrucibleRecipe;
+import cofh.thermalexpansion.util.managers.machine.CentrifugeManager.CentrifugeRecipe;
+import cofh.thermalexpansion.util.managers.machine.CentrifugeManager.ComparableItemStackCentrifuge;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -21,22 +20,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
+public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
 	final List<List<ItemStack>> inputs;
+	final List<ItemStack> outputs;
 	final List<FluidStack> outputFluids;
 
 	/* Animation */
-	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
-	public CrucibleRecipeWrapper(IGuiHelper guiHelper, CrucibleRecipe recipe) {
+	public CentrifugeRecipeWrapper(IGuiHelper guiHelper, CentrifugeRecipe recipe) {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 
-		if (ComparableItemStackCrucible.getOreID(recipe.getInput()) != -1) {
+		if (ComparableItemStackCentrifuge.getOreID(recipe.getInput()) != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));
 			}
@@ -44,21 +43,23 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 			recipeInputs.add(recipe.getInput());
 		}
 
-		List<FluidStack> recipeOutputFluids = new ArrayList<>();
-		recipeOutputFluids.add(recipe.getOutput());
+		List<ItemStack> recipeOutputs = new ArrayList<>();
+		recipeOutputs.addAll(recipe.getOutput());
+
+		List<FluidStack> recipeFluids = new ArrayList<>();
+		recipeFluids.add(recipe.getFluid());
 
 		inputs = Collections.singletonList(recipeInputs);
-		outputFluids = recipeOutputFluids;
+		outputs = recipeOutputs;
+		outputFluids = recipeFluids;
 
 		energy = recipe.getEnergy();
 
-		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_DROP);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_ARROW);
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLAME);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileCrucible.basePower, StartDirection.LEFT, true);
-		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileCrucible.basePower, StartDirection.LEFT, false);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileCentrifuge.basePower, StartDirection.LEFT, false);
 		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}
@@ -67,17 +68,15 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 	public void getIngredients(IIngredients ingredients) {
 
 		ingredients.setInputLists(ItemStack.class, inputs);
+		ingredients.setOutputs(ItemStack.class, outputs);
 		ingredients.setOutputs(FluidStack.class, outputFluids);
 	}
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
-		JEIPluginTE.drawFluid(69, 23, outputFluids.get(0), 24, 16);
-
-		fluid.draw(minecraft, 69, 23);
-		progress.draw(minecraft, 69, 23);
-		speed.draw(minecraft, 43, 33);
+		progress.draw(minecraft, 61, 23);
+		speed.draw(minecraft, 34, 32);
 		energyMeter.draw(minecraft, 2, 8);
 	}
 

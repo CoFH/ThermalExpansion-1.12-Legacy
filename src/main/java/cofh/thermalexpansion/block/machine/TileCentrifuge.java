@@ -2,13 +2,16 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.FluidHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiCentrifuge;
 import cofh.thermalexpansion.gui.container.machine.ContainerCentrifuge;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
-import cofh.thermalexpansion.util.managers.machine.CentrifugeManager.RecipeCentrifuge;
+import cofh.thermalexpansion.util.managers.machine.CentrifugeManager.CentrifugeRecipe;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,11 +52,9 @@ public class TileCentrifuge extends TileMachineBase {
 
 		LIGHT_VALUES[TYPE] = 4;
 
-		// SOUNDS[TYPE] = TESounds.MACHINE_CENTRIFUGE;
-
 		GameRegistry.registerTileEntity(TileCentrifuge.class, "thermalexpansion:machine_centrifuge");
 
-		// config();
+		config();
 	}
 
 	public static void config() {
@@ -66,8 +67,8 @@ public class TileCentrifuge extends TileMachineBase {
 	}
 
 	private int inputTracker;
-	private int outputTrackerPrimary;
-	private int outputTrackerSecondary;
+	private int outputTracker;
+	private int outputTrackerFluid;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
@@ -80,12 +81,29 @@ public class TileCentrifuge extends TileMachineBase {
 	}
 
 	@Override
+	public int getType() {
+
+		return TYPE;
+	}
+
+	@Override
+	public void update() {
+
+		if (ServerHelper.isClientWorld(world)) {
+			return;
+		}
+		transferOutputFluid();
+
+		super.update();
+	}
+
+	@Override
 	protected boolean canStart() {
 
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		RecipeCentrifuge recipe = CentrifugeManager.getRecipe(inventory[0]);
+		CentrifugeRecipe recipe = CentrifugeManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
 			return false;
@@ -95,20 +113,23 @@ public class TileCentrifuge extends TileMachineBase {
 		}
 		FluidStack fluid = recipe.getFluid();
 
-		if (!augmentSecondaryNull && tank.fill(fluid, false) != fluid.amount) {
+		if (fluid != null && !augmentSecondaryNull && tank.fill(fluid, false) != fluid.amount) {
 			return false;
 		}
 		List<ItemStack> outputs = recipe.getOutput();
 
-		// TODO: Finish
-
-		return false;
+		boolean valid = true;
+		for (int i = 0; i < outputs.size(); i++) {
+			ItemStack output = outputs.get(i);
+			valid &= inventory[i + 1].isEmpty() || inventory[i + 1].isItemEqual(output) && inventory[i + 1].getCount() + output.getCount() <= output.getMaxStackSize();
+		}
+		return valid;
 	}
 
 	@Override
 	protected boolean hasValidInput() {
 
-		RecipeCentrifuge recipe = CentrifugeManager.getRecipe(inventory[0]);
+		CentrifugeRecipe recipe = CentrifugeManager.getRecipe(inventory[0]);
 		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 	}
 
@@ -122,14 +143,29 @@ public class TileCentrifuge extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		RecipeCentrifuge recipe = CentrifugeManager.getRecipe(inventory[0]);
+		CentrifugeRecipe recipe = CentrifugeManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
 			processOff();
 			return;
 		}
+		List<ItemStack> outputs = recipe.getOutput();
 
-		// TODO: Finish
+		for (int i = 0; i < outputs.size(); i++) {
+			if (inventory[i + 1].isEmpty()) {
+				inventory[i + 1] = ItemHelper.cloneStack(outputs.get(i));
+			} else {
+				inventory[i + 1].grow(outputs.get(i).getCount());
+			}
+		}
+		FluidStack fluid = recipe.getFluid();
+		tank.fill(fluid, true);
+
+		inventory[0].shrink(recipe.getInput().getCount());
+
+		if (inventory[0].getCount() <= 0) {
+			inventory[0] = ItemStack.EMPTY;
+		}
 	}
 
 	@Override
@@ -157,14 +193,41 @@ public class TileCentrifuge extends TileMachineBase {
 			return;
 		}
 		int side;
-
-		// TODO: Finish
+		boolean foundOutput = false;
+		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
+			side = i % 6;
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
+				for (int j = 1; j < 5; j++) {
+					if (transferItem(j, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+						foundOutput = true;
+					}
+				}
+				if (foundOutput) {
+					outputTracker = side;
+					break;
+				}
+			}
+		}
 	}
 
-	@Override
-	public int getType() {
+	private void transferOutputFluid() {
 
-		return TYPE;
+		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
+			return;
+		}
+		int side;
+		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), FLUID_TRANSFER[level]));
+		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
+			side = i % 6;
+			if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {
+				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
+				if (toDrain > 0) {
+					tank.drain(toDrain, true);
+					outputTrackerFluid = side;
+					break;
+				}
+			}
+		}
 	}
 
 	/* GUI METHODS */
@@ -192,11 +255,6 @@ public class TileCentrifuge extends TileMachineBase {
 		return tank.getFluid();
 	}
 
-	public boolean fluidArrow() {
-
-		return CentrifugeManager.recipeExists(inventory[0]) && CentrifugeManager.getRecipe(inventory[0]).getFluid() != null;
-	}
-
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -204,8 +262,8 @@ public class TileCentrifuge extends TileMachineBase {
 		super.readFromNBT(nbt);
 
 		inputTracker = nbt.getInteger("TrackIn");
-		outputTrackerPrimary = nbt.getInteger("TrackOut1");
-		outputTrackerSecondary = nbt.getInteger("TrackOut2");
+		outputTracker = nbt.getInteger("TrackOut1");
+		outputTrackerFluid = nbt.getInteger("TrackOut2");
 		tank.readFromNBT(nbt);
 	}
 
@@ -215,8 +273,8 @@ public class TileCentrifuge extends TileMachineBase {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut1", outputTrackerPrimary);
-		nbt.setInteger("TrackOut2", outputTrackerSecondary);
+		nbt.setInteger("TrackOut1", outputTracker);
+		nbt.setInteger("TrackOut2", outputTrackerFluid);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}

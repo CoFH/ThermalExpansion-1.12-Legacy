@@ -133,10 +133,8 @@ public class TEProps {
 	public static final ResourceLocation PATH_CENTRIFUGE_CB = new ResourceLocation(PATH_ELEMENTS + "slots_centrifuge_cb.png");
 	public static final ResourceLocation PATH_CRAFTER = new ResourceLocation(PATH_ELEMENTS + "slots_crafter.png");
 	public static final ResourceLocation PATH_CRAFTER_CB = new ResourceLocation(PATH_ELEMENTS + "slots_crafter_cb.png");
-	public static final String PATH_ICON = PATH_GUI + "icons/";
 
 	public static final String TEXTURE_DEFAULT = "config_";
-	public static final String TEXTURE_CB = "config_cb_";
 
 	public static ResourceLocation textureGuiCommon = PATH_COMMON;
 	public static ResourceLocation textureGuiCentrifuge = PATH_CENTRIFUGE;

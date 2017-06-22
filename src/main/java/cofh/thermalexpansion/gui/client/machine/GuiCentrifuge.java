@@ -3,11 +3,13 @@ package cofh.thermalexpansion.gui.client.machine;
 import cofh.lib.gui.element.*;
 import cofh.thermalexpansion.block.machine.TileCentrifuge;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
+import cofh.thermalexpansion.gui.container.machine.ContainerCentrifuge;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrucible;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotType;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlayCentrifuge;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -17,24 +19,17 @@ public class GuiCentrifuge extends GuiPoweredBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "centrifuge.png");
 
-	private TileCentrifuge myTile;
-
 	private ElementBase slotInput;
-	private ElementSlotOverlay[] slotOutput = new ElementSlotOverlay[2];
+	private ElementSlotOverlayCentrifuge[] slotOutput = new ElementSlotOverlayCentrifuge[2];
 	private ElementSlotOverlay[] slotTank = new ElementSlotOverlay[2];
 
 	private ElementDualScaled progress;
 	private ElementDualScaled speed;
-	private ElementFluid progressFluid;
-	private ElementDualScaled progressOverlay;
-
 	public GuiCentrifuge(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerCrucible(inventory, tile), tile, inventory.player, TEXTURE);
+		super(new ContainerCentrifuge(inventory, tile), tile, inventory.player, TEXTURE);
 
 		generateInfo("tab.thermalexpansion.machine.centrifuge");
-
-		myTile = (TileCentrifuge) tile;
 	}
 
 	@Override
@@ -44,21 +39,17 @@ public class GuiCentrifuge extends GuiPoweredBase {
 
 		slotInput = addElement(new ElementSlotOverlay(this, 44, 26).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
 
-		// TODO: Finish
-		//		slotOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 22).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
-		//		slotOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 22).setSlotInfo(SlotColor.RED, SlotType.OUTPUT, SlotRender.BOTTOM));
+		slotOutput[0] = (ElementSlotOverlayCentrifuge) addElement(new ElementSlotOverlayCentrifuge(this, 106, 26).setSlotInfo(SlotColor.ORANGE, SlotRender.FULL));
+		slotOutput[1] = (ElementSlotOverlayCentrifuge) addElement(new ElementSlotOverlayCentrifuge(this, 106, 26).setSlotInfo(SlotColor.RED, SlotRender.BOTTOM));
 
 		slotTank[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.ORANGE, SlotType.TANK, SlotRender.FULL));
 		slotTank[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.YELLOW, SlotType.TANK, SlotRender.BOTTOM));
 
 		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
-		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setGauge(1).setAlwaysShow(true));
+		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setGauge(0).setAlwaysShow(true));
 
 		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 71, 34).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 44).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
-
-		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 103, 34).setFluid(baseTile.getTankFluid()).setSize(24, 16));
-		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 103, 34).setMode(1).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 64, 16));
 	}
 
 	@Override
@@ -83,9 +74,6 @@ public class GuiCentrifuge extends GuiPoweredBase {
 		}
 		progress.setQuantity(baseTile.getScaledProgress(PROGRESS));
 		speed.setQuantity(baseTile.getScaledSpeed(SPEED));
-
-		progressFluid.setVisible(myTile.fluidArrow());
-		progressOverlay.setVisible(myTile.fluidArrow());
 	}
 
 }

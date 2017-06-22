@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei;
 
 import cofh.lib.util.helpers.RenderHelper;
+import cofh.thermalexpansion.plugins.jei.crafting.centrifuge.CentrifugeRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.compactor.CompactorRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.crucible.CrucibleRecipeCategory;
@@ -52,6 +53,7 @@ public class JEIPluginTE extends BlankModPlugin {
 		RefineryRecipeCategory.register(registry);
 		TransposerRecipeCategory.register(registry);
 		ChargerRecipeCategory.register(registry);
+		CentrifugeRecipeCategory.register(registry);
 
 		SteamFuelCategory.register(registry);
 		MagmaticFuelCategory.register(registry);
@@ -76,6 +78,7 @@ public class JEIPluginTE extends BlankModPlugin {
 		RefineryRecipeCategory.initialize(registry);
 		TransposerRecipeCategory.initialize(registry);
 		ChargerRecipeCategory.initialize(registry);
+		CentrifugeRecipeCategory.initialize(registry);
 
 		SteamFuelCategory.initialize(registry);
 		MagmaticFuelCategory.initialize(registry);
