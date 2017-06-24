@@ -49,7 +49,7 @@ public class TileTransposer extends TileMachineBase {
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
-		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, false, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 
@@ -577,7 +577,6 @@ public class TileTransposer extends TileMachineBase {
 		PacketCoFHBase payload = super.getModePacket();
 
 		payload.addBool(extractMode);
-
 		return payload;
 	}
 
@@ -602,7 +601,6 @@ public class TileTransposer extends TileMachineBase {
 		PacketCoFHBase payload = super.getFluidPacket();
 
 		payload.addFluidStack(renderFluid);
-
 		return payload;
 	}
 
@@ -637,7 +635,6 @@ public class TileTransposer extends TileMachineBase {
 		super.handleFluidPacket(payload);
 
 		renderFluid = payload.getFluidStack();
-
 		callBlockUpdate();
 	}
 

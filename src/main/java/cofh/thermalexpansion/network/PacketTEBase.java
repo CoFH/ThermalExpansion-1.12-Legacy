@@ -9,7 +9,6 @@ import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.util.tileentity.ITransferControl;
 import cofh.lib.gui.container.IAugmentableContainer;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.gui.container.ISchematicContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,7 +21,7 @@ public class PacketTEBase extends PacketCoFHBase {
 	}
 
 	public enum PacketTypes {
-		RS_POWER_UPDATE, RS_CONFIG_UPDATE, TRANSFER_UPDATE, SECURITY_UPDATE, TAB_AUGMENT, TAB_SCHEMATIC, CONFIG_SYNC
+		RS_POWER_UPDATE, RS_CONFIG_UPDATE, TRANSFER_UPDATE, SECURITY_UPDATE, TAB_AUGMENT, CONFIG_SYNC
 	}
 
 	@Override
@@ -55,11 +54,6 @@ public class PacketTEBase extends PacketCoFHBase {
 				case TAB_AUGMENT:
 					if (player.openContainer instanceof IAugmentableContainer) {
 						((IAugmentableContainer) player.openContainer).setAugmentLock(getBool());
-					}
-					return;
-				case TAB_SCHEMATIC:
-					if (player.openContainer instanceof ISchematicContainer) {
-						((ISchematicContainer) player.openContainer).writeSchematic();
 					}
 					return;
 				//				case CONFIG_SYNC:
@@ -116,11 +110,6 @@ public class PacketTEBase extends PacketCoFHBase {
 	public static void sendTabAugmentPacketToServer(boolean lock) {
 
 		PacketHandler.sendToServer(getPacket(PacketTypes.TAB_AUGMENT).addBool(lock));
-	}
-
-	public static void sendTabSchematicPacketToServer() {
-
-		PacketHandler.sendToServer(getPacket(PacketTypes.TAB_SCHEMATIC));
 	}
 
 	//	public static void sendConfigSyncPacketToClient(EntityPlayer player) {

@@ -40,7 +40,7 @@ public class TileCharger extends TileMachineBase {
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
-		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, false, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_CHARGER_THROUGHPUT);

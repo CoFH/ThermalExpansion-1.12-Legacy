@@ -2,14 +2,12 @@ package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
+import cofh.lib.inventory.InventoryCraftingFalse;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -238,16 +236,7 @@ public class SawmillManager {
 	/* HELPERS */
 	private static void addAllLogs() {
 
-		Container tempContainer = new Container() {
-
-			@Override
-			public boolean canInteractWith(EntityPlayer player) {
-
-				return false;
-			}
-
-		};
-		InventoryCrafting tempCrafting = new InventoryCrafting(tempContainer, 3, 3);
+		InventoryCraftingFalse tempCrafting = new InventoryCraftingFalse(3, 3);
 
 		for (int i = 0; i < 9; i++) {
 			tempCrafting.setInventorySlotContents(i, ItemStack.EMPTY);
@@ -260,7 +249,7 @@ public class SawmillManager {
 					ItemStack log = ItemHelper.cloneStack(logEntry, 1);
 					log.setItemDamage(j);
 					tempCrafting.setInventorySlotContents(0, log);
-					ItemStack resultEntry = ItemHelper.findMatchingRecipe(tempCrafting, null);
+					ItemStack resultEntry = ItemHelper.getCraftingResult(tempCrafting, null);
 
 					if (!resultEntry.isEmpty()) {
 						ItemStack result = resultEntry.copy();
@@ -271,7 +260,7 @@ public class SawmillManager {
 			} else {
 				ItemStack log = ItemHelper.cloneStack(logEntry, 1);
 				tempCrafting.setInventorySlotContents(0, log);
-				ItemStack resultEntry = ItemHelper.findMatchingRecipe(tempCrafting, null);
+				ItemStack resultEntry = ItemHelper.getCraftingResult(tempCrafting, null);
 
 				if (!resultEntry.isEmpty()) {
 					ItemStack result = resultEntry.copy();

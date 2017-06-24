@@ -14,7 +14,7 @@ public class ElementSlotOverlayCrafter extends ElementBase {
 	public ElementSlotOverlayCrafter(GuiBase gui, int posX, int posY) {
 
 		super(gui, posX, posY);
-		this.texture = TEProps.textureGuiCrafter;
+		this.texture = TEProps.textureGuiSlots9;
 	}
 
 	public ElementSlotOverlayCrafter setSlotInfo(int color, int render) {

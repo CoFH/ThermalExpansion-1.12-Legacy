@@ -1,21 +1,17 @@
 package cofh.thermalexpansion.gui.container.machine;
 
-import cofh.core.util.CoreUtils;
 import cofh.lib.gui.slot.*;
-import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.machine.TileCrafter;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-import cofh.thermalexpansion.gui.container.ISchematicContainer;
-import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalfoundation.item.ItemDiagram;
-import cofh.thermalfoundation.util.helpers.SchematicHelper;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
-import net.minecraft.item.ItemStack;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerCrafter extends ContainerTEBase implements ISchematicContainer {
+public class ContainerCrafter extends ContainerTEBase {
 
 	protected TileCrafter myTile;
 	protected InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
@@ -43,66 +39,6 @@ public class ContainerCrafter extends ContainerTEBase implements ISchematicConta
 			craftSlots[i] = addSlotToContainer(new SlotFalseCopy(craftMatrix, i, 0, 0));
 		}
 		resultSlot = addSlotToContainer(new SlotCraftingLocked(inventory.player, craftMatrix, craftResult, 0, 0, 0));
-	}
-
-	@Override
-	protected int getPlayerInventoryVerticalOffset() {
-
-		return 123;
-	}
-
-	@Override
-	public ItemStack slotClick(int slot, int mouseButton, ClickType modifier, EntityPlayer player) {
-
-		if (slot == resultSlot.slotNumber && resultSlot.getHasStack() && CoreUtils.isClient()) {
-			if (SchematicHelper.isSchematic(myTile.getStackInSlot(0))) {
-				PacketTEBase.sendTabSchematicPacketToServer();
-				writeSchematic();
-			}
-		}
-		return super.slotClick(slot, mouseButton, modifier, player);
-	}
-
-	@Override
-	public void onCraftMatrixChanged(IInventory inventory) {
-
-		// InventoryCrafting craftMatrixTemp = new InventoryCrafting(new ContainerFalse(), 3, 3);
-		this.craftResult.setInventorySlotContents(0, ItemHelper.findMatchingRecipe(this.craftMatrix, myTile.getWorld()));
-	}
-
-	/* ISetSchematic */
-	@Override
-	public void writeSchematic() {
-
-		ItemStack schematic = myTile.getStackInSlot(0);
-
-		if (!schematic.isEmpty() && resultSlot.getHasStack()) {
-			ItemStack newSchematic = SchematicHelper.writeNBTToSchematic(schematic, SchematicHelper.getNBTForSchematic(craftMatrix, myTile.getWorld(), craftResult.getStackInSlot(0)));
-			newSchematic.setCount(schematic.getCount());
-			myTile.setInventorySlotContents(0, newSchematic);
-			for (int i = 0; i < 9; i++) {
-				craftSlots[i].putStack(ItemStack.EMPTY);
-			}
-			resultSlot.putStack(ItemStack.EMPTY);
-		}
-	}
-
-	@Override
-	public boolean canWriteSchematic() {
-
-		return SchematicHelper.isSchematic(myTile.getStackInSlot(0)) && !craftResult.getStackInSlot(0).isEmpty();
-	}
-
-	@Override
-	public Slot[] getCraftingSlots() {
-
-		return craftSlots;
-	}
-
-	@Override
-	public Slot getResultSlot() {
-
-		return resultSlot;
 	}
 
 }

@@ -1,9 +1,6 @@
 package cofh.thermalexpansion.gui.element;
 
-import cofh.core.init.CoreProps;
 import cofh.lib.gui.GuiBase;
-import cofh.lib.gui.element.ElementBase;
-import cofh.lib.util.helpers.RenderHelper;
 import cofh.thermalexpansion.init.TEProps;
 
 public class ElementSlotOverlayCentrifuge extends ElementSlotOverlay {
@@ -11,7 +8,7 @@ public class ElementSlotOverlayCentrifuge extends ElementSlotOverlay {
 	public ElementSlotOverlayCentrifuge(GuiBase gui, int posX, int posY) {
 
 		super(gui, posX, posY);
-		this.texture = TEProps.textureGuiCentrifuge;
+		this.texture = TEProps.textureGuiSlots4;
 	}
 
 	public ElementSlotOverlayCentrifuge setSlotInfo(SlotColor color, SlotRender render) {

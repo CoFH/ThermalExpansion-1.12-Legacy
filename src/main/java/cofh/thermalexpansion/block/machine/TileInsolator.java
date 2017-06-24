@@ -45,7 +45,7 @@ public class TileInsolator extends TileMachineBase {
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false, false };
-		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, false, true, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_MYCELIUM);
