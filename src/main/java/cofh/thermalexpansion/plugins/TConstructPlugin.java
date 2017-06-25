@@ -3,20 +3,29 @@ package cofh.thermalexpansion.plugins;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.util.managers.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.Locale;
 
-public class TinkersConstructPlugin {
+public class TConstructPlugin {
 
-	private TinkersConstructPlugin() {
+	private TConstructPlugin() {
 
 	}
 
@@ -34,22 +43,31 @@ public class TinkersConstructPlugin {
 			return;
 		}
 
-		/* VANILLA */
+		ItemStack slimeCongealed = getBlockStack("slime_congealed", 1, 0);
+		ItemStack slimeCongealedMagma = getBlockStack("slime_congealed", 1, 4);
+
+		ItemStack saplingSlimeBlue = getItem("slime_sapling", 1, 0);
+		ItemStack saplingSlimePurple = getItem("slime_sapling", 1, 1);
+		ItemStack saplingSlimeMagma = getItem("slime_sapling", 1, 2);
+
+		Block log = getBlock("slime_congealed");
+
+		Block leaves = getBlock("slime_leaves");
+
+		Fluid blueslime = FluidRegistry.getFluid("blueslime");
+		Fluid emerald = FluidRegistry.getFluid("emerald");
+
+		/* CRUCIBLE */
 		{
 			addRecipeSet("iron");
 			addRecipeSet("gold");
-
-			Fluid emerald = FluidRegistry.getFluid("emerald");
 
 			if (emerald != null) {
 				CrucibleManager.addRecipe(4000, new ItemStack(Items.EMERALD), new FluidStack(emerald, 666));
 				CrucibleManager.addRecipe(4000 * 2, new ItemStack(Blocks.EMERALD_ORE), new FluidStack(emerald, 666 * 2));
 				CrucibleManager.addRecipe(4000 * 8, new ItemStack(Blocks.EMERALD_BLOCK), new FluidStack(emerald, 666 * 9));
 			}
-		}
 
-		/* THERMAL FOUNDATION */
-		{
 			addRecipeSet("copper");
 			addRecipeSet("tin");
 			addRecipeSet("silver");
@@ -67,16 +85,68 @@ public class TinkersConstructPlugin {
 			addRecipeSet("signalum");
 			addRecipeSet("lumium");
 			addRecipeSet("enderium");
-		}
 
-		/* TINKERS' CONSTRUCT */
-		{
 			addRecipeSet("ardite");
 			addRecipeSet("cobalt");
 			addRecipeSet("manyullyn");
 		}
 
+		/* INSOLATOR */
+		{
+			InsolatorManager.addDefaultTreeRecipe(saplingSlimeBlue, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimeBlue, 50, false, Type.MYCELIUM_TREE);
+			InsolatorManager.addDefaultTreeRecipe(saplingSlimePurple, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimePurple, 50, false, Type.MYCELIUM_TREE);
+			InsolatorManager.addDefaultTreeRecipe(saplingSlimeMagma, ItemHelper.cloneStack(slimeCongealedMagma, 4), saplingSlimeMagma, 50, false, Type.MYCELIUM_TREE);
+		}
+
+		/* TAPPER */
+		{
+			TapperManager.addMapping(slimeCongealed, new FluidStack(blueslime, 10));
+			TapperManager.addMapping(slimeCongealedMagma, new FluidStack(blueslime, 10));
+
+			addLeafMapping(log, 0, leaves, 0);
+			addLeafMapping(log, 0, leaves, 1);
+			addLeafMapping(log, 4, leaves, 2);
+		}
+
 		ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
+	}
+
+	/* HELPERS */
+	private static ItemStack getBlockStack(String name, int amount, int meta) {
+
+		Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
+		return block != null ? new ItemStack(block, amount, meta) : ItemStack.EMPTY;
+	}
+
+	private static ItemStack getBlockStack(String name, int amount) {
+
+		return getBlockStack(name, amount, 0);
+	}
+
+	private static Block getBlock(String name) {
+
+		return ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
+	}
+
+	private static ItemStack getItem(String name, int amount, int meta) {
+
+		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID + ":" + name));
+		return item != null ? new ItemStack(item, amount, meta) : ItemStack.EMPTY;
+	}
+
+	private static ItemStack getItem(String name) {
+
+		return getItem(name, 1, 0);
+	}
+
+	private static void addLeafMapping(Block logBlock, int logMeta, Block leafBlock, int leafMeta) {
+
+		IBlockState logState = logBlock.getStateFromMeta(logMeta);
+
+		for (Boolean check_decay : BlockLeaves.CHECK_DECAY.getAllowedValues()) {
+			IBlockState leafState = leafBlock.getStateFromMeta(leafMeta).withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE).withProperty(BlockLeaves.CHECK_DECAY, check_decay);
+			TapperManager.addLeafMappingDirect(logState, leafState);
+		}
 	}
 
 	private static boolean addRecipeSet(String oreType) {
@@ -129,11 +199,11 @@ public class TinkersConstructPlugin {
 		return true;
 	}
 
-	public static final String NUGGET = "nugget";
-	public static final String INGOT = "ingot";
-	public static final String ORE = "ore";
-	public static final String BLOCK = "block";
-	public static final String DUST = "dust";
-	public static final String PLATE = "plate";
+	private static final String NUGGET = "nugget";
+	private static final String INGOT = "ingot";
+	private static final String ORE = "ore";
+	private static final String BLOCK = "block";
+	private static final String DUST = "dust";
+	private static final String PLATE = "plate";
 
 }

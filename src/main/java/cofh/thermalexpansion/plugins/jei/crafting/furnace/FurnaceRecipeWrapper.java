@@ -48,8 +48,9 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 		List<FluidStack> recipeOutputFluids = new ArrayList<>();
 
-		if (ComparableItemStackFurnace.getOreID(recipe.getInput()) != -1) {
-			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()), false)) {
+		int oreID = ComparableItemStackFurnace.getOreID(recipe.getInput());
+		if (oreID != -1) {
+			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));
 			}
 		} else {

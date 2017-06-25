@@ -21,8 +21,8 @@ public class InsolatorManager {
 	private static Set<ComparableItemStackInsolator> validationSet = new THashSet<>();
 	private static Set<ComparableItemStackInsolator> lockSet = new THashSet<>();
 
-	static final int CROP_MULTIPLIER_RICH = 3;
-	static final int CROP_MULTIPLIER_FLUX = 5;
+	static final int CROP_MULTIPLIER_RICH = 2;
+	static final int CROP_MULTIPLIER_FLUX = 3;
 	static final int DEFAULT_ENERGY = 5000;
 	static final int DEFAULT_ENERGY_RICH = 7500;
 	static final int DEFAULT_ENERGY_FLUX = 10000;
@@ -133,12 +133,12 @@ public class InsolatorManager {
 
 		/* TREE */
 		{
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 0), new ItemStack(Blocks.LOG, 5, 0), new ItemStack(Blocks.SAPLING, 1, 0), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 1), new ItemStack(Blocks.LOG, 5, 1), new ItemStack(Blocks.SAPLING, 1, 1), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 2), new ItemStack(Blocks.LOG, 5, 2), new ItemStack(Blocks.SAPLING, 1, 2), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 3), new ItemStack(Blocks.LOG, 5, 3), new ItemStack(Blocks.SAPLING, 1, 3), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.LOG2, 5, 0), new ItemStack(Blocks.SAPLING, 1, 4), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 5), new ItemStack(Blocks.LOG2, 5, 1), new ItemStack(Blocks.SAPLING, 1, 5), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 0), new ItemStack(Blocks.LOG, 4, 0), new ItemStack(Blocks.SAPLING, 1, 0), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 1), new ItemStack(Blocks.LOG, 4, 1), new ItemStack(Blocks.SAPLING, 1, 1), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 2), new ItemStack(Blocks.LOG, 4, 2), new ItemStack(Blocks.SAPLING, 1, 2), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 3), new ItemStack(Blocks.LOG, 4, 3), new ItemStack(Blocks.SAPLING, 1, 3), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.LOG2, 4, 0), new ItemStack(Blocks.SAPLING, 1, 4), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 5), new ItemStack(Blocks.LOG2, 4, 1), new ItemStack(Blocks.SAPLING, 1, 5), 50, false, Type.TREE);
 		}
 
 		/* LOAD RECIPES */
@@ -227,7 +227,7 @@ public class InsolatorManager {
 		lockSet.add(new ComparableItemStackInsolator(fertilizer));
 	}
 
-	private static void addDefaultOreDictionaryRecipe(String oreType) {
+	public static void addDefaultOreDictionaryRecipe(String oreType) {
 
 		if (oreType.length() <= 0) {
 			return;
@@ -263,7 +263,7 @@ public class InsolatorManager {
 		}
 	}
 
-	private static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
+	public static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
 
 		if (!secondaryOutput.isEmpty()) {
 			addRecipe(DEFAULT_ENERGY, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, secondaryOutput, secondaryChance, copyNBT, type);
@@ -276,7 +276,7 @@ public class InsolatorManager {
 		}
 	}
 
-	private static void addDefaultTreeRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
+	public static void addDefaultTreeRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
 
 		if (!secondaryOutput.isEmpty()) {
 			addRecipe(DEFAULT_ENERGY * 2, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, secondaryOutput, secondaryChance, copyNBT, type);
@@ -289,7 +289,7 @@ public class InsolatorManager {
 		}
 	}
 
-	private static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		addDefaultRecipe(primaryInput, primaryOutput, secondaryOutput, secondaryChance, false, Type.STANDARD);
 	}
@@ -369,7 +369,7 @@ public class InsolatorManager {
 
 	/* TYPE ENUM */
 	public enum Type {
-		STANDARD, MYCELIUM, NETHER, END, TREE
+		STANDARD, MYCELIUM, NETHER, END, TREE, MYCELIUM_TREE, NETHER_TREE, END_TREE
 	}
 
 	/* ITEMSTACK CLASS */

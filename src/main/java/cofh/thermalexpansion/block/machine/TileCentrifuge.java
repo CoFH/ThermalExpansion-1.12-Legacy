@@ -48,6 +48,8 @@ public class TileCentrifuge extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, true, true, true, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
+
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
 
 		LIGHT_VALUES[TYPE] = 4;
@@ -112,11 +114,14 @@ public class TileCentrifuge extends TileMachineBase {
 			return false;
 		}
 		FluidStack fluid = recipe.getFluid();
+		List<ItemStack> outputs = recipe.getOutput();
 
+		if (outputs.isEmpty()) {
+			return fluid != null && tank.fill(fluid, false) == fluid.amount;
+		}
 		if (fluid != null && !augmentSecondaryNull && tank.fill(fluid, false) != fluid.amount) {
 			return false;
 		}
-		List<ItemStack> outputs = recipe.getOutput();
 
 		boolean valid = true;
 		for (int i = 0; i < outputs.size(); i++) {
@@ -150,12 +155,15 @@ public class TileCentrifuge extends TileMachineBase {
 			return;
 		}
 		List<ItemStack> outputs = recipe.getOutput();
+		List<Integer> chances = recipe.getChance();
 
 		for (int i = 0; i < outputs.size(); i++) {
-			if (inventory[i + 1].isEmpty()) {
-				inventory[i + 1] = ItemHelper.cloneStack(outputs.get(i));
-			} else {
-				inventory[i + 1].grow(outputs.get(i).getCount());
+			if (world.rand.nextInt(secondaryChance) < chances.get(i)) {
+				if (inventory[i + 1].isEmpty()) {
+					inventory[i + 1] = ItemHelper.cloneStack(outputs.get(i));
+				} else {
+					inventory[i + 1].grow(outputs.get(i).getCount());
+				}
 			}
 		}
 		FluidStack fluid = recipe.getFluid();

@@ -93,6 +93,9 @@ public class IMCHandler {
 					case ADD_CHARGER_RECIPE:
 						ChargerManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("output")));
 						continue;
+					case ADD_CENTRIFUGE_RECIPE:
+						// TODO
+						continue;
 
 					/* REMOVE RECIPES */
 					case REMOVE_FURNACE_RECIPE:
@@ -134,6 +137,9 @@ public class IMCHandler {
 					case REMOVE_CHARGER_RECIPE:
 						ChargerManager.removeRecipe(new ItemStack(nbt.getCompoundTag("input")));
 						continue;
+					case REMOVE_CENTRIFUGE_RECIPE:
+						CentrifugeManager.removeRecipe(new ItemStack(nbt.getCompoundTag("input")));
+						continue;
 
 					/* FUELS */
 					case ADD_MAGMATIC_FUEL:
@@ -170,6 +176,8 @@ public class IMCHandler {
 
 	public static final String ADD_CHARGER_RECIPE = "addchargerrecipe";
 
+	public static final String ADD_CENTRIFUGE_RECIPE = "addcentrifugerecipe";
+
 	public static final String REMOVE_FURNACE_RECIPE = "removefurnacerecipe";
 	public static final String REMOVE_PULVERIZER_RECIPE = "removepulverizerrecipe";
 	public static final String REMOVE_SAWMILL_RECIPE = "removesawmillrecipe";
@@ -187,6 +195,8 @@ public class IMCHandler {
 	public static final String REMOVE_TRANSPOSER_EXTRACT_RECIPE = "removetransposerextractrecipe";
 
 	public static final String REMOVE_CHARGER_RECIPE = "removechargerrecipe";
+
+	public static final String REMOVE_CENTRIFUGE_RECIPE = "removecentrifugerecipe";
 
 	public static final String ADD_MAGMATIC_FUEL = "addmagmaticfuel";
 	public static final String ADD_COMPRESSION_FUEL = "addcompressionfuel";

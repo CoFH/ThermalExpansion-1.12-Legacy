@@ -33,7 +33,7 @@ public class InsolatorRecipeCategoryMycelium extends InsolatorRecipeCategory {
 
 		for (InsolatorRecipe recipe : InsolatorManager.getRecipeList()) {
 
-			if (recipe.getType() == Type.MYCELIUM) {
+			if (recipe.getType() == Type.MYCELIUM || recipe.getType() == Type.MYCELIUM_TREE) {
 				recipes.add(new InsolatorRecipeWrapper(guiHelper, recipe, RecipeUidsTE.INSOLATOR_MYCELIUM));
 			}
 		}

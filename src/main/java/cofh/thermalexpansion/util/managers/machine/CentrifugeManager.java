@@ -79,17 +79,22 @@ public class CentrifugeManager {
 	}
 
 	/* ADD RECIPES */
-	public static CentrifugeRecipe addRecipe(int energy, ItemStack input, List<ItemStack> output, FluidStack fluid) {
+	public static CentrifugeRecipe addRecipe(int energy, ItemStack input, List<ItemStack> output, List<Integer> chance, FluidStack fluid) {
 
-		if (input.isEmpty() || output.isEmpty() || output.size() > 4 || energy <= 0 || recipeExists(input)) {
+		if (input.isEmpty() || (output.isEmpty() && fluid == null) || output.size() > 4 || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
-		for (ItemStack stack : output) {
-			if (stack.isEmpty()) {
-				return null;
-			}
+		CentrifugeRecipe recipe = new CentrifugeRecipe(input, output, chance, fluid, energy);
+		recipeMap.put(new ComparableItemStackCentrifuge(input), recipe);
+		return recipe;
+	}
+
+	public static CentrifugeRecipe addRecipe(int energy, ItemStack input, List<ItemStack> output, FluidStack fluid) {
+
+		if (input.isEmpty() || (output.isEmpty() && fluid == null) || output.size() > 4 || energy <= 0 || recipeExists(input)) {
+			return null;
 		}
-		CentrifugeRecipe recipe = new CentrifugeRecipe(input, output, fluid, energy);
+		CentrifugeRecipe recipe = new CentrifugeRecipe(input, output, null, fluid, energy);
 		recipeMap.put(new ComparableItemStackCentrifuge(input), recipe);
 		return recipe;
 	}
@@ -118,13 +123,25 @@ public class CentrifugeManager {
 
 		final ItemStack input;
 		final List<ItemStack> output;
+		final List<Integer> chance;
 		final FluidStack fluid;
 		final int energy;
 
-		CentrifugeRecipe(ItemStack input, List<ItemStack> output, @Nullable FluidStack fluid, int energy) {
+		CentrifugeRecipe(ItemStack input, @Nullable List<ItemStack> output, @Nullable List<Integer> chance, @Nullable FluidStack fluid, int energy) {
 
 			this.input = input;
-			this.output = output;
+			this.output = new ArrayList<>();
+			if (output != null) {
+				this.output.addAll(output);
+			}
+			this.chance = new ArrayList<>();
+			if (chance != null) {
+				this.chance.addAll(chance);
+			} else {
+				for (int i = 0; i < this.output.size(); i++) {
+					this.chance.add(100);
+				}
+			}
 			this.fluid = fluid;
 			this.energy = energy;
 
@@ -141,6 +158,11 @@ public class CentrifugeManager {
 		public List<ItemStack> getOutput() {
 
 			return output;
+		}
+
+		public List<Integer> getChance() {
+
+			return chance;
 		}
 
 		public FluidStack getFluid() {

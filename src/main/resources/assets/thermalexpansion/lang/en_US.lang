@@ -141,15 +141,15 @@ info.thermalexpansion.augment.machineInsolatorEnd.a.1=Suitable for Ender crops.
 
 info.thermalexpansion.augment.machineInsolatorMycelium.0=Phytogenic Insolator: Specialization
 info.thermalexpansion.augment.machineInsolatorMycelium.a.0=Allows for non-standard crops to be grown.
-info.thermalexpansion.augment.machineInsolatorMycelium.a.1=Suitable for Fungi.
+info.thermalexpansion.augment.machineInsolatorMycelium.a.1=Suitable for Fungi and Slime.
 
 info.thermalexpansion.augment.machineInsolatorNether.0=Phytogenic Insolator: Specialization
 info.thermalexpansion.augment.machineInsolatorNether.a.0=Allows for non-standard crops to be grown.
 info.thermalexpansion.augment.machineInsolatorNether.a.1=Suitable for Nether crops.
 
-info.thermalexpansion.augment.machineInsolatorTree.0=Phytogenic Insolator: Specialization
-info.thermalexpansion.augment.machineInsolatorTree.a.0=Allows for non-standard crops to be grown.
-info.thermalexpansion.augment.machineInsolatorTree.a.1=Suitable for trees.
+info.thermalexpansion.augment.machineInsolatorTree.0=Phytogenic Insolator: Functionality
+info.thermalexpansion.augment.machineInsolatorTree.a.0=Allows for trees to be grown.
+info.thermalexpansion.augment.machineInsolatorTree.a.1=Can be used with Substrate Augments.
 
 info.thermalexpansion.augment.machinePower.0=Machines: Processing Speed
 info.thermalexpansion.augment.machinePower.a.0=Increases maximum power usage.

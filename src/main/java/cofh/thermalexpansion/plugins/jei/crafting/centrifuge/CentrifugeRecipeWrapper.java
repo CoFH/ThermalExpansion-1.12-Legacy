@@ -27,6 +27,8 @@ public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 	final List<ItemStack> outputs;
 	final List<FluidStack> outputFluids;
 
+	final List<Integer> chance;
+
 	/* Animation */
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
@@ -53,6 +55,7 @@ public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 		outputs = recipeOutputs;
 		outputFluids = recipeFluids;
 
+		chance = recipe.getChance();
 		energy = recipe.getEnergy();
 
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_ARROW);

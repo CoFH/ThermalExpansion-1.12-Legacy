@@ -15,6 +15,7 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
+import cofh.thermalexpansion.plugins.jei.crafting.centrifuge.CentrifugeRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.compactor.CompactorRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.crucible.CrucibleRecipeCategory;
@@ -530,20 +531,20 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		} else {
 			ChargerRecipeCategory.enable = false;
 		}
-//		if (enable[Type.CENTRIFUGE.getMetadata()]) {
-//			addRecipe(ShapedRecipe(machineCentrifuge,
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', ItemFrame.frameMachine,
-//					'I', copperPart,
-//					'P', ItemMaterial.powerCoilGold,
-//					'X', ItemMaterial.powerCoilElectrum,
-//					'Y', ItemMaterial.powerCoilSilver
-//			));
-//		} else {
-//			CentrifugeRecipeCategory.enable = false;
-//		}
+		if (enable[Type.CENTRIFUGE.getMetadata()]) {
+			addRecipe(ShapedRecipe(machineCentrifuge,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameMachine,
+					'I', copperPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', Items.COMPASS,
+					'Y', "ingotConstantan"
+			));
+		} else {
+			CentrifugeRecipeCategory.enable = false;
+		}
 //		if (enable[Type.CRAFTER.getMetadata()]) {
 //			addRecipe(ShapedRecipe(machineCrafter,
 //					" X ",

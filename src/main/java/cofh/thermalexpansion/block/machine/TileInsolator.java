@@ -120,16 +120,44 @@ public class TileInsolator extends TileMachineBase {
 			return false;
 		}
 		Type substrate = recipe.getType();
-		if (substrate != Type.STANDARD) {
-			if (substrate == Type.MYCELIUM && !augmentMycelium) {
-				return false;
-			} else if (substrate == Type.NETHER && !augmentNether) {
-				return false;
-			} else if (substrate == Type.END && !augmentEnd) {
-				return false;
-			} else if (substrate == Type.TREE && !augmentTree) {
-				return false;
-			}
+		switch (substrate) {
+			case STANDARD:
+				break;
+			case MYCELIUM:
+				if (!augmentMycelium) {
+					return false;
+				}
+				break;
+			case NETHER:
+				if (!augmentNether) {
+					return false;
+				}
+				break;
+			case END:
+				if (!augmentEnd) {
+					return false;
+				}
+				break;
+			case TREE:
+				if (!augmentTree) {
+					return false;
+				}
+				break;
+			case MYCELIUM_TREE:
+				if (!augmentTree || !augmentMycelium) {
+					return false;
+				}
+				break;
+			case NETHER_TREE:
+				if (!augmentTree || !augmentNether) {
+					return false;
+				}
+				break;
+			case END_TREE:
+				if (!augmentTree || !augmentEnd) {
+					return false;
+				}
+				break;
 		}
 		if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
 			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
@@ -464,7 +492,6 @@ public class TileInsolator extends TileMachineBase {
 		}
 		if (!augmentTree && TEProps.MACHINE_INSOLATOR_TREE.equals(id)) {
 			augmentTree = true;
-			hasModeAugment = true;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

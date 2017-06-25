@@ -5,7 +5,6 @@ import cofh.lib.gui.slot.SlotEnergy;
 import cofh.lib.gui.slot.SlotRemoveOnly;
 import cofh.lib.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.machine.TileCentrifuge;
-import cofh.thermalexpansion.block.machine.TileInsolator;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
 import net.minecraft.entity.player.InventoryPlayer;

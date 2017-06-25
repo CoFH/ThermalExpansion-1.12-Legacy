@@ -114,6 +114,15 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 			guiItemStacks.set(i + 1, outputs.get(i));
 		}
 		guiFluidStacks.set(0, outputFluids.get(0));
+
+		guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+			if (!recipeWrapper.chance.isEmpty() && slotIndex >= 1 && slotIndex <= 4) {
+				if (recipeWrapper.chance.get(slotIndex - 1) < 100) {
+					tooltip.add(StringHelper.localize("info.cofh.chance") + ": " + recipeWrapper.chance.get(slotIndex - 1) + "%");
+				}
+			}
+		});
 	}
 
 }

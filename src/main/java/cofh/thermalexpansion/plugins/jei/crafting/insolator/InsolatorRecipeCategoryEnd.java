@@ -33,7 +33,7 @@ public class InsolatorRecipeCategoryEnd extends InsolatorRecipeCategory {
 
 		for (InsolatorRecipe recipe : InsolatorManager.getRecipeList()) {
 
-			if (recipe.getType() == Type.END) {
+			if (recipe.getType() == Type.END || recipe.getType() == Type.END_TREE) {
 				recipes.add(new InsolatorRecipeWrapper(guiHelper, recipe, RecipeUidsTE.INSOLATOR_END));
 			}
 		}

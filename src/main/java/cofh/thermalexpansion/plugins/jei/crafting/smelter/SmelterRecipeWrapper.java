@@ -54,15 +54,17 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeInputsPrimary = new ArrayList<>();
 		List<ItemStack> recipeInputsSecondary = new ArrayList<>();
 
-		if (ComparableItemStackSmelter.getOreID(recipe.getPrimaryInput()) != -1) {
-			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getPrimaryInput()), false)) {
+		int oreID = ComparableItemStackSmelter.getOreID(recipe.getPrimaryInput());
+		if (oreID != -1) {
+			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputsPrimary.add(ItemHelper.cloneStack(ore, recipe.getPrimaryInput().getCount()));
 			}
 		} else {
 			recipeInputsPrimary.add(recipe.getPrimaryInput());
 		}
-		if (ComparableItemStackSmelter.getOreID(recipe.getSecondaryInput()) != -1) {
-			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getSecondaryInput()), false)) {
+		oreID = ComparableItemStackSmelter.getOreID(recipe.getSecondaryInput());
+		if (oreID != -1) {
+			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputsSecondary.add(ItemHelper.cloneStack(ore, recipe.getSecondaryInput().getCount()));
 			}
 		} else {

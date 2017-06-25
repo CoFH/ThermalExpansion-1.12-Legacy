@@ -65,14 +65,14 @@ public class TapperManager {
 
 	public static void initialize() {
 
-		FluidStack sap = new FluidStack(TFFluids.fluidSap, 25);
-		FluidStack resin = new FluidStack(TFFluids.fluidResin, 25);
+		FluidStack sap = new FluidStack(TFFluids.fluidSap, 50);
+		FluidStack resin = new FluidStack(TFFluids.fluidResin, 50);
 
 		/* FERTILIZER */
 		{
 			addFertilizer(ItemFertilizer.fertilizerBasic, 2);
-			addFertilizer(ItemFertilizer.fertilizerRich, 4);
-			addFertilizer(ItemFertilizer.fertilizerFlux, 6);
+			addFertilizer(ItemFertilizer.fertilizerRich, 3);
+			addFertilizer(ItemFertilizer.fertilizerFlux, 4);
 		}
 
 		/* FLUIDS */
@@ -114,7 +114,7 @@ public class TapperManager {
 
 	public static boolean addLeafMapping(ItemStack log, ItemStack leaf) {
 
-		if (log.isEmpty() || leaf == null) {
+		if (log.isEmpty() || leaf.isEmpty()) {
 			return false;
 		}
 		leafMap.put(new BlockWrapper(((ItemBlock) log.getItem()).getBlock(), ItemHelper.getItemDamage(log)), new BlockWrapper(((ItemBlock) leaf.getItem()).getBlock(), ItemHelper.getItemDamage(leaf)));
@@ -173,4 +173,8 @@ public class TapperManager {
 		fertilizerMap.put(new ComparableItemStack(fertilizer), multiplier);
 	}
 
+	public static void addLeafMappingDirect(IBlockState logState, IBlockState leafState) {
+
+		leafMap.put(new BlockWrapper(logState), new BlockWrapper(leafState));
+	}
 }
