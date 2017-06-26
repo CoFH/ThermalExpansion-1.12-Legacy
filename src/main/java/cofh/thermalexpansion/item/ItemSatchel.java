@@ -10,6 +10,7 @@ import cofh.core.item.ItemMulti;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.RegistrySocial;
 import cofh.core.util.core.IInitializer;
+import cofh.core.util.crafting.RecipeSecure;
 import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.core.util.helpers.ChatHelper;
 import cofh.core.util.helpers.SecurityHelper;
@@ -18,6 +19,8 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
+import cofh.thermalexpansion.init.TEItems;
+import cofh.thermalfoundation.item.ItemSecurity;
 import com.mojang.authlib.GameProfile;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -118,12 +121,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-
-		return slotChanged;
-	}
-
-	@Override
 	public int getItemEnchantability() {
 
 		return 10;
@@ -148,7 +145,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 			if (canPlayerAccess(stack, player)) {
 				player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_ID, world, 0, 0, 0);
 			} else if (SecurityHelper.isSecure(stack)) {
-				ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.cofh.secure", SecurityHelper.getOwnerName(stack)));
+				ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.cofh.secure.warning", SecurityHelper.getOwnerName(stack)));
 				return new ActionResult<>(EnumActionResult.FAIL, stack);
 			}
 		}
@@ -367,6 +364,13 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 				'X', satchelSignalum,
 				'Y', "nuggetSignalum"
 		));
+
+		addRecipe(new RecipeSecure(satchelBasic, " L ", "SXS", " S ", 'L', ItemSecurity.lock, 'S', "nuggetSignalum", 'X', satchelBasic));
+		addRecipe(new RecipeSecure(satchelHardened, " L ", "SXS", " S ", 'L', ItemSecurity.lock, 'S', "nuggetSignalum", 'X', satchelHardened));
+		addRecipe(new RecipeSecure(satchelReinforced, " L ", "SXS", " S ", 'L', ItemSecurity.lock, 'S', "nuggetSignalum", 'X', satchelReinforced));
+		addRecipe(new RecipeSecure(satchelSignalum, " L ", "SXS", " S ", 'L', ItemSecurity.lock, 'S', "nuggetSignalum", 'X', satchelSignalum));
+		addRecipe(new RecipeSecure(satchelResonant, " L ", "SXS", " S ", 'L', ItemSecurity.lock, 'S', "nuggetSignalum", 'X', satchelResonant));
+		addRecipe(new RecipeSecure(satchelCreative, " L ", "SXS", " S ", 'L', ItemSecurity.lock, 'S', "nuggetSignalum", 'X', satchelCreative));
 
 		// @formatter:on
 
