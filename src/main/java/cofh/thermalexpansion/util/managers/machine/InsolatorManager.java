@@ -22,7 +22,7 @@ public class InsolatorManager {
 	private static Set<ComparableItemStackInsolator> lockSet = new THashSet<>();
 
 	static final int CROP_MULTIPLIER_RICH = 3;
-	static final int CROP_MULTIPLIER_FLUX = 5;
+	static final int CROP_MULTIPLIER_FLUX = 4;
 	static final int DEFAULT_ENERGY = 5000;
 	static final int DEFAULT_ENERGY_RICH = 7500;
 	static final int DEFAULT_ENERGY_FLUX = 10000;
@@ -102,6 +102,24 @@ public class InsolatorManager {
 			addDefaultRecipe(new ItemStack(Items.MELON_SEEDS), new ItemStack(Blocks.MELON_BLOCK), null, 0);
 		}
 
+				/* FLOWERS */
+		{
+			addDefaultRecipe(new ItemStack(Blocks.YELLOW_FLOWER, 1, 0), new ItemStack(Blocks.YELLOW_FLOWER, 2, 0), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 0), new ItemStack(Blocks.RED_FLOWER, 2, 0), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 1), new ItemStack(Blocks.RED_FLOWER, 2, 1), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 2), new ItemStack(Blocks.RED_FLOWER, 2, 2), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 3), new ItemStack(Blocks.RED_FLOWER, 2, 3), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 4), new ItemStack(Blocks.RED_FLOWER, 2, 4), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 5), new ItemStack(Blocks.RED_FLOWER, 2, 5), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 6), new ItemStack(Blocks.RED_FLOWER, 2, 6), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 7), new ItemStack(Blocks.RED_FLOWER, 2, 7), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 8), new ItemStack(Blocks.RED_FLOWER, 2, 8), null, 0);
+
+			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 0), new ItemStack(Blocks.DOUBLE_PLANT, 2, 0), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 1), new ItemStack(Blocks.DOUBLE_PLANT, 2, 1), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), new ItemStack(Blocks.DOUBLE_PLANT, 2, 4), null, 0);
+		}
+
 		/* MYCELIUM */
 		{
 			ArrayList<ItemStack> crops = new ArrayList<>();
@@ -133,12 +151,12 @@ public class InsolatorManager {
 
 		/* TREE */
 		{
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 0), new ItemStack(Blocks.LOG, 5, 0), new ItemStack(Blocks.SAPLING, 1, 0), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 1), new ItemStack(Blocks.LOG, 5, 1), new ItemStack(Blocks.SAPLING, 1, 1), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 2), new ItemStack(Blocks.LOG, 5, 2), new ItemStack(Blocks.SAPLING, 1, 2), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 3), new ItemStack(Blocks.LOG, 5, 3), new ItemStack(Blocks.SAPLING, 1, 3), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.LOG2, 5, 0), new ItemStack(Blocks.SAPLING, 1, 4), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 5), new ItemStack(Blocks.LOG2, 5, 1), new ItemStack(Blocks.SAPLING, 1, 5), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 0), new ItemStack(Blocks.LOG, 4, 0), new ItemStack(Blocks.SAPLING, 1, 0), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 1), new ItemStack(Blocks.LOG, 4, 1), new ItemStack(Blocks.SAPLING, 1, 1), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 2), new ItemStack(Blocks.LOG, 4, 2), new ItemStack(Blocks.SAPLING, 1, 2), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 3), new ItemStack(Blocks.LOG, 4, 3), new ItemStack(Blocks.SAPLING, 1, 3), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.LOG2, 4, 0), new ItemStack(Blocks.SAPLING, 1, 4), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 5), new ItemStack(Blocks.LOG2, 4, 1), new ItemStack(Blocks.SAPLING, 1, 5), 50, false, Type.TREE);
 		}
 		/* LOAD RECIPES */
 		loadRecipes();
@@ -226,7 +244,7 @@ public class InsolatorManager {
 		lockSet.add(new ComparableItemStackInsolator(fertilizer));
 	}
 
-	private static void addDefaultOreDictionaryRecipe(String oreType) {
+	public static void addDefaultOreDictionaryRecipe(String oreType) {
 
 		if (oreType.length() <= 0) {
 			return;
@@ -262,7 +280,7 @@ public class InsolatorManager {
 		}
 	}
 
-	private static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
+	public static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
 
 		if (secondaryOutput != null) {
 			addRecipe(DEFAULT_ENERGY, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, secondaryOutput, secondaryChance, copyNBT, type);
@@ -275,7 +293,7 @@ public class InsolatorManager {
 		}
 	}
 
-	private static void addDefaultTreeRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
+	public static void addDefaultTreeRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
 
 		if (secondaryOutput != null) {
 			addRecipe(DEFAULT_ENERGY * 2, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, secondaryOutput, secondaryChance, copyNBT, type);
@@ -288,7 +306,7 @@ public class InsolatorManager {
 		}
 	}
 
-	private static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		addDefaultRecipe(primaryInput, primaryOutput, secondaryOutput, secondaryChance, false, Type.STANDARD);
 	}
@@ -368,7 +386,7 @@ public class InsolatorManager {
 
 	/* TYPE ENUM */
 	public enum Type {
-		STANDARD, MYCELIUM, NETHER, END, TREE
+		STANDARD, MYCELIUM, NETHER, END, TREE, MYCELIUM_TREE, NETHER_TREE, END_TREE
 	}
 
 	/* ITEMSTACK CLASS */

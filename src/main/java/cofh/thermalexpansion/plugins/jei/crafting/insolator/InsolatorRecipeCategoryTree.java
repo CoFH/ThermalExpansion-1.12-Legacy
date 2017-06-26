@@ -33,7 +33,7 @@ public class InsolatorRecipeCategoryTree extends InsolatorRecipeCategory {
 
 		for (InsolatorManager.RecipeInsolator recipe : InsolatorManager.getRecipeList()) {
 
-			if (recipe.getType() == Type.TREE) {
+			if (recipe.getType() == Type.TREE || recipe.getType() == Type.MYCELIUM_TREE || recipe.getType() == Type.NETHER_TREE || recipe.getType() == Type.END_TREE) {
 				recipes.add(new InsolatorRecipeWrapper(guiHelper, recipe, RecipeUidsTE.INSOLATOR_TREE));
 			}
 		}

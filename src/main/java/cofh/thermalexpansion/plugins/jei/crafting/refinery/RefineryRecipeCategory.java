@@ -111,11 +111,14 @@ public class RefineryRecipeCategory extends BlankRecipeCategory<RefineryRecipeWr
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 		guiFluidStacks.init(0, true, 22, 8, 16, 30, 1000, false, tankOverlayInput);
-		guiItemStacks.init(0, false, 81, 23);
 		guiFluidStacks.init(1, false, 117, 1, 16, 60, 1000, false, tankOverlayOutput);
 
 		guiFluidStacks.set(0, inputs.get(0));
-		guiItemStacks.set(0, outputItems.get(0));
+
+		if (!outputItems.isEmpty()) {
+			guiItemStacks.init(0, false, 81, 23);
+			guiItemStacks.set(0, outputItems.get(0));
+		}
 		guiFluidStacks.set(1, outputFluids.get(0));
 	}
 

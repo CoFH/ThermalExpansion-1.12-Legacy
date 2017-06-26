@@ -1,8 +1,9 @@
 package cofh.thermalexpansion.init;
 
 import cofh.thermalexpansion.plugins.ForestryPlugin;
+import cofh.thermalexpansion.plugins.HarvestcraftPlugin;
 import cofh.thermalexpansion.plugins.NaturaPlugin;
-import cofh.thermalexpansion.plugins.TinkersConstructPlugin;
+import cofh.thermalexpansion.plugins.TConstructPlugin;
 
 public class TEPlugins {
 
@@ -21,8 +22,11 @@ public class TEPlugins {
 	public static void postInit() {
 
 		ForestryPlugin.initialize();
+		HarvestcraftPlugin.initialize();
 		NaturaPlugin.initialize();
-		TinkersConstructPlugin.initialize();
+		TConstructPlugin.initialize();
+
+		ForestryPlugin.postInit();
 	}
 
 }

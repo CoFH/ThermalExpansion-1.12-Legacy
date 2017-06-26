@@ -72,7 +72,7 @@ public class TapperManager {
 		{
 			addFertilizer(ItemFertilizer.fertilizerBasic, 2);
 			addFertilizer(ItemFertilizer.fertilizerRich, 4);
-			addFertilizer(ItemFertilizer.fertilizerFlux, 6);
+			addFertilizer(ItemFertilizer.fertilizerFlux, 5);
 		}
 
 		/* FLUIDS */
@@ -171,6 +171,11 @@ public class TapperManager {
 	private static void addFertilizer(ItemStack fertilizer, int multiplier) {
 
 		fertilizerMap.put(new ComparableItemStack(fertilizer), multiplier);
+	}
+
+	public static void addLeafMappingDirect(IBlockState logState, IBlockState leafState) {
+
+		leafMap.put(new BlockWrapper(logState), new BlockWrapper(leafState));
 	}
 
 }

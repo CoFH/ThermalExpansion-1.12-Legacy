@@ -35,8 +35,9 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 
-		if (ComparableItemStackCompactor.getOreID(recipe.getInput()) != -1) {
-			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()), false)) {
+		int oreID = ComparableItemStackCompactor.getOreID(recipe.getInput());
+		if (oreID != -1) {
+			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().stackSize));
 			}
 		} else {

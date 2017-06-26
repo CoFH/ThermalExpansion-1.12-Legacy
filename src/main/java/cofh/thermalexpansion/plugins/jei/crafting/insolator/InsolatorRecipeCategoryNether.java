@@ -33,7 +33,7 @@ public class InsolatorRecipeCategoryNether extends InsolatorRecipeCategory {
 
 		for (InsolatorManager.RecipeInsolator recipe : InsolatorManager.getRecipeList()) {
 
-			if (recipe.getType() == Type.NETHER) {
+			if (recipe.getType() == Type.NETHER || recipe.getType() == Type.NETHER_TREE) {
 				recipes.add(new InsolatorRecipeWrapper(guiHelper, recipe, RecipeUidsTE.INSOLATOR_NETHER));
 			}
 		}

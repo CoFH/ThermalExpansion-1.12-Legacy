@@ -51,8 +51,9 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 		List<FluidStack> recipeInputFluids = new ArrayList<>();
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 
-		if (ComparableItemStackPulverizer.getOreID(recipe.getInput()) != -1) {
-			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()), false)) {
+		int oreID = ComparableItemStackPulverizer.getOreID(recipe.getInput());
+		if (oreID != -1) {
+			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().stackSize));
 			}
 		} else {
