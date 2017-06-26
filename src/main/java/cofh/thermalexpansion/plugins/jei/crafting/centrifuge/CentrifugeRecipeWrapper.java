@@ -59,7 +59,7 @@ public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 		energy = recipe.getEnergy();
 
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_ARROW);
-		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLAME);
+		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_SPIN);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
 		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileCentrifuge.basePower, StartDirection.LEFT, false);

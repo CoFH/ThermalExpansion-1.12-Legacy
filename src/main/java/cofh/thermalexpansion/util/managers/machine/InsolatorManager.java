@@ -21,8 +21,8 @@ public class InsolatorManager {
 	private static Set<ComparableItemStackInsolator> validationSet = new THashSet<>();
 	private static Set<ComparableItemStackInsolator> lockSet = new THashSet<>();
 
-	static final int CROP_MULTIPLIER_RICH = 2;
-	static final int CROP_MULTIPLIER_FLUX = 3;
+	static final int CROP_MULTIPLIER_RICH = 3;
+	static final int CROP_MULTIPLIER_FLUX = 4;
 	static final int DEFAULT_ENERGY = 5000;
 	static final int DEFAULT_ENERGY_RICH = 7500;
 	static final int DEFAULT_ENERGY_FLUX = 10000;
@@ -89,8 +89,8 @@ public class InsolatorManager {
 
 		/* CROPS */
 		{
-			addDefaultRecipe(new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.WHEAT), new ItemStack(Items.WHEAT_SEEDS), 150);
-			addDefaultRecipe(new ItemStack(Items.BEETROOT_SEEDS), new ItemStack(Items.BEETROOT), new ItemStack(Items.BEETROOT_SEEDS), 150);
+			addDefaultRecipe(new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.WHEAT), new ItemStack(Items.WHEAT_SEEDS), 110);
+			addDefaultRecipe(new ItemStack(Items.BEETROOT_SEEDS), new ItemStack(Items.BEETROOT), new ItemStack(Items.BEETROOT_SEEDS), 110);
 			addDefaultRecipe(new ItemStack(Items.POTATO), new ItemStack(Items.POTATO, 3), new ItemStack(Items.POISONOUS_POTATO), 5);
 			addDefaultRecipe(new ItemStack(Items.CARROT), new ItemStack(Items.CARROT, 3), ItemStack.EMPTY, 0);
 			addDefaultRecipe(new ItemStack(Items.DYE, 1, 3), new ItemStack(Items.DYE, 3, 3), ItemStack.EMPTY, 0);
@@ -100,6 +100,24 @@ public class InsolatorManager {
 			addDefaultRecipe(new ItemStack(Blocks.WATERLILY), new ItemStack(Blocks.WATERLILY, 2), ItemStack.EMPTY, 0);
 			addDefaultRecipe(new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Blocks.PUMPKIN), ItemStack.EMPTY, 0);
 			addDefaultRecipe(new ItemStack(Items.MELON_SEEDS), new ItemStack(Blocks.MELON_BLOCK), ItemStack.EMPTY, 0);
+		}
+
+		/* FLOWERS */
+		{
+			addDefaultRecipe(new ItemStack(Blocks.YELLOW_FLOWER, 1, 0), new ItemStack(Blocks.YELLOW_FLOWER, 2, 0), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 0), new ItemStack(Blocks.RED_FLOWER, 2, 0), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 1), new ItemStack(Blocks.RED_FLOWER, 2, 1), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 2), new ItemStack(Blocks.RED_FLOWER, 2, 2), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 3), new ItemStack(Blocks.RED_FLOWER, 2, 3), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 4), new ItemStack(Blocks.RED_FLOWER, 2, 4), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 5), new ItemStack(Blocks.RED_FLOWER, 2, 5), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 6), new ItemStack(Blocks.RED_FLOWER, 2, 6), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 7), new ItemStack(Blocks.RED_FLOWER, 2, 7), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 8), new ItemStack(Blocks.RED_FLOWER, 2, 8), ItemStack.EMPTY, 0);
+
+			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 0), new ItemStack(Blocks.DOUBLE_PLANT, 2, 0), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 1), new ItemStack(Blocks.DOUBLE_PLANT, 2, 1), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), new ItemStack(Blocks.DOUBLE_PLANT, 2, 4), ItemStack.EMPTY, 0);
 		}
 
 		/* MYCELIUM */
@@ -259,7 +277,7 @@ public class InsolatorManager {
 		if (isBlock || isTuber) {
 			addDefaultRecipe(seed, crop, ItemStack.EMPTY, 0);
 		} else {
-			addDefaultRecipe(seed, crop, seed, 150);
+			addDefaultRecipe(seed, crop, seed, 110);
 		}
 	}
 
@@ -267,7 +285,7 @@ public class InsolatorManager {
 
 		if (!secondaryOutput.isEmpty()) {
 			addRecipe(DEFAULT_ENERGY, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, secondaryOutput, secondaryChance, copyNBT, type);
-			addRecipe(DEFAULT_ENERGY_RICH, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), secondaryOutput, secondaryChance < 100 ? 100 : secondaryChance, copyNBT, type);
+			addRecipe(DEFAULT_ENERGY_RICH, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), secondaryOutput, secondaryChance < 100 ? 100 : secondaryChance < 125 ? 125 : secondaryChance, copyNBT, type);
 			addRecipe(DEFAULT_ENERGY_FLUX, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), secondaryOutput, secondaryChance < 150 ? 150 : secondaryChance, copyNBT, type);
 		} else {
 			addRecipe(DEFAULT_ENERGY, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, ItemStack.EMPTY, 0, copyNBT, type);
@@ -280,7 +298,7 @@ public class InsolatorManager {
 
 		if (!secondaryOutput.isEmpty()) {
 			addRecipe(DEFAULT_ENERGY * 2, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, secondaryOutput, secondaryChance, copyNBT, type);
-			addRecipe(DEFAULT_ENERGY_RICH * 2, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), secondaryOutput, secondaryChance < 100 ? 100 : secondaryChance, copyNBT, type);
+			addRecipe(DEFAULT_ENERGY_RICH * 2, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), secondaryOutput, secondaryChance < 100 ? 100 : secondaryChance < 125 ? 125 : secondaryChance, copyNBT, type);
 			addRecipe(DEFAULT_ENERGY_FLUX * 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), secondaryOutput, secondaryChance < 150 ? 150 : secondaryChance, copyNBT, type);
 		} else {
 			addRecipe(DEFAULT_ENERGY * 2, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, ItemStack.EMPTY, 0, copyNBT, type);

@@ -71,8 +71,8 @@ public class TapperManager {
 		/* FERTILIZER */
 		{
 			addFertilizer(ItemFertilizer.fertilizerBasic, 2);
-			addFertilizer(ItemFertilizer.fertilizerRich, 3);
-			addFertilizer(ItemFertilizer.fertilizerFlux, 4);
+			addFertilizer(ItemFertilizer.fertilizerRich, 4);
+			addFertilizer(ItemFertilizer.fertilizerFlux, 5);
 		}
 
 		/* FLUIDS */

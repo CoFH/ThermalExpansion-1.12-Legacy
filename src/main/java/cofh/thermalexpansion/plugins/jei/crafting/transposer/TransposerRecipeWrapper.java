@@ -45,7 +45,6 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeInputs = new ArrayList<>();
 
 		int oreID = ComparableItemStackTransposer.getOreID(recipe.getInput());
-
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));

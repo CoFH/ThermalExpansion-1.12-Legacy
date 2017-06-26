@@ -51,7 +51,7 @@ public class GuiCentrifuge extends GuiPoweredBase {
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setGauge(0).setAlwaysShow(true));
 
 		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 71, 34).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
-		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 44).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
+		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 44).setSize(16, 16).setTexture(TEX_SPIN, 32, 16));
 	}
 
 	@Override

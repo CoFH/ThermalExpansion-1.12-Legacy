@@ -49,7 +49,7 @@ public class TETextures {
 		MACHINE_FACE_REFINERY =             register(map, MACHINE_FACE_ + "refinery");
 		MACHINE_FACE_TRANSPOSER =			register(map, MACHINE_FACE_ + "transposer");
 		MACHINE_FACE_CHARGER =				register(map, MACHINE_FACE_ + "charger");
-		MACHINE_FACE_CENTRIFUGE =			map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "centrifuge");
+		MACHINE_FACE_CENTRIFUGE =			register(map, MACHINE_FACE_ + "centrifuge");
 		MACHINE_FACE_CRAFTER =				register(map, MACHINE_FACE_ + "crafter");
 		MACHINE_FACE_BREWER =				map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "brewer");
 		MACHINE_FACE_ENCHANTER =			map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "enchanter");
@@ -66,7 +66,7 @@ public class TETextures {
 		MACHINE_ACTIVE_REFINERY =           register(map, MACHINE_ACTIVE_ + "refinery");
 		MACHINE_ACTIVE_TRANSPOSER =			register(map, MACHINE_ACTIVE_ + "transposer");
 		MACHINE_ACTIVE_CHARGER =			register(map, MACHINE_ACTIVE_ + "charger");
-		MACHINE_ACTIVE_CENTRIFUGE =			map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "centrifuge");
+		MACHINE_ACTIVE_CENTRIFUGE =			register(map, MACHINE_ACTIVE_ + "centrifuge");
 		MACHINE_ACTIVE_CRAFTER =			register(map, MACHINE_ACTIVE_ + "crafter");
 		MACHINE_ACTIVE_BREWER =				map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "brewer");
 		MACHINE_ACTIVE_ENCHANTER =			map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "enchanter");

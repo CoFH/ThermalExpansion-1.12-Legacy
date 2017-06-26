@@ -42,73 +42,76 @@ public class TConstructPlugin {
 		if (!enable || !Loader.isModLoaded(MOD_ID)) {
 			return;
 		}
+		try {
+			ItemStack slimeCongealed = getBlockStack("slime_congealed", 1, 0);
+			ItemStack slimeCongealedMagma = getBlockStack("slime_congealed", 1, 4);
 
-		ItemStack slimeCongealed = getBlockStack("slime_congealed", 1, 0);
-		ItemStack slimeCongealedMagma = getBlockStack("slime_congealed", 1, 4);
+			ItemStack saplingSlimeBlue = getItem("slime_sapling", 1, 0);
+			ItemStack saplingSlimePurple = getItem("slime_sapling", 1, 1);
+			ItemStack saplingSlimeMagma = getItem("slime_sapling", 1, 2);
 
-		ItemStack saplingSlimeBlue = getItem("slime_sapling", 1, 0);
-		ItemStack saplingSlimePurple = getItem("slime_sapling", 1, 1);
-		ItemStack saplingSlimeMagma = getItem("slime_sapling", 1, 2);
+			Block log = getBlock("slime_congealed");
 
-		Block log = getBlock("slime_congealed");
+			Block leaves = getBlock("slime_leaves");
 
-		Block leaves = getBlock("slime_leaves");
+			Fluid blueslime = FluidRegistry.getFluid("blueslime");
+			Fluid emerald = FluidRegistry.getFluid("emerald");
 
-		Fluid blueslime = FluidRegistry.getFluid("blueslime");
-		Fluid emerald = FluidRegistry.getFluid("emerald");
+			/* CRUCIBLE */
+			{
+				addRecipeSet("iron");
+				addRecipeSet("gold");
 
-		/* CRUCIBLE */
-		{
-			addRecipeSet("iron");
-			addRecipeSet("gold");
+				if (emerald != null) {
+					CrucibleManager.addRecipe(4000, new ItemStack(Items.EMERALD), new FluidStack(emerald, 666));
+					CrucibleManager.addRecipe(4000 * 2, new ItemStack(Blocks.EMERALD_ORE), new FluidStack(emerald, 666 * 2));
+					CrucibleManager.addRecipe(4000 * 8, new ItemStack(Blocks.EMERALD_BLOCK), new FluidStack(emerald, 666 * 9));
+				}
 
-			if (emerald != null) {
-				CrucibleManager.addRecipe(4000, new ItemStack(Items.EMERALD), new FluidStack(emerald, 666));
-				CrucibleManager.addRecipe(4000 * 2, new ItemStack(Blocks.EMERALD_ORE), new FluidStack(emerald, 666 * 2));
-				CrucibleManager.addRecipe(4000 * 8, new ItemStack(Blocks.EMERALD_BLOCK), new FluidStack(emerald, 666 * 9));
+				addRecipeSet("copper");
+				addRecipeSet("tin");
+				addRecipeSet("silver");
+				addRecipeSet("lead");
+				addRecipeSet("aluminum");
+				addRecipeSet("nickel");
+				addRecipeSet("platinum");
+				addRecipeSet("iridium");
+
+				addRecipeSet("steel");
+				addRecipeSet("electrum");
+				addRecipeSet("invar");
+				addRecipeSet("bronze");
+				addRecipeSet("constantan");
+				addRecipeSet("signalum");
+				addRecipeSet("lumium");
+				addRecipeSet("enderium");
+
+				addRecipeSet("ardite");
+				addRecipeSet("cobalt");
+				addRecipeSet("manyullyn");
 			}
 
-			addRecipeSet("copper");
-			addRecipeSet("tin");
-			addRecipeSet("silver");
-			addRecipeSet("lead");
-			addRecipeSet("aluminum");
-			addRecipeSet("nickel");
-			addRecipeSet("platinum");
-			addRecipeSet("iridium");
+			/* INSOLATOR */
+			{
+				InsolatorManager.addDefaultTreeRecipe(saplingSlimeBlue, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimeBlue, 50, false, Type.MYCELIUM_TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingSlimePurple, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimePurple, 50, false, Type.MYCELIUM_TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingSlimeMagma, ItemHelper.cloneStack(slimeCongealedMagma, 4), saplingSlimeMagma, 50, false, Type.MYCELIUM_TREE);
+			}
 
-			addRecipeSet("steel");
-			addRecipeSet("electrum");
-			addRecipeSet("invar");
-			addRecipeSet("bronze");
-			addRecipeSet("constantan");
-			addRecipeSet("signalum");
-			addRecipeSet("lumium");
-			addRecipeSet("enderium");
+			/* TAPPER */
+			{
+				TapperManager.addMapping(slimeCongealed, new FluidStack(blueslime, 10));
+				TapperManager.addMapping(slimeCongealedMagma, new FluidStack(blueslime, 10));
 
-			addRecipeSet("ardite");
-			addRecipeSet("cobalt");
-			addRecipeSet("manyullyn");
+				addLeafMapping(log, 0, leaves, 0);
+				addLeafMapping(log, 0, leaves, 1);
+				addLeafMapping(log, 4, leaves, 2);
+			}
+
+			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
 		}
-
-		/* INSOLATOR */
-		{
-			InsolatorManager.addDefaultTreeRecipe(saplingSlimeBlue, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimeBlue, 50, false, Type.MYCELIUM_TREE);
-			InsolatorManager.addDefaultTreeRecipe(saplingSlimePurple, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimePurple, 50, false, Type.MYCELIUM_TREE);
-			InsolatorManager.addDefaultTreeRecipe(saplingSlimeMagma, ItemHelper.cloneStack(slimeCongealedMagma, 4), saplingSlimeMagma, 50, false, Type.MYCELIUM_TREE);
-		}
-
-		/* TAPPER */
-		{
-			TapperManager.addMapping(slimeCongealed, new FluidStack(blueslime, 10));
-			TapperManager.addMapping(slimeCongealedMagma, new FluidStack(blueslime, 10));
-
-			addLeafMapping(log, 0, leaves, 0);
-			addLeafMapping(log, 0, leaves, 1);
-			addLeafMapping(log, 4, leaves, 2);
-		}
-
-		ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 	}
 
 	/* HELPERS */
