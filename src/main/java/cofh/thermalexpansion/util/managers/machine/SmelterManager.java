@@ -378,6 +378,12 @@ public class SmelterManager {
 				addAlloyRecipe(2400, ItemMaterial.ingotGold, BLOCK_SOUL_SAND, output);
 			}
 		}
+
+		/* TINKERS' CONSTRUCT */
+		{
+			addDefaultOreDictionaryRecipe("cobalt");
+			addDefaultOreDictionaryRecipe("ardite");
+		}
 	}
 
 	public static void refresh() {
@@ -470,7 +476,7 @@ public class SmelterManager {
 		String oreName = "ore" + StringHelper.titleCase(oreType);
 		String dustName = "dust" + StringHelper.titleCase(oreType);
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
-		String relatedName = null;
+		String relatedName;
 
 		List<ItemStack> registeredOre = OreDictionary.getOres(oreName, false);
 		List<ItemStack> registeredDust = OreDictionary.getOres(dustName, false);

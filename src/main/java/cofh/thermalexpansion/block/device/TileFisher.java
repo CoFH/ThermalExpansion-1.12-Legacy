@@ -64,7 +64,7 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		super();
 
-		inventory = new ItemStack[10];
+		inventory = new ItemStack[5];
 		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 
@@ -167,16 +167,22 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		if (!enableAutoOutput) {
 			return;
 		}
-		//		int side;
-		//		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
-		//			side = i % 6;
-		//			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
-		//				if (transferItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
-		//					outputTracker = side;
-		//					break;
-		//				}
-		//			}
-		//		}
+		int side;
+		boolean foundOutput = false;
+		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
+			side = i % 6;
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
+				for (int j = 1; j < 5; j++) {
+					if (transferItem(j, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+						foundOutput = true;
+					}
+				}
+				if (foundOutput) {
+					outputTracker = side;
+					break;
+				}
+			}
+		}
 	}
 
 	protected static boolean isWater(IBlockState state) {

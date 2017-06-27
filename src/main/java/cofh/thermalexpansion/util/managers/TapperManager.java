@@ -177,4 +177,5 @@ public class TapperManager {
 
 		leafMap.put(new BlockWrapper(logState), new BlockWrapper(leafState));
 	}
+
 }

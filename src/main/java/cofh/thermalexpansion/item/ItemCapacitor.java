@@ -397,6 +397,8 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
+		config();
+
 		return true;
 	}
 
@@ -462,6 +464,12 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		return true;
 	}
 
+	private static void config() {
+
+		String category = "Item.Satchel";
+		enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+	}
+
 	/* ENTRY */
 	public class CapacitorEntry {
 
@@ -513,6 +521,8 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	public static final int CREATIVE = 32000;
+
+	public static boolean enable = true;
 
 	/* REFERENCES */
 	public static ItemStack capacitorBasic;

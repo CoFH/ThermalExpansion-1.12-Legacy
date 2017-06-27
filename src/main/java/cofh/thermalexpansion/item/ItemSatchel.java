@@ -18,8 +18,8 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.GuiHandler;
-import cofh.thermalexpansion.init.TEItems;
 import cofh.thermalfoundation.item.ItemSecurity;
 import com.mojang.authlib.GameProfile;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -308,6 +308,8 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
+		config();
+
 		return true;
 	}
 
@@ -383,6 +385,12 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 		return true;
 	}
 
+	private static void config() {
+
+		String category = "Item.Satchel";
+		enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+	}
+
 	/* ENTRY */
 	public class SatchelEntry {
 
@@ -418,6 +426,8 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	private static TIntObjectHashMap<SatchelEntry> satchelMap = new TIntObjectHashMap<>();
 
 	public static final int CREATIVE = 32000;
+
+	public static boolean enable = true;
 
 	/* REFERENCES */
 	public static ItemStack satchelBasic;

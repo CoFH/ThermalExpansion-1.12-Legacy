@@ -18,6 +18,7 @@ public class TEPlugins {
 
 	public static void postInit() {
 
+		ActuallyAdditionsPlugin.initialize();
 		ForestryPlugin.initialize();
 		HarvestcraftPlugin.initialize();
 		NaturaPlugin.initialize();

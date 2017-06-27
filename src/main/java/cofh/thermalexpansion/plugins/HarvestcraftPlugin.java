@@ -9,6 +9,7 @@ import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -89,7 +90,7 @@ public class HarvestcraftPlugin {
 			ItemStack itemCherry = getItem("cherryitem");
 			ItemStack itemFig = getItem("figitem");
 			ItemStack itemDragonfruit = getItem("dragonfruititem");
-			ItemStack itemApple = getItem("appleitem");
+			// ItemStack itemApple = getItem("appleitem");
 			ItemStack itemLemon = getItem("lemonitem");
 			ItemStack itemPear = getItem("pearitem");
 			ItemStack itemOlive = getItem("oliveitem");
@@ -125,7 +126,7 @@ public class HarvestcraftPlugin {
 				InsolatorManager.addDefaultRecipe(saplingCherry, ItemHelper.cloneStack(itemCherry, 2), saplingCherry, 100, false, Type.TREE);
 				InsolatorManager.addDefaultRecipe(saplingFig, ItemHelper.cloneStack(itemFig, 2), saplingFig, 100, false, Type.TREE);
 				InsolatorManager.addDefaultRecipe(saplingDragonfruit, ItemHelper.cloneStack(itemDragonfruit, 2), saplingDragonfruit, 100, false, Type.TREE);
-				InsolatorManager.addDefaultRecipe(saplingApple, ItemHelper.cloneStack(itemApple, 2), saplingApple, 100, false, Type.TREE);
+				InsolatorManager.addDefaultRecipe(saplingApple, ItemHelper.cloneStack(Items.APPLE, 2), saplingApple, 100, false, Type.TREE);
 				InsolatorManager.addDefaultRecipe(saplingLemon, ItemHelper.cloneStack(itemLemon, 2), saplingLemon, 100, false, Type.TREE);
 				InsolatorManager.addDefaultRecipe(saplingPear, ItemHelper.cloneStack(itemPear, 2), saplingPear, 100, false, Type.TREE);
 				InsolatorManager.addDefaultRecipe(saplingOlive, ItemHelper.cloneStack(itemOlive, 2), saplingOlive, 100, false, Type.TREE);
