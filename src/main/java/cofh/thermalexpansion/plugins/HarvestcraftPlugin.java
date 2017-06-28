@@ -2,6 +2,7 @@ package cofh.thermalexpansion.plugins;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.util.managers.FisherManager;
 import cofh.thermalexpansion.util.managers.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
@@ -119,6 +120,39 @@ public class HarvestcraftPlugin {
 			ItemStack itemNutmeg = getItem("nutmegitem");
 			ItemStack itemDurian = getItem("durianitem");
 
+			ItemStack fishAnchovy = getItem("anchovyrawitem");
+			ItemStack fishBass = getItem("bassrawitem");
+			ItemStack fishCarp = getItem("carprawitem");
+			ItemStack fishCatfish = getItem("catfishrawitem");
+			ItemStack fishCharr = getItem("charrrawitem");
+			ItemStack fishEel = getItem("eelrawitem");
+			ItemStack fishGrouper = getItem("grouperrawitem");
+			ItemStack fishHerring = getItem("herringrawitem");
+			ItemStack fishMudfish = getItem("mudfishrawitem");
+			ItemStack fishPerch = getItem("perchrawitem");
+			ItemStack fishSnapper = getItem("snapperrawitem");
+			ItemStack fishTilapia = getItem("tilapiarawitem");
+			ItemStack fishTrout = getItem("troutrawitem");
+			ItemStack fishTuna = getItem("tunarawitem");
+			ItemStack fishWalleye = getItem("walleyerawitem");
+
+			/* Currently omitting the following:
+				clam
+				crab
+				crayfish
+				frog
+				jellyfish
+				octopus
+				scallop
+				shrimp
+				snail
+				turtle
+			 */
+
+			// These seem to not have much of a use yet, so also omitting.
+			ItemStack fishGreenHeart = getItem("greenheartfishitem");
+			ItemStack fishSardine = getItem("sardinerawitem");
+
 			/* INSOLATOR */
 			{
 				InsolatorManager.addDefaultRecipe(saplingDate, ItemHelper.cloneStack(itemDate, 2), saplingDate, 100, false, Type.TREE);
@@ -162,6 +196,25 @@ public class HarvestcraftPlugin {
 
 				CentrifugeManager.addRecipe(energy, honeycomb, Arrays.asList(honey, beeswax), null);
 				CentrifugeManager.addRecipe(energy, waxcomb, Arrays.asList(ItemHelper.cloneStack(beeswax, 2)), null);
+			}
+
+			/* FISHER */
+			{
+				FisherManager.addFish(fishAnchovy, 20);
+				FisherManager.addFish(fishBass, 20);
+				FisherManager.addFish(fishCarp, 20);
+				FisherManager.addFish(fishCatfish, 20);
+				FisherManager.addFish(fishCharr, 20);
+				FisherManager.addFish(fishEel, 20);
+				FisherManager.addFish(fishGrouper, 20);
+				FisherManager.addFish(fishHerring, 20);
+				FisherManager.addFish(fishMudfish, 20);
+				FisherManager.addFish(fishPerch, 20);
+				FisherManager.addFish(fishSnapper, 20);
+				FisherManager.addFish(fishTilapia, 20);
+				FisherManager.addFish(fishTrout, 20);
+				FisherManager.addFish(fishTuna, 20);
+				FisherManager.addFish(fishWalleye, 20);
 			}
 
 			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");

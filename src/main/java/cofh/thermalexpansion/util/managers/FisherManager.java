@@ -1,13 +1,22 @@
 package cofh.thermalexpansion.util.managers;
 
 import cofh.lib.inventory.ComparableItemStack;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FisherManager {
+
+	private static List<ItemStack> fishList = new ArrayList<>();
+	private static List<Integer> weightList = new ArrayList<>();
+	private static int totalWeight;
 
 	private static TObjectIntHashMap<ComparableItemStack> baitMap = new TObjectIntHashMap<>();
 
@@ -18,7 +27,16 @@ public class FisherManager {
 
 	public static ItemStack getFish() {
 
-		return new ItemStack(Items.FISH, 1, 0);
+		int roll = MathHelper.RANDOM.nextInt(totalWeight);
+
+		for (int i = 0; i < weightList.size(); i++) {
+			roll -= weightList.get(i);
+
+			if (roll < 0) {
+				return fishList.get(i);
+			}
+		}
+		return ItemStack.EMPTY;
 	}
 
 	public static int getBaitMultiplier(ItemStack stack) {
@@ -34,8 +52,16 @@ public class FisherManager {
 		/* BAIT */
 		{
 			addBait(ItemFertilizer.fertilizerBasic, 2);
-			addBait(ItemFertilizer.fertilizerRich, 4);
-			addBait(ItemFertilizer.fertilizerFlux, 5);
+			addBait(ItemFertilizer.fertilizerRich, 3);
+			addBait(ItemFertilizer.fertilizerFlux, 4);
+		}
+
+		/* FISH */
+		{
+			addFish(new ItemStack(Items.FISH, 1, 0), 60);
+			addFish(new ItemStack(Items.FISH, 1, 1), 25);
+			addFish(new ItemStack(Items.FISH, 1, 2), 2);
+			addFish(new ItemStack(Items.FISH, 1, 3), 13);
 		}
 
 		/* LOAD MAPPINGS */
@@ -47,6 +73,18 @@ public class FisherManager {
 	}
 
 	/* ADD MAPPING */
+	public static boolean addFish(ItemStack fish, int weight) {
+
+		if (fish.isEmpty() || weight <= 0) {
+			return false;
+		}
+		fishList.add(ItemHelper.cloneStack(fish, 1));
+		weightList.add(weight);
+
+		totalWeight += weight;
+
+		return true;
+	}
 
 	public static void refresh() {
 

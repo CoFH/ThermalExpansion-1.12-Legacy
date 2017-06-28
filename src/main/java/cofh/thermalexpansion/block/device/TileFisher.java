@@ -51,14 +51,15 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
-	private static final int TARGET_WATER[] = { 10, 15, 20 };
-	private static final int TIME_CONSTANT = 10800;
-	private static final int BOOST_TIME = 16;
+	private static final int TARGET_WATER[] = { 10, 20, 30 };
+	private static final int TIME_CONSTANT = 7200;
+	private static final int BOOST_TIME = 8;
 
 	private int targetWater = -1;
 	private int timeConstant = TIME_CONSTANT;
-	private boolean inOcean;
-	private boolean inRiver;
+	private boolean isOcean;
+	private boolean isRiver;
+	private boolean isRaining;
 
 	private int inputTracker;
 	private int outputTracker;
@@ -161,20 +162,37 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
-		inOcean = BiomeDictionary.hasType(world.getBiome(pos), Type.OCEAN);
-		inRiver = BiomeDictionary.hasType(world.getBiome(pos), Type.RIVER);
+		int adjacentSources = 0;
 		targetWater = 0;
 
-		if (!isWater(world.getBlockState(pos.down()))) {
+		if (isWater(world.getBlockState(pos.down()))) {
+			adjacentSources++;
+		}
+		if (isWater(world.getBlockState(pos.west()))) {
+			adjacentSources++;
+		}
+		if (isWater(world.getBlockState(pos.east()))) {
+			adjacentSources++;
+		}
+		if (isWater(world.getBlockState(pos.north()))) {
+			adjacentSources++;
+		}
+		if (isWater(world.getBlockState(pos.south()))) {
+			adjacentSources++;
+		}
+		if (adjacentSources < 2) {
 			return;
 		}
-		Iterable<BlockPos> area = BlockPos.getAllInBox(pos.add(-2, -1, -2), pos.add(2, -1, 2));
+		Iterable<BlockPos> area = BlockPos.getAllInBox(pos.add(-2, -1, -2), pos.add(2, 0, 2));
 
 		for (BlockPos query : area) {
 			if (isWater(world.getBlockState(query))) {
 				targetWater++;
 			}
 		}
+		isOcean = BiomeDictionary.hasType(world.getBiome(pos), Type.OCEAN);
+		isRiver = BiomeDictionary.hasType(world.getBiome(pos), Type.RIVER);
+		isRaining = world.isRainingAt(pos);
 		timeConstant = getTimeConstant();
 	}
 
@@ -246,17 +264,17 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		int constant = TIME_CONSTANT;
 
-		if (inOcean) {
+		if (isOcean) {
 			constant /= 3;
-		} else if (inRiver) {
+		} else if (isRiver) {
 			constant /= 2;
 		}
 		if (targetWater >= TARGET_WATER[2]) {
-			return constant / 3;
+			return constant / (isRaining ? 4 : 3);
 		} else if (targetWater >= TARGET_WATER[1]) {
-			return constant / 2;
+			return constant / (isRaining ? 3 : 2);
 		}
-		return constant;
+		return constant / (isRaining ? 2 : 1);
 	}
 
 	public int getBoostMult() {
@@ -299,6 +317,12 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		boostMult = nbt.getInteger("BoostMult");
 		boostTime = nbt.getInteger("BoostTime");
+
+		timeConstant = nbt.getInteger("TimeConstant");
+
+		if (timeConstant <= 0) {
+			timeConstant = TIME_CONSTANT;
+		}
 	}
 
 	@Override
@@ -313,6 +337,8 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		nbt.setInteger("BoostMult", boostMult);
 		nbt.setInteger("BoostTime", boostTime);
+
+		nbt.setInteger("TimeConstant", timeConstant);
 
 		return nbt;
 	}

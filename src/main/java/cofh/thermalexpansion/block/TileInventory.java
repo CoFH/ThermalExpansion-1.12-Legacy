@@ -40,8 +40,7 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 		TileEntity adjInv = BlockHelper.getAdjacentTileEntity(this, side);
 
 		if (Utils.isAccessibleInput(adjInv, side)) {
-			IItemHandler inv = adjInv.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.getOpposite());
-
+			IItemHandler inv = InventoryHelper.getItemHandlerCap(adjInv, side.getOpposite());
 			if (inv == null) {
 				return false;
 			}
@@ -78,19 +77,16 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 		if (inventory[slot].isEmpty() || slot > inventory.length) {
 			return false;
 		}
-		ItemStack stack = inventory[slot].copy();
-		amount = Math.min(amount, stack.getCount());
-		stack.setCount(amount);
-		int added;
+		ItemStack initialStack = inventory[slot].copy();
+		initialStack.setCount(Math.min(amount, initialStack.getCount()));
+		TileEntity adjInv = BlockHelper.getAdjacentTileEntity(this, side);
 
-		TileEntity curTile = BlockHelper.getAdjacentTileEntity(this, side);
-		/* Add to Adjacent Inventory */
-		if (Utils.isAccessibleOutput(curTile, side)) {
-			added = Utils.addToInsertion(curTile, side, stack);
-			if (added >= amount) {
+		if (Utils.isAccessibleOutput(adjInv, side)) {
+			ItemStack inserted = InventoryHelper.addToInventory(adjInv, side, initialStack);
+			if (inserted.getCount() >= initialStack.getCount()) {
 				return false;
 			}
-			inventory[slot].shrink(amount - added);
+			inventory[slot].shrink(amount - inserted.getCount());
 			if (inventory[slot].getCount() <= 0) {
 				inventory[slot] = ItemStack.EMPTY;
 			}

@@ -147,7 +147,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 							if (curItem.isEmpty()) {
 								curItem = ItemStack.EMPTY;
 							} else {
-								curItem = InventoryHelper.addToInsertion(curTile, side, curItem);
+								curItem = InventoryHelper.addToInventory(curTile, side, curItem);
 							}
 							if (!curItem.isEmpty()) {
 								newStuffed.add(curItem);

@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.util;
 
 import cofh.api.item.IToolHammer;
-import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -10,47 +9,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
 
 public class Utils {
 
-	/* TILE FUNCTIONS - INSERTION */
-	public static int addToInsertion(TileEntity theTile, EnumFacing from, ItemStack stack) {
-
-		stack = InventoryHelper.addToInsertion(theTile, from, stack);
-		return stack.isEmpty() ? 0 : stack.getCount();
-	}
-
-	public static int addToInsertion(BlockPos pos, World worldObj, EnumFacing from, ItemStack stack) {
-
-		TileEntity theTile = worldObj.getTileEntity(pos);
-		stack = InventoryHelper.addToInsertion(theTile, from, stack);
-		return stack.isEmpty() ? 0 : stack.getCount();
-	}
-
 	/* QUERY FUNCTIONS */
-	public static boolean isAdjacentInput(TileEntity tile, EnumFacing side) {
-
-		return isAdjacentInput(tile.getPos(), tile.getWorld(), side);
-	}
-
-	public static boolean isAdjacentInput(BlockPos pos, World worldObj, EnumFacing side) {
-
-		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, pos, side);
-		return isAccessibleInput(tile, side);
-	}
-
-	public static boolean isAdjacentOutput(TileEntity tile, EnumFacing side) {
-
-		return isAdjacentOutput(tile.getPos(), tile.getWorld(), side);
-	}
-
-	public static boolean isAdjacentOutput(BlockPos pos, World worldObj, EnumFacing side) {
-
-		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, pos, side);
-		return isAccessibleOutput(tile, side);
-	}
-
 	public static boolean isAccessibleInput(TileEntity tile, EnumFacing side) {
 
 		return InventoryHelper.hasItemHandlerCap(tile, side.getOpposite()) && InventoryHelper.getItemHandlerCap(tile, side.getOpposite()).getSlots() > 0;
