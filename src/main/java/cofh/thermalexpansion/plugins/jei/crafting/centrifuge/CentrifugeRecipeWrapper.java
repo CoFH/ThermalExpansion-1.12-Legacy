@@ -78,7 +78,7 @@ public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
-		progress.draw(minecraft, 61, 23);
+		progress.draw(minecraft, 62, 23);
 		speed.draw(minecraft, 34, 32);
 		energyMeter.draw(minecraft, 2, 8);
 	}

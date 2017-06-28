@@ -100,8 +100,8 @@ public class TConstructPlugin {
 
 			/* TAPPER */
 			{
-				TapperManager.addMapping(slimeCongealed, new FluidStack(blueslime, 10));
-				TapperManager.addMapping(slimeCongealedMagma, new FluidStack(blueslime, 10));
+				TapperManager.addMapping(slimeCongealed, new FluidStack(blueslime, 25));
+				TapperManager.addMapping(slimeCongealedMagma, new FluidStack(blueslime, 25));
 
 				addLeafMapping(log, 0, leaves, 0);
 				addLeafMapping(log, 0, leaves, 1);

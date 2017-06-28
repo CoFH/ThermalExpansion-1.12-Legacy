@@ -139,25 +139,25 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 	protected void updateValidity() {
 
-		inHell = world.getBiome(getPos()) == Biomes.HELL;
+		inHell = world.getBiome(pos) == Biomes.HELL;
 		adjacentSources = 0;
 
-		if (isWater(world.getBlockState(getPos().down()))) {
+		if (isWater(world.getBlockState(pos.down()))) {
 			adjacentSources++;
 		}
-		if (isWater(world.getBlockState(getPos().up()))) {
+		if (isWater(world.getBlockState(pos.up()))) {
 			adjacentSources++;
 		}
-		if (isWater(world.getBlockState(getPos().west()))) {
+		if (isWater(world.getBlockState(pos.west()))) {
 			adjacentSources++;
 		}
-		if (isWater(world.getBlockState(getPos().east()))) {
+		if (isWater(world.getBlockState(pos.east()))) {
 			adjacentSources++;
 		}
-		if (isWater(world.getBlockState(getPos().north()))) {
+		if (isWater(world.getBlockState(pos.north()))) {
 			adjacentSources++;
 		}
-		if (isWater(world.getBlockState(getPos().south()))) {
+		if (isWater(world.getBlockState(pos.south()))) {
 			adjacentSources++;
 		}
 	}

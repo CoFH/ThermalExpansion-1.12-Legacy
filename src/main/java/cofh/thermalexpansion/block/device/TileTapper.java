@@ -53,7 +53,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true };
-		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false };
 
 		LIGHT_VALUES[TYPE] = 3;
 
@@ -153,7 +153,6 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		if (isActive) {
 			if (validTree) {
 				genFluid = TapperManager.getFluid(world.getBlockState(trunkPos));
-
 				if (boostTime > 0) {
 					tank.fill(new FluidStack(genFluid, genFluid.amount * boostMult), true);
 					boostTime--;
@@ -162,7 +161,6 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 					if (boostMult > 0) {
 						tank.fill(new FluidStack(genFluid, genFluid.amount * boostMult), true);
 						boostTime = BOOST_TIME - 1;
-
 						inventory[0].shrink(1);
 						if (inventory[0].getCount() <= 0) {
 							inventory[0] = ItemStack.EMPTY;
@@ -330,11 +328,6 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	public int getBoostMult() {
 
 		return boostMult;
-	}
-
-	public int getBoostTime() {
-
-		return boostTime;
 	}
 
 	/* GUI METHODS */

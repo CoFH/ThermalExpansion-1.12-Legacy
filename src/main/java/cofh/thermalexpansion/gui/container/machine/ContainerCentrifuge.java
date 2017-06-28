@@ -21,10 +21,10 @@ public class ContainerCentrifuge extends ContainerTEBase implements ISlotValidat
 
 		myTile = (TileCentrifuge) tile;
 		addSlotToContainer(new SlotValidated(this, myTile, 0, 44, 26));
-		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 106, 26));
-		addSlotToContainer(new SlotRemoveOnly(myTile, 2, 124, 26));
-		addSlotToContainer(new SlotRemoveOnly(myTile, 3, 106, 44));
-		addSlotToContainer(new SlotRemoveOnly(myTile, 4, 124, 44));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 107, 26));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 2, 125, 26));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 3, 107, 44));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 4, 127, 44));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 	}
 

@@ -27,7 +27,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	public ItemBlockCell(Block block) {
 
 		super(block);
-		setMaxStackSize(16);
+		setMaxStackSize(1);
 	}
 
 	@Override

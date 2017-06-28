@@ -11,6 +11,7 @@ import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.managers.CoolantManager;
+import cofh.thermalexpansion.util.managers.FisherManager;
 import cofh.thermalexpansion.util.managers.TapperManager;
 import cofh.thermalexpansion.util.managers.dynamo.*;
 import cofh.thermalexpansion.util.managers.machine.*;
@@ -176,6 +177,7 @@ public class ThermalExpansion {
 
 		CoolantManager.initialize();
 		TapperManager.initialize();
+		FisherManager.initialize();
 
 		SteamManager.initialize();
 		MagmaticManager.initialize();
@@ -200,6 +202,7 @@ public class ThermalExpansion {
 		CentrifugeManager.refresh();
 
 		TapperManager.refresh();
+		FisherManager.refresh();
 
 		SteamManager.refresh();
 		// Magmatic Unnecessary

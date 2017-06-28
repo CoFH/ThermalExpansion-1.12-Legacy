@@ -10,7 +10,7 @@ import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotType;
-import cofh.thermalexpansion.gui.element.ElementSlotOverlayCentrifuge;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlayQuad;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -21,7 +21,7 @@ public class GuiCentrifuge extends GuiPoweredBase {
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "centrifuge.png");
 
 	private ElementBase slotInput;
-	private ElementSlotOverlayCentrifuge[] slotOutput = new ElementSlotOverlayCentrifuge[2];
+	private ElementSlotOverlayQuad[] slotOutput = new ElementSlotOverlayQuad[2];
 	private ElementSlotOverlay[] slotTank = new ElementSlotOverlay[2];
 
 	private ElementDualScaled progress;
@@ -41,8 +41,8 @@ public class GuiCentrifuge extends GuiPoweredBase {
 
 		slotInput = addElement(new ElementSlotOverlay(this, 44, 26).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
 
-		slotOutput[0] = (ElementSlotOverlayCentrifuge) addElement(new ElementSlotOverlayCentrifuge(this, 106, 26).setSlotInfo(SlotColor.ORANGE, SlotRender.FULL));
-		slotOutput[1] = (ElementSlotOverlayCentrifuge) addElement(new ElementSlotOverlayCentrifuge(this, 106, 26).setSlotInfo(SlotColor.RED, SlotRender.BOTTOM));
+		slotOutput[0] = (ElementSlotOverlayQuad) addElement(new ElementSlotOverlayQuad(this, 107, 26).setSlotInfo(SlotColor.ORANGE, SlotRender.FULL));
+		slotOutput[1] = (ElementSlotOverlayQuad) addElement(new ElementSlotOverlayQuad(this, 107, 26).setSlotInfo(SlotColor.RED, SlotRender.BOTTOM));
 
 		slotTank[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.ORANGE, SlotType.TANK, SlotRender.FULL));
 		slotTank[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.YELLOW, SlotType.TANK, SlotRender.BOTTOM));
@@ -50,7 +50,7 @@ public class GuiCentrifuge extends GuiPoweredBase {
 		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setGauge(0).setAlwaysShow(true));
 
-		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 71, 34).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
+		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 72, 34).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 44).setSize(16, 16).setTexture(TEX_SPIN, 32, 16));
 	}
 

@@ -1,11 +1,13 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiFisher;
 import cofh.thermalexpansion.gui.container.device.ContainerFisher;
+import cofh.thermalexpansion.util.managers.FisherManager;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -15,6 +17,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -28,13 +32,13 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 5;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 } };
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2, 3, 4 }, { 0, 1, 2, 3, 4 }, { 0, 1, 2, 3, 4 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
-		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false, false, false, false, false, false };
-		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, true };
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, true, true, true, true };
 
 		GameRegistry.registerTileEntity(TileFisher.class, "thermalexpansion:device_fisher");
 
@@ -47,10 +51,14 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
-	private static final int TIME_CONSTANT = 3600;
+	private static final int TARGET_WATER[] = { 10, 15, 20 };
+	private static final int TIME_CONSTANT = 10800;
 	private static final int BOOST_TIME = 16;
 
 	private int targetWater = -1;
+	private int timeConstant = TIME_CONSTANT;
+	private boolean inOcean;
+	private boolean inRiver;
 
 	private int inputTracker;
 	private int outputTracker;
@@ -88,7 +96,7 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		super.blockPlaced();
 
-		if (redstoneControlOrDisable() && targetWater >= 8) {
+		if (redstoneControlOrDisable() && targetWater >= TARGET_WATER[0]) {
 			isActive = true;
 			sendTilePacket(Side.CLIENT);
 		}
@@ -114,18 +122,37 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		transferInput();
 
 		boolean curActive = isActive;
+		updateValidity();
 
 		if (isActive) {
-			if (targetWater > 8) {
-
+			if (targetWater >= TARGET_WATER[0]) {
+				if (boostTime > 0) {
+					for (int i = 0; i < boostMult; i++) {
+						catchFish();
+					}
+					boostTime--;
+				} else {
+					boostMult = FisherManager.getBaitMultiplier(inventory[0]);
+					if (boostMult > 0) {
+						for (int i = 0; i < boostMult; i++) {
+							catchFish();
+						}
+						boostTime = BOOST_TIME - 1;
+						inventory[0].shrink(1);
+						if (inventory[0].getCount() <= 0) {
+							inventory[0] = ItemStack.EMPTY;
+						}
+					} else {
+						catchFish();
+					}
+				}
 			}
-			if (!redstoneControlOrDisable() || targetWater < 8) {
+			if (targetWater < TARGET_WATER[0] || !redstoneControlOrDisable()) {
 				isActive = false;
 			}
-		} else if (redstoneControlOrDisable() && targetWater >= 8) {
+		} else if (targetWater >= TARGET_WATER[0] && redstoneControlOrDisable()) {
 			isActive = true;
 		}
-		updateValidity();
 		updateIfChanged(curActive);
 	}
 
@@ -134,8 +161,13 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
+		inOcean = BiomeDictionary.hasType(world.getBiome(pos), Type.OCEAN);
+		inRiver = BiomeDictionary.hasType(world.getBiome(pos), Type.RIVER);
 		targetWater = 0;
 
+		if (!isWater(world.getBlockState(pos.down()))) {
+			return;
+		}
 		Iterable<BlockPos> area = BlockPos.getAllInBox(pos.add(-2, -1, -2), pos.add(2, -1, 2));
 
 		for (BlockPos query : area) {
@@ -143,6 +175,7 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 				targetWater++;
 			}
 		}
+		timeConstant = getTimeConstant();
 	}
 
 	protected void transferInput() {
@@ -185,6 +218,20 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		}
 	}
 
+	protected void catchFish() {
+
+		ItemStack fish = FisherManager.getFish();
+		for (int j = 1; j < 5; j++) {
+			if (inventory[j].isEmpty()) {
+				inventory[j] = ItemHelper.cloneStack(fish);
+				break;
+			} else if (inventory[j].getCount() < inventory[j].getMaxStackSize() && ItemHelper.itemsIdentical(inventory[j], fish)) {
+				inventory[j].grow(1);
+				break;
+			}
+		}
+	}
+
 	protected static boolean isWater(IBlockState state) {
 
 		return (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) && state.getValue(BlockLiquid.LEVEL) == 0;
@@ -192,7 +239,29 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 	protected boolean timeCheckOffset() {
 
-		return (world.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
+		return (world.getTotalWorldTime() + offset) % timeConstant == 0;
+	}
+
+	protected int getTimeConstant() {
+
+		int constant = TIME_CONSTANT;
+
+		if (inOcean) {
+			constant /= 3;
+		} else if (inRiver) {
+			constant /= 2;
+		}
+		if (targetWater >= TARGET_WATER[2]) {
+			return constant / 3;
+		} else if (targetWater >= TARGET_WATER[1]) {
+			return constant / 2;
+		}
+		return constant;
+	}
+
+	public int getBoostMult() {
+
+		return boostMult;
 	}
 
 	/* GUI METHODS */
@@ -275,8 +344,7 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return true;
-		// return TapperManager.getFertilizerMultiplier(stack) > 0;
+		return FisherManager.isValidBait(stack);
 	}
 
 }

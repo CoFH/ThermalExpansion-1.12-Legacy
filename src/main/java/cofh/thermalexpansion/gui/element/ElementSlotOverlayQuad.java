@@ -3,15 +3,15 @@ package cofh.thermalexpansion.gui.element;
 import cofh.lib.gui.GuiBase;
 import cofh.thermalexpansion.init.TEProps;
 
-public class ElementSlotOverlayCentrifuge extends ElementSlotOverlay {
+public class ElementSlotOverlayQuad extends ElementSlotOverlay {
 
-	public ElementSlotOverlayCentrifuge(GuiBase gui, int posX, int posY) {
+	public ElementSlotOverlayQuad(GuiBase gui, int posX, int posY) {
 
 		super(gui, posX, posY);
 		this.texture = TEProps.textureGuiSlots4;
 	}
 
-	public ElementSlotOverlayCentrifuge setSlotInfo(SlotColor color, SlotRender render) {
+	public ElementSlotOverlayQuad setSlotInfo(SlotColor color, SlotRender render) {
 
 		slotColor = color;
 		slotRender = render;

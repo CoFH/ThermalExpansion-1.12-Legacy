@@ -26,7 +26,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	public ItemBlockTank(Block block) {
 
 		super(block);
-		setMaxStackSize(16);
+		setMaxStackSize(1);
 	}
 
 	@Override

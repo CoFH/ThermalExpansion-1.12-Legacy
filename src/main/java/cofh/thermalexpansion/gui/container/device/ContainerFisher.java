@@ -1,11 +1,12 @@
 package cofh.thermalexpansion.gui.container.device;
 
 import cofh.lib.gui.slot.ISlotValidator;
+import cofh.lib.gui.slot.SlotRemoveOnly;
 import cofh.lib.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.device.TileFisher;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.util.managers.FisherManager;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
@@ -19,18 +20,16 @@ public class ContainerFisher extends ContainerTEBase implements ISlotValidator {
 
 		myTile = (TileFisher) tile;
 		addSlotToContainer(new SlotValidated(this, myTile, 0, 35, 35));
-
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				addSlotToContainer(new Slot(myTile, j + i * 3 + 1, 98 + j * 18, 17 + i * 18));
-			}
-		}
+		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 107, 26));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 2, 125, 26));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 3, 107, 44));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 4, 125, 44));
 	}
 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		return true;
+		return FisherManager.isValidBait(stack);
 	}
 
 }

@@ -18,7 +18,6 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalfoundation.item.ItemSecurity;
 import com.mojang.authlib.GameProfile;

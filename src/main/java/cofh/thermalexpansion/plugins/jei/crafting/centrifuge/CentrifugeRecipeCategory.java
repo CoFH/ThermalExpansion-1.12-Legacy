@@ -49,7 +49,7 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.CENTRIFUGE);
-		registry.addRecipeClickArea(GuiCentrifuge.class, 71, 34, 24, 16, RecipeUidsTE.CENTRIFUGE);
+		registry.addRecipeClickArea(GuiCentrifuge.class, 72, 34, 24, 16, RecipeUidsTE.CENTRIFUGE);
 		registry.addRecipeCatalyst(BlockMachine.machineCentrifuge, RecipeUidsTE.CENTRIFUGE);
 	}
 
@@ -101,10 +101,10 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 		guiItemStacks.init(0, true, 33, 14);
-		guiItemStacks.init(1, false, 95, 14);
-		guiItemStacks.init(2, false, 113, 14);
-		guiItemStacks.init(3, false, 95, 32);
-		guiItemStacks.init(4, false, 113, 32);
+		guiItemStacks.init(1, false, 96, 14);
+		guiItemStacks.init(2, false, 114, 14);
+		guiItemStacks.init(3, false, 96, 32);
+		guiItemStacks.init(4, false, 114, 32);
 
 		guiFluidStacks.init(0, false, 141, 1, 16, 60, 2000, false, tankOverlay);
 
