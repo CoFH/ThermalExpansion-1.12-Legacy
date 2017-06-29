@@ -5,6 +5,7 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
+import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
@@ -40,6 +41,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_STEAM_TURBINE);
+		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_STEAM_BOILER);
 
 		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion.dynamo_steam");
 
@@ -55,6 +57,8 @@ public class TileDynamoSteam extends TileDynamoBase {
 		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
 	}
 
+	private static final int STEAM_AMOUNT = 250;
+	private static final int STEAM_RF = 40000;
 	private static final int STEAM_HIGH = TEProps.MAX_FLUID_SMALL * 3 / 4;
 
 	private FluidTankCore steamTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
@@ -65,6 +69,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 	/* AUGMENTS */
 	protected boolean augmentTurbine;
+	protected boolean augmentBoiler;
 
 	public TileDynamoSteam() {
 
@@ -86,13 +91,22 @@ public class TileDynamoSteam extends TileDynamoBase {
 		if (augmentTurbine) {
 			return steamTank.getFluidAmount() > STEAM_HIGH;
 		}
-		return steamTank.getFluidAmount() > STEAM_HIGH || (waterRF > 0 || waterTank.getFluidAmount() > 50) && (fuelRF > 0 || SteamManager.getFuelEnergy(inventory[0]) > 0);
+		if (augmentBoiler) {
+			return (waterRF > 0 || waterTank.getFluidAmount() > STEAM_AMOUNT) && (fuelRF > 0 || SteamManager.getFuelEnergy(inventory[0]) > 0);
+		}
+		return steamTank.getFluidAmount() > STEAM_HIGH || (waterRF > 0 || waterTank.getFluidAmount() > 200) && (fuelRF > 0 || SteamManager.getFuelEnergy(inventory[0]) > 0);
 	}
 
 	@Override
 	protected boolean canFinish() {
 
-		return steamTank.getFluidAmount() <= STEAM_HIGH;
+		if (augmentBoiler) {
+			return fuelRF <= 0 || waterRF <= 0;
+		}
+		if (augmentTurbine) {
+			return steamTank.getFluidAmount() <= STEAM_HIGH;
+		}
+		return fuelRF <= 0 || waterRF <= 0;
 	}
 
 	@Override
@@ -107,28 +121,44 @@ public class TileDynamoSteam extends TileDynamoBase {
 			inventory[0] = ItemHelper.consumeItem(inventory[0]);
 		}
 		if (waterRF <= 0) {
-			waterRF += 8000;
-			waterTank.modifyFluidStored(-50);
+			waterRF += STEAM_RF;
+			waterTank.modifyFluidStored(-STEAM_AMOUNT);
 		}
 	}
 
 	@Override
 	protected int processTick() {
 
-		int energy = calcEnergy();
-
-		if (steamTank.getFluidAmount() > STEAM_HIGH) {
-			energyStorage.modifyEnergyStored(energy);
-			steamTank.modifyFluidStored(-energy / 2);
+		int energy;
+		if (augmentBoiler) {
+			energy = energyConfig.maxPower * 2;
+			if (steamTank.getFluidAmount() > STEAM_HIGH) {
+				transferSteam();
+			}
+			if (fuelRF > 0) {
+				fuelRF -= energy;
+				waterRF -= energy;
+				steamTank.modifyFluidStored(energy * 2);
+			}
+		} else {
+			energy = calcEnergy();
+			if (steamTank.getFluidAmount() > STEAM_HIGH) {
+				energyStorage.modifyEnergyStored(energy);
+				steamTank.modifyFluidStored(-energy / 2);
+			}
+			if (fuelRF > 0) {
+				fuelRF -= energy;
+				waterRF -= energy;
+				steamTank.modifyFluidStored(energy);
+			}
+			transferEnergy();
 		}
-		if (fuelRF > 0) {
-			fuelRF -= energy;
-			waterRF -= energy;
-			steamTank.modifyFluidStored(energy);
-		}
-		transferEnergy();
-
 		return energy;
+	}
+
+	protected void transferSteam() {
+
+		steamTank.modifyFluidStored(-FluidHelper.insertFluidIntoAdjacentFluidHandler(world, pos, EnumFacing.values()[facing], new FluidStack(steamTank.getFluid(), energyConfig.maxPower * 2), true));
 	}
 
 	@Override
@@ -234,6 +264,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		super.preAugmentInstall();
 
 		augmentTurbine = false;
+		augmentBoiler = false;
 	}
 
 	@Override
@@ -247,6 +278,14 @@ public class TileDynamoSteam extends TileDynamoBase {
 			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 3));
 			fuelRF = 0;
 			waterRF = 0;
+			return true;
+		}
+		if (!augmentBoiler && TEProps.DYNAMO_STEAM_BOILER.equals(id)) {
+			augmentBoiler = true;
+			hasModeAugment = true;
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 3));
+			energyStorage.setEnergyStored(0);
+			energyMod += 100;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

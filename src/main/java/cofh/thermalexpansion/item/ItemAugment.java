@@ -225,6 +225,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		dynamoThrottle = addAugmentItem(515, TEProps.DYNAMO_THROTTLE, AugmentType.ADVANCED);
 
 		dynamoSteamTurbine = addAugmentItem(640, TEProps.DYNAMO_STEAM_TURBINE, AugmentType.MODE);
+		dynamoSteamBoiler = addAugmentItem(641, TEProps.DYNAMO_STEAM_BOILER, AugmentType.MODE);
 
 		dynamoMagmaticCoolant = addAugmentItem(656, TEProps.DYNAMO_MAGMATIC_COOLANT, AugmentType.MODE);
 
@@ -698,6 +699,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack dynamoThrottle;
 
 	public static ItemStack dynamoSteamTurbine;
+	public static ItemStack dynamoSteamBoiler;
 
 	public static ItemStack dynamoMagmaticCoolant;
 
