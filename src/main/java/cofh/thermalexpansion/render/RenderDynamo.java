@@ -45,7 +45,6 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		double d1 = RenderHelper.RENDER_OFFSET;
 		double d2 = 6F / 16F;
 		double d3 = 10F / 16F;
-		double d4 = 0.001;
 
 		modelCoil[0][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 0, 32, 32, 16).computeNormals().shrinkUVs(d1);
 		modelCoil[1][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 16, 32, 32, 16).computeNormals().shrinkUVs(d1);
@@ -53,8 +52,8 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		modelBase[0][1] = CCModel.quadModel(24).generateBox(0, -8, -8, -8, 16, 10, 16, 0, 0, 64, 64, 16).computeNormals().shrinkUVs(d1);
 		modelBase[1][1] = CCModel.quadModel(24).generateBox(0, -8, -8, -8, 16, 10, 16, 0, 32, 64, 64, 16).computeNormals().shrinkUVs(d1);
 
-		modelBaseOverlay[0][1] = CCModel.quadModel(24).generateBox(0, -8 - d4, -8 - d4, -8 - d4, 16 + 2 * d4, 10 + 2 * d4, 16 + 2 * d4, 0, 0, 64, 64, 16).computeNormals().shrinkUVs(d1);
-		modelBaseOverlay[1][1] = CCModel.quadModel(24).generateBox(0, -8 - d4, -8 - d4, -8 - d4, 16 + 2 * d4, 10 + 2 * d4, 16 + 2 * d4, 0, 32, 64, 64, 16).computeNormals().shrinkUVs(d1);
+		modelBaseOverlay[0][1] = CCModel.quadModel(24).generateBox(0, -8 - d1, -8 - d1, -8 - d1, 16 + 2 * d1, 10 + 2 * d1, 16 + 2 * d1, 0, 0, 64, 64, 16).computeNormals().shrinkUVs(d1);
+		modelBaseOverlay[1][1] = CCModel.quadModel(24).generateBox(0, -8 - d1, -8 - d1, -8 - d1, 16 + 2 * d1, 10 + 2 * d1, 16 + 2 * d1, 0, 32, 64, 64, 16).computeNormals().shrinkUVs(d1);
 
 		modelAnimation[0] = CCModel.quadModel(16).generateBlock(0, d1, d2 + d1, d1, 1 - d1, 1 - d1, 1 - d1, 3).computeNormals();
 		modelAnimation[1] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, 1 - d1, d3 - d1, 1 - d1, 3).computeNormals();
