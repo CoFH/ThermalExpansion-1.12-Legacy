@@ -21,14 +21,13 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 	public ItemBlockCache(Block block) {
 
 		super(block);
-		setMaxStackSize(16);
+		setMaxStackSize(1);
 	}
 
 	@Override
 	public ItemStack setDefaultTag(ItemStack stack, int level) {
 
 		ReconfigurableHelper.setFacing(stack, 3);
-		// RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
 		stack.getTagCompound().setByte("Level", (byte) level);
 
 		return stack;
