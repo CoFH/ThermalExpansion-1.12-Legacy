@@ -204,6 +204,7 @@ public class TEProps {
 	public static final String DYNAMO_THROTTLE = "dynamoThrottle";
 
 	public static final String DYNAMO_STEAM_TURBINE = "dynamoSteamTurbine";
+	public static final String DYNAMO_STEAM_BOILER = "dynamoSteamBoiler";
 
 	public static final String DYNAMO_MAGMATIC_COOLANT = "dynamoMagmaticCoolant";
 

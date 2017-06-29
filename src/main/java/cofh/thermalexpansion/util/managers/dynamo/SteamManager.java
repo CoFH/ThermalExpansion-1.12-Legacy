@@ -43,7 +43,7 @@ public class SteamManager {
 		addFuel(new ItemStack(Items.COAL, 1, 0), 32000);
 		addFuel(new ItemStack(Blocks.COAL_BLOCK), 32000 * 10);
 		addFuel(new ItemStack(Items.COAL, 1, 1), 24000);
-		addFuel(ItemHelper.cloneStack(ItemMaterial.gemCoke, 1), 64000);
+		addFuel(ItemHelper.cloneStack(ItemMaterial.gemCoke, 1), 48000);
 
 		loadFuels();
 	}
