@@ -2,6 +2,7 @@ package cofh.thermalexpansion.render;
 
 import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.texture.TextureUtils;
+import codechicken.lib.util.TransformUtils;
 import cofh.core.render.RenderUtils;
 import cofh.thermalexpansion.block.storage.BlockStrongbox;
 import cofh.thermalexpansion.block.storage.TileStrongbox;
@@ -12,6 +13,7 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformT
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.model.IModelState;
 
 public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> implements IItemRenderer {
 
@@ -73,7 +75,12 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 		render(level, access, 2, offset, offset, offset);
 	}
 
-	@Override
+    @Override
+    public IModelState getTransforms() {
+        return TransformUtils.DEFAULT_BLOCK;
+    }
+
+    @Override
 	public boolean isAmbientOcclusion() {
 
 		return true;
