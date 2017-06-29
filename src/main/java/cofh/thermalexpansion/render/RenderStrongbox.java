@@ -75,12 +75,13 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 		render(level, access, 2, offset, offset, offset);
 	}
 
-    @Override
-    public IModelState getTransforms() {
-        return TransformUtils.DEFAULT_BLOCK;
-    }
+	@Override
+	public IModelState getTransforms() {
 
-    @Override
+		return TransformUtils.DEFAULT_BLOCK;
+	}
+
+	@Override
 	public boolean isAmbientOcclusion() {
 
 		return true;
