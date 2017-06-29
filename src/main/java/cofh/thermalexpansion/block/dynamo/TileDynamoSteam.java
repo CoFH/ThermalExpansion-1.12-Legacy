@@ -276,6 +276,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 			augmentTurbine = true;
 			hasModeAugment = true;
 			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 3));
+			waterTank.modifyFluidStored(-waterTank.getCapacity());
 			fuelRF = 0;
 			waterRF = 0;
 			return true;
@@ -285,7 +286,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 			hasModeAugment = true;
 			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 3));
 			energyStorage.setEnergyStored(0);
-			energyMod += 100;
+			energyMod += 50;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

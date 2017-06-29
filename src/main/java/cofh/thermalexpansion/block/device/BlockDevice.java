@@ -282,7 +282,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		TileNullifier.initialize();
 		TileHeatSink.initialize();
 		TileTapper.initialize();
-		TileFisher.initialize();
+		// TileFisher.initialize();
 
 		TileItemBuffer.initialize();
 
@@ -290,7 +290,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		deviceNullifier = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.NULLIFIER.getMetadata()));
 		deviceHeatSink = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.HEAT_SINK.getMetadata()));
 		deviceTapper = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.TAPPER.getMetadata()));
-		deviceFisher = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.TAPPER.getMetadata()));
+		// deviceFisher = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.TAPPER.getMetadata()));
 		deviceItemBuffer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
 
 		addRecipes();
@@ -358,18 +358,18 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					'Y', "ingotCopper"
 			));
 		}
-		if (enable[Type.FISHER.getMetadata()]) {
-			addRecipe(ShapedRecipe(deviceTapper,
-					" X ",
-					"YCY",
-					"IPI",
-					'C', ItemFrame.frameDevice,
-					'I', tinPart,
-					'P', ItemMaterial.redstoneServo,
-					'X', "blockWool",
-					'Y', Blocks.IRON_BARS
-			));
-		}
+//		if (enable[Type.FISHER.getMetadata()]) {
+//			addRecipe(ShapedRecipe(deviceTapper,
+//					" X ",
+//					"YCY",
+//					"IPI",
+//					'C', ItemFrame.frameDevice,
+//					'I', tinPart,
+//					'P', ItemMaterial.redstoneServo,
+//					'X', "blockWool",
+//					'Y', Blocks.IRON_BARS
+//			));
+//		}
 		if (enable[Type.ITEM_BUFFER.getMetadata()]) {
 			addRecipe(ShapedRecipe(deviceItemBuffer,
 					" X ",

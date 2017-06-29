@@ -42,7 +42,7 @@ public class GuiFisher extends GuiDeviceBase {
 		slotInput = addElement(new ElementSlotOverlay(this, 35, 35).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
 		slotOutput = (ElementSlotOverlayQuad) addElement(new ElementSlotOverlayQuad(this, 107, 26).setSlotInfo(SlotColor.ORANGE, SlotRender.FULL));
 
-		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 62, 35).setSize(16, 16).setTexture(TEX_FLAME_GREEN, 32, 16));
+		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 62, 35).setSize(16, 16).setTexture(TEX_ALCHEMY, 32, 16));
 	}
 
 	@Override

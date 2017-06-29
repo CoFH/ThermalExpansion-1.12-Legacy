@@ -428,10 +428,16 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	protected boolean isValidAugment(AugmentType type, String id) {
 
-		if (type == AugmentType.CREATIVE && level != -1) {
+		if (type == AugmentType.CREATIVE && !isCreative) {
 			return false;
 		}
 		if (type == AugmentType.MODE && hasModeAugment) {
+			return false;
+		}
+		if(augmentCoilDuct && TEProps.DYNAMO_COIL_DUCT.equals(id)) {
+			return false;
+		}
+		if(augmentThrottle && TEProps.DYNAMO_THROTTLE.equals(id)) {
 			return false;
 		}
 		return VALID_AUGMENTS_BASE.contains(id) || VALID_AUGMENTS[getType()].contains(id) || super.isValidAugment(type, id);

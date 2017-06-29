@@ -321,6 +321,9 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		if (type == AugmentType.MODE && hasModeAugment) {
 			return false;
 		}
+		if(augmentSecondaryNull && TEProps.MACHINE_SECONDARY_NULL.equals(id)) {
+			return false;
+		}
 		return VALID_AUGMENTS_BASE.contains(id) || VALID_AUGMENTS[getType()].contains(id) || super.isValidAugment(type, id);
 	}
 

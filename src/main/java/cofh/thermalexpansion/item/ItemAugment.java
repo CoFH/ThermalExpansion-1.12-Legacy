@@ -225,7 +225,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		dynamoThrottle = addAugmentItem(515, TEProps.DYNAMO_THROTTLE, AugmentType.ADVANCED);
 
 		dynamoSteamTurbine = addAugmentItem(640, TEProps.DYNAMO_STEAM_TURBINE, AugmentType.MODE);
-		dynamoSteamBoiler = addAugmentItem(641, TEProps.DYNAMO_STEAM_BOILER, AugmentType.MODE);
+		// dynamoSteamBoiler = addAugmentItem(641, TEProps.DYNAMO_STEAM_BOILER, AugmentType.MODE);
 
 		dynamoMagmaticCoolant = addAugmentItem(656, TEProps.DYNAMO_MAGMATIC_COOLANT, AugmentType.MODE);
 
@@ -518,6 +518,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "nuggetLead",
 				'Y', "blockGlass"
 		));
+
 		addRecipe(ShapedRecipe(dynamoSteamTurbine,
 				" G ",
 				"ICI",
@@ -528,6 +529,17 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "ingotIron",
 				'Y', "dustRedstone"
 		));
+//		addRecipe(ShapedRecipe(dynamoSteamBoiler,
+//				" G ",
+//				"ICI",
+//				"YXY",
+//				'C', ItemMaterial.powerCoilElectrum,
+//				'G', "gearIron",
+//				'I', "plateCopper",
+//				'X', "ingotIron",
+//				'Y', "dustRedstone"
+//		));
+
 		addRecipe(ShapedRecipe(dynamoMagmaticCoolant,
 				" G ",
 				"ICI",
@@ -538,6 +550,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "blockGlassHardened",
 				'Y', "dustCryotheum"
 		));
+
 		addRecipe(ShapedRecipe(dynamoCompressionCoolant,
 				" G ",
 				"ICI",
@@ -558,6 +571,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "blockGlassHardened",
 				'Y', "dustPyrotheum"
 		));
+
 		addRecipe(ShapedRecipe(dynamoReactantElemental,
 				" G ",
 				"ICI",
