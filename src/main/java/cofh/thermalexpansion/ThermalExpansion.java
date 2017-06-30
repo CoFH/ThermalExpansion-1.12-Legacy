@@ -76,7 +76,6 @@ public class ThermalExpansion {
 		TEItems.preInit();
 		TEFlorbs.preInit();
 		TEPlugins.preInit();
-		//TEAchievements.preInit();
 
 		/* Register Handlers */
 		registerHandlers();
@@ -91,7 +90,6 @@ public class ThermalExpansion {
 		TEItems.initialize();
 		TEFlorbs.initialize();
 		TEPlugins.initialize();
-		// TEAchievements.initialize();
 
 		proxy.initialize(event);
 	}
@@ -103,7 +101,6 @@ public class ThermalExpansion {
 		TEItems.postInit();
 		TEFlorbs.postInit();
 		TEPlugins.postInit();
-		// TEAchievements.postInit();
 
 		managerInitialize();
 

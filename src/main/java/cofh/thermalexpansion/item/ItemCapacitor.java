@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.item;
 
 import cofh.api.item.IMultiModeItem;
+import cofh.api.item.INBTCopyIngredient;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.item.IEnchantableItem;
 import cofh.core.item.ItemMulti;
@@ -41,7 +42,7 @@ import java.util.Map;
 
 import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
 
-public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem {
+public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem, INBTCopyIngredient {
 
 	public ItemCapacitor() {
 
@@ -414,43 +415,6 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 				'X', "ingotCopper",
 				'Y', "dustSulfur"
 		);
-		// TODO: FIXME.
-//		addRecipe(new RecipeUpgrade(capacitorHardened,
-//				" R ",
-//				"IXI",
-//				"RYR",
-//				'I', "ingotInvar",
-//				'R', "dustRedstone",
-//				'X', capacitorBasic,
-//				'Y', "ingotTin"
-//		));
-//		addRecipe(new RecipeUpgrade(capacitorReinforced,
-//				" R ",
-//				"IXI",
-//				"RYR",
-//				'I', "ingotElectrum",
-//				'R', "dustRedstone",
-//				'X', capacitorHardened,
-//				'Y', "blockGlassHardened"
-//		));
-//		addRecipe(new RecipeUpgrade(capacitorSignalum,
-//				" R ",
-//				"IXI",
-//				"RYR",
-//				'I', "ingotSignalum",
-//				'R', "dustRedstone",
-//				'X', capacitorReinforced,
-//				'Y', "dustCryotheum"
-//		));
-//		addRecipe(new RecipeUpgrade(capacitorResonant,
-//				" R ",
-//				"IXI",
-//				"RYR",
-//				'I', "ingotEnderium",
-//				'R', "dustRedstone",
-//				'X', capacitorSignalum,
-//				'Y', "dustPyrotheum"
-//		));
 
 		// @formatter:on
 

@@ -1,0 +1,30 @@
+{
+	"type": "thermalexpansion:upgrade_shaped",
+	"result": {
+		"item": "thermalexpansion:capacitor",
+		"data": 2
+	},
+	"pattern": [
+		" R ",
+		"IXI",
+		"RYR"
+	],
+	"key": {
+		"I": {
+			"type": "forge:ore_dict",
+			"ore": "ingotElectrum"
+		},
+		"R": {
+			"type": "forge:ore_dict",
+			"ore": "dustRedstone"
+		},
+		"X": {
+			"item": "thermalexpansion:capacitor",
+			"data": 1
+		},
+		"Y": {
+			"type": "forge:ore_dict",
+			"ore": "blockGlassHardened"
+		}
+	}
+}

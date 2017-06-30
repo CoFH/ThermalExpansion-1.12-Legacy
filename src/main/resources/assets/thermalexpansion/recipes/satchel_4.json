@@ -1,0 +1,26 @@
+{
+	"type": "thermalexpansion:upgrade_shaped",
+	"result": {
+		"item": "thermalexpansion:satchel",
+		"data": 4
+	},
+	"pattern": [
+		" Y ",
+		"IXI",
+		"Y Y"
+	],
+	"key": {
+		"I": {
+			"type": "forge:ore_dict",
+			"ore": "ingotEnderium"
+		},
+		"X": {
+			"item": "thermalexpansion:satchel",
+			"data": 3
+		},
+		"Y": {
+			"type": "forge:ore_dict",
+			"ore": "nuggetSignalum"
+		}
+	}
+}

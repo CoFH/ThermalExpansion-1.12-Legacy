@@ -3,6 +3,7 @@ package cofh.thermalexpansion.item;
 import cofh.api.core.ISecurable.AccessMode;
 import cofh.api.item.IInventoryContainerItem;
 import cofh.api.item.IMultiModeItem;
+import cofh.api.item.INBTCopyIngredient;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
@@ -46,7 +47,7 @@ import java.util.UUID;
 
 import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
 
-public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeItem, IInventoryContainerItem, IEnchantableItem {
+public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeItem, IInventoryContainerItem, IEnchantableItem, INBTCopyIngredient {
 
 	public static ItemStack setDefaultInventoryTag(ItemStack container) {
 
@@ -329,46 +330,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 				'X', "blockWool",
 				'Y', "blockRockwool"
 		);
-		// TODO: FIXME.
-//		addRecipe(new RecipeUpgrade(satchelHardened,
-//			" Y ",
-//				"IXI",
-//				"Y Y",
-//				'I', "ingotInvar",
-//				'X', satchelBasic,
-//				'Y', "nuggetTin"
-//		));
-//		addRecipe(new RecipeUpgrade(satchelReinforced,
-//				" Y ",
-//				"IXI",
-//				"Y Y",
-//				'I', "ingotElectrum",
-//				'X', satchelHardened,
-//				'Y', "nuggetInvar"
-//		));
-//		addRecipe(new RecipeUpgrade(satchelSignalum,
-//				" Y ",
-//				"IXI",
-//				"Y Y",
-//				'I', "ingotSignalum",
-//				'X', satchelReinforced,
-//				'Y', "nuggetElectrum"
-//		));
-//		addRecipe(new RecipeUpgrade(satchelResonant,
-//				" Y ",
-//				"IXI",
-//				"Y Y",
-//				'I', "ingotEnderium",
-//				'X', satchelSignalum,
-//				'Y', "nuggetSignalum"
-//		));
-//
-//		addRecipe(new RecipeSecure(satchelBasic, " L ", "SXS", " S ", 'L', ItemSecurity.lock, 'S', "nuggetSignalum", 'X', satchelBasic));
-//		addRecipe(new RecipeSecure(satchelHardened, " L ", "SXS", " S ", 'L', ItemSecurity.lock, 'S', "nuggetSignalum", 'X', satchelHardened));
-//		addRecipe(new RecipeSecure(satchelReinforced, " L ", "SXS", " S ", 'L', ItemSecurity.lock, 'S', "nuggetSignalum", 'X', satchelReinforced));
-//		addRecipe(new RecipeSecure(satchelSignalum, " L ", "SXS", " S ", 'L', ItemSecurity.lock, 'S', "nuggetSignalum", 'X', satchelSignalum));
-//		addRecipe(new RecipeSecure(satchelResonant, " L ", "SXS", " S ", 'L', ItemSecurity.lock, 'S', "nuggetSignalum", 'X', satchelResonant));
-//		addRecipe(new RecipeSecure(satchelCreative, " L ", "SXS", " S ", 'L', ItemSecurity.lock, 'S', "nuggetSignalum", 'X', satchelCreative));
 
 		// @formatter:on
 

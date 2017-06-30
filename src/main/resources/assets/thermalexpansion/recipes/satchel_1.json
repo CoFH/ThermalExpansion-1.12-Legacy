@@ -1,0 +1,26 @@
+{
+	"type": "thermalexpansion:upgrade_shaped",
+	"result": {
+		"item": "thermalexpansion:satchel",
+		"data": 1
+	},
+	"pattern": [
+		" Y ",
+		"IXI",
+		"Y Y"
+	],
+	"key": {
+		"I": {
+			"type": "forge:ore_dict",
+			"ore": "ingotInvar"
+		},
+		"X": {
+			"item": "thermalexpansion:satchel",
+			"data": 0
+		},
+		"Y": {
+			"type": "forge:ore_dict",
+			"ore": "nuggetTin"
+		}
+	}
+}

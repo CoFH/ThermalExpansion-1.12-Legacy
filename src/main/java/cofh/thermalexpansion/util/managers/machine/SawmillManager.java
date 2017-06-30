@@ -58,6 +58,18 @@ public class SawmillManager {
 		 * 1 Sawdust / 4 Sticks (25% / Stick)
 		 */
 
+		/* VANILLA LOGS */
+		{
+			int energy = DEFAULT_ENERGY / 2;
+
+			addRecipe(energy, new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.PLANKS, 6, 0), ItemMaterial.dustWood);
+			addRecipe(energy, new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.PLANKS, 6, 1), ItemMaterial.dustWood);
+			addRecipe(energy, new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.PLANKS, 6, 2), ItemMaterial.dustWood);
+			addRecipe(energy, new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.PLANKS, 6, 3), ItemMaterial.dustWood);
+			addRecipe(energy, new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.PLANKS, 6, 4), ItemMaterial.dustWood);
+			addRecipe(energy, new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, 6, 5), ItemMaterial.dustWood);
+		}
+
 		/* MISC WOOD BLOCKS */
 		{
 			int energy = DEFAULT_ENERGY * 3 / 2;
