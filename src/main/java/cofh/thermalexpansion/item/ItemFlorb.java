@@ -15,11 +15,11 @@ import cofh.thermalexpansion.entity.projectile.EntityFlorb;
 import cofh.thermalexpansion.init.TEFlorbs;
 import cofh.thermalexpansion.render.item.ModelFlorb;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
@@ -31,6 +31,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemFlorb extends ItemMulti implements IBakeryProvider {
@@ -58,18 +59,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider {
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
-
-		list.add(new ItemStack(item, 1, 0));
-		list.add(new ItemStack(item, 1, 1));
-
-		for (int i = 0; i < TEFlorbs.florbList.size(); i++) {
-			list.add(TEFlorbs.florbList.get(i));
-		}
-	}
-
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean check) {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 
 		if (stack.getTagCompound() != null) {
 			Fluid fluid = FluidRegistry.getFluid(stack.getTagCompound().getString("Fluid"));
@@ -79,22 +69,35 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider {
 			}
 		}
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForDetails());
+			tooltip.add(StringHelper.shiftForDetails());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
 		if (stack.getTagCompound() == null) {
 			if (ItemHelper.getItemDamage(stack) == 0) {
-				list.add(StringHelper.localize("info.thermalexpansion.florb.a.0"));
+				tooltip.add(StringHelper.localize("info.thermalexpansion.florb.a.0"));
 			} else {
-				list.add(StringHelper.localize("info.thermalexpansion.florb.b.0"));
+				tooltip.add(StringHelper.localize("info.thermalexpansion.florb.b.0"));
 			}
-			list.add(StringHelper.localize("info.thermalexpansion.florb.c.0"));
-			list.add(StringHelper.localize("info.thermalexpansion.florb.c.1"));
+			tooltip.add(StringHelper.localize("info.thermalexpansion.florb.c.0"));
+			tooltip.add(StringHelper.localize("info.thermalexpansion.florb.c.1"));
 		} else {
-			list.add(StringHelper.localize("info.thermalexpansion.florb.d.0"));
-			list.add(StringHelper.localize("info.thermalexpansion.florb.d.1"));
+			tooltip.add(StringHelper.localize("info.thermalexpansion.florb.d.0"));
+			tooltip.add(StringHelper.localize("info.thermalexpansion.florb.d.1"));
+		}
+	}
+
+	@Override
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+
+		if (isInCreativeTab(tab)) {
+			items.add(new ItemStack(this, 1, 0));
+			items.add(new ItemStack(this, 1, 1));
+
+			for (int i = 0; i < TEFlorbs.florbList.size(); i++) {
+				items.add(TEFlorbs.florbList.get(i));
+			}
 		}
 	}
 

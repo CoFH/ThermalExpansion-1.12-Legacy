@@ -60,7 +60,7 @@ public class GuiFisher extends GuiDeviceBase {
 	protected void drawGuiContainerForegroundLayer(int x, int y) {
 
 		if (myTile.getBoostMult() > 0) {
-			fontRendererObj.drawString("x" + myTile.getBoostMult(), 82, 42, 0x404040);
+			fontRenderer.drawString("x" + myTile.getBoostMult(), 82, 42, 0x404040);
 		}
 		super.drawGuiContainerForegroundLayer(x, y);
 	}

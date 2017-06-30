@@ -1,13 +1,13 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.api.core.IAccelerable;
-import cofh.api.energy.EnergyStorage;
 import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.redstoneflux.impl.EnergyStorage;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.init.TEProps;

@@ -169,8 +169,8 @@ public class GuiItemBuffer extends GuiDeviceBase {
 		if (myTile.amountOutput < 10) {
 			xOutput += 3;
 		}
-		fontRendererObj.drawString(input, xInput, 42, 0x404040);
-		fontRendererObj.drawString(output, xOutput, 42, 0x404040);
+		fontRenderer.drawString(input, xInput, 42, 0x404040);
+		fontRenderer.drawString(output, xOutput, 42, 0x404040);
 
 		super.drawGuiContainerForegroundLayer(x, y);
 	}

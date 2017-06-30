@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.item;
 
-import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.item.IMultiModeItem;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.item.IEnchantableItem;
@@ -13,10 +12,12 @@ import cofh.core.util.helpers.ChatHelper;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.thermalexpansion.ThermalExpansion;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -24,7 +25,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
@@ -36,7 +36,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
@@ -90,8 +90,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	@Override
-	@SideOnly (Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
 			tooltip.add(StringHelper.shiftForDetails());
@@ -119,15 +118,16 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	@Override
-	@SideOnly (Side.CLIENT)
-	public void getSubItems(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		for (int metadata : itemList) {
-			if (metadata != CREATIVE) {
-				list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, metadata), 0));
-				list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, metadata), getBaseCapacity(metadata)));
-			} else {
-				list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, metadata), getBaseCapacity(metadata)));
+		if (isInCreativeTab(tab)) {
+			for (int metadata : itemList) {
+				if (metadata != CREATIVE) {
+					items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), 0));
+					items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), getBaseCapacity(metadata)));
+				} else {
+					items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), getBaseCapacity(metadata)));
+				}
 			}
 		}
 	}

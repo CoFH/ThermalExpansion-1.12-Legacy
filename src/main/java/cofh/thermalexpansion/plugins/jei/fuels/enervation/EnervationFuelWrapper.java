@@ -53,7 +53,7 @@ public class EnervationFuelWrapper extends BaseFuelWrapper {
 		super.drawInfo(minecraft, recipeWidth, recipeHeight, mouseX, mouseY);
 
 		if (maxEnergy > 0) {
-			minecraft.fontRendererObj.drawString(StringHelper.formatNumber(maxEnergy) + " RF", 96, 10 + (recipeHeight - 9) / 2, 0xD00000);
+			minecraft.fontRenderer.drawString(StringHelper.formatNumber(maxEnergy) + " RF", 96, 10 + (recipeHeight - 9) / 2, 0xD00000);
 		}
 	}
 

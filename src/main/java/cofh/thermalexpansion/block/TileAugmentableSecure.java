@@ -158,7 +158,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 		super.sendGuiNetworkData(container, listener);
 		if (listener instanceof EntityPlayer) {
-			listener.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) listener)) ? 1 : 0);
+			listener.sendWindowProperty(container, 0, canPlayerAccess(((EntityPlayer) listener)) ? 1 : 0);
 		}
 	}
 

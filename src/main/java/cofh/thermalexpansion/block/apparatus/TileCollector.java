@@ -103,12 +103,12 @@ public class TileCollector extends TileApparatusBase implements IInventoryConnec
 				break;
 		}
 		List<EntityItem> entityItems = world.getEntitiesWithinAABB(EntityItem.class, area);
-		for (EntityItem item : entityItems) {
-			if (item.isDead || item.getEntityItem().getCount() <= 0) {
+		for (EntityItem entityItem : entityItems) {
+			if (entityItem.isDead || entityItem.getItem().getCount() <= 0) {
 				continue;
 			}
-			stuffedItems.add(item.getEntityItem());
-			item.world.removeEntity(item);
+			stuffedItems.add(entityItem.getItem());
+			entityItem.world.removeEntity(entityItem);
 		}
 		if (augmentEntityCollection) {
 			List<EntityLivingBase> entityLiving = world.getEntitiesWithinAABB(EntityLivingBase.class, area);

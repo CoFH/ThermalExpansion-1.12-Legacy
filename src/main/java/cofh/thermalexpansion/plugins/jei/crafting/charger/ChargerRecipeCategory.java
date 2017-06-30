@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.plugins.jei.crafting.charger;
 
-import cofh.api.energy.IEnergyContainerItem;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.inventory.ComparableItemStackNBT;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;
 import cofh.thermalexpansion.plugins.jei.Drawables;
@@ -68,7 +68,7 @@ public class ChargerRecipeCategory extends BaseRecipeCategory<ChargerRecipeWrapp
 				try {
 					HashSet<ComparableItemStack> processedStacks = new HashSet<>();
 					NonNullList<ItemStack> list = NonNullList.create();
-					item.getSubItems(item, item.getCreativeTab(), list);
+					item.getSubItems(item.getCreativeTab(), list);
 
 					for (ItemStack chargable : list) {
 						IEnergyContainerItem energyContainerItem = (IEnergyContainerItem) item;

@@ -109,7 +109,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 
 		if (chance > 0) {
 			String dispChance = StringHelper.formatNumber(chance) + "%";
-			minecraft.fontRendererObj.drawString(dispChance, 102 - 6 * dispChance.length(), 48, 0x808080);
+			minecraft.fontRenderer.drawString(dispChance, 102 - 6 * dispChance.length(), 48, 0x808080);
 		}
 	}
 

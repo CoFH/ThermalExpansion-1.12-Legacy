@@ -22,7 +22,7 @@ public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileCache tile, double x, double y, double z, float f, int destroyStage) {
+	public void render(TileCache tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
 		if (tile.storedStack.isEmpty()) {
 			return;

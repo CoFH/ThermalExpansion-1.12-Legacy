@@ -40,11 +40,9 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import static cofh.lib.util.helpers.ItemHelper.addRecipe;
@@ -80,12 +78,11 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	}
 
 	@Override
-	@SideOnly (Side.CLIENT)
-	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
-				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, i)));
+				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i)));
 			}
 		}
 	}
@@ -262,11 +259,11 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	public boolean preInit() {
 
 		this.setRegistryName("device");
-		GameRegistry.register(this);
+		ForgeRegistries.BLOCKS.register(this);
 
 		itemBlock = new ItemBlockDevice(this);
 		itemBlock.setRegistryName(this.getRegistryName());
-		GameRegistry.register(itemBlock);
+		ForgeRegistries.ITEMS.register(itemBlock);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 

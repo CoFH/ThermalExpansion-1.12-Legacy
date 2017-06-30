@@ -3,7 +3,7 @@ package cofh.thermalexpansion.init;
 import cofh.thermalexpansion.ThermalExpansion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class TESounds {
 
@@ -27,7 +27,7 @@ public class TESounds {
 
 		SoundEvent sound = new SoundEvent(new ResourceLocation(ThermalExpansion.MOD_ID + ":" + id));
 		sound.setRegistryName(id);
-		GameRegistry.register(sound);
+		ForgeRegistries.SOUND_EVENTS.register(sound);
 		return sound;
 	}
 

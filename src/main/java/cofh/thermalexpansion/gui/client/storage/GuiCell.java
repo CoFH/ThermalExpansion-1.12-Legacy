@@ -254,8 +254,8 @@ public class GuiCell extends GuiCore {
 		if (baseTile.amountSend >= 100000) {
 			xSend -= 3;
 		}
-		fontRendererObj.drawString(recv, xRecv, 42, 0x404040);
-		fontRendererObj.drawString(send, xSend, 42, 0x404040);
+		fontRenderer.drawString(recv, xRecv, 42, 0x404040);
+		fontRenderer.drawString(send, xSend, 42, 0x404040);
 
 		super.drawGuiContainerForegroundLayer(x, y);
 	}

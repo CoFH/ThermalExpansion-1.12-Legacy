@@ -52,9 +52,9 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 	}
 
 	@Override
-	public void renderTileEntityAt(TileStrongbox tile, double x, double y, double z, float f, int destroyStage) {
+	public void render(TileStrongbox tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
-		model.boxLid.rotateAngleX = (float) tile.getRadianLidAngle(f);
+		model.boxLid.rotateAngleX = (float) tile.getRadianLidAngle(partialTicks);
 
 		render(tile.isCreative ? 5 : tile.getLevel(), tile.getAccess().ordinal(), tile.getFacing(), x, y, z);
 	}
@@ -92,4 +92,5 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 
 		return true;
 	}
+
 }

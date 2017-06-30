@@ -1,12 +1,12 @@
 package cofh.thermalexpansion.block;
 
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyContainerItem;
-import cofh.api.energy.IEnergyReceiver;
-import cofh.api.energy.IEnergyStorage;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.EnergyHelper;
+import cofh.redstoneflux.api.IEnergyContainerItem;
+import cofh.redstoneflux.api.IEnergyReceiver;
+import cofh.redstoneflux.api.IEnergyStorage;
+import cofh.redstoneflux.impl.EnergyStorage;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;

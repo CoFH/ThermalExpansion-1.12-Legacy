@@ -54,7 +54,7 @@ public class ReactantFuelWrapper extends BaseFuelWrapper {
 		durationFill.draw(minecraft, 22, 43);
 		energyMeter.draw(minecraft, 71, 7);
 
-		minecraft.fontRendererObj.drawString(StringHelper.formatNumber(energy) + " RF", 96, (recipeHeight - 9) / 2, 0x808080);
+		minecraft.fontRenderer.drawString(StringHelper.formatNumber(energy) + " RF", 96, (recipeHeight - 9) / 2, 0x808080);
 		//		minecraft.fontRendererObj.drawString(StringHelper.formatNumber(energy * 10) + " RF", 96, 10 + (recipeHeight - 9) / 2, 0x089e4c);
 	}
 

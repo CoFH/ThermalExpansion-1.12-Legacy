@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
-import cofh.api.energy.IEnergyContainerItem;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.EnergyHelper;
+import cofh.redstoneflux.api.IEnergyContainerItem;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;

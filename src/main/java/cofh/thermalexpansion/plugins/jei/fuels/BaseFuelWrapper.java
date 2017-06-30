@@ -22,7 +22,7 @@ public abstract class BaseFuelWrapper extends BlankRecipeWrapper {
 		durationFill.draw(minecraft, 34, 43);
 		energyMeter.draw(minecraft, 71, 7);
 
-		minecraft.fontRendererObj.drawString(StringHelper.formatNumber(energy) + " RF", 96, (recipeHeight - 9) / 2, 0x808080);
+		minecraft.fontRenderer.drawString(StringHelper.formatNumber(energy) + " RF", 96, (recipeHeight - 9) / 2, 0x808080);
 	}
 
 	@Nullable

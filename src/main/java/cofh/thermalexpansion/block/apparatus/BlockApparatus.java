@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block.apparatus;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.bakery.BlockBakeryProperties;
 import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
@@ -37,11 +36,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import static cofh.lib.util.helpers.ItemHelper.addRecipe;
@@ -68,22 +65,22 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		// Listed
 		builder.add(VARIANT);
 		// UnListed
-		builder.add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
+		builder.add(TEProps.CREATIVE);
 		builder.add(TEProps.LEVEL);
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FACING);
 		builder.add(TEProps.SIDE_CONFIG);
+		builder.add(TEProps.TILE);
 
 		return builder.build();
 	}
 
 	@Override
-	@SideOnly (Side.CLIENT)
-	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
-				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, i)));
+				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i)));
 			}
 		}
 	}
@@ -219,11 +216,11 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 	public boolean preInit() {
 
 		this.setRegistryName("apparatus");
-		GameRegistry.register(this);
+		ForgeRegistries.BLOCKS.register(this);
 
 		itemBlock = new ItemBlockApparatus(this);
 		itemBlock.setRegistryName(this.getRegistryName());
-		GameRegistry.register(itemBlock);
+		ForgeRegistries.ITEMS.register(itemBlock);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 

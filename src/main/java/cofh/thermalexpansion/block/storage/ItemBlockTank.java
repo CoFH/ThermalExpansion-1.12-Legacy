@@ -10,15 +10,17 @@ import cofh.lib.util.capabilities.FluidContainerItemWrapper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import net.minecraft.block.Block;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerItem, IEnchantableItem {
@@ -45,7 +47,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 
 		SecurityHelper.addOwnerInformation(stack, tooltip);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {

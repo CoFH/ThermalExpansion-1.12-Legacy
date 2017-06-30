@@ -1,25 +1,27 @@
 package cofh.thermalexpansion.block.storage;
 
-import cofh.api.energy.IEnergyContainerItem;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.item.IEnchantableItem;
 import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
-import cofh.lib.util.capabilities.EnergyContainerItemWrapper;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.redstoneflux.api.IEnergyContainerItem;
+import cofh.redstoneflux.util.EnergyContainerItemWrapper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.block.Block;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerItem, IEnchantableItem {
@@ -52,7 +54,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 
 		SecurityHelper.addOwnerInformation(stack, tooltip);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {

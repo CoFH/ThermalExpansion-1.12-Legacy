@@ -21,7 +21,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -38,11 +37,9 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nonnull;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import static cofh.lib.util.helpers.ItemHelper.addRecipe;
@@ -76,19 +73,18 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 	}
 
 	@Override
-	@SideOnly (Side.CLIENT)
-	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
 		if (enable) {
 			if (TEProps.creativeTabShowAllLevels) {
 				for (int j = 0; j < 5; j++) {
-					list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, 0), j));
+					items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, 0), j));
 				}
 			} else {
-				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, 0), TEProps.creativeTabLevel));
+				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, 0), TEProps.creativeTabLevel));
 			}
 			if (TEProps.creativeTabShowCreative) {
-				list.add(itemBlock.setCreativeTag(new ItemStack(item, 1, 0), 4));
+				items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, 0), 4));
 			}
 		}
 	}
@@ -259,11 +255,11 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 	public boolean preInit() {
 
 		this.setRegistryName("tank");
-		GameRegistry.register(this);
+		ForgeRegistries.BLOCKS.register(this);
 
 		itemBlock = new ItemBlockTank(this);
 		itemBlock.setRegistryName(this.getRegistryName());
-		GameRegistry.register(itemBlock);
+		ForgeRegistries.ITEMS.register(itemBlock);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 

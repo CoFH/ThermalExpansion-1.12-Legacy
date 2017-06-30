@@ -17,7 +17,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -30,11 +29,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -55,19 +53,18 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister, IWorl
 	}
 
 	@Override
-	@SideOnly (Side.CLIENT)
-	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, NonNullList<ItemStack> list) {
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
 		if (enable) {
 			if (TEProps.creativeTabShowAllLevels) {
 				for (int j = 0; j < 5; j++) {
-					list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, 0), j));
+					items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, 0), j));
 				}
 			} else {
-				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, 0), TEProps.creativeTabLevel));
+				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, 0), TEProps.creativeTabLevel));
 			}
 			if (TEProps.creativeTabShowCreative) {
-				list.add(itemBlock.setCreativeTag(new ItemStack(item, 1, 0), 4));
+				items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, 0), 4));
 			}
 		}
 	}
@@ -195,11 +192,11 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister, IWorl
 	public boolean preInit() {
 
 		this.setRegistryName("strongbox");
-		GameRegistry.register(this);
+		ForgeRegistries.BLOCKS.register(this);
 
 		itemBlock = new ItemBlockStrongbox(this);
 		itemBlock.setRegistryName(this.getRegistryName());
-		GameRegistry.register(itemBlock);
+		ForgeRegistries.ITEMS.register(itemBlock);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
