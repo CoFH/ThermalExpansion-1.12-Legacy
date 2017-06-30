@@ -16,14 +16,13 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapelessRecipe;
+import static cofh.lib.util.helpers.RecipeHelper.addShapelessRecipe;
 
 public class TEFlorbs {
 
@@ -89,12 +88,12 @@ public class TEFlorbs {
 		if (!enable) {
 			return;
 		}
-		GameRegistry.addRecipe(ShapelessRecipe(florbStack, "dustWood", "crystalSlag", "slimeball"));
-		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, "dustWood", "crystalSlag", "slimeball", Items.BLAZE_POWDER));
-		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, "dustWood", "crystalSlag", Items.MAGMA_CREAM));
+		addShapelessRecipe(florbStack, "dustWood", "crystalSlag", "slimeball");
+		addShapelessRecipe(florbMagmaticStack, "dustWood", "crystalSlag", "slimeball", Items.BLAZE_POWDER);
+		addShapelessRecipe(florbMagmaticStack, "dustWood", "crystalSlag", Items.MAGMA_CREAM);
 
-		GameRegistry.addRecipe(ShapelessRecipe(florbStack, "dustWood", "crystalSlag", ItemMaterial.globRosin));
-		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, "dustWood", "crystalSlag", ItemMaterial.globRosin, Items.BLAZE_POWDER));
+		addShapelessRecipe(florbStack, "dustWood", "crystalSlag", ItemMaterial.globRosin);
+		addShapelessRecipe(florbMagmaticStack, "dustWood", "crystalSlag", ItemMaterial.globRosin, Items.BLAZE_POWDER);
 	}
 
 	private static void addFlorb(ItemStack florb, Fluid fluid) {

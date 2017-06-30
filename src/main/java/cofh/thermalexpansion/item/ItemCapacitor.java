@@ -7,7 +7,6 @@ import cofh.core.item.ItemMulti;
 import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.core.IInitializer;
-import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.core.util.helpers.ChatHelper;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
@@ -40,8 +39,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-import static cofh.lib.util.helpers.ItemHelper.addRecipe;
+import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem {
 
@@ -407,7 +405,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 		// @formatter:off
 
-		addRecipe(ShapedRecipe(capacitorBasic,
+		addShapedRecipe(capacitorBasic,
 				" R ",
 				"IXI",
 				"RYR",
@@ -415,43 +413,44 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 				'R', "dustRedstone",
 				'X', "ingotCopper",
 				'Y', "dustSulfur"
-		));
-		addRecipe(new RecipeUpgrade(capacitorHardened,
-				" R ",
-				"IXI",
-				"RYR",
-				'I', "ingotInvar",
-				'R', "dustRedstone",
-				'X', capacitorBasic,
-				'Y', "ingotTin"
-		));
-		addRecipe(new RecipeUpgrade(capacitorReinforced,
-				" R ",
-				"IXI",
-				"RYR",
-				'I', "ingotElectrum",
-				'R', "dustRedstone",
-				'X', capacitorHardened,
-				'Y', "blockGlassHardened"
-		));
-		addRecipe(new RecipeUpgrade(capacitorSignalum,
-				" R ",
-				"IXI",
-				"RYR",
-				'I', "ingotSignalum",
-				'R', "dustRedstone",
-				'X', capacitorReinforced,
-				'Y', "dustCryotheum"
-		));
-		addRecipe(new RecipeUpgrade(capacitorResonant,
-				" R ",
-				"IXI",
-				"RYR",
-				'I', "ingotEnderium",
-				'R', "dustRedstone",
-				'X', capacitorSignalum,
-				'Y', "dustPyrotheum"
-		));
+		);
+		// TODO: FIXME.
+//		addRecipe(new RecipeUpgrade(capacitorHardened,
+//				" R ",
+//				"IXI",
+//				"RYR",
+//				'I', "ingotInvar",
+//				'R', "dustRedstone",
+//				'X', capacitorBasic,
+//				'Y', "ingotTin"
+//		));
+//		addRecipe(new RecipeUpgrade(capacitorReinforced,
+//				" R ",
+//				"IXI",
+//				"RYR",
+//				'I', "ingotElectrum",
+//				'R', "dustRedstone",
+//				'X', capacitorHardened,
+//				'Y', "blockGlassHardened"
+//		));
+//		addRecipe(new RecipeUpgrade(capacitorSignalum,
+//				" R ",
+//				"IXI",
+//				"RYR",
+//				'I', "ingotSignalum",
+//				'R', "dustRedstone",
+//				'X', capacitorReinforced,
+//				'Y', "dustCryotheum"
+//		));
+//		addRecipe(new RecipeUpgrade(capacitorResonant,
+//				" R ",
+//				"IXI",
+//				"RYR",
+//				'I', "ingotEnderium",
+//				'R', "dustRedstone",
+//				'X', capacitorSignalum,
+//				'Y', "dustPyrotheum"
+//		));
 
 		// @formatter:on
 

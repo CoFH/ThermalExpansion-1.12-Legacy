@@ -17,8 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-import static cofh.lib.util.helpers.ItemHelper.addRecipe;
+import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvider {
 
@@ -79,15 +78,15 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 
 		// @formatter:off
 
-		addRecipe(ShapedRecipe(frameMachine,
+		addShapedRecipe(frameMachine,
 				"IGI",
 				"GCG",
 				"IGI",
 				'C', "gearTin",
 				'G', "blockGlass",
 				'I', "ingotIron"
-		));
-//		addRecipe(ShapedRecipe(frameApparatus,
+		);
+//		addShapedRecipe(frameApparatus,
 //				"IGI",
 //				"GCG",
 //				"IGI",
@@ -95,30 +94,30 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 //				'G', "blockGlass",
 //				'I', "ingotIron"
 //		));
-		addRecipe(ShapedRecipe(frameDevice,
+		addShapedRecipe(frameDevice,
 				"IGI",
 				"GCG",
 				"IGI",
 				'C', "gearCopper",
 				'G', "blockGlass",
 				'I', "ingotIron"
-		));
-		addRecipe(ShapedRecipe(frameCell,
+		);
+		addShapedRecipe(frameCell,
 				"IGI",
 				"GCG",
 				"IGI",
 				'C', "gearLead",
 				'G', "blockGlass",
 				'I', "ingotIron"
-		));
-//		addRecipe(ShapedRecipe(ItemHelper.cloneStack(frameLight, 2),
+		);
+//		addShapedRecipe(ItemHelper.cloneStack(frameLight, 2),
 //				" Q ",
 //				"G G",
 //				" I ",
 //				'G', BlockGlass.glassLead,
 //				'I', "ingotSignalum",
 //				'Q', "gemQuartz"
-//		));
+//		);
 
 		// @formatter:on
 

@@ -41,8 +41,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-import static cofh.lib.util.helpers.ItemHelper.addRecipe;
+import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
@@ -384,14 +383,14 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 		// @formatter:off
 		if (enable) {
-			addRecipe(ShapedRecipe(cache[0],
+			addShapedRecipe(cache[0],
 					" I ",
 					"ICI",
 					" P ",
 					'C', "chestWood",
 					'I', "ingotTin",
 					'P', ItemMaterial.redstoneServo
-			));
+			);
 		}
 		// @formatter:on
 	}

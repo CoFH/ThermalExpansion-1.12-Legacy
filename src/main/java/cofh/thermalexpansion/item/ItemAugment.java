@@ -35,8 +35,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-import static cofh.lib.util.helpers.ItemHelper.addRecipe;
+import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem {
 
@@ -248,32 +247,32 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		// @formatter:off
 
 		/* MACHINE */
-		addRecipe(ShapedRecipe(machinePower,
+		addShapedRecipe(machinePower,
 				" I ",
 				"ICI",
 				"YIY",
 				'C', ItemMaterial.powerCoilGold,
 				'I', "ingotGold",
 				'Y', "dustRedstone"
-		));
-		addRecipe(ShapedRecipe(machineSecondary,
+		);
+		addShapedRecipe(machineSecondary,
 				" I ",
 				"ICI",
 				"YIY",
 				'C', ItemMaterial.redstoneServo,
 				'I', "ingotBronze",
 				'Y', "blockRockwool"
-		));
-		addRecipe(ShapedRecipe(machineSecondaryNull,
+		);
+		addShapedRecipe(machineSecondaryNull,
 				" I ",
 				"ICI",
 				"YIY",
 				'C', Items.LAVA_BUCKET,
 				'I', "nuggetInvar",
 				'Y', "blockGlass"
-		));
+		);
 
-		addRecipe(ShapedRecipe(machineFurnaceFood,
+		addShapedRecipe(machineFurnaceFood,
 				" G ",
 				"ICI",
 				"YXY",
@@ -282,8 +281,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateSilver",
 				'X', Blocks.BRICK_BLOCK,
 				'Y', "dustRedstone"
-		));
-		addRecipe(ShapedRecipe(machineFurnaceOre,
+		);
+		addShapedRecipe(machineFurnaceOre,
 				" G ",
 				"ICI",
 				"YXY",
@@ -292,8 +291,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateInvar",
 				'X', Blocks.PISTON,
 				'Y', "dustPyrotheum"
-		));
-		addRecipe(ShapedRecipe(machineFurnacePyrolysis,
+		);
+		addShapedRecipe(machineFurnacePyrolysis,
 				" G ",
 				"ICI",
 				"YXY",
@@ -302,9 +301,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateCopper",
 				'X', Blocks.NETHER_BRICK,
 				'Y', "dustCharcoal"
-		));
+		);
 
-//		addRecipe(ShapedRecipe(machinePulverizerGeode,
+//		addShapedRecipe(machinePulverizerGeode,
 //				" G ",
 //				"ICI",
 //				"YXY",
@@ -313,8 +312,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 //				'I', "plateBronze",
 //				'X', "gemDiamond",
 //				'Y', "dustPetrotheum"
-//		));
-		addRecipe(ShapedRecipe(machinePulverizerPetrotheum,
+//		);
+		addShapedRecipe(machinePulverizerPetrotheum,
 				" G ",
 				"ICI",
 				"YXY",
@@ -323,9 +322,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateBronze",
 				'X', "blockGlassHardened",
 				'Y', "dustPetrotheum"
-		));
+		);
 
-		addRecipe(ShapedRecipe(machineSawmillTapper,
+		addShapedRecipe(machineSawmillTapper,
 				" G ",
 				"ICI",
 				"YXY",
@@ -334,9 +333,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateCopper",
 				'X', Items.BUCKET,
 				'Y', "dustRedstone"
-		));
+		);
 
-		addRecipe(ShapedRecipe(machineSmelterPyrotheum,
+		addShapedRecipe(machineSmelterPyrotheum,
 				" G ",
 				"ICI",
 				"YXY",
@@ -345,9 +344,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateNickel",
 				'X', "blockGlassHardened",
 				'Y', "dustPyrotheum"
-		));
+		);
 
-		addRecipe(ShapedRecipe(machineInsolatorMycelium,
+		addShapedRecipe(machineInsolatorMycelium,
 				" G ",
 				"ICI",
 				"YXY",
@@ -356,8 +355,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateLead",
 				'X', Blocks.MYCELIUM,
 				'Y', "dustRedstone"
-		));
-		addRecipe(ShapedRecipe(machineInsolatorNether,
+		);
+		addShapedRecipe(machineInsolatorNether,
 				" G ",
 				"ICI",
 				"YXY",
@@ -366,8 +365,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateTin",
 				'X', Blocks.SOUL_SAND,
 				'Y', "dustGlowstone"
-		));
-		addRecipe(ShapedRecipe(machineInsolatorEnd,
+		);
+		addShapedRecipe(machineInsolatorEnd,
 				" G ",
 				"ICI",
 				"YXY",
@@ -376,8 +375,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateSilver",
 				'X', Blocks.END_STONE,
 				'Y', "dustCryotheum"
-		));
-		addRecipe(ShapedRecipe(machineInsolatorTree,
+		);
+		addShapedRecipe(machineInsolatorTree,
 				" G ",
 				"ICI",
 				"YXY",
@@ -386,9 +385,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateLumium",
 				'X', Blocks.PISTON,
 				'Y', "dustAerotheum"
-		));
+		);
 
-//		addRecipe(ShapedRecipe(machineCrucibleAlloy,
+//		addShapedRecipe(machineCrucibleAlloy,
 //				" G ",
 //				"ICI",
 //				"YXY",
@@ -397,9 +396,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 //				'I', "plateInvar",
 //				'X', Blocks.BRICK_BLOCK,
 //				'Y', "dustCryotheum"
-//		));
+//		);
 
-		addRecipe(ShapedRecipe(machineCompactorMint,
+		addShapedRecipe(machineCompactorMint,
 				" G ",
 				"ICI",
 				"YXY",
@@ -408,9 +407,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateElectrum",
 				'X', "gemEmerald",
 				'Y', "dustGlowstone"
-		));
+		);
 
-		addRecipe(ShapedRecipe(machineChargerThroughput,
+		addShapedRecipe(machineChargerThroughput,
 				" G ",
 				"ICI",
 				"YXY",
@@ -419,9 +418,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateSilver",
 				'X', "ingotLead",
 				'Y', "dustRedstone"
-		));
+		);
 
-		addRecipe(ShapedRecipe(machineExtruderNoWater,
+		addShapedRecipe(machineExtruderNoWater,
 				" G ",
 				"ICI",
 				"YXY",
@@ -430,8 +429,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateInvar",
 				'X', Blocks.PISTON,
 				'Y', "dustCryotheum"
-		));
-		addRecipe(ShapedRecipe(machineExtruderGranite,
+		);
+		addShapedRecipe(machineExtruderGranite,
 				" G ",
 				"ICI",
 				"YXY",
@@ -440,8 +439,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateInvar",
 				'X', TileExtruder.GRANITE,
 				'Y', "dustRedstone"
-		));
-		addRecipe(ShapedRecipe(machineExtruderDiorite,
+		);
+		addShapedRecipe(machineExtruderDiorite,
 				" G ",
 				"ICI",
 				"YXY",
@@ -450,8 +449,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateInvar",
 				'X', TileExtruder.DIORITE,
 				'Y', "dustRedstone"
-		));
-		addRecipe(ShapedRecipe(machineExtruderAndesite,
+		);
+		addShapedRecipe(machineExtruderAndesite,
 				" G ",
 				"ICI",
 				"YXY",
@@ -460,9 +459,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateInvar",
 				'X', TileExtruder.ANDESITE,
 				'Y', "dustRedstone"
-		));
+		);
 
-		addRecipe(ShapedRecipe(machinePrecipitatorSnowLayer,
+		addShapedRecipe(machinePrecipitatorSnowLayer,
 				" G ",
 				"ICI",
 				"YXY",
@@ -471,9 +470,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateInvar",
 				'X', TilePrecipitator.SNOW_LAYER,
 				'Y', "dustRedstone"
-		));
+		);
 
-		addRecipe(ShapedRecipe(machinePrecipitatorPackedIce,
+		addShapedRecipe(machinePrecipitatorPackedIce,
 				" G ",
 				"ICI",
 				"YXY",
@@ -482,43 +481,43 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateInvar",
 				'X', TilePrecipitator.PACKED_ICE,
 				'Y', "dustRedstone"
-		));
+		);
 
 		/* DYNAMO */
-		addRecipe(ShapedRecipe(dynamoPower,
+		addShapedRecipe(dynamoPower,
 				" I ",
 				"ICI",
 				"YIY",
 				'C', ItemMaterial.powerCoilSilver,
 				'I', "ingotSilver",
 				'Y', "dustRedstone"
-		));
-		addRecipe(ShapedRecipe(dynamoEfficiency,
+		);
+		addShapedRecipe(dynamoEfficiency,
 				" I ",
 				"ICI",
 				"YIY",
 				'C', ItemMaterial.powerCoilElectrum,
 				'I', "ingotLead",
 				'Y', "dustGlowstone"
-		));
-		addRecipe(ShapedRecipe(dynamoCoilDuct,
+		);
+		addShapedRecipe(dynamoCoilDuct,
 				" I ",
 				"ICI",
 				"YIY",
 				'C', "ingotCopper",
 				'I', "nuggetLead",
 				'Y', "blockGlass"
-		));
-		addRecipe(ShapedRecipe(dynamoThrottle,
+		);
+		addShapedRecipe(dynamoThrottle,
 				" I ",
 				"ICI",
 				"YIY",
 				'C', "ingotElectrum",
 				'I', "nuggetLead",
 				'Y', "blockGlass"
-		));
+		);
 
-		addRecipe(ShapedRecipe(dynamoSteamTurbine,
+		addShapedRecipe(dynamoSteamTurbine,
 				" G ",
 				"ICI",
 				"YXY",
@@ -527,8 +526,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateCopper",
 				'X', "ingotIron",
 				'Y', "dustRedstone"
-		));
-//		addRecipe(ShapedRecipe(dynamoSteamBoiler,
+		);
+//		addShapedRecipe(dynamoSteamBoiler,
 //				" G ",
 //				"ICI",
 //				"YXY",
@@ -537,9 +536,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 //				'I', "plateCopper",
 //				'X', "ingotIron",
 //				'Y', "dustRedstone"
-//		));
+//		);
 
-		addRecipe(ShapedRecipe(dynamoMagmaticCoolant,
+		addShapedRecipe(dynamoMagmaticCoolant,
 				" G ",
 				"ICI",
 				"YXY",
@@ -548,9 +547,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateInvar",
 				'X', "blockGlassHardened",
 				'Y', "dustCryotheum"
-		));
+		);
 
-		addRecipe(ShapedRecipe(dynamoCompressionCoolant,
+		addShapedRecipe(dynamoCompressionCoolant,
 				" G ",
 				"ICI",
 				"YXY",
@@ -559,8 +558,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateTin",
 				'X', "blockGlassHardened",
 				'Y', "dustCryotheum"
-		));
-		addRecipe(ShapedRecipe(dynamoCompressionFuel,
+		);
+		addShapedRecipe(dynamoCompressionFuel,
 				" G ",
 				"ICI",
 				"YXY",
@@ -569,9 +568,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateCopper",
 				'X', "blockGlassHardened",
 				'Y', "dustPyrotheum"
-		));
+		);
 
-		addRecipe(ShapedRecipe(dynamoReactantElemental,
+		addShapedRecipe(dynamoReactantElemental,
 				" G ",
 				"ICI",
 				"YXY",
@@ -580,7 +579,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateLead",
 				'X', "blockGlassHardened",
 				'Y', "dustAerotheum"
-		));
+		);
 
 		/* APPARATUS */
 

@@ -38,8 +38,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-import static cofh.lib.util.helpers.ItemHelper.addRecipe;
+import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelRegister {
 
@@ -257,7 +256,7 @@ public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelReg
 
 		// @formatter:off
 		if (enable) {
-			addRecipe(ShapedRecipe(cell[0],
+			addShapedRecipe(cell[0],
 					" X ",
 					"ICI",
 					" P ",
@@ -265,7 +264,7 @@ public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelReg
 					'I', "ingotLead",
 					'P', ItemMaterial.powerCoilElectrum,
 					'X', Blocks.REDSTONE_BLOCK
-			));
+			);
 		}
 		// @formatter:on
 	}

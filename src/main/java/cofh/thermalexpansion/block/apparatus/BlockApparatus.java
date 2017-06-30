@@ -40,8 +40,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-import static cofh.lib.util.helpers.ItemHelper.addRecipe;
+import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
@@ -247,10 +246,10 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		String tinPart = "thermalexpansion:machineTin";
 
 		if (enable[Type.BREAKER.getMetadata()]) {
-			addRecipe(ShapedRecipe(apparatusBreaker, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Items.IRON_PICKAXE, 'Y', "ingotIron"));
+			addShapedRecipe(apparatusBreaker, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Items.IRON_PICKAXE, 'Y', "ingotIron");
 		}
 		if (enable[Type.COLLECTOR.getMetadata()]) {
-			addRecipe(ShapedRecipe(apparatusCollector, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Blocks.HOPPER, 'Y', "ingotIron"));
+			addShapedRecipe(apparatusCollector, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Blocks.HOPPER, 'Y', "ingotIron");
 		}
 		return true;
 	}

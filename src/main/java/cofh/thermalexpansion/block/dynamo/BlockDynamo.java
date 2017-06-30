@@ -48,8 +48,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-import static cofh.lib.util.helpers.ItemHelper.addRecipe;
+import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelRegister {
 
@@ -347,7 +346,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 
 		// @formatter:off
 		if (enable[Type.STEAM.getMetadata()]) {
-			addRecipe(ShapedRecipe(dynamoSteam,
+			addShapedRecipe(dynamoSteam,
 					" C ",
 					"GIG",
 					"IRI",
@@ -355,10 +354,10 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 					'G', "gearCopper",
 					'I', "ingotIron",
 					'R', "dustRedstone"
-			));
+			);
 		}
 		if (enable[Type.MAGMATIC.getMetadata()]) {
-			addRecipe(ShapedRecipe(dynamoMagmatic,
+			addShapedRecipe(dynamoMagmatic,
 					" C ",
 					"GIG",
 					"IRI",
@@ -366,10 +365,10 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 					'G', "gearInvar",
 					'I', "ingotIron",
 					'R', "dustRedstone"
-			));
+			);
 		}
 		if (enable[Type.COMPRESSION.getMetadata()]) {
-			addRecipe(ShapedRecipe(dynamoCompression,
+			addShapedRecipe(dynamoCompression,
 					" C ",
 					"GIG",
 					"IRI",
@@ -377,10 +376,10 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 					'G', "gearTin",
 					'I', "ingotIron",
 					'R', "dustRedstone"
-			));
+			);
 		}
 		if (enable[Type.REACTANT.getMetadata()]) {
-			addRecipe(ShapedRecipe(dynamoReactant,
+			addShapedRecipe(dynamoReactant,
 					" C ",
 					"GIG",
 					"IRI",
@@ -388,10 +387,10 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 					'G', "gearLead",
 					'I', "ingotIron",
 					'R', "dustRedstone"
-			));
+			);
 		}
 		if (enable[Type.ENERVATION.getMetadata()]) {
-			addRecipe(ShapedRecipe(dynamoEnervation,
+			addShapedRecipe(dynamoEnervation,
 					" C ",
 					"GIG",
 					"IRI",
@@ -399,10 +398,10 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 					'G', "gearElectrum",
 					'I', "ingotIron",
 					'R', "dustRedstone"
-			));
+			);
 		}
 		if (enable[Type.NUMISMATIC.getMetadata()]) {
-			addRecipe(ShapedRecipe(dynamoNumismatic,
+			addShapedRecipe(dynamoNumismatic,
 					" C ",
 					"GIG",
 					"IRI",
@@ -410,7 +409,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 					'G', "gearConstantan",
 					'I', "ingotIron",
 					'R', "dustRedstone"
-			));
+			);
 		}
 		// @formatter:on
 	}

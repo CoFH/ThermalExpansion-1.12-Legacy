@@ -41,8 +41,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-import static cofh.lib.util.helpers.ItemHelper.addRecipe;
+import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelRegister {
 
@@ -292,14 +291,14 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 
 		// @formatter:off
 		if (enable) {
-			addRecipe(ShapedRecipe(tank[0],
+			addShapedRecipe(tank[0],
 					" I ",
 					"ICI",
 					" P ",
 					'C', "ingotCopper",
 					'I', "blockGlass",
 					'P', ItemMaterial.redstoneServo
-			));
+			);
 		}
 		// @formatter:on
 	}

@@ -36,8 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-import static cofh.lib.util.helpers.ItemHelper.addRecipe;
+import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockStrongbox extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
@@ -229,13 +228,13 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister, IWorl
 
 		// @formatter:off
 		if (enable) {
-			addRecipe(ShapedRecipe(strongbox[0],
+			addShapedRecipe(strongbox[0],
 					" I ",
 					"ICI",
 					" I ",
 					'C', "chestWood",
 					'I', "ingotTin"
-			));
+			);
 		}
 		// @formatter:on
 	}

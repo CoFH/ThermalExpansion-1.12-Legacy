@@ -44,8 +44,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-import static cofh.lib.util.helpers.ItemHelper.addRecipe;
+import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
@@ -308,7 +307,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 		// @formatter:off
 		if (enable[Type.WATER_GEN.getMetadata()]) {
-			addRecipe(ShapedRecipe(deviceWaterGen,
+			addShapedRecipe(deviceWaterGen,
 					" X ",
 					"YCY",
 					"IPI",
@@ -317,10 +316,10 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					'P', ItemMaterial.redstoneServo,
 					'X', Items.BUCKET,
 					'Y', "blockGlass"
-			));
+			);
 		}
 		if (enable[Type.NULLIFIER.getMetadata()]) {
-			addRecipe(ShapedRecipe(deviceNullifier,
+			addShapedRecipe(deviceNullifier,
 					" X ",
 					"YCY",
 					"IPI",
@@ -329,10 +328,10 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					'P', ItemMaterial.redstoneServo,
 					'X', Items.LAVA_BUCKET,
 					'Y', Blocks.BRICK_BLOCK
-			));
+			);
 		}
 		if (enable[Type.HEAT_SINK.getMetadata()]) {
-			addRecipe(ShapedRecipe(deviceHeatSink,
+			addShapedRecipe(deviceHeatSink,
 					" X ",
 					"YCY",
 					"IPI",
@@ -341,10 +340,10 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					'P', ItemMaterial.redstoneServo,
 					'X', "blockCopper",
 					'Y', "ingotInvar"
-			));
+			);
 		}
 		if (enable[Type.TAPPER.getMetadata()]) {
-			addRecipe(ShapedRecipe(deviceTapper,
+			addShapedRecipe(deviceTapper,
 					" X ",
 					"YCY",
 					"IPI",
@@ -353,10 +352,10 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					'P', ItemMaterial.redstoneServo,
 					'X', Items.BUCKET,
 					'Y', "ingotCopper"
-			));
+			);
 		}
 //		if (enable[Type.FISHER.getMetadata()]) {
-//			addRecipe(ShapedRecipe(deviceTapper,
+//			addShapedRecipe(deviceFisher,
 //					" X ",
 //					"YCY",
 //					"IPI",
@@ -365,10 +364,10 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 //					'P', ItemMaterial.redstoneServo,
 //					'X', "blockWool",
 //					'Y', Blocks.IRON_BARS
-//			));
+//			);
 //		}
 		if (enable[Type.ITEM_BUFFER.getMetadata()]) {
-			addRecipe(ShapedRecipe(deviceItemBuffer,
+			addShapedRecipe(deviceItemBuffer,
 					" X ",
 					"YCY",
 					"IPI",
@@ -377,7 +376,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					'P', ItemMaterial.redstoneServo,
 					'X', Blocks.HOPPER,
 					'Y', "dustRedstone"
-			));
+			);
 		}
 		// @formatter:on
 	}

@@ -29,7 +29,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-import static cofh.lib.util.helpers.ItemHelper.*;
+import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.lib.util.helpers.RecipeHelper.addShapelessRecipe;
 
 public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem {
 
@@ -165,69 +166,69 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 
 		// @formatter:off
 
-		addRecipe(ShapedRecipe(upgradeIncremental[0],
+		addShapedRecipe(upgradeIncremental[0],
 				" I ",
 				"IGI",
 				"DID",
 				'D', "dustRedstone",
 				'G', "gearBronze",
 				'I', "ingotInvar"
-		));
-		addRecipe(ShapedRecipe(upgradeIncremental[1],
+		);
+		addShapedRecipe(upgradeIncremental[1],
 				" I ",
 				"IGI",
 				"DID",
 				'D', "blockGlassHardened",
 				'G', "gearSilver",
 				'I', "ingotElectrum"
-		));
-		addRecipe(ShapedRecipe(upgradeIncremental[2],
+		);
+		addShapedRecipe(upgradeIncremental[2],
 				" I ",
 				"IGI",
 				"DID",
 				'D', "dustCryotheum",
 				'G', "gearElectrum",
 				'I', "ingotSignalum"
-		));
-		addRecipe(ShapedRecipe(upgradeIncremental[3],
+		);
+		addShapedRecipe(upgradeIncremental[3],
 				" I ",
 				"IGI",
 				"DID",
 				'D', "dustPyrotheum",
 				'G', "gearLumium",
 				'I', "ingotEnderium"
-		));
+		);
 
-		addRecipe(ShapelessRecipe(upgradeFull[1],
+		addShapelessRecipe(upgradeFull[1],
 				upgradeIncremental[0],
 				upgradeIncremental[1]
-		));
+		);
 
-		addRecipe(ShapelessRecipe(upgradeFull[2],
+		addShapelessRecipe(upgradeFull[2],
 				upgradeFull[1],
 				upgradeIncremental[2]
-		));
-		addRecipe(ShapelessRecipe(upgradeFull[2],
+		);
+		addShapelessRecipe(upgradeFull[2],
 				upgradeIncremental[0],
 				upgradeIncremental[1],
 				upgradeIncremental[2]
-		));
+		);
 
-		addRecipe(ShapelessRecipe(upgradeFull[3],
+		addShapelessRecipe(upgradeFull[3],
 				upgradeFull[2],
 				upgradeIncremental[3]
-		));
-		addRecipe(ShapelessRecipe(upgradeFull[3],
+		);
+		addShapelessRecipe(upgradeFull[3],
 				upgradeFull[1],
 				upgradeIncremental[2],
 				upgradeIncremental[3]
-		));
-		addRecipe(ShapelessRecipe(upgradeFull[3],
+		);
+		addShapelessRecipe(upgradeFull[3],
 				upgradeIncremental[0],
 				upgradeIncremental[1],
 				upgradeIncremental[2],
 				upgradeIncremental[3]
-		));
+		);
 
 		// @formatter:on
 
