@@ -274,7 +274,7 @@ public class TileSmelter extends TileMachineBase {
 				}
 			}
 		}
-		if (!inventory[3].isEmpty()) {
+		if (inventory[3].isEmpty()) {
 			return;
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {

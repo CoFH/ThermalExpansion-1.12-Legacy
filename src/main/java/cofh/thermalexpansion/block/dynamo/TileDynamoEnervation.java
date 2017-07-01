@@ -30,7 +30,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 
-		GameRegistry.registerTileEntity(TileDynamoEnervation.class, "thermalexpansion.dynamo_enervation");
+		GameRegistry.registerTileEntity(TileDynamoEnervation.class, "thermalexpansion:dynamo_enervation");
 
 		config();
 	}

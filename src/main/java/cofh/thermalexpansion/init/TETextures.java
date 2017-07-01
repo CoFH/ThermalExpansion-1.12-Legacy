@@ -140,8 +140,8 @@ public class TETextures {
 		ICON_SCHEMATIC =					map.getMissingSprite();//TODO
 
 		/* CELLS */
-		CELL_CONFIG_BLUE =                  registerCB(map, CELL_CONFIG_ + "blue");
-		CELL_CONFIG_ORANGE =                registerCB(map, CELL_CONFIG_ + "orange");
+		CELL_CONFIG_BLUE =                  register(map, CELL_CONFIG_ + "blue");
+		CELL_CONFIG_ORANGE =                register(map, CELL_CONFIG_ + "orange");
 
 		CELL_INNER_0 =                      register(map, CELL_ + "inner_0");
 		CELL_INNER_1 =                      register(map, CELL_ + "inner_1");

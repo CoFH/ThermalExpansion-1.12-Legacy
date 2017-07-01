@@ -29,7 +29,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 
-		GameRegistry.registerTileEntity(TileDynamoNumismatic.class, "thermalexpansion.dynamo_numismatic");
+		GameRegistry.registerTileEntity(TileDynamoNumismatic.class, "thermalexpansion:dynamo_numismatic");
 
 		config();
 	}

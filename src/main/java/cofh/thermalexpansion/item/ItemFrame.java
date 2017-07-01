@@ -9,12 +9,15 @@ import cofh.core.util.core.IInitializer;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.render.RenderFrame;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
@@ -29,8 +32,8 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 		setCreativeTab(ThermalExpansion.tabItems);
 	}
 
-	@SideOnly (Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 
 	}
 

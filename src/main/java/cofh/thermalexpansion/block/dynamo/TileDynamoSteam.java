@@ -43,7 +43,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_STEAM_TURBINE);
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_STEAM_BOILER);
 
-		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion.dynamo_steam");
+		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion:dynamo_steam");
 
 		config();
 	}

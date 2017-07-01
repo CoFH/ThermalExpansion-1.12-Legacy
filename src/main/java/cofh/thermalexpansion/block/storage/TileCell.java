@@ -28,25 +28,19 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TileCell extends TilePowered implements ITickable, IEnergyProvider {
 
+	public static final int CAPACITY_BASE = 2000000;
+	public static final int XFER_BASE = 1000;
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final byte[] DEFAULT_SIDES = { 2, 1, 1, 1, 1, 1 };
 
-	public static final int[] SEND = { 1, 4, 9, 16, 25 };
 	public static final int[] RECV = { 1, 4, 9, 16, 25 };
-
-	static {
-		for (int i = 0; i < CAPACITY.length; i++) {
-			CAPACITY[i] *= 2000000;
-			SEND[i] *= 1000;
-			RECV[i] *= 1000;
-		}
-	}
+	public static final int[] SEND = { 1, 4, 9, 16, 25 };
 
 	private static boolean enableSecurity = true;
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileCell.class, "thermalexpansion.storage_cell");
+		GameRegistry.registerTileEntity(TileCell.class, "thermalexpansion:storage_cell");
 
 		config();
 	}
@@ -58,6 +52,24 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		String category = "Storage.Cell";
 		BlockCell.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		int capacity = CAPACITY_BASE;
+		comment = "Adjust this value to change the amount of Energy (in RF) stored by a Basic Cell. This base value will scale with block level.";
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+
+		int recv = XFER_BASE;
+		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be received by a Basic Cell. This base value will scale with block level.";
+		recv = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseReceive", category, recv, recv / 100, recv * 100, comment);
+
+		int send = XFER_BASE;
+		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be sent by a Basic Cell. This base value will scale with block level.";
+		send = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseSend", category, send, send / 100, send * 100, comment);
+
+		for (int i = 0; i < CAPACITY.length; i++) {
+			CAPACITY[i] *= capacity;
+			RECV[i] *= recv;
+			SEND[i] *= send;
+		}
 	}
 
 	private int compareTracker;
