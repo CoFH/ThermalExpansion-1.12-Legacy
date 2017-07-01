@@ -29,15 +29,9 @@ import java.util.List;
 
 public class TileTank extends TileAugmentableSecure implements ITickable, ITileInfo {
 
-	public static int[] CAPACITY = { 1, 4, 9, 16, 25 };
-
+	public static final int CAPACITY_BASE = 20000;
+	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int RENDER_LEVELS = 100;
-
-	static {
-		for (int i = 0; i < CAPACITY.length; i++) {
-			CAPACITY[i] *= 20000;
-		}
-	}
 
 	private static boolean enableSecurity = true;
 
@@ -55,6 +49,14 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		String category = "Storage.Tank";
 		BlockTank.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		int capacity = CAPACITY_BASE;
+		comment = "Adjust this value to change the amount of Fluid (in mB) stored by a Basic Tank. This base value will scale with block level.";
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+
+		for (int i = 0; i < CAPACITY.length; i++) {
+			CAPACITY[i] *= capacity;
+		}
 	}
 
 	private int compareTracker;

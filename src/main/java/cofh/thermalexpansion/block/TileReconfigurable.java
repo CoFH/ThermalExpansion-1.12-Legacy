@@ -345,7 +345,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 		if (side == null) {
 			return true;
 		}
-		return allowExtraction(sideConfig.sideTypes[sideCache[side.ordinal()]]) && slotConfig.allowExtractionSlot[slot];
+		return allowExtraction(sideConfig.sideTypes[sideCache[side.ordinal()]]) && (sideConfig.sideTypes[sideCache[side.ordinal()]] == OPEN || slotConfig.allowExtractionSlot[slot]);
 	}
 
 	/* ISidedTexture */

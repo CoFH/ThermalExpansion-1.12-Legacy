@@ -315,6 +315,9 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@Override
 	public boolean initialize() {
 
+		if (!enable) {
+			return false;
+		}
 		// @formatter:off
 
 		addRecipe(ShapedRecipe(satchelBasic,
