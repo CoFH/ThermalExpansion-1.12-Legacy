@@ -11,7 +11,13 @@ import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -114,6 +120,10 @@ public class CompactorManager {
 
 		/* STORAGE */
 		{
+			addDefaultStorageRecipe(ItemMaterial.ingotIron, new ItemStack(Blocks.IRON_BLOCK));
+			addDefaultStorageRecipe(ItemMaterial.ingotGold, new ItemStack(Blocks.GOLD_BLOCK));
+			addDefaultStorageRecipe(ItemMaterial.gemDiamond, new ItemStack(Blocks.DIAMOND_BLOCK));
+
 			addDefaultStorageRecipe(ItemMaterial.ingotCopper, BlockStorage.blockCopper);
 			addDefaultStorageRecipe(ItemMaterial.ingotTin, BlockStorage.blockTin);
 			addDefaultStorageRecipe(ItemMaterial.ingotSilver, BlockStorage.blockSilver);
@@ -181,107 +191,107 @@ public class CompactorManager {
 			addDefaultMintRecipe(ItemMaterial.nuggetLumium, ItemMaterial.ingotLumium, BlockStorageAlloy.blockLumium, ItemCoin.coinLumium);
 			addDefaultMintRecipe(ItemMaterial.nuggetEnderium, ItemMaterial.ingotEnderium, BlockStorageAlloy.blockEnderium, ItemCoin.coinEnderium);
 		}
+
 		/* LOAD RECIPES */
-		loadRecipes();
+		//loadRecipes();
 	}
 
 	public static void loadRecipes() {
 
-		// TODO: FIXME.
-		//		for (IRecipe recipe : CraftingManager.getInstance().getRecipeList()) {
-		//
-		//			if (recipe instanceof ShapedRecipes) {
-		//				ShapedRecipes target = (ShapedRecipes) recipe;
-		//				if (target.recipeItems.length == 4 || target.recipeItems.length == 9) {
-		//					boolean match = true;
-		//					for (int i = 1; i < target.recipeItems.length; i++) {
-		//						match &= ItemHelper.itemsIdentical(target.recipeItems[0], target.recipeItems[i]);
-		//					}
-		//					if (match) {
-		//						addDefaultStorageRecipe(target.recipeItems[0], target.getRecipeOutput(), target.recipeItems.length);
-		//					}
-		//				}
-		//			} else if (recipe instanceof ShapelessRecipes) {
-		//				ShapelessRecipes target = (ShapelessRecipes) recipe;
-		//				if (target.getRecipeSize() == 4 || target.getRecipeSize() == 9) {
-		//					boolean match = true;
-		//					for (int i = 1; i < target.getRecipeSize(); i++) {
-		//						match &= ItemHelper.itemsIdentical(target.recipeItems.get(0), target.recipeItems.get(i));
-		//					}
-		//					if (match) {
-		//						addDefaultStorageRecipe(target.recipeItems.get(0), target.getRecipeOutput(), target.getRecipeSize());
-		//					}
-		//				}
-		//			} else if (recipe instanceof ShapedOreRecipe) {
-		//				ShapedOreRecipe target = (ShapedOreRecipe) recipe;
-		//				if (target.getRecipeSize() == 4 || target.getRecipeSize() == 9) {
-		//					boolean match = true;
-		//					if (target.getInput()[0] instanceof List && !((List) target.getInput()[0]).isEmpty()) {
-		//						ItemStack input = ((List<ItemStack>) target.getInput()[0]).get(0);
-		//						for (int i = 1; i < target.getRecipeSize(); i++) {
-		//							if (target.getInput()[i] instanceof List && !((List) target.getInput()[i]).isEmpty()) {
-		//								ItemStack compare = ((List<ItemStack>) target.getInput()[i]).get(0);
-		//								match &= ItemHelper.itemsIdentical(input, compare);
-		//							} else {
-		//								match = false;
-		//							}
-		//						}
-		//						if (match) {
-		//							List<ItemStack> ores = (List<ItemStack>) target.getInput()[0];
-		//							for (ItemStack ore : ores) {
-		//								addDefaultStorageRecipe(ore, target.getRecipeOutput(), target.getRecipeSize());
-		//							}
-		//						}
-		//					} else if (target.getInput()[0] instanceof ItemStack) {
-		//						ItemStack input = (ItemStack) target.getInput()[0];
-		//						for (int i = 1; i < target.getRecipeSize(); i++) {
-		//							if (target.getInput()[i] instanceof ItemStack) {
-		//								match &= ItemHelper.itemsIdentical(input, (ItemStack) target.getInput()[i]);
-		//							} else {
-		//								match = false;
-		//							}
-		//						}
-		//						if (match) {
-		//							addDefaultStorageRecipe((ItemStack) target.getInput()[0], target.getRecipeOutput(), target.getRecipeSize());
-		//						}
-		//					}
-		//				}
-		//			} else if (recipe instanceof ShapelessOreRecipe) {
-		//				ShapelessOreRecipe target = (ShapelessOreRecipe) recipe;
-		//				if (target.getRecipeSize() == 4 || target.getRecipeSize() == 9) {
-		//					boolean match = true;
-		//					if (target.getInput().get(0) instanceof List && !((List) target.getInput().get(0)).isEmpty()) {
-		//						ItemStack input = ((List<ItemStack>) target.getInput().get(0)).get(0);
-		//						for (int i = 1; i < target.getRecipeSize(); i++) {
-		//							if (target.getInput().get(i) instanceof List && !((List) target.getInput().get(i)).isEmpty()) {
-		//								ItemStack compare = ((List<ItemStack>) target.getInput().get(i)).get(0);
-		//								match &= ItemHelper.itemsIdentical(input, compare);
-		//							} else {
-		//								match = false;
-		//							}
-		//						}
-		//						if (match) {
-		//							List<ItemStack> ores = (List<ItemStack>) target.getInput().get(0);
-		//							for (ItemStack ore : ores) {
-		//								addDefaultStorageRecipe(ore, target.getRecipeOutput(), target.getRecipeSize());
-		//							}
-		//						}
-		//					} else if (target.getInput().get(0) instanceof ItemStack) {
-		//						ItemStack input = (ItemStack) target.getInput().get(0);
-		//						for (int i = 1; i < target.getRecipeSize(); i++) {
-		//							if (target.getInput().get(i) instanceof ItemStack) {
-		//								match &= ItemHelper.itemsIdentical(input, (ItemStack) target.getInput().get(i));
-		//							} else {
-		//								match = false;
-		//							}
-		//						}
-		//						if (match) {
-		//							addDefaultStorageRecipe((ItemStack) target.getInput().get(0), target.getRecipeOutput(), target.getRecipeSize());
-		//						}
-		//					}
-		//				}
-		//			}
-		//		}
+		for (IRecipe recipe : CraftingManager.REGISTRY) {
+
+			if (recipe instanceof ShapedRecipes) {
+				//				ShapedRecipes target = (ShapedRecipes) recipe;
+				//				if (target.recipeItems.size() == 4 || target.recipeItems.size() == 9) {
+				//					boolean match = true;
+				//					for (int i = 1; i < target.recipeItems.size(); i++) {
+				//						match &= ItemHelper.itemsIdentical(target.recipeItems.get(0), target.recipeItems.get(i));
+				//					}
+				//					if (match) {
+				//						addDefaultStorageRecipe(target.recipeItems.get(0), target.getRecipeOutput(), target.recipeItems.size());
+				//					}
+				//				}
+			} else if (recipe instanceof ShapelessRecipes) {
+				//				ShapelessRecipes target = (ShapelessRecipes) recipe;
+				//				if (target.getRecipeSize() == 4 || target.getRecipeSize() == 9) {
+				//					boolean match = true;
+				//					for (int i = 1; i < target.getRecipeSize(); i++) {
+				//						match &= ItemHelper.itemsIdentical(target.recipeItems.get(0), target.recipeItems.get(i));
+				//					}
+				//					if (match) {
+				//						addDefaultStorageRecipe(target.recipeItems.get(0), target.getRecipeOutput(), target.getRecipeSize());
+				//					}
+				//				}
+			} else if (recipe instanceof ShapedOreRecipe) {
+				//				ShapedOreRecipe target = (ShapedOreRecipe) recipe;
+				//				if (target.getRecipeSize() == 4 || target.getRecipeSize() == 9) {
+				//					boolean match = true;
+				//					if (target.getInput()[0] instanceof List && !((List) target.getInput()[0]).isEmpty()) {
+				//						ItemStack input = ((List<ItemStack>) target.getInput()[0]).get(0);
+				//						for (int i = 1; i < target.getRecipeSize(); i++) {
+				//							if (target.getInput()[i] instanceof List && !((List) target.getInput()[i]).isEmpty()) {
+				//								ItemStack compare = ((List<ItemStack>) target.getInput()[i]).get(0);
+				//								match &= ItemHelper.itemsIdentical(input, compare);
+				//							} else {
+				//								match = false;
+				//							}
+				//						}
+				//						if (match) {
+				//							List<ItemStack> ores = (List<ItemStack>) target.getInput()[0];
+				//							for (ItemStack ore : ores) {
+				//								addDefaultStorageRecipe(ore, target.getRecipeOutput(), target.getRecipeSize());
+				//							}
+				//						}
+				//					} else if (target.getInput()[0] instanceof ItemStack) {
+				//						ItemStack input = (ItemStack) target.getInput()[0];
+				//						for (int i = 1; i < target.getRecipeSize(); i++) {
+				//							if (target.getInput()[i] instanceof ItemStack) {
+				//								match &= ItemHelper.itemsIdentical(input, (ItemStack) target.getInput()[i]);
+				//							} else {
+				//								match = false;
+				//							}
+				//						}
+				//						if (match) {
+				//							addDefaultStorageRecipe((ItemStack) target.getInput()[0], target.getRecipeOutput(), target.getRecipeSize());
+				//						}
+				//					}
+				//				}
+			} else if (recipe instanceof ShapelessOreRecipe) {
+				//				ShapelessOreRecipe target = (ShapelessOreRecipe) recipe;
+				//				if (target.getRecipeSize() == 4 || target.getRecipeSize() == 9) {
+				//					boolean match = true;
+				//					if (target.getInput().get(0) instanceof List && !((List) target.getInput().get(0)).isEmpty()) {
+				//						ItemStack input = ((List<ItemStack>) target.getInput().get(0)).get(0);
+				//						for (int i = 1; i < target.getRecipeSize(); i++) {
+				//							if (target.getInput().get(i) instanceof List && !((List) target.getInput().get(i)).isEmpty()) {
+				//								ItemStack compare = ((List<ItemStack>) target.getInput().get(i)).get(0);
+				//								match &= ItemHelper.itemsIdentical(input, compare);
+				//							} else {
+				//								match = false;
+				//							}
+				//						}
+				//						if (match) {
+				//							List<ItemStack> ores = (List<ItemStack>) target.getInput().get(0);
+				//							for (ItemStack ore : ores) {
+				//								addDefaultStorageRecipe(ore, target.getRecipeOutput(), target.getRecipeSize());
+				//							}
+				//						}
+				//					} else if (target.getInput().get(0) instanceof ItemStack) {
+				//						ItemStack input = (ItemStack) target.getInput().get(0);
+				//						for (int i = 1; i < target.getRecipeSize(); i++) {
+				//							if (target.getInput().get(i) instanceof ItemStack) {
+				//								match &= ItemHelper.itemsIdentical(input, (ItemStack) target.getInput().get(i));
+				//							} else {
+				//								match = false;
+				//							}
+				//						}
+				//						if (match) {
+				//							addDefaultStorageRecipe((ItemStack) target.getInput().get(0), target.getRecipeOutput(), target.getRecipeSize());
+				//						}
+				//					}
+				//				}
+			}
+		}
 	}
 
 	public static void refresh() {
