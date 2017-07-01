@@ -31,14 +31,9 @@ import java.util.List;
 
 public class TileCache extends TileInventory implements ISidedInventory, IReconfigurableFacing, ISidedTexture, ITileInfo, IInventoryRetainer {
 
+	public static final int CAPACITY_BASE = 20000;
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int[] SLOTS = { 0, 1 };
-
-	static {
-		for (int i = 0; i < CAPACITY.length; i++) {
-			CAPACITY[i] *= 20000;
-		}
-	}
 
 	private static boolean enableSecurity = true;
 
@@ -56,6 +51,14 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 		String category = "Storage.Cache";
 		BlockCache.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		int capacity = CAPACITY_BASE;
+		comment = "Adjust this value to change the amount of Items stored by a Basic Cache. This base value will scale with block level.";
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+
+		for (int i = 0; i < CAPACITY.length; i++) {
+			CAPACITY[i] *= capacity;
+		}
 	}
 
 	private int compareTracker;

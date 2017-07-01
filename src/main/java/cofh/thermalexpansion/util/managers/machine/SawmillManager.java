@@ -2,9 +2,11 @@ package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
+import cofh.lib.inventory.InventoryCraftingFalse;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -59,6 +61,18 @@ public class SawmillManager {
 		 * 1 Sawdust / 4 Planks (25% / Plank)
 		 * 1 Sawdust / 4 Sticks (25% / Stick)
 		 */
+
+		/* VANILLA LOGS */
+		{
+			int energy = DEFAULT_ENERGY / 2;
+
+			addRecipe(energy, new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.PLANKS, (int) (4 * LOG_MULTIPLIER), 0), ItemMaterial.dustWood);
+			addRecipe(energy, new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.PLANKS, (int) (4 * LOG_MULTIPLIER), 1), ItemMaterial.dustWood);
+			addRecipe(energy, new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.PLANKS, (int) (4 * LOG_MULTIPLIER), 2), ItemMaterial.dustWood);
+			addRecipe(energy, new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.PLANKS, (int) (4 * LOG_MULTIPLIER), 3), ItemMaterial.dustWood);
+			addRecipe(energy, new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.PLANKS, (int) (4 * LOG_MULTIPLIER), 4), ItemMaterial.dustWood);
+			addRecipe(energy, new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.PLANKS, (int) (4 * LOG_MULTIPLIER), 5), ItemMaterial.dustWood);
+		}
 
 		/* MISC WOOD BLOCKS */
 		{
@@ -237,16 +251,7 @@ public class SawmillManager {
 	/* HELPERS */
 	private static void addAllLogs() {
 
-		Container tempContainer = new Container() {
-
-			@Override
-			public boolean canInteractWith(EntityPlayer player) {
-
-				return false;
-			}
-
-		};
-		InventoryCrafting tempCrafting = new InventoryCrafting(tempContainer, 3, 3);
+		InventoryCraftingFalse tempCrafting = new InventoryCraftingFalse(3, 3);
 
 		for (int i = 0; i < 9; i++) {
 			tempCrafting.setInventorySlotContents(i, null);
@@ -254,6 +259,11 @@ public class SawmillManager {
 		List<ItemStack> registeredOres = OreDictionary.getOres("logWood", false);
 
 		for (ItemStack logEntry : registeredOres) {
+			Block logBlock = Block.getBlockFromItem(logEntry.getItem());
+
+			if (logBlock.equals(Blocks.LOG) || logBlock.equals(Blocks.LOG2)) {
+				continue;
+			}
 			if (ItemHelper.getItemDamage(logEntry) == OreDictionary.WILDCARD_VALUE) {
 				for (int j = 0; j < 16; j++) {
 					ItemStack log = ItemHelper.cloneStack(logEntry, 1);

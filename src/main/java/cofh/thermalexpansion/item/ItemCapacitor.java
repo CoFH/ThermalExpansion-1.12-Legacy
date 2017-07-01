@@ -411,12 +411,17 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
+		config();
+
 		return true;
 	}
 
 	@Override
 	public boolean initialize() {
 
+		if (!enable) {
+			return false;
+		}
 		// @formatter:off
 
 		addRecipe(ShapedRecipe(capacitorBasic,
@@ -476,6 +481,30 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		return true;
 	}
 
+	private static void config() {
+
+		String category = "Item.Capacitor";
+		enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		int capacity = CAPACITY_BASE;
+		String comment = "Adjust this value to change the amount of Energy (in RF) stored by a Basic Flux Capacitor. This base value will scale with item level.";
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+
+		int recv = XFER_BASE * 2;
+		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be received by a Basic Flux Capacitor. This base value will scale with item level.";
+		recv = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseReceive", category, recv, recv / 100, recv * 100, comment);
+
+		int send = XFER_BASE / 2;
+		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be sent by a Basic Flux Capacitor. This base value will scale with item level.";
+		send = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseSend", category, send, send / 100, send * 100, comment);
+
+		for (int i = 0; i < CAPACITY.length; i++) {
+			CAPACITY[i] *= capacity;
+			RECV[i] *= recv;
+			SEND[i] *= send;
+		}
+	}
+
 	/* ENTRY */
 	public class CapacitorEntry {
 
@@ -515,19 +544,16 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	private TIntObjectHashMap<CapacitorEntry> capacitorMap = new TIntObjectHashMap<>();
 	private TIntObjectHashMap<ModelResourceLocation> textureMap = new TIntObjectHashMap<>();
 
+	public static final int CAPACITY_BASE = 1000000;
+	public static final int XFER_BASE = 1000;
+
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
-	public static final int[] SEND = { 1, 4, 9, 16, 25 };
 	public static final int[] RECV = { 1, 4, 9, 16, 25 };
+	public static final int[] SEND = { 1, 4, 9, 16, 25 };
 
-	static {
-		for (int i = 0; i < CAPACITY.length; i++) {
-			CAPACITY[i] *= 1000000;
-			SEND[i] *= 500;
-			RECV[i] *= 2000;
-		}
-	}
+	public static final int CREATIVE = 32000;
 
-	public final int CREATIVE = 32000;
+	public static boolean enable = true;
 
 	/* REFERENCES */
 	public static ItemStack capacitorBasic;
