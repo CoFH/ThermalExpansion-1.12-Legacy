@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.entity.projectile;
 
 import cofh.core.init.CoreProps;
-import cofh.lib.util.helpers.ServerHelper;
+import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.ItemFlorb;
 import net.minecraft.block.Block;
@@ -74,7 +74,7 @@ public class EntityFlorb extends EntityThrowable {
 	private void setGravity() {
 
 		if (fluid.getDensity() < 0) {
-			this.gravity = cofh.lib.util.helpers.MathHelper.minF(0.01F, 0.03F + 0.03F * fluid.getDensity() / 1000F);
+			this.gravity = cofh.core.util.helpers.MathHelper.minF(0.01F, 0.03F + 0.03F * fluid.getDensity() / 1000F);
 		}
 	}
 

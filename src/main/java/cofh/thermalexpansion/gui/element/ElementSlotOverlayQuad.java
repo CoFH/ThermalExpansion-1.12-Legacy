@@ -1,11 +1,11 @@
 package cofh.thermalexpansion.gui.element;
 
-import cofh.lib.gui.GuiBase;
+import cofh.core.gui.GuiCore;
 import cofh.thermalexpansion.init.TEProps;
 
 public class ElementSlotOverlayQuad extends ElementSlotOverlay {
 
-	public ElementSlotOverlayQuad(GuiBase gui, int posX, int posY) {
+	public ElementSlotOverlayQuad(GuiCore gui, int posX, int posY) {
 
 		super(gui, posX, posY);
 		this.texture = TEProps.textureGuiSlots4;

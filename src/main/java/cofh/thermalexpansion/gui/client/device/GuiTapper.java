@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.gui.client.device;
 
-import cofh.lib.gui.element.ElementBase;
-import cofh.lib.gui.element.ElementDualScaled;
-import cofh.lib.gui.element.ElementFluidTank;
+import cofh.core.gui.element.ElementBase;
+import cofh.core.gui.element.ElementDualScaled;
+import cofh.core.gui.element.ElementFluidTank;
 import cofh.thermalexpansion.block.device.TileTapper;
 import cofh.thermalexpansion.gui.container.device.ContainerTapper;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;

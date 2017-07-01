@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.util;
 
 import cofh.api.item.IToolHammer;
-import cofh.lib.util.helpers.InventoryHelper;
+import cofh.core.util.helpers.InventoryHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;

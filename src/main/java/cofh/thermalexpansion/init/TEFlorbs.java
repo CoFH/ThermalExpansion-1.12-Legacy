@@ -2,8 +2,8 @@ package cofh.thermalexpansion.init;
 
 import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
-import cofh.lib.util.DefaultedHashMap;
-import cofh.lib.util.helpers.ItemHelper;
+import cofh.core.util.DefaultedHashMap;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalexpansion.util.BehaviorFlorbDispense;
@@ -22,7 +22,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static cofh.lib.util.helpers.RecipeHelper.addShapelessRecipe;
+import static cofh.core.util.helpers.RecipeHelper.addShapelessRecipe;
 
 public class TEFlorbs {
 

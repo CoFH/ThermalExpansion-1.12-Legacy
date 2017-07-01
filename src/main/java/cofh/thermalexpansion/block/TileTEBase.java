@@ -288,8 +288,18 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	}
 
 	/* SIDE CONFIG HELPERS */
+	public static final int NONE = 0;
+	public static final int INPUT_ALL = 1;
+	public static final int OUTPUT_PRIMARY = 2;
+	public static final int OUTPUT_SECONDARY = 3;
+	public static final int OUTPUT_ALL = 4;
+	public static final int INPUT_PRIMARY = 5;
+	public static final int INPUT_SECONDARY = 6;
+	public static final int OPEN = 7;
+	public static final int OMNI = 8;
+
 	public static boolean[] SIDE_INSERTION = { false, true, false, false, false, true, true, true, true };
-	public static boolean[] SIDE_EXTRACTION = { false, true, true, true, true, true, true, true, true };
+	public static boolean[] SIDE_EXTRACTION = { false, false, true, true, true, false, false, true, true };
 
 	public static boolean[] SIDE_INPUT_PRIMARY = { false, true, false, false, false, true, false, false, true };
 	public static boolean[] SIDE_INPUT_SECONDARY = { false, true, false, false, false, false, true, false, true };

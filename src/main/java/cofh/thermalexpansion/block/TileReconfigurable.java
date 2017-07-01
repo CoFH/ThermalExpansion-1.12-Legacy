@@ -3,8 +3,8 @@ package cofh.thermalexpansion.block;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.ISidedTexture;
-import cofh.core.util.tileentity.IReconfigurableSides;
-import cofh.lib.util.helpers.BlockHelper;
+import cofh.api.tileentity.IReconfigurableSides;
+import cofh.core.util.helpers.BlockHelper;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -345,7 +345,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 		if (side == null) {
 			return true;
 		}
-		return allowExtraction(sideConfig.sideTypes[sideCache[side.ordinal()]]) && slotConfig.allowExtractionSlot[slot];
+		return allowExtraction(sideConfig.sideTypes[sideCache[side.ordinal()]]) && (sideConfig.sideTypes[sideCache[side.ordinal()]] == OPEN || slotConfig.allowExtractionSlot[slot]);
 	}
 
 	/* ISidedTexture */

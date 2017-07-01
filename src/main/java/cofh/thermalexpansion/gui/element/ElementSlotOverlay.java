@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.gui.element;
 
 import cofh.core.init.CoreProps;
-import cofh.lib.gui.GuiBase;
-import cofh.lib.gui.element.ElementBase;
-import cofh.lib.util.helpers.RenderHelper;
+import cofh.core.gui.GuiCore;
+import cofh.core.gui.element.ElementBase;
+import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.init.TEProps;
 
 public class ElementSlotOverlay extends ElementBase {
@@ -12,7 +12,7 @@ public class ElementSlotOverlay extends ElementBase {
 	protected SlotType slotType;
 	protected SlotRender slotRender;
 
-	public ElementSlotOverlay(GuiBase gui, int posX, int posY) {
+	public ElementSlotOverlay(GuiCore gui, int posX, int posY) {
 
 		super(gui, posX, posY);
 		this.texture = TEProps.textureGuiCommon;

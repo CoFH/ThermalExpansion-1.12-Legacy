@@ -2,8 +2,8 @@ package cofh.thermalexpansion.gui;
 
 import cofh.CoFHCore;
 import cofh.core.util.CoreUtils;
-import cofh.lib.util.TimeTracker;
-import cofh.lib.util.helpers.MathHelper;
+import cofh.core.util.TimeTracker;
+import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.init.TEFlorbs;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;

@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvider {
 

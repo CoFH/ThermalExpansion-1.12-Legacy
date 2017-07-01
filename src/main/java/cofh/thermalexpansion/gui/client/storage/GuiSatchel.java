@@ -2,12 +2,12 @@ package cofh.thermalexpansion.gui.client.storage;
 
 import cofh.api.core.ISecurable;
 import cofh.core.gui.GuiCore;
-import cofh.core.gui.element.TabInfo;
-import cofh.core.gui.element.TabSecurity;
+import cofh.core.gui.element.tab.TabInfo;
+import cofh.core.gui.element.tab.TabSecurity;
 import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.SecurityHelper;
-import cofh.lib.util.helpers.MathHelper;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.util.helpers.MathHelper;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.container.storage.ContainerSatchel;
 import cofh.thermalexpansion.item.ItemSatchel;
 import net.minecraft.client.renderer.GlStateManager;

@@ -3,7 +3,7 @@ package cofh.thermalexpansion.block.storage;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.util.helpers.*;
+import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentableSecure;
 import net.minecraft.entity.player.EntityPlayer;

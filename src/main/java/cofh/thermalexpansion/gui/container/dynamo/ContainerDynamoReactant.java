@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.gui.container.dynamo;
 
-import cofh.lib.gui.slot.ISlotValidator;
-import cofh.lib.gui.slot.SlotValidated;
+import cofh.core.gui.slot.ISlotValidator;
+import cofh.core.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.dynamo.TileDynamoReactant;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.InventoryPlayer;

@@ -2,8 +2,8 @@ package cofh.thermalexpansion.block.apparatus;
 
 import cofh.api.tileentity.IInventoryConnection;
 import cofh.core.entity.CoFHFakePlayer;
-import cofh.lib.util.helpers.BlockHelper;
-import cofh.lib.util.helpers.FluidHelper;
+import cofh.core.util.helpers.BlockHelper;
+import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.apparatus.GuiBreaker;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;

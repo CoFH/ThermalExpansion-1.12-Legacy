@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.crafting.refinery;
 
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiRefinery;
 import cofh.thermalexpansion.plugins.jei.Drawables;

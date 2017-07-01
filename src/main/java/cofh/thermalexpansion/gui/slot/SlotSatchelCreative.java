@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.gui.slot;
 
-import cofh.lib.gui.slot.ISlotValidator;
+import cofh.core.gui.slot.ISlotValidator;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;

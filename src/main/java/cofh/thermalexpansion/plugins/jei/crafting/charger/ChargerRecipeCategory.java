@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.plugins.jei.crafting.charger;
 
-import cofh.lib.inventory.ComparableItemStack;
-import cofh.lib.inventory.ComparableItemStackNBT;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackNBT;
+import cofh.core.util.helpers.StringHelper;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;

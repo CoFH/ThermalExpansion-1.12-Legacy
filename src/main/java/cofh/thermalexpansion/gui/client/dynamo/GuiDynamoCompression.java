@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.gui.client.dynamo;
 
-import cofh.lib.gui.element.ElementFluidTank;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.gui.element.ElementFluidTank;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;

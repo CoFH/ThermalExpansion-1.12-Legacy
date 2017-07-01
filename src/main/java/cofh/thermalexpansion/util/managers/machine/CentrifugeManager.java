@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.util.oredict.OreDictionaryArbiter;
-import cofh.lib.inventory.ComparableItemStack;
-import cofh.lib.util.helpers.ItemHelper;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;

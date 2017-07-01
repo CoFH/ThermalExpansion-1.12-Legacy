@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
-import cofh.lib.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStack;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;

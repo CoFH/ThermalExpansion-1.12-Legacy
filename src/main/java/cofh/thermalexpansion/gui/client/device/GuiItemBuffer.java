@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.gui.client.device;
 
-import cofh.lib.gui.element.ElementButton;
-import cofh.lib.gui.element.ElementSimple;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.gui.element.ElementButton;
+import cofh.core.gui.element.ElementSimple;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.device.TileItemBuffer;
 import cofh.thermalexpansion.gui.container.device.ContainerItemBuffer;
 import cofh.thermalexpansion.init.TEProps;

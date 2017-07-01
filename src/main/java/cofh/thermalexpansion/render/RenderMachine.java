@@ -8,7 +8,7 @@ import codechicken.lib.texture.IItemBlockTextureProvider;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
-import cofh.lib.util.helpers.RenderHelper;
+import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.TileMachineBase;
 import cofh.thermalexpansion.init.TEBlocks;

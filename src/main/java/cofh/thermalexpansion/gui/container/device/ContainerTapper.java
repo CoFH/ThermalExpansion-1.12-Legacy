@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.gui.container.device;
 
-import cofh.lib.gui.slot.ISlotValidator;
-import cofh.lib.gui.slot.SlotValidated;
+import cofh.core.gui.slot.ISlotValidator;
+import cofh.core.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.device.TileTapper;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.managers.TapperManager;

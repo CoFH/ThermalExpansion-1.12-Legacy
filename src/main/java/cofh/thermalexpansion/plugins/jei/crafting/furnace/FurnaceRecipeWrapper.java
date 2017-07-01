@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.crafting.furnace;
 
-import cofh.lib.util.helpers.ItemHelper;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.machine.TileFurnace;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;

@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
-import cofh.lib.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStack;
 import cofh.thermalfoundation.item.ItemCoin;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.iterator.TObjectIntIterator;

@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.gui.client.machine;
 
-import cofh.lib.gui.element.ElementBase;
-import cofh.lib.gui.element.ElementButton;
-import cofh.lib.gui.element.ElementDualScaled;
-import cofh.lib.gui.element.ElementEnergyStored;
+import cofh.core.gui.element.ElementBase;
+import cofh.core.gui.element.ElementButton;
+import cofh.core.gui.element.ElementDualScaled;
+import cofh.core.gui.element.ElementEnergyStored;
 import cofh.thermalexpansion.block.machine.TileCompactor;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerCompactor;

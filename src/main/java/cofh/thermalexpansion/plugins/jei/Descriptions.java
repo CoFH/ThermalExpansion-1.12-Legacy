@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.plugins.jei;
 
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.util.helpers.StringHelper;
 import gnu.trove.map.hash.THashMap;
 import mezz.jei.api.IModRegistry;
 import net.minecraft.item.ItemStack;

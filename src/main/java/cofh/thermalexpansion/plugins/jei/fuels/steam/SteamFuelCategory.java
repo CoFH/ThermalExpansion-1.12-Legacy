@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.fuels.steam;
 
-import cofh.lib.inventory.ComparableItemStack;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.plugins.jei.Drawables;

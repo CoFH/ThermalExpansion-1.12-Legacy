@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.lib.inventory.ComparableItemStackSafe;
-import cofh.lib.util.helpers.ItemHelper;
+import cofh.core.inventory.ComparableItemStackSafe;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.item.ItemStack;

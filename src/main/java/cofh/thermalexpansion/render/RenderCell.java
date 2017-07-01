@@ -6,7 +6,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
-import cofh.lib.util.helpers.RenderHelper;
+import cofh.core.util.helpers.RenderHelper;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.thermalexpansion.block.storage.BlockCell;
 import cofh.thermalexpansion.block.storage.TileCell;

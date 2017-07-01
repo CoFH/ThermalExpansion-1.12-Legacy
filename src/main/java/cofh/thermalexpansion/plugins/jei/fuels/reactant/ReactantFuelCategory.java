@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.fuels.reactant;
 
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.plugins.jei.Drawables;

@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
 import cofh.core.init.CoreProps;
-import cofh.lib.inventory.ComparableItemStack;
-import cofh.lib.util.helpers.ItemHelper;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.iterator.TObjectIntIterator;

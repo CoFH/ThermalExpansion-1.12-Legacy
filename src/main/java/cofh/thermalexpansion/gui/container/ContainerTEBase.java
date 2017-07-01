@@ -4,9 +4,9 @@ import cofh.api.core.IAugmentable;
 import cofh.core.block.TileCore;
 import cofh.core.gui.slot.SlotAugment;
 import cofh.core.util.helpers.AugmentHelper;
-import cofh.lib.gui.container.ContainerBase;
-import cofh.lib.gui.container.IAugmentableContainer;
-import cofh.lib.util.helpers.ServerHelper;
+import cofh.core.gui.container.ContainerCore;
+import cofh.core.gui.container.IAugmentableContainer;
+import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.network.PacketTEBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -16,7 +16,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerTEBase extends ContainerBase implements IAugmentableContainer {
+public class ContainerTEBase extends ContainerCore implements IAugmentableContainer {
 
 	protected final TileCore baseTile;
 

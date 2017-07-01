@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.crafting.smelter;
 
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.plugins.jei.Drawables;

@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.crafting;
 
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.util.helpers.StringHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 

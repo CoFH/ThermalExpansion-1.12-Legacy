@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.gui.client.dynamo;
 
-import cofh.lib.gui.element.ElementDualScaled;
-import cofh.lib.gui.element.ElementEnergyStored;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.gui.element.ElementDualScaled;
+import cofh.core.gui.element.ElementEnergyStored;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;

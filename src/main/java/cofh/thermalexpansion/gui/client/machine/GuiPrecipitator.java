@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.gui.client.machine;
 
-import cofh.lib.gui.element.*;
+import cofh.core.gui.element.*;
 import cofh.thermalexpansion.block.machine.TilePrecipitator;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;

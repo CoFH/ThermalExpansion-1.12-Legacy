@@ -7,7 +7,7 @@ import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.core.init.CoreEnchantments;
-import cofh.lib.util.helpers.RenderHelper;
+import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.block.storage.BlockTank;
 import cofh.thermalexpansion.block.storage.TileTank;
 import cofh.thermalexpansion.init.TEProps;

@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.gui.client.dynamo;
 
-import cofh.lib.gui.element.ElementFluidTank;
-import cofh.lib.gui.element.ElementSimple;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.gui.element.ElementFluidTank;
+import cofh.core.gui.element.ElementSimple;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.dynamo.TileDynamoMagmatic;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;

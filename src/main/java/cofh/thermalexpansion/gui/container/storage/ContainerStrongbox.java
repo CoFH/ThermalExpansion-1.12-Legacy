@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.gui.container.storage;
 
 import cofh.api.item.IInventoryContainerItem;
-import cofh.lib.gui.slot.ISlotValidator;
-import cofh.lib.gui.slot.SlotValidated;
-import cofh.lib.util.helpers.MathHelper;
+import cofh.core.gui.slot.ISlotValidator;
+import cofh.core.gui.slot.SlotValidated;
+import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.block.storage.TileStrongbox;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import gnu.trove.map.hash.THashMap;

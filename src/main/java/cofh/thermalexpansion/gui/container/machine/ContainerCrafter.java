@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.gui.container.machine;
 
-import cofh.lib.gui.slot.*;
+import cofh.core.gui.slot.*;
 import cofh.thermalexpansion.block.machine.TileCrafter;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalfoundation.item.ItemDiagram;

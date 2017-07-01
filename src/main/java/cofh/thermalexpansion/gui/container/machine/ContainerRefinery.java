@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.gui.container.machine;
 
-import cofh.lib.gui.slot.SlotEnergy;
-import cofh.lib.gui.slot.SlotRemoveOnly;
+import cofh.core.gui.slot.SlotEnergy;
+import cofh.core.gui.slot.SlotRemoveOnly;
 import cofh.thermalexpansion.block.machine.TileRefinery;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.InventoryPlayer;

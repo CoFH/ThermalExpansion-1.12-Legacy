@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.plugins.jei;
 
-import cofh.lib.util.helpers.RenderHelper;
+import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.plugins.jei.crafting.centrifuge.CentrifugeRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.compactor.CompactorRecipeCategory;
@@ -19,10 +19,7 @@ import cofh.thermalexpansion.plugins.jei.fuels.magmatic.MagmaticFuelCategory;
 import cofh.thermalexpansion.plugins.jei.fuels.numismatic.NumismaticFuelCategory;
 import cofh.thermalexpansion.plugins.jei.fuels.reactant.ReactantFuelCategory;
 import cofh.thermalexpansion.plugins.jei.fuels.steam.SteamFuelCategory;
-import mezz.jei.api.BlankModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.*;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -33,12 +30,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 @JEIPlugin
-public class JEIPluginTE extends BlankModPlugin {
-
-	@Override
-	public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
-
-	}
+public class JEIPluginTE implements IModPlugin {
 
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registry) {

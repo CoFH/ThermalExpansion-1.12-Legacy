@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.gui;
 
 import cofh.core.block.TileCore;
-import cofh.lib.util.helpers.ItemHelper;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.gui.client.storage.GuiSatchel;
 import cofh.thermalexpansion.gui.container.storage.ContainerSatchel;
 import cofh.thermalexpansion.init.TEItems;

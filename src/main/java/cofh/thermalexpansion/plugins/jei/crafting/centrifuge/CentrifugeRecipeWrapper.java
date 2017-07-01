@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.crafting.centrifuge;
 
-import cofh.lib.util.helpers.ItemHelper;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.machine.TileCentrifuge;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;

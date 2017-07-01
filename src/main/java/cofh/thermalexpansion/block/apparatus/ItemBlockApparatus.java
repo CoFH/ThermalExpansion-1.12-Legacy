@@ -2,10 +2,10 @@ package cofh.thermalexpansion.block.apparatus;
 
 import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.helpers.SecurityHelper;
-import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
-import cofh.lib.util.helpers.EnergyHelper;
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.api.tileentity.IRedstoneControl.ControlMode;
+import cofh.core.util.helpers.EnergyHelper;
+import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.block.Block;

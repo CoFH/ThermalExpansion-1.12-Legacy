@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.fuels.coolant;
 
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.item.ItemAugment;

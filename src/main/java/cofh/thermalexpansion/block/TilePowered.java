@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block;
 
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.util.helpers.EnergyHelper;
+import cofh.core.util.helpers.EnergyHelper;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.api.IEnergyReceiver;
 import cofh.redstoneflux.api.IEnergyStorage;

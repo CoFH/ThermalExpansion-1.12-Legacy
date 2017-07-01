@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.crafting.transposer;
 
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;

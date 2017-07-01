@@ -8,7 +8,7 @@ import codechicken.lib.model.bakery.generation.IBakery;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.StateMapper;
-import cofh.lib.util.helpers.FluidHelper;
+import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
@@ -41,7 +41,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelRegister {
 

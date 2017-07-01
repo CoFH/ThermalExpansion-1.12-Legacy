@@ -2,8 +2,8 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.inventory.InventoryCraftingFalse;
-import cofh.lib.util.helpers.ItemHelper;
+import cofh.core.inventory.InventoryCraftingFalse;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCrafter;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrafter;

@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.util.managers;
 
-import cofh.lib.inventory.ComparableItemStack;
-import cofh.lib.util.BlockWrapper;
-import cofh.lib.util.ItemWrapper;
-import cofh.lib.util.helpers.ItemHelper;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.util.BlockWrapper;
+import cofh.core.util.ItemWrapper;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import com.google.common.collect.HashMultimap;

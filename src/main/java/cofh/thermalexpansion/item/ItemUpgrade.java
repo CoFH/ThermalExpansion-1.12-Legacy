@@ -5,10 +5,10 @@ import cofh.api.item.IUpgradeItem;
 import cofh.core.item.ItemMulti;
 import cofh.core.util.core.IInitializer;
 import cofh.core.util.helpers.ChatHelper;
-import cofh.core.util.tileentity.IUpgradeable;
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.ServerHelper;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.api.tileentity.IUpgradeable;
+import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.helpers.ServerHelper;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.block.Block;
@@ -29,8 +29,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
-import static cofh.lib.util.helpers.RecipeHelper.addShapelessRecipe;
+import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.addShapelessRecipe;
 
 public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem {
 

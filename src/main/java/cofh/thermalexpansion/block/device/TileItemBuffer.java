@@ -2,8 +2,8 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.util.helpers.MathHelper;
-import cofh.lib.util.helpers.ServerHelper;
+import cofh.core.util.helpers.MathHelper;
+import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiItemBuffer;
 import cofh.thermalexpansion.gui.container.device.ContainerItemBuffer;

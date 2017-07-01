@@ -2,11 +2,11 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.util.BlockWrapper;
-import cofh.lib.util.helpers.FluidHelper;
-import cofh.lib.util.helpers.MathHelper;
-import cofh.lib.util.helpers.RenderHelper;
-import cofh.lib.util.helpers.ServerHelper;
+import cofh.core.util.BlockWrapper;
+import cofh.core.util.helpers.FluidHelper;
+import cofh.core.util.helpers.MathHelper;
+import cofh.core.util.helpers.RenderHelper;
+import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiTapper;
 import cofh.thermalexpansion.gui.container.device.ContainerTapper;

@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.gui.container.machine;
 
-import cofh.lib.gui.slot.ISlotValidator;
-import cofh.lib.gui.slot.SlotEnergy;
-import cofh.lib.gui.slot.SlotRemoveOnly;
-import cofh.lib.gui.slot.SlotValidated;
+import cofh.core.gui.slot.ISlotValidator;
+import cofh.core.gui.slot.SlotEnergy;
+import cofh.core.gui.slot.SlotRemoveOnly;
+import cofh.core.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.machine.TileSmelter;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager;

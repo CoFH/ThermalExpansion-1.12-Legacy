@@ -2,9 +2,9 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.util.helpers.FluidHelper;
-import cofh.lib.util.helpers.RenderHelper;
-import cofh.lib.util.helpers.ServerHelper;
+import cofh.core.util.helpers.FluidHelper;
+import cofh.core.util.helpers.RenderHelper;
+import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrucible;

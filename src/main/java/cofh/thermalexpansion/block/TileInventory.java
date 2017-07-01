@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.block;
 
-import cofh.lib.util.helpers.BlockHelper;
-import cofh.lib.util.helpers.InventoryHelper;
-import cofh.lib.util.helpers.ItemHelper;
+import cofh.core.util.helpers.BlockHelper;
+import cofh.core.util.helpers.InventoryHelper;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

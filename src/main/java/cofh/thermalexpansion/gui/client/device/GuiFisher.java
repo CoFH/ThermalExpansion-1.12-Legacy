@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.gui.client.device;
 
-import cofh.lib.gui.element.ElementBase;
-import cofh.lib.gui.element.ElementDualScaled;
+import cofh.core.gui.element.ElementBase;
+import cofh.core.gui.element.ElementDualScaled;
 import cofh.thermalexpansion.block.device.TileFisher;
 import cofh.thermalexpansion.gui.container.device.ContainerFisher;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;

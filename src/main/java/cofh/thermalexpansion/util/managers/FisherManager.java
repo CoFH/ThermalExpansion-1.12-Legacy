@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.util.managers;
 
-import cofh.lib.inventory.ComparableItemStack;
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.helpers.MathHelper;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;

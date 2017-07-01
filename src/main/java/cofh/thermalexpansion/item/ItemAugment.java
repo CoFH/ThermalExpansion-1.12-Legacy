@@ -6,9 +6,9 @@ import cofh.api.item.IAugmentItem;
 import cofh.core.item.ItemMulti;
 import cofh.core.util.core.IInitializer;
 import cofh.core.util.helpers.ChatHelper;
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.ServerHelper;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.helpers.ServerHelper;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.TileExtruder;
 import cofh.thermalexpansion.block.machine.TilePrecipitator;
@@ -35,7 +35,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static cofh.lib.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem {
 
