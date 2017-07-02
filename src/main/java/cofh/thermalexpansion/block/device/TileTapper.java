@@ -171,7 +171,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 				}
 				updateValidity();
 			}
-			if (!redstoneControlOrDisable()) {
+			if (!redstoneControlOrDisable() || !validTree) {
 				isActive = false;
 			}
 		} else if (validTree && redstoneControlOrDisable()) {
@@ -249,6 +249,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 						Material material = state.getMaterial();
 
 						if (material == Material.GROUND || material == Material.GRASS) {
+							validTree = false;
 							cached = true;
 							return;
 						}
@@ -299,6 +300,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 				Material material = state.getMaterial();
 
 				if (material == Material.GROUND || material == Material.GRASS) {
+					validTree = false;
 					cached = true;
 					return;
 				}
