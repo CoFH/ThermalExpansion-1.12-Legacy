@@ -387,6 +387,8 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean preInit() {
 
+		config();
+
 		capacitorBasic = addCapacitorItem(0, "standard0", SEND[0], RECV[0], CAPACITY[0], EnumRarity.COMMON);
 		capacitorHardened = addCapacitorItem(1, "standard1", SEND[1], RECV[1], CAPACITY[1], EnumRarity.COMMON);
 		capacitorReinforced = addCapacitorItem(2, "standard2", SEND[2], RECV[2], CAPACITY[2], EnumRarity.UNCOMMON);
@@ -396,8 +398,6 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		capacitorCreative = addCapacitorItem(CREATIVE, "creative", SEND[4], 0, CAPACITY[4], EnumRarity.EPIC, false);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
-
-		config();
 
 		return true;
 	}
