@@ -294,6 +294,8 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@Override
 	public boolean preInit() {
 
+		config();
+
 		satchelBasic = addSatchelItem(0, "standard0", 0, EnumRarity.COMMON);
 		satchelHardened = addSatchelItem(1, "standard1", 1, EnumRarity.COMMON);
 		satchelReinforced = addSatchelItem(2, "standard2", 2, EnumRarity.UNCOMMON);
@@ -303,8 +305,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 		satchelCreative = addSatchelItem(CREATIVE, "creative", 0, EnumRarity.EPIC, false);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
-
-		config();
 
 		return true;
 	}

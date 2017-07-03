@@ -260,7 +260,7 @@ public class SawmillManager {
 		for (ItemStack logEntry : registeredOres) {
 			Block logBlock = Block.getBlockFromItem(logEntry.getItem());
 
-			if (logBlock.equals(Blocks.LOG) || logBlock.equals(Blocks.LOG2)) {
+			if (Blocks.LOG.equals(logBlock) || Blocks.LOG2.equals(logBlock)) {
 				continue;
 			}
 			if (ItemHelper.getItemDamage(logEntry) == OreDictionary.WILDCARD_VALUE) {
