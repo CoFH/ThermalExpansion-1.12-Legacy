@@ -11,11 +11,7 @@ import cofh.core.item.ItemMulti;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.RegistrySocial;
 import cofh.core.util.core.IInitializer;
-import cofh.core.util.helpers.ChatHelper;
-import cofh.core.util.helpers.SecurityHelper;
-import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.helpers.ServerHelper;
-import cofh.core.util.helpers.StringHelper;
+import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
 import com.mojang.authlib.GameProfile;
@@ -312,6 +308,9 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@Override
 	public boolean initialize() {
 
+		if (!enable) {
+			return false;
+		}
 		// @formatter:off
 
 		addShapedRecipe(satchelBasic,

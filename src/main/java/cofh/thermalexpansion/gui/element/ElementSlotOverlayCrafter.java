@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.gui.element;
 
-import cofh.core.init.CoreProps;
 import cofh.core.gui.GuiCore;
 import cofh.core.gui.element.ElementBase;
+import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.init.TEProps;
 

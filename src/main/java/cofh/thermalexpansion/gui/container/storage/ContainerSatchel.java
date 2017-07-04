@@ -1,13 +1,13 @@
 package cofh.thermalexpansion.gui.container.storage;
 
 import cofh.api.core.ISecurable;
-import cofh.core.util.CoreUtils;
-import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.gui.container.ContainerInventoryItem;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotLocked;
 import cofh.core.gui.slot.SlotValidated;
+import cofh.core.util.CoreUtils;
 import cofh.core.util.helpers.MathHelper;
+import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.slot.SlotSatchelCreative;
 import cofh.thermalexpansion.item.ItemSatchel;

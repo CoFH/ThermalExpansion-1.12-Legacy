@@ -1,11 +1,11 @@
 package cofh.thermalexpansion.block.storage;
 
+import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.item.IEnchantableItem;
+import cofh.core.util.helpers.EnergyHelper;
 import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.helpers.SecurityHelper;
-import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.core.util.helpers.EnergyHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.util.EnergyContainerItemWrapper;

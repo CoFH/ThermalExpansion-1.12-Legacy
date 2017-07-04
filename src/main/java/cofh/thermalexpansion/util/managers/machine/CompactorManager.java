@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.core.inventory.ComparableItemStack;
 import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalfoundation.block.BlockStorage;
 import cofh.thermalfoundation.block.BlockStorageAlloy;
 import cofh.thermalfoundation.item.ItemCoin;

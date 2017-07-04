@@ -1,12 +1,12 @@
 package cofh.thermalexpansion.block.storage;
 
 import cofh.api.fluid.IFluidContainerItem;
+import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.item.IEnchantableItem;
+import cofh.core.util.capabilities.FluidContainerItemWrapper;
 import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.helpers.SecurityHelper;
-import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.core.util.capabilities.FluidContainerItemWrapper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import net.minecraft.block.Block;

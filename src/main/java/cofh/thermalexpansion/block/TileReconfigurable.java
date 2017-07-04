@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.block;
 
 import cofh.api.tileentity.IReconfigurableFacing;
+import cofh.api.tileentity.IReconfigurableSides;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.ISidedTexture;
-import cofh.api.tileentity.IReconfigurableSides;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

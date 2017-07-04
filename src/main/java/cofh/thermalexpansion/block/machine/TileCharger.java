@@ -1,11 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.helpers.AugmentHelper;
-import cofh.core.util.helpers.EnergyHelper;
-import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.helpers.MathHelper;
-import cofh.core.util.helpers.ServerHelper;
+import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;

@@ -10,7 +10,6 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.render.RenderFrame;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;

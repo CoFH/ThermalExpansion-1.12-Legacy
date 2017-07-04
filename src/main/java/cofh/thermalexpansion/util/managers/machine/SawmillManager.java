@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.core.inventory.ComparableItemStack;
 import cofh.core.inventory.InventoryCraftingFalse;
 import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.block.Block;

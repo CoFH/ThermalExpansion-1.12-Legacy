@@ -1,11 +1,11 @@
 package cofh.thermalexpansion.block;
 
 import codechicken.lib.vec.Vector3;
-import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.core.audio.ISoundSource;
 import cofh.core.audio.SoundTile;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.helpers.SoundHelper;
 import cofh.thermalexpansion.init.TEProps;

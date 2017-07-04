@@ -308,6 +308,8 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public void onModeChange(EntityPlayer player, ItemStack stack) {
 
+		player.world.playSound(null, player.getPosition(), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, 0.4F, (isActive(stack) ? 0.7F : 0.5F) + 0.1F * getMode(stack));
+
 		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.capacitor.a." + getMode(stack)));
 	}
 
@@ -404,11 +406,10 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean initialize() {
 
-		// @formatter:off
-
 		if (!enable) {
 			return false;
 		}
+		// @formatter:off
 
 		addShapedRecipe(capacitorBasic,
 				" R ",

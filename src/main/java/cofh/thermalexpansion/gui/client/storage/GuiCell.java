@@ -1,11 +1,11 @@
 package cofh.thermalexpansion.gui.client.storage;
 
 import cofh.core.gui.GuiCore;
-import cofh.core.gui.element.tab.*;
-import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.gui.element.ElementButton;
 import cofh.core.gui.element.ElementEnergyStored;
 import cofh.core.gui.element.ElementSimple;
+import cofh.core.gui.element.tab.*;
+import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.storage.TileCell;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;

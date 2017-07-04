@@ -2,10 +2,10 @@ package cofh.thermalexpansion.item;
 
 import cofh.api.core.ISecurable;
 import cofh.api.item.IUpgradeItem;
+import cofh.api.tileentity.IUpgradeable;
 import cofh.core.item.ItemMulti;
 import cofh.core.util.core.IInitializer;
 import cofh.core.util.helpers.ChatHelper;
-import cofh.api.tileentity.IUpgradeable;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.helpers.StringHelper;
@@ -25,8 +25,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;

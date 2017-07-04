@@ -2,16 +2,12 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
+import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.ISidedTexture;
-import cofh.core.util.helpers.AugmentHelper;
-import cofh.api.tileentity.IInventoryRetainer;
-import cofh.core.util.helpers.BlockHelper;
-import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.helpers.MathHelper;
-import cofh.core.util.helpers.StringHelper;
+import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.init.TETextures;

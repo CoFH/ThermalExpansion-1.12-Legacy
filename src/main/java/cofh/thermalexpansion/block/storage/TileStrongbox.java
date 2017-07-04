@@ -2,15 +2,11 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
+import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.helpers.AugmentHelper;
-import cofh.api.tileentity.IInventoryRetainer;
-import cofh.core.util.helpers.BlockHelper;
-import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.helpers.MathHelper;
-import cofh.core.util.helpers.ServerHelper;
+import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.gui.client.storage.GuiStrongbox;
@@ -33,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 
-public class TileStrongbox extends TileInventory implements ITickable, ISidedInventory, IReconfigurableFacing, IInventoryRetainer {
+public class TileStrongbox extends TileInventory implements ITickable, ISidedInventory, IReconfigurableFacing, IInventoryRetainer { //, IDropoffManager {
 
 	private static boolean enableSecurity = true;
 
@@ -417,5 +413,12 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 		return true;
 	}
+
+	//	/* IDropoffManager */
+	//	@Override
+	//	public boolean acceptsDropoff(EntityPlayer player) {
+	//
+	//		return player != null && canPlayerAccess(player);
+	//	}
 
 }

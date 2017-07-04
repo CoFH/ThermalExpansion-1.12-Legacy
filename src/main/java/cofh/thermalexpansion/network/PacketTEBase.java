@@ -2,12 +2,12 @@ package cofh.thermalexpansion.network;
 
 import cofh.api.core.ISecurable;
 import cofh.api.core.ISecurable.AccessMode;
-import cofh.core.network.PacketCoFHBase;
-import cofh.core.network.PacketHandler;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.api.tileentity.ITransferControl;
 import cofh.core.gui.container.IAugmentableContainer;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketHandler;
 import cofh.thermalexpansion.ThermalExpansion;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;

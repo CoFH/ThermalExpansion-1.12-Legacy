@@ -1,10 +1,10 @@
 package cofh.thermalexpansion.gui.client.dynamo;
 
 import cofh.core.gui.GuiCore;
-import cofh.core.gui.element.tab.*;
-import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.gui.container.IAugmentableContainer;
 import cofh.core.gui.element.ElementEnergyStored;
+import cofh.core.gui.element.tab.*;
+import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
 import net.minecraft.entity.player.EntityPlayer;
