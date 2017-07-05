@@ -269,15 +269,12 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 			lastDisplayLevel = 0;
 			sendUpdate = true;
 		}
-		if (curDisplayLevel != lastDisplayLevel) {
+		if (lastDisplayLevel != curDisplayLevel) {
 			lastDisplayLevel = curDisplayLevel;
 			sendUpdate = true;
 		}
-		if (curLight != getLightValue()) {
-			updateLighting();
-			sendUpdate = true;
-		}
 		if (sendUpdate) {
+			updateLighting();
 			sendTilePacket(Side.CLIENT);
 		}
 	}
