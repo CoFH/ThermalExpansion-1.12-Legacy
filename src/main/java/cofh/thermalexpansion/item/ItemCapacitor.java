@@ -99,11 +99,11 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		}
 		if (isActive(stack)) {
 			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.a." + getMode(stack)));
-			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.instance.getKey())));
+			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
 			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.c.0"));
 			tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.capacitor.d.0"));
 		} else {
-			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.instance.getKey())));
+			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
 			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.c.1"));
 			tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.capacitor.d.0"));
 		}
@@ -386,7 +386,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 	/* IInitializer */
 	@Override
-	public boolean preInit() {
+	public boolean initialize() {
 
 		config();
 
@@ -404,7 +404,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	@Override
-	public boolean initialize() {
+	public boolean register() {
 
 		if (!enable) {
 			return false;
@@ -422,12 +422,6 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		);
 
 		// @formatter:on
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
 
 		return true;
 	}

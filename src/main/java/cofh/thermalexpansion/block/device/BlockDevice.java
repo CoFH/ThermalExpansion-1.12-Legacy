@@ -255,7 +255,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 	/* IInitializer */
 	@Override
-	public boolean preInit() {
+	public boolean initialize() {
 
 		this.setRegistryName("device");
 		ForgeRegistries.BLOCKS.register(this);
@@ -263,14 +263,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		itemBlock = new ItemBlockDevice(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		ForgeRegistries.ITEMS.register(itemBlock);
-
-		ThermalExpansion.proxy.addIModelRegister(this);
-
-		return true;
-	}
-
-	@Override
-	public boolean initialize() {
 
 		TileDeviceBase.config();
 
@@ -282,6 +274,14 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 		TileItemBuffer.initialize();
 
+		ThermalExpansion.proxy.addIModelRegister(this);
+
+		return true;
+	}
+
+	@Override
+	public boolean register() {
+
 		deviceWaterGen = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.WATER_GEN.getMetadata()));
 		deviceNullifier = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.NULLIFIER.getMetadata()));
 		deviceHeatSink = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.HEAT_SINK.getMetadata()));
@@ -290,12 +290,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		deviceItemBuffer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
 
 		addRecipes();
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
 
 		return true;
 	}

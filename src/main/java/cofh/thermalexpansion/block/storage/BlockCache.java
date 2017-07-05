@@ -343,7 +343,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 	/* IInitializer */
 	@Override
-	public boolean preInit() {
+	public boolean initialize() {
 
 		this.setRegistryName("cache");
 		ForgeRegistries.BLOCKS.register(this);
@@ -352,15 +352,15 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		itemBlock.setRegistryName(this.getRegistryName());
 		ForgeRegistries.ITEMS.register(itemBlock);
 
+		TileCache.initialize();
+
 		ThermalExpansion.proxy.addIModelRegister(this);
 
 		return true;
 	}
 
 	@Override
-	public boolean initialize() {
-
-		TileCache.initialize();
+	public boolean register() {
 
 		cache = new ItemStack[5];
 
@@ -368,12 +368,6 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 			cache[i] = itemBlock.setDefaultTag(new ItemStack(this), i);
 		}
 		addRecipes();
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
 
 		return true;
 	}

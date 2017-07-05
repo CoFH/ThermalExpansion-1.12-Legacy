@@ -316,7 +316,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 
 	/* IInitializer */
 	@Override
-	public boolean preInit() {
+	public boolean initialize() {
 
 		this.setRegistryName("machine");
 		ForgeRegistries.BLOCKS.register(this);
@@ -324,14 +324,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		itemBlock = new ItemBlockMachine(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		ForgeRegistries.ITEMS.register(itemBlock);
-
-		ThermalExpansion.proxy.addIModelRegister(this);
-
-		return true;
-	}
-
-	@Override
-	public boolean initialize() {
 
 		TileMachineBase.config();
 
@@ -352,6 +344,14 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		TilePrecipitator.initialize();
 		TileExtruder.initialize();
 
+		ThermalExpansion.proxy.addIModelRegister(this);
+
+		return true;
+	}
+
+	@Override
+	public boolean register() {
+
 		machineFurnace = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FURNACE.getMetadata()));
 		machinePulverizer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.PULVERIZER.getMetadata()));
 		machineSawmill = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.SAWMILL.getMetadata()));
@@ -370,12 +370,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		machineExtruder = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.EXTRUDER.getMetadata()));
 
 		addRecipes();
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
 
 		return true;
 	}

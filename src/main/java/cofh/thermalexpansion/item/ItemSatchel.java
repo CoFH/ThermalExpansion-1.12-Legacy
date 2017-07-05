@@ -288,7 +288,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 
 	/* IInitializer */
 	@Override
-	public boolean preInit() {
+	public boolean initialize() {
 
 		config();
 
@@ -306,7 +306,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	}
 
 	@Override
-	public boolean initialize() {
+	public boolean register() {
 
 		if (!enable) {
 			return false;
@@ -331,12 +331,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 		);
 
 		// @formatter:on
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
 
 		return true;
 	}

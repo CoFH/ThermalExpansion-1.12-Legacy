@@ -179,7 +179,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	/* IInitializer */
 	@Override
-	public boolean preInit() {
+	public boolean initialize() {
 
 		/* MACHINES */
 		machinePower = addAugmentItem(128, TEProps.MACHINE_POWER);
@@ -242,7 +242,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	}
 
 	@Override
-	public boolean initialize() {
+	public boolean register() {
 
 		// @formatter:off
 
@@ -584,12 +584,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		/* APPARATUS */
 
 		// @formatter:on
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
 
 		return true;
 	}

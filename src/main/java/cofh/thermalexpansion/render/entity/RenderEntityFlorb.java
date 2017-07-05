@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.render.entity;
 
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
-import cofh.thermalexpansion.init.TEFlorbs;
+import cofh.thermalexpansion.item.ItemFlorb;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
@@ -40,7 +40,7 @@ public class RenderEntityFlorb extends Render<EntityFlorb> {
 		GlStateManager.rotate(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 
 		//K, So the entity has been thrown, Fluid isn't null, This HAS to be a florb. Ignore null return.
-		Minecraft.getMinecraft().getRenderItem().renderItem(TEFlorbs.getFlorb(fluid), TransformType.GROUND);
+		Minecraft.getMinecraft().getRenderItem().renderItem(ItemFlorb.getFlorb(fluid), TransformType.GROUND);
 
 		GlStateManager.disableRescaleNormal();
 		GlStateManager.popMatrix();

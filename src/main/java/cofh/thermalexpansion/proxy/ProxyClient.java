@@ -58,7 +58,7 @@ public class ProxyClient extends Proxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileStrongbox.class, RenderStrongbox.INSTANCE);
 	}
 
-	/* EVENT HANDLERS */
+	/* EVENT HANDLING */
 	@SubscribeEvent
 	public void registerIcons(TextureStitchEvent.Pre event) {
 

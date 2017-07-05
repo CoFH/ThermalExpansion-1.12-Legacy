@@ -278,7 +278,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.DEVICE_WATER_GEN;
+		return TESounds.deviceWaterGen;
 	}
 
 	/* CAPABILITIES */

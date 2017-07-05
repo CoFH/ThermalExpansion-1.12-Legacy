@@ -478,7 +478,7 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.MACHINE_SMELTER;
+		return TESounds.machineSmelter;
 	}
 
 	/* CAPABILITIES */

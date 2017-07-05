@@ -137,7 +137,7 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 
 	/* IInitializer */
 	@Override
-	public boolean preInit() {
+	public boolean initialize() {
 
 		upgradeIncremental = new ItemStack[4];
 		for (int i = 0; i < 4; i++) {
@@ -162,7 +162,7 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 	}
 
 	@Override
-	public boolean initialize() {
+	public boolean register() {
 
 		// @formatter:off
 
@@ -231,12 +231,6 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 		);
 
 		// @formatter:on
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
 
 		return true;
 	}

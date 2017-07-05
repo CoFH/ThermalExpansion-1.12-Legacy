@@ -3,27 +3,39 @@ package cofh.thermalexpansion.init;
 import cofh.thermalexpansion.ThermalExpansion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class TESounds {
+
+	public static final TESounds INSTANCE = new TESounds();
 
 	private TESounds() {
 
 	}
 
-	public static void initialize() {
+	public static void preInit() {
 
-		MACHINE_FURNACE = getRegisteredSoundEvent("machine_furnace");
-		MACHINE_PULVERIZER = getRegisteredSoundEvent("machine_pulverizer");
-		MACHINE_SAWMILL = getRegisteredSoundEvent("machine_sawmill");
-		MACHINE_SMELTER = getRegisteredSoundEvent("machine_smelter");
-		MACHINE_CRUCIBLE = getRegisteredSoundEvent("machine_crucible");
-		MACHINE_TRANSPOSER = getRegisteredSoundEvent("machine_transposer");
-
-		DEVICE_WATER_GEN = getRegisteredSoundEvent("device_water_gen");
+		MinecraftForge.EVENT_BUS.register(INSTANCE);
 	}
 
-	private static SoundEvent getRegisteredSoundEvent(String id) {
+	/* EVENT HANDLING */
+	@SubscribeEvent
+	public void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+
+		machineFurnace = registerSoundEvent("machine_furnace");
+		machinePulverizer = registerSoundEvent("machine_pulverizer");
+		machineSawmill = registerSoundEvent("machine_sawmill");
+		machineSmelter = registerSoundEvent("machine_smelter");
+		machineCrucible = registerSoundEvent("machine_crucible");
+		machineTransposer = registerSoundEvent("machine_transposer");
+
+		deviceWaterGen = registerSoundEvent("device_water_gen");
+	}
+
+	private static SoundEvent registerSoundEvent(String id) {
 
 		SoundEvent sound = new SoundEvent(new ResourceLocation(ThermalExpansion.MOD_ID + ":" + id));
 		sound.setRegistryName(id);
@@ -31,13 +43,13 @@ public class TESounds {
 		return sound;
 	}
 
-	public static SoundEvent MACHINE_FURNACE;
-	public static SoundEvent MACHINE_PULVERIZER;
-	public static SoundEvent MACHINE_SAWMILL;
-	public static SoundEvent MACHINE_SMELTER;
-	public static SoundEvent MACHINE_CRUCIBLE;
-	public static SoundEvent MACHINE_TRANSPOSER;
+	public static SoundEvent machineFurnace;
+	public static SoundEvent machinePulverizer;
+	public static SoundEvent machineSawmill;
+	public static SoundEvent machineSmelter;
+	public static SoundEvent machineCrucible;
+	public static SoundEvent machineTransposer;
 
-	public static SoundEvent DEVICE_WATER_GEN;
+	public static SoundEvent deviceWaterGen;
 
 }

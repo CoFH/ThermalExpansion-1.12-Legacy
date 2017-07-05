@@ -4,7 +4,7 @@ import cofh.CoFHCore;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.TimeTracker;
 import cofh.core.util.helpers.MathHelper;
-import cofh.thermalexpansion.init.TEFlorbs;
+import cofh.thermalexpansion.item.ItemFlorb;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -26,7 +26,7 @@ public class CreativeTabTEFlorbs extends CreativeTabs {
 	public ItemStack getIconItemStack() {
 
 		updateIcon();
-		return TEFlorbs.florbList.get(iconIndex);
+		return ItemFlorb.florbList.get(iconIndex);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class CreativeTabTEFlorbs extends CreativeTabs {
 		World world = CoFHCore.proxy.getClientWorld();
 
 		if (CoreUtils.isClient() && iconTracker.hasDelayPassed(world, 80)) {
-			int next = MathHelper.RANDOM.nextInt(TEFlorbs.florbList.size() - 1);
+			int next = MathHelper.RANDOM.nextInt(ItemFlorb.florbList.size() - 1);
 			iconIndex = next >= iconIndex ? next + 1 : next;
 			iconTracker.markTime(world);
 		}

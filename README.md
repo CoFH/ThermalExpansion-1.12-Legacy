@@ -46,6 +46,4 @@ Essentially, take this and learn from it! Create addon mods that depend on it! I
 
 Don't be a jerk.
 
-See LICENSE-CODE.txt and LICENSE-ART.txt for license information.
-
 ©2012-2017 Cult of the Full Hub / Team CoFH / CoFH

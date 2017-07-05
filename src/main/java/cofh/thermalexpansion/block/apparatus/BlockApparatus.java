@@ -12,7 +12,6 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -22,8 +21,6 @@ import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -39,8 +36,6 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
@@ -212,7 +207,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 
 	/* IInitializer */
 	@Override
-	public boolean preInit() {
+	public boolean initialize() {
 
 		this.setRegistryName("apparatus");
 		ForgeRegistries.BLOCKS.register(this);
@@ -223,35 +218,27 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
-		return true;
-	}
-
-	public boolean initialize() {
-
 		TileApparatusBase.config();
 
 		TileBreaker.initialize();
 		TileCollector.initialize();
 
+		return true;
+	}
+
+	public boolean register() {
+
 		apparatusBreaker = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.BREAKER.getMetadata()));
 		apparatusCollector = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.COLLECTOR.getMetadata()));
+
+		addRecipes();
 
 		return true;
 	}
 
-	@Override
-	public boolean postInit() {
+	/* HELPERS */
+	private void addRecipes() {
 
-		String machineFrame = "thermalexpansion:machineFrame";
-		String tinPart = "thermalexpansion:machineTin";
-
-		if (enable[Type.BREAKER.getMetadata()]) {
-			addShapedRecipe(apparatusBreaker, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Items.IRON_PICKAXE, 'Y', "ingotIron");
-		}
-		if (enable[Type.COLLECTOR.getMetadata()]) {
-			addShapedRecipe(apparatusCollector, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Blocks.HOPPER, 'Y', "ingotIron");
-		}
-		return true;
 	}
 
 	/* TYPE */

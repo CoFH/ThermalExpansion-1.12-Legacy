@@ -50,9 +50,19 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 		return RenderFrame.INSTANCE;
 	}
 
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+
+		ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:frame", "frame");
+		ModelLoader.setCustomModelResourceLocation(this, 0, location);
+		ModelLoader.setCustomMeshDefinition(this, (stack -> location));
+		ModelRegistryHelper.register(location, new CCBakeryModel(""));
+	}
+
 	/* IInitializer */
 	@Override
-	public boolean preInit() {
+	public boolean initialize() {
 
 		frameMachine = addItem(0, "frameMachine");
 		// frameApparatus = addItem(32, "frameApparatus");
@@ -66,17 +76,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 	}
 
 	@Override
-	@SideOnly (Side.CLIENT)
-	public void registerModels() {
-
-		ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:frame", "frame");
-		ModelLoader.setCustomModelResourceLocation(this, 0, location);
-		ModelLoader.setCustomMeshDefinition(this, (stack -> location));
-		ModelRegistryHelper.register(location, new CCBakeryModel(""));
-	}
-
-	@Override
-	public boolean initialize() {
+	public boolean register() {
 
 		// @formatter:off
 
@@ -122,12 +122,6 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 //		);
 
 		// @formatter:on
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
 
 		return true;
 	}

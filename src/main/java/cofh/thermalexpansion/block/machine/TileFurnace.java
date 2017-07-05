@@ -405,7 +405,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.MACHINE_FURNACE;
+		return TESounds.machineFurnace;
 	}
 
 	/* CAPABILITIES */

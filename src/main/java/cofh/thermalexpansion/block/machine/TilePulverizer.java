@@ -376,7 +376,7 @@ public class TilePulverizer extends TileMachineBase {
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.MACHINE_PULVERIZER;
+		return TESounds.machinePulverizer;
 	}
 
 	/* CAPABILITIES */

@@ -2,7 +2,6 @@ package cofh.thermalexpansion.proxy;
 
 import cofh.core.render.IModelRegister;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
-import cofh.thermalexpansion.init.TESounds;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -19,7 +18,6 @@ public class Proxy {
 
 	public void initialize(FMLInitializationEvent event) {
 
-		TESounds.initialize();
 	}
 
 	public void postInit(FMLPostInitializationEvent event) {
@@ -32,7 +30,7 @@ public class Proxy {
 		EntityFlorb.initialize(0);
 	}
 
-	/* EVENT HANDLERS */
+	/* EVENT HANDLING */
 	@SubscribeEvent
 	public void onPlayerLogin(PlayerLoggedInEvent event) {
 

@@ -5,19 +5,28 @@ import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.generation.IBakery;
+import cofh.core.init.CoreProps;
 import cofh.core.item.ItemMulti;
+import cofh.core.util.ConfigHandler;
 import cofh.core.util.CoreUtils;
+import cofh.core.util.DefaultedHashMap;
+import cofh.core.util.core.IInitializer;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
-import cofh.thermalexpansion.init.TEFlorbs;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.item.ModelFlorb;
+import cofh.thermalexpansion.util.BehaviorFlorbDispense;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager;
+import cofh.thermalfoundation.item.ItemMaterial;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -26,15 +35,23 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class ItemFlorb extends ItemMulti implements IBakeryProvider {
+import static cofh.core.util.helpers.RecipeHelper.addShapelessRecipe;
+
+public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitializer {
 
 	public static ItemStack setTag(ItemStack container, Fluid fluid) {
 
@@ -45,16 +62,11 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider {
 		return container;
 	}
 
-	public static void dropFlorb(Fluid fluid, World worldObj, BlockPos pos) {
-
-		if (fluid != null) {
-			CoreUtils.dropItemStackIntoWorldWithVelocity(TEFlorbs.getFlorb(fluid), worldObj, pos);
-		}
-	}
-
 	public ItemFlorb() {
 
 		super("thermalexpansion");
+
+		setUnlocalizedName("florb");
 		setCreativeTab(ThermalExpansion.tabFlorbs);
 	}
 
@@ -95,8 +107,8 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider {
 			items.add(new ItemStack(this, 1, 0));
 			items.add(new ItemStack(this, 1, 1));
 
-			for (int i = 0; i < TEFlorbs.florbList.size(); i++) {
-				items.add(TEFlorbs.florbList.get(i));
+			for (int i = 0; i < florbList.size(); i++) {
+				items.add(florbList.get(i));
 			}
 		}
 	}
@@ -150,6 +162,56 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider {
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
+	/* HELPERS */
+	public static void addFlorb(ItemStack florb, Fluid fluid) {
+
+		setTag(florb, fluid);
+		florbList.add(florb);
+		florbMap.put(fluid.getName(), florb);
+	}
+
+	public static void dropFlorb(Fluid fluid, World world, BlockPos pos) {
+
+		if (fluid != null) {
+			CoreUtils.dropItemStackIntoWorldWithVelocity(getFlorb(fluid), world, pos);
+		}
+	}
+
+	/**
+	 * Attempts to get a Florb ItemStack from the given fluid.
+	 *
+	 * @param fluid The fluid a Florb is being requested for.
+	 * @return The ItemStack.
+	 */
+	@Nonnull
+	public static ItemStack getFlorb(Fluid fluid) {
+
+		return florbMap.get(fluid.getName());
+	}
+
+	public static void parseFlorbs() {
+
+		for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
+			if (fluid.canBePlacedInWorld()) {
+				if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
+					addFlorb(ItemHelper.cloneStack(florb), fluid);
+				} else {
+					addFlorb(ItemHelper.cloneStack(florbMagmatic), fluid);
+				}
+				if (!ItemFlorb.enable) {
+					continue;
+				}
+				if (CONFIG_FLORBS.get("Whitelist", fluid.getName(), true)) {
+					if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
+						TransposerManager.addFillRecipe(1600, ItemFlorb.florb, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
+					} else {
+						TransposerManager.addFillRecipe(1600, ItemFlorb.florbMagmatic, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
+					}
+				}
+			}
+		}
+	}
+
 	/* IModelRegister */
 	@Override
 	@SideOnly (Side.CLIENT)
@@ -175,5 +237,60 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider {
 
 		return ModelFlorb.INSTANCE;
 	}
+
+	/* IInitializer */
+	@Override
+	public boolean initialize() {
+
+		config();
+
+		florb = addItem(0, "florb");
+		florbMagmatic = addItem(1, "florbMagmatic");
+
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, new BehaviorFlorbDispense());
+
+		ThermalExpansion.proxy.addIModelRegister(this);
+
+		return true;
+	}
+
+	@Override
+	public boolean register() {
+
+		if (!enable) {
+			return false;
+		}
+		ItemStack florbStack = ItemHelper.cloneStack(florb, 4);
+		ItemStack florbMagmaticStack = ItemHelper.cloneStack(florbMagmatic, 4);
+
+		addShapelessRecipe(florbStack, "dustWood", "crystalSlag", "slimeball");
+		addShapelessRecipe(florbMagmaticStack, "dustWood", "crystalSlag", "slimeball", Items.BLAZE_POWDER);
+		addShapelessRecipe(florbMagmaticStack, "dustWood", "crystalSlag", Items.MAGMA_CREAM);
+
+		addShapelessRecipe(florbStack, "dustWood", "crystalSlag", ItemMaterial.globRosin);
+		addShapelessRecipe(florbMagmaticStack, "dustWood", "crystalSlag", ItemMaterial.globRosin, Items.BLAZE_POWDER);
+
+		return true;
+	}
+
+	private static void config() {
+
+		CONFIG_FLORBS.setConfiguration(new Configuration(new File(CoreProps.configDir, "cofh/" + ThermalExpansion.MOD_ID + "/florbs.cfg"), true));
+
+		String category = "General";
+		String comment = "If TRUE, the recipe for Florbs is enabled. Setting this to FALSE means that you actively dislike fun things.";
+		enable = CONFIG_FLORBS.getConfiguration().getBoolean("EnableRecipe", category, enable, comment);
+	}
+
+	public static final ConfigHandler CONFIG_FLORBS = new ConfigHandler(ThermalExpansion.VERSION);
+
+	public static ArrayList<ItemStack> florbList = new ArrayList<>();
+	public static Map<String, ItemStack> florbMap = new DefaultedHashMap<String, ItemStack>(ItemStack.EMPTY);
+
+	public static boolean enable = true;
+
+	/* REFERENCES */
+	public static ItemStack florb;
+	public static ItemStack florbMagmatic;
 
 }

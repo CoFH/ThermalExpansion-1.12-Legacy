@@ -216,7 +216,7 @@ public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelReg
 
 	/* IInitializer */
 	@Override
-	public boolean preInit() {
+	public boolean initialize() {
 
 		this.setRegistryName("cell");
 		ForgeRegistries.BLOCKS.register(this);
@@ -225,15 +225,15 @@ public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelReg
 		itemBlock.setRegistryName(this.getRegistryName());
 		ForgeRegistries.ITEMS.register(itemBlock);
 
+		TileCell.initialize();
+
 		ThermalExpansion.proxy.addIModelRegister(this);
 
 		return true;
 	}
 
 	@Override
-	public boolean initialize() {
-
-		TileCell.initialize();
+	public boolean register() {
 
 		cell = new ItemStack[5];
 
@@ -241,12 +241,6 @@ public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelReg
 			cell[i] = itemBlock.setDefaultTag(new ItemStack(this), i);
 		}
 		addRecipes();
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
 
 		return true;
 	}

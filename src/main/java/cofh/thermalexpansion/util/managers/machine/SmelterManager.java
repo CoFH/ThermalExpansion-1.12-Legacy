@@ -109,73 +109,92 @@ public class SmelterManager {
 			ItemStack blockGlass;
 			int energy = DEFAULT_ENERGY;
 
-			blockGlass = ItemHelper.cloneStack(BlockGlass.glassCopper, 2);
-			addAlloyRecipe(energy, "dustCopper", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotCopper", 1, "dustObsidian", 4, blockGlass);
-
-			blockGlass = ItemHelper.cloneStack(BlockGlass.glassTin, 2);
-			addAlloyRecipe(energy, "dustTin", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotTin", 1, "dustObsidian", 4, blockGlass);
-
-			blockGlass = ItemHelper.cloneStack(BlockGlass.glassSilver, 2);
-			addAlloyRecipe(energy, "dustSilver", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotSilver", 1, "dustObsidian", 4, blockGlass);
-
 			blockGlass = ItemHelper.cloneStack(BlockGlass.glassLead, 2);
 			addAlloyRecipe(energy, "dustLead", 1, "dustObsidian", 4, blockGlass);
 			addAlloyRecipe(energy, "ingotLead", 1, "dustObsidian", 4, blockGlass);
 
-			blockGlass = ItemHelper.cloneStack(BlockGlass.glassAluminum, 2);
-			addAlloyRecipe(energy, "dustAluminum", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotAluminum", 1, "dustObsidian", 4, blockGlass);
+			energy = DEFAULT_ENERGY * 3 / 2;
 
-			blockGlass = ItemHelper.cloneStack(BlockGlass.glassNickel, 2);
-			addAlloyRecipe(energy, "dustNickel", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotNickel", 1, "dustObsidian", 4, blockGlass);
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustCopper, 1), ItemHelper.cloneStack(BlockGlass.glassCopper, 2));
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustTin, 1), ItemHelper.cloneStack(BlockGlass.glassTin, 2));
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustSilver, 1), ItemHelper.cloneStack(BlockGlass.glassSilver, 2));
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustAluminum, 1), ItemHelper.cloneStack(BlockGlass.glassAluminum, 2));
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustNickel, 1), ItemHelper.cloneStack(BlockGlass.glassNickel, 2));
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustPlatinum, 1), ItemHelper.cloneStack(BlockGlass.glassPlatinum, 2));
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustIridium, 1), ItemHelper.cloneStack(BlockGlass.glassIridium, 2));
 
-			blockGlass = ItemHelper.cloneStack(BlockGlass.glassPlatinum, 2);
-			addAlloyRecipe(energy, "dustPlatinum", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotPlatinum", 1, "dustObsidian", 4, blockGlass);
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustSteel, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassSteel, 2));
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustElectrum, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassElectrum, 2));
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustInvar, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassInvar, 2));
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustBronze, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassBronze, 2));
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustConstantan, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassConstantan, 2));
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustSignalum, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassSignalum, 2));
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustLumium, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassLumium, 2));
+			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustEnderium, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassEnderium, 2));
 
-			blockGlass = ItemHelper.cloneStack(BlockGlass.glassIridium, 2);
-			addAlloyRecipe(energy, "dustIridium", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotIridium", 1, "dustObsidian", 4, blockGlass);
-
-			blockGlass = ItemHelper.cloneStack(BlockGlass.glassMithril, 2);
-			addAlloyRecipe(energy, "dustMithril", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "dustMithril", 1, "dustObsidian", 4, blockGlass);
-
-			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassSteel, 2);
-			addAlloyRecipe(energy, "dustSteel", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotSteel", 1, "dustObsidian", 4, blockGlass);
-
-			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassElectrum, 2);
-			addAlloyRecipe(energy, "dustElectrum", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotElectrum", 1, "dustObsidian", 4, blockGlass);
-
-			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassInvar, 2);
-			addAlloyRecipe(energy, "dustInvar", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotInvar", 1, "dustObsidian", 4, blockGlass);
-
-			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassBronze, 2);
-			addAlloyRecipe(energy, "dustBronze", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotBronze", 1, "dustObsidian", 4, blockGlass);
-
-			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassConstantan, 2);
-			addAlloyRecipe(energy, "dustConstantan", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotConstantan", 1, "dustObsidian", 4, blockGlass);
-
-			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassSignalum, 2);
-			addAlloyRecipe(energy, "dustSignalum", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotSignalum", 1, "dustObsidian", 4, blockGlass);
-
-			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassLumium, 2);
-			addAlloyRecipe(energy, "dustLumium", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotLumium", 1, "dustObsidian", 4, blockGlass);
-
-			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassEnderium, 2);
-			addAlloyRecipe(energy, "dustEnderium", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotEnderium", 1, "dustObsidian", 4, blockGlass);
+			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassCopper, 2);
+			//			addAlloyRecipe(energy, "dustCopper", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotCopper", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassTin, 2);
+			//			addAlloyRecipe(energy, "dustTin", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotTin", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassSilver, 2);
+			//			addAlloyRecipe(energy, "dustSilver", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotSilver", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassAluminum, 2);
+			//			addAlloyRecipe(energy, "dustAluminum", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotAluminum", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassNickel, 2);
+			//			addAlloyRecipe(energy, "dustNickel", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotNickel", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassPlatinum, 2);
+			//			addAlloyRecipe(energy, "dustPlatinum", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotPlatinum", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassIridium, 2);
+			//			addAlloyRecipe(energy, "dustIridium", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotIridium", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassMithril, 2);
+			//			addAlloyRecipe(energy, "dustMithril", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "dustMithril", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassSteel, 2);
+			//			addAlloyRecipe(energy, "dustSteel", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotSteel", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassElectrum, 2);
+			//			addAlloyRecipe(energy, "dustElectrum", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotElectrum", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassInvar, 2);
+			//			addAlloyRecipe(energy, "dustInvar", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotInvar", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassBronze, 2);
+			//			addAlloyRecipe(energy, "dustBronze", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotBronze", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassConstantan, 2);
+			//			addAlloyRecipe(energy, "dustConstantan", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotConstantan", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassSignalum, 2);
+			//			addAlloyRecipe(energy, "dustSignalum", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotSignalum", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassLumium, 2);
+			//			addAlloyRecipe(energy, "dustLumium", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotLumium", 1, "dustObsidian", 4, blockGlass);
+			//
+			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassEnderium, 2);
+			//			addAlloyRecipe(energy, "dustEnderium", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(energy, "ingotEnderium", 1, "dustObsidian", 4, blockGlass);
 		}
 
 		/* ORES */

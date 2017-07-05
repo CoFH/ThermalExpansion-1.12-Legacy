@@ -15,7 +15,7 @@ import java.util.Locale;
 
 public class IMCHandler {
 
-	public static IMCHandler instance = new IMCHandler();
+	public static final IMCHandler INSTANCE = new IMCHandler();
 
 	public void handleIMC(List<IMCMessage> messages) {
 

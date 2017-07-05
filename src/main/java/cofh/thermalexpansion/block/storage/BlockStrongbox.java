@@ -188,7 +188,7 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister, IWorl
 
 	/* IInitializer */
 	@Override
-	public boolean preInit() {
+	public boolean initialize() {
 
 		this.setRegistryName("strongbox");
 		ForgeRegistries.BLOCKS.register(this);
@@ -197,15 +197,15 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister, IWorl
 		itemBlock.setRegistryName(this.getRegistryName());
 		ForgeRegistries.ITEMS.register(itemBlock);
 
+		TileStrongbox.initialize();
+
 		ThermalExpansion.proxy.addIModelRegister(this);
 
 		return true;
 	}
 
 	@Override
-	public boolean initialize() {
-
-		TileStrongbox.initialize();
+	public boolean register() {
 
 		strongbox = new ItemStack[5];
 
@@ -213,12 +213,6 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister, IWorl
 			strongbox[i] = itemBlock.setDefaultTag(new ItemStack(this), i);
 		}
 		addRecipes();
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
 
 		return true;
 	}

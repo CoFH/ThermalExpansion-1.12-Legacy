@@ -9,10 +9,16 @@ import cofh.thermalexpansion.block.storage.BlockCache;
 import cofh.thermalexpansion.block.storage.BlockCell;
 import cofh.thermalexpansion.block.storage.BlockStrongbox;
 import cofh.thermalexpansion.block.storage.BlockTank;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 
 public class TEBlocks {
+
+	public static final TEBlocks INSTANCE = new TEBlocks();
 
 	private TEBlocks() {
 
@@ -41,23 +47,18 @@ public class TEBlocks {
 		initList.add(blockStrongbox);
 
 		for (IInitializer init : initList) {
-			init.preInit();
-		}
-	}
-
-	public static void initialize() {
-
-		for (IInitializer init : initList) {
 			init.initialize();
 		}
+		MinecraftForge.EVENT_BUS.register(INSTANCE);
 	}
 
-	public static void postInit() {
+	/* EVENT HANDLING */
+	@SubscribeEvent
+	public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 
 		for (IInitializer init : initList) {
-			init.postInit();
+			init.register();
 		}
-		initList.clear();
 	}
 
 	private static ArrayList<IInitializer> initList = new ArrayList<>();

@@ -297,7 +297,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 
 	/* IInitializer */
 	@Override
-	public boolean preInit() {
+	public boolean initialize() {
 
 		this.setRegistryName("dynamo");
 		ForgeRegistries.BLOCKS.register(this);
@@ -305,14 +305,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		itemBlock = new ItemBlockDynamo(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		ForgeRegistries.ITEMS.register(itemBlock);
-
-		ThermalExpansion.proxy.addIModelRegister(this);
-
-		return true;
-	}
-
-	@Override
-	public boolean initialize() {
 
 		TileDynamoBase.config();
 
@@ -323,6 +315,14 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		TileDynamoEnervation.initialize();
 		TileDynamoNumismatic.initialize();
 
+		ThermalExpansion.proxy.addIModelRegister(this);
+
+		return true;
+	}
+
+	@Override
+	public boolean register() {
+
 		dynamoSteam = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.STEAM.getMetadata()));
 		dynamoMagmatic = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.MAGMATIC.getMetadata()));
 		dynamoCompression = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.COMPRESSION.getMetadata()));
@@ -331,12 +331,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		dynamoNumismatic = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.NUMISMATIC.getMetadata()));
 
 		addRecipes();
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
 
 		return true;
 	}

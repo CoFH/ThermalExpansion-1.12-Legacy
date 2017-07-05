@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 
 public class TickHandlerClientConfig {
 
-	public static TickHandlerClientConfig instance = new TickHandlerClientConfig();
+	public static final TickHandlerClientConfig INSTANCE = new TickHandlerClientConfig();
 
 	public boolean needsMenu = false;
 

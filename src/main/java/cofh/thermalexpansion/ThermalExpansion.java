@@ -6,6 +6,7 @@ import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.init.*;
+import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
@@ -74,8 +75,7 @@ public class ThermalExpansion {
 		TEProps.preInit();
 		TEBlocks.preInit();
 		TEItems.preInit();
-		TEFlorbs.preInit();
-		TEPlugins.preInit();
+		TESounds.preInit();
 
 		/* Register Handlers */
 		registerHandlers();
@@ -86,20 +86,13 @@ public class ThermalExpansion {
 	@EventHandler
 	public void initialize(FMLInitializationEvent event) {
 
-		TEBlocks.initialize();
-		TEItems.initialize();
-		TEFlorbs.initialize();
-		TEPlugins.initialize();
-
 		proxy.initialize(event);
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 
-		TEBlocks.postInit();
-		TEItems.postInit();
-		TEFlorbs.postInit();
+		ItemFlorb.parseFlorbs();
 		TEPlugins.postInit();
 
 		managerInitialize();
@@ -110,7 +103,7 @@ public class ThermalExpansion {
 	@EventHandler
 	public void loadComplete(FMLLoadCompleteEvent event) {
 
-		IMCHandler.instance.handleIMC(FMLInterModComms.fetchRuntimeMessages(this));
+		IMCHandler.INSTANCE.handleIMC(FMLInterModComms.fetchRuntimeMessages(this));
 
 		TEProps.loadComplete();
 		CONFIG.cleanUp(false, true);
@@ -128,7 +121,7 @@ public class ThermalExpansion {
 	@EventHandler
 	public void handleIMC(IMCEvent event) {
 
-		IMCHandler.instance.handleIMC(event.getMessages());
+		IMCHandler.INSTANCE.handleIMC(event.getMessages());
 	}
 
 	/* HELPERS */

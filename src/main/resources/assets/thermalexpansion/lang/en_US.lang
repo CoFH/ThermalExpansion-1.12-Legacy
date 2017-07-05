@@ -174,7 +174,7 @@ info.thermalexpansion.augment.machinePulverizerGeode.b.0=Additional energy is re
 info.thermalexpansion.augment.machinePulverizerPetrotheum.0=Pulverizer: Specialization
 info.thermalexpansion.augment.machinePulverizerPetrotheum.a.0=Increases yield from ores.
 info.thermalexpansion.augment.machinePulverizerPetrotheum.b.0=Additional energy is required per operation.
-info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=Fluid Petrotheum must be supplied.
+info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=Tectonic Petrotheum must be supplied.
 
 info.thermalexpansion.augment.machineSawmillTapper.0=Sawmill: Specialization
 info.thermalexpansion.augment.machineSawmillTapper.a.0=Allows for fluids to be extracted from logs.
@@ -191,7 +191,7 @@ info.thermalexpansion.augment.machineSecondaryNull.b.0=Really. They just disappe
 info.thermalexpansion.augment.machineSmelterPyrotheum.0=Induction Smelter: Specialization
 info.thermalexpansion.augment.machineSmelterPyrotheum.a.0=Increases yield from ores.
 info.thermalexpansion.augment.machineSmelterPyrotheum.b.0=Additional energy is required per operation.
-info.thermalexpansion.augment.machineSmelterPyrotheum.c.0=Fluid Pyrotheum must be supplied.
+info.thermalexpansion.augment.machineSmelterPyrotheum.c.0=Blazing Pyrotheum must be supplied.
 
 info.thermalexpansion.augment.noticeAdvanced=NYI
 info.thermalexpansion.augment.noticeCreative=Requires a Creative block.
