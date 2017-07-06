@@ -1,7 +1,9 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
 import cofh.core.init.CoreProps;
+import cofh.core.inventory.ComparableItemStack;
 import com.google.common.collect.ImmutableSet;
+import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -45,6 +47,18 @@ public class MagmaticManager {
 
 	public static void loadFuels() {
 
+	}
+
+	public static void refresh() {
+
+		TObjectIntHashMap<Fluid> tempMap = new TObjectIntHashMap<>(fuelMap.size());
+
+		for (TObjectIntIterator<Fluid> it = fuelMap.iterator(); it.hasNext(); ) {
+			it.advance();
+			tempMap.put(FluidRegistry.getFluid(it.key().getName()), it.value());
+		}
+		fuelMap.clear();
+		fuelMap = tempMap;
 	}
 
 	/* ADD FUELS */

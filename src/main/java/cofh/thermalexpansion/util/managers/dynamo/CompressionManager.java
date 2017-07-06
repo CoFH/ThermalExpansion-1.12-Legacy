@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
 import com.google.common.collect.ImmutableSet;
+import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -41,7 +42,7 @@ public class CompressionManager {
 		addFuel("crude_oil", 400000);
 		addFuel("tree_oil", 1000000);
 		addFuel("refined_oil", 1250000);
-		addFuel("fuel", 2000000);
+		addFuel("refined_fuel", 2000000);
 
 		loadFuels();
 	}
@@ -52,6 +53,18 @@ public class CompressionManager {
 		addFuel("oil", 200000);
 		addFuel("crystaloil", 400000);
 		addFuel("empoweredoil", 700000);
+	}
+
+	public static void refresh() {
+
+		TObjectIntHashMap<Fluid> tempMap = new TObjectIntHashMap<>(fuelMap.size());
+
+		for (TObjectIntIterator<Fluid> it = fuelMap.iterator(); it.hasNext(); ) {
+			it.advance();
+			tempMap.put(FluidRegistry.getFluid(it.key().getName()), it.value());
+		}
+		fuelMap.clear();
+		fuelMap = tempMap;
 	}
 
 	/* ADD FUELS */

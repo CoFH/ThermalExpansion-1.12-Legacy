@@ -181,8 +181,8 @@ public class ThermalExpansion {
 		FisherManager.refresh();
 
 		SteamManager.refresh();
-		// Magmatic Unnecessary
-		// Compression Unnecessary
+		MagmaticManager.refresh();
+		CompressionManager.refresh();
 		ReactantManager.refresh();
 		EnervationManager.refresh();
 		NumismaticManager.refresh();
