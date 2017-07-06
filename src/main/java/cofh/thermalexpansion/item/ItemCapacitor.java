@@ -437,11 +437,11 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 		int recv = XFER_BASE * 2;
 		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be received by a Basic Flux Capacitor. This base value will scale with item level.";
-		recv = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseReceive", category, recv, recv / 100, recv * 100, comment);
+		recv = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseReceive", category, recv, recv / 10, recv * 10, comment);
 
 		int send = XFER_BASE / 2;
 		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be sent by a Basic Flux Capacitor. This base value will scale with item level.";
-		send = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseSend", category, send, send / 100, send * 100, comment);
+		send = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseSend", category, send, send / 10, send * 10, comment);
 
 		for (int i = 0; i < CAPACITY.length; i++) {
 			CAPACITY[i] *= capacity;

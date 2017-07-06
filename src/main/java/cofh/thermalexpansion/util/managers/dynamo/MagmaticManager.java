@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
 import cofh.core.init.CoreProps;
-import cofh.core.inventory.ComparableItemStack;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;

@@ -82,7 +82,7 @@ public class IMCHandler {
 						CrucibleManager.addRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("output")));
 						continue;
 					case ADD_REFINERY_RECIPE:
-						RefineryManager.addRecipe(nbt.getInteger("energy"), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("input")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("output")), new ItemStack(nbt.getCompoundTag("outputItem")));
+						RefineryManager.addRecipe(nbt.getInteger("energy"), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("input")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("output")), new ItemStack(nbt.getCompoundTag("secondaryOutput")));
 						continue;
 					case ADD_TRANSPOSER_FILL_RECIPE:
 						TransposerManager.addFillRecipe(nbt.getInteger("energy"), new ItemStack(nbt.getCompoundTag("input")), new ItemStack(nbt.getCompoundTag("output")), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("fluid")), nbt.getBoolean("reversible"));

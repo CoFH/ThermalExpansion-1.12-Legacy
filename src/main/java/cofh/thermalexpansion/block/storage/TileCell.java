@@ -30,6 +30,8 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 	public static final int CAPACITY_BASE = 2000000;
 	public static final int XFER_BASE = 1000;
+	public static final int[] XFER_SCALE = { 1, 4, 9, 16, 25 };
+
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final byte[] DEFAULT_SIDES = { 2, 1, 1, 1, 1, 1 };
 
@@ -59,11 +61,11 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		int recv = XFER_BASE;
 		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be received by a Basic Cell. This base value will scale with block level.";
-		recv = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseReceive", category, recv, recv / 100, recv * 100, comment);
+		recv = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseReceive", category, recv, recv / 10, recv * 10, comment);
 
 		int send = XFER_BASE;
 		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be sent by a Basic Cell. This base value will scale with block level.";
-		send = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseSend", category, send, send / 100, send * 100, comment);
+		send = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseSend", category, send, send / 10, send * 10, comment);
 
 		for (int i = 0; i < CAPACITY.length; i++) {
 			CAPACITY[i] *= capacity;
@@ -147,8 +149,8 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		if (super.setLevel(level)) {
 			energyStorage.setCapacity(getCapacity(level, enchantHolding));
-			amountRecv = amountRecv * RECV[level] / RECV[curLevel];
-			amountSend = amountSend * SEND[level] / SEND[curLevel];
+			amountRecv = amountRecv * XFER_SCALE[level] / XFER_SCALE[curLevel];
+			amountSend = amountSend * XFER_SCALE[level] / XFER_SCALE[curLevel];
 
 			if (isCreative) {
 				energyStorage.setEnergyStored(energyStorage.getMaxEnergyStored());
@@ -164,8 +166,8 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
-		amountRecv = tag.getInteger("Recv") * RECV[level] / 1000;
-		amountSend = tag.getInteger("Send") * SEND[level] / 1000;
+		amountRecv = tag.getInteger("Recv") * XFER_SCALE[level] / 1000;
+		amountSend = tag.getInteger("Send") * XFER_SCALE[level] / 1000;
 
 		return super.readPortableTagInternal(player, tag);
 	}
@@ -173,8 +175,8 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
-		tag.setInteger("Recv", amountRecv * 1000 / RECV[level]);
-		tag.setInteger("Send", amountSend * 1000 / SEND[level]);
+		tag.setInteger("Recv", amountRecv * 1000 / XFER_SCALE[level]);
+		tag.setInteger("Send", amountSend * 1000 / XFER_SCALE[level]);
 
 		return super.writePortableTagInternal(player, tag);
 	}
