@@ -295,6 +295,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
 			builder.append(",facing=").append(state.getValue(TEProps.FACING));
 			builder.append(",active=").append(state.getValue(TEProps.ACTIVE));
+			builder.append(",active_texture=").append(state.getValue(TEProps.ACTIVE_SPRITE_PROPERTY));
 			return builder.toString();
 		});
 
