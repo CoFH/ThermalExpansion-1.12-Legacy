@@ -21,10 +21,6 @@ public class TEProps {
 		configClient();
 	}
 
-	public static void loadComplete() {
-
-	}
-
 	/* HELPERS */
 	private static void configCommon() {
 

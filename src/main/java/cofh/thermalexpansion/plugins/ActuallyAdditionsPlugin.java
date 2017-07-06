@@ -39,6 +39,7 @@ public class ActuallyAdditionsPlugin {
 				}
 			}
 
+			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
 		}

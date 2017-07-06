@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.block.dynamo;
 
-import codechicken.lib.texture.TextureUtils;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.render.TextureHelper;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
@@ -170,7 +170,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	@Override
 	public TextureAtlasSprite getActiveIcon() {
 
-		return TextureUtils.getTexture(TFFluids.fluidSteam.getStill());
+		return TextureHelper.getTexture(TFFluids.fluidSteam.getStill());
 	}
 
 	/* GUI METHODS */

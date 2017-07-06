@@ -123,6 +123,7 @@ public class CompactorManager {
 			addDefaultStorageRecipe(ItemMaterial.ingotIron, new ItemStack(Blocks.IRON_BLOCK));
 			addDefaultStorageRecipe(ItemMaterial.ingotGold, new ItemStack(Blocks.GOLD_BLOCK));
 			addDefaultStorageRecipe(ItemMaterial.gemDiamond, new ItemStack(Blocks.DIAMOND_BLOCK));
+			addDefaultStorageRecipe(ItemMaterial.gemEmerald, new ItemStack(Blocks.EMERALD_BLOCK));
 
 			addDefaultStorageRecipe(ItemMaterial.ingotCopper, BlockStorage.blockCopper);
 			addDefaultStorageRecipe(ItemMaterial.ingotTin, BlockStorage.blockTin);
@@ -146,6 +147,7 @@ public class CompactorManager {
 			addDefaultStorageRecipe(ItemMaterial.nuggetIron, ItemMaterial.ingotIron);
 			addDefaultStorageRecipe(ItemMaterial.nuggetGold, ItemMaterial.ingotGold);
 			addDefaultStorageRecipe(ItemMaterial.nuggetDiamond, ItemMaterial.gemDiamond);
+			addDefaultStorageRecipe(ItemMaterial.nuggetEmerald, ItemMaterial.gemEmerald);
 
 			addDefaultStorageRecipe(ItemMaterial.nuggetCopper, ItemMaterial.ingotCopper);
 			addDefaultStorageRecipe(ItemMaterial.nuggetTin, ItemMaterial.ingotTin);

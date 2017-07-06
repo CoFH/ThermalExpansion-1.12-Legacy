@@ -60,9 +60,9 @@ public class ProxyClient extends Proxy {
 
 	/* EVENT HANDLING */
 	@SubscribeEvent
-	public void registerIcons(TextureStitchEvent.Pre event) {
+	public void handleTextureStitchEventPre(TextureStitchEvent.Pre event) {
 
-		TETextures.registerIcons(event);
+		TETextures.registerTextures(event.getMap());
 	}
 
 	/* HELPERS */

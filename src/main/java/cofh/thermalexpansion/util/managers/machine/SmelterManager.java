@@ -660,7 +660,6 @@ public class SmelterManager {
 		public static final String ORE = "ore";
 		public static final String DUST = "dust";
 		public static final String INGOT = "ingot";
-		public static final String BLOCK = "block";
 		public static final String NUGGET = "nugget";
 
 		public static final Set<String> EQUALS = new THashSet<>();
@@ -679,7 +678,7 @@ public class SmelterManager {
 
 		public static boolean safeOreType(String oreName) {
 
-			return EQUALS.contains(oreName) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(BLOCK) || oreName.startsWith(NUGGET);
+			return EQUALS.contains(oreName) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET);
 		}
 
 		public static int getOreID(ItemStack stack) {

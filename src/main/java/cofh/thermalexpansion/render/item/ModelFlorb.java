@@ -3,8 +3,8 @@ package cofh.thermalexpansion.render.item;
 import codechicken.lib.model.ItemQuadBakery;
 import codechicken.lib.model.PerspectiveAwareModelProperties;
 import codechicken.lib.model.bakery.generation.IItemBakery;
-import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
+import cofh.core.render.TextureHelper;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -50,7 +50,7 @@ public final class ModelFlorb implements IItemBakery, IIconRegister {
 			quads.addAll(ItemQuadBakery.bakeItem(ImmutableList.of(magmatic ? MAGMATIC_BASE : BASE)));
 
 			if (fluid != null) {
-				TextureAtlasSprite fluidSprite = TextureUtils.getTexture(fluid.getStill(new FluidStack(fluid, 1)));
+				TextureAtlasSprite fluidSprite = TextureHelper.getTexture(fluid.getStill(new FluidStack(fluid, 1)));
 				quads.addAll(ItemTextureQuadConverter.convertTexture(DefaultVertexFormats.ITEM, TRSRTransformation.identity(), MASK, fluidSprite, NORTH_Z_FLUID, EnumFacing.NORTH, fluid.getColor()));
 				quads.addAll(ItemTextureQuadConverter.convertTexture(DefaultVertexFormats.ITEM, TRSRTransformation.identity(), MASK, fluidSprite, SOUTH_Z_FLUID, EnumFacing.SOUTH, fluid.getColor()));
 			}

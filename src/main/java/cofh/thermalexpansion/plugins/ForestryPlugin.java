@@ -124,6 +124,8 @@ public class ForestryPlugin {
 					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(ItemHelper.getOre("cropCherry"), 1), mulch, new FluidStack(seed_oil, 50), 5, false);
 					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(ItemHelper.getOre("cropChestnut"), 1), mulch, new FluidStack(seed_oil, 220), 2, false);
 					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(ItemHelper.getOre("cropWalnut"), 1), mulch, new FluidStack(seed_oil, 180), 5, false);
+
+					addSeedOilRecipes();
 				}
 			}
 
@@ -149,17 +151,6 @@ public class ForestryPlugin {
 			}
 
 			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
-
-			MagicBeesPlugin.initialize();
-		} catch (Throwable t) {
-			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
-		}
-	}
-
-	public static void postInit() {
-
-		try {
-			addSeedOilRecipes();
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
 		}
@@ -169,11 +160,8 @@ public class ForestryPlugin {
 	public static void addSeedOilRecipes() {
 
 		Fluid seed_oil = FluidRegistry.getFluid("seed.oil");
-
-		if (seed_oil == null) {
-			return;
-		}
 		String[] oreNameList = OreDictionary.getOreNames();
+
 		for (String name : oreNameList) {
 			if (name.startsWith("seed")) {
 				List<ItemStack> seed = OreDictionary.getOres(name, false);

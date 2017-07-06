@@ -4,10 +4,10 @@ import codechicken.lib.model.bakery.generation.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
-import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
+import cofh.core.render.TextureHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
@@ -183,7 +183,7 @@ public class RenderDynamo implements ILayeredBlockBakery {
 			int facing = state.getValue(TEProps.FACING).ordinal();
 			int type = state.getValue(BlockDynamo.VARIANT).getMetadata();
 
-			TextureAtlasSprite activeSprite = TextureUtils.getTexture(state.getValue(TEProps.ACTIVE_SPRITE_PROPERTY));
+			TextureAtlasSprite activeSprite = TextureHelper.getTexture(state.getValue(TEProps.ACTIVE_SPRITE_PROPERTY));
 
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);

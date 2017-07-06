@@ -32,7 +32,7 @@ public class Proxy {
 
 	/* EVENT HANDLING */
 	@SubscribeEvent
-	public void onPlayerLogin(PlayerLoggedInEvent event) {
+	public void handlePlayerLoggedInEvent(PlayerLoggedInEvent event) {
 
 		// PacketTEBase.sendConfigSyncPacketToClient(event.player);
 	}

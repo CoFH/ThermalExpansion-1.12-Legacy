@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.block.dynamo;
 
-import codechicken.lib.texture.TextureUtils;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.render.TextureHelper;
 import cofh.core.util.helpers.EnergyHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -73,7 +73,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	@Override
 	public TextureAtlasSprite getActiveIcon() {
 
-		return TextureUtils.getTexture(TFFluids.fluidMana.getStill());
+		return TextureHelper.getTexture(TFFluids.fluidMana.getStill());
 	}
 
 	/* GUI METHODS */

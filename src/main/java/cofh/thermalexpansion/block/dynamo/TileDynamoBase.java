@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.dynamo;
 
-import codechicken.lib.texture.TextureUtils;
 import cofh.api.core.IAccelerable;
 import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.api.tileentity.IEnergyInfo;
@@ -8,6 +7,7 @@ import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.render.TextureHelper;
 import cofh.core.util.TimeTracker;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.BlockHelper;
@@ -314,7 +314,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	public TextureAtlasSprite getActiveIcon() {
 
-		return TextureUtils.getTexture(FluidRegistry.WATER.getStill());
+		return TextureHelper.getTexture(FluidRegistry.WATER.getStill());
 	}
 
 	/* GUI METHODS */

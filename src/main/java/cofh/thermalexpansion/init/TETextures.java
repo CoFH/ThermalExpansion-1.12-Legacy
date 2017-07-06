@@ -4,7 +4,6 @@ import cofh.core.init.CoreProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.TextureStitchEvent;
 
 public class TETextures {
 
@@ -12,127 +11,128 @@ public class TETextures {
 
 	}
 
-	public static void registerIcons(TextureStitchEvent.Pre event) {
+	public static void registerTextures(TextureMap map) {
 
-		TextureMap map = event.getMap();
+		textureMap = map;
 
-		// @formatter:off \o/ Formatter!
-		CONFIG_NONE =						register(map, CONFIG_ + "none");
-		CONFIG_BLUE =						registerCB(map, CONFIG_ + "blue");
-		CONFIG_RED =						registerCB(map, CONFIG_ + "red");
-		CONFIG_YELLOW =						registerCB(map, CONFIG_ + "yellow");
-		CONFIG_ORANGE =						registerCB(map, CONFIG_ + "orange");
-		CONFIG_GREEN =						registerCB(map, CONFIG_ + "green");
-		CONFIG_PURPLE =						registerCB(map, CONFIG_ + "purple");
-		CONFIG_OPEN =						register(map, CONFIG_ + "open");
-		CONFIG_OMNI =                       register(map, CONFIG_ + "omni");
+		// @formatter:off
+
+		CONFIG_NONE =						register(CONFIG_ + "none");
+		CONFIG_BLUE =						registerCB(CONFIG_ + "blue");
+		CONFIG_RED =						registerCB(CONFIG_ + "red");
+		CONFIG_YELLOW =						registerCB(CONFIG_ + "yellow");
+		CONFIG_ORANGE =						registerCB(CONFIG_ + "orange");
+		CONFIG_GREEN =						registerCB(CONFIG_ + "green");
+		CONFIG_PURPLE =						registerCB(CONFIG_ + "purple");
+		CONFIG_OPEN =						register(CONFIG_ + "open");
+		CONFIG_OMNI =                       register(CONFIG_ + "omni");
 
 		/* MACHINES */
-		MACHINE_TOP =                       register(map, MACHINE_ + "top");
-		MACHINE_BOTTOM =                    register(map, MACHINE_ + "bottom");
-		MACHINE_SIDE =                      register(map, MACHINE_ + "side");
+		MACHINE_TOP =                       register(MACHINE_ + "top");
+		MACHINE_BOTTOM =                    register(MACHINE_ + "bottom");
+		MACHINE_SIDE =                      register(MACHINE_ + "side");
 
-		MACHINE_OVERLAY_0 =                 map.getMissingSprite(); // register(map, MACHINE_ + "overlay_0");
-		MACHINE_OVERLAY_1 =                 register(map, MACHINE_ + "overlay_1");
-		MACHINE_OVERLAY_2 =                 register(map, MACHINE_ + "overlay_2");
-		MACHINE_OVERLAY_3 =                 register(map, MACHINE_ + "overlay_3");
-		MACHINE_OVERLAY_4 =                 register(map, MACHINE_ + "overlay_4");
-		MACHINE_OVERLAY_C =                 register(map, MACHINE_ + "overlay_c");
+		MACHINE_OVERLAY_0 =                 map.getMissingSprite(); // register(MACHINE_ + "overlay_0");
+		MACHINE_OVERLAY_1 =                 register(MACHINE_ + "overlay_1");
+		MACHINE_OVERLAY_2 =                 register(MACHINE_ + "overlay_2");
+		MACHINE_OVERLAY_3 =                 register(MACHINE_ + "overlay_3");
+		MACHINE_OVERLAY_4 =                 register(MACHINE_ + "overlay_4");
+		MACHINE_OVERLAY_C =                 register(MACHINE_ + "overlay_c");
 
-		MACHINE_FACE_FURNACE =				register(map, MACHINE_FACE_ + "furnace");
-		MACHINE_FACE_PULVERIZER =			register(map, MACHINE_FACE_ + "pulverizer");
-		MACHINE_FACE_SAWMILL =				register(map, MACHINE_FACE_ + "sawmill");
-		MACHINE_FACE_SMELTER =				register(map, MACHINE_FACE_ + "smelter");
-		MACHINE_FACE_INSOLATOR =			register(map, MACHINE_FACE_ + "insolator");
-		MACHINE_FACE_COMPACTOR =			register(map, MACHINE_FACE_ + "compactor");
-		MACHINE_FACE_CRUCIBLE =				register(map, MACHINE_FACE_ + "crucible");
-		MACHINE_FACE_REFINERY =             register(map, MACHINE_FACE_ + "refinery");
-		MACHINE_FACE_TRANSPOSER =			register(map, MACHINE_FACE_ + "transposer");
-		MACHINE_FACE_CHARGER =				register(map, MACHINE_FACE_ + "charger");
-		MACHINE_FACE_CENTRIFUGE =			register(map, MACHINE_FACE_ + "centrifuge");
-		MACHINE_FACE_CRAFTER =				register(map, MACHINE_FACE_ + "crafter");
-		MACHINE_FACE_BREWER =				map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "brewer");
-		MACHINE_FACE_ENCHANTER =			map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "enchanter");
-		MACHINE_FACE_PRECIPITATOR =			register(map, MACHINE_FACE_ + "precipitator");
-		MACHINE_FACE_EXTRUDER =				register(map, MACHINE_FACE_ + "extruder");
+		MACHINE_FACE_FURNACE =				register(MACHINE_FACE_ + "furnace");
+		MACHINE_FACE_PULVERIZER =			register(MACHINE_FACE_ + "pulverizer");
+		MACHINE_FACE_SAWMILL =				register(MACHINE_FACE_ + "sawmill");
+		MACHINE_FACE_SMELTER =				register(MACHINE_FACE_ + "smelter");
+		MACHINE_FACE_INSOLATOR =			register(MACHINE_FACE_ + "insolator");
+		MACHINE_FACE_COMPACTOR =			register(MACHINE_FACE_ + "compactor");
+		MACHINE_FACE_CRUCIBLE =				register(MACHINE_FACE_ + "crucible");
+		MACHINE_FACE_REFINERY =             register(MACHINE_FACE_ + "refinery");
+		MACHINE_FACE_TRANSPOSER =			register(MACHINE_FACE_ + "transposer");
+		MACHINE_FACE_CHARGER =				register(MACHINE_FACE_ + "charger");
+		MACHINE_FACE_CENTRIFUGE =			register(MACHINE_FACE_ + "centrifuge");
+		MACHINE_FACE_CRAFTER =				register(MACHINE_FACE_ + "crafter");
+		MACHINE_FACE_BREWER =				map.getMissingSprite();//TODO register(MACHINE_FACE_ + "brewer");
+		MACHINE_FACE_ENCHANTER =			map.getMissingSprite();//TODO register(MACHINE_FACE_ + "enchanter");
+		MACHINE_FACE_PRECIPITATOR =			register(MACHINE_FACE_ + "precipitator");
+		MACHINE_FACE_EXTRUDER =				register(MACHINE_FACE_ + "extruder");
 
-		MACHINE_ACTIVE_FURNACE =			register(map, MACHINE_ACTIVE_ + "furnace");
-		MACHINE_ACTIVE_PULVERIZER =			register(map, MACHINE_ACTIVE_ + "pulverizer");
-		MACHINE_ACTIVE_SAWMILL =			register(map, MACHINE_ACTIVE_ + "sawmill");
-		MACHINE_ACTIVE_SMELTER =			register(map, MACHINE_ACTIVE_ + "smelter");
-		MACHINE_ACTIVE_INSOLATOR =			register(map, MACHINE_ACTIVE_ + "insolator");
-		MACHINE_ACTIVE_COMPACTOR =			register(map, MACHINE_ACTIVE_ + "compactor");
-		MACHINE_ACTIVE_CRUCIBLE =			register(map, MACHINE_ACTIVE_ + "crucible");
-		MACHINE_ACTIVE_REFINERY =           register(map, MACHINE_ACTIVE_ + "refinery");
-		MACHINE_ACTIVE_TRANSPOSER =			register(map, MACHINE_ACTIVE_ + "transposer");
-		MACHINE_ACTIVE_CHARGER =			register(map, MACHINE_ACTIVE_ + "charger");
-		MACHINE_ACTIVE_CENTRIFUGE =			register(map, MACHINE_ACTIVE_ + "centrifuge");
-		MACHINE_ACTIVE_CRAFTER =			register(map, MACHINE_ACTIVE_ + "crafter");
-		MACHINE_ACTIVE_BREWER =				map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "brewer");
-		MACHINE_ACTIVE_ENCHANTER =			map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "enchanter");
-		MACHINE_ACTIVE_PRECIPITATOR =		register(map, MACHINE_ACTIVE_ + "precipitator");
-		MACHINE_ACTIVE_EXTRUDER =			register(map, MACHINE_ACTIVE_ + "extruder");
+		MACHINE_ACTIVE_FURNACE =			register(MACHINE_ACTIVE_ + "furnace");
+		MACHINE_ACTIVE_PULVERIZER =			register(MACHINE_ACTIVE_ + "pulverizer");
+		MACHINE_ACTIVE_SAWMILL =			register(MACHINE_ACTIVE_ + "sawmill");
+		MACHINE_ACTIVE_SMELTER =			register(MACHINE_ACTIVE_ + "smelter");
+		MACHINE_ACTIVE_INSOLATOR =			register(MACHINE_ACTIVE_ + "insolator");
+		MACHINE_ACTIVE_COMPACTOR =			register(MACHINE_ACTIVE_ + "compactor");
+		MACHINE_ACTIVE_CRUCIBLE =			register(MACHINE_ACTIVE_ + "crucible");
+		MACHINE_ACTIVE_REFINERY =           register(MACHINE_ACTIVE_ + "refinery");
+		MACHINE_ACTIVE_TRANSPOSER =			register(MACHINE_ACTIVE_ + "transposer");
+		MACHINE_ACTIVE_CHARGER =			register(MACHINE_ACTIVE_ + "charger");
+		MACHINE_ACTIVE_CENTRIFUGE =			register(MACHINE_ACTIVE_ + "centrifuge");
+		MACHINE_ACTIVE_CRAFTER =			register(MACHINE_ACTIVE_ + "crafter");
+		MACHINE_ACTIVE_BREWER =				map.getMissingSprite();//TODO register(MACHINE_ACTIVE_ + "brewer");
+		MACHINE_ACTIVE_ENCHANTER =			map.getMissingSprite();//TODO register(MACHINE_ACTIVE_ + "enchanter");
+		MACHINE_ACTIVE_PRECIPITATOR =		register(MACHINE_ACTIVE_ + "precipitator");
+		MACHINE_ACTIVE_EXTRUDER =			register(MACHINE_ACTIVE_ + "extruder");
 
-		MACHINE_ACTIVE_EXTRUDER_UNDERLAY =	register(map, MACHINE_ACTIVE_ + "extruder_underlay");
+		MACHINE_ACTIVE_EXTRUDER_UNDERLAY =	register(MACHINE_ACTIVE_ + "extruder_underlay");
 
-		MACHINE_FRAME_TOP =                 register(map, MACHINE_ + "frame_top");
-		MACHINE_FRAME_BOTTOM =              register(map, MACHINE_ + "frame_bottom");
-		MACHINE_FRAME_SIDE =                register(map, MACHINE_ + "frame_side");
-		MACHINE_FRAME_INNER =               register(map, MACHINE_ + "frame_inner");
+		MACHINE_FRAME_TOP =                 register(MACHINE_ + "frame_top");
+		MACHINE_FRAME_BOTTOM =              register(MACHINE_ + "frame_bottom");
+		MACHINE_FRAME_SIDE =                register(MACHINE_ + "frame_side");
+		MACHINE_FRAME_INNER =               register(MACHINE_ + "frame_inner");
 
 		/* AUTOMATA */
-		APPARATUS_SIDE =					register(map, BLOCKS_ + "apparatus/apparatus_side");
+		APPARATUS_SIDE =					register(BLOCKS_ + "apparatus/apparatus_side");
 
-		APPARATUS_FACE_BREAKER =			register(map, APPARATUS_FACE_ + "breaker");
-		APPARATUS_FACE_COLLECTOR =			register(map, APPARATUS_FACE_ + "collector");
+		APPARATUS_FACE_BREAKER =			register(APPARATUS_FACE_ + "breaker");
+		APPARATUS_FACE_COLLECTOR =			register(APPARATUS_FACE_ + "collector");
 
-		APPARATUS_ACTIVE_BREAKER =			register(map, APPARATUS_ACTIVE_ + "breaker");
-		APPARATUS_ACTIVE_COLLECTOR =		register(map, APPARATUS_ACTIVE_ + "collector");
+		APPARATUS_ACTIVE_BREAKER =			register(APPARATUS_ACTIVE_ + "breaker");
+		APPARATUS_ACTIVE_COLLECTOR =		register(APPARATUS_ACTIVE_ + "collector");
 
 		/* DEVICES */
-		DEVICE_TOP =                        register(map, BLOCKS_ + "device/device_top");
-		DEVICE_BOTTOM =                     register(map, BLOCKS_ + "device/device_bottom");
-		DEVICE_SIDE =						register(map, BLOCKS_ + "device/device_side");
+		DEVICE_TOP =                        register(BLOCKS_ + "device/device_top");
+		DEVICE_BOTTOM =                     register(BLOCKS_ + "device/device_bottom");
+		DEVICE_SIDE =						register(BLOCKS_ + "device/device_side");
 
-		DEVICE_FACE_WATER_GEN =				register(map, DEVICE_FACE_ + "water_gen");
-		DEVICE_FACE_NULLIFIER =				register(map, DEVICE_FACE_ + "nullifier");
-		DEVICE_FACE_HEAT_SINK =             register(map, DEVICE_FACE_ + "heat_sink");
-		DEVICE_FACE_TAPPER =                register(map, DEVICE_FACE_ + "tapper");
-		DEVICE_FACE_FISHER =                register(map, DEVICE_FACE_ + "fisher");
+		DEVICE_FACE_WATER_GEN =				register(DEVICE_FACE_ + "water_gen");
+		DEVICE_FACE_NULLIFIER =				register(DEVICE_FACE_ + "nullifier");
+		DEVICE_FACE_HEAT_SINK =             register(DEVICE_FACE_ + "heat_sink");
+		DEVICE_FACE_TAPPER =                register(DEVICE_FACE_ + "tapper");
+		DEVICE_FACE_FISHER =                register(DEVICE_FACE_ + "fisher");
 
-		DEVICE_FACE_ITEM_BUFFER =			register(map, DEVICE_FACE_ + "item_buffer");
-		DEVICE_FACE_EXTENDER =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "extender");
+		DEVICE_FACE_ITEM_BUFFER =			register(DEVICE_FACE_ + "item_buffer");
+		DEVICE_FACE_EXTENDER =				map.getMissingSprite();//TODO register(DEVICE_FACE_ + "extender");
 
-		DEVICE_ACTIVE_WATER_GEN =			register(map, DEVICE_ACTIVE_ + "water_gen");
-		DEVICE_ACTIVE_NULLIFIER =			register(map, DEVICE_ACTIVE_ + "nullifier");
-		DEVICE_ACTIVE_HEAT_SINK =           register(map, DEVICE_ACTIVE_ + "heat_sink");
-		DEVICE_ACTIVE_TAPPER =              register(map, DEVICE_ACTIVE_ + "tapper");
-		DEVICE_ACTIVE_FISHER =              register(map, DEVICE_ACTIVE_ + "fisher");
+		DEVICE_ACTIVE_WATER_GEN =			register(DEVICE_ACTIVE_ + "water_gen");
+		DEVICE_ACTIVE_NULLIFIER =			register(DEVICE_ACTIVE_ + "nullifier");
+		DEVICE_ACTIVE_HEAT_SINK =           register(DEVICE_ACTIVE_ + "heat_sink");
+		DEVICE_ACTIVE_TAPPER =              register(DEVICE_ACTIVE_ + "tapper");
+		DEVICE_ACTIVE_FISHER =              register(DEVICE_ACTIVE_ + "fisher");
 
-		DEVICE_ACTIVE_ITEM_BUFFER =			register(map, DEVICE_ACTIVE_ + "item_buffer");
-		DEVICE_ACTIVE_EXTENDER =			map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "extender");
+		DEVICE_ACTIVE_ITEM_BUFFER =			register(DEVICE_ACTIVE_ + "item_buffer");
+		DEVICE_ACTIVE_EXTENDER =			map.getMissingSprite();//TODO register(DEVICE_ACTIVE_ + "extender");
 
-        DEVICE_FRAME_TOP =                  register(map, DEVICE_ + "frame_top");
-		DEVICE_FRAME_SIDE =                 register(map, DEVICE_ + "frame_side");
-		DEVICE_FRAME_BOTTOM =               register(map, DEVICE_ + "frame_bottom");
-		DEVICE_FRAME_INNER =                register(map, DEVICE_ + "frame_inner");
+        DEVICE_FRAME_TOP =                  register(DEVICE_ + "frame_top");
+		DEVICE_FRAME_SIDE =                 register(DEVICE_ + "frame_side");
+		DEVICE_FRAME_BOTTOM =               register(DEVICE_ + "frame_bottom");
+		DEVICE_FRAME_INNER =                register(DEVICE_ + "frame_inner");
 
 		/* DYNAMOS */
-		DYNAMO_COIL_REDSTONE =				register(map, DYNAMO_ + "coil_redstone");
+		DYNAMO_COIL_REDSTONE =				register(DYNAMO_ + "coil_redstone");
 
-		DYNAMO_STEAM =						register(map, DYNAMO_ + "steam");
-		DYNAMO_MAGMATIC =					register(map, DYNAMO_ + "magmatic");
-		DYNAMO_COMPRESSION =				register(map, DYNAMO_ + "compression");
-		DYNAMO_REACTANT =					register(map, DYNAMO_ + "reactant");
-		DYNAMO_ENERVATION =					register(map, DYNAMO_ + "enervation");
-		DYNAMO_NUMISMATIC =					register(map, DYNAMO_ + "numismatic");
+		DYNAMO_STEAM =						register(DYNAMO_ + "steam");
+		DYNAMO_MAGMATIC =					register(DYNAMO_ + "magmatic");
+		DYNAMO_COMPRESSION =				register(DYNAMO_ + "compression");
+		DYNAMO_REACTANT =					register(DYNAMO_ + "reactant");
+		DYNAMO_ENERVATION =					register(DYNAMO_ + "enervation");
+		DYNAMO_NUMISMATIC =					register(DYNAMO_ + "numismatic");
 
-		DYNAMO_OVERLAY_0 =                  map.getMissingSprite(); // register(map, DYNAMO_ + "overlay_0");
-		DYNAMO_OVERLAY_1 =                  register(map, DYNAMO_ + "overlay_1");
-		DYNAMO_OVERLAY_2 =                  register(map, DYNAMO_ + "overlay_2");
-		DYNAMO_OVERLAY_3 =                  register(map, DYNAMO_ + "overlay_3");
-		DYNAMO_OVERLAY_4 =                  register(map, DYNAMO_ + "overlay_4");
-		DYNAMO_OVERLAY_C =                  register(map, DYNAMO_ + "overlay_c");
+		DYNAMO_OVERLAY_0 =                  map.getMissingSprite(); // register(DYNAMO_ + "overlay_0");
+		DYNAMO_OVERLAY_1 =                  register(DYNAMO_ + "overlay_1");
+		DYNAMO_OVERLAY_2 =                  register(DYNAMO_ + "overlay_2");
+		DYNAMO_OVERLAY_3 =                  register(DYNAMO_ + "overlay_3");
+		DYNAMO_OVERLAY_4 =                  register(DYNAMO_ + "overlay_4");
+		DYNAMO_OVERLAY_C =                  register(DYNAMO_ + "overlay_c");
 
 		/* ICONS */
 		ICON_ACCEPT =						map.getMissingSprite();//TODO
@@ -140,119 +140,119 @@ public class TETextures {
 		ICON_SCHEMATIC =					map.getMissingSprite();//TODO
 
 		/* CELLS */
-		CELL_CONFIG_BLUE =                  register(map, CELL_CONFIG_ + "blue");
-		CELL_CONFIG_ORANGE =                register(map, CELL_CONFIG_ + "orange");
+		CELL_CONFIG_BLUE =                  register(CELL_CONFIG_ + "blue");
+		CELL_CONFIG_ORANGE =                register(CELL_CONFIG_ + "orange");
 
-		CELL_INNER_0 =                      register(map, CELL_ + "inner_0");
-		CELL_INNER_1 =                      register(map, CELL_ + "inner_1");
-		CELL_INNER_2 =                      register(map, CELL_ + "inner_2");
-		CELL_INNER_3 =                      register(map, CELL_ + "inner_3");
-		CELL_INNER_4 =                      register(map, CELL_ + "inner_4");
-		CELL_INNER_C =                      register(map, CELL_ + "inner_c");
+		CELL_INNER_0 =                      register(CELL_ + "inner_0");
+		CELL_INNER_1 =                      register(CELL_ + "inner_1");
+		CELL_INNER_2 =                      register(CELL_ + "inner_2");
+		CELL_INNER_3 =                      register(CELL_ + "inner_3");
+		CELL_INNER_4 =                      register(CELL_ + "inner_4");
+		CELL_INNER_C =                      register(CELL_ + "inner_c");
 
-		CELL_SIDE_0 =                       register(map, CELL_ + "side_0");
-		CELL_SIDE_1 =                       register(map, CELL_ + "side_1");
-		CELL_SIDE_2 =                       register(map, CELL_ + "side_2");
-		CELL_SIDE_3 =                       register(map, CELL_ + "side_3");
-		CELL_SIDE_4 =                       register(map, CELL_ + "side_4");
-		CELL_SIDE_C =                       register(map, CELL_ + "side_c");
+		CELL_SIDE_0 =                       register(CELL_ + "side_0");
+		CELL_SIDE_1 =                       register(CELL_ + "side_1");
+		CELL_SIDE_2 =                       register(CELL_ + "side_2");
+		CELL_SIDE_3 =                       register(CELL_ + "side_3");
+		CELL_SIDE_4 =                       register(CELL_ + "side_4");
+		CELL_SIDE_C =                       register(CELL_ + "side_c");
 
-		CELL_METER_0 =                      register(map, CELL_ + "meter_0");
-		CELL_METER_1 =                      register(map, CELL_ + "meter_1");
-		CELL_METER_2 =                      register(map, CELL_ + "meter_2");
-		CELL_METER_3 =                      register(map, CELL_ + "meter_3");
-		CELL_METER_4 =                      register(map, CELL_ + "meter_4");
-		CELL_METER_5 =                      register(map, CELL_ + "meter_5");
-		CELL_METER_6 =                      register(map, CELL_ + "meter_6");
-		CELL_METER_7 =                      register(map, CELL_ + "meter_7");
-		CELL_METER_8 =                      register(map, CELL_ + "meter_8");
-		CELL_METER_C =                      register(map, CELL_ + "meter_c");
+		CELL_METER_0 =                      register(CELL_ + "meter_0");
+		CELL_METER_1 =                      register(CELL_ + "meter_1");
+		CELL_METER_2 =                      register(CELL_ + "meter_2");
+		CELL_METER_3 =                      register(CELL_ + "meter_3");
+		CELL_METER_4 =                      register(CELL_ + "meter_4");
+		CELL_METER_5 =                      register(CELL_ + "meter_5");
+		CELL_METER_6 =                      register(CELL_ + "meter_6");
+		CELL_METER_7 =                      register(CELL_ + "meter_7");
+		CELL_METER_8 =                      register(CELL_ + "meter_8");
+		CELL_METER_C =                      register(CELL_ + "meter_c");
 
-		CELL_CENTER_0 =                     register(map, "blocks/redstone_block");
-		CELL_CENTER_1 =                     register(map, "thermalfoundation:blocks/fluid/redstone_still");
+		CELL_CENTER_0 =                     register("blocks/redstone_block");
+		CELL_CENTER_1 =                     register("thermalfoundation:blocks/fluid/redstone_still");
 
-		TANK_BOTTOM_0_0 =                   register(map, TANK_ + "bottom_0_0");
-		TANK_BOTTOM_0_1 =                   register(map, TANK_ + "bottom_0_1");
-		TANK_BOTTOM_0_2 =                   register(map, TANK_ + "bottom_0_2");
-		TANK_BOTTOM_0_3 =                   register(map, TANK_ + "bottom_0_3");
-		TANK_BOTTOM_0_4 =                   register(map, TANK_ + "bottom_0_4");
-		TANK_BOTTOM_0_C =                   register(map, TANK_ + "bottom_0_c");
+		TANK_BOTTOM_0_0 =                   register(TANK_ + "bottom_0_0");
+		TANK_BOTTOM_0_1 =                   register(TANK_ + "bottom_0_1");
+		TANK_BOTTOM_0_2 =                   register(TANK_ + "bottom_0_2");
+		TANK_BOTTOM_0_3 =                   register(TANK_ + "bottom_0_3");
+		TANK_BOTTOM_0_4 =                   register(TANK_ + "bottom_0_4");
+		TANK_BOTTOM_0_C =                   register(TANK_ + "bottom_0_c");
 
-		TANK_BOTTOM_1_0 =                   register(map, TANK_ + "bottom_1_0");
-		TANK_BOTTOM_1_1 =                   register(map, TANK_ + "bottom_1_1");
-		TANK_BOTTOM_1_2 =                   register(map, TANK_ + "bottom_1_2");
-		TANK_BOTTOM_1_3 =                   register(map, TANK_ + "bottom_1_3");
-		TANK_BOTTOM_1_4 =                   register(map, TANK_ + "bottom_1_4");
-		TANK_BOTTOM_1_C =                   register(map, TANK_ + "bottom_1_c");
+		TANK_BOTTOM_1_0 =                   register(TANK_ + "bottom_1_0");
+		TANK_BOTTOM_1_1 =                   register(TANK_ + "bottom_1_1");
+		TANK_BOTTOM_1_2 =                   register(TANK_ + "bottom_1_2");
+		TANK_BOTTOM_1_3 =                   register(TANK_ + "bottom_1_3");
+		TANK_BOTTOM_1_4 =                   register(TANK_ + "bottom_1_4");
+		TANK_BOTTOM_1_C =                   register(TANK_ + "bottom_1_c");
 
-		TANK_TOP_0 =                        register(map, TANK_ + "top_0");
-		TANK_TOP_1 =                        register(map, TANK_ + "top_1");
-		TANK_TOP_2 =                        register(map, TANK_ + "top_2");
-		TANK_TOP_3 =                        register(map, TANK_ + "top_3");
-		TANK_TOP_4 =                        register(map, TANK_ + "top_4");
-		TANK_TOP_C =                        register(map, TANK_ + "top_c");
+		TANK_TOP_0 =                        register(TANK_ + "top_0");
+		TANK_TOP_1 =                        register(TANK_ + "top_1");
+		TANK_TOP_2 =                        register(TANK_ + "top_2");
+		TANK_TOP_3 =                        register(TANK_ + "top_3");
+		TANK_TOP_4 =                        register(TANK_ + "top_4");
+		TANK_TOP_C =                        register(TANK_ + "top_c");
 
-		TANK_SIDE_0_0 =                     register(map, TANK_ + "side_0_0");
-		TANK_SIDE_0_1 =                     register(map, TANK_ + "side_0_1");
-		TANK_SIDE_0_2 =                     register(map, TANK_ + "side_0_2");
-		TANK_SIDE_0_3 =                     register(map, TANK_ + "side_0_3");
-		TANK_SIDE_0_4 =                     register(map, TANK_ + "side_0_4");
-		TANK_SIDE_0_C =                     register(map, TANK_ + "side_0_c");
+		TANK_SIDE_0_0 =                     register(TANK_ + "side_0_0");
+		TANK_SIDE_0_1 =                     register(TANK_ + "side_0_1");
+		TANK_SIDE_0_2 =                     register(TANK_ + "side_0_2");
+		TANK_SIDE_0_3 =                     register(TANK_ + "side_0_3");
+		TANK_SIDE_0_4 =                     register(TANK_ + "side_0_4");
+		TANK_SIDE_0_C =                     register(TANK_ + "side_0_c");
 
-		TANK_SIDE_1_0 =                     register(map, TANK_ + "side_1_0");
-		TANK_SIDE_1_1 =                     register(map, TANK_ + "side_1_1");
-		TANK_SIDE_1_2 =                     register(map, TANK_ + "side_1_2");
-		TANK_SIDE_1_3 =                     register(map, TANK_ + "side_1_3");
-		TANK_SIDE_1_4 =                     register(map, TANK_ + "side_1_4");
-		TANK_SIDE_1_C =                     register(map, TANK_ + "side_1_c");
+		TANK_SIDE_1_0 =                     register(TANK_ + "side_1_0");
+		TANK_SIDE_1_1 =                     register(TANK_ + "side_1_1");
+		TANK_SIDE_1_2 =                     register(TANK_ + "side_1_2");
+		TANK_SIDE_1_3 =                     register(TANK_ + "side_1_3");
+		TANK_SIDE_1_4 =                     register(TANK_ + "side_1_4");
+		TANK_SIDE_1_C =                     register(TANK_ + "side_1_c");
 
-		CACHE_BOTTOM_0 =                    register(map, CACHE_ + "bottom_0");
-		CACHE_BOTTOM_1 =                    register(map, CACHE_ + "bottom_1");
-		CACHE_BOTTOM_2 =                    register(map, CACHE_ + "bottom_2");
-		CACHE_BOTTOM_3 =                    register(map, CACHE_ + "bottom_3");
-		CACHE_BOTTOM_4 =                    register(map, CACHE_ + "bottom_4");
-		CACHE_BOTTOM_C =                    register(map, CACHE_ + "bottom_c");
+		CACHE_BOTTOM_0 =                    register(CACHE_ + "bottom_0");
+		CACHE_BOTTOM_1 =                    register(CACHE_ + "bottom_1");
+		CACHE_BOTTOM_2 =                    register(CACHE_ + "bottom_2");
+		CACHE_BOTTOM_3 =                    register(CACHE_ + "bottom_3");
+		CACHE_BOTTOM_4 =                    register(CACHE_ + "bottom_4");
+		CACHE_BOTTOM_C =                    register(CACHE_ + "bottom_c");
 
-		CACHE_TOP_0 =                       register(map, CACHE_ + "top_0");
-		CACHE_TOP_1 =                       register(map, CACHE_ + "top_1");
-		CACHE_TOP_2 =                       register(map, CACHE_ + "top_2");
-		CACHE_TOP_3 =                       register(map, CACHE_ + "top_3");
-		CACHE_TOP_4 =                       register(map, CACHE_ + "top_4");
-		CACHE_TOP_C =                       register(map, CACHE_ + "top_c");
+		CACHE_TOP_0 =                       register(CACHE_ + "top_0");
+		CACHE_TOP_1 =                       register(CACHE_ + "top_1");
+		CACHE_TOP_2 =                       register(CACHE_ + "top_2");
+		CACHE_TOP_3 =                       register(CACHE_ + "top_3");
+		CACHE_TOP_4 =                       register(CACHE_ + "top_4");
+		CACHE_TOP_C =                       register(CACHE_ + "top_c");
 
-		CACHE_SIDE_0 =                      register(map, CACHE_ + "side_0");
-		CACHE_SIDE_1 =                      register(map, CACHE_ + "side_1");
-		CACHE_SIDE_2 =                      register(map, CACHE_ + "side_2");
-		CACHE_SIDE_3 =                      register(map, CACHE_ + "side_3");
-		CACHE_SIDE_4 =                      register(map, CACHE_ + "side_4");
-		CACHE_SIDE_C =                      register(map, CACHE_ + "side_c");
+		CACHE_SIDE_0 =                      register(CACHE_ + "side_0");
+		CACHE_SIDE_1 =                      register(CACHE_ + "side_1");
+		CACHE_SIDE_2 =                      register(CACHE_ + "side_2");
+		CACHE_SIDE_3 =                      register(CACHE_ + "side_3");
+		CACHE_SIDE_4 =                      register(CACHE_ + "side_4");
+		CACHE_SIDE_C =                      register(CACHE_ + "side_c");
 
-		CACHE_FACE_0 =                      register(map, CACHE_ + "face_0");
-		CACHE_FACE_1 =                      register(map, CACHE_ + "face_1");
-		CACHE_FACE_2 =                      register(map, CACHE_ + "face_2");
-		CACHE_FACE_3 =                      register(map, CACHE_ + "face_3");
-		CACHE_FACE_4 =                      register(map, CACHE_ + "face_4");
-		CACHE_FACE_C =                      register(map, CACHE_ + "face_c");
+		CACHE_FACE_0 =                      register(CACHE_ + "face_0");
+		CACHE_FACE_1 =                      register(CACHE_ + "face_1");
+		CACHE_FACE_2 =                      register(CACHE_ + "face_2");
+		CACHE_FACE_3 =                      register(CACHE_ + "face_3");
+		CACHE_FACE_4 =                      register(CACHE_ + "face_4");
+		CACHE_FACE_C =                      register(CACHE_ + "face_c");
 
-		CACHE_METER_0 =                     register(map, CACHE_ + "meter_0");
-		CACHE_METER_1 =                     register(map, CACHE_ + "meter_1");
-		CACHE_METER_2 =                     register(map, CACHE_ + "meter_2");
-		CACHE_METER_3 =                     register(map, CACHE_ + "meter_3");
-		CACHE_METER_4 =                     register(map, CACHE_ + "meter_4");
-		CACHE_METER_5 =                     register(map, CACHE_ + "meter_5");
-		CACHE_METER_6 =                     register(map, CACHE_ + "meter_6");
-		CACHE_METER_7 =                     register(map, CACHE_ + "meter_7");
-		CACHE_METER_8 =                     register(map, CACHE_ + "meter_8");
-		CACHE_METER_C =                     register(map, CACHE_ + "meter_c");
+		CACHE_METER_0 =                     register(CACHE_ + "meter_0");
+		CACHE_METER_1 =                     register(CACHE_ + "meter_1");
+		CACHE_METER_2 =                     register(CACHE_ + "meter_2");
+		CACHE_METER_3 =                     register(CACHE_ + "meter_3");
+		CACHE_METER_4 =                     register(CACHE_ + "meter_4");
+		CACHE_METER_5 =                     register(CACHE_ + "meter_5");
+		CACHE_METER_6 =                     register(CACHE_ + "meter_6");
+		CACHE_METER_7 =                     register(CACHE_ + "meter_7");
+		CACHE_METER_8 =                     register(CACHE_ + "meter_8");
+		CACHE_METER_C =                     register(CACHE_ + "meter_c");
 
-		STRONGBOX_TOP_0 =                   register(map, STRONGBOX_ + "top_0");
-		STRONGBOX_TOP_1 =                   register(map, STRONGBOX_ + "top_1");
-		STRONGBOX_TOP_2 =                   register(map, STRONGBOX_ + "top_2");
-		STRONGBOX_TOP_3 =                   register(map, STRONGBOX_ + "top_3");
-		STRONGBOX_TOP_4 =                   register(map, STRONGBOX_ + "top_4");
-		STRONGBOX_TOP_C =                   register(map, STRONGBOX_ + "top_c");
+		STRONGBOX_TOP_0 =                   register(STRONGBOX_ + "top_0");
+		STRONGBOX_TOP_1 =                   register(STRONGBOX_ + "top_1");
+		STRONGBOX_TOP_2 =                   register(STRONGBOX_ + "top_2");
+		STRONGBOX_TOP_3 =                   register(STRONGBOX_ + "top_3");
+		STRONGBOX_TOP_4 =                   register(STRONGBOX_ + "top_4");
+		STRONGBOX_TOP_C =                   register(STRONGBOX_ + "top_c");
 
-		ILLUMINATOR_FRAME =                 register(map, BLOCKS_ + "light/illuminator_frame");
+		ILLUMINATOR_FRAME =                 register(BLOCKS_ + "light/illuminator_frame");
 
 		/* ARRAYS */
 		CONFIG = new TextureAtlasSprite[] {
@@ -518,21 +518,21 @@ public class TETextures {
 		// @formatter:on
 	}
 
-	// Bouncer to make the class readable.
-	private static TextureAtlasSprite register(TextureMap map, String sprite) {
+	/* HELPERS */
+	private static TextureAtlasSprite register(String sprite) {
 
-		return map.registerSprite(new ResourceLocation(sprite));
+		return textureMap.registerSprite(new ResourceLocation(sprite));
 	}
 
-	// Bouncer for registering ColorBlind textures.
-	private static TextureAtlasSprite registerCB(TextureMap map, String sprite) {
+	private static TextureAtlasSprite registerCB(String sprite) {
 
 		if (CoreProps.enableColorBlindTextures) {
 			sprite += CB_POSTFIX;
 		}
-		return register(map, sprite);
+		return register(sprite);
 	}
 
+	private static TextureMap textureMap;
 	private static String CB_POSTFIX = "_cb";
 
 	private static final String BLOCKS_ = "thermalexpansion:blocks/";

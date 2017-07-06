@@ -5,9 +5,13 @@ import cofh.CoFHCore;
 import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
 import cofh.thermalexpansion.gui.GuiHandler;
-import cofh.thermalexpansion.init.*;
+import cofh.thermalexpansion.init.TEBlocks;
+import cofh.thermalexpansion.init.TEItems;
+import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalexpansion.network.PacketTEBase;
+import cofh.thermalexpansion.plugins.*;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.managers.CoolantManager;
@@ -73,6 +77,7 @@ public class ThermalExpansion {
 		CONFIG_CLIENT.setConfiguration(new Configuration(new File(CoreProps.configDir, "/cofh/" + MOD_ID + "/client.cfg"), true));
 
 		TEProps.preInit();
+
 		TEBlocks.preInit();
 		TEItems.preInit();
 		TESounds.preInit();
@@ -92,10 +97,8 @@ public class ThermalExpansion {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 
-		ItemFlorb.parseFlorbs();
-		TEPlugins.postInit();
-
 		managerInitialize();
+		pluginInitialize();
 
 		proxy.postInit(event);
 	}
@@ -105,7 +108,6 @@ public class ThermalExpansion {
 
 		IMCHandler.INSTANCE.handleIMC(FMLInterModComms.fetchRuntimeMessages(this));
 
-		TEProps.loadComplete();
 		CONFIG.cleanUp(false, true);
 		CONFIG_CLIENT.cleanUp(false, true);
 
@@ -157,6 +159,8 @@ public class ThermalExpansion {
 		ReactantManager.initialize();
 		EnervationManager.initialize();
 		NumismaticManager.initialize();
+
+		ItemFlorb.parseFlorbs();
 	}
 
 	private synchronized void managerRefresh() {
@@ -182,6 +186,16 @@ public class ThermalExpansion {
 		ReactantManager.refresh();
 		EnervationManager.refresh();
 		NumismaticManager.refresh();
+	}
+
+	private void pluginInitialize() {
+
+		ActuallyAdditionsPlugin.initialize();
+		ForestryPlugin.initialize();
+		HarvestcraftPlugin.initialize();
+		NaturaPlugin.initialize();
+		RusticPlugin.initialize();
+		TConstructPlugin.initialize();
 	}
 
 }
