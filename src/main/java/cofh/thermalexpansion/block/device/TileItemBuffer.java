@@ -5,6 +5,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiItemBuffer;
 import cofh.thermalexpansion.gui.container.device.ContainerItemBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -20,7 +21,7 @@ import java.util.Arrays;
 
 public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
-	private static final int TYPE = BlockDevice.Type.ITEM_BUFFER.getMetadata();
+	private static final int TYPE = Type.ITEM_BUFFER.getMetadata();
 
 	public static void initialize() {
 

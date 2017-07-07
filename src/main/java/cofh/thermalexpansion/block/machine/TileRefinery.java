@@ -7,6 +7,7 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiRefinery;
 import cofh.thermalexpansion.gui.container.machine.ContainerRefinery;
 import cofh.thermalexpansion.init.TEProps;
@@ -36,7 +37,7 @@ import java.util.HashSet;
 
 public class TileRefinery extends TileMachineBase {
 
-	private static final int TYPE = BlockMachine.Type.REFINERY.getMetadata();
+	private static final int TYPE = Type.REFINERY.getMetadata();
 	public static int basePower = 20;
 
 	public static void initialize() {

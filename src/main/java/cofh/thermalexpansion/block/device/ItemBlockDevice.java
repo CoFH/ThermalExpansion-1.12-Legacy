@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.device;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.block.ItemBlockCore;
 import cofh.core.util.helpers.*;
+import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -32,7 +33,7 @@ public class ItemBlockDevice extends ItemBlockCore {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.device." + BlockDevice.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
+		return "tile.thermalexpansion.device." + Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
 	}
 
 	@Override
@@ -47,7 +48,7 @@ public class ItemBlockDevice extends ItemBlockCore {
 		}
 		SecurityHelper.addAccessInformation(stack, tooltip);
 
-		String name = BlockDevice.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		String name = Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.device." + name));
 
 		RedstoneControlHelper.addRSControlInformation(stack, tooltip);

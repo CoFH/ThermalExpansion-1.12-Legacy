@@ -7,6 +7,7 @@ import cofh.core.util.helpers.EnergyHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 import cofh.thermalexpansion.util.managers.dynamo.EnervationManager;
@@ -23,7 +24,7 @@ import java.util.HashSet;
 
 public class TileDynamoEnervation extends TileDynamoBase {
 
-	private static final int TYPE = BlockDynamo.Type.ENERVATION.getMetadata();
+	private static final int TYPE = Type.ENERVATION.getMetadata();
 	public static int basePower = 40;
 
 	public static void initialize() {

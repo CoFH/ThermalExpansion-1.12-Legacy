@@ -149,7 +149,7 @@ public class ElementSlotOverlay extends ElementBase {
 				y -= 2;
 				break;
 			case TANK_SHORT:
-				sizeY = 48;
+				sizeY = 34;
 				offsetX = slotColor.ordinal() * 32;
 				offsetY = 160;
 				x -= 8;

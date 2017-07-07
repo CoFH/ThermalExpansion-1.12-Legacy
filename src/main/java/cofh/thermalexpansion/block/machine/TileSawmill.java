@@ -7,6 +7,7 @@ import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiSawmill;
 import cofh.thermalexpansion.gui.container.machine.ContainerSawmill;
 import cofh.thermalexpansion.init.TEProps;
@@ -37,7 +38,7 @@ import java.util.HashSet;
 
 public class TileSawmill extends TileMachineBase {
 
-	private static final int TYPE = BlockMachine.Type.SAWMILL.getMetadata();
+	private static final int TYPE = Type.SAWMILL.getMetadata();
 	public static int basePower = 20;
 	public static int fluidFactor = 5;
 

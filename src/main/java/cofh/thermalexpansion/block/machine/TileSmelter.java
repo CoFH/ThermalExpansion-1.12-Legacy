@@ -5,6 +5,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiSmelter;
 import cofh.thermalexpansion.gui.container.machine.ContainerSmelter;
 import cofh.thermalexpansion.init.TEProps;
@@ -33,7 +34,7 @@ import java.util.HashSet;
 
 public class TileSmelter extends TileMachineBase {
 
-	private static final int TYPE = BlockMachine.Type.SMELTER.getMetadata();
+	private static final int TYPE = Type.SMELTER.getMetadata();
 	public static int basePower = 20;
 	public static int fluidAmount = 100;
 

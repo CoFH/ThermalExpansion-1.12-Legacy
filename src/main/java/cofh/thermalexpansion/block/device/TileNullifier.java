@@ -4,6 +4,7 @@ import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiNullifier;
 import cofh.thermalexpansion.gui.container.device.ContainerNullifier;
 import cofh.thermalexpansion.init.TETextures;
@@ -26,7 +27,7 @@ import java.util.Arrays;
 
 public class TileNullifier extends TileDeviceBase {
 
-	private static final int TYPE = BlockDevice.Type.NULLIFIER.getMetadata();
+	private static final int TYPE = Type.NULLIFIER.getMetadata();
 
 	public static void initialize() {
 

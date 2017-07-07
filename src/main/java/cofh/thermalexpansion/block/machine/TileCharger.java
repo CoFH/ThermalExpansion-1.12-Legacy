@@ -4,6 +4,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;
 import cofh.thermalexpansion.gui.container.machine.ContainerCharger;
 import cofh.thermalexpansion.init.TEProps;
@@ -22,7 +23,7 @@ import java.util.HashSet;
 
 public class TileCharger extends TileMachineBase {
 
-	private static final int TYPE = BlockMachine.Type.CHARGER.getMetadata();
+	private static final int TYPE = Type.CHARGER.getMetadata();
 	private static final int ENERGY_TRANSFER[] = new int[] { 1000, 4000, 9000, 16000, 25000 };
 	public static int basePower = 50;
 

@@ -19,6 +19,7 @@ import cofh.redstoneflux.api.IEnergyStorage;
 import cofh.redstoneflux.impl.EnergyStorage;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
+import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
@@ -40,8 +41,8 @@ import java.util.HashSet;
 
 public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
-	protected static final EnergyConfig[] DEFAULT_ENERGY_CONFIG = new EnergyConfig[BlockDynamo.Type.values().length];
-	protected static final HashSet<String>[] VALID_AUGMENTS = new HashSet[BlockDynamo.Type.values().length];
+	protected static final EnergyConfig[] DEFAULT_ENERGY_CONFIG = new EnergyConfig[Type.values().length];
+	protected static final HashSet<String>[] VALID_AUGMENTS = new HashSet[Type.values().length];
 	private static boolean enableSecurity = true;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
@@ -89,7 +90,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public String getTileName() {
 
-		return "tile.thermalexpansion.dynamo." + BlockDynamo.Type.values()[getType()].getName() + ".name";
+		return "tile.thermalexpansion.dynamo." + Type.values()[getType()].getName() + ".name";
 	}
 
 	@Override

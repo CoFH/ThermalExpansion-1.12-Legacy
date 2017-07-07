@@ -5,6 +5,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiPulverizer;
 import cofh.thermalexpansion.gui.container.machine.ContainerPulverizer;
 import cofh.thermalexpansion.init.TEProps;
@@ -32,7 +33,7 @@ import java.util.HashSet;
 
 public class TilePulverizer extends TileMachineBase {
 
-	private static final int TYPE = BlockMachine.Type.PULVERIZER.getMetadata();
+	private static final int TYPE = Type.PULVERIZER.getMetadata();
 	public static int basePower = 20;
 	public static int fluidAmount = 100;
 

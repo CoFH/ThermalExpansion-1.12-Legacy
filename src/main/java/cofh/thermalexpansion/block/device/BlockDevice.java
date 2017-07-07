@@ -11,7 +11,6 @@ import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
@@ -48,7 +47,7 @@ import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
-	public static final PropertyEnum<BlockDevice.Type> VARIANT = PropertyEnum.create("type", Type.class);
+	public static final PropertyEnum<Type> VARIANT = PropertyEnum.create("type", Type.class);
 
 	public BlockDevice() {
 
@@ -223,7 +222,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		if (side == EnumFacing.UP) {
 			return TETextures.DEVICE_TOP;
 		}
-		return side != EnumFacing.NORTH ? TETextures.DEVICE_SIDE : TETextures.DEVICE_FACE[stack.getMetadata() % BlockMachine.Type.values().length];
+		return side != EnumFacing.NORTH ? TETextures.DEVICE_SIDE : TETextures.DEVICE_FACE[stack.getMetadata() % Type.values().length];
 	}
 
 	@Override
@@ -391,7 +390,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 		// @formatter:on
 
-		private static final BlockDevice.Type[] METADATA_LOOKUP = new BlockDevice.Type[values().length];
+		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
 		private final int light;

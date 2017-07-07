@@ -7,6 +7,7 @@ import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiWaterGen;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
@@ -37,7 +38,7 @@ import javax.annotation.Nullable;
 
 public class TileWaterGen extends TileDeviceBase implements ITickable {
 
-	private static final int TYPE = BlockDevice.Type.WATER_GEN.getMetadata();
+	private static final int TYPE = Type.WATER_GEN.getMetadata();
 
 	public static void initialize() {
 

@@ -52,7 +52,7 @@ import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelRegister {
 
-	public static final PropertyEnum<BlockDynamo.Type> VARIANT = PropertyEnum.create("type", Type.class);
+	public static final PropertyEnum<Type> VARIANT = PropertyEnum.create("type", Type.class);
 
 	static AxisAlignedBB[] boundingBox = new AxisAlignedBB[12];
 
@@ -421,7 +421,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		NUMISMATIC(5, "numismatic");
 		// @formatter:on
 
-		private static final BlockDynamo.Type[] METADATA_LOOKUP = new BlockDynamo.Type[values().length];
+		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
 		private final int light;

@@ -5,6 +5,7 @@ import cofh.core.gui.container.ICustomInventory;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiPrecipitator;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;
 import cofh.thermalexpansion.init.TEProps;
@@ -31,7 +32,7 @@ import java.util.HashSet;
 
 public class TilePrecipitator extends TileMachineBase implements ICustomInventory {
 
-	private static final int TYPE = BlockMachine.Type.PRECIPITATOR.getMetadata();
+	private static final int TYPE = Type.PRECIPITATOR.getMetadata();
 	public static int basePower = 20;
 
 	public static ItemStack SNOW_LAYER;

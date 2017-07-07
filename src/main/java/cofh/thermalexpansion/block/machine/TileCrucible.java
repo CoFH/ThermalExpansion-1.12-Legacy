@@ -6,6 +6,7 @@ import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrucible;
 import cofh.thermalexpansion.init.TEProps;
@@ -37,7 +38,7 @@ import java.util.HashSet;
 
 public class TileCrucible extends TileMachineBase {
 
-	private static final int TYPE = BlockMachine.Type.CRUCIBLE.getMetadata();
+	private static final int TYPE = Type.CRUCIBLE.getMetadata();
 	public static int basePower = 50;
 
 	public static void initialize() {

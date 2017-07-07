@@ -127,7 +127,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		if (container.getTagCompound() == null) {
 			setDefaultTag(container);
 		}
-		if (resource == null || container.getCount() > 1 || isCreative(container)) {
+		if (resource == null || isCreative(container)) {
 			return 0;
 		}
 		int capacity = getCapacity(container);
@@ -182,7 +182,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		if (container.getTagCompound() == null) {
 			setDefaultTag(container);
 		}
-		if (!container.getTagCompound().hasKey("Fluid") || maxDrain == 0 || container.getCount() > 1) {
+		if (!container.getTagCompound().hasKey("Fluid") || maxDrain == 0) {
 			return null;
 		}
 		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
@@ -205,18 +205,18 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		return stack;
 	}
 
-	/* CAPABILITIES */
-	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-
-		return new FluidContainerItemWrapper(stack, this);
-	}
-
 	/* IEnchantableItem */
 	@Override
 	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
 
 		return enchantment == CoreEnchantments.holding;
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+
+		return new FluidContainerItemWrapper(stack, this);
 	}
 
 }

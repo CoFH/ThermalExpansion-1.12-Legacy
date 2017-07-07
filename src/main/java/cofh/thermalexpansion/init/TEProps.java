@@ -1,13 +1,21 @@
 package cofh.thermalexpansion.init;
 
 import codechicken.lib.block.property.unlisted.*;
+import cofh.CoFHCore;
+import cofh.core.gui.CreativeTabCore;
+import cofh.core.util.CoreUtils;
+import cofh.core.util.TimeTracker;
+import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.gui.CreativeTabTE;
-import cofh.thermalexpansion.gui.CreativeTabTEFlorbs;
+import cofh.thermalexpansion.block.machine.BlockMachine;
+import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TEProps {
 
@@ -72,21 +80,55 @@ public class TEProps {
 
 
 		/* CREATIVE TABS */
-		ThermalExpansion.tabCommon = new CreativeTabTE();
+		ThermalExpansion.tabCommon = new CreativeTabCore("thermalexpansion") {
+
+			@Override
+			@SideOnly (Side.CLIENT)
+			public ItemStack getIconItemStack() {
+
+				return BlockMachine.machineFurnace;
+			}
+
+		};
 
 		if (itemTabCommon) {
 			ThermalExpansion.tabItems = ThermalExpansion.tabCommon;
 		} else {
-			ThermalExpansion.tabItems = new CreativeTabTE("Items") {
+			ThermalExpansion.tabItems = new CreativeTabCore("thermalexpansion", "Items") {
 
 				@Override
-				protected ItemStack getStack() {
+				@SideOnly (Side.CLIENT)
+				public ItemStack getIconItemStack() {
 
 					return ItemMaterial.powerCoilElectrum;
 				}
+
 			};
 		}
-		ThermalExpansion.tabFlorbs = florbTabCommon ? ThermalExpansion.tabCommon : new CreativeTabTEFlorbs();
+		ThermalExpansion.tabFlorbs = florbTabCommon ? ThermalExpansion.tabCommon : new CreativeTabCore("thermalexpansion", "Florbs") {
+
+			int iconIndex = 0;
+			TimeTracker iconTracker = new TimeTracker();
+
+			void updateIcon() {
+
+				World world = CoFHCore.proxy.getClientWorld();
+				if (CoreUtils.isClient() && iconTracker.hasDelayPassed(world, 80)) {
+					int next = MathHelper.RANDOM.nextInt(ItemFlorb.florbList.size() - 1);
+					iconIndex = next >= iconIndex ? next + 1 : next;
+					iconTracker.markTime(world);
+				}
+			}
+
+			@Override
+			@SideOnly (Side.CLIENT)
+			public ItemStack getIconItemStack() {
+
+				updateIcon();
+				return ItemFlorb.florbList.get(iconIndex);
+			}
+
+		};
 	}
 
 	/* GENERAL */

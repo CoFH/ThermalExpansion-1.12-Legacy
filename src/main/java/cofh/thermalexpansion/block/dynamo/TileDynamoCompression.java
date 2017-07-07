@@ -5,6 +5,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.TextureHelper;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
@@ -33,7 +34,7 @@ import java.util.HashSet;
 
 public class TileDynamoCompression extends TileDynamoBase {
 
-	private static final int TYPE = BlockDynamo.Type.COMPRESSION.getMetadata();
+	private static final int TYPE = Type.COMPRESSION.getMetadata();
 	public static int basePower = 40;
 	public static int fluidAmount = 100;
 

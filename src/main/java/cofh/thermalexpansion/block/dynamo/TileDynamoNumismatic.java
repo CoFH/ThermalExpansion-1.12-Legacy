@@ -6,6 +6,7 @@ import cofh.core.render.TextureHelper;
 import cofh.core.util.helpers.EnergyHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoNumismatic;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoNumismatic;
 import cofh.thermalexpansion.util.managers.dynamo.NumismaticManager;
@@ -22,7 +23,7 @@ import java.util.HashSet;
 
 public class TileDynamoNumismatic extends TileDynamoBase {
 
-	private static final int TYPE = BlockDynamo.Type.NUMISMATIC.getMetadata();
+	private static final int TYPE = Type.NUMISMATIC.getMetadata();
 	public static int basePower = 40;
 
 	public static void initialize() {

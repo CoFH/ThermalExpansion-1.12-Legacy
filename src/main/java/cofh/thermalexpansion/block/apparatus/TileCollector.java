@@ -4,6 +4,7 @@ import cofh.api.tileentity.IInventoryConnection;
 import cofh.core.util.RegistrySocial;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.apparatus.BlockApparatus.Type;
 import cofh.thermalexpansion.gui.client.apparatus.GuiCollector;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.EntityLiving;
@@ -25,7 +26,7 @@ import java.util.UUID;
 
 public class TileCollector extends TileApparatusBase implements IInventoryConnection, ITickable {
 
-	private static final int TYPE = BlockApparatus.Type.COLLECTOR.getMetadata();
+	private static final int TYPE = Type.COLLECTOR.getMetadata();
 	public static final float[] DEFAULT_DROP_CHANCES = new float[] { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 
 	public static void initialize() {

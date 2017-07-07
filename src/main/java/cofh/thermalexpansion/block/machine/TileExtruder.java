@@ -7,6 +7,7 @@ import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.init.TEProps;
@@ -37,7 +38,7 @@ import java.util.HashSet;
 
 public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
-	private static final int TYPE = BlockMachine.Type.EXTRUDER.getMetadata();
+	private static final int TYPE = Type.EXTRUDER.getMetadata();
 	public static int basePower = 20;
 
 	public static ItemStack ANDESITE;

@@ -109,7 +109,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
 
-		return satchelMap.get(ItemHelper.getItemDamage(stack)).enchantable;
+		return typeMap.get(ItemHelper.getItemDamage(stack)).enchantable;
 	}
 
 	@Override
@@ -182,18 +182,18 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 
 	public static int getLevel(ItemStack stack) {
 
-		if (isCreative(stack) || !satchelMap.containsKey(ItemHelper.getItemDamage(stack))) {
+		if (isCreative(stack) || !typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
 			return 0;
 		}
-		return satchelMap.get(ItemHelper.getItemDamage(stack)).level;
+		return typeMap.get(ItemHelper.getItemDamage(stack)).level;
 	}
 
 	public static int getStorageIndex(ItemStack stack) {
 
-		if (isCreative(stack) || !satchelMap.containsKey(ItemHelper.getItemDamage(stack))) {
+		if (isCreative(stack) || !typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
 			return 0;
 		}
-		int level = satchelMap.get(ItemHelper.getItemDamage(stack)).level;
+		int level = typeMap.get(ItemHelper.getItemDamage(stack)).level;
 		int enchant = EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
 
 		return Math.min(1 + level + enchant, CoreProps.STORAGE_SIZE.length - 1);
@@ -263,7 +263,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("access=%s,type=%s", SecurityHelper.getAccess(stack).toString().toLowerCase(Locale.US), satchelMap.get(ItemHelper.getItemDamage(stack)).name)));
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("access=%s,type=%s", SecurityHelper.getAccess(stack).toString().toLowerCase(Locale.US), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
 
 		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
 			for (int i = 0; i < AccessMode.values().length; i++) {
@@ -283,7 +283,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@Override
 	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
 
-		return satchelMap.containsKey(ItemHelper.getItemDamage(stack)) && satchelMap.get(ItemHelper.getItemDamage(stack)).enchantable && enchantment == CoreEnchantments.holding;
+		return typeMap.containsKey(ItemHelper.getItemDamage(stack)) && typeMap.get(ItemHelper.getItemDamage(stack)).enchantable && enchantment == CoreEnchantments.holding;
 	}
 
 	/* IInitializer */
@@ -292,13 +292,13 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 
 		config();
 
-		satchelBasic = addSatchelItem(0, "standard0", 0, EnumRarity.COMMON);
-		satchelHardened = addSatchelItem(1, "standard1", 1, EnumRarity.COMMON);
-		satchelReinforced = addSatchelItem(2, "standard2", 2, EnumRarity.UNCOMMON);
-		satchelSignalum = addSatchelItem(3, "standard3", 3, EnumRarity.UNCOMMON);
-		satchelResonant = addSatchelItem(4, "standard4", 4, EnumRarity.RARE);
+		satchelBasic = addEntryItem(0, "standard0", 0, EnumRarity.COMMON);
+		satchelHardened = addEntryItem(1, "standard1", 1, EnumRarity.COMMON);
+		satchelReinforced = addEntryItem(2, "standard2", 2, EnumRarity.UNCOMMON);
+		satchelSignalum = addEntryItem(3, "standard3", 3, EnumRarity.UNCOMMON);
+		satchelResonant = addEntryItem(4, "standard4", 4, EnumRarity.RARE);
 
-		satchelCreative = addSatchelItem(CREATIVE, "creative", 0, EnumRarity.EPIC, false);
+		satchelCreative = addEntryItem(CREATIVE, "creative", 0, EnumRarity.EPIC, false);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -342,13 +342,13 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	}
 
 	/* ENTRY */
-	public class SatchelEntry {
+	public class TypeEntry {
 
 		public final String name;
 		public final int level;
 		public final boolean enchantable;
 
-		SatchelEntry(String name, int level, boolean enchantable) {
+		TypeEntry(String name, int level, boolean enchantable) {
 
 			this.name = name;
 			this.level = level;
@@ -356,24 +356,24 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 		}
 	}
 
-	private void addSatchelEntry(int metadata, String name, int level, boolean enchantable) {
+	private void addTypeEntry(int metadata, String name, int level, boolean enchantable) {
 
-		satchelMap.put(metadata, new SatchelEntry(name, level, enchantable));
+		typeMap.put(metadata, new TypeEntry(name, level, enchantable));
 	}
 
-	private ItemStack addSatchelItem(int metadata, String name, int level, EnumRarity rarity, boolean enchantable) {
+	private ItemStack addEntryItem(int metadata, String name, int level, EnumRarity rarity, boolean enchantable) {
 
-		addSatchelEntry(metadata, name, level, enchantable);
+		addTypeEntry(metadata, name, level, enchantable);
 		return addItem(metadata, name, rarity);
 	}
 
-	private ItemStack addSatchelItem(int metadata, String name, int level, EnumRarity rarity) {
+	private ItemStack addEntryItem(int metadata, String name, int level, EnumRarity rarity) {
 
-		addSatchelEntry(metadata, name, level, true);
+		addTypeEntry(metadata, name, level, true);
 		return addItem(metadata, name, rarity);
 	}
 
-	private static TIntObjectHashMap<SatchelEntry> satchelMap = new TIntObjectHashMap<>();
+	private static TIntObjectHashMap<TypeEntry> typeMap = new TIntObjectHashMap<>();
 
 	public static final int CREATIVE = 32000;
 

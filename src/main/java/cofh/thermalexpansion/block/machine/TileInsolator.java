@@ -5,12 +5,12 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
 import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.InsolatorRecipe;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -32,7 +32,7 @@ import java.util.HashSet;
 
 public class TileInsolator extends TileMachineBase {
 
-	private static final int TYPE = BlockMachine.Type.INSOLATOR.getMetadata();
+	private static final int TYPE = Type.INSOLATOR.getMetadata();
 	public static int basePower = 20;
 
 	public static void initialize() {
@@ -119,7 +119,7 @@ public class TileInsolator extends TileMachineBase {
 		if (recipe == null || tank.getFluidAmount() < recipe.getEnergy() / 10) {
 			return false;
 		}
-		Type substrate = recipe.getType();
+		InsolatorManager.Type substrate = recipe.getType();
 		switch (substrate) {
 			case STANDARD:
 				break;

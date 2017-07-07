@@ -5,6 +5,7 @@ import cofh.core.inventory.InventoryCraftingFalse;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiCrafter;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrafter;
 import cofh.thermalexpansion.init.TEProps;
@@ -28,7 +29,7 @@ import java.util.HashSet;
 
 public class TileCrafter extends TileMachineBase {
 
-	private static final int TYPE = BlockMachine.Type.CRAFTER.getMetadata();
+	private static final int TYPE = Type.CRAFTER.getMetadata();
 	public static int basePower = 20;
 
 	private static final int SLOT_OUTPUT = 9;

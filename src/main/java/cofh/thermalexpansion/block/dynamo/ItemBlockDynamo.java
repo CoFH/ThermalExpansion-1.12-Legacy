@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.dynamo;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
+import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -33,7 +34,7 @@ public class ItemBlockDynamo extends ItemBlockTEBase {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.dynamo." + BlockDynamo.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
+		return "tile.thermalexpansion.dynamo." + Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class ItemBlockDynamo extends ItemBlockTEBase {
 		SecurityHelper.addAccessInformation(stack, tooltip);
 
 		tooltip.add(StringHelper.localize("info.thermalexpansion.dynamo.0"));
-		String name = BlockDynamo.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		String name = Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + name));
 
 		if (getLevel(stack) >= 2) {

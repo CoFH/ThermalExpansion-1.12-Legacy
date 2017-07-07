@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.machine;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -34,7 +35,7 @@ public class ItemBlockMachine extends ItemBlockTEBase {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.machine." + BlockMachine.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
+		return "tile.thermalexpansion.machine." + Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class ItemBlockMachine extends ItemBlockTEBase {
 		}
 		SecurityHelper.addAccessInformation(stack, tooltip);
 
-		String name = BlockMachine.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		String name = Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.machine." + name));
 
 		if (getLevel(stack) >= 2) {

@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
+import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
@@ -9,9 +10,9 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileDeviceBase extends TilePowered {
 
-	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[BlockDevice.Type.values().length];
-	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[BlockDevice.Type.values().length];
-	public static final int[] LIGHT_VALUES = new int[BlockDevice.Type.values().length];
+	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[Type.values().length];
+	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[Type.values().length];
+	public static final int[] LIGHT_VALUES = new int[Type.values().length];
 
 	private static boolean enableSecurity = true;
 
@@ -32,7 +33,7 @@ public abstract class TileDeviceBase extends TilePowered {
 	@Override
 	public String getTileName() {
 
-		return "tile.thermalexpansion.device." + BlockDevice.Type.byMetadata(getType()).getName() + ".name";
+		return "tile.thermalexpansion.device." + Type.byMetadata(getType()).getName() + ".name";
 	}
 
 	public boolean isAugmentable() {

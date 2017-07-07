@@ -13,6 +13,7 @@ import cofh.core.util.helpers.EnergyHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.redstoneflux.api.IEnergyContainerItem;
+import cofh.redstoneflux.util.EnergyContainerItemWrapper;
 import cofh.thermalexpansion.ThermalExpansion;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -32,6 +33,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -55,26 +57,26 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 	public int getSend(ItemStack stack) {
 
-		if (!capacitorMap.containsKey(ItemHelper.getItemDamage(stack))) {
+		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
 			return 0;
 		}
-		return capacitorMap.get(ItemHelper.getItemDamage(stack)).send;
+		return typeMap.get(ItemHelper.getItemDamage(stack)).send;
 	}
 
 	public int getRecv(ItemStack stack) {
 
-		if (!capacitorMap.containsKey(ItemHelper.getItemDamage(stack))) {
+		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
 			return 0;
 		}
-		return capacitorMap.get(ItemHelper.getItemDamage(stack)).recv;
+		return typeMap.get(ItemHelper.getItemDamage(stack)).recv;
 	}
 
 	public int getCapacity(ItemStack stack) {
 
-		if (!capacitorMap.containsKey(ItemHelper.getItemDamage(stack))) {
+		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
 			return 0;
 		}
-		int capacity = capacitorMap.get(ItemHelper.getItemDamage(stack)).capacity;
+		int capacity = typeMap.get(ItemHelper.getItemDamage(stack)).capacity;
 		int enchant = EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
 
 		return capacity + capacity * enchant / 2;
@@ -82,10 +84,10 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 	public int getBaseCapacity(int metadata) {
 
-		if (!capacitorMap.containsKey(metadata)) {
+		if (!typeMap.containsKey(metadata)) {
 			return 0;
 		}
-		return capacitorMap.get(metadata).capacity;
+		return typeMap.get(metadata).capacity;
 	}
 
 	@Override
@@ -180,7 +182,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
 
-		return capacitorMap.get(ItemHelper.getItemDamage(stack)).enchantable;
+		return typeMap.get(ItemHelper.getItemDamage(stack)).enchantable;
 	}
 
 	@Override
@@ -318,7 +320,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.getEnergyStored(stack) > 0 && this.isActive(stack) ? 1 : 0, this.getMode(stack), capacitorMap.get(ItemHelper.getItemDamage(stack)).name)));
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.getEnergyStored(stack) > 0 && this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
 
 		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
 			for (int active = 0; active < 2; active++) {
@@ -381,7 +383,14 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
 
-		return capacitorMap.containsKey(ItemHelper.getItemDamage(stack)) && capacitorMap.get(ItemHelper.getItemDamage(stack)).enchantable && enchantment == CoreEnchantments.holding;
+		return typeMap.containsKey(ItemHelper.getItemDamage(stack)) && typeMap.get(ItemHelper.getItemDamage(stack)).enchantable && enchantment == CoreEnchantments.holding;
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+
+		return new EnergyContainerItemWrapper(stack, this);
 	}
 
 	/* IInitializer */
@@ -390,13 +399,13 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 		config();
 
-		capacitorBasic = addCapacitorItem(0, "standard0", SEND[0], RECV[0], CAPACITY[0], EnumRarity.COMMON);
-		capacitorHardened = addCapacitorItem(1, "standard1", SEND[1], RECV[1], CAPACITY[1], EnumRarity.COMMON);
-		capacitorReinforced = addCapacitorItem(2, "standard2", SEND[2], RECV[2], CAPACITY[2], EnumRarity.UNCOMMON);
-		capacitorSignalum = addCapacitorItem(3, "standard3", SEND[3], RECV[3], CAPACITY[3], EnumRarity.UNCOMMON);
-		capacitorResonant = addCapacitorItem(4, "standard4", SEND[4], RECV[4], CAPACITY[4], EnumRarity.RARE);
+		capacitorBasic = addEntryItem(0, "standard0", SEND[0], RECV[0], CAPACITY[0], EnumRarity.COMMON);
+		capacitorHardened = addEntryItem(1, "standard1", SEND[1], RECV[1], CAPACITY[1], EnumRarity.COMMON);
+		capacitorReinforced = addEntryItem(2, "standard2", SEND[2], RECV[2], CAPACITY[2], EnumRarity.UNCOMMON);
+		capacitorSignalum = addEntryItem(3, "standard3", SEND[3], RECV[3], CAPACITY[3], EnumRarity.UNCOMMON);
+		capacitorResonant = addEntryItem(4, "standard4", SEND[4], RECV[4], CAPACITY[4], EnumRarity.RARE);
 
-		capacitorCreative = addCapacitorItem(CREATIVE, "creative", SEND[4], 0, CAPACITY[4], EnumRarity.EPIC, false);
+		capacitorCreative = addEntryItem(CREATIVE, "creative", SEND[4], 0, CAPACITY[4], EnumRarity.EPIC, false);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -451,7 +460,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	/* ENTRY */
-	public class CapacitorEntry {
+	public class TypeEntry {
 
 		public final String name;
 		public final int send;
@@ -459,7 +468,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		public final int capacity;
 		public final boolean enchantable;
 
-		CapacitorEntry(String name, int send, int recv, int capacity, boolean enchantable) {
+		TypeEntry(String name, int send, int recv, int capacity, boolean enchantable) {
 
 			this.name = name;
 			this.send = send;
@@ -469,33 +478,32 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		}
 	}
 
-	private void addCapacitorEntry(int metadata, String name, int send, int recv, int capacity, boolean enchantable) {
+	private void addEntry(int metadata, String name, int send, int recv, int capacity, boolean enchantable) {
 
-		capacitorMap.put(metadata, new CapacitorEntry(name, send, recv, capacity, enchantable));
+		typeMap.put(metadata, new TypeEntry(name, send, recv, capacity, enchantable));
 	}
 
-	private ItemStack addCapacitorItem(int metadata, String name, int send, int recv, int capacity, EnumRarity rarity, boolean enchantable) {
+	private ItemStack addEntryItem(int metadata, String name, int send, int recv, int capacity, EnumRarity rarity, boolean enchantable) {
 
-		addCapacitorEntry(metadata, name, send, recv, capacity, enchantable);
+		addEntry(metadata, name, send, recv, capacity, enchantable);
 		return addItem(metadata, name, rarity);
 	}
 
-	private ItemStack addCapacitorItem(int metadata, String name, int send, int recv, int capacity, EnumRarity rarity) {
+	private ItemStack addEntryItem(int metadata, String name, int send, int recv, int capacity, EnumRarity rarity) {
 
-		addCapacitorEntry(metadata, name, send, recv, capacity, true);
+		addEntry(metadata, name, send, recv, capacity, true);
 		return addItem(metadata, name, rarity);
 	}
 
-	private static TIntObjectHashMap<CapacitorEntry> capacitorMap = new TIntObjectHashMap<>();
+	private static TIntObjectHashMap<TypeEntry> typeMap = new TIntObjectHashMap<>();
 
 	public static final int CAPACITY_BASE = 1000000;
 	public static final int XFER_BASE = 1000;
+	public static final int CREATIVE = 32000;
 
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int[] RECV = { 1, 4, 9, 16, 25 };
 	public static final int[] SEND = { 1, 4, 9, 16, 25 };
-
-	public static final int CREATIVE = 32000;
 
 	public static boolean enable = true;
 

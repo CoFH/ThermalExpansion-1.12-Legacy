@@ -7,6 +7,7 @@ import cofh.core.render.TextureHelper;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
 import cofh.thermalexpansion.init.TEProps;
@@ -36,7 +37,7 @@ import java.util.HashSet;
 
 public class TileDynamoReactant extends TileDynamoBase {
 
-	private static final int TYPE = BlockDynamo.Type.REACTANT.getMetadata();
+	private static final int TYPE = Type.REACTANT.getMetadata();
 	public static int basePower = 40;
 	public static int fluidAmount = 100;
 

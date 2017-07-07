@@ -10,6 +10,7 @@ import cofh.core.util.helpers.ServerHelper;
 import cofh.redstoneflux.impl.EnergyStorage;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -22,11 +23,11 @@ import java.util.HashSet;
 
 public abstract class TileMachineBase extends TilePowered implements IAccelerable, ITickable {
 
-	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[BlockMachine.Type.values().length];
-	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[BlockMachine.Type.values().length];
-	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[BlockMachine.Type.values().length];
-	public static final HashSet<String>[] VALID_AUGMENTS = new HashSet[BlockMachine.Type.values().length];
-	public static final int[] LIGHT_VALUES = new int[BlockMachine.Type.values().length];
+	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[Type.values().length];
+	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[Type.values().length];
+	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[Type.values().length];
+	public static final HashSet<String>[] VALID_AUGMENTS = new HashSet[Type.values().length];
+	public static final int[] LIGHT_VALUES = new int[Type.values().length];
 
 	private static boolean enableSecurity = true;
 
@@ -71,7 +72,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	@Override
 	public String getTileName() {
 
-		return "tile.thermalexpansion.machine." + BlockMachine.Type.byMetadata(getType()).getName() + ".name";
+		return "tile.thermalexpansion.machine." + Type.byMetadata(getType()).getName() + ".name";
 	}
 
 	@Override

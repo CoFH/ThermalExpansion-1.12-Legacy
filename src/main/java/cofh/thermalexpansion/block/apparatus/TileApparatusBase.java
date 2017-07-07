@@ -11,6 +11,7 @@ import cofh.core.util.helpers.InventoryHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
+import cofh.thermalexpansion.block.apparatus.BlockApparatus.Type;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.Utils;
@@ -29,11 +30,11 @@ import java.util.LinkedList;
 
 public abstract class TileApparatusBase extends TilePowered implements IAccelerable, IInventoryConnection, ITickable {
 
-	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[BlockApparatus.Type.values().length];
-	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[BlockApparatus.Type.values().length];
-	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[BlockApparatus.Type.values().length];
-	public static final HashSet[] VALID_AUGMENTS = new HashSet[BlockApparatus.Type.values().length];
-	public static final int[] LIGHT_VALUES = new int[BlockApparatus.Type.values().length];
+	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[Type.values().length];
+	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[Type.values().length];
+	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[Type.values().length];
+	public static final HashSet[] VALID_AUGMENTS = new HashSet[Type.values().length];
+	public static final int[] LIGHT_VALUES = new int[Type.values().length];
 
 	private static boolean enableSecurity = true;
 
@@ -84,7 +85,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	@Override
 	public String getTileName() {
 
-		return "tile.thermalexpansion.apparatus." + BlockApparatus.Type.byMetadata(getType()).getName() + ".name";
+		return "tile.thermalexpansion.apparatus." + Type.byMetadata(getType()).getName() + ".name";
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.TextureHelper;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
@@ -32,7 +33,7 @@ import java.util.HashSet;
 
 public class TileDynamoMagmatic extends TileDynamoBase {
 
-	private static final int TYPE = BlockDynamo.Type.MAGMATIC.getMetadata();
+	private static final int TYPE = Type.MAGMATIC.getMetadata();
 	public static int basePower = 40;
 	public static int fluidAmount = 100;
 

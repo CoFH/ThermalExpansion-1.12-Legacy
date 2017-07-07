@@ -60,7 +60,7 @@ import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockMachine extends BlockTEBase implements IModelRegister, IBakeryProvider, IWorldBlockTextureProvider {
 
-	public static final PropertyEnum<BlockMachine.Type> VARIANT = PropertyEnum.create("type", Type.class);
+	public static final PropertyEnum<Type> VARIANT = PropertyEnum.create("type", Type.class);
 
 	public BlockMachine() {
 
@@ -596,7 +596,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		EXTRUDER(15, "extruder");
 		// @formatter:on
 
-		private static final BlockMachine.Type[] METADATA_LOOKUP = new BlockMachine.Type[values().length];
+		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
 

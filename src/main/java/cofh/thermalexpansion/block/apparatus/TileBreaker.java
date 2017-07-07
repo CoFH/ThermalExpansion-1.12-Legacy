@@ -5,6 +5,7 @@ import cofh.core.entity.CoFHFakePlayer;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.apparatus.BlockApparatus.Type;
 import cofh.thermalexpansion.gui.client.apparatus.GuiBreaker;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.block.state.IBlockState;
@@ -23,7 +24,7 @@ import java.util.Arrays;
 
 public class TileBreaker extends TileApparatusBase implements IInventoryConnection, ITickable {
 
-	private static final int TYPE = BlockApparatus.Type.BREAKER.getMetadata();
+	private static final int TYPE = Type.BREAKER.getMetadata();
 
 	public static void initialize() {
 

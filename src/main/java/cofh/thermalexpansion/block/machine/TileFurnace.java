@@ -7,6 +7,7 @@ import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiFurnace;
 import cofh.thermalexpansion.gui.container.machine.ContainerFurnace;
 import cofh.thermalexpansion.init.TEProps;
@@ -34,7 +35,7 @@ import java.util.HashSet;
 
 public class TileFurnace extends TileMachineBase {
 
-	private static final int TYPE = BlockMachine.Type.FURNACE.getMetadata();
+	private static final int TYPE = Type.FURNACE.getMetadata();
 	public static int basePower = 20;
 
 	public static void initialize() {

@@ -39,7 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
-	public static final PropertyEnum<BlockApparatus.Type> VARIANT = PropertyEnum.create("type", Type.class);
+	public static final PropertyEnum<Type> VARIANT = PropertyEnum.create("type", Type.class);
 
 	public BlockApparatus() {
 
@@ -249,7 +249,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		COLLECTOR(1, "collector");
 		// @formatter:on
 
-		private static final BlockApparatus.Type[] METADATA_LOOKUP = new BlockApparatus.Type[values().length];
+		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
 		private final int light;

@@ -5,6 +5,7 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiFisher;
 import cofh.thermalexpansion.gui.container.device.ContainerFisher;
 import cofh.thermalexpansion.util.managers.FisherManager;
@@ -18,7 +19,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -26,7 +26,7 @@ import java.util.Arrays;
 
 public class TileFisher extends TileDeviceBase implements ITickable {
 
-	private static final int TYPE = BlockDevice.Type.FISHER.getMetadata();
+	private static final int TYPE = Type.FISHER.getMetadata();
 
 	public static void initialize() {
 
@@ -190,8 +190,8 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 				targetWater++;
 			}
 		}
-		isOcean = BiomeDictionary.hasType(world.getBiome(pos), Type.OCEAN);
-		isRiver = BiomeDictionary.hasType(world.getBiome(pos), Type.RIVER);
+		isOcean = BiomeDictionary.hasType(world.getBiome(pos), BiomeDictionary.Type.OCEAN);
+		isRiver = BiomeDictionary.hasType(world.getBiome(pos), BiomeDictionary.Type.RIVER);
 		isRaining = world.isRainingAt(pos);
 		timeConstant = getTimeConstant();
 	}

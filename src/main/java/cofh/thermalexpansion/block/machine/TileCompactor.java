@@ -4,6 +4,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiCompactor;
 import cofh.thermalexpansion.gui.container.machine.ContainerCompactor;
 import cofh.thermalexpansion.init.TEProps;
@@ -21,7 +22,7 @@ import java.util.HashSet;
 
 public class TileCompactor extends TileMachineBase {
 
-	private static final int TYPE = BlockMachine.Type.COMPACTOR.getMetadata();
+	private static final int TYPE = Type.COMPACTOR.getMetadata();
 	private static final Mode[] VALUES = new Mode[3];
 	public static int basePower = 20;
 
