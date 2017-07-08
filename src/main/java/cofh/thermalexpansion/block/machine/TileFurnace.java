@@ -384,6 +384,7 @@ public class TileFurnace extends TileMachineBase {
 			augmentPyrolysis = true;
 			hasModeAugment = true;
 			energyMod += 50;
+			tank.setLock(TFFluids.fluidCreosote);
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

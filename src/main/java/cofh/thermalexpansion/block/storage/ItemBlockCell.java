@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
 import cofh.core.util.helpers.EnergyHelper;
 import cofh.core.util.helpers.RedstoneControlHelper;
@@ -92,6 +93,12 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	public int getItemEnchantability() {
 
 		return 10;
+	}
+
+	@Override
+	public int getRGBDurabilityForDisplay(ItemStack stack) {
+
+		return CoreProps.RGB_DURABILITY_FLUX;
 	}
 
 	@Override
