@@ -29,7 +29,6 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.HashSet;
 
 public class TileDynamoSteam extends TileDynamoBase {

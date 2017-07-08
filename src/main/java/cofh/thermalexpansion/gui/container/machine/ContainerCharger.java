@@ -30,7 +30,7 @@ public class ContainerCharger extends ContainerTEBase implements ISlotValidator 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		return ChargerManager.recipeExists(stack) || EnergyHelper.isEnergyContainerItem(stack);
+		return ChargerManager.recipeExists(stack) || EnergyHelper.isEnergyContainerItem(stack) || EnergyHelper.isEnergyHandler(stack);
 	}
 
 }

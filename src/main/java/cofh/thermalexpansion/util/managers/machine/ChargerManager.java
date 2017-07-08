@@ -14,7 +14,7 @@ public class ChargerManager {
 
 	private static Map<ComparableItemStackSafe, RecipeCharger> recipeMap = new THashMap<>();
 
-	static final int DEFAULT_ENERGY = 3200;
+	static final int DEFAULT_ENERGY = 8000;
 
 	public static RecipeCharger getRecipe(ItemStack input) {
 

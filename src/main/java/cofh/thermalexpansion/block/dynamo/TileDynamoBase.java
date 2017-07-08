@@ -434,10 +434,10 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (type == AugmentType.MODE && hasModeAugment) {
 			return false;
 		}
-		if(augmentCoilDuct && TEProps.DYNAMO_COIL_DUCT.equals(id)) {
+		if (augmentCoilDuct && TEProps.DYNAMO_COIL_DUCT.equals(id)) {
 			return false;
 		}
-		if(augmentThrottle && TEProps.DYNAMO_THROTTLE.equals(id)) {
+		if (augmentThrottle && TEProps.DYNAMO_THROTTLE.equals(id)) {
 			return false;
 		}
 		return VALID_AUGMENTS_BASE.contains(id) || VALID_AUGMENTS[getType()].contains(id) || super.isValidAugment(type, id);
