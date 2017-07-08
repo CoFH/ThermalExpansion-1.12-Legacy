@@ -153,18 +153,18 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		return TileCell.getCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
 	}
 
-	/* CAPABILITIES */
-	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-
-		return new EnergyContainerItemWrapper(stack, this);
-	}
-
 	/* IEnchantableItem */
 	@Override
 	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
 
 		return enchantment == CoreEnchantments.holding;
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+
+		return new EnergyContainerItemWrapper(stack, this);
 	}
 
 }

@@ -203,18 +203,18 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		return stack;
 	}
 
-	/* CAPABILITIES */
-	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
-
-		return new FluidContainerItemWrapper(stack, this);
-	}
-
 	/* IEnchantableItem */
 	@Override
 	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
 
 		return enchantment == CoreEnchantments.holding;
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+
+		return new FluidContainerItemWrapper(stack, this);
 	}
 
 }
