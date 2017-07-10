@@ -30,8 +30,8 @@ public class CompactorManager {
 	private static Map<ComparableItemStackCompactor, CompactorRecipe> recipeMapMint = new THashMap<>();
 	private static Set<ComparableItemStackCompactor> validationSet = new THashSet<>();
 
-	static final int DEFAULT_ENERGY = 4000;
-	static final int DEFAULT_ENERGY_STORAGE = 400;
+	public static final int DEFAULT_ENERGY = 4000;
+	public static final int DEFAULT_ENERGY_STORAGE = 400;
 
 	public static CompactorRecipe getRecipe(ItemStack input, Mode mode) {
 

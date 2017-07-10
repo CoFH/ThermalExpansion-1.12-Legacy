@@ -10,11 +10,11 @@ public class RefineryManager {
 
 	private static TIntObjectHashMap<RefineryRecipe> recipeMap = new TIntObjectHashMap<>();
 
-	static final int DEFAULT_ENERGY = 5000;
+	public static final int DEFAULT_ENERGY = 5000;
 
 	public static RefineryRecipe getRecipe(FluidStack input) {
 
-		return input == null ? null : recipeMap.get(input.getFluid().hashCode());
+		return input == null ? null : recipeMap.get(input.getFluid().getName().hashCode());
 	}
 
 	public static boolean recipeExists(FluidStack input) {
@@ -56,7 +56,7 @@ public class RefineryManager {
 			return null;
 		}
 		RefineryRecipe recipe = new RefineryRecipe(input, outputFluid, outputItem, energy);
-		recipeMap.put(input.getFluid().hashCode(), recipe);
+		recipeMap.put(input.getFluid().getName().hashCode(), recipe);
 		return recipe;
 	}
 
@@ -66,7 +66,7 @@ public class RefineryManager {
 		if (input == null) {
 			return null;
 		}
-		return recipeMap.remove(input.getFluid().hashCode());
+		return recipeMap.remove(input.getFluid().getName().hashCode());
 	}
 
 	/* HELPERS */

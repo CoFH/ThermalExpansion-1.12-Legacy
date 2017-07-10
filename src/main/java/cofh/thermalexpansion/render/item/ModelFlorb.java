@@ -46,7 +46,6 @@ public final class ModelFlorb implements IItemBakery, IIconRegister {
 			if (stack.getTagCompound() != null) {
 				fluid = FluidRegistry.getFluid(stack.getTagCompound().getString("Fluid"));
 			}
-
 			quads.addAll(ItemQuadBakery.bakeItem(ImmutableList.of(magmatic ? MAGMATIC_BASE : BASE)));
 
 			if (fluid != null) {

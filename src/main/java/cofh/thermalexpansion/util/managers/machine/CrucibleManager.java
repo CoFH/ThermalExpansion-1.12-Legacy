@@ -25,7 +25,7 @@ public class CrucibleManager {
 
 	private static Map<ComparableItemStackCrucible, CrucibleRecipe> recipeMap = new THashMap<>();
 
-	static final int DEFAULT_ENERGY = 8000;
+	public static final int DEFAULT_ENERGY = 8000;
 
 	public static CrucibleRecipe getRecipe(ItemStack input) {
 

@@ -25,8 +25,9 @@ public class FurnaceManager {
 	private static Map<ComparableItemStackFurnace, FurnaceRecipe> recipeMapPyrolysis = new THashMap<>();
 	private static Set<ComparableItemStackFurnace> foodSet = new THashSet<>();
 	private static Set<ComparableItemStackFurnace> oreSet = new THashSet<>();
+	private static Map<String, ItemStack> reservedMap = new THashMap<>();
 
-	static final int DEFAULT_ENERGY = 2000;
+	public static final int DEFAULT_ENERGY = 2000;
 
 	public static FurnaceRecipe getRecipe(ItemStack input) {
 
@@ -150,11 +151,11 @@ public class FurnaceManager {
 			addOreDictRecipe(energy, "oreTin", ItemMaterial.ingotTin);
 			addOreDictRecipe(energy, "oreSilver", ItemMaterial.ingotSilver);
 			addOreDictRecipe(energy, "oreLead", ItemMaterial.ingotLead);
-			addOreDictRecipe(energy, "oreAluminum", ItemMaterial.ingotAluminum);
+			// addOreDictRecipe(energy, "oreAluminum", ItemMaterial.ingotAluminum);
 			addOreDictRecipe(energy, "oreNickel", ItemMaterial.ingotNickel);
 			addOreDictRecipe(energy, "orePlatinum", ItemMaterial.ingotPlatinum);
-			addOreDictRecipe(energy, "oreIridium", ItemMaterial.ingotIridium);
-			addOreDictRecipe(energy, "oreMithril", ItemMaterial.ingotMithril);
+			// addOreDictRecipe(energy, "oreIridium", ItemMaterial.ingotIridium);
+			// addOreDictRecipe(energy, "oreMithril", ItemMaterial.ingotMithril);
 
 			addOreDictRecipe(energy, "oreCoal", new ItemStack(Items.COAL, 1, 0));
 			addOreDictRecipe(energy, "oreDiamond", new ItemStack(Items.DIAMOND, 1, 0));
@@ -175,19 +176,20 @@ public class FurnaceManager {
 			addOreDictRecipe(energy, "dustTin", ItemMaterial.ingotTin);
 			addOreDictRecipe(energy, "dustSilver", ItemMaterial.ingotSilver);
 			addOreDictRecipe(energy, "dustLead", ItemMaterial.ingotLead);
-			addOreDictRecipe(energy, "dustAluminum", ItemMaterial.ingotAluminum);
+			// addOreDictRecipe(energy, "dustAluminum", ItemMaterial.ingotAluminum);
 			addOreDictRecipe(energy, "dustNickel", ItemMaterial.ingotNickel);
 			addOreDictRecipe(energy, "dustPlatinum", ItemMaterial.ingotPlatinum);
 			addOreDictRecipe(energy, "dustIridium", ItemMaterial.ingotIridium);
 			addOreDictRecipe(energy, "dustMithril", ItemMaterial.ingotMithril);
 
-			// No Steel
+			// addOreDictRecipe(energy, "dustSteel", ItemMaterial.ingotSteel);
 			addOreDictRecipe(energy, "dustElectrum", ItemMaterial.ingotElectrum);
 			addOreDictRecipe(energy, "dustInvar", ItemMaterial.ingotInvar);
 			addOreDictRecipe(energy, "dustBronze", ItemMaterial.ingotBronze);
-			addOreDictRecipe(energy, "dustSignalum", ItemMaterial.ingotSignalum);
-			addOreDictRecipe(energy, "dustLumium", ItemMaterial.ingotLumium);
-			// No Enderium
+			addOreDictRecipe(energy, "dustConstantan", ItemMaterial.ingotConstantan);
+			// addOreDictRecipe(energy, "dustSignalum", ItemMaterial.ingotSignalum);
+			// addOreDictRecipe(energy, "dustLumium", ItemMaterial.ingotLumium);
+			// addOreDictRecipe(energy, "dustEnderium", ItemMaterial.ingotEnderium);
 		}
 
 		/* OREBERRIES */
@@ -246,6 +248,19 @@ public class FurnaceManager {
 		handledBlocks.add(Blocks.REDSTONE_ORE);
 		handledBlocks.add(Blocks.QUARTZ_ORE);
 
+		reservedMap.put("oreAluminum", ItemMaterial.ingotAluminum);
+		reservedMap.put("oreIridium", ItemMaterial.ingotIridium);
+		reservedMap.put("oreMithril", ItemMaterial.ingotMithril);
+
+		reservedMap.put("dustAluminum", ItemMaterial.ingotAluminum);
+		reservedMap.put("dustIridium", ItemMaterial.ingotIridium);
+		reservedMap.put("dustMithril", ItemMaterial.ingotMithril);
+
+		reservedMap.put("dustSteel", ItemMaterial.ingotSteel);
+		reservedMap.put("dustSignalum", ItemMaterial.ingotSignalum);
+		reservedMap.put("dustLumium", ItemMaterial.ingotLumium);
+		reservedMap.put("dustEnderium", ItemMaterial.ingotEnderium);
+
 		for (ItemStack key : smeltingList.keySet()) {
 			if (key.isEmpty() || recipeExists(key)) {
 				continue;
@@ -253,6 +268,9 @@ public class FurnaceManager {
 			output = smeltingList.get(key);
 			if (output.isEmpty() || handledBlocks.contains(Block.getBlockFromItem(key.getItem()))) {
 				continue;
+			}
+			if (reservedMap.containsKey(ItemHelper.getOreName(key))) {
+				output = ItemHelper.cloneStack(reservedMap.get(ItemHelper.getOreName(key)), output.getCount());
 			}
 			int energy = DEFAULT_ENERGY;
 

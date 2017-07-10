@@ -31,7 +31,7 @@ public class SmelterManager {
 
 	static final int ORE_MULTIPLIER = 2;
 	static final int ORE_MULTIPLIER_SPECIAL = 3;
-	static final int DEFAULT_ENERGY = 4000;
+	public static final int DEFAULT_ENERGY = 4000;
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
 
@@ -475,10 +475,10 @@ public class SmelterManager {
 			return;
 		}
 		if (oreName != null) {
-			addOreToIngotRecipe(4000, oreName, ItemHelper.cloneStack(ingot, ORE_MULTIPLIER), ItemHelper.cloneStack(ingot, ORE_MULTIPLIER_SPECIAL), ItemHelper.cloneStack(ingotRelated, 1), richSlagChance, slagOreChance);
+			addOreToIngotRecipe(DEFAULT_ENERGY, oreName, ItemHelper.cloneStack(ingot, ORE_MULTIPLIER), ItemHelper.cloneStack(ingot, ORE_MULTIPLIER_SPECIAL), ItemHelper.cloneStack(ingotRelated, 1), richSlagChance, slagOreChance);
 		}
 		if (dustName != null) {
-			addDustToIngotRecipe(800, dustName, ItemHelper.cloneStack(ingot, 2), slagDustChance);
+			addDustToIngotRecipe(DEFAULT_ENERGY / 5, dustName, ItemHelper.cloneStack(ingot, 2), slagDustChance);
 		}
 	}
 

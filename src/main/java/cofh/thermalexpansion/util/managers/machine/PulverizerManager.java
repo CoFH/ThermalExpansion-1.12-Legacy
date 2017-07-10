@@ -25,7 +25,7 @@ public class PulverizerManager {
 	private static Map<ComparableItemStackPulverizer, PulverizerRecipe> recipeMap = new THashMap<>();
 
 	static final int ORE_MULTIPLIER = 2;
-	static final int DEFAULT_ENERGY = 4000;
+	public static final int DEFAULT_ENERGY = 4000;
 
 	public static PulverizerRecipe getRecipe(ItemStack input) {
 
@@ -391,8 +391,8 @@ public class PulverizerManager {
 		if (related.isEmpty() && !registeredRelated.isEmpty()) {
 			related = registeredRelated.get(0);
 		}
-		addOreToDustRecipe(4000, oreName, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, 5);
-		addOreToDustRecipe(4800, clusterName, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, 5);
+		addOreToDustRecipe(4000, oreName, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
+		addOreToDustRecipe(4800, clusterName, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
 		addIngotToDustRecipe(2400, ingotName, ItemHelper.cloneStack(dust, 1));
 	}
 
@@ -442,8 +442,8 @@ public class PulverizerManager {
 		if (related.isEmpty() && !registeredRelated.isEmpty()) {
 			related = registeredRelated.get(0);
 		}
-		addOreToDustRecipe(DEFAULT_ENERGY, oreName, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, 5);
-		addOreToDustRecipe(DEFAULT_ENERGY * 5 / 4, clusterName, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, 5);
+		addOreToDustRecipe(DEFAULT_ENERGY, oreName, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
+		addOreToDustRecipe(DEFAULT_ENERGY * 5 / 4, clusterName, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
 		addIngotToDustRecipe(DEFAULT_ENERGY * 3 / 4, gemName, ItemHelper.cloneStack(dust, 1));
 	}
 

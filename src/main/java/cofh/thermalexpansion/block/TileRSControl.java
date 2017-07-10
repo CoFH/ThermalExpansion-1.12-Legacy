@@ -21,6 +21,8 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 
 	public boolean isActive;
 
+	protected boolean playSound;
+
 	/* REDSTONE CONTROL */
 	protected int powerLevel;
 	protected boolean isPowered;
@@ -128,10 +130,10 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 		isPowered = payload.getBool();
 		rsMode = ControlMode.values()[payload.getByte()];
 
-		boolean prevActive = isActive;
 		isActive = payload.getBool();
+		playSound = isActive;
 
-		if (isActive && !prevActive) {
+		if (playSound) {
 			if (getSoundEvent() != null && TEProps.enableSounds) {
 				SoundHelper.playSound(getSound());
 			}
@@ -183,7 +185,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 	@SideOnly (Side.CLIENT)
 	public boolean shouldPlaySound() {
 
-		return !tileEntityInvalid && isActive;
+		return !tileEntityInvalid && playSound;
 	}
 
 	/* HELPERS */

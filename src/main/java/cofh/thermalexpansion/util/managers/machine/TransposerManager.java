@@ -27,7 +27,7 @@ public class TransposerManager {
 
 	public static TransposerRecipe getFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return input.isEmpty() || fluid == null ? null : recipeMapFill.get(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()));
+		return input.isEmpty() || fluid == null ? null : recipeMapFill.get(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().getName().hashCode()));
 	}
 
 	public static TransposerRecipe getExtractRecipe(ItemStack input) {
@@ -85,6 +85,8 @@ public class TransposerManager {
 
 		addFillRecipe(2000, ItemHelper.cloneStack(ItemFertilizer.fertilizerBasic), ItemHelper.cloneStack(ItemFertilizer.fertilizerRich), new FluidStack(TFFluids.fluidSap, 500), false);
 
+		addFillRecipe(200, new ItemStack(Items.BOWL), new ItemStack(Items.MUSHROOM_STEW), new FluidStack(TFFluids.fluidMushroomStew, 250), true);
+
 		/* LOAD RECIPES */
 		loadRecipes();
 	}
@@ -105,7 +107,7 @@ public class TransposerManager {
 			tempRecipe = entry.getValue();
 			ComparableItemStackTransposer input = new ComparableItemStackTransposer(tempRecipe.input);
 			FluidStack fluid = tempRecipe.fluid.copy();
-			tempFill.put(Arrays.asList(input.hashCode(), fluid.getFluid().hashCode()), tempRecipe);
+			tempFill.put(Arrays.asList(input.hashCode(), fluid.getFluid().getName().hashCode()), tempRecipe);
 			tempSet.add(input);
 		}
 		for (Entry<ComparableItemStackTransposer, TransposerRecipe> entry : recipeMapExtract.entrySet()) {
@@ -134,7 +136,7 @@ public class TransposerManager {
 			return null;
 		}
 		TransposerRecipe recipeFill = new TransposerRecipe(input, output, fluid, energy, 100);
-		recipeMapFill.put(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()), recipeFill);
+		recipeMapFill.put(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().getName().hashCode()), recipeFill);
 		validationSet.add(new ComparableItemStackTransposer(input));
 
 		if (reversible) {
@@ -167,7 +169,7 @@ public class TransposerManager {
 	/* REMOVE RECIPES */
 	public static TransposerRecipe removeFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return recipeMapFill.remove(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()));
+		return recipeMapFill.remove(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().getName().hashCode()));
 	}
 
 	public static TransposerRecipe removeExtractRecipe(ItemStack input) {

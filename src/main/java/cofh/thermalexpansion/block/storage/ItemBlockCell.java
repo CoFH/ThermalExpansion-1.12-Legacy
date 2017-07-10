@@ -4,10 +4,7 @@ import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
-import cofh.core.util.helpers.EnergyHelper;
-import cofh.core.util.helpers.RedstoneControlHelper;
-import cofh.core.util.helpers.SecurityHelper;
-import cofh.core.util.helpers.StringHelper;
+import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.util.EnergyContainerItemWrapper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
@@ -87,6 +84,18 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	public boolean isEnchantable(ItemStack stack) {
 
 		return true;
+	}
+
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+
+		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
+	}
+
+	@Override
+	public boolean showDurabilityBar(ItemStack stack) {
+
+		return !isCreative(stack);
 	}
 
 	@Override

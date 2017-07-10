@@ -191,6 +191,7 @@ public class ThermalExpansion {
 	private void pluginInitialize() {
 
 		ActuallyAdditionsPlugin.initialize();
+		BiomesOPlentyPlugin.initialize();
 		ForestryPlugin.initialize();
 		HarvestcraftPlugin.initialize();
 		NaturaPlugin.initialize();

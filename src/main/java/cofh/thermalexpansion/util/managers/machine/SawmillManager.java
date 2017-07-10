@@ -23,7 +23,7 @@ public class SawmillManager {
 	private static Map<ComparableItemStackSawmill, SawmillRecipe> recipeMap = new THashMap<>();
 
 	static final float LOG_MULTIPLIER = 1.5F;
-	static final int DEFAULT_ENERGY = 1600;
+	public static final int DEFAULT_ENERGY = 1600;
 
 	public static SawmillRecipe getRecipe(ItemStack input) {
 
