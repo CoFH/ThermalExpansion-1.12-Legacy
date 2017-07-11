@@ -83,9 +83,9 @@ public class GuiCompactor extends GuiPoweredBase {
 
 		if (buttonName.equals("Mode")) {
 			if (myTile.modeFlag == 1) {
-				playClickSound(1.0F, 0.8F);
+				playClickSound(0.8F);
 			} else {
-				playClickSound(1.0F, 0.6F);
+				playClickSound(0.6F);
 			}
 			myTile.toggleMode();
 		}

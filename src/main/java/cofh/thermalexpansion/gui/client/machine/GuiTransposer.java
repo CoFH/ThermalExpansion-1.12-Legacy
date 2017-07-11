@@ -125,9 +125,9 @@ public class GuiTransposer extends GuiPoweredBase {
 
 		if (buttonName.equals("Mode")) {
 			if (myTile.extractFlag) {
-				playClickSound(1.0F, 0.8F);
+				playClickSound(0.8F);
 			} else {
-				playClickSound(1.0F, 0.6F);
+				playClickSound(0.6F);
 			}
 			myTile.setMode(!myTile.extractFlag);
 		}

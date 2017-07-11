@@ -146,7 +146,7 @@ public class GuiItemBuffer extends GuiDeviceBase {
 			myTile.amountOutput += change;
 			pitch += 0.1F;
 		}
-		playClickSound(1.0F, pitch);
+		playClickSound(pitch);
 
 		myTile.sendModePacket();
 

@@ -205,7 +205,7 @@ public class GuiCell extends GuiCore {
 			baseTile.amountSend += change;
 			pitch += 0.1F;
 		}
-		playClickSound(1.0F, pitch);
+		playClickSound(pitch);
 
 		baseTile.sendModePacket();
 

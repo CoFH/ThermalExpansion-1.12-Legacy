@@ -117,9 +117,9 @@ public class GuiInsolator extends GuiPoweredBase {
 
 		if (buttonName.equals("Mode")) {
 			if (myTile.lockPrimary) {
-				playClickSound(1.0F, 0.6F);
+				playClickSound(0.6F);
 			} else {
-				playClickSound(1.0F, 0.8F);
+				playClickSound(0.8F);
 			}
 			myTile.setMode(!myTile.lockPrimary);
 		}
