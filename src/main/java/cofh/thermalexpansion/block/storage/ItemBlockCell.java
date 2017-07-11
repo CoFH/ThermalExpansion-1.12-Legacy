@@ -46,6 +46,18 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	}
 
 	@Override
+	public ItemStack setCreativeTag(ItemStack stack, int level) {
+
+		if (stack.getTagCompound() == null) {
+			setDefaultTag(stack, level);
+		}
+		ReconfigurableHelper.setSideCache(stack, TileCell.CREATIVE_SIDES);
+		EnergyHelper.setDefaultEnergyTag(stack, TileCell.CAPACITY[level]);
+		stack.getTagCompound().setBoolean("Creative", true);
+		return stack;
+	}
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
 		return "tile.thermalexpansion.storage.cell.name";
