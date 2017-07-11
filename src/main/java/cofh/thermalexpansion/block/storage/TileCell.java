@@ -34,6 +34,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final byte[] DEFAULT_SIDES = { 2, 1, 1, 1, 1, 1 };
+	public static final byte[] CREATIVE_SIDES = { 2, 2, 2, 2, 2, 2 };
 
 	public static final int[] RECV = { 1, 4, 9, 16, 25 };
 	public static final int[] SEND = { 1, 4, 9, 16, 25 };

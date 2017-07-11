@@ -178,6 +178,8 @@ public class EntityFlorb extends EntityThrowable {
 				block = Blocks.FLOWING_WATER;
 			} else if ("lava".equals(fluid.getName())) {
 				block = Blocks.FLOWING_LAVA;
+			} else if (block == null) {
+				block = Blocks.FLOWING_WATER;
 			}
 			if (worldObj.isAirBlock(pos) || state.getMaterial() == Material.FIRE || state.getBlock() == Blocks.SNOW_LAYER) {
 				if (!fluid.getName().equals("water") || !worldObj.getBiome(pos).getBiomeName().toLowerCase().equals("hell")) {
