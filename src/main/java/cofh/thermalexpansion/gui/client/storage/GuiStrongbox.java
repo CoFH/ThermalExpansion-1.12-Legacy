@@ -14,10 +14,12 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.common.Optional;
 import vazkii.quark.api.IChestButtonCallback;
 
 import java.util.UUID;
 
+@Optional.Interface (iface = "vazkii.quark.api.IChestButtonCallback", modid = "quark")
 public class GuiStrongbox extends GuiCore implements IChestButtonCallback {
 
 	protected TileStrongbox baseTile;

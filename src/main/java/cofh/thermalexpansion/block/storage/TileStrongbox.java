@@ -23,6 +23,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -30,6 +31,7 @@ import vazkii.quark.api.IDropoffManager;
 
 import java.util.Arrays;
 
+@Optional.Interface (iface = "vazkii.quark.api.IDropoffManager", modid = "quark")
 public class TileStrongbox extends TileInventory implements ITickable, ISidedInventory, IReconfigurableFacing, IInventoryRetainer, IDropoffManager {
 
 	private static boolean enableSecurity = true;
