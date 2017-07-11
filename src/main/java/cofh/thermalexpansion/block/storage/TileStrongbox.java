@@ -26,10 +26,11 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import vazkii.quark.api.IDropoffManager;
 
 import java.util.Arrays;
 
-public class TileStrongbox extends TileInventory implements ITickable, ISidedInventory, IReconfigurableFacing, IInventoryRetainer { //, IDropoffManager {
+public class TileStrongbox extends TileInventory implements ITickable, ISidedInventory, IReconfigurableFacing, IInventoryRetainer, IDropoffManager {
 
 	private static boolean enableSecurity = true;
 
@@ -414,11 +415,11 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 		return true;
 	}
 
-	//	/* IDropoffManager */
-	//	@Override
-	//	public boolean acceptsDropoff(EntityPlayer player) {
-	//
-	//		return player != null && canPlayerAccess(player);
-	//	}
+	/* IDropoffManager */
+	@Override
+	public boolean acceptsDropoff(EntityPlayer player) {
+
+		return player != null && canPlayerAccess(player);
+	}
 
 }

@@ -10,13 +10,15 @@ import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.storage.TileStrongbox;
 import cofh.thermalexpansion.gui.container.storage.ContainerStrongbox;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
+import vazkii.quark.api.IChestButtonCallback;
 
 import java.util.UUID;
 
-public class GuiStrongbox extends GuiCore {
+public class GuiStrongbox extends GuiCore implements IChestButtonCallback {
 
 	protected TileStrongbox baseTile;
 	protected UUID playerName;
@@ -88,6 +90,14 @@ public class GuiStrongbox extends GuiCore {
 			this.mc.player.closeScreen();
 		}
 		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
+	}
+
+	/* IChestButtonCallback */
+	@Override
+	public boolean onAddChestButton(GuiButton button, int buttonType) {
+
+		button.x += xSize + 20;
+		return true;
 	}
 
 }

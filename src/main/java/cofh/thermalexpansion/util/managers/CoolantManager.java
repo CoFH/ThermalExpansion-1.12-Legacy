@@ -17,6 +17,7 @@ public class CoolantManager {
 	private static TObjectIntHashMap<Fluid> coolantFactorMap = new TObjectIntHashMap<>();
 
 	private static final int WATER_RF = 500000;
+	private static final int WATER_FACTOR = 6;
 
 	public static boolean isValidCoolant(Fluid fluid) {
 
@@ -74,7 +75,7 @@ public class CoolantManager {
 
 	public static void initialize() {
 
-		addCoolant("water", 500000, 6);
+		addCoolant("water", WATER_RF, WATER_FACTOR);
 		addCoolant("cryotheum", 4000000, 2);
 
 		loadMappings();
