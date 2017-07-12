@@ -29,13 +29,15 @@ public class ActuallyAdditionsPlugin {
 		}
 		try {
 
-			Fluid canola_oil = FluidRegistry.getFluid("canola_oil");
-			Fluid refined_canola_oil = FluidRegistry.getFluid("oil");
+			Fluid canola_oil = FluidRegistry.getFluid("canolaoil");
+			Fluid refined_canola_oil = FluidRegistry.getFluid("refinedcanolaoil");
 
 			/* REFINERY */
 			{
+				int energy = RefineryManager.DEFAULT_ENERGY;
+
 				if (canola_oil != null && refined_canola_oil != null) {
-					RefineryManager.addRecipe(1000, new FluidStack(canola_oil, 100), new FluidStack(refined_canola_oil, 100), ItemStack.EMPTY);
+					RefineryManager.addRecipe(energy / 5, new FluidStack(canola_oil, 100), new FluidStack(refined_canola_oil, 100), ItemStack.EMPTY);
 				}
 			}
 

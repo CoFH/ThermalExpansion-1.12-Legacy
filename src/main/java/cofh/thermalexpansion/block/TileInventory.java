@@ -83,10 +83,11 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 
 		if (Utils.isAccessibleOutput(adjInv, side)) {
 			ItemStack inserted = InventoryHelper.addToInventory(adjInv, side, initialStack);
+
 			if (inserted.getCount() >= initialStack.getCount()) {
 				return false;
 			}
-			inventory[slot].shrink(amount - inserted.getCount());
+			inventory[slot].shrink(initialStack.getCount() - inserted.getCount());
 			if (inventory[slot].getCount() <= 0) {
 				inventory[slot] = ItemStack.EMPTY;
 			}

@@ -235,7 +235,7 @@ public class PulverizerManager {
 			addRecipe(energy, new ItemStack(Items.DIAMOND_LEGGINGS), new ItemStack(Items.DIAMOND, 7));
 			addRecipe(energy, new ItemStack(Items.DIAMOND_BOOTS), new ItemStack(Items.DIAMOND, 4));
 
-			addRecipe(energy, new ItemStack(Items.DIAMOND_HORSE_ARMOR), new ItemStack(Items.DIAMOND, 10));
+			addRecipe(energy, new ItemStack(Items.DIAMOND_HORSE_ARMOR), new ItemStack(Items.DIAMOND, 8));
 
 			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolBow, new ItemStack(Items.DIAMOND, 2));
 			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolFishingRod, new ItemStack(Items.DIAMOND, 2));
