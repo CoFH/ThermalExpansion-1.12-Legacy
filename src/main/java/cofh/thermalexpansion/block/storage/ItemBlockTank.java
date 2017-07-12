@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
@@ -91,6 +92,12 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	}
 
 	@Override
+	public boolean hasContainerItem(ItemStack stack) {
+
+		return true;
+	}
+
+	@Override
 	public boolean isEnchantable(ItemStack stack) {
 
 		return true;
@@ -100,6 +107,13 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	public int getItemEnchantability() {
 
 		return 10;
+	}
+
+	@Override
+	public ItemStack getContainerItem(ItemStack stack) {
+
+		drain(stack, Fluid.BUCKET_VOLUME, true);
+		return stack;
 	}
 
 	/* IFluidContainerItem */

@@ -4,6 +4,7 @@ import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
@@ -53,7 +54,7 @@ public class ItemBlockDynamo extends ItemBlockTEBase {
 		String name = Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + name));
 
-		if (getLevel(stack) >= 2) {
+		if (getLevel(stack) >= TEProps.levelRedstoneControl) {
 			RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 		}
 	}

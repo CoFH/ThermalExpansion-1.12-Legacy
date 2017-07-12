@@ -195,6 +195,7 @@ public class ThermalExpansion {
 		ForestryPlugin.initialize();
 		HarvestcraftPlugin.initialize();
 		NaturaPlugin.initialize();
+		QuarkPlugin.initialize();
 		RusticPlugin.initialize();
 		TConstructPlugin.initialize();
 	}
