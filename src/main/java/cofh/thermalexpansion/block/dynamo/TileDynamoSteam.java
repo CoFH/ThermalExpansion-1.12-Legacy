@@ -84,23 +84,18 @@ public class TileDynamoSteam extends TileDynamoBase {
 		return TYPE;
 	}
 
+	@Override
 	protected boolean canStart() {
 
 		if (augmentTurbine) {
 			return steamTank.getFluidAmount() > STEAM_HIGH;
 		}
-		if (augmentBoiler) {
-			return (waterRF > 0 || waterTank.getFluidAmount() > STEAM_AMOUNT) && (fuelRF > 0 || SteamManager.getFuelEnergy(inventory[0]) > 0);
-		}
-		return steamTank.getFluidAmount() > STEAM_HIGH || (waterRF > 0 || waterTank.getFluidAmount() > 200) && (fuelRF > 0 || SteamManager.getFuelEnergy(inventory[0]) > 0);
+		return (waterRF > 0 || waterTank.getFluidAmount() >= STEAM_AMOUNT) && (fuelRF > 0 || SteamManager.getFuelEnergy(inventory[0]) > 0);
 	}
 
 	@Override
 	protected boolean canFinish() {
 
-		if (augmentBoiler) {
-			return fuelRF <= 0 || waterRF <= 0;
-		}
 		if (augmentTurbine) {
 			return steamTank.getFluidAmount() <= STEAM_HIGH;
 		}
