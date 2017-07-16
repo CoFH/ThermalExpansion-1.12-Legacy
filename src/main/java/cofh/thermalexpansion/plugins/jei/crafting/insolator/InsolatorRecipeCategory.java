@@ -68,7 +68,6 @@ public class InsolatorRecipeCategory extends BaseRecipeCategory<InsolatorRecipeW
 		List<InsolatorRecipeWrapper> recipes = new ArrayList<>();
 
 		for (InsolatorRecipe recipe : InsolatorManager.getRecipeList()) {
-
 			if (recipe.getType() == Type.STANDARD) {
 				recipes.add(new InsolatorRecipeWrapper(guiHelper, recipe));
 			}

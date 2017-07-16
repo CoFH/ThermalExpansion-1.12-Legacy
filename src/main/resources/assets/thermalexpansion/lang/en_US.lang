@@ -65,7 +65,7 @@ info.thermalexpansion.augment.dynamoReactantElemental.b.0=Only Elemental Reactio
 
 info.thermalexpansion.augment.dynamoSteamBoiler.0=Steam Dynamo: Specialization
 info.thermalexpansion.augment.dynamoSteamBoiler.a.0=Converts Dynamo into a Steam Boiler.
-info.thermalexpansion.augment.dynamoSteamBoiler.b.0=Greatly increases Steam production and fuel efficiency.
+info.thermalexpansion.augment.dynamoSteamBoiler.a.1=Greatly increases Steam production and fuel efficiency.
 
 info.thermalexpansion.augment.dynamoSteamTurbine.0=Steam Dynamo: Specialization
 info.thermalexpansion.augment.dynamoSteamTurbine.a.0=Greatly increases power generation.
@@ -86,6 +86,14 @@ info.thermalexpansion.augment.machineCompactorMint.c.0=Machine must be toggled i
 info.thermalexpansion.augment.machineCrucibleAlloy.0=Magma Crucible: Specialization
 info.thermalexpansion.augment.machineCrucibleAlloy.a.0=Magma Crucible: Specialization
 info.thermalexpansion.augment.machineCrucibleAlloy.b.0=Magma Crucible: Specialization
+
+info.thermalexpansion.augment.machineEnchanterEmpowered.0=Arcane Ensorcellator: Functionality
+info.thermalexpansion.augment.machineEnchanterEmpowered.a.0=Focuses and aligns arcane energies to maximize enchantment strength.
+info.thermalexpansion.augment.machineEnchanterEmpowered.b.0=Additional resources are required.
+
+info.thermalexpansion.augment.machineEnchanterTreasure.0=Arcane Ensorcellator: Functionality
+info.thermalexpansion.augment.machineEnchanterTreasure.a.0=Allows for extremely rare enchantments to be imbued.
+info.thermalexpansion.augment.machineEnchanterTreasure.b.0=Additional energy is required.
 
 info.thermalexpansion.augment.machineExtruderAndesite.0=Igneous Extruder: Specialization
 info.thermalexpansion.augment.machineExtruderAndesite.a.0=Allows for the creation of Andesite.
@@ -130,7 +138,7 @@ info.thermalexpansion.augment.machineInsolatorNether.a.1=Suitable for Nether cro
 
 info.thermalexpansion.augment.machineInsolatorTree.0=Phytogenic Insolator: Functionality
 info.thermalexpansion.augment.machineInsolatorTree.a.0=Allows for trees to be grown.
-info.thermalexpansion.augment.machineInsolatorTree.a.1=Can be used with Substrate Augments.
+info.thermalexpansion.augment.machineInsolatorTree.c.0=Can be used with Substrate Augments.
 
 info.thermalexpansion.augment.machinePower.0=Machines: Processing Speed
 info.thermalexpansion.augment.machinePower.a.0=Increases maximum power usage.
@@ -268,6 +276,8 @@ item.thermalexpansion.augment.machineCompactorMint.name=Numismatic Press
 item.thermalexpansion.augment.machineFurnaceFood.name=Trivection Chamber
 item.thermalexpansion.augment.machineFurnaceOre.name=Flux Anodizers
 item.thermalexpansion.augment.machineFurnacePyrolysis.name=Pyrolytic Conversion
+item.thermalexpansion.augment.machineEnchanterEmpowered.name=Recombinant Focus
+item.thermalexpansion.augment.machineEnchanterTreasure.name=Esoteric Arcanum
 item.thermalexpansion.augment.machineExtruderAndesite.name=Andesitic Subduction
 item.thermalexpansion.augment.machineExtruderDiorite.name=Dioritic Subduction
 item.thermalexpansion.augment.machineExtruderGranite.name=Granitic Subduction
@@ -450,7 +460,7 @@ tile.thermalexpansion.machine.charger.name=Energetic Infuser
 tile.thermalexpansion.machine.compactor.name=Compactor
 tile.thermalexpansion.machine.crafter.name=Cyclic Assembler
 tile.thermalexpansion.machine.crucible.name=Magma Crucible
-tile.thermalexpansion.machine.enchanter.name=WIP
+tile.thermalexpansion.machine.enchanter.name=Arcane Ensorcellator
 tile.thermalexpansion.machine.extruder.name=Igneous Extruder
 tile.thermalexpansion.machine.furnace.name=Redstone Furnace
 tile.thermalexpansion.machine.insolator.name=Phytogenic Insolator

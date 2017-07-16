@@ -43,13 +43,26 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 				sideCache[i] = 0;
 			}
 		}
-		return super.readPortableTagInternal(player, tag);
+
+		if (hasAutoInput) {
+			enableAutoInput = tag.getBoolean("EnableIn");
+		}
+		if (hasAutoOutput) {
+			enableAutoOutput = tag.getBoolean("EnableOut");
+		}
+		if (hasRedstoneControl) {
+			super.readPortableTagInternal(player, tag);
+		}
+		return true;
 	}
 
 	@Override
 	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
 		ReconfigurableHelper.setItemStackTagReconfig(tag, this);
+
+		tag.setBoolean("EnableIn", enableAutoInput);
+		tag.setBoolean("EnableOut", enableAutoOutput);
 
 		return super.writePortableTagInternal(player, tag);
 	}

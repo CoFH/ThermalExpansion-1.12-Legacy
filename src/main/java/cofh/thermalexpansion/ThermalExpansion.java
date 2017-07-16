@@ -148,6 +148,7 @@ public class ThermalExpansion {
 		TransposerManager.initialize();
 		ChargerManager.initialize();
 		CentrifugeManager.initialize();
+		EnchanterManager.initialize();
 
 		CoolantManager.initialize();
 		TapperManager.initialize();
@@ -176,6 +177,7 @@ public class ThermalExpansion {
 		TransposerManager.refresh();
 		ChargerManager.refresh();
 		CentrifugeManager.refresh();
+		EnchanterManager.refresh();
 
 		TapperManager.refresh();
 		FisherManager.refresh();

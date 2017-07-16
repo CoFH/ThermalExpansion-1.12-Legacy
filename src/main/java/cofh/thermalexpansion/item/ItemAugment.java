@@ -204,9 +204,12 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineCompactorMint = addAugmentItem(336, TEProps.MACHINE_COMPACTOR_MINT, AugmentType.MODE);
 
-		//		machineCrucibleAlloy = addAugmentItem(352, TEProps.MACHINE_CRUCIBLE_ALLOY, AugmentType.MODE);
+		// machineCrucibleAlloy = addAugmentItem(352, TEProps.MACHINE_CRUCIBLE_ALLOY, AugmentType.MODE);
 
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
+
+		machineEnchanterTreasure = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_TREASURE, AugmentType.ADVANCED);
+		machineEnchanterEmpowered = addAugmentItem(465, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.ADVANCED);
 
 		machinePrecipitatorSnowLayer = addAugmentItem(481, TEProps.MACHINE_PRECIPITATOR_SNOW_LAYER, AugmentType.MODE);
 		machinePrecipitatorPackedIce = addAugmentItem(482, TEProps.MACHINE_PRECIPITATOR_PACKED_ICE, AugmentType.MODE);
@@ -223,7 +226,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		dynamoThrottle = addAugmentItem(515, TEProps.DYNAMO_THROTTLE, AugmentType.ADVANCED);
 
 		dynamoSteamTurbine = addAugmentItem(640, TEProps.DYNAMO_STEAM_TURBINE, AugmentType.MODE);
-		// dynamoSteamBoiler = addAugmentItem(641, TEProps.DYNAMO_STEAM_BOILER, AugmentType.MODE);
+		dynamoSteamBoiler = addAugmentItem(641, TEProps.DYNAMO_STEAM_BOILER, AugmentType.MODE);
 
 		dynamoMagmaticCoolant = addAugmentItem(656, TEProps.DYNAMO_MAGMATIC_COOLANT, AugmentType.MODE);
 
@@ -689,6 +692,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineChargerThroughput;
 
 	public static ItemStack machineCentrifugeMobs;              // Enstabulation Chamber
+
+	public static ItemStack machineEnchanterTreasure;
+	public static ItemStack machineEnchanterEmpowered;
 
 	public static ItemStack machinePrecipitatorSnowLayer;
 	public static ItemStack machinePrecipitatorPackedIce;

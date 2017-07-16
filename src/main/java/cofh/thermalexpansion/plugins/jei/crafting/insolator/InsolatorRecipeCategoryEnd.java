@@ -32,7 +32,6 @@ public class InsolatorRecipeCategoryEnd extends InsolatorRecipeCategory {
 		List<InsolatorRecipeWrapper> recipes = new ArrayList<>();
 
 		for (InsolatorRecipe recipe : InsolatorManager.getRecipeList()) {
-
 			if (recipe.getType() == Type.END || recipe.getType() == Type.END_TREE) {
 				recipes.add(new InsolatorRecipeWrapper(guiHelper, recipe, RecipeUidsTE.INSOLATOR_END));
 			}

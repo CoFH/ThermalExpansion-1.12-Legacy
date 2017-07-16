@@ -144,10 +144,6 @@ public class CentrifugeManager {
 			}
 			this.fluid = fluid;
 			this.energy = energy;
-
-			if (input.getCount() <= 0) {
-				input.setCount(1);
-			}
 		}
 
 		public ItemStack getInput() {

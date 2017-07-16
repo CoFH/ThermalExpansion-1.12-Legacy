@@ -225,6 +225,9 @@ public class TEProps {
 
 	public static final String MACHINE_CHARGER_THROUGHPUT = "machineChargerThroughput";
 
+	public static final String MACHINE_ENCHANTER_TREASURE = "machineEnchanterTreasure";
+	public static final String MACHINE_ENCHANTER_EMPOWERED = "machineEnchanterEmpowered";
+
 	public static final String MACHINE_PRECIPITATOR_SNOW_LAYER = "machinePrecipitatorSnowLayer";
 	public static final String MACHINE_PRECIPITATOR_PACKED_ICE = "machinePrecipitatorPackedIce";
 

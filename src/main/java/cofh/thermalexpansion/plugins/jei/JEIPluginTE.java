@@ -5,6 +5,7 @@ import cofh.thermalexpansion.plugins.jei.crafting.centrifuge.CentrifugeRecipeCat
 import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.compactor.CompactorRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.crucible.CrucibleRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.enchanter.EnchanterRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.furnace.FurnaceRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.insolator.InsolatorRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.pulverizer.PulverizerRecipeCategory;
@@ -48,6 +49,7 @@ public class JEIPluginTE implements IModPlugin {
 		TransposerRecipeCategory.register(registry);
 		ChargerRecipeCategory.register(registry);
 		CentrifugeRecipeCategory.register(registry);
+		EnchanterRecipeCategory.register(registry);
 
 		SteamFuelCategory.register(registry);
 		MagmaticFuelCategory.register(registry);
@@ -73,6 +75,7 @@ public class JEIPluginTE implements IModPlugin {
 		TransposerRecipeCategory.initialize(registry);
 		ChargerRecipeCategory.initialize(registry);
 		CentrifugeRecipeCategory.initialize(registry);
+		EnchanterRecipeCategory.initialize(registry);
 
 		SteamFuelCategory.initialize(registry);
 		MagmaticFuelCategory.initialize(registry);

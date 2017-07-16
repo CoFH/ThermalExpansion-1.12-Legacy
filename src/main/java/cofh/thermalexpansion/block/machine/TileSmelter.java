@@ -56,7 +56,7 @@ public class TileSmelter extends TileMachineBase {
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
 
-		LIGHT_VALUES[TYPE] = 15;
+		LIGHT_VALUES[TYPE] = 14;
 
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion:machine_smelter");
 

@@ -26,14 +26,20 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.stats.StatList;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.items.ItemHandlerHelper;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -77,7 +83,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (CoreUtils.isFakePlayer(entity)) {
 			return;
 		}
-		if (slot > 8 || !isActive(stack)) {
+		if (slot > 8 || getMode(stack) != REFILL) {
 			return;
 		}
 	}
@@ -146,20 +152,54 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		return stack;
 	}
 
-	/* HELPERS */
-	public boolean isActive(ItemStack stack) {
+	@Override
+	@Nonnull
+	public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
 
-		return stack.getTagCompound() != null && stack.getTagCompound().getBoolean("Active");
-	}
+		ItemStack stack = player.getHeldItem(hand);
+		FluidStack fluid = getFluid(stack);
 
-	public boolean setActiveState(ItemStack stack, boolean state) {
-
-		if (getFluid(stack) != null) {
-			stack.getTagCompound().setBoolean("Active", state);
-			return true;
+		// empty bucket shouldn't exist, do nothing since it should be handled by the bucket event
+		if (fluid == null) {
+			return ActionResult.newResult(EnumActionResult.PASS, stack);
 		}
-		stack.getTagCompound().setBoolean("Active", false);
-		return false;
+		// clicked on a block?
+		RayTraceResult traceResult = this.rayTrace(world, player, false);
+
+		if (traceResult == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
+			return ActionResult.newResult(EnumActionResult.PASS, stack);
+		}
+		BlockPos clickPos = traceResult.getBlockPos();
+		// can we place liquid there?
+		if (world.isBlockModifiable(player, clickPos)) {
+			// the block adjacent to the side we clicked on
+			BlockPos targetPos = clickPos.offset(traceResult.sideHit);
+
+			// can the player place there?
+			if (player.canPlayerEdit(targetPos, traceResult.sideHit, stack)) {
+				// try placing liquid
+				FluidActionResult result = FluidUtil.tryPlaceFluid(player, world, targetPos, stack, fluid);
+				if (result.isSuccess() && !player.capabilities.isCreativeMode) {
+					// success!
+					player.addStat(StatList.getObjectUseStats(this));
+
+					stack.shrink(1);
+					ItemStack drained = result.getResult();
+					ItemStack emptyStack = !drained.isEmpty() ? drained.copy() : new ItemStack(this);
+
+					// check whether we replace the item or add the empty one to the inventory
+					if (stack.isEmpty()) {
+						return ActionResult.newResult(EnumActionResult.SUCCESS, emptyStack);
+					} else {
+						// add empty bucket to player inventory
+						ItemHandlerHelper.giveItemToPlayer(player, emptyStack);
+						return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+					}
+				}
+			}
+		}
+		// couldn't place liquid there2
+		return ActionResult.newResult(EnumActionResult.FAIL, stack);
 	}
 
 	/* IMultiModeItem */
@@ -218,8 +258,16 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public void onModeChange(EntityPlayer player, ItemStack stack) {
 
-		player.world.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_FILL, SoundCategory.PLAYERS, 0.4F, (isActive(stack) ? 0.7F : 0.5F) + 0.1F * getMode(stack));
-
+		switch (getMode(stack)) {
+			case BUCKET_FILL:
+				player.world.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_FILL, SoundCategory.PLAYERS, 0.6F, 1.0F);
+				break;
+			case BUCKET_EMPTY:
+				player.world.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 0.6F, 1.0F);
+				break;
+			case REFILL:
+				player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.2F, 0.8F);
+		}
 		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.reservoir.a." + getMode(stack)));
 	}
 
@@ -435,6 +483,10 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	private static TIntObjectHashMap<ItemReservoir.TypeEntry> typeMap = new TIntObjectHashMap<>();
+
+	public static final int BUCKET_FILL = 0;
+	public static final int BUCKET_EMPTY = 1;
+	public static final int REFILL = 2;
 
 	public static final int CAPACITY_BASE = 10000;
 	public static final int CREATIVE = 32000;

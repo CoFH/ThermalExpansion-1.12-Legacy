@@ -334,19 +334,6 @@ public class InsolatorManager {
 			this.energy = energy;
 			this.copyNBT = copyNBT;
 			this.type = type;
-
-			if (primaryInput.getCount() <= 0) {
-				primaryInput.setCount(1);
-			}
-			if (secondaryInput.getCount() <= 0) {
-				secondaryInput.setCount(1);
-			}
-			if (primaryOutput.getCount() <= 0) {
-				primaryOutput.setCount(1);
-			}
-			if (!secondaryOutput.isEmpty() && secondaryOutput.getCount() <= 0) {
-				secondaryOutput.setCount(1);
-			}
 		}
 
 		public ItemStack getPrimaryInput() {

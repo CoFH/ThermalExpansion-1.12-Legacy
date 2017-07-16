@@ -1,15 +1,14 @@
-package cofh.thermalexpansion.plugins.jei.crafting.insolator;
+package cofh.thermalexpansion.plugins.jei.crafting.enchanter;
 
 import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.helpers.StringHelper;
-import cofh.thermalexpansion.block.machine.TileInsolator;
+import cofh.thermalexpansion.block.machine.TileEnchanter;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.ComparableItemStackInsolator;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.InsolatorRecipe;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
+import cofh.thermalexpansion.util.managers.machine.EnchanterManager.ComparableItemStackEnchanter;
+import cofh.thermalexpansion.util.managers.machine.EnchanterManager.EnchanterRecipe;
+import cofh.thermalexpansion.util.managers.machine.EnchanterManager.Type;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -25,14 +24,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
+public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
 	final List<List<ItemStack>> inputs;
 	final List<List<FluidStack>> inputFluids;
 	final List<ItemStack> outputs;
-
-	final int chance;
 
 	final Type type;
 
@@ -41,12 +38,12 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
-	public InsolatorRecipeWrapper(IGuiHelper guiHelper, InsolatorRecipe recipe) {
+	public EnchanterRecipeWrapper(IGuiHelper guiHelper, EnchanterRecipe recipe) {
 
-		this(guiHelper, recipe, RecipeUidsTE.INSOLATOR);
+		this(guiHelper, recipe, RecipeUidsTE.ENCHANTER);
 	}
 
-	public InsolatorRecipeWrapper(IGuiHelper guiHelper, InsolatorRecipe recipe, String uIdIn) {
+	public EnchanterRecipeWrapper(IGuiHelper guiHelper, EnchanterRecipe recipe, String uIdIn) {
 
 		uId = uIdIn;
 
@@ -55,7 +52,7 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeInputsPrimary = new ArrayList<>();
 		List<ItemStack> recipeInputsSecondary = new ArrayList<>();
 
-		int oreID = ComparableItemStackInsolator.getOreID(recipe.getPrimaryInput());
+		int oreID = ComparableItemStackEnchanter.getOreID(recipe.getPrimaryInput());
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputsPrimary.add(ItemHelper.cloneStack(ore, recipe.getPrimaryInput().getCount()));
@@ -63,7 +60,7 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 		} else {
 			recipeInputsPrimary.add(recipe.getPrimaryInput());
 		}
-		oreID = ComparableItemStackInsolator.getOreID(recipe.getSecondaryInput());
+		oreID = ComparableItemStackEnchanter.getOreID(recipe.getSecondaryInput());
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputsSecondary.add(ItemHelper.cloneStack(ore, recipe.getSecondaryInput().getCount()));
@@ -73,20 +70,16 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 		}
 		recipeInputs.add(recipeInputsPrimary);
 		recipeInputs.add(recipeInputsSecondary);
-		recipeInputFluids.add(new FluidStack(FluidRegistry.WATER, recipe.getEnergy() / 10));
+		recipeInputFluids.add(new FluidStack(FluidRegistry.WATER, recipe.getExperience()));
 
 		List<ItemStack> recipeOutputs = new ArrayList<>();
-		recipeOutputs.add(recipe.getPrimaryOutput());
+		recipeOutputs.add(recipe.getOutput());
 
-		if (recipe.getSecondaryOutput() != null) {
-			recipeOutputs.add(recipe.getSecondaryOutput());
-		}
 		inputs = recipeInputs;
 		inputFluids = Collections.singletonList(recipeInputFluids);
 		outputs = recipeOutputs;
 
 		energy = recipe.getEnergy();
-		chance = recipe.getSecondaryOutputChance();
 
 		type = recipe.getType();
 
@@ -95,8 +88,8 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_SUN);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileInsolator.basePower, StartDirection.LEFT, true);
-		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileInsolator.basePower, StartDirection.LEFT, false);
+		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileEnchanter.basePower, StartDirection.LEFT, true);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileEnchanter.basePower, StartDirection.LEFT, false);
 		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}
@@ -118,11 +111,6 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 		progress.draw(minecraft, 69, 23);
 		speed.draw(minecraft, 34, 34);
 		energyMeter.draw(minecraft, 2, 8);
-
-		if (chance > 0) {
-			String dispChance = StringHelper.formatNumber(chance) + "%";
-			minecraft.fontRenderer.drawString(dispChance, 102 - 6 * dispChance.length(), 48, 0x808080);
-		}
 	}
 
 }

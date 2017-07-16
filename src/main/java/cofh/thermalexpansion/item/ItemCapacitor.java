@@ -147,10 +147,10 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		Iterable<ItemStack> equipment;
 
 		switch (getMode(stack)) {
-			case 0:
+			case HELD_ITEMS:
 				equipment = player.getHeldEquipment();
 				break;
-			case 1:
+			case ARMOR:
 				equipment = player.getArmorInventoryList();
 				break;
 			default:
@@ -503,6 +503,9 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	private static TIntObjectHashMap<TypeEntry> typeMap = new TIntObjectHashMap<>();
+
+	public static final int HELD_ITEMS = 0;
+	public static final int ARMOR = 1;
 
 	public static final int CAPACITY_BASE = 1000000;
 	public static final int XFER_BASE = 1000;

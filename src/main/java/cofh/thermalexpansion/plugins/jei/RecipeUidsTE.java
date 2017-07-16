@@ -37,6 +37,10 @@ public class RecipeUidsTE {
 
 	public static final String CENTRIFUGE = "thermalexpansion.centrifuge";
 
+	public static final String ENCHANTER = "thermalexpansion.enchanter";
+	public static final String ENCHANTER_TREASURE = "thermalexpansion.enchanter_treasure";
+	public static final String ENCHANTER_EMPOWERED = "thermalexpansion.enchanter_empowered";
+
 	public static final String DYNAMO_STEAM = "thermalexpansion.steam";
 	public static final String DYNAMO_MAGMATIC = "thermalexpansion.magmatic";
 	public static final String DYNAMO_COMPRESSION = "thermalexpansion.compression";

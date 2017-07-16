@@ -487,16 +487,6 @@ public class PulverizerManager {
 			this.secondaryOutput = secondaryOutput;
 			this.secondaryChance = secondaryChance;
 			this.energy = energy;
-
-			if (input.getCount() <= 0) {
-				input.setCount(1);
-			}
-			if (primaryOutput.getCount() <= 0) {
-				primaryOutput.setCount(1);
-			}
-			if (!secondaryOutput.isEmpty() && secondaryOutput.getCount() <= 0) {
-				secondaryOutput.setCount(1);
-			}
 		}
 
 		public ItemStack getInput() {

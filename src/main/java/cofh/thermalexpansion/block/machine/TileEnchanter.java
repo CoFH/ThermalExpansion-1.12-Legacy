@@ -6,11 +6,11 @@ import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
-import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
-import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
+import cofh.thermalexpansion.gui.client.machine.GuiEnchanter;
+import cofh.thermalexpansion.gui.container.machine.ContainerEnchanter;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.InsolatorRecipe;
+import cofh.thermalexpansion.util.managers.machine.EnchanterManager;
+import cofh.thermalexpansion.util.managers.machine.EnchanterManager.EnchanterRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -30,42 +30,37 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class TileInsolator extends TileMachineBase {
+public class TileEnchanter extends TileMachineBase {
 
-	private static final int TYPE = Type.INSOLATOR.getMetadata();
+	private static final int TYPE = Type.ENCHANTER.getMetadata();
 	public static int basePower = 20;
 
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 9;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 }, { 0, 1, 2, 3 }, { 0, 1, 2, 3 } };
-		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
-		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+		SIDE_CONFIGS[TYPE].numConfig = 7;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 0 }, { 1 }, { 0, 1, 2 }, { 0, 1, 2 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 5, 6, 7, 8 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
-		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false, false };
-		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, false, true, true, false };
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, false, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
-		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_MYCELIUM);
-		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_NETHER);
-		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_END);
-		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_TREE);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_ENCHANTER_TREASURE);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_ENCHANTER_EMPOWERED);
 
-		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
-		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
+		LIGHT_VALUES[TYPE] = 12;
 
-		LIGHT_VALUES[TYPE] = 14;
-
-		GameRegistry.registerTileEntity(TileInsolator.class, "thermalexpansion:machine_insolator");
+		GameRegistry.registerTileEntity(TileEnchanter.class, "thermalexpansion:machine_enchanter");
 
 		config();
 	}
 
 	public static void config() {
 
-		String category = "Machine.Insolator";
+		String category = "Machine.Enchanter";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
@@ -74,23 +69,20 @@ public class TileInsolator extends TileMachineBase {
 
 	private int inputTrackerPrimary;
 	private int inputTrackerSecondary;
-	private int outputTrackerPrimary;
-	private int outputTrackerSecondary;
+	private int outputTracker;
 
 	public boolean lockPrimary = false;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 
 	/* AUGMENTS */
-	protected boolean augmentMycelium;
-	protected boolean augmentNether;
-	protected boolean augmentEnd;
-	protected boolean augmentTree;
+	protected boolean augmentTreasure;
+	protected boolean augmentEmpowered;
 
-	public TileInsolator() {
+	public TileEnchanter() {
 
 		super();
-		inventory = new ItemStack[2 + 1 + 1 + 1];
+		inventory = new ItemStack[2 + 1 + 1];
 		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 		tank.setLock(FluidRegistry.WATER);
@@ -114,52 +106,32 @@ public class TileInsolator extends TileMachineBase {
 		if (inventory[0].isEmpty() || inventory[1].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		InsolatorRecipe recipe = InsolatorManager.getRecipe(inventory[0], inventory[1]);
+		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[0], inventory[1]);
 
-		if (recipe == null || tank.getFluidAmount() < recipe.getEnergy() / 10) {
+		if (recipe == null || tank.getFluidAmount() < recipe.getExperience()) {
 			return false;
 		}
-		InsolatorManager.Type type = recipe.getType();
+		EnchanterManager.Type type = recipe.getType();
 		switch (type) {
 			case STANDARD:
 				break;
-			case MYCELIUM:
-				if (!augmentMycelium) {
+			case TREASURE:
+				if (!augmentTreasure) {
 					return false;
 				}
 				break;
-			case NETHER:
-				if (!augmentNether) {
+			case EMPOWERED:
+				if (!augmentEmpowered) {
 					return false;
 				}
 				break;
-			case END:
-				if (!augmentEnd) {
-					return false;
-				}
-				break;
-			case TREE:
-				if (!augmentTree) {
-					return false;
-				}
-				break;
-			case MYCELIUM_TREE:
-				if (!augmentTree || !augmentMycelium) {
-					return false;
-				}
-				break;
-			case NETHER_TREE:
-				if (!augmentTree || !augmentNether) {
-					return false;
-				}
-				break;
-			case END_TREE:
-				if (!augmentTree || !augmentEnd) {
+			case TREASURE_EMPOWERED:
+				if (!augmentTreasure || !augmentEmpowered) {
 					return false;
 				}
 				break;
 		}
-		if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
+		if (EnchanterManager.isRecipeReversed(inventory[0], inventory[1])) {
 			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
 				return false;
 			}
@@ -168,29 +140,20 @@ public class TileInsolator extends TileMachineBase {
 				return false;
 			}
 		}
-		ItemStack primaryItem = recipe.getPrimaryOutput();
-		ItemStack secondaryItem = recipe.getSecondaryOutput();
+		ItemStack output = recipe.getOutput();
 
-		if (!secondaryItem.isEmpty() && !inventory[3].isEmpty()) {
-			if (!augmentSecondaryNull && !inventory[3].isItemEqual(secondaryItem)) {
-				return false;
-			}
-			if (!augmentSecondaryNull && inventory[3].getCount() + secondaryItem.getCount() > secondaryItem.getMaxStackSize()) {
-				return false;
-			}
-		}
-		return inventory[2].isEmpty() || inventory[2].isItemEqual(primaryItem) && inventory[2].getCount() + primaryItem.getCount() <= primaryItem.getMaxStackSize();
+		return inventory[2].isEmpty() || inventory[2].isItemEqual(output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
 	}
 
 	@Override
 	protected boolean hasValidInput() {
 
-		InsolatorRecipe recipe = InsolatorManager.getRecipe(inventory[0], inventory[1]);
+		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[0], inventory[1]);
 
 		if (recipe == null) {
 			return false;
 		}
-		if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
+		if (EnchanterManager.isRecipeReversed(inventory[0], inventory[1])) {
 			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
 				return false;
 			}
@@ -205,51 +168,27 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	protected void processStart() {
 
-		processMax = InsolatorManager.getRecipe(inventory[0], inventory[1]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = EnchanterManager.getRecipe(inventory[0], inventory[1]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		InsolatorRecipe recipe = InsolatorManager.getRecipe(inventory[0], inventory[1]);
+		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[0], inventory[1]);
 
 		if (recipe == null) {
 			processOff();
 			return;
 		}
-		tank.drain(recipe.getEnergy() / 10, true);
-		ItemStack primaryItem = recipe.getPrimaryOutput();
-		ItemStack secondaryItem = recipe.getSecondaryOutput();
+		tank.drain(recipe.getExperience(), true);
+		ItemStack primaryItem = recipe.getOutput();
 		if (inventory[2].isEmpty()) {
 			inventory[2] = ItemHelper.cloneStack(primaryItem);
 		} else {
 			inventory[2].grow(primaryItem.getCount());
 		}
-		if (!secondaryItem.isEmpty()) {
-			int modifiedChance = secondaryChance;
-
-			int recipeChance = recipe.getSecondaryOutputChance();
-			if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
-				if (inventory[3].isEmpty()) {
-					inventory[3] = ItemHelper.cloneStack(secondaryItem);
-
-					if (world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-						inventory[3].grow(secondaryItem.getCount());
-					}
-				} else if (inventory[3].isItemEqual(secondaryItem)) {
-					inventory[3].grow(secondaryItem.getCount());
-
-					if (world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-						inventory[3].grow(secondaryItem.getCount());
-					}
-				}
-				if (inventory[3].getCount() > inventory[3].getMaxStackSize()) {
-					inventory[3].setCount(inventory[3].getMaxStackSize());
-				}
-			}
-		}
-		if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
+		if (EnchanterManager.isRecipeReversed(inventory[0], inventory[1])) {
 			inventory[1].shrink(recipe.getPrimaryInput().getCount());
 			inventory[0].shrink(recipe.getSecondaryInput().getCount());
 		} else {
@@ -309,25 +248,13 @@ public class TileInsolator extends TileMachineBase {
 		}
 		int side;
 		if (!inventory[2].isEmpty()) {
-			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
+			for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 				side = i % 6;
 				if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 					if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
-						outputTrackerPrimary = side;
+						outputTracker = side;
 						break;
 					}
-				}
-			}
-		}
-		if (inventory[3].isEmpty()) {
-			return;
-		}
-		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
-			side = i % 6;
-			if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {
-				if (transferItem(3, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
-					outputTrackerSecondary = side;
-					break;
 				}
 			}
 		}
@@ -357,13 +284,13 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
-		return new GuiInsolator(inventory, this);
+		return new GuiEnchanter(inventory, this);
 	}
 
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerInsolator(inventory, this);
+		return new ContainerEnchanter(inventory, this);
 	}
 
 	@Override
@@ -394,8 +321,7 @@ public class TileInsolator extends TileMachineBase {
 
 		inputTrackerPrimary = nbt.getInteger("TrackIn1");
 		inputTrackerSecondary = nbt.getInteger("TrackIn2");
-		outputTrackerPrimary = nbt.getInteger("Tracker1");
-		outputTrackerSecondary = nbt.getInteger("Tracker2");
+		outputTracker = nbt.getInteger("TrackOut");
 		lockPrimary = nbt.getBoolean("SlotLock");
 		tank.readFromNBT(nbt);
 	}
@@ -407,8 +333,7 @@ public class TileInsolator extends TileMachineBase {
 
 		nbt.setInteger("TrackIn1", inputTrackerPrimary);
 		nbt.setInteger("TrackIn2", inputTrackerSecondary);
-		nbt.setInteger("Tracker1", outputTrackerPrimary);
-		nbt.setInteger("Tracker2", outputTrackerSecondary);
+		nbt.setInteger("TrackOut", outputTracker);
 		nbt.setBoolean("SlotLock", lockPrimary);
 		tank.writeToNBT(nbt);
 		return nbt;
@@ -464,10 +389,8 @@ public class TileInsolator extends TileMachineBase {
 
 		super.preAugmentInstall();
 
-		augmentMycelium = false;
-		augmentNether = false;
-		augmentEnd = false;
-		augmentTree = false;
+		augmentTreasure = false;
+		augmentEmpowered = false;
 	}
 
 	@Override
@@ -475,23 +398,14 @@ public class TileInsolator extends TileMachineBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-		if (!augmentMycelium && TEProps.MACHINE_INSOLATOR_MYCELIUM.equals(id)) {
-			augmentMycelium = true;
-			hasModeAugment = true;
+		if (!augmentTreasure && TEProps.MACHINE_ENCHANTER_TREASURE.equals(id)) {
+			augmentTreasure = true;
+			energyMod += 50;
 			return true;
 		}
-		if (!augmentNether && TEProps.MACHINE_INSOLATOR_NETHER.equals(id)) {
-			augmentNether = true;
-			hasModeAugment = true;
-			return true;
-		}
-		if (!augmentEnd && TEProps.MACHINE_INSOLATOR_END.equals(id)) {
-			augmentEnd = true;
-			hasModeAugment = true;
-			return true;
-		}
-		if (!augmentTree && TEProps.MACHINE_INSOLATOR_TREE.equals(id)) {
-			augmentTree = true;
+		if (!augmentEmpowered && TEProps.MACHINE_ENCHANTER_EMPOWERED.equals(id)) {
+			augmentEmpowered = true;
+			energyMod += 100;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);
@@ -503,13 +417,13 @@ public class TileInsolator extends TileMachineBase {
 
 		if (lockPrimary) {
 			if (slot == 0) {
-				return InsolatorManager.isItemFertilizer(stack);
+				return EnchanterManager.isItemArcana(stack);
 			}
 			if (slot == 1) {
-				return !InsolatorManager.isItemFertilizer(stack) && InsolatorManager.isItemValid(stack);
+				return !EnchanterManager.isItemArcana(stack) && EnchanterManager.isItemValid(stack);
 			}
 		}
-		return slot > 1 || InsolatorManager.isItemValid(stack);
+		return slot > 1 || EnchanterManager.isItemValid(stack);
 	}
 
 	/* CAPABILITIES */

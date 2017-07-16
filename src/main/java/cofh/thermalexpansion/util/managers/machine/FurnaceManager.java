@@ -399,13 +399,6 @@ public class FurnaceManager {
 			this.output = output;
 			this.energy = energy;
 			this.creosote = creosote;
-
-			if (input.getCount() <= 0) {
-				input.setCount(1);
-			}
-			if (output.getCount() <= 0) {
-				output.setCount(1);
-			}
 		}
 
 		public ItemStack getInput() {

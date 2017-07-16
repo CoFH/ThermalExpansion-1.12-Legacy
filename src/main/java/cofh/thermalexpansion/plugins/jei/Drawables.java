@@ -74,7 +74,7 @@ public class Drawables {
 		for (int i = 0; i < 3; i++) {
 			tank[i] = guiHelper.createDrawable(JEI_TEXTURE, 64 * i, 192, 18, 62);
 			tankOverlay[2 * i] = guiHelper.createDrawable(JEI_TEXTURE, 32 + 64 * i, 193, 16, 60);
-			tankOverlay[2 * i + 1] = guiHelper.createDrawable(JEI_TEXTURE, 64 + 64 * i, 193, 16, 60);
+			tankOverlay[2 * i + 1] = guiHelper.createDrawable(JEI_TEXTURE, 48 + 64 * i, 193, 16, 60);
 
 			progressLeft[i] = guiHelper.createDrawable(JEI_TEXTURE, 176, 32 * i, 24, 16);
 			progressLeftFill[i] = guiHelper.createDrawable(JEI_TEXTURE, 200, 32 * i, 24, 16);
