@@ -218,6 +218,7 @@ public class TileInsolator extends TileMachineBase {
 			processOff();
 			return;
 		}
+		tank.drain(recipe.getEnergy() / 10, true);
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 		if (inventory[2].isEmpty()) {
@@ -269,7 +270,6 @@ public class TileInsolator extends TileMachineBase {
 		int energy = calcEnergy();
 		energyStorage.modifyEnergyStored(-energy);
 		processRem -= energy;
-		tank.drain(energy / 10, true);
 
 		return energy;
 	}
