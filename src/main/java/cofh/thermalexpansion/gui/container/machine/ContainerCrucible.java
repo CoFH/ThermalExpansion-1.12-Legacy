@@ -6,6 +6,7 @@ import cofh.core.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.machine.TileCrucible;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -26,6 +27,9 @@ public class ContainerCrucible extends ContainerTEBase implements ISlotValidator
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
+		if (myTile.augmentLava() && !CrucibleManager.isLava(stack)) {
+			return false;
+		}
 		return CrucibleManager.recipeExists(stack);
 	}
 

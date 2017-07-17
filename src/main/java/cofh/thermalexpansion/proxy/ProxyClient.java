@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.proxy;
 
-import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IModelRegister;
 import cofh.thermalexpansion.block.storage.TileCache;
 import cofh.thermalexpansion.block.storage.TileStrongbox;
@@ -9,7 +8,6 @@ import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.render.RenderCache;
 import cofh.thermalexpansion.render.RenderStrongbox;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
-import cofh.thermalexpansion.render.item.ModelFlorb;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -52,7 +50,6 @@ public class ProxyClient extends Proxy {
 	/* REGISTRATION */
 	public void registerRenderInformation() {
 
-		TextureUtils.addIconRegister(ModelFlorb.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityFlorb.class, RenderEntityFlorb::new);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCache.class, RenderCache.INSTANCE);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileStrongbox.class, RenderStrongbox.INSTANCE);

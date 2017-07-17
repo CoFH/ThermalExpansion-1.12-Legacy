@@ -4,6 +4,7 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.machine.TileCrucible;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
+import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager.ComparableItemStackCrucible;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager.CrucibleRecipe;
@@ -34,6 +35,13 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 
 	public CrucibleRecipeWrapper(IGuiHelper guiHelper, CrucibleRecipe recipe) {
 
+		this(guiHelper, recipe, RecipeUidsTE.CRUCIBLE);
+	}
+
+	public CrucibleRecipeWrapper(IGuiHelper guiHelper, CrucibleRecipe recipe, String uIdIn) {
+
+		uId = uIdIn;
+
 		List<ItemStack> recipeInputs = new ArrayList<>();
 
 		int oreID = ComparableItemStackCrucible.getOreID(recipe.getInput());
@@ -57,10 +65,18 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLAME);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileCrucible.basePower, StartDirection.LEFT, true);
-		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileCrucible.basePower, StartDirection.LEFT, false);
+		int basePower = TileCrucible.basePower;
+
+		if (uId.equals(RecipeUidsTE.CRUCIBLE_LAVA)) {
+			basePower *= TileCrucible.LAVA_MULTIPLIER;
+			energy *= 100 + TileCrucible.LAVA_ENERGY_MOD;
+			energy /= 100;
+		}
+		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / basePower, StartDirection.LEFT, true);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / basePower, StartDirection.LEFT, false);
 		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
+
 	}
 
 	@Override

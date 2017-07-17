@@ -204,7 +204,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineCompactorMint = addAugmentItem(336, TEProps.MACHINE_COMPACTOR_MINT, AugmentType.MODE);
 
-		// machineCrucibleAlloy = addAugmentItem(352, TEProps.MACHINE_CRUCIBLE_ALLOY, AugmentType.MODE);
+		machineCrucibleLava = addAugmentItem(352, TEProps.MACHINE_CRUCIBLE_LAVA, AugmentType.MODE);
+		// machineCrucibleAlloy = addAugmentItem(353, TEProps.MACHINE_CRUCIBLE_ALLOY, AugmentType.MODE);
 
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
 
@@ -390,17 +391,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Y', "dustAerotheum"
 		);
 
-//		addShapedRecipe(machineCrucibleAlloy,
-//				" G ",
-//				"ICI",
-//				"YXY",
-//				'C', ItemMaterial.redstoneServo,
-//				'G', "gearSignalum",
-//				'I', "plateInvar",
-//				'X', Blocks.BRICK_BLOCK,
-//				'Y', "dustCryotheum"
-//		);
-
 		addShapedRecipe(machineCompactorMint,
 				" G ",
 				"ICI",
@@ -411,6 +401,27 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "gemEmerald",
 				'Y', "dustGlowstone"
 		);
+
+		addShapedRecipe(machineCrucibleLava,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearInvar",
+				'I', Blocks.PISTON,
+				'X', Blocks.NETHER_BRICK,
+				'Y', "dustPyrotheum"
+		);
+		//		addShapedRecipe(machineCrucibleAlloy,
+//				" G ",
+//				"ICI",
+//				"YXY",
+//				'C', ItemMaterial.redstoneServo,
+//				'G', "gearSignalum",
+//				'I', "plateInvar",
+//				'X', Blocks.BRICK_BLOCK,
+//				'Y', "dustCryotheum"
+//		);
 
 		addShapedRecipe(machineChargerThroughput,
 				" G ",
@@ -687,6 +698,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineCompactorMint;
 
+	public static ItemStack machineCrucibleLava;
 	public static ItemStack machineCrucibleAlloy;
 
 	public static ItemStack machineChargerThroughput;

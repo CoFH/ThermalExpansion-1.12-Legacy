@@ -6,6 +6,7 @@ import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.furnace.FurnaceRecipeCategoryFood;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager.CrucibleRecipe;
 import mezz.jei.api.IGuiHelper;
@@ -38,6 +39,7 @@ public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWra
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipeCategories(new CrucibleRecipeCategory(guiHelper));
+		registry.addRecipeCategories(new CrucibleRecipeCategoryLava(guiHelper));
 	}
 
 	public static void initialize(IModRegistry registry) {
@@ -49,8 +51,10 @@ public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWra
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.CRUCIBLE);
-		registry.addRecipeClickArea(GuiCrucible.class, 103, 34, 24, 16, RecipeUidsTE.CRUCIBLE);
+		registry.addRecipeClickArea(GuiCrucible.class, 103, 34, 24, 16, RecipeUidsTE.CRUCIBLE, RecipeUidsTE.CRUCIBLE_LAVA);
 		registry.addRecipeCatalyst(BlockMachine.machineCrucible, RecipeUidsTE.CRUCIBLE);
+
+		CrucibleRecipeCategoryLava.initialize(registry);
 	}
 
 	public static List<CrucibleRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

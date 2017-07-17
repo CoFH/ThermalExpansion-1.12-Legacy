@@ -8,22 +8,23 @@ import cofh.thermalfoundation.block.BlockOreFluid;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class CrucibleManager {
 
 	private static Map<ComparableItemStackCrucible, CrucibleRecipe> recipeMap = new THashMap<>();
+	private static Set<ComparableItemStackCrucible> lavaSet = new THashSet<>();
 
 	public static final int DEFAULT_ENERGY = 8000;
 
@@ -42,18 +43,26 @@ public class CrucibleManager {
 		return recipeMap.values().toArray(new CrucibleRecipe[recipeMap.size()]);
 	}
 
+	public static boolean isLava(ItemStack input) {
+
+		return !input.isEmpty() && lavaSet.contains(new ComparableItemStackCrucible(input));
+	}
+
 	public static void initialize() {
 
 		/* LAVA */
 		{
-			int netherrack_RF = CoreProps.LAVA_RF * 6 / 10;
-			int blaze_rod_RF = CoreProps.LAVA_RF / 10;
+			int netherrack_RF = CoreProps.LAVA_RF * 3 / 5;
+			int magma_RF = CoreProps.LAVA_RF * 2 / 5;
 			int rock_RF = CoreProps.LAVA_RF * 8 / 5;
 
 			addRecipe(netherrack_RF, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-			addRecipe(blaze_rod_RF, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME / 4));
+			addRecipe(magma_RF, new ItemStack(Blocks.MAGMA), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
 			addRecipe(rock_RF, new ItemStack(Blocks.COBBLESTONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
 			addRecipe(rock_RF, new ItemStack(Blocks.STONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
+			addRecipe(rock_RF, new ItemStack(Blocks.STONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
+			addRecipe(rock_RF, new ItemStack(Blocks.STONE, 1, 5), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
+			addRecipe(rock_RF, new ItemStack(Blocks.STONE, 1, 6), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
 			addRecipe(rock_RF, new ItemStack(Blocks.OBSIDIAN), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
 		}
 
@@ -122,25 +131,25 @@ public class CrucibleManager {
 		if (input.isEmpty() || output == null || output.amount <= 0 || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
+		ComparableItemStackCrucible inputCrucible = new ComparableItemStackCrucible(input);
+
 		CrucibleRecipe recipe = new CrucibleRecipe(input, output, energy);
-		recipeMap.put(new ComparableItemStackCrucible(input), recipe);
+		recipeMap.put(inputCrucible, recipe);
+
+		if (FluidRegistry.LAVA.equals(output.getFluid())) {
+			lavaSet.add(inputCrucible);
+		}
 		return recipe;
 	}
 
 	/* REMOVE RECIPES */
 	public static CrucibleRecipe removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackCrucible(input));
-	}
-
-	/* HELPERS */
-	private static void addOreDictionaryRecipe(int energy, String oreName, int stackSize, FluidStack output) {
-
-		List<ItemStack> registeredOres = OreDictionary.getOres(oreName, false);
-
-		for (ItemStack ore : registeredOres) {
-			addRecipe(energy, ItemHelper.cloneStack(ore, stackSize), output);
+		ComparableItemStackCrucible inputCrucible = new ComparableItemStackCrucible(input);
+		if (lavaSet.contains(inputCrucible)) {
+			lavaSet.remove(inputCrucible);
 		}
+		return recipeMap.remove(inputCrucible);
 	}
 
 	/* RECIPE CLASS */

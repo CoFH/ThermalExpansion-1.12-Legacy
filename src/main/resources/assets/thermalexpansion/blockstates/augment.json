@@ -84,6 +84,11 @@
 					"layer0": "thermalexpansion:items/augment/machine_compactor_mint"
 				}
 			},
+			"machinecruciblelava": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_crucible_lava"
+				}
+			},
 			"machinecruciblealloy": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/placeholder"

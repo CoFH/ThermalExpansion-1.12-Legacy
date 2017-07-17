@@ -143,18 +143,17 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		if (slot > 8 || !isActive(stack)) {
 			return;
 		}
-		EntityPlayer player = (EntityPlayer) entity;
 		Iterable<ItemStack> equipment;
 
 		switch (getMode(stack)) {
 			case HELD_ITEMS:
-				equipment = player.getHeldEquipment();
+				equipment = entity.getHeldEquipment();
 				break;
 			case ARMOR:
-				equipment = player.getArmorInventoryList();
+				equipment = entity.getArmorInventoryList();
 				break;
 			default:
-				equipment = player.getEquipmentAndArmor();
+				equipment = entity.getEquipmentAndArmor();
 		}
 		for (ItemStack equipmentStack : equipment) {
 			if (EnergyHelper.isEnergyContainerItem(equipmentStack)) {

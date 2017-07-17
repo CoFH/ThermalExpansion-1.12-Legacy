@@ -9,10 +9,7 @@ import cofh.core.item.ItemMulti;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.capabilities.FluidContainerItemWrapper;
 import cofh.core.util.core.IInitializer;
-import cofh.core.util.helpers.ChatHelper;
-import cofh.core.util.helpers.EnergyHelper;
-import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.helpers.StringHelper;
+import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.util.ITooltipFlag;
@@ -26,18 +23,14 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.stats.StatList;
 import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -85,6 +78,16 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		}
 		if (slot > 8 || getMode(stack) != REFILL) {
 			return;
+		}
+		Iterable<ItemStack> equipment = entity.getHeldEquipment();
+
+		for (ItemStack equipmentStack : equipment) {
+			if (FluidHelper.isFluidHandler(equipmentStack)) {
+				IFluidHandlerItem handler = FluidUtil.getFluidHandler(equipmentStack);
+				if (handler != null && getFluid(stack) != null) {
+					drain(stack, handler.fill(new FluidStack(getFluid(stack), Fluid.BUCKET_VOLUME), true), true);
+				}
+			}
 		}
 	}
 
@@ -157,48 +160,51 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
 
 		ItemStack stack = player.getHeldItem(hand);
+
+		if (getMode(stack) == BUCKET_FILL) {
+			return doBucketFill(stack, world, player, hand);
+		}
+		if (getMode(stack) == BUCKET_EMPTY) {
+			return doBucketEmpty(stack, world, player, hand);
+		}
+		return ActionResult.newResult(EnumActionResult.PASS, stack);
+	}
+
+	ActionResult<ItemStack> doBucketFill(ItemStack stack, @Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
+
 		FluidStack fluid = getFluid(stack);
 
-		// empty bucket shouldn't exist, do nothing since it should be handled by the bucket event
-		if (fluid == null) {
+		if (fluid != null && getCapacity(stack) - fluid.amount < Fluid.BUCKET_VOLUME) {
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 		}
-		// clicked on a block?
-		RayTraceResult traceResult = this.rayTrace(world, player, false);
 
-		if (traceResult == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
+		return ActionResult.newResult(EnumActionResult.FAIL, stack);
+	}
+
+	ActionResult<ItemStack> doBucketEmpty(ItemStack stack, @Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
+
+		FluidStack fluid = getFluid(stack);
+
+		if (fluid == null || fluid.amount < Fluid.BUCKET_VOLUME) {
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 		}
-		BlockPos clickPos = traceResult.getBlockPos();
-		// can we place liquid there?
-		if (world.isBlockModifiable(player, clickPos)) {
-			// the block adjacent to the side we clicked on
-			BlockPos targetPos = clickPos.offset(traceResult.sideHit);
-
-			// can the player place there?
-			if (player.canPlayerEdit(targetPos, traceResult.sideHit, stack)) {
-				// try placing liquid
-				FluidActionResult result = FluidUtil.tryPlaceFluid(player, world, targetPos, stack, fluid);
-				if (result.isSuccess() && !player.capabilities.isCreativeMode) {
-					// success!
-					player.addStat(StatList.getObjectUseStats(this));
-
-					stack.shrink(1);
-					ItemStack drained = result.getResult();
-					ItemStack emptyStack = !drained.isEmpty() ? drained.copy() : new ItemStack(this);
-
-					// check whether we replace the item or add the empty one to the inventory
-					if (stack.isEmpty()) {
-						return ActionResult.newResult(EnumActionResult.SUCCESS, emptyStack);
-					} else {
-						// add empty bucket to player inventory
-						ItemHandlerHelper.giveItemToPlayer(player, emptyStack);
-						return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
-					}
-				}
-			}
-		}
-		// couldn't place liquid there2
+		//		RayTraceResult traceResult = this.rayTrace(world, player, false);
+		//
+		//		if (traceResult == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
+		//			return ActionResult.newResult(EnumActionResult.PASS, stack);
+		//		}
+		//		BlockPos pos = traceResult.getBlockPos();
+		//		if (world.isBlockModifiable(player, pos)) {
+		//			BlockPos targetPos = pos.offset(traceResult.sideHit);
+		//			if (player.canPlayerEdit(targetPos, traceResult.sideHit, stack)) {
+		//				FluidActionResult result = FluidUtil.tryPlaceFluid(player, world, targetPos, stack, new FluidStack(fluid, Fluid.BUCKET_VOLUME));
+		//				if (result.isSuccess() && !player.capabilities.isCreativeMode) {
+		//					player.addStat(StatList.getObjectUseStats(this));
+		//					drain(stack, Fluid.BUCKET_VOLUME, true);
+		//					return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+		//				}
+		//			}
+		//		}
 		return ActionResult.newResult(EnumActionResult.FAIL, stack);
 	}
 

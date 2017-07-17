@@ -338,7 +338,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level));
 
 			// Efficiency Loss
-			energyMod += 20;
+			energyMod += 15;
 			return true;
 		}
 		if (TEProps.MACHINE_SECONDARY.equals(id)) {

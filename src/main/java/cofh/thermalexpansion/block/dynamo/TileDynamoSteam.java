@@ -28,6 +28,8 @@ import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -164,7 +166,19 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	@Override
-	public TextureAtlasSprite getActiveIcon() {
+	public int getCoil() {
+
+		return augmentBoiler ? 1 : 0;
+	}
+
+	@Override
+	public TextureAtlasSprite getCoilUnderlayTexture() {
+
+		return TextureHelper.getTexture(TFFluids.fluidSteam.getStill());
+	}
+
+	@Override
+	public TextureAtlasSprite getBaseUnderlayTexture() {
 
 		return TextureHelper.getTexture(TFFluids.fluidSteam.getStill());
 	}
@@ -243,6 +257,17 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addBool(augmentTurbine);
+		payload.addBool(augmentBoiler);
+
+		return payload;
+	}
+
+	@Override
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
@@ -251,6 +276,16 @@ public class TileDynamoSteam extends TileDynamoBase {
 		currentFuelRF = payload.getInt();
 		steamTank.setFluid(payload.getFluidStack());
 		waterTank.setFluid(payload.getFluidStack());
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void handleTilePacket(PacketCoFHBase payload) {
+
+		super.handleTilePacket(payload);
+
+		augmentTurbine = payload.getBool();
+		augmentBoiler = payload.getBool();
 	}
 
 	/* HELPERS */

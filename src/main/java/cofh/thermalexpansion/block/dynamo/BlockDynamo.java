@@ -95,7 +95,9 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		builder.add(TEProps.LEVEL);
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FACING);
-		builder.add(TEProps.ACTIVE_SPRITE_PROPERTY);
+		builder.add(TEProps.COIL);
+		builder.add(TEProps.COIL_ANIM);
+		builder.add(TEProps.BASE_ANIM);
 		return builder.build();
 	}
 
@@ -289,7 +291,9 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
 			builder.append(",facing=").append(state.getValue(TEProps.FACING));
 			builder.append(",active=").append(state.getValue(TEProps.ACTIVE));
-			builder.append(",active_texture=").append(state.getValue(TEProps.ACTIVE_SPRITE_PROPERTY));
+			builder.append(",coil=").append(state.getValue(TEProps.COIL));
+			builder.append(",coil_anim=").append(state.getValue(TEProps.COIL_ANIM));
+			builder.append(",base_anim=").append(state.getValue(TEProps.BASE_ANIM));
 			return builder.toString();
 		});
 

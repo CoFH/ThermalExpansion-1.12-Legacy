@@ -188,12 +188,16 @@ public class TEProps {
 	public static final UnlistedIntegerProperty LEVEL = new UnlistedIntegerProperty("level");
 	public static final UnlistedIntegerProperty HOLDING = new UnlistedIntegerProperty("enchant_holding");
 	public static final UnlistedIntegerProperty SCALE = new UnlistedIntegerProperty("scale");
+	public static final UnlistedIntegerProperty COIL = new UnlistedIntegerProperty("coil");
 
 	public static final UnlistedByteArrayProperty SIDE_CONFIG = new UnlistedByteArrayProperty("side_config");
 
-	public static final UnlistedFluidStackProperty FLUID = new UnlistedFluidStackProperty("fluid_stack");
-	public static final UnlistedResourceLocationProperty ACTIVE_SPRITE_PROPERTY = new UnlistedResourceLocationProperty("active_texture");
+	public static final UnlistedFluidStackProperty FLUID = new UnlistedFluidStackProperty("fluid");
+
 	public static final UnlistedTileEntityProperty TILE = new UnlistedTileEntityProperty("tile");
+
+	public static final UnlistedResourceLocationProperty COIL_ANIM = new UnlistedResourceLocationProperty("coil_anim");
+	public static final UnlistedResourceLocationProperty BASE_ANIM = new UnlistedResourceLocationProperty("base_anim");
 
 	/* AUGMENT IDENTIFIERS */
 
@@ -221,6 +225,7 @@ public class TEProps {
 
 	public static final String MACHINE_COMPACTOR_MINT = "machineCompactorMint";
 
+	public static final String MACHINE_CRUCIBLE_LAVA = "machineCrucibleLava";
 	public static final String MACHINE_CRUCIBLE_ALLOY = "machineCrucibleAlloy";
 
 	public static final String MACHINE_CHARGER_THROUGHPUT = "machineChargerThroughput";

@@ -70,7 +70,7 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 
 			recipeOutputFluids.add(treeFluid);
 			outputFluids = recipeOutputFluids;
-			energy = recipe.getEnergy() * 3 / 2;
+			energy = recipe.getEnergy() * (100 + TileSawmill.TAPPER_ENERGY_MOD) / 100;
 		} else {
 			outputFluids = Collections.emptyList();
 			energy = recipe.getEnergy();

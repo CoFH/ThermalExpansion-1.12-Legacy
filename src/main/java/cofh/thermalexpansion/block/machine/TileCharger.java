@@ -195,19 +195,6 @@ public class TileCharger extends TileMachineBase {
 		return energy;
 	}
 
-	private int calcEnergyItem() {
-
-		if (!augmentThroughput) {
-			return calcEnergy();
-		}
-		return Math.min(energyStorage.getEnergyStored(), getEnergyTransfer(level));
-	}
-
-	private int getEnergyTransfer(int level) {
-
-		return ENERGY_TRANSFER[MathHelper.clamp(level, 0, 4)];
-	}
-
 	/* STANDARD */
 	@Override
 	public void update() {
@@ -503,6 +490,19 @@ public class TileCharger extends TileMachineBase {
 			return true;
 		}
 		return super.installAugmentToSlot(slot);
+	}
+
+	private int calcEnergyItem() {
+
+		if (!augmentThroughput) {
+			return calcEnergy();
+		}
+		return Math.min(energyStorage.getEnergyStored(), getEnergyTransfer(level));
+	}
+
+	private int getEnergyTransfer(int level) {
+
+		return ENERGY_TRANSFER[MathHelper.clamp(level, 0, 4)];
 	}
 
 	/* IEnergyInfo */

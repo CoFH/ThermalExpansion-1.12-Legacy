@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.core.util.helpers.ServerHelper;
@@ -41,6 +42,9 @@ public class TileCrucible extends TileMachineBase {
 	private static final int TYPE = Type.CRUCIBLE.getMetadata();
 	public static int basePower = 50;
 
+	public static final int LAVA_MULTIPLIER = 10;
+	public static final int LAVA_ENERGY_MOD = 20;
+
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
@@ -54,6 +58,7 @@ public class TileCrucible extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_CRUCIBLE_LAVA);
 
 		LIGHT_VALUES[TYPE] = 14;
 
@@ -76,6 +81,9 @@ public class TileCrucible extends TileMachineBase {
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, 0);
+
+	/* AUGMENTS */
+	protected boolean augmentLava;
 
 	public TileCrucible() {
 
@@ -109,9 +117,21 @@ public class TileCrucible extends TileMachineBase {
 	}
 
 	@Override
+	protected int calcEnergy() {
+
+		if (augmentLava) {
+			return Math.min(super.calcEnergy() * LAVA_MULTIPLIER, energyStorage.getEnergyStored());
+		}
+		return super.calcEnergy();
+	}
+
+	@Override
 	protected boolean canStart() {
 
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
+			return false;
+		}
+		if (augmentLava && !CrucibleManager.isLava(inventory[0])) {
 			return false;
 		}
 		CrucibleRecipe recipe = CrucibleManager.getRecipe(inventory[0]);
@@ -130,6 +150,10 @@ public class TileCrucible extends TileMachineBase {
 	protected boolean hasValidInput() {
 
 		CrucibleRecipe recipe = CrucibleManager.getRecipe(inventory[0]);
+
+		if (augmentLava && !CrucibleManager.isLava(inventory[0])) {
+			return false;
+		}
 		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 	}
 
@@ -228,6 +252,11 @@ public class TileCrucible extends TileMachineBase {
 		return tank.getFluid();
 	}
 
+	public boolean augmentLava() {
+
+		return augmentLava;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -319,11 +348,51 @@ public class TileCrucible extends TileMachineBase {
 		renderFluid = payload.getFluidStack();
 	}
 
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		augmentLava = false;
+	}
+
+	@Override
+	protected void postAugmentInstall() {
+
+		super.postAugmentInstall();
+
+		if (augmentLava) {
+			energyStorage.setMaxTransfer(energyConfig.maxPower * 4 * LAVA_MULTIPLIER);
+		}
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentLava && TEProps.MACHINE_CRUCIBLE_LAVA.equals(id)) {
+			augmentLava = true;
+			hasModeAugment = true;
+			energyMod += LAVA_ENERGY_MOD;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
+	}
+
+	/* IEnergyInfo */
+	@Override
+	public int getInfoMaxEnergyPerTick() {
+
+		return augmentLava ? energyConfig.maxPower * LAVA_MULTIPLIER : energyConfig.maxPower;
+	}
+
 	/* IInventory */
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot != 0 || CrucibleManager.recipeExists(stack);
+		return slot != 0 || (augmentLava ? CrucibleManager.isLava(stack) : CrucibleManager.recipeExists(stack));
 	}
 
 	/* ISidedTexture */

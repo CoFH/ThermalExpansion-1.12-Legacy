@@ -27,6 +27,7 @@ public class RecipeUidsTE {
 	public static final String COMPACTOR_MINT = "thermalexpansion.compactor_mint";
 
 	public static final String CRUCIBLE = "thermalexpansion.crucible";
+	public static final String CRUCIBLE_LAVA = "thermalexpansion.crucible_lava";
 
 	public static final String REFINERY = "thermalexpansion.refinery";
 

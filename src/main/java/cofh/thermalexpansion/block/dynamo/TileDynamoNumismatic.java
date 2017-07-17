@@ -72,7 +72,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	}
 
 	@Override
-	public TextureAtlasSprite getActiveIcon() {
+	public TextureAtlasSprite getBaseUnderlayTexture() {
 
 		return TextureHelper.getTexture(TFFluids.fluidMana.getStill());
 	}

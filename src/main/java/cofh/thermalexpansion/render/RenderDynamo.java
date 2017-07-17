@@ -34,7 +34,9 @@ public class RenderDynamo implements ILayeredBlockBakery {
 	private static CCModel[][] modelCoil = new CCModel[2][6];
 	private static CCModel[][] modelBase = new CCModel[2][6];
 	private static CCModel[][] modelBaseOverlay = new CCModel[2][6];
-	private static CCModel[] modelAnimation = new CCModel[6];
+
+	private static CCModel[] modelCoilAnimation = new CCModel[6];
+	private static CCModel[] modelBaseAnimation = new CCModel[6];
 
 	static {
 		generateModels();
@@ -46,6 +48,10 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		double d2 = 6F / 16F;
 		double d3 = 10F / 16F;
 
+		double d4 = 4F / 16F;
+		double d5 = 12F / 16F;
+		double d6 = 8F / 16F;
+
 		modelCoil[0][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 0, 32, 32, 16).computeNormals().shrinkUVs(d1);
 		modelCoil[1][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 16, 32, 32, 16).computeNormals().shrinkUVs(d1);
 
@@ -55,14 +61,32 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		modelBaseOverlay[0][1] = CCModel.quadModel(24).generateBox(0, -8 - d1, -8 - d1, -8 - d1, 16 + 2 * d1, 10 + 2 * d1, 16 + 2 * d1, 0, 0, 64, 64, 16).computeNormals().shrinkUVs(d1);
 		modelBaseOverlay[1][1] = CCModel.quadModel(24).generateBox(0, -8 - d1, -8 - d1, -8 - d1, 16 + 2 * d1, 10 + 2 * d1, 16 + 2 * d1, 0, 32, 64, 64, 16).computeNormals().shrinkUVs(d1);
 
-		modelAnimation[0] = CCModel.quadModel(16).generateBlock(0, d1, d2 + d1, d1, 1 - d1, 1 - d1, 1 - d1, 3).computeNormals();
-		modelAnimation[1] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, 1 - d1, d3 - d1, 1 - d1, 3).computeNormals();
+//		modelCoilAnimation[0] = CCModel.quadModel(16).generateBlock(0, d4, d1, d4, d5 - d1, d6 - d1, d5 - d1, 3).computeNormals();
+//		modelCoilAnimation[1] = CCModel.quadModel(16).generateBlock(0, d4, d5 + d1, d4, 1 - d1, d6 - d1, d5 - d1, 3).computeNormals();
+//
+//		modelCoilAnimation[2] = CCModel.quadModel(16).generateBlock(0, d4, d1, d4, d5 - d1, d6 - d1, d5 - d1, 12).computeNormals();
+//		modelCoilAnimation[3] = CCModel.quadModel(16).generateBlock(0, d4, d5 + d1, d4, 1 - d1, d6 - d1, d5 - d1, 12).computeNormals();
+//
+//		modelCoilAnimation[4] = CCModel.quadModel(16).generateBlock(0, d4, d1, d4, d5 - d1, d6 - d1, d5 - d1, 48).computeNormals();
+//		modelCoilAnimation[5] = CCModel.quadModel(16).generateBlock(0, d4, d5 + d1, d4, 1 - d1, d6 - d1, d5 - d1, 48).computeNormals();
 
-		modelAnimation[2] = CCModel.quadModel(16).generateBlock(0, d1, d1, d2 + d1, 1 - d1, 1 - d1, 1 - d1, 12).computeNormals();
-		modelAnimation[3] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, 1 - d1, 1 - d1, d3 - d1, 12).computeNormals();
+		modelCoilAnimation[0] = CCModel.quadModel(16).generateBlock(0, d4 + d1, d1, d4 + d1, d5 - d1, 1 - d1, d5 - d1, 3).computeNormals();
+		modelCoilAnimation[1] = CCModel.quadModel(16).generateBlock(0, d4 + d1, d1, d4 + d1, d5 - d1, 1 - d1, d5 - d1, 3).computeNormals();
 
-		modelAnimation[4] = CCModel.quadModel(16).generateBlock(0, d2 + d1, d1, d1, 1 - d1, 1 - d1, 1 - d1, 48).computeNormals();
-		modelAnimation[5] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, d3 - d1, 1 - d1, 1 - d1, 48).computeNormals();
+		modelCoilAnimation[2] = CCModel.quadModel(16).generateBlock(0, d4 + d1, d4 + d1, d1, d5 - d1, d5 - d1, 1 - d1, 12).computeNormals();
+		modelCoilAnimation[3] = CCModel.quadModel(16).generateBlock(0, d4 + d1, d4 + d1, d1, d5 - d1, d5 - d1, 1 - d1, 12).computeNormals();
+
+		modelCoilAnimation[4] = CCModel.quadModel(16).generateBlock(0, d1, d4 + d1, d4 + d1, 1 - d1, d5 - d1, d5 - d1, 48).computeNormals();
+		modelCoilAnimation[5] = CCModel.quadModel(16).generateBlock(0, d1, d4 + d1, d4 + d1, 1 - d1, d5 - d1, d5 - d1, 48).computeNormals();
+
+		modelBaseAnimation[0] = CCModel.quadModel(16).generateBlock(0, d1, d2 + d1, d1, 1 - d1, 1 - d1, 1 - d1, 3).computeNormals();
+		modelBaseAnimation[1] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, 1 - d1, d3 - d1, 1 - d1, 3).computeNormals();
+
+		modelBaseAnimation[2] = CCModel.quadModel(16).generateBlock(0, d1, d1, d2 + d1, 1 - d1, 1 - d1, 1 - d1, 12).computeNormals();
+		modelBaseAnimation[3] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, 1 - d1, 1 - d1, d3 - d1, 12).computeNormals();
+
+		modelBaseAnimation[4] = CCModel.quadModel(16).generateBlock(0, d2 + d1, d1, d1, 1 - d1, 1 - d1, 1 - d1, 48).computeNormals();
+		modelBaseAnimation[5] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, d3 - d1, 1 - d1, 1 - d1, 48).computeNormals();
 
 		for (CCModel[] model : modelCoil) {
 			CCModel.generateSidedModels(model, 1, new Vector3());
@@ -76,12 +100,12 @@ public class RenderDynamo implements ILayeredBlockBakery {
 	}
 
 	/* RENDER */
-	protected void renderCoil(CCRenderState ccrs, int facing, boolean active) {
+	protected void renderCoil(CCRenderState ccrs, int facing, boolean active, int type) {
 
 		if (active) {
-			modelCoil[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(TETextures.DYNAMO_COIL_REDSTONE));
+			modelCoil[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(TETextures.DYNAMO_COIL[type]));
 		} else {
-			modelCoil[1][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(TETextures.DYNAMO_COIL_REDSTONE));
+			modelCoil[1][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(TETextures.DYNAMO_COIL[type]));
 		}
 	}
 
@@ -105,10 +129,17 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		}
 	}
 
-	protected void renderAnimation(CCRenderState ccrs, int facing, boolean active, int type, TextureAtlasSprite icon) {
+	protected void renderCoilAnimation(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite icon) {
 
 		if (active) {
-			modelAnimation[facing].render(ccrs, new IconTransformation(icon));
+			modelCoilAnimation[facing].render(ccrs, new IconTransformation(icon));
+		}
+	}
+
+	protected void renderBaseAnimation(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite icon) {
+
+		if (active) {
+			modelBaseAnimation[facing].render(ccrs, new IconTransformation(icon));
 		}
 	}
 
@@ -142,9 +173,12 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		state = state.withProperty(TEProps.CREATIVE, dynamo.isCreative);
 		state = state.withProperty(TEProps.LEVEL, dynamo.getLevel());
 		state = state.withProperty(TEProps.ACTIVE, dynamo.isActive);
+		state = state.withProperty(TEProps.COIL, dynamo.getCoil());
 
 		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[dynamo.getFacing()]);
-		state = state.withProperty(TEProps.ACTIVE_SPRITE_PROPERTY, new ResourceLocation(dynamo.getActiveIcon().getIconName()));
+
+		state = state.withProperty(TEProps.COIL_ANIM, new ResourceLocation(dynamo.getCoilUnderlayTexture().getIconName()));
+		state = state.withProperty(TEProps.BASE_ANIM, new ResourceLocation(dynamo.getBaseUnderlayTexture().getIconName()));
 		return state;
 	}
 
@@ -160,7 +194,7 @@ public class RenderDynamo implements ILayeredBlockBakery {
 
 			boolean creative = BlockDynamo.itemBlock.isCreative(stack);
 			int level = BlockDynamo.itemBlock.getLevel(stack);
-			renderCoil(ccrs, 1, false);
+			renderCoil(ccrs, 1, false, 0);
 			renderBase(ccrs, 1, false, stack.getMetadata());
 
 			if (level > 0) {
@@ -178,12 +212,14 @@ public class RenderDynamo implements ILayeredBlockBakery {
 
 		if (face == null && state != null) {
 			boolean creative = state.getValue(TEProps.CREATIVE);
-			int level = state.getValue(TEProps.LEVEL);
 			boolean active = state.getValue(TEProps.ACTIVE);
+			int level = state.getValue(TEProps.LEVEL);
 			int facing = state.getValue(TEProps.FACING).ordinal();
+			int coil = state.getValue(TEProps.COIL);
 			int type = state.getValue(BlockDynamo.VARIANT).getMetadata();
 
-			TextureAtlasSprite activeSprite = TextureHelper.getTexture(state.getValue(TEProps.ACTIVE_SPRITE_PROPERTY));
+			TextureAtlasSprite coilUnderlay = TextureHelper.getTexture(state.getValue(TEProps.COIL_ANIM));
+			TextureAtlasSprite baseUnderlay = TextureHelper.getTexture(state.getValue(TEProps.BASE_ANIM));
 
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);
@@ -191,9 +227,12 @@ public class RenderDynamo implements ILayeredBlockBakery {
 			ccrs.reset();
 			ccrs.bind(buffer);
 			if (layer == BlockRenderLayer.SOLID) {
-				renderCoil(ccrs, facing, active);
-				renderAnimation(ccrs, facing, active, type, activeSprite);
+				if (coil != 0) {
+					renderCoilAnimation(ccrs, facing, active, coilUnderlay);
+				}
+				renderBaseAnimation(ccrs, facing, active, baseUnderlay);
 			} else {
+				renderCoil(ccrs, facing, active, coil);
 				renderBase(ccrs, facing, active, type);
 
 				if (level > 0) {

@@ -111,7 +111,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 	}
 
 	@Override
-	public TextureAtlasSprite getActiveIcon() {
+	public TextureAtlasSprite getBaseUnderlayTexture() {
 
 		return TextureHelper.getTexture(renderFluid.getFluid().getStill());
 	}

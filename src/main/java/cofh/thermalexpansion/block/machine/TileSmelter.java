@@ -38,6 +38,8 @@ public class TileSmelter extends TileMachineBase {
 	public static int basePower = 20;
 	public static int fluidAmount = 100;
 
+	public static final int PYROTHEUM_ENERGY_MOD = 50;
+
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
@@ -454,7 +456,7 @@ public class TileSmelter extends TileMachineBase {
 		if (!augmentPyrotheum && TEProps.MACHINE_SMELTER_PYROTHEUM.equals(id)) {
 			augmentPyrotheum = true;
 			hasModeAugment = true;
-			energyMod += 50;
+			energyMod += PYROTHEUM_ENERGY_MOD;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

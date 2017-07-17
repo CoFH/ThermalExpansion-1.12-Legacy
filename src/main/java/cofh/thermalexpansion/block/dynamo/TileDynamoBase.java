@@ -79,6 +79,8 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	protected boolean augmentCoilDuct;
 	protected boolean augmentThrottle;
 
+	protected int renderCoil = 0;
+
 	int energyMod = ENERGY_BASE;
 
 	public TileDynamoBase() {
@@ -313,7 +315,17 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		}
 	}
 
-	public TextureAtlasSprite getActiveIcon() {
+	public int getCoil() {
+
+		return 0;
+	}
+
+	public TextureAtlasSprite getCoilUnderlayTexture() {
+
+		return TextureHelper.getTexture(FluidRegistry.WATER.getStill());
+	}
+
+	public TextureAtlasSprite getBaseUnderlayTexture() {
 
 		return TextureHelper.getTexture(FluidRegistry.WATER.getStill());
 	}
@@ -402,7 +414,6 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		facing = payload.getByte();
 		hasRedstoneControl = payload.getBool();
-
 	}
 
 	/* HELPERS */
@@ -415,6 +426,8 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		augmentThrottle = false;
 		augmentCoilDuct = false;
+
+		renderCoil = getCoil();
 	}
 
 	@Override
@@ -424,6 +437,10 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 			energyConfig.minPower = 0;
 		}
 		energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 4);
+
+		if (world != null && ServerHelper.isServerWorld(world) && renderCoil != getCoil()) {
+			sendTilePacket(Side.CLIENT);
+		}
 	}
 
 	@Override

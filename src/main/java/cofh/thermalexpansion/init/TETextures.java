@@ -119,6 +119,7 @@ public class TETextures {
 
 		/* DYNAMOS */
 		DYNAMO_COIL_REDSTONE =				register(DYNAMO_ + "coil_redstone");
+		DYNAMO_COIL_STEAM_BOILER =		    register(DYNAMO_ + "coil_steam_boiler");
 
 		DYNAMO_STEAM =						register(DYNAMO_ + "steam");
 		DYNAMO_MAGMATIC =					register(DYNAMO_ + "magmatic");
@@ -254,6 +255,10 @@ public class TETextures {
 
 		ILLUMINATOR_FRAME =                 register(BLOCKS_ + "light/illuminator_frame");
 
+		FLORB =                             register(ITEMS_ + "florb/florb");
+		FLORB_MAGMATIC =                    register(ITEMS_ + "florb/florb_magmatic");
+		FLORB_MASK =                        register(ITEMS_ + "florb/florb_mask");
+
 		/* ARRAYS */
 		CONFIG = new TextureAtlasSprite[] {
 				CONFIG_NONE,
@@ -275,7 +280,6 @@ public class TETextures {
 				MACHINE_OVERLAY_4,
 				MACHINE_OVERLAY_C
 		};
-
 		MACHINE_FACE = new TextureAtlasSprite[] {
 				MACHINE_FACE_FURNACE,
 				MACHINE_FACE_PULVERIZER,
@@ -318,7 +322,6 @@ public class TETextures {
 				APPARATUS_FACE_BREAKER,
 				APPARATUS_FACE_COLLECTOR
 		};
-
 		APPARATUS_ACTIVE = new TextureAtlasSprite[] {
 				APPARATUS_ACTIVE_BREAKER,
 				APPARATUS_ACTIVE_COLLECTOR
@@ -351,6 +354,11 @@ public class TETextures {
 //				DEVICE_ACTIVE_FLUID_BUFFER,
 //				DEVICE_ACTIVE_ENERGY_BUFFER
 		};
+
+		DYNAMO_COIL = new TextureAtlasSprite[] {
+				DYNAMO_COIL_REDSTONE,
+				DYNAMO_COIL_STEAM_BOILER
+		};
 		DYNAMO = new TextureAtlasSprite[] {
 				DYNAMO_STEAM,
 				DYNAMO_MAGMATIC,
@@ -359,7 +367,6 @@ public class TETextures {
 				DYNAMO_ENERVATION,
 				DYNAMO_NUMISMATIC
 		};
-
 		DYNAMO_OVERLAY = new TextureAtlasSprite[] {
 				DYNAMO_OVERLAY_0,
 				DYNAMO_OVERLAY_1,
@@ -374,7 +381,6 @@ public class TETextures {
 				CELL_CONFIG_BLUE,
 				CELL_CONFIG_ORANGE
 		};
-
 		CELL_INNER = new TextureAtlasSprite[] {
 				CELL_INNER_0,
 				CELL_INNER_1,
@@ -383,7 +389,6 @@ public class TETextures {
 				CELL_INNER_4,
 				CELL_INNER_C
 		};
-
 		CELL_SIDE = new TextureAtlasSprite[] {
 				CELL_SIDE_0,
 				CELL_SIDE_1,
@@ -392,12 +397,10 @@ public class TETextures {
 				CELL_SIDE_4,
 				CELL_SIDE_C
 		};
-
 		CELL_CENTER = new TextureAtlasSprite[] {
 				CELL_CENTER_0,
 				CELL_CENTER_1
 		};
-
 		CELL_METER = new TextureAtlasSprite[] {
 				CELL_METER_0,
 				CELL_METER_1,
@@ -429,7 +432,6 @@ public class TETextures {
 						TANK_BOTTOM_1_C
 				}
 		};
-
 		TANK_TOP = new TextureAtlasSprite[] {
 				TANK_TOP_0,
 				TANK_TOP_1,
@@ -438,7 +440,6 @@ public class TETextures {
 				TANK_TOP_4,
 				TANK_TOP_C
 		};
-
 		TANK_SIDE = new TextureAtlasSprite[][] {
 				new TextureAtlasSprite[] {
 						TANK_SIDE_0_0,
@@ -466,7 +467,6 @@ public class TETextures {
 				CACHE_BOTTOM_4,
 				CACHE_BOTTOM_C
 		};
-
 		CACHE_TOP = new TextureAtlasSprite[] {
 				CACHE_TOP_0,
 				CACHE_TOP_1,
@@ -475,7 +475,6 @@ public class TETextures {
 				CACHE_TOP_4,
 				CACHE_TOP_C
 		};
-
 		CACHE_SIDE = new TextureAtlasSprite[] {
 				CACHE_SIDE_0,
 				CACHE_SIDE_1,
@@ -484,7 +483,6 @@ public class TETextures {
 				CACHE_SIDE_4,
 				CACHE_SIDE_C
 		};
-
 		CACHE_FACE = new TextureAtlasSprite[] {
 				CACHE_FACE_0,
 				CACHE_FACE_1,
@@ -493,7 +491,6 @@ public class TETextures {
 				CACHE_FACE_4,
 				CACHE_FACE_C
 		};
-
 		CACHE_METER = new TextureAtlasSprite[] {
 				CACHE_METER_0,
 				CACHE_METER_1,
@@ -536,6 +533,8 @@ public class TETextures {
 	private static String CB_POSTFIX = "_cb";
 
 	private static final String BLOCKS_ = "thermalexpansion:blocks/";
+	private static final String ITEMS_ = "thermalexpansion:items/";
+
 	private static final String CONFIG_ = BLOCKS_ + "config/config_";
 	private static final String MACHINE_ = BLOCKS_ + "machine/machine_";
 	private static final String MACHINE_FACE_ = MACHINE_ + "face_";
@@ -664,8 +663,12 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_FRAME_BOTTOM;
 	public static TextureAtlasSprite DEVICE_FRAME_INNER;
 
+	public static TextureAtlasSprite[] DYNAMO_COIL;
 	public static TextureAtlasSprite DYNAMO_COIL_REDSTONE;
+	public static TextureAtlasSprite DYNAMO_COIL_STEAM_BOILER;
 	public static TextureAtlasSprite DYNAMO_COIL_ENDER;
+	public static TextureAtlasSprite DYNAMO_COIL_MANA;
+	public static TextureAtlasSprite DYNAMO_COIL_MJ;
 
 	public static TextureAtlasSprite[] DYNAMO;
 	public static TextureAtlasSprite DYNAMO_STEAM;
@@ -812,5 +815,9 @@ public class TETextures {
 	public static TextureAtlasSprite STRONGBOX_TOP_C;
 
 	public static TextureAtlasSprite ILLUMINATOR_FRAME;
+
+	public static TextureAtlasSprite FLORB;
+	public static TextureAtlasSprite FLORB_MAGMATIC;
+	public static TextureAtlasSprite FLORB_MASK;
 
 }

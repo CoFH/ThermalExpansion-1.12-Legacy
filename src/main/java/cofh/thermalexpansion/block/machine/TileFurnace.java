@@ -38,6 +38,10 @@ public class TileFurnace extends TileMachineBase {
 	private static final int TYPE = Type.FURNACE.getMetadata();
 	public static int basePower = 20;
 
+	public static final int FOOD_ENERGY_MOD = 50;
+	public static final int ORE_ENERGY_MOD = 50;
+	public static final int PYRO_ENERGY_MOD = 50;
+
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
@@ -371,25 +375,26 @@ public class TileFurnace extends TileMachineBase {
 		if (!augmentFood && TEProps.MACHINE_FURNACE_FOOD.equals(id)) {
 			augmentFood = true;
 			hasModeAugment = true;
-			energyMod += 50;
+			energyMod += FOOD_ENERGY_MOD;
 			return true;
 		}
 		if (!augmentOre && TEProps.MACHINE_FURNACE_ORE.equals(id)) {
 			augmentOre = true;
 			hasModeAugment = true;
-			energyMod += 50;
+			energyMod += ORE_ENERGY_MOD;
 			return true;
 		}
 		if (!augmentPyrolysis && TEProps.MACHINE_FURNACE_PYROLYSIS.equals(id)) {
 			augmentPyrolysis = true;
 			hasModeAugment = true;
-			energyMod += 50;
+			energyMod += PYRO_ENERGY_MOD;
 			tank.setLock(TFFluids.fluidCreosote);
 			return true;
 		}
 		return super.installAugmentToSlot(slot);
 	}
 
+	/* IEnergyInfo */
 	@Override
 	public int getInfoMaxEnergyPerTick() {
 

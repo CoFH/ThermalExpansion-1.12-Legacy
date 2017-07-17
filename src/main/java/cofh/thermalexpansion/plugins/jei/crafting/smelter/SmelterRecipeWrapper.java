@@ -77,7 +77,7 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 			recipeInputFluids.add(new FluidStack(TFFluids.fluidPyrotheum, TileSmelter.fluidAmount));
 			inputFluids = Collections.singletonList(recipeInputFluids);
 			recipeOutputs.add(ItemHelper.cloneStack(recipe.getPrimaryOutput(), recipe.getPrimaryOutput().getCount() + 1));
-			energy = recipe.getEnergy() * 3 / 2;
+			energy = recipe.getEnergy() * (100 + TileSmelter.PYROTHEUM_ENERGY_MOD) / 100;
 		} else {
 			inputFluids = Collections.emptyList();
 			recipeOutputs.add(recipe.getPrimaryOutput());

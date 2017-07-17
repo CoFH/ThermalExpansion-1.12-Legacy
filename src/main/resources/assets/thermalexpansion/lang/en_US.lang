@@ -66,6 +66,7 @@ info.thermalexpansion.augment.dynamoReactantElemental.b.0=Only Elemental Reactio
 info.thermalexpansion.augment.dynamoSteamBoiler.0=Steam Dynamo: Specialization
 info.thermalexpansion.augment.dynamoSteamBoiler.a.0=Converts Dynamo into a Steam Boiler.
 info.thermalexpansion.augment.dynamoSteamBoiler.a.1=Greatly increases Steam production and fuel efficiency.
+info.thermalexpansion.augment.dynamoSteamBoiler.c.0=Energy is no longer produced.
 
 info.thermalexpansion.augment.dynamoSteamTurbine.0=Steam Dynamo: Specialization
 info.thermalexpansion.augment.dynamoSteamTurbine.a.0=Greatly increases power generation.
@@ -86,6 +87,10 @@ info.thermalexpansion.augment.machineCompactorMint.c.0=Machine must be toggled i
 info.thermalexpansion.augment.machineCrucibleAlloy.0=Magma Crucible: Specialization
 info.thermalexpansion.augment.machineCrucibleAlloy.a.0=Magma Crucible: Specialization
 info.thermalexpansion.augment.machineCrucibleAlloy.b.0=Magma Crucible: Specialization
+
+info.thermalexpansion.augment.machineCrucibleLava.0=Magma Crucible: Specialization
+info.thermalexpansion.augment.machineCrucibleLava.a.0=Greatly increases Lava production speed.
+info.thermalexpansion.augment.machineCrucibleLava.b.0=Only Lava can be created.
 
 info.thermalexpansion.augment.machineEnchanterEmpowered.0=Arcane Ensorcellator: Functionality
 info.thermalexpansion.augment.machineEnchanterEmpowered.a.0=Focuses and aligns arcane energies to maximize enchantment strength.
@@ -273,6 +278,7 @@ item.thermalexpansion.augment.dynamoThrottle.name=Excitation Field Limiter
 
 item.thermalexpansion.augment.machineChargerThroughput.name=Flux Linkage Concentrator
 item.thermalexpansion.augment.machineCompactorMint.name=Numismatic Press
+item.thermalexpansion.augment.machineCrucibleLava.name=Pyroconvective Loop
 item.thermalexpansion.augment.machineFurnaceFood.name=Trivection Chamber
 item.thermalexpansion.augment.machineFurnaceOre.name=Flux Anodizers
 item.thermalexpansion.augment.machineFurnacePyrolysis.name=Pyrolytic Conversion
