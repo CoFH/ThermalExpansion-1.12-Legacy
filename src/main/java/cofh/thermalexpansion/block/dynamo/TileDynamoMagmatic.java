@@ -87,6 +87,15 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	}
 
 	@Override
+	protected boolean canFinish() {
+
+		if (augmentCoolant) {
+			return fuelRF <= 0 || coolantRF <= 0;
+		}
+		return fuelRF <= 0;
+	}
+
+	@Override
 	protected void processStart() {
 
 		if (augmentCoolant) {
@@ -102,6 +111,21 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		}
 		fuelRF += MagmaticManager.getFuelEnergy100mB(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
 		fuelTank.drain(fluidAmount, true);
+	}
+
+	@Override
+	protected int processTick() {
+
+		int energy = calcEnergy();
+		energyStorage.modifyEnergyStored(energy);
+		fuelRF -= energy;
+
+		if (augmentCoolant) {
+			coolantRF -= energy;
+		}
+		transferEnergy();
+
+		return energy;
 	}
 
 	@Override
