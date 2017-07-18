@@ -40,6 +40,11 @@ info.thermalexpansion.augment.0=Augment
 info.thermalexpansion.augment.dynamoCoilDuct.0=Dynamos: Side Accessibility
 info.thermalexpansion.augment.dynamoCoilDuct.a.0=Allows insertion and extraction through the coil.
 
+info.thermalexpansion.augment.dynamoCoilSteam.0=Dynamos: Output Specialization
+info.thermalexpansion.augment.dynamoCoilSteam.a.0=Converts an applicable Dynamo into a Steam Boiler.
+info.thermalexpansion.augment.dynamoCoilSteam.a.1=Increases fuel efficiency.
+info.thermalexpansion.augment.dynamoCoilSteam.c.0=Steam is produced instead of RF.
+
 info.thermalexpansion.augment.dynamoCompressionCoolant.0=Compression Dynamo: Specialization
 info.thermalexpansion.augment.dynamoCompressionCoolant.a.0=Coolant is no longer consumed for operation.
 info.thermalexpansion.augment.dynamoCompressionCoolant.b.0=Some coolant must be present.
@@ -62,11 +67,6 @@ info.thermalexpansion.augment.dynamoPower.b.0=Less energy (RF) is produced by fu
 info.thermalexpansion.augment.dynamoReactantElemental.0=Reactant Dynamo: Specialization
 info.thermalexpansion.augment.dynamoReactantElemental.a.0=Greatly increases power generation and efficiency.
 info.thermalexpansion.augment.dynamoReactantElemental.b.0=Only Elemental Reactions can be performed.
-
-info.thermalexpansion.augment.dynamoSteamBoiler.0=Steam Dynamo: Specialization
-info.thermalexpansion.augment.dynamoSteamBoiler.a.0=Converts Dynamo into a Steam Boiler.
-info.thermalexpansion.augment.dynamoSteamBoiler.a.1=Greatly increases Steam production and fuel efficiency.
-info.thermalexpansion.augment.dynamoSteamBoiler.c.0=Energy is no longer produced.
 
 info.thermalexpansion.augment.dynamoSteamTurbine.0=Steam Dynamo: Specialization
 info.thermalexpansion.augment.dynamoSteamTurbine.a.0=Greatly increases power generation.
@@ -266,13 +266,13 @@ item.thermalexpansion.augment.apparatusDepth.name=WIP
 item.thermalexpansion.augment.apparatusRadius.name=WIP
 
 item.thermalexpansion.augment.dynamoCoilDuct.name=Transmission Coil Ducting
+item.thermalexpansion.augment.dynamoCoilSteam.name=Boiler Conversion
 item.thermalexpansion.augment.dynamoCompressionCoolant.name=Closed-Loop Cooling
 item.thermalexpansion.augment.dynamoCompressionFuel.name=Ignition Plugs
 item.thermalexpansion.augment.dynamoEfficiency.name=Fuel Catalyzer
 item.thermalexpansion.augment.dynamoMagmaticCoolant.name=Isentropic Reservoir
 item.thermalexpansion.augment.dynamoPower.name=Auxiliary Transmission Coil
 item.thermalexpansion.augment.dynamoReactantElemental.name=Elemental Catalyzer
-item.thermalexpansion.augment.dynamoSteamBoiler.name=Boiler Conversion
 item.thermalexpansion.augment.dynamoSteamTurbine.name=Turbine Conversion
 item.thermalexpansion.augment.dynamoThrottle.name=Excitation Field Limiter
 

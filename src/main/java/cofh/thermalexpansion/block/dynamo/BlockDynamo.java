@@ -200,7 +200,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 	@SideOnly (Side.CLIENT)
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 
-		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
+		return layer != BlockRenderLayer.CUTOUT_MIPPED;
 	}
 
 	@Override
@@ -428,18 +428,11 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
-		private final int light;
-
-		Type(int metadata, String name, int light) {
-
-			this.metadata = metadata;
-			this.name = name;
-			this.light = light;
-		}
 
 		Type(int metadata, String name) {
 
-			this(metadata, name, 0);
+			this.metadata = metadata;
+			this.name = name;
 		}
 
 		public int getMetadata() {
@@ -451,11 +444,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		public String getName() {
 
 			return this.name;
-		}
-
-		public int getLight() {
-
-			return light;
 		}
 
 		public static Type byMetadata(int metadata) {

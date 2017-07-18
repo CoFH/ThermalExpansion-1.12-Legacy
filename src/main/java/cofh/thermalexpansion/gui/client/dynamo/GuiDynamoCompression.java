@@ -24,8 +24,8 @@ public class GuiDynamoCompression extends GuiDynamoBase {
 
 		super.initGui();
 
-		addElement(new ElementFluidTank(this, 8, 9, baseTile.getTank(0)));
-		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank(1)));
+		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank(0)));
+		addElement(new ElementFluidTank(this, 8, 9, baseTile.getTank(1)));
 	}
 
 }

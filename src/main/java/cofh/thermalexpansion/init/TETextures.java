@@ -119,7 +119,7 @@ public class TETextures {
 
 		/* DYNAMOS */
 		DYNAMO_COIL_REDSTONE =				register(DYNAMO_ + "coil_redstone");
-		DYNAMO_COIL_STEAM_BOILER =		    register(DYNAMO_ + "coil_steam_boiler");
+		DYNAMO_COIL_STEAM =     		    register(DYNAMO_ + "coil_steam");
 
 		DYNAMO_STEAM =						register(DYNAMO_ + "steam");
 		DYNAMO_MAGMATIC =					register(DYNAMO_ + "magmatic");
@@ -357,7 +357,7 @@ public class TETextures {
 
 		DYNAMO_COIL = new TextureAtlasSprite[] {
 				DYNAMO_COIL_REDSTONE,
-				DYNAMO_COIL_STEAM_BOILER
+				DYNAMO_COIL_STEAM
 		};
 		DYNAMO = new TextureAtlasSprite[] {
 				DYNAMO_STEAM,
@@ -665,7 +665,7 @@ public class TETextures {
 
 	public static TextureAtlasSprite[] DYNAMO_COIL;
 	public static TextureAtlasSprite DYNAMO_COIL_REDSTONE;
-	public static TextureAtlasSprite DYNAMO_COIL_STEAM_BOILER;
+	public static TextureAtlasSprite DYNAMO_COIL_STEAM;
 	public static TextureAtlasSprite DYNAMO_COIL_ENDER;
 	public static TextureAtlasSprite DYNAMO_COIL_MANA;
 	public static TextureAtlasSprite DYNAMO_COIL_MJ;

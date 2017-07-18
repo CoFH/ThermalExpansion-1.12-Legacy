@@ -56,6 +56,9 @@ public class TileDynamoReactant extends TileDynamoBase {
 		String category = "Dynamo.Reactant";
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
+		String comment = "Adjust this value to change the Energy generation (in RF/t) for a Reactant Dynamo. This base value will scale with block level and Augments.";
+		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, basePower / 4, basePower * 4, comment);
+
 		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
 		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
 	}

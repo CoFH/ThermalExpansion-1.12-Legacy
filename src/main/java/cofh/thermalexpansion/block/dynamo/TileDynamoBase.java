@@ -4,15 +4,13 @@ import cofh.api.core.IAccelerable;
 import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
+import cofh.api.tileentity.ISteamInfo;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.TextureHelper;
 import cofh.core.util.TimeTracker;
-import cofh.core.util.helpers.AugmentHelper;
-import cofh.core.util.helpers.BlockHelper;
-import cofh.core.util.helpers.EnergyHelper;
-import cofh.core.util.helpers.ServerHelper;
+import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyProvider;
 import cofh.redstoneflux.api.IEnergyReceiver;
 import cofh.redstoneflux.api.IEnergyStorage;
@@ -21,6 +19,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,12 +33,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashSet;
 
-public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
+public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IReconfigurableFacing, ISidedInventory, IEnergyInfo, ISteamInfo {
 
 	protected static final EnergyConfig[] DEFAULT_ENERGY_CONFIG = new EnergyConfig[Type.values().length];
 	protected static final HashSet<String>[] VALID_AUGMENTS = new HashSet[Type.values().length];
@@ -47,6 +47,9 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 	protected static final int ENERGY_BASE = 100;
+
+	public static final int[] COIL_LIGHT = { 7, 0 };
+	public static final boolean[] COIL_UNDERLAY = { false, true };
 
 	static {
 		VALID_AUGMENTS_BASE.add(TEProps.DYNAMO_POWER);
@@ -79,7 +82,10 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	protected boolean augmentCoilDuct;
 	protected boolean augmentThrottle;
 
+	protected boolean augmentBoiler;
+
 	protected int renderCoil = 0;
+	protected int lastEnergy;
 
 	int energyMod = ENERGY_BASE;
 
@@ -104,7 +110,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public int getLightValue() {
 
-		return isActive ? 7 : 0;
+		return isActive ? COIL_LIGHT[getCoil()] : 0;
 	}
 
 	@Override
@@ -264,12 +270,17 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	protected int processTick() {
 
-		int energy = calcEnergy();
-		energyStorage.modifyEnergyStored(energy);
-		fuelRF -= energy;
+		lastEnergy = calcEnergy();
+		energyStorage.modifyEnergyStored(lastEnergy);
+		fuelRF -= lastEnergy;
 		transferEnergy();
 
-		return energy;
+		return lastEnergy;
+	}
+
+	protected void transferSteam() {
+
+		FluidHelper.insertFluidIntoAdjacentFluidHandler(world, pos, EnumFacing.values()[facing], new FluidStack(TFFluids.fluidSteam, energyConfig.maxPower), true);
 	}
 
 	protected void transferEnergy() {
@@ -317,12 +328,12 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	public int getCoil() {
 
-		return 0;
+		return augmentBoiler ? 1 : 0;
 	}
 
 	public TextureAtlasSprite getCoilUnderlayTexture() {
 
-		return TextureHelper.getTexture(FluidRegistry.WATER.getStill());
+		return TextureHelper.getTexture(TFFluids.fluidSteam.getStill());
 	}
 
 	public TextureAtlasSprite getBaseUnderlayTexture() {
@@ -344,6 +355,21 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	public FluidTankCore getTank(int tankIndex) {
 
 		return null;
+	}
+
+	public boolean showEnergyTab() {
+
+		return !augmentBoiler;
+	}
+
+	public boolean showSteamTab() {
+
+		return augmentBoiler;
+	}
+
+	public boolean isSteamProducer() {
+
+		return augmentBoiler;
 	}
 
 	/* NBT METHODS */
@@ -381,6 +407,9 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		payload.addInt(energyStorage.getMaxEnergyStored());
 		payload.addInt(energyStorage.getEnergyStored());
 		payload.addInt(fuelRF);
+		payload.addInt(lastEnergy);
+
+		payload.addBool(augmentBoiler);
 
 		return payload;
 	}
@@ -393,6 +422,8 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		payload.addByte(facing);
 		payload.addBool(hasRedstoneControl);
 
+		payload.addBool(augmentBoiler);
+
 		return payload;
 	}
 
@@ -404,6 +435,9 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		energyStorage.setCapacity(payload.getInt());
 		energyStorage.setEnergyStored(payload.getInt());
 		fuelRF = payload.getInt();
+		lastEnergy = payload.getInt();
+
+		augmentBoiler = payload.getBool();
 	}
 
 	@Override
@@ -414,6 +448,8 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		facing = payload.getByte();
 		hasRedstoneControl = payload.getBool();
+
+		augmentBoiler = payload.getBool();
 	}
 
 	/* HELPERS */
@@ -426,6 +462,8 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		augmentThrottle = false;
 		augmentCoilDuct = false;
+
+		augmentBoiler = false;
 
 		renderCoil = getCoil();
 	}
@@ -532,7 +570,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (!isActive) {
 			return 0;
 		}
-		return calcEnergy();
+		return lastEnergy;
 	}
 
 	@Override
@@ -547,10 +585,20 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		return energyStorage.getEnergyStored();
 	}
 
+	/* ISteamInfo */
 	@Override
-	public int getInfoMaxEnergyStored() {
+	public int getInfoSteamPerTick() {
 
-		return energyConfig.maxEnergy;
+		if (!isActive) {
+			return 0;
+		}
+		return augmentBoiler ? energyConfig.maxPower : lastEnergy;
+	}
+
+	@Override
+	public int getInfoMaxSteamPerTick() {
+
+		return energyConfig.maxPower;
 	}
 
 	/* IPortableData */

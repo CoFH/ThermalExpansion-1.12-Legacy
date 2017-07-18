@@ -147,12 +147,6 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 		return energyStorage.getEnergyStored();
 	}
 
-	@Override
-	public int getInfoMaxEnergyStored() {
-
-		return energyStorage.getMaxEnergyStored();
-	}
-
 	/* IEnergyReceiver */
 	@Override
 	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {

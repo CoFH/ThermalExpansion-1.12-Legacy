@@ -21,6 +21,9 @@ public abstract class GuiDynamoBase extends GuiCore {
 
 	protected String myTutorial = "";
 
+	protected TabBase energyTab;
+	protected TabBase steamTab;
+
 	protected TabBase augmentTab;
 	protected TabBase redstoneTab;
 	protected TabBase securityTab;
@@ -51,6 +54,9 @@ public abstract class GuiDynamoBase extends GuiCore {
 		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
 
 		// Right Side
+		steamTab = addTab(new TabSteam(this, baseTile, baseTile.isSteamProducer()));
+		steamTab.setVisible(baseTile.showSteamTab());
+
 		augmentTab = addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
 
 		redstoneTab = addTab(new TabRedstoneControl(this, baseTile));
@@ -60,7 +66,9 @@ public abstract class GuiDynamoBase extends GuiCore {
 		securityTab = addTab(new TabSecurity(this, baseTile, playerName));
 		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 
-		addTab(new TabEnergy(this, baseTile, true));
+		energyTab = addTab(new TabEnergy(this, baseTile, true));
+		energyTab.setVisible(baseTile.showEnergyTab());
+
 		addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.0")));
 
 		if (!myTutorial.isEmpty()) {
@@ -79,6 +87,8 @@ public abstract class GuiDynamoBase extends GuiCore {
 		redstoneTab.setVisible(baseTile.hasRedstoneControl());
 
 		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
+		energyTab.setVisible(baseTile.showEnergyTab());
+		steamTab.setVisible(baseTile.showSteamTab());
 	}
 
 }

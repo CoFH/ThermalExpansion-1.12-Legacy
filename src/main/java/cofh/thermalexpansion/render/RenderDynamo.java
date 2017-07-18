@@ -52,23 +52,20 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		double d5 = 12F / 16F;
 		double d6 = 8F / 16F;
 
-		modelCoil[0][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 0, 32, 32, 16).computeNormals().shrinkUVs(d1);
-		modelCoil[1][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 16, 32, 32, 16).computeNormals().shrinkUVs(d1);
+		modelCoil[0][1] = CCModel.quadModel(48).generateBox(0, -4, 0, -4, 8, 8 - d1, 8, 0, 0, 32, 32, 16);
+		modelCoil[1][1] = CCModel.quadModel(48).generateBox(0, -4, 0, -4, 8, 8 - d1, 8, 0, 16, 32, 32, 16);
+
+		CCModel.generateBackface(modelCoil[0][1], 0, modelCoil[0][1], 24, 24);
+		CCModel.generateBackface(modelCoil[1][1], 0, modelCoil[1][1], 24, 24);
+
+		modelCoil[0][1].computeNormals().shrinkUVs(d1);
+		modelCoil[1][1].computeNormals().shrinkUVs(d1);
 
 		modelBase[0][1] = CCModel.quadModel(24).generateBox(0, -8, -8, -8, 16, 10, 16, 0, 0, 64, 64, 16).computeNormals().shrinkUVs(d1);
 		modelBase[1][1] = CCModel.quadModel(24).generateBox(0, -8, -8, -8, 16, 10, 16, 0, 32, 64, 64, 16).computeNormals().shrinkUVs(d1);
 
 		modelBaseOverlay[0][1] = CCModel.quadModel(24).generateBox(0, -8 - d1, -8 - d1, -8 - d1, 16 + 2 * d1, 10 + 2 * d1, 16 + 2 * d1, 0, 0, 64, 64, 16).computeNormals().shrinkUVs(d1);
 		modelBaseOverlay[1][1] = CCModel.quadModel(24).generateBox(0, -8 - d1, -8 - d1, -8 - d1, 16 + 2 * d1, 10 + 2 * d1, 16 + 2 * d1, 0, 32, 64, 64, 16).computeNormals().shrinkUVs(d1);
-
-//		modelCoilAnimation[0] = CCModel.quadModel(16).generateBlock(0, d4, d1, d4, d5 - d1, d6 - d1, d5 - d1, 3).computeNormals();
-//		modelCoilAnimation[1] = CCModel.quadModel(16).generateBlock(0, d4, d5 + d1, d4, 1 - d1, d6 - d1, d5 - d1, 3).computeNormals();
-//
-//		modelCoilAnimation[2] = CCModel.quadModel(16).generateBlock(0, d4, d1, d4, d5 - d1, d6 - d1, d5 - d1, 12).computeNormals();
-//		modelCoilAnimation[3] = CCModel.quadModel(16).generateBlock(0, d4, d5 + d1, d4, 1 - d1, d6 - d1, d5 - d1, 12).computeNormals();
-//
-//		modelCoilAnimation[4] = CCModel.quadModel(16).generateBlock(0, d4, d1, d4, d5 - d1, d6 - d1, d5 - d1, 48).computeNormals();
-//		modelCoilAnimation[5] = CCModel.quadModel(16).generateBlock(0, d4, d5 + d1, d4, 1 - d1, d6 - d1, d5 - d1, 48).computeNormals();
 
 		modelCoilAnimation[0] = CCModel.quadModel(16).generateBlock(0, d4 + d1, d1, d4 + d1, d5 - d1, 1 - d1, d5 - d1, 3).computeNormals();
 		modelCoilAnimation[1] = CCModel.quadModel(16).generateBlock(0, d4 + d1, d1, d4 + d1, d5 - d1, 1 - d1, d5 - d1, 3).computeNormals();
@@ -227,17 +224,16 @@ public class RenderDynamo implements ILayeredBlockBakery {
 			ccrs.reset();
 			ccrs.bind(buffer);
 			if (layer == BlockRenderLayer.SOLID) {
-				if (coil != 0) {
-					renderCoilAnimation(ccrs, facing, active, coilUnderlay);
-				}
 				renderBaseAnimation(ccrs, facing, active, baseUnderlay);
-			} else {
+			} else if (layer == BlockRenderLayer.CUTOUT) {
 				renderCoil(ccrs, facing, active, coil);
 				renderBase(ccrs, facing, active, type);
 
 				if (level > 0) {
 					renderBaseOverlay(ccrs, facing, active, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(face, level));
 				}
+			} else if (TileDynamoBase.COIL_UNDERLAY[coil]) {
+				renderCoilAnimation(ccrs, facing, active, coilUnderlay);
 			}
 			buffer.finishDrawing();
 			return buffer.bake();

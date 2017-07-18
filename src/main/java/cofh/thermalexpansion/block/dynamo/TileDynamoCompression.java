@@ -41,6 +41,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 	public static void initialize() {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COIL_STEAM);
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COMPRESSION_COOLANT);
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COMPRESSION_FUEL);
 
@@ -53,6 +54,9 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		String category = "Dynamo.Compression";
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		String comment = "Adjust this value to change the Energy generation (in RF/t) for a Compression Dynamo. This base value will scale with block level and Augments.";
+		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, basePower / 4, basePower * 4, comment);
 
 		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
 		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
@@ -102,13 +106,20 @@ public class TileDynamoCompression extends TileDynamoBase {
 	@Override
 	protected int processTick() {
 
-		int energy = calcEnergy();
-		energyStorage.modifyEnergyStored(energy);
-		fuelRF -= energy;
-		coolantRF -= augmentCoolant ? 0 : energy;
+		if (augmentBoiler) {
+			fuelRF -= energyConfig.maxPower;
+			coolantRF -= energyConfig.maxPower;
+			transferSteam();
+
+			return energyConfig.maxPower;
+		}
+		lastEnergy = calcEnergy();
+		energyStorage.modifyEnergyStored(lastEnergy);
+		fuelRF -= lastEnergy;
+		coolantRF -= augmentCoolant ? 0 : lastEnergy;
 		transferEnergy();
 
-		return energy;
+		return lastEnergy;
 	}
 
 	@Override
@@ -228,6 +239,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		augmentFuel = false;
 
 		fuelTank.clearLock();
+		coolantTank.clearLock();
 	}
 
 	@Override
@@ -238,6 +250,9 @@ public class TileDynamoCompression extends TileDynamoBase {
 		if (augmentFuel) {
 			fuelTank.setLock(TFFluids.fluidFuel);
 		}
+		if (augmentBoiler) {
+			coolantTank.setLock(FluidRegistry.WATER);
+		}
 	}
 
 	@Override
@@ -245,6 +260,14 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
+		if (!augmentBoiler && TEProps.DYNAMO_COIL_STEAM.equals(id)) {
+			augmentBoiler = true;
+			hasModeAugment = true;
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 2));
+			energyStorage.setEnergyStored(0);
+			energyMod += 25;
+			return true;
+		}
 		if (!augmentCoolant && TEProps.DYNAMO_COMPRESSION_COOLANT.equals(id)) {
 			augmentCoolant = true;
 			hasModeAugment = true;
@@ -288,7 +311,9 @@ public class TileDynamoCompression extends TileDynamoBase {
 					if (CompressionManager.isValidFuel(resource)) {
 						return fuelTank.fill(resource, doFill);
 					}
-					if (CoolantManager.isValidCoolant(resource)) {
+					if (augmentBoiler && resource.getFluid() == FluidRegistry.WATER) {
+						return coolantTank.fill(resource, doFill);
+					} else if (CoolantManager.isValidCoolant(resource)) {
 						return coolantTank.fill(resource, doFill);
 					}
 					return 0;

@@ -226,8 +226,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		dynamoCoilDuct = addAugmentItem(514, TEProps.DYNAMO_COIL_DUCT, AugmentType.ADVANCED);
 		dynamoThrottle = addAugmentItem(515, TEProps.DYNAMO_THROTTLE, AugmentType.ADVANCED);
 
+		dynamoCoilSteam = addAugmentItem(576, TEProps.DYNAMO_COIL_STEAM, AugmentType.MODE);
+
 		dynamoSteamTurbine = addAugmentItem(640, TEProps.DYNAMO_STEAM_TURBINE, AugmentType.MODE);
-		dynamoSteamBoiler = addAugmentItem(641, TEProps.DYNAMO_STEAM_BOILER, AugmentType.MODE);
 
 		dynamoMagmaticCoolant = addAugmentItem(656, TEProps.DYNAMO_MAGMATIC_COOLANT, AugmentType.MODE);
 
@@ -531,6 +532,17 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Y', "blockGlass"
 		);
 
+		addShapedRecipe(dynamoCoilSteam,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', "blockGlassHardened",
+				'G', "gearCopper",
+				'I', "plateIron",
+				'X', "ingotCopper",
+				'Y', "dustRedstone"
+		);
+
 		addShapedRecipe(dynamoSteamTurbine,
 				" G ",
 				"ICI",
@@ -541,16 +553,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "ingotIron",
 				'Y', "dustRedstone"
 		);
-//		addShapedRecipe(dynamoSteamBoiler,
-//				" G ",
-//				"ICI",
-//				"YXY",
-//				'C', ItemMaterial.powerCoilElectrum,
-//				'G', "gearIron",
-//				'I', "plateCopper",
-//				'X', "ingotIron",
-//				'Y', "dustRedstone"
-//		);
 
 		addShapedRecipe(dynamoMagmaticCoolant,
 				" G ",
@@ -723,7 +725,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack dynamoThrottle;
 
 	public static ItemStack dynamoSteamTurbine;
-	public static ItemStack dynamoSteamBoiler;
+	public static ItemStack dynamoCoilSteam;
 
 	public static ItemStack dynamoMagmaticCoolant;
 

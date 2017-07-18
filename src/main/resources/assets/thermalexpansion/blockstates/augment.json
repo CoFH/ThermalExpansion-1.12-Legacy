@@ -159,14 +159,14 @@
 					"layer0": "thermalexpansion:items/augment/dynamo_throttle"
 				}
 			},
+			"dynamocoilsteam": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_coil_steam"
+				}
+			},
 			"dynamosteamturbine": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/dynamo_steam_turbine"
-				}
-			},
-			"dynamosteamboiler": {
-				"textures": {
-					"layer0": "thermalexpansion:items/augment/dynamo_steam_boiler"
 				}
 			},
 			"dynamomagmaticcoolant": {

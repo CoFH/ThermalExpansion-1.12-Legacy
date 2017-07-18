@@ -40,6 +40,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	public static void initialize() {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COIL_STEAM);
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_MAGMATIC_COOLANT);
 
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion:dynamo_magmatic");
@@ -51,6 +52,9 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 		String category = "Dynamo.Magmatic";
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		String comment = "Adjust this value to change the Energy generation (in RF/t) for a Magmatic Dynamo. This base value will scale with block level and Augments.";
+		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, basePower / 4, basePower * 4, comment);
 
 		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
 		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
@@ -64,7 +68,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 	/* AUGMENTS */
 	protected boolean augmentCoolant;
-	protected boolean flagCoolant;
+	protected boolean flagTank;
 
 	@Override
 	public int getType() {
@@ -81,16 +85,25 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	@Override
 	protected boolean canStart() {
 
-		if (augmentCoolant) {
+		if (augmentBoiler || augmentCoolant) {
 			return (fuelRF > 0 || fuelTank.getFluidAmount() >= fluidAmount) && (coolantRF > 0 || coolantTank.getFluidAmount() >= fluidAmount);
 		}
 		return fuelTank.getFluidAmount() >= fluidAmount;
 	}
 
 	@Override
+	protected boolean canFinish() {
+
+		if (augmentBoiler || augmentCoolant) {
+			return fuelRF <= 0 || coolantRF <= 0;
+		}
+		return fuelRF <= 0;
+	}
+
+	@Override
 	protected void processStart() {
 
-		if (augmentCoolant) {
+		if (augmentBoiler || augmentCoolant) {
 			if (fuelRF <= 0) {
 				fuelRF += MagmaticManager.getFuelEnergy100mB(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
 				fuelTank.drain(fluidAmount, true);
@@ -103,6 +116,24 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		}
 		fuelRF += MagmaticManager.getFuelEnergy100mB(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
 		fuelTank.drain(fluidAmount, true);
+	}
+
+	protected int processTick() {
+
+		if (augmentBoiler) {
+			fuelRF -= energyConfig.maxPower;
+			coolantRF -= energyConfig.maxPower;
+			transferSteam();
+
+			return energyConfig.maxPower;
+		}
+		lastEnergy = calcEnergy();
+		energyStorage.modifyEnergyStored(lastEnergy);
+		fuelRF -= lastEnergy;
+		coolantRF -= augmentCoolant ? lastEnergy : 0;
+		transferEnergy();
+
+		return lastEnergy;
 	}
 
 	@Override
@@ -133,9 +164,9 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		return coolantTank;
 	}
 
-	public boolean augmentCoolant() {
+	public boolean showCoolantTank() {
 
-		return augmentCoolant && flagCoolant;
+		return (augmentBoiler || augmentCoolant) && flagTank;
 	}
 
 	/* NBT METHODS */
@@ -201,7 +232,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		super.handleGuiPacket(payload);
 
 		augmentCoolant = payload.getBool();
-		flagCoolant = augmentCoolant;
+		flagTank = augmentBoiler || augmentCoolant;
 		fuelTank.setFluid(payload.getFluidStack());
 		coolantTank.setFluid(payload.getFluidStack());
 	}
@@ -234,7 +265,9 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 		super.postAugmentInstall();
 
-		if (!augmentCoolant) {
+		if (augmentBoiler) {
+			coolantTank.setLock(FluidRegistry.WATER);
+		} else if (!augmentCoolant) {
 			coolantTank.drain(coolantTank.getCapacity(), true);
 			coolantRF = 0;
 		}
@@ -245,6 +278,14 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
+		if (!augmentBoiler && TEProps.DYNAMO_COIL_STEAM.equals(id)) {
+			augmentBoiler = true;
+			hasModeAugment = true;
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level));
+			energyStorage.setEnergyStored(0);
+			energyMod += 15;
+			return true;
+		}
 		if (!augmentCoolant && TEProps.DYNAMO_MAGMATIC_COOLANT.equals(id)) {
 			augmentCoolant = true;
 			hasModeAugment = true;
@@ -283,7 +324,9 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 					if (MagmaticManager.isValidFuel(resource)) {
 						return fuelTank.fill(resource, doFill);
 					}
-					if (augmentCoolant && CoolantManager.isValidCoolant(resource)) {
+					if (augmentBoiler && resource.getFluid() == FluidRegistry.WATER) {
+						return coolantTank.fill(resource, doFill);
+					} else if (augmentCoolant && CoolantManager.isValidCoolant(resource)) {
 						return coolantTank.fill(resource, doFill);
 					}
 					return 0;
