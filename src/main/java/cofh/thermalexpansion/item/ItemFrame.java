@@ -57,7 +57,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 		ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:frame", "frame");
 		ModelLoader.setCustomModelResourceLocation(this, 0, location);
 		ModelLoader.setCustomMeshDefinition(this, (stack -> location));
-		ModelRegistryHelper.register(location, new CCBakeryModel(""));
+		ModelRegistryHelper.register(location, new CCBakeryModel());
 	}
 
 	/* IInitializer */

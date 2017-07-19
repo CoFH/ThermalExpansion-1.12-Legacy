@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.render;
 
-import codechicken.lib.model.PerspectiveAwareModelProperties;
+import codechicken.lib.model.bakedmodels.ModelProperties.PerspectiveProperties;
 import codechicken.lib.model.bakery.generation.IItemBakery;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
@@ -48,9 +48,9 @@ public class RenderFrame implements IItemBakery {
 	}
 
 	@Override
-	public PerspectiveAwareModelProperties getModelProperties(ItemStack stack) {
+	public PerspectiveProperties getModelProperties(ItemStack stack) {
 
-		return PerspectiveAwareModelProperties.DEFAULT_BLOCK;
+		return PerspectiveProperties.DEFAULT_BLOCK;
 	}
 
 	private TextureAtlasSprite getFrameTexture(EnumFacing face, ItemStack stack) {

@@ -282,7 +282,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		for (Type type : Type.values()) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), type.getMetadata(), location);
 		}
-		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/dynamo/dynamo_coil_redstone"));
+		ModelRegistryHelper.register(location, new CCBakeryModel());
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 

@@ -290,7 +290,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		for (Type type : Type.values()) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), type.getMetadata(), location);
 		}
-		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/machine/machine_top_0"));
+		ModelRegistryHelper.register(location, new CCBakeryModel());
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 

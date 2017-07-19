@@ -202,7 +202,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		for (Type type : Type.values()) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), type.getMetadata(), location);
 		}
-		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/apparatus/apparatus_side"));
+		ModelRegistryHelper.register(location, new CCBakeryModel());
 	}
 
 	/* IInitializer */

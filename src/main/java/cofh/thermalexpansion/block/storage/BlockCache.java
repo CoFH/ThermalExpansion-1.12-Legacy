@@ -325,7 +325,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, mapper.location);
 		ModelLoader.setCustomStateMapper(this, mapper);
 		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
-		ModelRegistryHelper.register(mapper.location, new CCBakeryModel("thermalexpansion:blocks/storage/cache_top_0"));
+		ModelRegistryHelper.register(mapper.location, new CCBakeryModel());
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 

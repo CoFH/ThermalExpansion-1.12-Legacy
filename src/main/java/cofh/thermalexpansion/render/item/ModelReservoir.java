@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.render.item;
 
-import codechicken.lib.model.PerspectiveAwareModelProperties;
+import codechicken.lib.model.bakedmodels.ModelProperties.PerspectiveProperties;
 import codechicken.lib.model.bakery.generation.IItemBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.item.ItemStack;
@@ -23,9 +23,9 @@ public class ModelReservoir implements IItemBakery {
 	}
 
 	@Override
-	public PerspectiveAwareModelProperties getModelProperties(ItemStack stack) {
+	public PerspectiveProperties getModelProperties(ItemStack stack) {
 
-		return PerspectiveAwareModelProperties.DEFAULT_ITEM;
+		return PerspectiveProperties.DEFAULT_ITEM;
 	}
 
 }

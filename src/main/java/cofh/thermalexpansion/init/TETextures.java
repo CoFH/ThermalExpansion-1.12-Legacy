@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.init;
 
+import codechicken.lib.render.particle.CustomParticleHandler;
 import cofh.core.init.CoreProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -513,6 +514,7 @@ public class TETextures {
 				STRONGBOX_TOP_C
 		};
 		// @formatter:on
+		CustomParticleHandler.addIgnoredSprite(CONFIG_NONE);
 	}
 
 	/* HELPERS */
@@ -553,6 +555,7 @@ public class TETextures {
 
 	/* REFERENCES */
 	public static TextureAtlasSprite[] CONFIG;
+	//TODO, Remove None config texture in favor of null.
 	public static TextureAtlasSprite CONFIG_NONE;
 	public static TextureAtlasSprite CONFIG_BLUE;
 	public static TextureAtlasSprite CONFIG_RED;

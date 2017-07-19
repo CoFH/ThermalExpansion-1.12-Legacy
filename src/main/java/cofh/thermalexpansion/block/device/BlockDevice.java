@@ -249,7 +249,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		for (Type type : Type.values()) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), type.getMetadata(), location);
 		}
-		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/device/device_side"));
+		ModelRegistryHelper.register(location, new CCBakeryModel());
 	}
 
 	/* IInitializer */

@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block;
 
 import codechicken.lib.render.particle.CustomParticleHandler;
-import codechicken.lib.texture.IWorldBlockTextureProvider;
 import cofh.api.core.IAugmentable;
 import cofh.api.core.ISecurable;
 import cofh.api.tileentity.IRedstoneControl;
@@ -64,12 +63,6 @@ public abstract class BlockTEBase extends BlockCoreTile {
 	}
 
 	@Override
-	public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles) {
-
-		return true;
-	}
-
-	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		RayTraceResult traceResult = RayTracer.retrace(player);
@@ -128,25 +121,23 @@ public abstract class BlockTEBase extends BlockCoreTile {
 
 	/* RENDERING METHODS */
 	@Override
+	public boolean addLandingEffects(IBlockState state, WorldServer world, BlockPos pos, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles) {
+
+		return CustomParticleHandler.handleLandingEffects(world, pos, entity, numberOfParticles);
+	}
+
+	@Override
 	@SideOnly (Side.CLIENT)
 	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
 
-		if (this instanceof IWorldBlockTextureProvider) {
-			CustomParticleHandler.addDestroyEffects(world, pos, manager, (IWorldBlockTextureProvider) this);
-			return true;
-		}
-		return false;
+		return CustomParticleHandler.handleDestroyEffects(world, pos, manager);
 	}
 
 	@Override
 	@SideOnly (Side.CLIENT) // Because vanilla removed state and side based particle textures in 1.8..
 	public boolean addHitEffects(IBlockState state, World world, RayTraceResult trace, ParticleManager manager) {
 
-		if (this instanceof IWorldBlockTextureProvider) {
-			CustomParticleHandler.addHitEffects(state, world, trace, manager, ((IWorldBlockTextureProvider) this));
-			return true;
-		}
-		return false;
+		return CustomParticleHandler.handleHitEffects(state, world, trace, manager);
 	}
 
 	/* HELPERS */

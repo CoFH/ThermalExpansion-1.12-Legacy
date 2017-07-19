@@ -220,7 +220,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 		final ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:florb", "type=florb");
 		ModelLoader.setCustomMeshDefinition(this, stack -> location);
 		ModelLoader.setCustomModelResourceLocation(this, 0, location);
-		ModelRegistryHelper.register(location, new CCBakeryModel(""));
+		ModelRegistryHelper.register(location, new CCBakeryModel());
 		ModelBakery.registerItemKeyGenerator(this, stack -> {
 
 			String fluid = "";
