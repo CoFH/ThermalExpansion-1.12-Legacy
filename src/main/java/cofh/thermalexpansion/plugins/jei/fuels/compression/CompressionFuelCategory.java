@@ -17,6 +17,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -55,8 +56,8 @@ public class CompressionFuelCategory extends BaseFuelCategory<CompressionFuelWra
 
 		List<CompressionFuelWrapper> recipes = new ArrayList<>();
 
-		for (Fluid fuel : CompressionManager.getFuels()) {
-			FluidStack fuelStack = new FluidStack(fuel, Fluid.BUCKET_VOLUME);
+		for (String fluidName : CompressionManager.getFuels()) {
+			FluidStack fuelStack = new FluidStack(FluidRegistry.getFluid(fluidName), Fluid.BUCKET_VOLUME);
 			recipes.add(new CompressionFuelWrapper(guiHelper, fuelStack, CompressionManager.getFuelEnergy(fuelStack)));
 		}
 		return recipes;

@@ -13,22 +13,23 @@ public class CoolantManager {
 	/**
 	 * Coolant is stored as RF effectiveness per bucket.
 	 */
-	private static TObjectIntHashMap<Fluid> coolantMap = new TObjectIntHashMap<>();
-	private static TObjectIntHashMap<Fluid> coolantFactorMap = new TObjectIntHashMap<>();
+	private static TObjectIntHashMap<String> coolantMap = new TObjectIntHashMap<>();
+	private static TObjectIntHashMap<String> coolantFactorMap = new TObjectIntHashMap<>();
 
-	private static final int WATER_RF = 500000;
+	private static final int WATER_RF = 250000;
+	private static final int WATER_FACTOR = 6;
 
 	public static boolean isValidCoolant(Fluid fluid) {
 
-		return fluid != null && coolantMap.containsKey(fluid);
+		return fluid != null && coolantMap.containsKey(fluid.getName());
 	}
 
 	public static boolean isValidCoolant(FluidStack stack) {
 
-		return stack != null && coolantMap.containsKey(stack.getFluid());
+		return stack != null && coolantMap.containsKey(stack.getFluid().getName());
 	}
 
-	public static Set<Fluid> getCoolantFluids() {
+	public static Set<String> getCoolantFluids() {
 
 		return ImmutableSet.copyOf(coolantMap.keySet());
 	}
@@ -38,7 +39,7 @@ public class CoolantManager {
 	 */
 	public static int getCoolantRF(Fluid fluid) {
 
-		return coolantMap.get(fluid);
+		return coolantMap.get(fluid.getName());
 	}
 
 	public static int getCoolantRF(FluidStack stack) {
@@ -64,7 +65,7 @@ public class CoolantManager {
 	 */
 	public static int getCoolantFactor(Fluid fluid) {
 
-		return coolantFactorMap.get(fluid);
+		return coolantFactorMap.get(fluid.getName());
 	}
 
 	public static int getCoolantFactor(FluidStack stack) {
@@ -74,7 +75,7 @@ public class CoolantManager {
 
 	public static void initialize() {
 
-		addCoolant("water", 500000, 6);
+		addCoolant("water", WATER_RF, WATER_FACTOR);
 		addCoolant("cryotheum", 4000000, 2);
 
 		loadMappings();
@@ -86,39 +87,24 @@ public class CoolantManager {
 	}
 
 	/* ADD */
-	public static boolean addCoolant(Fluid fluid, int coolantRF, int coolantFactor) {
-
-		if (fluid == null || coolantRF < 0 || coolantFactor < 1 || coolantFactor > 100) {
-			return false;
-		}
-		coolantMap.put(fluid, coolantRF);
-		coolantFactorMap.put(fluid, coolantFactor);
-		return true;
-	}
-
 	public static boolean addCoolant(String fluidName, int coolantRF, int coolantFactor) {
 
-		return addCoolant(FluidRegistry.getFluid(fluidName), coolantRF, coolantFactor);
+		if (!FluidRegistry.isFluidRegistered(fluidName) || coolantRF < 0 || coolantFactor < 1 || coolantFactor > 100) {
+			return false;
+		}
+		coolantMap.put(fluidName, coolantRF);
+		coolantFactorMap.put(fluidName, coolantFactor);
+		return true;
 	}
 
 	/* REMOVE */
-	public static boolean removeCoolant(Fluid fluid) {
-
-		if (!coolantMap.contains(fluid)) {
-			return false;
-		}
-		coolantMap.remove(fluid);
-		coolantFactorMap.remove(fluid);
-		return true;
-	}
-
 	public static boolean removeCoolant(String fluidName) {
 
 		if (!FluidRegistry.isFluidRegistered(fluidName)) {
 			return false;
 		}
-		coolantMap.remove(FluidRegistry.getFluid(fluidName));
-		coolantFactorMap.remove(FluidRegistry.getFluid(fluidName));
+		coolantMap.remove(fluidName);
+		coolantFactorMap.remove(fluidName);
 		return true;
 	}
 

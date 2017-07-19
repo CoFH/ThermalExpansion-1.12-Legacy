@@ -3,7 +3,6 @@ package cofh.thermalexpansion.util.managers.dynamo;
 import cofh.core.init.CoreProps;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.map.hash.TObjectIntHashMap;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -11,28 +10,28 @@ import java.util.Set;
 
 public class MagmaticManager {
 
-	private static TObjectIntHashMap<Fluid> fuelMap = new TObjectIntHashMap<>();
+	private static TObjectIntHashMap<String> fuelMap = new TObjectIntHashMap<>();
 
-	public static int DEFAULT_ENERGY = 32000;
+	public static int DEFAULT_ENERGY = 100000;
 
-	public static Set<Fluid> getFuels() {
+	public static Set<String> getFuels() {
 
 		return ImmutableSet.copyOf(fuelMap.keySet());
 	}
 
 	public static boolean isValidFuel(FluidStack fluid) {
 
-		return fluid != null && fuelMap.containsKey(fluid.getFluid());
+		return fluid != null && fuelMap.containsKey(fluid.getFluid().getName());
 	}
 
 	public static int getFuelEnergy(FluidStack fluid) {
 
-		return fluid == null ? 0 : fuelMap.get(fluid.getFluid());
+		return fluid == null ? 0 : fuelMap.get(fluid.getFluid().getName());
 	}
 
 	public static int getFuelEnergy100mB(FluidStack fluid) {
 
-		return fluid == null ? 0 : fuelMap.get(fluid.getFluid()) / 10;
+		return fluid == null ? 0 : fuelMap.get(fluid.getFluid().getName()) / 10;
 	}
 
 	public static void initialize() {
@@ -47,31 +46,28 @@ public class MagmaticManager {
 
 	}
 
-	/* ADD FUELS */
-	public static boolean addFuel(Fluid fluid, int energy) {
+	public static void refresh() {
 
-		if (fluid == null || energy < 10000 || energy > 200000000) {
-			return false;
-		}
-		fuelMap.put(fluid, energy);
-		return true;
 	}
 
-	public static boolean addFuel(String name, int energy) {
+	/* ADD FUELS */
+	public static boolean addFuel(String fluidName, int energy) {
 
-		return FluidRegistry.isFluidRegistered(name) && addFuel(FluidRegistry.getFluid(name), energy);
+		if (!FluidRegistry.isFluidRegistered(fluidName) || energy < 10000 || energy > 200000000) {
+			return false;
+		}
+		fuelMap.put(fluidName, energy);
+		return true;
 	}
 
 	/* REMOVE FUELS */
-	public static boolean removeFuel(Fluid fluid) {
+	public static boolean removeFuel(String fluidName) {
 
-		fuelMap.remove(fluid);
+		if (!FluidRegistry.isFluidRegistered(fluidName)) {
+			return false;
+		}
+		fuelMap.remove(fluidName);
 		return true;
-	}
-
-	public static boolean removeFuel(String name) {
-
-		return FluidRegistry.isFluidRegistered(name) && removeFuel(FluidRegistry.getFluid(name));
 	}
 
 }
