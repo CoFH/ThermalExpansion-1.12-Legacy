@@ -48,7 +48,7 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	public static void config() {
 
 		String category = "Device.Fisher";
-		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+		// BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	private static final int TARGET_WATER[] = { 10, 20, 30 };

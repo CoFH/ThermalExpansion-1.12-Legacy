@@ -43,7 +43,7 @@ public class TileCrucible extends TileMachineBase {
 	public static int basePower = 50;
 
 	public static final int LAVA_MULTIPLIER = 10;
-	public static final int LAVA_ENERGY_MOD = 20;
+	public static final int LAVA_ENERGY_MOD = 0;
 
 	public static void initialize() {
 

@@ -12,7 +12,7 @@ public class MagmaticManager {
 
 	private static TObjectIntHashMap<String> fuelMap = new TObjectIntHashMap<>();
 
-	public static int DEFAULT_ENERGY = 32000;
+	public static int DEFAULT_ENERGY = 100000;
 
 	public static Set<String> getFuels() {
 
@@ -48,14 +48,6 @@ public class MagmaticManager {
 
 	public static void refresh() {
 
-		//		TObjectIntHashMap<Fluid> tempMap = new TObjectIntHashMap<>(fuelMap.size());
-		//
-		//		for (TObjectIntIterator<Fluid> it = fuelMap.iterator(); it.hasNext(); ) {
-		//			it.advance();
-		//			tempMap.put(FluidRegistry.getFluid(it.key().getName()), it.value());
-		//		}
-		//		fuelMap.clear();
-		//		fuelMap = tempMap;
 	}
 
 	/* ADD FUELS */

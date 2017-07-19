@@ -21,12 +21,12 @@ public class CoolantManager {
 
 	public static boolean isValidCoolant(Fluid fluid) {
 
-		return fluid != null && coolantMap.containsKey(fluid);
+		return fluid != null && coolantMap.containsKey(fluid.getName());
 	}
 
 	public static boolean isValidCoolant(FluidStack stack) {
 
-		return stack != null && coolantMap.containsKey(stack.getFluid());
+		return stack != null && coolantMap.containsKey(stack.getFluid().getName());
 	}
 
 	public static Set<String> getCoolantFluids() {
@@ -65,7 +65,7 @@ public class CoolantManager {
 	 */
 	public static int getCoolantFactor(Fluid fluid) {
 
-		return coolantFactorMap.get(fluid);
+		return coolantFactorMap.get(fluid.getName());
 	}
 
 	public static int getCoolantFactor(FluidStack stack) {
