@@ -48,6 +48,7 @@ public class RecipeUidsTE {
 	public static final String DYNAMO_REACTANT = "thermalexpansion.reactant";
 	public static final String DYNAMO_ENERVATION = "thermalexpansion.enervation";
 	public static final String DYNAMO_NUMISMATIC = "thermalexpansion.numismatic";
+	public static final String DYNAMO_NUMISMATIC_GEM = "thermalexpansion.numismatic_gem";
 
 	public static final String COOLANT = "thermalexpansion.coolant";
 

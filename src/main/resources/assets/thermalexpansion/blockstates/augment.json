@@ -159,9 +159,9 @@
 					"layer0": "thermalexpansion:items/augment/dynamo_throttle"
 				}
 			},
-			"dynamocoilsteam": {
+			"dynamoboiler": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/dynamo_coil_steam"
+					"layer0": "thermalexpansion:items/augment/dynamo_boiler"
 				}
 			},
 			"dynamosteamturbine": {
@@ -187,6 +187,11 @@
 			"dynamoreactantelemental": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/dynamo_reactant_elemental"
+				}
+			},
+			"dynamonumismaticgem": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_numismatic_gem"
 				}
 			},
 			"apparatusdepth": {

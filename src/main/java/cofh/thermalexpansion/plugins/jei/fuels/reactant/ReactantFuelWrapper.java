@@ -11,6 +11,7 @@ import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class ReactantFuelWrapper extends BaseFuelWrapper {
 		recipeInputs.add(reaction.getReactant());
 
 		List<FluidStack> recipeFluids = new ArrayList<>();
-		recipeFluids.add(new FluidStack(reaction.getFluid(), TileDynamoReactant.fluidAmount));
+		recipeFluids.add(new FluidStack(FluidRegistry.getFluid(reaction.getFluidName()), TileDynamoReactant.fluidAmount));
 
 		this.inputs = Collections.singletonList(recipeInputs);
 		this.inputFluids = Collections.singletonList(recipeFluids);

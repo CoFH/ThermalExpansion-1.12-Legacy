@@ -18,6 +18,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -57,8 +58,8 @@ public class CoolantCategory extends BaseFuelCategory<CoolantWrapper> {
 
 		List<CoolantWrapper> recipes = new ArrayList<>();
 
-		for (Fluid coolant : CoolantManager.getCoolantFluids()) {
-			FluidStack coolantStack = new FluidStack(coolant, Fluid.BUCKET_VOLUME);
+		for (String fluidName : CoolantManager.getCoolantFluids()) {
+			FluidStack coolantStack = new FluidStack(FluidRegistry.getFluid(fluidName), Fluid.BUCKET_VOLUME);
 			recipes.add(new CoolantWrapper(guiHelper, coolantStack, CoolantManager.getCoolantRF(coolantStack), CoolantManager.getCoolantFactor(coolantStack)));
 		}
 		return recipes;

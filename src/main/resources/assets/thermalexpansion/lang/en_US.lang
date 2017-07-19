@@ -37,13 +37,13 @@ gui.thermalexpansion.storage.cell.incSend=Increase RF Output by
 
 info.thermalexpansion.augment.0=Augment
 
+info.thermalexpansion.augment.dynamoBoiler.0=Dynamos: Output Specialization
+info.thermalexpansion.augment.dynamoBoiler.a.0=Converts an applicable Dynamo into a Steam Boiler.
+info.thermalexpansion.augment.dynamoBoiler.a.1=Increases fuel efficiency.
+info.thermalexpansion.augment.dynamoBoiler.c.0=Steam is produced instead of RF.
+
 info.thermalexpansion.augment.dynamoCoilDuct.0=Dynamos: Side Accessibility
 info.thermalexpansion.augment.dynamoCoilDuct.a.0=Allows insertion and extraction through the coil.
-
-info.thermalexpansion.augment.dynamoCoilSteam.0=Dynamos: Output Specialization
-info.thermalexpansion.augment.dynamoCoilSteam.a.0=Converts an applicable Dynamo into a Steam Boiler.
-info.thermalexpansion.augment.dynamoCoilSteam.a.1=Increases fuel efficiency.
-info.thermalexpansion.augment.dynamoCoilSteam.c.0=Steam is produced instead of RF.
 
 info.thermalexpansion.augment.dynamoCompressionCoolant.0=Compression Dynamo: Specialization
 info.thermalexpansion.augment.dynamoCompressionCoolant.a.0=Coolant is no longer consumed for operation.
@@ -59,6 +59,11 @@ info.thermalexpansion.augment.dynamoEfficiency.a.0=More energy (RF) is produced 
 info.thermalexpansion.augment.dynamoMagmaticCoolant.0=Magmatic Dynamo: Specialization
 info.thermalexpansion.augment.dynamoMagmaticCoolant.a.0=Greatly increases power generation and efficiency.
 info.thermalexpansion.augment.dynamoMagmaticCoolant.b.0=Coolant is required for operation.
+
+info.thermalexpansion.augment.dynamoNumismaticGem.0=Numismatic Dynamo: Specialization
+info.thermalexpansion.augment.dynamoNumismaticGem.a.0=Allows for various gemstones to be used as fuel.
+info.thermalexpansion.augment.dynamoNumismaticGem.a.1=Greatly increases power generation and efficiency.
+info.thermalexpansion.augment.dynamoNumismaticGem.b.0=Only gemstones may be utilized.
 
 info.thermalexpansion.augment.dynamoPower.0=Dynamos: Increased Output
 info.thermalexpansion.augment.dynamoPower.a.0=Increases power generation (RF/t).
@@ -265,12 +270,13 @@ info.thermalexpansion.upgrade.incremental.1=Requires tier immediately preceding.
 item.thermalexpansion.augment.apparatusDepth.name=WIP
 item.thermalexpansion.augment.apparatusRadius.name=WIP
 
+item.thermalexpansion.augment.dynamoBoiler.name=Boiler Conversion
 item.thermalexpansion.augment.dynamoCoilDuct.name=Transmission Coil Ducting
-item.thermalexpansion.augment.dynamoCoilSteam.name=Boiler Conversion
 item.thermalexpansion.augment.dynamoCompressionCoolant.name=Closed-Loop Cooling
 item.thermalexpansion.augment.dynamoCompressionFuel.name=Ignition Plugs
 item.thermalexpansion.augment.dynamoEfficiency.name=Fuel Catalyzer
 item.thermalexpansion.augment.dynamoMagmaticCoolant.name=Isentropic Reservoir
+item.thermalexpansion.augment.dynamoNumismaticGem.name=Lapidary Calibration
 item.thermalexpansion.augment.dynamoPower.name=Auxiliary Transmission Coil
 item.thermalexpansion.augment.dynamoReactantElemental.name=Elemental Catalyzer
 item.thermalexpansion.augment.dynamoSteamTurbine.name=Turbine Conversion

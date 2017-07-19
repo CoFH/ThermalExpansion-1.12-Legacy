@@ -40,7 +40,7 @@ public class TransposerManager {
 		return getFillRecipe(input, fluid) != null;
 	}
 
-	public static boolean extractRecipeExists(ItemStack input, FluidStack fluid) {
+	public static boolean extractRecipeExists(ItemStack input) {
 
 		return getExtractRecipe(input) != null;
 	}
@@ -148,7 +148,7 @@ public class TransposerManager {
 		if (input.isEmpty() || fluid == null || fluid.amount <= 0 || energy <= 0) {
 			return null;
 		}
-		if (extractRecipeExists(input, fluid)) {
+		if (extractRecipeExists(input)) {
 			return null;
 		}
 		if (output == null && reversible || output.isEmpty() && chance != 0) {

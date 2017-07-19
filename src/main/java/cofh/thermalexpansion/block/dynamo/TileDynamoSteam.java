@@ -43,7 +43,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	public static void initialize() {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
-		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COIL_STEAM);
+		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_BOILER);
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_STEAM_TURBINE);
 
 		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion:dynamo_steam");
@@ -295,12 +295,12 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-		if (!augmentBoiler && TEProps.DYNAMO_COIL_STEAM.equals(id)) {
+		if (!augmentBoiler && TEProps.DYNAMO_BOILER.equals(id)) {
 			augmentBoiler = true;
 			hasModeAugment = true;
-			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 3));
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 2));
 			energyStorage.setEnergyStored(0);
-			energyMod += 50;
+			energyMod += 25;
 			return true;
 		}
 		if (!augmentTurbine && TEProps.DYNAMO_STEAM_TURBINE.equals(id)) {

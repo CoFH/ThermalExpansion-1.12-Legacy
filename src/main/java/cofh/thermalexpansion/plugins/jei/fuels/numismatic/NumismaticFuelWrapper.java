@@ -2,6 +2,7 @@ package cofh.thermalexpansion.plugins.jei.fuels.numismatic;
 
 import cofh.thermalexpansion.block.dynamo.TileDynamoNumismatic;
 import cofh.thermalexpansion.plugins.jei.Drawables;
+import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.fuels.BaseFuelWrapper;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -18,6 +19,13 @@ public class NumismaticFuelWrapper extends BaseFuelWrapper {
 	final List<List<ItemStack>> inputs;
 
 	public NumismaticFuelWrapper(IGuiHelper guiHelper, ItemStack fuel, int energy) {
+
+		this(guiHelper, fuel, energy, RecipeUidsTE.DYNAMO_NUMISMATIC);
+	}
+
+	public NumismaticFuelWrapper(IGuiHelper guiHelper, ItemStack fuel, int energy, String uIdIn) {
+
+		uId = uIdIn;
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 		recipeInputs.add(fuel);

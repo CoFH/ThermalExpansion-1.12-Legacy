@@ -115,14 +115,23 @@ public class CrucibleManager {
 	public static void refresh() {
 
 		Map<ComparableItemStackCrucible, CrucibleRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Set<ComparableItemStackCrucible> tempSet = new THashSet<>();
 		CrucibleRecipe tempRecipe;
 
 		for (Entry<ComparableItemStackCrucible, CrucibleRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			tempMap.put(new ComparableItemStackCrucible(tempRecipe.input), tempRecipe);
+			ComparableItemStackCrucible input = new ComparableItemStackCrucible(tempRecipe.input);
+			tempMap.put(input, tempRecipe);
+
+			if (FluidRegistry.LAVA.equals(tempRecipe.getOutput().getFluid())) {
+				tempSet.add(input);
+			}
 		}
 		recipeMap.clear();
 		recipeMap = tempMap;
+
+		lavaSet.clear();
+		lavaSet = tempSet;
 	}
 
 	/* ADD RECIPES */
@@ -146,9 +155,7 @@ public class CrucibleManager {
 	public static CrucibleRecipe removeRecipe(ItemStack input) {
 
 		ComparableItemStackCrucible inputCrucible = new ComparableItemStackCrucible(input);
-		if (lavaSet.contains(inputCrucible)) {
-			lavaSet.remove(inputCrucible);
-		}
+		lavaSet.remove(inputCrucible);
 		return recipeMap.remove(inputCrucible);
 	}
 

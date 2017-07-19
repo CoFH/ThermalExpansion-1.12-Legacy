@@ -11,6 +11,7 @@ import java.util.List;
 
 public abstract class BaseFuelWrapper extends BlankRecipeWrapper {
 
+	protected String uId;
 	protected int energy;
 
 	protected IDrawableAnimated durationFill;

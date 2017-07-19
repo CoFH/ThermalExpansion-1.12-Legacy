@@ -340,7 +340,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		TileCentrifuge.initialize();
 		// TileCrafter.initialize();
 		// TileBrewer.initialize();
-		TileEnchanter.initialize();
+		// TileEnchanter.initialize();
 		TilePrecipitator.initialize();
 		TileExtruder.initialize();
 
@@ -365,7 +365,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		machineCentrifuge = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CENTRIFUGE.getMetadata()));
 		// machineCrafter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
 		// machineBrewer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.BREWER.getMetadata()));
-		machineEnchanter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ENCHANTER.getMetadata()));
+		// machineEnchanter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ENCHANTER.getMetadata()));
 		machinePrecipitator = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.PRECIPITATOR.getMetadata()));
 		machineExtruder = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.EXTRUDER.getMetadata()));
 
@@ -548,18 +548,18 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 //					'Y', "gearTin"
 //			);
 //		}
-		if (enable[Type.ENCHANTER.getMetadata()]) {
-			addShapedRecipe(machineEnchanter,
-					" X ",
-					"YCY",
-					"IPI",
-					'C', ItemFrame.frameMachine,
-					'I', constantanPart,
-					'P', ItemMaterial.powerCoilGold,
-					'X', Blocks.ENCHANTING_TABLE,
-					'Y', "blockLapis"
-			);
-		}
+//		if (enable[Type.ENCHANTER.getMetadata()]) {
+//			addShapedRecipe(machineEnchanter,
+//					" X ",
+//					"YCY",
+//					"IPI",
+//					'C', ItemFrame.frameMachine,
+//					'I', constantanPart,
+//					'P', ItemMaterial.powerCoilGold,
+//					'X', Blocks.ENCHANTING_TABLE,
+//					'Y', "blockLapis"
+//			);
+//		}
 		if (enable[Type.PRECIPITATOR.getMetadata()]) {
 			addShapedRecipe(machinePrecipitator,
 					" X ",

@@ -40,7 +40,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	public static void initialize() {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
-		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COIL_STEAM);
+		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_BOILER);
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_MAGMATIC_COOLANT);
 
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion:dynamo_magmatic");
@@ -278,12 +278,12 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-		if (!augmentBoiler && TEProps.DYNAMO_COIL_STEAM.equals(id)) {
+		if (!augmentBoiler && TEProps.DYNAMO_BOILER.equals(id)) {
 			augmentBoiler = true;
 			hasModeAugment = true;
 			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level));
 			energyStorage.setEnergyStored(0);
-			energyMod += 15;
+			energyMod += 10;
 			return true;
 		}
 		if (!augmentCoolant && TEProps.DYNAMO_MAGMATIC_COOLANT.equals(id)) {

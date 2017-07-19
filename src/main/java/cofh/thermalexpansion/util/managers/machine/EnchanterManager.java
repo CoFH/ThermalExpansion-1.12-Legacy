@@ -24,7 +24,7 @@ public class EnchanterManager {
 	private static Set<ComparableItemStackEnchanter> lockSet = new THashSet<>();
 
 	public static final ItemStack ITEM_BOOK = new ItemStack(Items.BOOK);
-	public static final ItemStack ITEM_BOOK2 = ItemTome.lexicon;
+	public static final ItemStack ITEM_BOOK2 = ItemTome.tomeLexicon;
 
 	public static final int DEFAULT_ENERGY[] = { 4000, 8000, 12000, 16000, 20000 };
 	public static final int DEFAULT_EXPERIENCE[] = { 500, 1500, 3000, 5000, 7500 };

@@ -209,8 +209,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
 
-		machineEnchanterTreasure = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_TREASURE, AugmentType.ADVANCED);
-		machineEnchanterEmpowered = addAugmentItem(465, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.ADVANCED);
+		// machineEnchanterTreasure = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_TREASURE, AugmentType.ADVANCED);
+		// machineEnchanterEmpowered = addAugmentItem(465, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.ADVANCED);
 
 		machinePrecipitatorSnowLayer = addAugmentItem(481, TEProps.MACHINE_PRECIPITATOR_SNOW_LAYER, AugmentType.MODE);
 		machinePrecipitatorPackedIce = addAugmentItem(482, TEProps.MACHINE_PRECIPITATOR_PACKED_ICE, AugmentType.MODE);
@@ -226,7 +226,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		dynamoCoilDuct = addAugmentItem(514, TEProps.DYNAMO_COIL_DUCT, AugmentType.ADVANCED);
 		dynamoThrottle = addAugmentItem(515, TEProps.DYNAMO_THROTTLE, AugmentType.ADVANCED);
 
-		dynamoCoilSteam = addAugmentItem(576, TEProps.DYNAMO_COIL_STEAM, AugmentType.MODE);
+		dynamoBoiler = addAugmentItem(576, TEProps.DYNAMO_BOILER, AugmentType.MODE);
 
 		dynamoSteamTurbine = addAugmentItem(640, TEProps.DYNAMO_STEAM_TURBINE, AugmentType.MODE);
 
@@ -237,9 +237,11 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		dynamoReactantElemental = addAugmentItem(688, TEProps.DYNAMO_REACTANT_ELEMENTAL, AugmentType.MODE);
 
+		dynamoNumismaticGem = addAugmentItem(720, TEProps.DYNAMO_NUMISMATIC_GEM, AugmentType.MODE);
+
 		/* AUTOMATA */
-		//		apparatusDepth = addAugmentItem(896, TEProps.APPARATUS_DEPTH);
-		//		apparatusRadius = addAugmentItem(897, TEProps.APPARATUS_RADIUS);
+		// apparatusDepth = addAugmentItem(896, TEProps.APPARATUS_DEPTH);
+		// apparatusRadius = addAugmentItem(897, TEProps.APPARATUS_RADIUS);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -483,7 +485,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'C', ItemMaterial.redstoneServo,
 				'G', "gearCopper",
 				'I', "plateInvar",
-				'X', TilePrecipitator.SNOW_LAYER,
+				'X', Blocks.SNOW_LAYER,
 				'Y', "dustRedstone"
 		);
 
@@ -494,7 +496,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'C', ItemMaterial.redstoneServo,
 				'G', "gearCopper",
 				'I', "plateInvar",
-				'X', TilePrecipitator.PACKED_ICE,
+				'X', Blocks.PACKED_ICE,
 				'Y', "dustRedstone"
 		);
 
@@ -532,14 +534,14 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Y', "blockGlass"
 		);
 
-		addShapedRecipe(dynamoCoilSteam,
+		addShapedRecipe(dynamoBoiler,
 				" G ",
 				"ICI",
 				"YXY",
-				'C', "blockGlassHardened",
-				'G', "gearCopper",
-				'I', "plateIron",
-				'X', "ingotCopper",
+				'C', Items.BUCKET,
+				'G', "gearIron",
+				'I', "plateCopper",
+				'X', "blockGlassHardened",
 				'Y', "dustRedstone"
 		);
 
@@ -594,6 +596,17 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'G', "gearSignalum",
 				'I', "plateLead",
 				'X', "blockGlassHardened",
+				'Y', "dustAerotheum"
+		);
+
+		addShapedRecipe(dynamoNumismaticGem,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearSignalum",
+				'I', "plateElectrum",
+				'X', "gemEmerald",
 				'Y', "dustAerotheum"
 		);
 
@@ -724,8 +737,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack dynamoCoilDuct;
 	public static ItemStack dynamoThrottle;
 
+	public static ItemStack dynamoBoiler;
+
 	public static ItemStack dynamoSteamTurbine;
-	public static ItemStack dynamoCoilSteam;
 
 	public static ItemStack dynamoMagmaticCoolant;
 
@@ -733,6 +747,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack dynamoCompressionFuel;
 
 	public static ItemStack dynamoReactantElemental;
+
+	public static ItemStack dynamoNumismaticGem;
 
 	/* Apparatus */
 	public static ItemStack apparatusDepth;

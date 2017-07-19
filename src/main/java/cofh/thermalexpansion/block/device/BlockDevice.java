@@ -132,7 +132,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 			//				return null;
 			//			case ENERGY_BUFFER:                     // TODO
 			//				return null;
-			//			case LEXICON:                           // TODO
+			//			case OREDICT:                           // TODO
 			//				return null;
 			//			case CHUNK_LOADER:                      // TODO
 			//				return null;
@@ -385,7 +385,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		FISHER(4, "fisher"),
 		ITEM_BUFFER(5, "item_buffer");
 
-		// LEXICON
+		// OREDICT
 		// CHUNK_LOADER
 
 		// @formatter:on

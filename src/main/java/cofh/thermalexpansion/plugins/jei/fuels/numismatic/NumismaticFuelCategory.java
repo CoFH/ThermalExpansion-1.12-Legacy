@@ -34,6 +34,7 @@ public class NumismaticFuelCategory extends BaseFuelCategory<NumismaticFuelWrapp
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipeCategories(new NumismaticFuelCategory(guiHelper));
+		registry.addRecipeCategories(new NumismaticFuelCategoryGem(guiHelper));
 	}
 
 	public static void initialize(IModRegistry registry) {
@@ -45,8 +46,10 @@ public class NumismaticFuelCategory extends BaseFuelCategory<NumismaticFuelWrapp
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.DYNAMO_NUMISMATIC);
-		registry.addRecipeClickArea(GuiDynamoNumismatic.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_NUMISMATIC);
+		registry.addRecipeClickArea(GuiDynamoNumismatic.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_NUMISMATIC, RecipeUidsTE.DYNAMO_NUMISMATIC_GEM);
 		registry.addRecipeCatalyst(BlockDynamo.dynamoNumismatic, RecipeUidsTE.DYNAMO_NUMISMATIC);
+
+		NumismaticFuelCategoryGem.initialize(registry);
 	}
 
 	public static List<NumismaticFuelWrapper> getRecipes(IGuiHelper guiHelper) {

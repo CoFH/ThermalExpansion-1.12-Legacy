@@ -275,7 +275,7 @@ public class TileTransposer extends TileMachineBase {
 		if (!hasFluidHandler && FluidHelper.isFluidHandler(inventory[0])) {
 			if (!extractMode && TransposerManager.fillRecipeExists(inventory[0], tank.getFluid())) {
 				// There is a specific recipe for this! Do not use FluidHandler stuff.
-			} else if (extractMode && TransposerManager.extractRecipeExists(inventory[0], tank.getFluid())) {
+			} else if (extractMode && TransposerManager.extractRecipeExists(inventory[0])) {
 				// There is a specific recipe for this! Do not use FluidHandler stuff.
 			} else {
 				inventory[1] = ItemHelper.cloneStack(inventory[0], 1);

@@ -395,9 +395,9 @@ public class CompactorManager {
 
 	private static void addDefaultMintRecipe(ItemStack nugget, ItemStack ingot, ItemStack block, ItemStack output) {
 
-		addRecipe(DEFAULT_ENERGY / 4, ItemHelper.cloneStack(nugget, 3), ItemHelper.cloneStack(output, 1), Mode.MINT);
+		addRecipe(DEFAULT_ENERGY / 2, ItemHelper.cloneStack(nugget, 3), ItemHelper.cloneStack(output, 1), Mode.MINT);
 		addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(ingot, 1), ItemHelper.cloneStack(output, 3), Mode.MINT);
-		addRecipe(DEFAULT_ENERGY * 8, ItemHelper.cloneStack(block, 1), ItemHelper.cloneStack(output, 27), Mode.MINT);
+		addRecipe(DEFAULT_ENERGY * 6, ItemHelper.cloneStack(block, 1), ItemHelper.cloneStack(output, 27), Mode.MINT);
 	}
 
 	/* RECIPE CLASS */
