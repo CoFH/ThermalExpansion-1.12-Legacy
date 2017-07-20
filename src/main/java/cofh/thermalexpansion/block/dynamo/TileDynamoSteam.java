@@ -298,7 +298,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		if (!augmentBoiler && TEProps.DYNAMO_BOILER.equals(id)) {
 			augmentBoiler = true;
 			hasModeAugment = true;
-			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 2));
+			energyConfig.setDefaultParams(energyConfig.maxPower + 2 * getBasePower(this.level));
 			energyStorage.setEnergyStored(0);
 			energyMod += 25;
 			return true;
@@ -306,7 +306,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		if (!augmentTurbine && TEProps.DYNAMO_STEAM_TURBINE.equals(id)) {
 			augmentTurbine = true;
 			hasModeAugment = true;
-			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 3));
+			energyConfig.setDefaultParams(energyConfig.maxPower + 3 * getBasePower(this.level));
 			fuelRF = 0;
 			waterRF = 0;
 			return true;

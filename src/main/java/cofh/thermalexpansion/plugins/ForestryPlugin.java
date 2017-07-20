@@ -65,9 +65,9 @@ public class ForestryPlugin {
 			ItemStack combMellow = getItem("bee_combs", 1, 16);
 
 			ItemStack propolis = getItem("propolis", 1, 0);
-			ItemStack propolisSilky = getItem("propolis", 1, 1);
+			ItemStack propolisSticky = getItem("propolis", 1, 1);
 			ItemStack propolisPulsating = getItem("propolis", 1, 2);
-			ItemStack propolisSticky = getItem("propolis", 1, 3);
+			ItemStack propolisSilky = getItem("propolis", 1, 3);
 
 			ItemStack pollenCrystalline = getItem("pollen", 1, 1);
 
@@ -111,6 +111,7 @@ public class ForestryPlugin {
 
 				if (juice != null) {
 					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(Items.APPLE, 1), mulch, new FluidStack(juice, 200), 20, false);
+					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(Items.CARROT, 1), mulch, new FluidStack(juice, 200), 20, false);
 					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(ItemHelper.getOre("cropDate"), 1), mulch, new FluidStack(juice, 50), 20, false);
 					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(ItemHelper.getOre("cropLemon"), 1), mulch, new FluidStack(juice, 400), 10, false);
 					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(ItemHelper.getOre("cropPapaya"), 1), mulch, new FluidStack(juice, 600), 10, false);
@@ -119,6 +120,7 @@ public class ForestryPlugin {
 
 				if (seed_oil != null) {
 					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(Items.WHEAT_SEEDS, 1), ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
+					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(Items.BEETROOT_SEEDS, 1), ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
 					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(Items.PUMPKIN_SEEDS, 1), ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
 					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(Items.MELON_SEEDS, 1), ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
 					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(ItemHelper.getOre("cropCherry"), 1), mulch, new FluidStack(seed_oil, 50), 5, false);

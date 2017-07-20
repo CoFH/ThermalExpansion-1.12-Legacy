@@ -16,8 +16,8 @@ public class CoolantManager {
 	private static TObjectIntHashMap<String> coolantMap = new TObjectIntHashMap<>();
 	private static TObjectIntHashMap<String> coolantFactorMap = new TObjectIntHashMap<>();
 
-	private static final int WATER_RF = 250000;
-	private static final int WATER_FACTOR = 6;
+	public static final int WATER_RF = 250000;
+	public static final int WATER_FACTOR = 20;
 
 	public static boolean isValidCoolant(Fluid fluid) {
 
@@ -61,7 +61,7 @@ public class CoolantManager {
 	}
 
 	/**
-	 * This is a rough breakpoint factor - it's a measure of the "power" of a coolant relative to the Water baseline - lower is *better*.
+	 * This is a rough breakpoint factor - it's a measure of the "power" of a coolant relative to the Water baseline - higher is *better*.
 	 */
 	public static int getCoolantFactor(Fluid fluid) {
 
@@ -76,14 +76,14 @@ public class CoolantManager {
 	public static void initialize() {
 
 		addCoolant("water", WATER_RF, WATER_FACTOR);
-		addCoolant("cryotheum", 4000000, 2);
+		addCoolant("cryotheum", 3000000, 60);
 
 		loadMappings();
 	}
 
 	public static void loadMappings() {
 
-		addCoolant("ice", 1500000, 3);
+		addCoolant("ice", 1500000, 40);
 	}
 
 	/* ADD */

@@ -4,7 +4,6 @@ import cofh.api.core.IAccelerable;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.BlockHelper;
-import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -64,8 +63,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
-	private static final int TIME_CONSTANT = 100;
-	private static final int USE_FACTOR = 10;
+	private static final int USE_FACTOR = 5;
 
 	private boolean cached;
 	private IAccelerable[] accelerables = new IAccelerable[6];
@@ -74,13 +72,11 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	private FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
 
 	private int coolantRF;
-	private int coolantFactor = TIME_CONSTANT;
-	private int offset;
+	private int coolantFactor = CoolantManager.WATER_FACTOR;
 
 	public TileHeatSink() {
 
 		super();
-		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
 	}
 
 	@Override
@@ -102,38 +98,29 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
-		if (!timeCheckOffset()) {
-			return;
-		}
 		boolean curActive = isActive;
 
 		if (isActive) {
 			if (coolantRF <= 0) {
-				coolantFactor = TIME_CONSTANT;
+				// get coolant info
 				if (tank.getFluidAmount() >= fluidAmount) {
 					String prevID = renderFluid.getFluid().getName();
 					coolantRF += CoolantManager.getCoolantRF100mB(tank.getFluid());
-					coolantFactor = Math.min(100, CoolantManager.getCoolantFactor(tank.getFluid()));
+					coolantFactor = CoolantManager.getCoolantFactor(tank.getFluid());
 
 					if (!prevID.equals(renderFluid.getFluid().getName())) {
 						sendFluidPacket();
 					}
 					tank.drain(fluidAmount, true);
 
-					for (int i = 0; i < 6; i++) {
-						if (accelerables[i] != null) {
-							coolantRF -= Math.min(5000, USE_FACTOR * accelerables[i].updateAccelerable());
-						}
+					if (world.rand.nextInt(100) < coolantFactor) {
+						updateAccelerables();
 					}
 				} else {
 					isActive = false;
 				}
-			} else {
-				for (int i = 0; i < 6; i++) {
-					if (accelerables[i] != null) {
-						coolantRF -= Math.min(5000, USE_FACTOR * accelerables[i].updateAccelerable());
-					}
-				}
+			} else if (world.rand.nextInt(100) < coolantFactor) {
+				updateAccelerables();
 			}
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
@@ -165,9 +152,13 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		return coolantRF > 0 || tank.getFluidAmount() >= fluidAmount;
 	}
 
-	protected boolean timeCheckOffset() {
+	protected void updateAccelerables() {
 
-		return (world.getTotalWorldTime() + offset) % (coolantFactor) == 0;
+		for (int i = 0; i < 6; i++) {
+			if (accelerables[i] != null) {
+				coolantRF -= USE_FACTOR * accelerables[i].updateAccelerable();
+			}
+		}
 	}
 
 	/* GUI METHODS */
@@ -202,12 +193,14 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		super.readFromNBT(nbt);
 
 		coolantRF = nbt.getInteger("Coolant");
+		coolantFactor = nbt.getInteger("CoolFactor");
 		tank.readFromNBT(nbt);
 
 		if (!CoolantManager.isValidCoolant(tank.getFluid())) {
 			tank.setFluid(null);
-		} else {
-			coolantFactor = Math.min(100, CoolantManager.getCoolantFactor(tank.getFluid()));
+		}
+		if (coolantFactor <= 0) {
+			coolantFactor = CoolantManager.WATER_FACTOR;
 		}
 	}
 
@@ -217,6 +210,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("Coolant", coolantRF);
+		nbt.setInteger("CoolantFactor", coolantFactor);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}

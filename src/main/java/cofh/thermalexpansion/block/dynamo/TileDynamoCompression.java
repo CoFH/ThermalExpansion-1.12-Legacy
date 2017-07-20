@@ -276,7 +276,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		if (!augmentFuel && TEProps.DYNAMO_COMPRESSION_FUEL.equals(id)) {
 			augmentFuel = true;
 			hasModeAugment = true;
-			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 3));
+			energyConfig.setDefaultParams(energyConfig.maxPower + 3 * getBasePower(this.level));
 			energyMod += 50;
 			return true;
 		}

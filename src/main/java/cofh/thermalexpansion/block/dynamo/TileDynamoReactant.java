@@ -241,7 +241,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 		if (!augmentElemental && TEProps.DYNAMO_REACTANT_ELEMENTAL.equals(id)) {
 			augmentElemental = true;
 			hasModeAugment = true;
-			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 5));
+			energyConfig.setDefaultParams(energyConfig.maxPower + 4 * getBasePower(this.level));
 			energyMod += 25;
 			return true;
 		}

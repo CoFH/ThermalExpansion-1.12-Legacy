@@ -25,7 +25,6 @@ public class CoolantWrapper extends BaseFuelWrapper {
 	final List<List<FluidStack>> inputs;
 
 	protected int factor;
-	protected double overclock;
 
 	protected IDrawableAnimated durationFill;
 
@@ -37,8 +36,6 @@ public class CoolantWrapper extends BaseFuelWrapper {
 		this.inputs = Collections.singletonList(recipeInputs);
 		this.energy = energy;
 		this.factor = factor;
-
-		overclock = 100D / factor;
 
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_SNOWFLAKE);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getCoolantFill();
@@ -60,7 +57,7 @@ public class CoolantWrapper extends BaseFuelWrapper {
 		energyMeter.draw(minecraft, 71, 7);
 
 		minecraft.fontRenderer.drawString(StringHelper.formatNumber(energy) + " TC", 96, (recipeHeight - 9) / 2, 0x0a76d0);
-		minecraft.fontRenderer.drawString(decimalFormat.format(overclock) + "%", 96, 10 + (recipeHeight - 9) / 2, 0xd0650b);
+		minecraft.fontRenderer.drawString(decimalFormat.format(factor) + "%", 96, 10 + (recipeHeight - 9) / 2, 0xd0650b);
 	}
 
 	@Nullable

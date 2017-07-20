@@ -180,7 +180,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		if (!augmentGem && TEProps.DYNAMO_NUMISMATIC_GEM.equals(id)) {
 			augmentGem = true;
 			hasModeAugment = true;
-			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 5));
+			energyConfig.setDefaultParams(energyConfig.maxPower + 4 * getBasePower(this.level));
 			energyMod += 25;
 			return true;
 		}
