@@ -36,7 +36,7 @@ public class MagmaticManager {
 
 	public static void initialize() {
 
-		addFuel("lava", CoreProps.LAVA_RF * 9 / 10);
+		addFuel("lava", CoreProps.LAVA_RF * 60 / 100);
 		addFuel("pyrotheum", 2000000);
 
 		loadFuels();
