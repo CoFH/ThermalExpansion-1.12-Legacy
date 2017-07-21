@@ -305,8 +305,7 @@ public class EnchanterManager {
 			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
 			if (ids != null) {
-				for (int i = 0, e = ids.size(); i < e; ) {
-					int id = ids.get(i++);
+				for (Integer id : ids) {
 					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
 						return id;
 					}

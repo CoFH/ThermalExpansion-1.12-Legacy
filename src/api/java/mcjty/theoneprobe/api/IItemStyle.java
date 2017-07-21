@@ -4,11 +4,12 @@ package mcjty.theoneprobe.api;
  * Style for the item element.
  */
 public interface IItemStyle {
-    IItemStyle width(int w);
 
-    IItemStyle height(int h);
+	IItemStyle width(int w);
 
-    int getWidth();
+	IItemStyle height(int h);
 
-    int getHeight();
+	int getWidth();
+
+	int getHeight();
 }

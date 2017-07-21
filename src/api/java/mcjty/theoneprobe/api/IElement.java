@@ -7,29 +7,29 @@ import io.netty.buffer.ByteBuf;
  */
 public interface IElement {
 
-    /**
-     * Render this element at the location given by the location
-     */
-    void render(int x, int y);
+	/**
+	 * Render this element at the location given by the location
+	 */
+	void render(int x, int y);
 
-    /**
-     * Get the width of this element
-     */
-    int getWidth();
+	/**
+	 * Get the width of this element
+	 */
+	int getWidth();
 
-    /**
-     * Get the height of this element
-     */
-    int getHeight();
+	/**
+	 * Get the height of this element
+	 */
+	int getHeight();
 
-    /**
-     * Persist this element to the given network buffer. This should be symmetrical to
-     * what IElementFactory.createElement() expects.
-     */
-    void toBytes(ByteBuf buf);
+	/**
+	 * Persist this element to the given network buffer. This should be symmetrical to
+	 * what IElementFactory.createElement() expects.
+	 */
+	void toBytes(ByteBuf buf);
 
-    /**
-     * Get the identifier for this element (as returned by ITheOneProbe.registerElementFactory()
-     */
-    int getID();
+	/**
+	 * Get the identifier for this element (as returned by ITheOneProbe.registerElementFactory()
+	 */
+	int getID();
 }

@@ -661,6 +661,7 @@ public class SmelterManager {
 			EQUALS.add("itemSlag");
 			EQUALS.add("itemSlagRich");
 			EQUALS.add("itemCinnabar");
+			EQUALS.add("fuelCoke");
 		}
 
 		public static boolean safeOreType(String oreName) {
@@ -673,8 +674,7 @@ public class SmelterManager {
 			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
 			if (ids != null) {
-				for (int i = 0, e = ids.size(); i < e; ) {
-					int id = ids.get(i++);
+				for (Integer id : ids) {
 					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
 						return id;
 					}

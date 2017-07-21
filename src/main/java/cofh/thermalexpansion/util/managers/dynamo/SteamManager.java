@@ -18,7 +18,7 @@ public class SteamManager {
 
 	private static TObjectIntHashMap<ComparableItemStack> fuelMap = new TObjectIntHashMap<>();
 
-	public static int DEFAULT_ENERGY = 32000;
+	public static int DEFAULT_ENERGY = 16000;
 
 	public static Set<ComparableItemStack> getFuels() {
 
@@ -40,10 +40,10 @@ public class SteamManager {
 
 	public static void initialize() {
 
-		addFuel(new ItemStack(Items.COAL, 1, 0), 32000);
-		addFuel(new ItemStack(Blocks.COAL_BLOCK), 32000 * 10);
-		addFuel(new ItemStack(Items.COAL, 1, 1), 24000);
-		addFuel(ItemHelper.cloneStack(ItemMaterial.gemCoke, 1), 48000);
+		addFuel(new ItemStack(Items.COAL, 1, 0), 24000);
+		addFuel(new ItemStack(Blocks.COAL_BLOCK), 24000 * 10);
+		addFuel(new ItemStack(Items.COAL, 1, 1), 16000);
+		addFuel(ItemHelper.cloneStack(ItemMaterial.fuelCoke, 1), 40000);
 
 		loadFuels();
 	}

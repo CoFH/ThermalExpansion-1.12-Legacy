@@ -283,7 +283,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 			hasModeAugment = true;
 			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level));
 			energyStorage.setEnergyStored(0);
-			energyMod += 10;
+			energyMod -= 10;
 			return true;
 		}
 		if (!augmentCoolant && TEProps.DYNAMO_MAGMATIC_COOLANT.equals(id)) {

@@ -14,11 +14,17 @@ import javax.annotation.Nullable;
 
 public class TopPlugin implements IProbeInfoProvider, Function<ITheOneProbe, Void> {
 
+	private static boolean initialized = false;
+
 	public static void initialize() {
 
+		if (initialized) {
+			return;
+		}
 		if (Loader.isModLoaded("theoneprobe")) {
 			FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", TopPlugin.class.getName());
 		}
+		initialized = true;
 	}
 
 	@Override

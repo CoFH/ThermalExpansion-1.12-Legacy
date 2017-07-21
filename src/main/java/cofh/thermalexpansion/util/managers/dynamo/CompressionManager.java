@@ -47,14 +47,28 @@ public class CompressionManager {
 
 	public static void loadFuels() {
 
-		addFuel("canolaoil", 80000);
-		addFuel("refinedcanolaoil", 200000);
-		addFuel("crystaloil", 400000);
-		addFuel("empoweredoil", 700000);
+		/* ACTUALLY ADDITIONS */
+		{
+			addFuel("canolaoil", 80000);
+			addFuel("refinedcanolaoil", 200000);
+			addFuel("crystaloil", 400000);
+			addFuel("empoweredoil", 700000);
+		}
 
-		addFuel("bio.ethanol", 700000);
+		/* FORESTRY */
+		{
+			addFuel("bio.ethanol", 500000);
+		}
 
-		addFuel("biofuel", 700000);
+		/* IMMERSIVE ENGINEERING */
+		{
+			addFuel("biodiesel", 500000);
+		}
+
+		/* MINEFACTORY RELOADED */
+		{
+			addFuel("biofuel", 500000);
+		}
 	}
 
 	public static void refresh() {

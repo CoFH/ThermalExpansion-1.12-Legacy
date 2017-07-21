@@ -7,9 +7,9 @@ import io.netty.buffer.ByteBuf;
  */
 public interface IElementFactory {
 
-    /**
-     * Create an element from a network buffer. This should be
-     * symmetrical to what IElement.toBytes() creates.
-     */
-    IElement createElement(ByteBuf buf);
+	/**
+	 * Create an element from a network buffer. This should be
+	 * symmetrical to what IElement.toBytes() creates.
+	 */
+	IElement createElement(ByteBuf buf);
 }

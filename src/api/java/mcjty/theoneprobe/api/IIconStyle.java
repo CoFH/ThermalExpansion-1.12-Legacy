@@ -4,31 +4,32 @@ package mcjty.theoneprobe.api;
  * Style for the icon element.
  */
 public interface IIconStyle {
-    /**
-     * Change the width of the icon. Default is 16
-     */
-    IIconStyle width(int w);
 
-    /**
-     * Change the height of the icon. Default is 16
-     */
-    IIconStyle height(int h);
+	/**
+	 * Change the width of the icon. Default is 16
+	 */
+	IIconStyle width(int w);
 
-    int getWidth();
+	/**
+	 * Change the height of the icon. Default is 16
+	 */
+	IIconStyle height(int h);
 
-    int getHeight();
+	int getWidth();
 
-    /**
-     * Change the total width of the texture on which the icon sits. Default is 256
-     */
-    IIconStyle textureWidth(int w);
+	int getHeight();
 
-    /**
-     * Change the total height of the texture on which the icon sits. Default is 256
-     */
-    IIconStyle textureHeight(int h);
+	/**
+	 * Change the total width of the texture on which the icon sits. Default is 256
+	 */
+	IIconStyle textureWidth(int w);
 
-    int getTextureWidth();
+	/**
+	 * Change the total height of the texture on which the icon sits. Default is 256
+	 */
+	IIconStyle textureHeight(int h);
 
-    int getTextureHeight();
+	int getTextureWidth();
+
+	int getTextureHeight();
 }

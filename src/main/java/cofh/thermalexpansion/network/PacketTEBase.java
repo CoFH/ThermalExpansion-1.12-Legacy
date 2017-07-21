@@ -10,6 +10,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.thermalexpansion.ThermalExpansion;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -29,23 +30,38 @@ public class PacketTEBase extends PacketCoFHBase {
 
 		try {
 			int type = getByte();
-
 			switch (PacketTypes.values()[type]) {
 				case RS_POWER_UPDATE:
 					BlockPos pos = getCoords();
-					IRedstoneControl rs = (IRedstoneControl) player.world.getTileEntity(pos);
-					rs.setPowered(getBool());
+					if (player.world.isBlockLoaded(pos)) {
+						TileEntity tile = player.world.getTileEntity(pos);
+						if (tile instanceof IRedstoneControl) {
+							IRedstoneControl rs = (IRedstoneControl) tile;
+							rs.setPowered(getBool());
+						}
+					}
 					return;
 				case RS_CONFIG_UPDATE:
 					pos = getCoords();
-					rs = (IRedstoneControl) player.world.getTileEntity(pos);
-					rs.setControl(ControlMode.values()[getByte()]);
+					if (player.world.isBlockLoaded(pos)) {
+						TileEntity tile = player.world.getTileEntity(pos);
+						if (tile instanceof IRedstoneControl) {
+							IRedstoneControl rs = (IRedstoneControl) tile;
+							rs.setControl(ControlMode.values()[getByte()]);
+						}
+					}
 					return;
 				case TRANSFER_UPDATE:
 					pos = getCoords();
-					ITransferControl transfer = (ITransferControl) player.world.getTileEntity(pos);
-					transfer.setTransferIn(getBool());
-					transfer.setTransferOut(getBool());
+					if (player.world.isBlockLoaded(pos)) {
+						TileEntity tile = player.world.getTileEntity(pos);
+						if (tile instanceof ITransferControl) {
+							ITransferControl transfer = (ITransferControl) tile;
+							transfer.setTransferIn(getBool());
+							transfer.setTransferOut(getBool());
+						}
+					}
+					return;
 				case SECURITY_UPDATE:
 					if (player.openContainer instanceof ISecurable) {
 						((ISecurable) player.openContainer).setAccess(AccessMode.values()[getByte()]);

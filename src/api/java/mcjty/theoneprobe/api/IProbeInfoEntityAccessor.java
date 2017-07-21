@@ -11,11 +11,11 @@ import net.minecraft.world.World;
  */
 public interface IProbeInfoEntityAccessor {
 
-    /**
-     * Add information for the probe info for the given entity. This is always
-     * called server side.
-     * The given probeInfo object represents a vertical layout. So adding elements to that
-     * will cause them to be grouped vertically.
-     */
-    void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, Entity entity, IProbeHitEntityData data);
+	/**
+	 * Add information for the probe info for the given entity. This is always
+	 * called server side.
+	 * The given probeInfo object represents a vertical layout. So adding elements to that
+	 * will cause them to be grouped vertically.
+	 */
+	void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, Entity entity, IProbeHitEntityData data);
 }

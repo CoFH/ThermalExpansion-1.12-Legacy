@@ -52,9 +52,9 @@ public class CrucibleManager {
 
 		/* LAVA */
 		{
-			int netherrack_RF = CoreProps.LAVA_RF * 3 / 5;
-			int magma_RF = CoreProps.LAVA_RF * 2 / 5;
-			int rock_RF = CoreProps.LAVA_RF * 8 / 5;
+			int netherrack_RF = CoreProps.LAVA_RF * 30 / 100;
+			int magma_RF = CoreProps.LAVA_RF * 20 / 100;
+			int rock_RF = CoreProps.LAVA_RF * 150 / 100;
 
 			addRecipe(netherrack_RF, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
 			addRecipe(magma_RF, new ItemStack(Blocks.MAGMA), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
@@ -209,8 +209,7 @@ public class CrucibleManager {
 			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
 			if (ids != null) {
-				for (int i = 0, e = ids.size(); i < e; ) {
-					int id = ids.get(i++);
+				for (Integer id : ids) {
 					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
 						return id;
 					}

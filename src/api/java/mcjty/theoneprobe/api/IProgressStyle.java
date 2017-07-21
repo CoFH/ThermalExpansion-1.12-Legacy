@@ -4,54 +4,55 @@ package mcjty.theoneprobe.api;
  * Style for the progress bar.
  */
 public interface IProgressStyle {
-    /// The color that is used for the border of the progress bar
-    IProgressStyle borderColor(int c);
 
-    /// The color that is used for the background of the progress bar
-    IProgressStyle backgroundColor(int c);
+	/// The color that is used for the border of the progress bar
+	IProgressStyle borderColor(int c);
 
-    /// The color that is used for the filled part of the progress bar
-    IProgressStyle filledColor(int c);
+	/// The color that is used for the background of the progress bar
+	IProgressStyle backgroundColor(int c);
 
-    /// If this is different from the filledColor then the fill color will alternate
-    IProgressStyle alternateFilledColor(int c);
+	/// The color that is used for the filled part of the progress bar
+	IProgressStyle filledColor(int c);
 
-    /// If true then text is shown inside the progress bar
-    IProgressStyle showText(boolean b);
+	/// If this is different from the filledColor then the fill color will alternate
+	IProgressStyle alternateFilledColor(int c);
 
-    /// The number format to use for the text inside the progress bar
-    IProgressStyle numberFormat(NumberFormat f);
+	/// If true then text is shown inside the progress bar
+	IProgressStyle showText(boolean b);
 
-    IProgressStyle prefix(String prefix);
+	/// The number format to use for the text inside the progress bar
+	IProgressStyle numberFormat(NumberFormat f);
 
-    IProgressStyle suffix(String suffix);
+	IProgressStyle prefix(String prefix);
 
-    /// If the progressbar is a lifebar then this is the maximum width
-    IProgressStyle width(int w);
+	IProgressStyle suffix(String suffix);
 
-    IProgressStyle height(int h);
+	/// If the progressbar is a lifebar then this is the maximum width
+	IProgressStyle width(int w);
 
-    IProgressStyle lifeBar(boolean b);
+	IProgressStyle height(int h);
 
-    int getBorderColor();
+	IProgressStyle lifeBar(boolean b);
 
-    int getBackgroundColor();
+	int getBorderColor();
 
-    int getFilledColor();
+	int getBackgroundColor();
 
-    int getAlternatefilledColor();
+	int getFilledColor();
 
-    boolean isShowText();
+	int getAlternatefilledColor();
 
-    NumberFormat getNumberFormat();
+	boolean isShowText();
 
-    String getPrefix();
+	NumberFormat getNumberFormat();
 
-    String getSuffix();
+	String getPrefix();
 
-    int getWidth();
+	String getSuffix();
 
-    int getHeight();
+	int getWidth();
 
-    boolean isLifeBar();
+	int getHeight();
+
+	boolean isLifeBar();
 }

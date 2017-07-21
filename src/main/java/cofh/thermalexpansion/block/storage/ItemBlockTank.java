@@ -112,8 +112,9 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	@Override
 	public ItemStack getContainerItem(ItemStack stack) {
 
-		drain(stack, Fluid.BUCKET_VOLUME, true);
-		return stack;
+		ItemStack retStack = stack.copy();
+		drain(retStack, Fluid.BUCKET_VOLUME, true);
+		return retStack;
 	}
 
 	/* IFluidContainerItem */

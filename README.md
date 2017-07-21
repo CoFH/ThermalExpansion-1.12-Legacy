@@ -6,7 +6,7 @@ You'll notice that this repository does not have a license! By default, that mea
 
 That is indeed the case. All rights reserved, as far as the code is concerned.
 
-Art and sound assets are released under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0), a summary of which can be found at: https://creativecommons.org/licenses/by-sa/4.0/
+Art and sound assets are released under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0), a summary of which can be found at: https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 ©2012-2017 Cult of the Full Hub / Team CoFH / CoFH
 
