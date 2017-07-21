@@ -47,7 +47,7 @@ public class MagmaticFuelCategory extends BaseFuelCategory<MagmaticFuelWrapper> 
 
 		List<MagmaticFuelWrapper> recipes = new ArrayList<>();
 
-		for (String fluidName : CompressionManager.getFuels()) {
+		for (String fluidName : MagmaticManager.getFuels()) {
 			FluidStack fuelStack = new FluidStack(FluidRegistry.getFluid(fluidName), Fluid.BUCKET_VOLUME);
 			recipes.add(new MagmaticFuelWrapper(guiHelper, fuelStack, MagmaticManager.getFuelEnergy(fuelStack)));
 		}

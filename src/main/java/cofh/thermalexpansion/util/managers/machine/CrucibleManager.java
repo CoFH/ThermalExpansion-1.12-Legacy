@@ -46,14 +46,17 @@ public class CrucibleManager {
 
 		/* LAVA */
 		{
-			int netherrack_RF = CoreProps.LAVA_RF * 6 / 10;
-			int blaze_rod_RF = CoreProps.LAVA_RF / 10;
-			int rock_RF = CoreProps.LAVA_RF * 8 / 5;
+			int netherrack_RF = CoreProps.LAVA_RF * 30 / 100;
+			int magma_RF = CoreProps.LAVA_RF * 20 / 100;
+			int rock_RF = CoreProps.LAVA_RF * 150 / 100;
 
 			addRecipe(netherrack_RF, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-			addRecipe(blaze_rod_RF, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME / 4));
+			addRecipe(magma_RF, new ItemStack(Blocks.MAGMA), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
 			addRecipe(rock_RF, new ItemStack(Blocks.COBBLESTONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
 			addRecipe(rock_RF, new ItemStack(Blocks.STONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
+			addRecipe(rock_RF, new ItemStack(Blocks.STONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
+			addRecipe(rock_RF, new ItemStack(Blocks.STONE, 1, 5), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
+			addRecipe(rock_RF, new ItemStack(Blocks.STONE, 1, 6), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
 			addRecipe(rock_RF, new ItemStack(Blocks.OBSIDIAN), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
 		}
 

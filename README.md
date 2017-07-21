@@ -6,7 +6,7 @@ You'll notice that this repository does not have a license! By default, that mea
 
 That is indeed the case. All rights reserved, as far as the code is concerned.
 
-Art and sound assets are released under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0), a summary of which can be found at: https://creativecommons.org/licenses/by-sa/4.0/
+Art and sound assets are released under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0), a summary of which can be found at: https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 ©2012-2017 Cult of the Full Hub / Team CoFH / CoFH
 
@@ -45,7 +45,5 @@ So, why is this here? Well, the rights are reserved, but what that really means 
 Essentially, take this and learn from it! Create addon mods that depend on it! If you see something we can improve, tell us. Submit a Pull Request. The one catch: don't steal! A lot of effort has gone into this, and if you were to take this and call it your own, you'd basically be a big jerk.
 
 Don't be a jerk.
-
-See LICENSE-CODE.txt and LICENSE-ART.txt for license information.
 
 ©2012-2017 Cult of the Full Hub / Team CoFH / CoFH
