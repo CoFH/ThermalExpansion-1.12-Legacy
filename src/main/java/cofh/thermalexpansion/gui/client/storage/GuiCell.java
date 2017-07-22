@@ -25,8 +25,6 @@ public class GuiCell extends GuiCore {
 	protected TileCell baseTile;
 	protected UUID playerName;
 
-	protected String myTutorial = "";
-
 	protected TabBase redstoneTab;
 	protected TabBase configTab;
 	protected TabBase securityTab;
@@ -43,14 +41,6 @@ public class GuiCell extends GuiCore {
 		baseTile = (TileCell) tile;
 		name = baseTile.getName();
 		playerName = SecurityHelper.getID(inventory.player);
-
-		if (baseTile.enableSecurity() && baseTile.isSecured()) {
-			myTutorial += StringHelper.tutorialTabSecurity() + "\n\n";
-		}
-		if (baseTile.hasRedstoneControl()) {
-			myTutorial += StringHelper.tutorialTabRedstone() + "\n\n";
-		}
-		myTutorial += StringHelper.tutorialTabConfiguration();
 
 		generateInfo("tab.thermalexpansion.storage.cell");
 	}
@@ -71,8 +61,6 @@ public class GuiCell extends GuiCore {
 		if (!myInfo.isEmpty()) {
 			addTab(new TabInfo(this, myInfo));
 		}
-		addTab(new TabTutorial(this, myTutorial));
-
 		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
 
 		ElementSimple infoInput = (ElementSimple) new ElementSimple(this, 33, 16).setSize(20, 20).setTexture(TEX_INFO_INPUT, 20, 20);

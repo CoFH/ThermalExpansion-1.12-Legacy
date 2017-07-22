@@ -19,8 +19,6 @@ public abstract class GuiDynamoBase extends GuiCore {
 	protected TileDynamoBase baseTile;
 	protected UUID playerName;
 
-	protected String myTutorial = "";
-
 	protected TabBase energyTab;
 	protected TabBase steamTab;
 
@@ -35,15 +33,6 @@ public abstract class GuiDynamoBase extends GuiCore {
 		baseTile = (TileDynamoBase) tile;
 		name = baseTile.getName();
 		playerName = SecurityHelper.getID(player);
-
-		myTutorial = StringHelper.tutorialTabAugment() + "\n\n";
-
-		if (baseTile.enableSecurity() && baseTile.isSecured()) {
-			myTutorial += StringHelper.tutorialTabSecurity() + "\n\n";
-		}
-		if (baseTile.hasRedstoneControl()) {
-			myTutorial += StringHelper.tutorialTabRedstone();
-		}
 	}
 
 	@Override
@@ -69,10 +58,8 @@ public abstract class GuiDynamoBase extends GuiCore {
 		energyTab = addTab(new TabEnergy(this, baseTile, true));
 		energyTab.setVisible(baseTile.showEnergyTab());
 
-		addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.0")));
-
-		if (!myTutorial.isEmpty()) {
-			addTab(new TabTutorial(this, myTutorial));
+		if (!myInfo.isEmpty()) {
+			addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.0")));
 		}
 	}
 

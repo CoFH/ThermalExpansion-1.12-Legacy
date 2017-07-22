@@ -4,7 +4,6 @@ import cofh.core.gui.GuiCore;
 import cofh.core.gui.container.IAugmentableContainer;
 import cofh.core.gui.element.tab.*;
 import cofh.core.util.helpers.SecurityHelper;
-import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.TilePowered;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -18,8 +17,6 @@ public abstract class GuiPoweredBase extends GuiCore {
 	protected TilePowered baseTile;
 	protected UUID playerName;
 
-	protected String myTutorial = "";
-
 	protected TabBase augmentTab;
 	protected TabBase redstoneTab;
 	protected TabBase configTab;
@@ -32,20 +29,6 @@ public abstract class GuiPoweredBase extends GuiCore {
 		baseTile = (TilePowered) tile;
 		name = baseTile.getName();
 		playerName = SecurityHelper.getID(player);
-
-		myTutorial = StringHelper.tutorialTabAugment() + "\n\n";
-
-		if (baseTile.enableSecurity() && baseTile.isSecured()) {
-			myTutorial += StringHelper.tutorialTabSecurity() + "\n\n";
-		}
-		if (baseTile.hasRedstoneControl()) {
-			myTutorial += StringHelper.tutorialTabRedstone() + "\n\n";
-		}
-		myTutorial += StringHelper.tutorialTabConfiguration();
-
-		if (baseTile.getMaxEnergyStored(null) > 0) {
-			myTutorial += "\n\n" + StringHelper.tutorialTabFluxRequired();
-		}
 	}
 
 	@Override
@@ -70,9 +53,6 @@ public abstract class GuiPoweredBase extends GuiCore {
 		}
 		if (!myInfo.isEmpty()) {
 			addTab(new TabInfo(this, myInfo));
-		}
-		if (!myTutorial.isEmpty()) {
-			addTab(new TabTutorial(this, myTutorial));
 		}
 	}
 

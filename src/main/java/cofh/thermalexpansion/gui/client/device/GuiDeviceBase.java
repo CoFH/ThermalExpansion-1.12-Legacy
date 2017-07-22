@@ -5,6 +5,7 @@ import cofh.core.gui.element.tab.*;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.device.TileDeviceBase;
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
@@ -17,8 +18,6 @@ public class GuiDeviceBase extends GuiCore {
 	protected TileDeviceBase baseTile;
 	protected UUID playerName;
 
-	protected String myTutorial = "";
-
 	protected TabBase redstoneTab;
 	protected TabBase configTab;
 	protected TabBase securityTab;
@@ -30,12 +29,6 @@ public class GuiDeviceBase extends GuiCore {
 		baseTile = (TileDeviceBase) tile;
 		name = baseTile.getName();
 		playerName = SecurityHelper.getID(player);
-
-		if (baseTile.enableSecurity() && baseTile.isSecured()) {
-			myTutorial += StringHelper.tutorialTabSecurity() + "\n\n";
-		}
-		myTutorial += StringHelper.tutorialTabRedstone() + "\n\n";
-		myTutorial += StringHelper.tutorialTabConfiguration();
 	}
 
 	@Override
@@ -59,7 +52,6 @@ public class GuiDeviceBase extends GuiCore {
 		if (!myInfo.isEmpty()) {
 			addTab(new TabInfo(this, myInfo));
 		}
-		addTab(new TabTutorial(this, myTutorial));
 	}
 
 	@Override
