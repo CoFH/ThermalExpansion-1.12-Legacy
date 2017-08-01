@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.render;
 
 import codechicken.lib.render.item.IItemRenderer;
+import codechicken.lib.render.particle.IModelParticleProvider;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.util.TransformUtils;
 import cofh.core.render.RenderUtils;
@@ -8,14 +9,24 @@ import cofh.thermalexpansion.block.storage.BlockStrongbox;
 import cofh.thermalexpansion.block.storage.TileStrongbox;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.model.ModelStrongbox;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.model.IModelState;
 
-public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> implements IItemRenderer {
+import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.Set;
+
+public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> implements IItemRenderer, IModelParticleProvider {
 
 	private static final ResourceLocation[] TEXTURES = new ResourceLocation[6];
 
@@ -51,6 +62,7 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 		GlStateManager.popMatrix();
 	}
 
+	/* TileEntitySpecialRenderer */
 	@Override
 	public void render(TileStrongbox tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
@@ -81,6 +93,13 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 		return TransformUtils.DEFAULT_BLOCK;
 	}
 
+	/* IBakedModel */
+	@Override
+	public TextureAtlasSprite getParticleTexture() {
+
+		return IItemRenderer.super.getParticleTexture();
+	}
+
 	@Override
 	public boolean isAmbientOcclusion() {
 
@@ -93,4 +112,24 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 		return true;
 	}
 
+	/* IModelParticleProvider */
+	@Override
+	public Set<TextureAtlasSprite> getHitEffects(@Nonnull RayTraceResult traceResult, IBlockState state, IBlockAccess world, BlockPos pos) {
+
+		TileEntity tileEntity = world.getTileEntity(pos);
+		if (tileEntity instanceof TileStrongbox) {
+			return Collections.singleton(((TileStrongbox) tileEntity).getBreakTexture());
+		}
+		return Collections.singleton(TextureUtils.getMissingSprite());
+	}
+
+	@Override
+	public Set<TextureAtlasSprite> getDestroyEffects(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+		TileEntity tileEntity = world.getTileEntity(pos);
+		if (tileEntity instanceof TileStrongbox) {
+			return Collections.singleton(((TileStrongbox) tileEntity).getBreakTexture());
+		}
+		return Collections.singleton(TextureUtils.getMissingSprite());
+	}
 }
