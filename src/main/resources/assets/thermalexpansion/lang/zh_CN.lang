@@ -83,8 +83,12 @@ info.thermalexpansion.augment.dynamoPower.a.0=提升输出功率(RF/t)。
 info.thermalexpansion.augment.dynamoPower.b.0=单位燃料的能量产出会降低。
 
 info.thermalexpansion.augment.dynamoReactantElemental.0=反应能源炉:类型特化
-info.thermalexpansion.augment.dynamoReactantElemental.a.0=大幅度提升产能和效率.
+info.thermalexpansion.augment.dynamoReactantElemental.a.0=大幅度提升产能和效率。
 info.thermalexpansion.augment.dynamoReactantElemental.b.0=只能进行一些主要的反应。
+
+info.thermalexpansion.augment.dynamoSteamBoiler.0=蒸汽能源炉：蒸汽锅炉
+info.thermalexpansion.augment.dynamoSteamBoiler.a.0=将能源炉变成真正的蒸汽锅炉。
+info.thermalexpansion.augment.dynamoSteamBoiler.b.0=大幅度提升蒸汽产出和燃料效率。
 
 info.thermalexpansion.augment.dynamoSteamTurbine.0=蒸汽能源炉：外部水冷
 info.thermalexpansion.augment.dynamoSteamTurbine.a.0=大幅提升产能速度和燃料利用率。
@@ -208,7 +212,8 @@ info.thermalexpansion.capacitor.d.0=必须放在快捷栏中.
 
 info.thermalexpansion.coolant=冷却剂
 
-info.thermalexpansion.device.extender=对一个给定方块有更多的连接.
+info.thermalexpansion.device.extender=对一个给定方块有更多的连接。
+info.thermalexpansion.device.fisher=捕捉鱼和其他水生生物。
 info.thermalexpansion.device.heat_sink=加快附近机器的工作速度。
 info.thermalexpansion.device.item_buffer=存储并传输物品。
 info.thermalexpansion.device.nullifier=彻底销毁物品。
@@ -238,7 +243,7 @@ info.thermalexpansion.level.4=谐振
 info.thermalexpansion.level.creative=创造
 
 info.thermalexpansion.machine.brewer=WIP
-info.thermalexpansion.machine.centrifuge=WIP
+info.thermalexpansion.machine.centrifuge=将物品分解成其组分。
 info.thermalexpansion.machine.charger=给物品充能(RF)。
 info.thermalexpansion.machine.compactor=压缩物品。
 info.thermalexpansion.machine.crafter=自动合成物品。
@@ -256,6 +261,7 @@ info.thermalexpansion.machine.transposer=处理流体与流体容器。
 
 info.thermalexpansion.storage.cache=存储大量单种物品。
 info.thermalexpansion.storage.cell=存储大量红石通量 (RF)。
+info.thermalexpansion.storage.satchel=收集并存储物品。可以被保护。
 info.thermalexpansion.storage.strongbox=存储物品。可以被保护。
 info.thermalexpansion.storage.tank=存储大量流体。
 
@@ -276,6 +282,7 @@ item.thermalexpansion.augment.dynamoEfficiency.name=燃料催化加速
 item.thermalexpansion.augment.dynamoMagmaticCoolant.name=熵增抑制容器
 item.thermalexpansion.augment.dynamoPower.name=辅助传动线圈
 item.thermalexpansion.augment.dynamoReactantElemental.name=基础反应催化
+item.thermalexpansion.augment.dynamoSteamBoiler.name=蒸汽锅炉改装
 item.thermalexpansion.augment.dynamoSteamTurbine.name=涡轮增压装置
 item.thermalexpansion.augment.dynamoThrottle.name=励磁限制装置
 
@@ -318,6 +325,14 @@ item.thermalexpansion.frame.frameDevice.name=设备框架
 item.thermalexpansion.frame.frameLight.name=照明框架
 item.thermalexpansion.frame.frameMachine.name=机器框架
 
+item.thermalexpansion.satchel.creative.name=背包 (创造)
+item.thermalexpansion.satchel.name=背包
+item.thermalexpansion.satchel.standard0.name=背包 （基础）
+item.thermalexpansion.satchel.standard1.name=背包 （硬化）
+item.thermalexpansion.satchel.standard2.name=背包 （强化）
+item.thermalexpansion.satchel.standard3.name=背包 （信素）
+item.thermalexpansion.satchel.standard4.name=背包 （谐振）
+
 item.thermalexpansion.upgrade.creative.name=创造转换套件
 item.thermalexpansion.upgrade.full1.name=硬化转换套件
 item.thermalexpansion.upgrade.full2.name=强化转换套件
@@ -343,6 +358,9 @@ tab.thermalexpansion.apparatus.collector.2=可能大概也许不会偷走你的�
 
 tab.thermalexpansion.device.extender.0=把这个东西对准某个侧面不够用的方块。
 tab.thermalexpansion.device.extender.1=嗒哒！现在那个方块有更多面了。
+tab.thermalexpansion.device.fisher.0=捕捉各种水生生物。使用诱饵加速产出。
+tab.thermalexpansion.device.fisher.1=必须放在水体当中。
+tab.thermalexpansion.device.fisher.2=挂起你的鱼竿吧，不用枯坐了。
 tab.thermalexpansion.device.heat_sink.0=冷却周围机器，提升工作速度。
 tab.thermalexpansion.device.heat_sink.1=给它灌满冷却剂看着它工作好了！
 tab.thermalexpansion.device.heat_sink.2=不同的冷却剂有不同的冷却效果。
@@ -373,9 +391,9 @@ tab.thermalexpansion.dynamo.steam.1=固体燃料和水能被用于生产蒸汽�
 tab.thermalexpansion.machine.brewer.0=WIP
 tab.thermalexpansion.machine.brewer.1=WIP
 tab.thermalexpansion.machine.brewer.2=WIP
-tab.thermalexpansion.machine.centrifuge.0=WIP
-tab.thermalexpansion.machine.centrifuge.1=WIP
-tab.thermalexpansion.machine.centrifuge.2=WIP
+tab.thermalexpansion.machine.centrifuge.0=将物品分解成其组分。
+tab.thermalexpansion.machine.centrifuge.1=一些物品会被分解成流体。
+tab.thermalexpansion.machine.centrifuge.2=来玩个转盘！
 tab.thermalexpansion.machine.charger.0=给可储存RF的物品充能。
 tab.thermalexpansion.machine.charger.1=充能速度受物品限制。
 tab.thermalexpansion.machine.charger.2=嗡嗡嗡，嗡嗡嗡...
@@ -426,12 +444,16 @@ tab.thermalexpansion.storage.cell.1=按下Shift 和/或 Ctrl 以调整/微调能
 
 tab.thermalexpansion.storage.enchant=可以被附魔以提升容量.
 
+tab.thermalexpansion.storage.satchel.0=这是个背包，可以让你携带更多物品。
+tab.thermalexpansion.storage.satchel.1=不会携带某些“对象”。
+
 tab.thermalexpansion.storage.strongbox.0=这是个箱子！它存储物品，是的，很多物品.
 
 tile.thermalexpansion.apparatus.breaker.name=方块破坏器
 tile.thermalexpansion.apparatus.collector.name=物品采集器
 
 tile.thermalexpansion.device.extender.name=延展枢纽
+tile.thermalexpansion.device.fisher.name=水产捕获器
 tile.thermalexpansion.device.heat_sink.name=外置散热器
 tile.thermalexpansion.device.item_buffer.name=物品分配器
 tile.thermalexpansion.device.nullifier.name=焚毁炉
@@ -446,7 +468,7 @@ tile.thermalexpansion.dynamo.reactant.name=反应能源炉
 tile.thermalexpansion.dynamo.steam.name=蒸汽能源炉
 
 tile.thermalexpansion.machine.brewer.name=WIP
-tile.thermalexpansion.machine.centrifuge.name=WIP
+tile.thermalexpansion.machine.centrifuge.name=离心机
 tile.thermalexpansion.machine.charger.name=能量灌注机
 tile.thermalexpansion.machine.compactor.name=压缩机
 tile.thermalexpansion.machine.crafter.name=循环装配台
