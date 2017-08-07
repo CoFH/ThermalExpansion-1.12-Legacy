@@ -153,14 +153,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 					ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.thermalexpansion.augment.install.failure"));
 				}
 				return EnumActionResult.SUCCESS;
-			} else { // Client
-				if (((IAugmentable) tile).installAugment(stack)) {
-					if (!player.capabilities.isCreativeMode) {
-						stack.shrink(1);
-					}
-					ServerHelper.sendItemUsePacket(world, pos, side, hand, hitX, hitY, hitZ);
-					return EnumActionResult.SUCCESS;
-				}
 			}
 		}
 		return EnumActionResult.PASS;
