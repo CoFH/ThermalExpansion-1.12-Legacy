@@ -255,7 +255,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@Override
 	public void onModeChange(EntityPlayer player, ItemStack stack) {
 
-		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.satchel.a." + getMode(stack)));
+		// ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.satchel.a." + getMode(stack)));
 	}
 
 	/* IModelRegister */

@@ -4,6 +4,8 @@ import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RefineryManager {
@@ -43,6 +45,13 @@ public class RefineryManager {
 
 	public static void loadRecipes() {
 
+		/* IMMERSIVE PETROLEUM */
+		{
+			Fluid oil = FluidRegistry.getFluid("oil");
+			if (oil != null) {
+				addRecipe(DEFAULT_ENERGY, new FluidStack(oil, 100), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar);
+			}
+		}
 	}
 
 	public static void refresh() {

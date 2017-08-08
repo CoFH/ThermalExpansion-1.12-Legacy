@@ -10,7 +10,6 @@ import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.storage.TileStrongbox;
 import cofh.thermalexpansion.gui.container.storage.ContainerStrongbox;
-import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;

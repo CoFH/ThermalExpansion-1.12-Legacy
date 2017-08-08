@@ -11,7 +11,6 @@ import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.TileExtruder;
-import cofh.thermalexpansion.block.machine.TilePrecipitator;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -151,14 +150,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 					ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.thermalexpansion.augment.install.failure"));
 				}
 				return EnumActionResult.SUCCESS;
-			} else { // Client
-				if (((IAugmentable) tile).installAugment(stack)) {
-					if (!player.capabilities.isCreativeMode) {
-						stack.shrink(1);
-					}
-					ServerHelper.sendItemUsePacket(world, pos, side, hand, hitX, hitY, hitZ);
-					return EnumActionResult.SUCCESS;
-				}
 			}
 		}
 		return EnumActionResult.PASS;

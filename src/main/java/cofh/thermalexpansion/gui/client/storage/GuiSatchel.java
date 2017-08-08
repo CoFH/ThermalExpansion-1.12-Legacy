@@ -9,7 +9,6 @@ import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.container.storage.ContainerSatchel;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.ItemSatchel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;

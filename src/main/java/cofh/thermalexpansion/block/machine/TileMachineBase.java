@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.api.core.IAccelerable;
 import cofh.api.item.IAugmentItem.AugmentType;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.TimeTracker;
 import cofh.core.util.helpers.AugmentHelper;
@@ -221,7 +222,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 				updateLighting();
 			}
 			sendTilePacket(Side.CLIENT);
-		} else if (wasActive && tracker.hasDelayPassed(world, 100)) {
+		} else if (wasActive && tracker.hasDelayPassed(world, CoreProps.TILE_UPDATE_DELAY)) {
 			wasActive = false;
 			if (LIGHT_VALUES[getType()] != 0) {
 				updateLighting();

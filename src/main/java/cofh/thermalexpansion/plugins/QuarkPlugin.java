@@ -1,18 +1,23 @@
 package cofh.thermalexpansion.plugins;
 
+import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
+import cofh.thermalexpansion.util.managers.machine.SmelterManager;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+
+import java.util.Locale;
 
 public class QuarkPlugin {
 
@@ -34,63 +39,80 @@ public class QuarkPlugin {
 			return;
 		}
 		try {
-			ItemStack chestSpruce = getBlockStack("custom_chest", 1, 0);
-			ItemStack chestBirch = getBlockStack("custom_chest", 1, 1);
-			ItemStack chestJungle = getBlockStack("custom_chest", 1, 2);
-			ItemStack chestAcacia = getBlockStack("custom_chest", 1, 3);
-			ItemStack chestDarkOak = getBlockStack("custom_chest", 1, 4);
-
-			ItemStack chestTrappedSpruce = getBlockStack("custom_chest_trap", 1, 0);
-			ItemStack chestTrappedBirch = getBlockStack("custom_chest_trap", 1, 1);
-			ItemStack chestTrappedJungle = getBlockStack("custom_chest_trap", 1, 2);
-			ItemStack chestTrappedAcacia = getBlockStack("custom_chest_trap", 1, 3);
-			ItemStack chestTrappedDarkOak = getBlockStack("custom_chest_trap", 1, 4);
-
-			ItemStack bookshelfSpruce = getBlockStack("custom_bookshelf", 1, 0);
-			ItemStack bookshelfBirch = getBlockStack("custom_bookshelf", 1, 1);
-			ItemStack bookshelfJungle = getBlockStack("custom_bookshelf", 1, 2);
-			ItemStack bookshelfAcacia = getBlockStack("custom_bookshelf", 1, 3);
-			ItemStack bookshelfDarkOak = getBlockStack("custom_bookshelf", 1, 4);
-
-			ItemStack trapdoorSpruce = getBlockStack("spruce_trapdoor", 1);
-			ItemStack trapdoorBirch = getBlockStack("birch_trapdoor", 1);
-			ItemStack trapdoorJungle = getBlockStack("jungle_trapdoor", 1);
-			ItemStack trapdoorAcacia = getBlockStack("acacia_trapdoor", 1);
-			ItemStack trapdoorDarkOak = getBlockStack("dark_oak_trapdoor", 1);
 
 			/* PULVERIZER */
 			{
-				int energy = PulverizerManager.DEFAULT_ENERGY * 3 / 4;
+				int energy = PulverizerManager.DEFAULT_ENERGY;
 
+				PulverizerManager.addRecipe(energy, getBlockStack("blaze_lantern", 1, 0), new ItemStack(Items.BLAZE_POWDER, 16));
+				PulverizerManager.addRecipe(energy, new ItemStack(Items.REEDS), new ItemStack(Items.SUGAR, 2));
+
+				energy = PulverizerManager.DEFAULT_ENERGY * 3 / 4;
+
+				int[] dyeChance = new int[ColorHelper.WOOL_COLOR_CONFIG.length];
+				for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
+					dyeChance[i] = 10;
+				}
+				dyeChance[EnumDyeColor.WHITE.getMetadata()] = 0;
+				dyeChance[EnumDyeColor.BROWN.getMetadata()] = 0;
+				dyeChance[EnumDyeColor.BLUE.getMetadata()] = 0;
+				dyeChance[EnumDyeColor.GREEN.getMetadata()] = 0;
+				dyeChance[EnumDyeColor.BLACK.getMetadata()] = 0;
+
+				ItemStack stringStack = ItemHelper.cloneStack(Items.STRING, 4);
+				ItemStack brickStack = ItemHelper.cloneStack(Items.BRICK, 3);
+
+				for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
+					if (dyeChance[i] > 0) {
+						PulverizerManager.addRecipe(energy, getBlockStack("quilted_wool", 1, i), stringStack, new ItemStack(Items.DYE, 1, 15 - i), dyeChance[i]);
+						PulverizerManager.addRecipe(energy / 2, getBlockStack("colored_flowerpot_" + ColorHelper.WOOL_COLOR_CONFIG[i].toLowerCase(Locale.ENGLISH), 1), brickStack, new ItemStack(Items.DYE, 1, 15 - i), dyeChance[i]);
+					} else {
+						PulverizerManager.addRecipe(energy, getBlockStack("quilted_wool", 1, i), stringStack);
+						PulverizerManager.addRecipe(energy / 2, getBlockStack("colored_flowerpot_" + ColorHelper.WOOL_COLOR_CONFIG[i].toLowerCase(Locale.ENGLISH), 1), brickStack);
+					}
+				}
 			}
 
 			/* SAWMILL */
 			{
 				int energy = SawmillManager.DEFAULT_ENERGY * 3 / 2;
 
-				SawmillManager.addRecipe(energy, chestSpruce, new ItemStack(Blocks.PLANKS, 4, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-				SawmillManager.addRecipe(energy, chestBirch, new ItemStack(Blocks.PLANKS, 4, 2), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-				SawmillManager.addRecipe(energy, chestJungle, new ItemStack(Blocks.PLANKS, 4, 3), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-				SawmillManager.addRecipe(energy, chestAcacia, new ItemStack(Blocks.PLANKS, 4, 4), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-				SawmillManager.addRecipe(energy, chestDarkOak, new ItemStack(Blocks.PLANKS, 4, 5), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+				SawmillManager.addRecipe(energy, getBlockStack("custom_chest", 1, 0), new ItemStack(Blocks.PLANKS, 4, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+				SawmillManager.addRecipe(energy, getBlockStack("custom_chest", 1, 1), new ItemStack(Blocks.PLANKS, 4, 2), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+				SawmillManager.addRecipe(energy, getBlockStack("custom_chest", 1, 2), new ItemStack(Blocks.PLANKS, 4, 3), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+				SawmillManager.addRecipe(energy, getBlockStack("custom_chest", 1, 3), new ItemStack(Blocks.PLANKS, 4, 4), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+				SawmillManager.addRecipe(energy, getBlockStack("custom_chest", 1, 4), new ItemStack(Blocks.PLANKS, 4, 5), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 
-				SawmillManager.addRecipe(energy, chestTrappedSpruce, new ItemStack(Blocks.PLANKS, 4, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-				SawmillManager.addRecipe(energy, chestTrappedBirch, new ItemStack(Blocks.PLANKS, 4, 2), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-				SawmillManager.addRecipe(energy, chestTrappedJungle, new ItemStack(Blocks.PLANKS, 4, 3), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-				SawmillManager.addRecipe(energy, chestTrappedAcacia, new ItemStack(Blocks.PLANKS, 4, 4), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-				SawmillManager.addRecipe(energy, chestTrappedDarkOak, new ItemStack(Blocks.PLANKS, 4, 5), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+				SawmillManager.addRecipe(energy, getBlockStack("custom_chest_trap", 1, 0), new ItemStack(Blocks.PLANKS, 4, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+				SawmillManager.addRecipe(energy, getBlockStack("custom_chest_trap", 1, 1), new ItemStack(Blocks.PLANKS, 4, 2), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+				SawmillManager.addRecipe(energy, getBlockStack("custom_chest_trap", 1, 2), new ItemStack(Blocks.PLANKS, 4, 3), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+				SawmillManager.addRecipe(energy, getBlockStack("custom_chest_trap", 1, 3), new ItemStack(Blocks.PLANKS, 4, 4), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+				SawmillManager.addRecipe(energy, getBlockStack("custom_chest_trap", 1, 4), new ItemStack(Blocks.PLANKS, 4, 5), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 
-				SawmillManager.addRecipe(energy, bookshelfSpruce, new ItemStack(Blocks.PLANKS, 3, 1), new ItemStack(Items.BOOK, 3), 25);
-				SawmillManager.addRecipe(energy, bookshelfBirch, new ItemStack(Blocks.PLANKS, 3, 2), new ItemStack(Items.BOOK, 3), 25);
-				SawmillManager.addRecipe(energy, bookshelfJungle, new ItemStack(Blocks.PLANKS, 3, 3), new ItemStack(Items.BOOK, 3), 25);
-				SawmillManager.addRecipe(energy, bookshelfAcacia, new ItemStack(Blocks.PLANKS, 3, 4), new ItemStack(Items.BOOK, 3), 25);
-				SawmillManager.addRecipe(energy, bookshelfDarkOak, new ItemStack(Blocks.PLANKS, 3, 5), new ItemStack(Items.BOOK, 3), 25);
+				SawmillManager.addRecipe(energy, getBlockStack("custom_bookshelf", 1, 0), new ItemStack(Blocks.PLANKS, 3, 1), new ItemStack(Items.BOOK, 3), 25);
+				SawmillManager.addRecipe(energy, getBlockStack("custom_bookshelf", 1, 1), new ItemStack(Blocks.PLANKS, 3, 2), new ItemStack(Items.BOOK, 3), 25);
+				SawmillManager.addRecipe(energy, getBlockStack("custom_bookshelf", 1, 2), new ItemStack(Blocks.PLANKS, 3, 3), new ItemStack(Items.BOOK, 3), 25);
+				SawmillManager.addRecipe(energy, getBlockStack("custom_bookshelf", 1, 3), new ItemStack(Blocks.PLANKS, 3, 4), new ItemStack(Items.BOOK, 3), 25);
+				SawmillManager.addRecipe(energy, getBlockStack("custom_bookshelf", 1, 4), new ItemStack(Blocks.PLANKS, 3, 5), new ItemStack(Items.BOOK, 3), 25);
 
-				SawmillManager.addRecipe(energy, trapdoorSpruce, new ItemStack(Blocks.PLANKS, 1, 1), ItemMaterial.dustWood, 75);
-				SawmillManager.addRecipe(energy, trapdoorBirch, new ItemStack(Blocks.PLANKS, 1, 2), ItemMaterial.dustWood, 75);
-				SawmillManager.addRecipe(energy, trapdoorJungle, new ItemStack(Blocks.PLANKS, 1, 3), ItemMaterial.dustWood, 75);
-				SawmillManager.addRecipe(energy, trapdoorAcacia, new ItemStack(Blocks.PLANKS, 1, 4), ItemMaterial.dustWood, 75);
-				SawmillManager.addRecipe(energy, trapdoorDarkOak, new ItemStack(Blocks.PLANKS, 1, 5), ItemMaterial.dustWood, 75);
+				SawmillManager.addRecipe(energy, getBlockStack("spruce_trapdoor", 2), new ItemStack(Blocks.PLANKS, 1, 1), ItemMaterial.dustWood, 75);
+				SawmillManager.addRecipe(energy, getBlockStack("birch_trapdoor", 2), new ItemStack(Blocks.PLANKS, 1, 2), ItemMaterial.dustWood, 75);
+				SawmillManager.addRecipe(energy, getBlockStack("jungle_trapdoor", 2), new ItemStack(Blocks.PLANKS, 1, 3), ItemMaterial.dustWood, 75);
+				SawmillManager.addRecipe(energy, getBlockStack("acacia_trapdoor", 2), new ItemStack(Blocks.PLANKS, 1, 4), ItemMaterial.dustWood, 75);
+				SawmillManager.addRecipe(energy, getBlockStack("dark_oak_trapdoor", 2), new ItemStack(Blocks.PLANKS, 1, 5), ItemMaterial.dustWood, 75);
+
+				energy = SawmillManager.DEFAULT_ENERGY * 3 / 4;
+
+				for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
+					SawmillManager.addRecipe(energy, getBlockStack("colored_item_frame", 1, i), new ItemStack(Items.LEATHER, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+				}
+			}
+
+			/* SMELTER */
+			{
+				int energy = SmelterManager.DEFAULT_ENERGY;
+
+				SmelterManager.addRecycleRecipe(energy, getBlockStack("iron_ladder", 1, 0), new ItemStack(Items.IRON_NUGGET), 3);
 			}
 
 			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");

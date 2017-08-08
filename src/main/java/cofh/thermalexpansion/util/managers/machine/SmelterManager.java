@@ -565,7 +565,7 @@ public class SmelterManager {
 		}
 	}
 
-	private static void addAlloyRecipe(int energy, String primaryOreName, int primaryAmount, String secondaryOreName, int secondaryAmount, ItemStack primaryOutput) {
+	public static void addAlloyRecipe(int energy, String primaryOreName, int primaryAmount, String secondaryOreName, int secondaryAmount, ItemStack primaryOutput) {
 
 		List<ItemStack> primaryOreList = OreDictionary.getOres(primaryOreName, false);
 		List<ItemStack> secondaryOreList = OreDictionary.getOres(secondaryOreName, false);
@@ -575,12 +575,12 @@ public class SmelterManager {
 		}
 	}
 
-	private static void addAlloyRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
+	public static void addAlloyRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
 
 		addRecipe(energy, primaryInput, secondaryInput, primaryOutput, ItemStack.EMPTY, 0);
 	}
 
-	private static SmelterRecipe addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
+	public static SmelterRecipe addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
 
 		return addRecipe(energy, input, BLOCK_SAND, ItemHelper.cloneStack(output, outputSize), ItemMaterial.crystalSlag, outputSize * 5 + 5);
 	}

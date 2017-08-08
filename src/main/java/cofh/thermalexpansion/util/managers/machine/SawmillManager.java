@@ -2,6 +2,7 @@ package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.inventory.ComparableItemStack;
 import cofh.core.inventory.InventoryCraftingFalse;
+import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -81,7 +82,7 @@ public class SawmillManager {
 			addRecipe(energy, new ItemStack(Blocks.CRAFTING_TABLE), new ItemStack(Blocks.PLANKS, 2), ItemMaterial.dustWood);
 			addRecipe(energy / 2, new ItemStack(Blocks.WOODEN_BUTTON, 2), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 25);
 			addRecipe(energy, new ItemStack(Blocks.WOODEN_PRESSURE_PLATE), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 50);
-			addRecipe(energy, new ItemStack(Blocks.TRAPDOOR), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 75);
+			addRecipe(energy, new ItemStack(Blocks.TRAPDOOR, 2), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 75);
 			addRecipe(energy / 2, new ItemStack(Items.BOWL, 2), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 25);
 			addRecipe(energy, new ItemStack(Items.SIGN), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 50);
 		}
@@ -126,12 +127,12 @@ public class SawmillManager {
 		{
 			int energy = DEFAULT_ENERGY * 3 / 2;
 
-			addRecipe(energy, new ItemStack(Blocks.OAK_STAIRS), new ItemStack(Blocks.PLANKS, 1, 0), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Blocks.SPRUCE_STAIRS), new ItemStack(Blocks.PLANKS, 1, 1), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Blocks.BIRCH_STAIRS), new ItemStack(Blocks.PLANKS, 1, 2), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Blocks.JUNGLE_STAIRS), new ItemStack(Blocks.PLANKS, 1, 3), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Blocks.ACACIA_STAIRS), new ItemStack(Blocks.PLANKS, 1, 4), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Blocks.DARK_OAK_STAIRS), new ItemStack(Blocks.PLANKS, 1, 5), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.OAK_STAIRS, 2), new ItemStack(Blocks.PLANKS, 1, 0), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.SPRUCE_STAIRS, 2), new ItemStack(Blocks.PLANKS, 1, 1), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.BIRCH_STAIRS, 2), new ItemStack(Blocks.PLANKS, 1, 2), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.JUNGLE_STAIRS, 2), new ItemStack(Blocks.PLANKS, 1, 3), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.ACACIA_STAIRS, 2), new ItemStack(Blocks.PLANKS, 1, 4), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.DARK_OAK_STAIRS, 2), new ItemStack(Blocks.PLANKS, 1, 5), ItemMaterial.dustWood, 25);
 		}
 
 		/* BOATS */
@@ -171,7 +172,9 @@ public class SawmillManager {
 		{
 			int energy = DEFAULT_ENERGY * 3 / 2;
 
-			addRecipe(energy, new ItemStack(Items.BED), new ItemStack(Blocks.PLANKS, 1), new ItemStack(Blocks.WOOL, 2));
+			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
+				addRecipe(energy, new ItemStack(Items.BED, 1, i), new ItemStack(Blocks.PLANKS, 2), new ItemStack(Blocks.WOOL, 2, i));
+			}
 			addRecipe(energy, new ItemStack(Blocks.BOOKSHELF), new ItemStack(Blocks.PLANKS, 3), new ItemStack(Items.BOOK, 3), 25);
 			addRecipe(energy, new ItemStack(Blocks.JUKEBOX), new ItemStack(Blocks.PLANKS, 4), new ItemStack(Items.DIAMOND, 1), 25);
 			addRecipe(energy, new ItemStack(Blocks.NOTEBLOCK), new ItemStack(Blocks.PLANKS, 4), new ItemStack(Items.REDSTONE, 1), 25);

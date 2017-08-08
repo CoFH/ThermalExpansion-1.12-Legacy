@@ -96,8 +96,8 @@ public class NaturaPlugin {
 			ItemStack saplingBloodwood = getItem("nether_sapling2", 1, 0);
 
 			ItemStack logGhostwood = getBlockStack("nether_logs", 1, 0);
-			ItemStack logDarkwood = getBlockStack("nether_logs", 1, 1);
-			ItemStack logFusewood = getBlockStack("nether_logs", 1, 2);
+			ItemStack logFusewood = getBlockStack("nether_logs", 1, 1);
+			ItemStack logDarkwood = getBlockStack("nether_logs", 1, 2);
 			ItemStack logBloodwood = getBlockStack("nether_logs2", 1, 0);
 
 			Block log = getBlock("overworld_logs");

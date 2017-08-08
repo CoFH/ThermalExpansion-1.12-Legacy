@@ -71,6 +71,10 @@ public class PulverizerManager {
 			addRecipe(energy / 4, new ItemStack(Blocks.STONEBRICK), new ItemStack(Blocks.STONEBRICK, 1, 2));
 			addRecipe(energy * 3 / 2, new ItemStack(Blocks.OBSIDIAN), ItemHelper.cloneStack(ItemMaterial.dustObsidian, 4));
 
+			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
+				addRecipe(energy, new ItemStack(Blocks.CONCRETE, 1, i), new ItemStack(Blocks.CONCRETE_POWDER, 1, i));
+			}
+
 			energy = DEFAULT_ENERGY / 2;
 
 			addRecipe(energy, new ItemStack(Items.COAL, 1, 0), ItemMaterial.dustCoal, ItemMaterial.dustSulfur, 15);
@@ -114,7 +118,7 @@ public class PulverizerManager {
 
 			int[] dyeChance = new int[ColorHelper.WOOL_COLOR_CONFIG.length];
 			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
-				dyeChance[i] = 5;
+				dyeChance[i] = 10;
 			}
 			dyeChance[EnumDyeColor.WHITE.getMetadata()] = 0;
 			dyeChance[EnumDyeColor.BROWN.getMetadata()] = 0;
@@ -206,9 +210,9 @@ public class PulverizerManager {
 			for (int i = 0; i < 3; i++) {
 				addRecipe(energy, new ItemStack(Blocks.QUARTZ_BLOCK, 1, i), new ItemStack(Items.QUARTZ, 4));
 			}
-			addRecipe(energy, new ItemStack(Blocks.BRICK_STAIRS), new ItemStack(Items.BRICK, 6));
-			addRecipe(energy, new ItemStack(Blocks.NETHER_BRICK_STAIRS), new ItemStack(Items.NETHERBRICK, 6));
-			addRecipe(energy, new ItemStack(Blocks.QUARTZ_STAIRS), new ItemStack(Items.QUARTZ, 6));
+			addRecipe(energy, new ItemStack(Blocks.BRICK_STAIRS), new ItemStack(Items.BRICK, 3));
+			addRecipe(energy, new ItemStack(Blocks.NETHER_BRICK_STAIRS), new ItemStack(Items.NETHERBRICK, 3));
+			addRecipe(energy, new ItemStack(Blocks.QUARTZ_STAIRS), new ItemStack(Items.QUARTZ, 3));
 			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 4), new ItemStack(Items.BRICK, 2));
 			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 6), new ItemStack(Items.NETHERBRICK, 2));
 			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 7), new ItemStack(Items.QUARTZ, 2));

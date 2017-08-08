@@ -4,7 +4,6 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.ServerHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiFisher;
 import cofh.thermalexpansion.gui.container.device.ContainerFisher;

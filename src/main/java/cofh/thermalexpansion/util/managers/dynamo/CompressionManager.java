@@ -65,6 +65,12 @@ public class CompressionManager {
 			addFuel("biodiesel", 500000);
 		}
 
+		/* IMMERSIVE PETROLEUM */
+		{
+			addFuel("oil", 400000);
+			addFuel("diesel", 800000);
+		}
+
 		/* MINEFACTORY RELOADED */
 		{
 			addFuel("biofuel", 500000);
