@@ -43,8 +43,8 @@ gui.thermalexpansion.machine.compactor.modeMint=铸币模式
 gui.thermalexpansion.machine.compactor.modePress=辊压模式
 gui.thermalexpansion.machine.compactor.modeStorage=压缩模式
 
-gui.thermalexpansion.machine.insolator.modeLocked=肥料槽已解锁
-gui.thermalexpansion.machine.insolator.modeUnlocked=肥料槽已锁定
+gui.thermalexpansion.machine.insolator.modeLocked=肥料槽已锁定
+gui.thermalexpansion.machine.insolator.modeUnlocked=肥料槽已解锁
 
 gui.thermalexpansion.machine.smelter.modeLocked=流量槽已锁定
 gui.thermalexpansion.machine.smelter.modeUnlocked=流量槽已解锁
