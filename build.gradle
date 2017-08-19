@@ -44,6 +44,15 @@ repositories {
 		name = "JEI Maven"
 		url = "http://dvs1.progwml6.com/files/maven"
 	}
+	ivy {
+		// Fake ivy repo to fetch Baubles
+		name = "Azanor Dropbox"
+		url = 'https://dl.dropboxusercontent.com/u/47135879'
+		layout 'pattern', {
+			// Example: Baubles-1.12-1.5.1-api.jar
+			artifact '/[organisation]-[revision]-[module].[ext]'
+		}
+	}
 }
 
 dependencies {
@@ -53,6 +62,7 @@ dependencies {
 
 	compile "codechicken:CodeChickenLib:${config.mc_version}-${config.ccl_version}:deobf"
 	compile "mezz.jei:jei_${config.mc_version}:${config.jei_version}"
+	compile "Baubles:api:${config.mc_version}-${config.baubles_version}@jar"
 }
 
 version = "${project.config.mod_version}." + (System.getenv("BUILD_NUMBER") ?: "1")
