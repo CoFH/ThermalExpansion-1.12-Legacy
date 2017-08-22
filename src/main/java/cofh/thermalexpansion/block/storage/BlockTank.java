@@ -15,6 +15,7 @@ import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.RenderTank;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -164,6 +165,12 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 
 		return new AxisAlignedBB(0.125F, 0F, 0.125F, 0.875F, 1F, 0.875F);
+	}
+
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing side) {
+
+		return BlockFaceShape.UNDEFINED;
 	}
 
 	/* HELPERS */

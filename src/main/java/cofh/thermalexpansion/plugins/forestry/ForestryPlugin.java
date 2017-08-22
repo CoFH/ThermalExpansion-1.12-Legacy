@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.plugins;
+package cofh.thermalexpansion.plugins.forestry;
 
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;

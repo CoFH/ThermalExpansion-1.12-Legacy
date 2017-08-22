@@ -52,6 +52,15 @@ public class RefineryManager {
 				addRecipe(DEFAULT_ENERGY, new FluidStack(oil, 100), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar);
 			}
 		}
+
+		/* INDUSTRIALCRAFT 2 */
+		{
+			Fluid biomass = FluidRegistry.getFluid("ic2biomass");
+			Fluid biogas = FluidRegistry.getFluid("ic2biogas");
+			if (biomass != null && biogas != null) {
+				addRecipe(DEFAULT_ENERGY / 2, new FluidStack(biomass, 10), new FluidStack(biogas, 200));
+			}
+		}
 	}
 
 	public static void refresh() {
@@ -67,6 +76,11 @@ public class RefineryManager {
 		RefineryRecipe recipe = new RefineryRecipe(input, outputFluid, outputItem, energy);
 		recipeMap.put(input.getFluid().getName().hashCode(), recipe);
 		return recipe;
+	}
+
+	public static RefineryRecipe addRecipe(int energy, FluidStack input, FluidStack outputFluid) {
+
+		return addRecipe(energy, input, outputFluid, ItemStack.EMPTY);
 	}
 
 	/* REMOVE RECIPES */

@@ -57,7 +57,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		String comment = "Adjust this value to change the Energy generation (in RF/t) for a Steam Dynamo. This base value will scale with block level and Augments.";
-		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, basePower / 4, basePower * 4, comment);
+		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
 
 		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
 		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
@@ -69,7 +69,6 @@ public class TileDynamoSteam extends TileDynamoBase {
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
 	private int waterRF;
-	private int currentFuelRF = 0;
 
 	/* AUGMENTS */
 	protected boolean augmentTurbine;

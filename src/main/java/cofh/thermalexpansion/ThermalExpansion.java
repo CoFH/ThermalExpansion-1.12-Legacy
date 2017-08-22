@@ -12,6 +12,7 @@ import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.plugins.*;
+import cofh.thermalexpansion.plugins.forestry.ForestryPlugin;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.managers.CoolantManager;
@@ -196,6 +197,7 @@ public class ThermalExpansion {
 		BiomesOPlentyPlugin.initialize();
 		ForestryPlugin.initialize();
 		HarvestcraftPlugin.initialize();
+		IndustrialCraftPlugin.initialize();
 		NaturaPlugin.initialize();
 		QuarkPlugin.initialize();
 		RusticPlugin.initialize();

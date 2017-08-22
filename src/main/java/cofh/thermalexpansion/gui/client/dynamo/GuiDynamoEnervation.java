@@ -13,8 +13,6 @@ public class GuiDynamoEnervation extends GuiDynamoBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "enervation.png");
 
-	private ElementDualScaled duration;
-
 	public GuiDynamoEnervation(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerDynamoEnervation(inventory, tile), tile, inventory.player, TEXTURE);
@@ -29,14 +27,6 @@ public class GuiDynamoEnervation extends GuiDynamoBase {
 
 		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
 		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_FLUX, 32, 16));
-	}
-
-	@Override
-	protected void updateElementInformation() {
-
-		super.updateElementInformation();
-
-		duration.setQuantity(baseTile.getScaledDuration(SPEED));
 	}
 
 }

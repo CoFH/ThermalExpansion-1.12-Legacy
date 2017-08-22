@@ -19,6 +19,7 @@ import cofh.thermalexpansion.render.RenderDynamo;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -252,6 +253,12 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 			return RayTracer.rayTraceCuboidsClosest(start, end, pos, boundingBox[facing], boundingBox[facing + 6]);
 		}
 		return super.collisionRayTrace(blockState, worldIn, pos, start, end);
+	}
+
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing side) {
+
+		return BlockFaceShape.UNDEFINED;
 	}
 
 	/* RENDERING METHODS */

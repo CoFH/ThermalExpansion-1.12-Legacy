@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.plugins.top;
 
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileTEBase;
-import com.google.common.base.Function;
 import mcjty.theoneprobe.api.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,44 +11,63 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 
 import javax.annotation.Nullable;
+import java.util.function.Function;
 
-public class TopPlugin implements IProbeInfoProvider, Function<ITheOneProbe, Void> {
+public class TopPlugin {
 
-	private static boolean initialized = false;
+	private TopPlugin() {
+
+	}
+
+	public static final String MOD_ID = "theoneprobe";
+	public static final String MOD_NAME = "The One Probe";
 
 	public static void initialize() {
 
-		if (initialized) {
+		String category = "Plugins";
+		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
+
+		boolean enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
+
+		if (!enable || !Loader.isModLoaded(MOD_ID)) {
 			return;
 		}
-		if (Loader.isModLoaded("theoneprobe")) {
-			FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", TopPlugin.class.getName());
+		try {
+			FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", InfoProvider.class.getName()); //"cofh.thermalexpansion.plugins.top.TopPlugin$InfoProvider");
+
+			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
 		}
-		initialized = true;
 	}
 
-	@Override
-	public Void apply(@Nullable ITheOneProbe probe) {
+	/* HELPERS */
+	public static class InfoProvider implements IProbeInfoProvider, Function<ITheOneProbe, Void> {
 
-		if (probe != null) {
-			probe.registerProvider(this);
+		@Override
+		public Void apply(@Nullable ITheOneProbe probe) {
+
+			if (probe != null) {
+				probe.registerProvider(this);
+			}
+			return null;
 		}
-		return null;
-	}
 
-	@Override
-	public String getID() {
+		/* IProbeInfoProvider */
+		@Override
+		public String getID() {
 
-		return "thermalexpansion.probeplugin";
-	}
+			return "thermalexpansion.probeplugin";
+		}
 
-	@Override
-	public void addProbeInfo(ProbeMode probeMode, IProbeInfo iProbeInfo, EntityPlayer entityPlayer, World world, IBlockState iBlockState, IProbeHitData iProbeHitData) {
+		@Override
+		public void addProbeInfo(ProbeMode probeMode, IProbeInfo iProbeInfo, EntityPlayer entityPlayer, World world, IBlockState iBlockState, IProbeHitData iProbeHitData) {
 
-		TileEntity te = world.getTileEntity(iProbeHitData.getPos());
-		if (te instanceof TileTEBase) {
-			TileTEBase tile = (TileTEBase) te;
-			tile.provideInfo(iProbeInfo, iProbeHitData.getSideHit(), entityPlayer);
+			TileEntity te = world.getTileEntity(iProbeHitData.getPos());
+			if (te instanceof TileTEBase) {
+				TileTEBase tile = (TileTEBase) te;
+				tile.provideInfo(iProbeInfo, iProbeHitData.getSideHit(), entityPlayer);
+			}
 		}
 	}
 

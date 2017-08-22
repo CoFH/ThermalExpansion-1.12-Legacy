@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.plugins;
+package cofh.thermalexpansion.plugins.forestry;
 
 import cofh.thermalexpansion.ThermalExpansion;
 import net.minecraft.block.Block;
@@ -8,14 +8,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-public class MagicBeesPlugin {
+public class BotanyPlugin {
 
-	private MagicBeesPlugin() {
+	private BotanyPlugin() {
 
 	}
 
-	public static final String MOD_ID = "magicbees";
-	public static final String MOD_NAME = "Magic Bees";
+	public static final String MOD_ID = "botany";
+	public static final String MOD_NAME = "Botany";
 
 	public static void initialize() {
 

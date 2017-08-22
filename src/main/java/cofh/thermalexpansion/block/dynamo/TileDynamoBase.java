@@ -43,6 +43,10 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	protected static final EnergyConfig[] DEFAULT_ENERGY_CONFIG = new EnergyConfig[Type.values().length];
 	protected static final HashSet<String>[] VALID_AUGMENTS = new HashSet[Type.values().length];
+
+	public static final int MIN_BASE_POWER = 10;
+	public static final int MAX_BASE_POWER = 200;
+
 	private static boolean enableSecurity = true;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
@@ -66,7 +70,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	byte facing = 1;
 	int fuelRF;
-	boolean wasActive;
+	int currentFuelRF;
 	boolean hasModeAugment;
 
 	int compareTracker;

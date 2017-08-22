@@ -69,6 +69,12 @@ public class CompressionManager {
 		{
 			addFuel("oil", 400000);
 			addFuel("diesel", 800000);
+			addFuel("gasoline", 1200000);
+		}
+
+		/* INDUSTRIALCRAFT 2 */
+		{
+			addFuel("ic2biogas", 100000);
 		}
 
 		/* MINEFACTORY RELOADED */

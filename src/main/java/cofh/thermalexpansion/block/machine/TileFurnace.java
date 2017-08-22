@@ -71,6 +71,9 @@ public class TileFurnace extends TileMachineBase {
 		String category = "Machine.Furnace";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
+		String comment = "Adjust this value to change the Energy consumption (in RF/t) for a Redstone Furnace. This base value will scale with block level and Augments.";
+		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
+
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
 	}

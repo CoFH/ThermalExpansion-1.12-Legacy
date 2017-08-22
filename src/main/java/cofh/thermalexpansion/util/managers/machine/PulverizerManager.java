@@ -63,8 +63,6 @@ public class PulverizerManager {
 			addRecipe(energy, new ItemStack(Blocks.COBBLESTONE), new ItemStack(Blocks.SAND), new ItemStack(Blocks.GRAVEL), 15);
 			addRecipe(energy, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), 15);
 			addRecipe(energy, new ItemStack(Blocks.NETHERRACK), new ItemStack(Blocks.GRAVEL), ItemMaterial.dustSulfur, 15);
-			addRecipe(energy, new ItemStack(Blocks.SANDSTONE), ItemHelper.cloneStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 25);
-			addRecipe(energy, new ItemStack(Blocks.RED_SANDSTONE), new ItemStack(Blocks.SAND, 2, 1), ItemMaterial.dustNiter, 25);
 			addRecipe(energy, new ItemStack(Blocks.GLOWSTONE), new ItemStack(Items.GLOWSTONE_DUST, 4));
 			addRecipe(energy, new ItemStack(Blocks.MAGMA), new ItemStack(Items.MAGMA_CREAM, 4));
 
@@ -209,20 +207,25 @@ public class PulverizerManager {
 
 			for (int i = 0; i < 3; i++) {
 				addRecipe(energy, new ItemStack(Blocks.QUARTZ_BLOCK, 1, i), new ItemStack(Items.QUARTZ, 4));
+				addRecipe(energy, new ItemStack(Blocks.SANDSTONE, 1, i), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 40);
+				addRecipe(energy, new ItemStack(Blocks.RED_SANDSTONE, 1, i), new ItemStack(Blocks.SAND, 2, 1), ItemMaterial.dustNiter, 40);
 			}
+
+			/* STAIRS */
 			addRecipe(energy, new ItemStack(Blocks.BRICK_STAIRS), new ItemStack(Items.BRICK, 3));
 			addRecipe(energy, new ItemStack(Blocks.NETHER_BRICK_STAIRS), new ItemStack(Items.NETHERBRICK, 3));
 			addRecipe(energy, new ItemStack(Blocks.QUARTZ_STAIRS), new ItemStack(Items.QUARTZ, 3));
+			addRecipe(energy, new ItemStack(Blocks.SANDSTONE_STAIRS), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 20);
+			addRecipe(energy, new ItemStack(Blocks.RED_SANDSTONE_STAIRS), new ItemStack(Blocks.SAND, 2, 1), ItemMaterial.dustNiter, 20);
+
+			/* SLABS */
 			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 4), new ItemStack(Items.BRICK, 2));
 			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 6), new ItemStack(Items.NETHERBRICK, 2));
 			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 7), new ItemStack(Items.QUARTZ, 2));
+			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 1), new ItemStack(Blocks.SAND, 1), ItemMaterial.dustNiter, 20);
+			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB2, 1, 0), new ItemStack(Blocks.SAND, 1, 1), ItemMaterial.dustNiter, 20);
 
-			for (int i = 0; i < 3; i++) {
-				addRecipe(energy, new ItemStack(Blocks.SANDSTONE, 1, i), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 50);
-			}
-			addRecipe(energy, new ItemStack(Blocks.SANDSTONE_STAIRS), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 75);
-			addRecipe(energy, new ItemStack(Blocks.STONE_SLAB, 1, 1), new ItemStack(Blocks.SAND, 1), ItemMaterial.dustNiter, 25);
-
+			/* MISC */
 			addRecipe(energy / 2, new ItemStack(Items.FLOWER_POT), new ItemStack(Items.BRICK, 3));
 			addRecipe(energy / 2, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Blocks.SAND, 1));
 

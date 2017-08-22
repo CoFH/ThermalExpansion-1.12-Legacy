@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.gui.GuiCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.TextureHelper;
 import cofh.core.util.helpers.AugmentHelper;
@@ -54,7 +55,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		String comment = "Adjust this value to change the Energy generation (in RF/t) for a Magmatic Dynamo. This base value will scale with block level and Augments.";
-		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, basePower / 4, basePower * 4, comment);
+		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
 
 		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
 		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
@@ -143,6 +144,12 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	}
 
 	/* GUI METHODS */
+	@Override
+	public int getScaledDuration(int scale) {
+
+		return isActive ? GuiCore.SPEED : 0;
+	}
+
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
@@ -283,7 +290,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 			hasModeAugment = true;
 			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level));
 			energyStorage.setEnergyStored(0);
-			energyMod -= 10;
+			energyMod -= 30;
 			return true;
 		}
 		if (!augmentCoolant && TEProps.DYNAMO_MAGMATIC_COOLANT.equals(id)) {

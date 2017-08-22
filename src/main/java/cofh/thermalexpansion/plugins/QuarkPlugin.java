@@ -3,6 +3,8 @@ package cofh.thermalexpansion.plugins;
 import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager;
@@ -44,11 +46,39 @@ public class QuarkPlugin {
 			{
 				int energy = PulverizerManager.DEFAULT_ENERGY;
 
-				PulverizerManager.addRecipe(energy, getBlockStack("blaze_lantern", 1, 0), new ItemStack(Items.BLAZE_POWDER, 16));
-				PulverizerManager.addRecipe(energy, new ItemStack(Items.REEDS), new ItemStack(Items.SUGAR, 2));
+				PulverizerManager.addRecipe(energy, getBlockStack("biotite_ore", 1), getItem("biotite", 3, 0), new ItemStack(Items.ENDER_PEARL), 5);
+
+				PulverizerManager.addRecipe(energy, getBlockStack("blaze_lantern", 1), new ItemStack(Items.BLAZE_POWDER, 16));
 
 				energy = PulverizerManager.DEFAULT_ENERGY * 3 / 4;
 
+				PulverizerManager.addRecipe(energy, getBlockStack("soul_sandstone", 1), ItemHelper.cloneStack(Blocks.SOUL_SAND, 2), ItemMaterial.dustSulfur, 40);
+
+				for (int i = 0; i < 2; i++) {
+					PulverizerManager.addRecipe(energy, getBlockStack("biotite_block", 1, i), getItem("biotite", 4, 0));
+					PulverizerManager.addRecipe(energy, getBlockStack("sandstone_new", 1, i), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 40);
+					PulverizerManager.addRecipe(energy, getBlockStack("sandstone_new", 1, 2 + i), new ItemStack(Blocks.SAND, 2, 1), ItemMaterial.dustNiter, 40);
+					PulverizerManager.addRecipe(energy, getBlockStack("sandstone_new", 1, 4 + i), new ItemStack(Blocks.SOUL_SAND, 2), ItemMaterial.dustSulfur, 40);
+				}
+
+				/* STAIRS */
+				PulverizerManager.addRecipe(energy, getBlockStack("soul_sandstone_stairs", 1), new ItemStack(Blocks.SOUL_SAND, 2), ItemMaterial.dustSulfur, 20);
+				PulverizerManager.addRecipe(energy, getBlockStack("biotite_stairs", 1), getItem("biotite", 3, 0));
+				PulverizerManager.addRecipe(energy, getBlockStack("sandstone_bricks_stairs", 1), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 20);
+				PulverizerManager.addRecipe(energy, getBlockStack("red_sandstone_bricks_stairs", 1), new ItemStack(Blocks.SAND, 2, 1), ItemMaterial.dustNiter, 20);
+				PulverizerManager.addRecipe(energy, getBlockStack("soul_sandstone_bricks_stairs", 1), new ItemStack(Blocks.SOUL_SAND, 2), ItemMaterial.dustSulfur, 20);
+
+				/* SLABS */
+				PulverizerManager.addRecipe(energy / 2, getBlockStack("soul_sandstone_slab", 1), new ItemStack(Blocks.SOUL_SAND, 1), ItemMaterial.dustSulfur, 20);
+				PulverizerManager.addRecipe(energy / 2, getBlockStack("biotite_slab", 1), getItem("biotite", 2, 0));
+				PulverizerManager.addRecipe(energy / 2, getBlockStack("sandstone_smooth_slab", 1), new ItemStack(Blocks.SAND, 1), ItemMaterial.dustNiter, 20);
+				PulverizerManager.addRecipe(energy / 2, getBlockStack("sandstone_bricks_slab", 1), new ItemStack(Blocks.SAND, 1), ItemMaterial.dustNiter, 20);
+				PulverizerManager.addRecipe(energy / 2, getBlockStack("red_sandstone_smooth_slab", 1), new ItemStack(Blocks.SAND, 1, 1), ItemMaterial.dustNiter, 20);
+				PulverizerManager.addRecipe(energy / 2, getBlockStack("red_sandstone_bricks_slab", 1), new ItemStack(Blocks.SAND, 1, 1), ItemMaterial.dustNiter, 20);
+				PulverizerManager.addRecipe(energy / 2, getBlockStack("soul_sandstone_smooth_slab", 1), new ItemStack(Blocks.SOUL_SAND, 1), ItemMaterial.dustSulfur, 20);
+				PulverizerManager.addRecipe(energy / 2, getBlockStack("soul_sandstone_bricks_slab", 1), new ItemStack(Blocks.SOUL_SAND, 1), ItemMaterial.dustSulfur, 20);
+
+				/* DYES */
 				int[] dyeChance = new int[ColorHelper.WOOL_COLOR_CONFIG.length];
 				for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
 					dyeChance[i] = 10;
@@ -113,6 +143,13 @@ public class QuarkPlugin {
 				int energy = SmelterManager.DEFAULT_ENERGY;
 
 				SmelterManager.addRecycleRecipe(energy, getBlockStack("iron_ladder", 1, 0), new ItemStack(Items.IRON_NUGGET), 3);
+			}
+
+			/* INSOLATOR */
+			{
+				ItemStack glowshroom = getBlockStack("glowshroom", 1, 0);
+
+				InsolatorManager.addDefaultRecipe(glowshroom, ItemHelper.cloneStack(glowshroom, 2), ItemStack.EMPTY, 0, false, Type.MYCELIUM);
 			}
 
 			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");

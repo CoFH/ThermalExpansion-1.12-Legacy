@@ -12,8 +12,6 @@ public class GuiDynamoNumismatic extends GuiDynamoBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "numismatic.png");
 
-	private ElementDualScaled duration;
-
 	public GuiDynamoNumismatic(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerDynamoNumismatic(inventory, tile), tile, inventory.player, TEXTURE);
@@ -28,14 +26,6 @@ public class GuiDynamoNumismatic extends GuiDynamoBase {
 
 		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
 		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_ALCHEMY, 32, 16));
-	}
-
-	@Override
-	protected void updateElementInformation() {
-
-		super.updateElementInformation();
-
-		duration.setQuantity(baseTile.getScaledDuration(SPEED));
 	}
 
 }

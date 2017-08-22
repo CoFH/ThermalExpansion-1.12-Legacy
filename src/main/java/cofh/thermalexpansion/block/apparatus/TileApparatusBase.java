@@ -53,7 +53,6 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 
 	int processMax;
 	int processRem;
-	boolean wasActive;
 	boolean hasModeAugment;
 
 	CoFHFakePlayer fakePlayer;

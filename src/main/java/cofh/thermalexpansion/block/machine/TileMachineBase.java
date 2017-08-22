@@ -30,6 +30,9 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public static final HashSet<String>[] VALID_AUGMENTS = new HashSet[Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[Type.values().length];
 
+	public static final int MIN_BASE_POWER = 10;
+	public static final int MAX_BASE_POWER = 200;
+
 	private static boolean enableSecurity = true;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
@@ -48,7 +51,6 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 	int processMax;
 	int processRem;
-	boolean wasActive;
 	boolean hasModeAugment;
 
 	EnergyConfig energyConfig;

@@ -68,6 +68,9 @@ public class TileInsolator extends TileMachineBase {
 		String category = "Machine.Insolator";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
+		String comment = "Adjust this value to change the Energy consumption (in RF/t) for a Phytogenic Insolator. This base value will scale with block level and Augments.";
+		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
+
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
 	}

@@ -83,7 +83,16 @@ public class CoolantManager {
 
 	public static void loadMappings() {
 
-		addCoolant("ice", 1500000, 40);
+		/* FORESTRY */
+		{
+			addCoolant("ice", 1500000, 40);
+		}
+
+		/* INDUSTRIALCRAFT 2 */
+		{
+			addCoolant("ic2distilled_water", 300000, 25);
+			addCoolant("ic2coolant", 2000000, 50);
+		}
 	}
 
 	/* ADD */

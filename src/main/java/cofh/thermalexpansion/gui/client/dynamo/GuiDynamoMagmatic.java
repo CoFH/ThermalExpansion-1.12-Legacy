@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.gui.client.dynamo;
 
+import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementFluidTank;
 import cofh.core.gui.element.ElementSimple;
 import cofh.core.util.helpers.StringHelper;
@@ -35,6 +36,7 @@ public class GuiDynamoMagmatic extends GuiDynamoBase {
 		super.initGui();
 
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank(0)));
+		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
 
 		tankBackground = (ElementSimple) addElement(new ElementSimple(this, 7, 8).setTextureOffsets(176, 0).setSize(18, 62).setTexture(TEX_PATH, 256, 256));
 		tank = (ElementFluidTank) addElement(new ElementFluidTank(this, 8, 9, baseTile.getTank(1)));

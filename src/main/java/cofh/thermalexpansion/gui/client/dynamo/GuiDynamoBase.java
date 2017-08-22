@@ -2,6 +2,7 @@ package cofh.thermalexpansion.gui.client.dynamo;
 
 import cofh.core.gui.GuiCore;
 import cofh.core.gui.container.IAugmentableContainer;
+import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementEnergyStored;
 import cofh.core.gui.element.tab.*;
 import cofh.core.util.helpers.SecurityHelper;
@@ -25,6 +26,8 @@ public abstract class GuiDynamoBase extends GuiCore {
 	protected TabBase augmentTab;
 	protected TabBase redstoneTab;
 	protected TabBase securityTab;
+
+	protected ElementDualScaled duration;
 
 	public GuiDynamoBase(Container container, TileEntity tile, EntityPlayer player, ResourceLocation texture) {
 
@@ -76,6 +79,14 @@ public abstract class GuiDynamoBase extends GuiCore {
 		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 		energyTab.setVisible(baseTile.showEnergyTab());
 		steamTab.setVisible(baseTile.showSteamTab());
+	}
+
+	@Override
+	protected void updateElementInformation() {
+
+		super.updateElementInformation();
+
+		duration.setQuantity(baseTile.getScaledDuration(SPEED));
 	}
 
 }

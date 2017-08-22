@@ -13,8 +13,6 @@ public class GuiDynamoReactant extends GuiDynamoBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "reactant.png");
 
-	private ElementDualScaled duration;
-
 	public GuiDynamoReactant(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerDynamoReactant(inventory, tile), tile, inventory.player, TEXTURE);
@@ -30,14 +28,6 @@ public class GuiDynamoReactant extends GuiDynamoBase {
 		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank(0)));
 		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_FLAME_GREEN, 32, 16));
-	}
-
-	@Override
-	protected void updateElementInformation() {
-
-		super.updateElementInformation();
-
-		duration.setQuantity(baseTile.getScaledDuration(SPEED));
 	}
 
 }

@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.gui.client.dynamo;
 
+import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementFluidTank;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
@@ -26,6 +27,7 @@ public class GuiDynamoCompression extends GuiDynamoBase {
 
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank(0)));
 		addElement(new ElementFluidTank(this, 8, 9, baseTile.getTank(1)));
+		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
 	}
 
 }
