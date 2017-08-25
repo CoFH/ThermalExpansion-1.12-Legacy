@@ -254,7 +254,7 @@ public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelReg
 					" X ",
 					"ICI",
 					" P ",
-					'C', ItemFrame.frameCell,
+					'C', ItemFrame.frameCell0,
 					'I', "ingotLead",
 					'P', ItemMaterial.powerCoilElectrum,
 					'X', Blocks.REDSTONE_BLOCK

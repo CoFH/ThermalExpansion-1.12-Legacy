@@ -78,7 +78,6 @@ public class TEProps {
 		comment = "If TRUE, various Thermal Expansion Blocks will play ambient sounds when active.";
 		enableSounds = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("EnableSounds", category, enableSounds, comment);
 
-
 		/* CREATIVE TABS */
 		ThermalExpansion.tabCommon = new CreativeTabCore("thermalexpansion") {
 

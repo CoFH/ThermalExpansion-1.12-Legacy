@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.crafting.refinery;
 
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.TileRefinery;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
@@ -25,6 +26,8 @@ public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 	final List<ItemStack> outputs;
 	final List<FluidStack> outputFluids;
 
+	final int chance;
+
 	/* Animation */
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
@@ -46,6 +49,7 @@ public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 		outputFluids = recipeOutputFluids;
 
 		energy = recipe.getEnergy();
+		chance = recipe.getChance();
 
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_DROP);
@@ -75,6 +79,11 @@ public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 		progress.draw(minecraft, 46, 23);
 		speed.draw(minecraft, 22, 40);
 		energyMeter.draw(minecraft, 2, 8);
+
+		if (chance > 0) {
+			String dispChance = StringHelper.formatNumber(chance) + "%";
+			minecraft.fontRenderer.drawString(dispChance, 102 - 6 * dispChance.length(), 48, 0x808080);
+		}
 	}
 
 }

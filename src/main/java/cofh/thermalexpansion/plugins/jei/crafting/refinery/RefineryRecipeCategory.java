@@ -114,6 +114,13 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 		guiFluidStacks.set(0, inputs.get(0));
 		guiItemStacks.set(0, outputItems.get(0));
 		guiFluidStacks.set(1, outputFluids.get(0));
+
+		guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+			if (slotIndex == 0 && recipeWrapper.chance < 100) {
+				tooltip.add(StringHelper.localize("info.cofh.chance") + ": " + recipeWrapper.chance + "%");
+			}
+		});
 	}
 
 }

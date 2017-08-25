@@ -7,6 +7,7 @@ import cofh.thermalexpansion.util.managers.machine.CompactorManager;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
+import cofh.thermalexpansion.util.managers.machine.RefineryManager;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
@@ -14,6 +15,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
@@ -56,6 +60,18 @@ public class IndustrialCraftPlugin {
 				CompactorManager.addRecipe(energy, coalBall, coalBallCompressed, Mode.PRESS);
 				CompactorManager.addRecipe(energy, coalBallCompressed, coalChunk, Mode.PRESS);
 				CompactorManager.addRecipe(energy, coalChunk, ItemMaterial.gemDiamond, Mode.PRESS);
+			}
+
+			/* REFINERY */
+			{
+				Fluid biomass = FluidRegistry.getFluid("ic2biomass");
+				Fluid biogas = FluidRegistry.getFluid("ic2biogas");
+
+				int energy = RefineryManager.DEFAULT_ENERGY;
+
+				if (biomass != null && biogas != null) {
+					RefineryManager.addRecipe(energy, new FluidStack(biomass, 25), new FluidStack(biogas, 500), getItem("crop_res", 1, 2), 5);
+				}
 			}
 
 			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");

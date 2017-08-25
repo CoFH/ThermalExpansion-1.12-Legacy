@@ -43,9 +43,6 @@ public class ForestryPlugin {
 		try {
 			ItemStack woodPile = getBlockStack("wood_pile", 1);
 
-			ItemStack beeswax = getItem("beeswax");
-			ItemStack refractoryWax = getItem("refractory_wax");
-
 			ItemStack combHoney = getItem("bee_combs", 1, 0);
 			ItemStack combCocoa = getItem("bee_combs", 1, 1);
 			ItemStack combSimmering = getItem("bee_combs", 1, 2);
@@ -64,19 +61,22 @@ public class ForestryPlugin {
 			ItemStack combMossy = getItem("bee_combs", 1, 15);
 			ItemStack combMellow = getItem("bee_combs", 1, 16);
 
+			ItemStack honeydew = getItem("honeydew");
+			ItemStack dropHoney = getItem("honey_drop", 1, 0);
+			ItemStack dropHoneyCharged = getItem("honey_drop", 1, 1);
+			ItemStack dropHoneyOmega = getItem("honey_drop", 1, 2);
+
+			ItemStack pollenCrystalline = getItem("pollen", 1, 1);
+
 			ItemStack propolis = getItem("propolis", 1, 0);
 			ItemStack propolisSticky = getItem("propolis", 1, 1);
 			ItemStack propolisPulsating = getItem("propolis", 1, 2);
 			ItemStack propolisSilky = getItem("propolis", 1, 3);
 
-			ItemStack pollenCrystalline = getItem("pollen", 1, 1);
+			ItemStack wax = getItem("beeswax");
+			ItemStack waxRefractory = getItem("refractory_wax");
 
 			ItemStack silkWisp = getItem("crafting_material", 1, 2);
-
-			ItemStack honeydew = getItem("honeydew");
-			ItemStack honeyDrop = getItem("honey_drop", 1, 0);
-			ItemStack honeyDropCharged = getItem("honey_drop", 1, 1);
-			ItemStack honeyDropOmega = getItem("honey_drop", 1, 2);
 
 			ItemStack mulch = getItem("mulch");
 			ItemStack phosphor = getItem("phosphor");
@@ -95,17 +95,17 @@ public class ForestryPlugin {
 			/* REFINERY */
 			{
 				if (biomass != null && ethanol != null) {
-					RefineryManager.addRecipe(3000, new FluidStack(biomass, 100), new FluidStack(ethanol, 30), ItemStack.EMPTY);
+					RefineryManager.addRecipe(3000, new FluidStack(biomass, 100), new FluidStack(ethanol, 30));
 				}
 			}
 
 			/* TRANSPOSER */
 			{
-				int energy = 4800;
+				int energy = 4000;
 
 				if (honey != null) {
 					TransposerManager.addExtractRecipe(energy, honeydew, ItemStack.EMPTY, new FluidStack(honey, 100), 0, false);
-					TransposerManager.addExtractRecipe(energy, honeyDrop, propolis, new FluidStack(honey, 100), 5, false);
+					TransposerManager.addExtractRecipe(energy, dropHoney, propolis, new FluidStack(honey, 100), 5, false);
 				}
 				energy = 2400;
 
@@ -133,21 +133,21 @@ public class ForestryPlugin {
 
 			/* CENTRIFUGE */
 			{
-				int energy = 4000;
+				int energy = CentrifugeManager.DEFAULT_ENERGY;
 
-				CentrifugeManager.addRecipe(energy, combHoney, Arrays.asList(beeswax, honeyDrop), Arrays.asList(100, 40), null);
-				CentrifugeManager.addRecipe(energy, combCocoa, Arrays.asList(beeswax, new ItemStack(Items.DYE, 1, 3)), Arrays.asList(100, 50), null);
-				CentrifugeManager.addRecipe(energy, combSimmering, Arrays.asList(refractoryWax, ItemHelper.cloneStack(phosphor, 2)), Arrays.asList(100, 70), null);
-				CentrifugeManager.addRecipe(energy, combStringy, Arrays.asList(propolis, honeyDrop), Arrays.asList(100, 40), null);
-				CentrifugeManager.addRecipe(energy, combFrozen, Arrays.asList(beeswax, honeyDrop, new ItemStack(Items.SNOWBALL), pollenCrystalline), Arrays.asList(80, 70, 40, 20), null);
-				CentrifugeManager.addRecipe(energy, combDripping, Arrays.asList(honeydew, honeyDrop), Arrays.asList(100, 40), null);
-				CentrifugeManager.addRecipe(energy, combSilky, Arrays.asList(honeyDrop, propolisSilky), Arrays.asList(100, 80), null);
-				CentrifugeManager.addRecipe(energy, combParched, Arrays.asList(beeswax, honeyDrop), Arrays.asList(100, 90), null);
-				CentrifugeManager.addRecipe(energy, combMysterious, Arrays.asList(propolisPulsating, honeyDrop), Arrays.asList(100, 40), null);
-				CentrifugeManager.addRecipe(energy, combPowdery, Arrays.asList(new ItemStack(Items.GUNPOWDER, 1), beeswax, honeyDrop), Arrays.asList(90, 20, 20), null);
-				CentrifugeManager.addRecipe(energy, combWheat, Arrays.asList(new ItemStack(Items.WHEAT, 1), beeswax, honeyDrop), Arrays.asList(80, 20, 20), null);
-				CentrifugeManager.addRecipe(energy, combMossy, Arrays.asList(beeswax, honeyDrop), Arrays.asList(100, 90), null);
-				CentrifugeManager.addRecipe(energy, combMellow, Arrays.asList(honeydew, new ItemStack(Items.QUARTZ, 1), beeswax), Arrays.asList(60, 30, 20), null);
+				CentrifugeManager.addRecipe(energy, combHoney, Arrays.asList(wax, dropHoney), Arrays.asList(100, 40), null);
+				CentrifugeManager.addRecipe(energy, combCocoa, Arrays.asList(wax, new ItemStack(Items.DYE, 1, 3)), Arrays.asList(100, 50), null);
+				CentrifugeManager.addRecipe(energy, combSimmering, Arrays.asList(waxRefractory, ItemHelper.cloneStack(phosphor, 2)), Arrays.asList(100, 70), null);
+				CentrifugeManager.addRecipe(energy, combStringy, Arrays.asList(propolis, dropHoney), Arrays.asList(100, 40), null);
+				CentrifugeManager.addRecipe(energy, combFrozen, Arrays.asList(wax, dropHoney, new ItemStack(Items.SNOWBALL), pollenCrystalline), Arrays.asList(80, 70, 40, 20), null);
+				CentrifugeManager.addRecipe(energy, combDripping, Arrays.asList(honeydew, dropHoney), Arrays.asList(100, 40), null);
+				CentrifugeManager.addRecipe(energy, combSilky, Arrays.asList(dropHoney, propolisSilky), Arrays.asList(100, 80), null);
+				CentrifugeManager.addRecipe(energy, combParched, Arrays.asList(wax, dropHoney), Arrays.asList(100, 90), null);
+				CentrifugeManager.addRecipe(energy, combMysterious, Arrays.asList(propolisPulsating, dropHoney), Arrays.asList(100, 40), null);
+				CentrifugeManager.addRecipe(energy, combPowdery, Arrays.asList(new ItemStack(Items.GUNPOWDER, 1), wax, dropHoney), Arrays.asList(90, 20, 20), null);
+				CentrifugeManager.addRecipe(energy, combWheat, Arrays.asList(new ItemStack(Items.WHEAT, 1), wax, dropHoney), Arrays.asList(80, 20, 20), null);
+				CentrifugeManager.addRecipe(energy, combMossy, Arrays.asList(wax, dropHoney), Arrays.asList(100, 90), null);
+				CentrifugeManager.addRecipe(energy, combMellow, Arrays.asList(honeydew, new ItemStack(Items.QUARTZ, 1), wax), Arrays.asList(60, 30, 20), null);
 
 				CentrifugeManager.addRecipe(energy, propolisSilky, Arrays.asList(silkWisp, propolis), Arrays.asList(60, 10), null);
 			}
@@ -156,6 +156,9 @@ public class ForestryPlugin {
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
 		}
+
+		ExtraBeesPlugin.initialize();
+		MagicBeesPlugin.initialize();
 	}
 
 	/* HELPERS */

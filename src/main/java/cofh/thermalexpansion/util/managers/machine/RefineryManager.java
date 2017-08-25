@@ -32,12 +32,12 @@ public class RefineryManager {
 	public static void initialize() {
 
 		int energy = DEFAULT_ENERGY;
-		addRecipe(energy, new FluidStack(TFFluids.fluidCoal, 100), new FluidStack(TFFluids.fluidRefinedOil, 50), ItemMaterial.globTar);
-		addRecipe(energy, new FluidStack(TFFluids.fluidCrudeOil, 100), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar);
-		addRecipe(energy, new FluidStack(TFFluids.fluidRefinedOil, 100), new FluidStack(TFFluids.fluidFuel, 100), ItemMaterial.dustSulfur);
+		addRecipe(energy, new FluidStack(TFFluids.fluidCoal, 100), new FluidStack(TFFluids.fluidRefinedOil, 50), ItemMaterial.globTar, 75);
+		addRecipe(energy, new FluidStack(TFFluids.fluidCrudeOil, 100), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar, 50);
+		addRecipe(energy, new FluidStack(TFFluids.fluidRefinedOil, 100), new FluidStack(TFFluids.fluidFuel, 100), ItemMaterial.dustSulfur, 50);
 
 		energy = DEFAULT_ENERGY / 2;
-		addRecipe(energy, new FluidStack(TFFluids.fluidResin, 100), new FluidStack(TFFluids.fluidTreeOil, 50), ItemMaterial.globRosin);
+		addRecipe(energy, new FluidStack(TFFluids.fluidResin, 100), new FluidStack(TFFluids.fluidTreeOil, 50), ItemMaterial.globRosin, 75);
 
 		/* LOAD RECIPES */
 		loadRecipes();
@@ -49,16 +49,7 @@ public class RefineryManager {
 		{
 			Fluid oil = FluidRegistry.getFluid("oil");
 			if (oil != null) {
-				addRecipe(DEFAULT_ENERGY, new FluidStack(oil, 100), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar);
-			}
-		}
-
-		/* INDUSTRIALCRAFT 2 */
-		{
-			Fluid biomass = FluidRegistry.getFluid("ic2biomass");
-			Fluid biogas = FluidRegistry.getFluid("ic2biogas");
-			if (biomass != null && biogas != null) {
-				addRecipe(DEFAULT_ENERGY / 2, new FluidStack(biomass, 10), new FluidStack(biogas, 200));
+				addRecipe(DEFAULT_ENERGY, new FluidStack(oil, 100), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar, 50);
 			}
 		}
 	}
@@ -68,19 +59,24 @@ public class RefineryManager {
 	}
 
 	/* ADD RECIPES */
-	public static RefineryRecipe addRecipe(int energy, FluidStack input, FluidStack outputFluid, ItemStack outputItem) {
+	public static RefineryRecipe addRecipe(int energy, FluidStack input, FluidStack outputFluid, ItemStack outputItem, int chance) {
 
 		if (input == null || outputFluid == null || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
-		RefineryRecipe recipe = new RefineryRecipe(input, outputFluid, outputItem, energy);
+		RefineryRecipe recipe = new RefineryRecipe(input, outputFluid, outputItem, energy, chance);
 		recipeMap.put(input.getFluid().getName().hashCode(), recipe);
 		return recipe;
 	}
 
+	public static RefineryRecipe addRecipe(int energy, FluidStack input, FluidStack outputFluid, ItemStack outputItem) {
+
+		return addRecipe(energy, input, outputFluid, outputItem, 100);
+	}
+
 	public static RefineryRecipe addRecipe(int energy, FluidStack input, FluidStack outputFluid) {
 
-		return addRecipe(energy, input, outputFluid, ItemStack.EMPTY);
+		return addRecipe(energy, input, outputFluid, ItemStack.EMPTY, 0);
 	}
 
 	/* REMOVE RECIPES */
@@ -101,13 +97,15 @@ public class RefineryManager {
 		final FluidStack outputFluid;
 		final ItemStack outputItem;
 		final int energy;
+		final int chance;
 
-		RefineryRecipe(FluidStack input, FluidStack outputFluid, ItemStack outputItem, int energy) {
+		RefineryRecipe(FluidStack input, FluidStack outputFluid, ItemStack outputItem, int energy, int chance) {
 
 			this.input = input;
 			this.outputFluid = outputFluid;
 			this.outputItem = outputItem;
 			this.energy = energy;
+			this.chance = chance;
 		}
 
 		public FluidStack getInput() {
@@ -129,6 +127,12 @@ public class RefineryManager {
 
 			return energy;
 		}
+
+		public int getChance() {
+
+			return chance;
+		}
+
 	}
 
 }

@@ -54,6 +54,7 @@ public class TileRefinery extends TileMachineBase {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
 
 		GameRegistry.registerTileEntity(TileRefinery.class, "thermalexpansion:machine_refinery");
@@ -181,13 +182,26 @@ public class TileRefinery extends TileMachineBase {
 		ItemStack outputItem = recipe.getOutputItem();
 
 		if (!outputItem.isEmpty()) {
-			if (inventory[0].isEmpty()) {
-				inventory[0] = ItemHelper.cloneStack(outputItem);
-			} else {
-				inventory[0].grow(outputItem.getCount());
-			}
-			if (inventory[0].getCount() > inventory[0].getMaxStackSize()) {
-				inventory[0].setCount(inventory[0].getMaxStackSize());
+			int modifiedChance = secondaryChance;
+
+			int recipeChance = recipe.getChance();
+			if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
+				if (inventory[0].isEmpty()) {
+					inventory[0] = ItemHelper.cloneStack(outputItem);
+
+					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+						inventory[0].grow(outputItem.getCount());
+					}
+				} else if (inventory[0].isItemEqual(outputItem)) {
+					inventory[0].grow(outputItem.getCount());
+
+					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+						inventory[0].grow(outputItem.getCount());
+					}
+				}
+				if (inventory[0].getCount() > inventory[0].getMaxStackSize()) {
+					inventory[0].setCount(inventory[0].getMaxStackSize());
+				}
 			}
 		}
 		inputTank.drain(recipe.getInput().amount, true);

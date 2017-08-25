@@ -151,7 +151,7 @@ public class TransposerManager {
 		if (extractRecipeExists(input)) {
 			return null;
 		}
-		if (output == null && reversible || output.isEmpty() && chance != 0) {
+		if (output.isEmpty() && reversible || output.isEmpty() && chance != 0) {
 			return null;
 		}
 		TransposerRecipe recipeExtraction = new TransposerRecipe(input, output, fluid, energy, chance);

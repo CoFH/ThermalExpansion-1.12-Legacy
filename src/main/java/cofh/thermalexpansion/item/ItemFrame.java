@@ -67,7 +67,10 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 		frameMachine = addItem(0, "frameMachine");
 		// frameApparatus = addItem(32, "frameApparatus");
 		frameDevice = addItem(64, "frameDevice");
-		frameCell = addItem(128, "frameCell");
+		frameCell0 = addItem(128, "frameCell");
+		//		frameCell2 = addItem(130, "frameCell2");
+		//		frameCell3 = addItem(131, "frameCell3");
+		//		frameCell4 = addItem(132, "frameCell4");
 		// frameLight = addItem(160, "frameLight");
 
 		ThermalExpansion.proxy.addIModelRegister(this);
@@ -104,7 +107,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 				'G', "blockGlass",
 				'I', "ingotIron"
 		);
-		addShapedRecipe(frameCell,
+		addShapedRecipe(frameCell0,
 				"IGI",
 				"GCG",
 				"IGI",
@@ -130,7 +133,10 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 	public static ItemStack frameMachine;
 	public static ItemStack frameApparatus;
 	public static ItemStack frameDevice;
-	public static ItemStack frameCell;
+	public static ItemStack frameCell0;
+	public static ItemStack frameCell2;
+	public static ItemStack frameCell3;
+	public static ItemStack frameCell4;
 	public static ItemStack frameLight;
 
 }

@@ -141,8 +141,10 @@ public class RusticPlugin {
 
 			/* CENTRIFUGE */
 			{
+				int energy = CentrifugeManager.DEFAULT_ENERGY;
+
 				if (honey != null) {
-					CentrifugeManager.addRecipe(4000, honeycomb, Arrays.asList(beeswax), Arrays.asList(100), new FluidStack(honey, 250));
+					CentrifugeManager.addRecipe(energy, honeycomb, Arrays.asList(beeswax), new FluidStack(honey, 250));
 				}
 			}
 
