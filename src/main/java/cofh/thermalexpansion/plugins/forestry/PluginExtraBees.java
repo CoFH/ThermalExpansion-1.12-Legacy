@@ -1,89 +1,98 @@
 package cofh.thermalexpansion.plugins.forestry;
 
+import cofh.core.util.ModPlugin;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalfoundation.item.ItemMaterial;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.Arrays;
 
-public class ExtraBeesPlugin {
+public class PluginExtraBees extends ModPlugin {
 
-	private ExtraBeesPlugin() {
-
-	}
-
+	public static final String PARENT_ID = PluginForestry.MOD_ID;
 	public static final String MOD_ID = "extrabees";
 	public static final String MOD_NAME = "Extra Bees";
 
-	public static void initialize() {
+	public PluginExtraBees() {
+
+		super(MOD_ID, MOD_NAME);
+	}
+
+	/* IInitializer */
+	@Override
+	public boolean initialize() {
 
 		String category = "Plugins";
 		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
+		enable = Loader.isModLoaded(PARENT_ID) && Loader.isModLoaded(MOD_ID) && ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
 
-		boolean enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
+		if (!enable) {
+			return false;
+		}
+		return !error;
+	}
 
-		if (!enable || !Loader.isModLoaded(MOD_ID)) {
-			return;
+	@Override
+	public boolean register() {
+
+		if (!enable) {
+			return false;
 		}
 		try {
-			ItemStack dropHoney = getItem(ForestryPlugin.MOD_ID, "honey_drop", 1, 0);
-			ItemStack wax = getItem(ForestryPlugin.MOD_ID, "beeswax", 1, 0);
-			ItemStack compost = getItem(ForestryPlugin.MOD_ID, "fertilizer_bio", 1, 0);
+			ItemStack dropHoney = getItemStack(PARENT_ID, "honey_drop", 1, 0);
+			ItemStack wax = getItemStack(PARENT_ID, "beeswax", 1, 0);
+			ItemStack compost = getItemStack(PARENT_ID, "fertilizer_bio", 1, 0);
 
-			ItemStack combIron = getItem("honey_comb", 1, 15);
-			ItemStack combGold = getItem("honey_comb", 1, 16);
-			ItemStack combCopper = getItem("honey_comb", 1, 17);
-			ItemStack combTin = getItem("honey_comb", 1, 18);
-			ItemStack combSilver = getItem("honey_comb", 1, 19);
-			ItemStack combLead = getItem("honey_comb", 1, 37);
-			ItemStack combNickel = getItem("honey_comb", 1, 73);
-			ItemStack combPlatinum = getItem("honey_comb", 1, 45);
+			ItemStack combIron = getItemStack("honey_comb", 1, 15);
+			ItemStack combGold = getItemStack("honey_comb", 1, 16);
+			ItemStack combCopper = getItemStack("honey_comb", 1, 17);
+			ItemStack combTin = getItemStack("honey_comb", 1, 18);
+			ItemStack combSilver = getItemStack("honey_comb", 1, 19);
+			ItemStack combLead = getItemStack("honey_comb", 1, 37);
+			ItemStack combNickel = getItemStack("honey_comb", 1, 73);
+			ItemStack combPlatinum = getItemStack("honey_comb", 1, 45);
 
-			ItemStack combLapis = getItem("honey_comb", 1, 46);
-			ItemStack combEmerald = getItem("honey_comb", 1, 52);
-			ItemStack combDiamond = getItem("honey_comb", 1, 56);
+			ItemStack combLapis = getItemStack("honey_comb", 1, 46);
+			ItemStack combEmerald = getItemStack("honey_comb", 1, 52);
+			ItemStack combDiamond = getItemStack("honey_comb", 1, 56);
 
-			ItemStack combClay = getItem("honey_comb", 1, 22);
-			ItemStack combRedstone = getItem("honey_comb", 1, 12);
-			ItemStack combGlowstone = getItem("honey_comb", 1, 75);
-			ItemStack combCoal = getItem("honey_comb", 1, 4);
-			ItemStack combObsidian = getItem("honey_comb", 1, 36);
-			ItemStack combSulfur = getItem("honey_comb", 1, 27);
-			ItemStack combNiter = getItem("honey_comb", 1, 76);
+			ItemStack combClay = getItemStack("honey_comb", 1, 22);
+			ItemStack combRedstone = getItemStack("honey_comb", 1, 12);
+			ItemStack combGlowstone = getItemStack("honey_comb", 1, 75);
+			ItemStack combCoal = getItemStack("honey_comb", 1, 4);
+			ItemStack combObsidian = getItemStack("honey_comb", 1, 36);
+			ItemStack combSulfur = getItemStack("honey_comb", 1, 27);
+			ItemStack combNiter = getItemStack("honey_comb", 1, 76);
 
-			ItemStack combMushroom = getItem("honey_comb", 1, 24);
-			ItemStack combSlime = getItem("honey_comb", 1, 29);
-			ItemStack combBlaze = getItem("honey_comb", 1, 30);
+			ItemStack combMushroom = getItemStack("honey_comb", 1, 24);
+			ItemStack combSlime = getItemStack("honey_comb", 1, 29);
+			ItemStack combBlaze = getItemStack("honey_comb", 1, 30);
 
-			ItemStack combBarren = getItem("honey_comb", 1, 0);
-			ItemStack combRotten = getItem("honey_comb", 1, 1);
-			ItemStack combBone = getItem("honey_comb", 1, 2);
-			ItemStack combWater = getItem("honey_comb", 1, 6);
-			ItemStack combRocky = getItem("honey_comb", 1, 11);
-			ItemStack combOld = getItem("honey_comb", 1, 23);
-			ItemStack combTar = getItem("honey_comb", 1, 25);
+			ItemStack combBarren = getItemStack("honey_comb", 1, 0);
+			ItemStack combRotten = getItemStack("honey_comb", 1, 1);
+			ItemStack combBone = getItemStack("honey_comb", 1, 2);
+			ItemStack combWater = getItemStack("honey_comb", 1, 6);
+			ItemStack combRocky = getItemStack("honey_comb", 1, 11);
+			ItemStack combOld = getItemStack("honey_comb", 1, 23);
+			ItemStack combTar = getItemStack("honey_comb", 1, 25);
 
-			ItemStack combCompost = getItem("honey_comb", 1, 79);
+			ItemStack combCompost = getItemStack("honey_comb", 1, 79);
 
-			ItemStack combUranium = getItem("honey_comb", 1, 21);
-			ItemStack combRubber = getItem("honey_comb", 1, 26);
+			ItemStack combUranium = getItemStack("honey_comb", 1, 21);
+			ItemStack combRubber = getItemStack("honey_comb", 1, 26);
 
-			ItemStack dropAcid = getItem("honey_drop", 1, 1);
+			ItemStack dropAcid = getItemStack("honey_drop", 1, 1);
 
-			ItemStack propolisWater = getItem("propolis", 1, 0);
-			ItemStack propolisCreosote = getItem("propolis", 1, 7);
+			ItemStack propolisWater = getItemStack("propolis", 1, 0);
+			ItemStack propolisCreosote = getItemStack("propolis", 1, 7);
 
 			ItemStack[] tintedCombs = new ItemStack[16];
 			ItemStack[] tintedDrops = new ItemStack[16];
@@ -93,16 +102,16 @@ public class ExtraBeesPlugin {
 			int tintedDropStart = 13;
 
 			for (int i = 0; i < 16; i++) {
-				tintedCombs[i] = getItem("honey_comb", 1, i + tintedCombStart);
-				tintedDrops[i] = getItem("honey_drop", 1, i + tintedDropStart);
+				tintedCombs[i] = getItemStack("honey_comb", 1, i + tintedCombStart);
+				tintedDrops[i] = getItemStack("honey_drop", 1, i + tintedDropStart);
 			}
-			dye[0] = getItem("misc", 1, 19);
-			dye[1] = getItem("misc", 1, 20);
-			dye[2] = getItem("misc", 1, 21);
-			dye[3] = getItem("misc", 1, 22);
-			dye[4] = getItem("misc", 1, 24);
-			dye[5] = getItem("misc", 1, 23);
-			dye[6] = getItem("misc", 1, 25);
+			dye[0] = getItemStack("misc", 1, 19);
+			dye[1] = getItemStack("misc", 1, 20);
+			dye[2] = getItemStack("misc", 1, 21);
+			dye[3] = getItemStack("misc", 1, 22);
+			dye[4] = getItemStack("misc", 1, 24);
+			dye[5] = getItemStack("misc", 1, 23);
+			dye[6] = getItemStack("misc", 1, 25);
 			dye[7] = new ItemStack(Items.DYE, 1, 14);
 			dye[8] = new ItemStack(Items.DYE, 1, 6);
 			dye[9] = new ItemStack(Items.DYE, 1, 5);
@@ -169,39 +178,14 @@ public class ExtraBeesPlugin {
 					CentrifugeManager.addRecipe(energy, tintedCombs[i], Arrays.asList(tintedDrops[i], dropHoney, wax), Arrays.asList(100, 80, 80), null);
 				}
 			}
-
-			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
+			error = true;
 		}
-	}
-
-	/* HELPERS */
-	private static ItemStack getBlockStack(String name, int amount, int meta) {
-
-		Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return block != null ? new ItemStack(block, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getBlockStack(String name, int amount) {
-
-		return getBlockStack(name, amount, 0);
-	}
-
-	private static ItemStack getItem(String modid, String name, int amount, int meta) {
-
-		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(modid + ":" + name));
-		return item != null ? new ItemStack(item, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getItem(String name, int amount, int meta) {
-
-		return getItem(MOD_ID, name, amount, meta);
-	}
-
-	private static ItemStack getItem(String name) {
-
-		return getItem(name, 1, 0);
+		if (!error) {
+			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
+		}
+		return !error;
 	}
 
 }

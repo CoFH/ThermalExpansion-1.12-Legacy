@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins;
 
+import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -12,43 +13,51 @@ import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.Locale;
 
-public class TConstructPlugin {
-
-	private TConstructPlugin() {
-
-	}
+public class PluginTConstruct extends ModPlugin {
 
 	public static final String MOD_ID = "tconstruct";
 	public static final String MOD_NAME = "Tinkers' Construct";
 
-	public static void initialize() {
+	public PluginTConstruct() {
+
+		super(MOD_ID, MOD_NAME);
+	}
+
+	/* IInitializer */
+	@Override
+	public boolean initialize() {
 
 		String category = "Plugins";
 		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
+		enable = Loader.isModLoaded(MOD_ID) && ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
 
-		boolean enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
+		if (!enable) {
+			return false;
+		}
+		return !error;
+	}
 
-		if (!enable || !Loader.isModLoaded(MOD_ID)) {
-			return;
+	@Override
+	public boolean register() {
+
+		if (!enable) {
+			return false;
 		}
 		try {
 			ItemStack slimeCongealed = getBlockStack("slime_congealed", 1, 0);
 			ItemStack slimeCongealedMagma = getBlockStack("slime_congealed", 1, 4);
 
-			ItemStack saplingSlimeBlue = getItem("slime_sapling", 1, 0);
-			ItemStack saplingSlimePurple = getItem("slime_sapling", 1, 1);
-			ItemStack saplingSlimeMagma = getItem("slime_sapling", 1, 2);
+			ItemStack saplingSlimeBlue = getItemStack("slime_sapling", 1, 0);
+			ItemStack saplingSlimePurple = getItemStack("slime_sapling", 1, 1);
+			ItemStack saplingSlimeMagma = getItemStack("slime_sapling", 1, 2);
 
 			Block log = getBlock("slime_congealed");
 
@@ -107,42 +116,18 @@ public class TConstructPlugin {
 				addLeafMapping(log, 0, leaves, 1);
 				addLeafMapping(log, 4, leaves, 2);
 			}
-
-			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
+			error = true;
 		}
+		if (!error) {
+			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
+		}
+		return !error;
 	}
 
 	/* HELPERS */
-	private static ItemStack getBlockStack(String name, int amount, int meta) {
-
-		Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return block != null ? new ItemStack(block, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getBlockStack(String name, int amount) {
-
-		return getBlockStack(name, amount, 0);
-	}
-
-	private static Block getBlock(String name) {
-
-		return ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-	}
-
-	private static ItemStack getItem(String name, int amount, int meta) {
-
-		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return item != null ? new ItemStack(item, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getItem(String name) {
-
-		return getItem(name, 1, 0);
-	}
-
-	private static void addLeafMapping(Block logBlock, int logMeta, Block leafBlock, int leafMeta) {
+	private void addLeafMapping(Block logBlock, int logMeta, Block leafBlock, int leafMeta) {
 
 		IBlockState logState = logBlock.getStateFromMeta(logMeta);
 
@@ -152,7 +137,7 @@ public class TConstructPlugin {
 		}
 	}
 
-	private static boolean addRecipeSet(String oreType) {
+	private boolean addRecipeSet(String oreType) {
 
 		if (oreType == null || oreType.isEmpty()) {
 			return false;
@@ -201,12 +186,5 @@ public class TConstructPlugin {
 		}
 		return true;
 	}
-
-	private static final String NUGGET = "nugget";
-	private static final String INGOT = "ingot";
-	private static final String ORE = "ore";
-	private static final String BLOCK = "block";
-	private static final String DUST = "dust";
-	private static final String PLATE = "plate";
 
 }

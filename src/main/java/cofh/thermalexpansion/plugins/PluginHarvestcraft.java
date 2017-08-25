@@ -1,56 +1,61 @@
 package cofh.thermalexpansion.plugins;
 
+import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.FisherManager;
-import cofh.thermalexpansion.util.managers.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.Arrays;
 
-public class HarvestcraftPlugin {
-
-	private HarvestcraftPlugin() {
-
-	}
+public class PluginHarvestcraft extends ModPlugin {
 
 	public static final String MOD_ID = "harvestcraft";
 	public static final String MOD_NAME = "HarvestCraft";
 
-	public static void initialize() {
+	public PluginHarvestcraft() {
+
+		super(MOD_ID, MOD_NAME);
+	}
+
+	/* IInitializer */
+	@Override
+	public boolean initialize() {
 
 		String category = "Plugins";
 		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
+		enable = Loader.isModLoaded(MOD_ID) && ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
 
-		boolean enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
+		if (!enable) {
+			return false;
+		}
+		return !error;
+	}
 
-		if (!enable || !Loader.isModLoaded(MOD_ID)) {
-			return;
+	@Override
+	public boolean register() {
+
+		if (!enable) {
+			return false;
 		}
 		try {
-			ItemStack beeswax = getItem("beeswaxitem");
-			ItemStack honey = getItem("honeyitem");
-			ItemStack honeycomb = getItem("honeycombitem");
-			ItemStack waxcomb = getItem("waxcombitem");
+			ItemStack beeswax = getItemStack("beeswaxitem");
+			ItemStack honey = getItemStack("honeyitem");
+			ItemStack honeycomb = getItemStack("honeycombitem");
+			ItemStack waxcomb = getItemStack("waxcombitem");
 
-			ItemStack cookingOil = getItem("oliveoilitem");
-			ItemStack sesameOil = getItem("sesameoilitem");
+			ItemStack cookingOil = getItemStack("oliveoilitem");
+			ItemStack sesameOil = getItemStack("sesameoilitem");
 
-			ItemStack fruitBait = getItem("fruitbaititem");
-			ItemStack grainBait = getItem("grainbaititem");
-			ItemStack veggieBait = getItem("veggiebaititem");
-			ItemStack fishBait = getItem("fishtrapbaititem");
+			ItemStack fruitBait = getItemStack("fruitbaititem");
+			ItemStack grainBait = getItemStack("grainbaititem");
+			ItemStack veggieBait = getItemStack("veggiebaititem");
+			ItemStack fishBait = getItemStack("fishtrapbaititem");
 
 			ItemStack saplingDate = getBlockStack("date_sapling");
 			ItemStack saplingPapaya = getBlockStack("papaya_sapling");
@@ -86,55 +91,55 @@ public class HarvestcraftPlugin {
 			ItemStack saplingNutmeg = getBlockStack("nutmeg_sapling");
 			ItemStack saplingDurian = getBlockStack("durian_sapling");
 
-			ItemStack itemDate = getItem("dateitem");
-			ItemStack itemPapaya = getItem("papayaitem");
-			ItemStack itemCherry = getItem("cherryitem");
-			ItemStack itemFig = getItem("figitem");
-			ItemStack itemDragonfruit = getItem("dragonfruititem");
-			// ItemStack itemApple = getItem("appleitem");
-			ItemStack itemLemon = getItem("lemonitem");
-			ItemStack itemPear = getItem("pearitem");
-			ItemStack itemOlive = getItem("oliveitem");
-			ItemStack itemGrapefruit = getItem("grapefruititem");
-			ItemStack itemPomegranate = getItem("pomegranateitem");
-			ItemStack itemCashew = getItem("cashewitem");
-			ItemStack itemVanilla = getItem("vanillaitem");
-			ItemStack itemStarfruit = getItem("starfruititem");
-			ItemStack itemBanana = getItem("bananaitem");
-			ItemStack itemPlum = getItem("plumitem");
-			ItemStack itemAvocado = getItem("avocadoitem");
-			ItemStack itemPecan = getItem("pecanitem");
-			ItemStack itemPistachio = getItem("pistachioitem");
-			ItemStack itemLime = getItem("limeitem");
-			ItemStack itemPeppercorn = getItem("peppercornitem");
-			ItemStack itemAlmond = getItem("almonditem");
-			ItemStack itemGooseberry = getItem("gooseberryitem");
-			ItemStack itemPeach = getItem("peachitem");
-			ItemStack itemChestnut = getItem("chestnutitem");
-			ItemStack itemCoconut = getItem("coconutitem");
-			ItemStack itemMango = getItem("mangoitem");
-			ItemStack itemApricot = getItem("apricotitem");
-			ItemStack itemOrange = getItem("orangeitem");
-			ItemStack itemWalnut = getItem("walnutitem");
-			ItemStack itemPersimmon = getItem("persimmonitem");
-			ItemStack itemNutmeg = getItem("nutmegitem");
-			ItemStack itemDurian = getItem("durianitem");
+			ItemStack itemDate = getItemStack("dateitem");
+			ItemStack itemPapaya = getItemStack("papayaitem");
+			ItemStack itemCherry = getItemStack("cherryitem");
+			ItemStack itemFig = getItemStack("figitem");
+			ItemStack itemDragonfruit = getItemStack("dragonfruititem");
+			// ItemStack itemApple = getItemStack("appleitem");
+			ItemStack itemLemon = getItemStack("lemonitem");
+			ItemStack itemPear = getItemStack("pearitem");
+			ItemStack itemOlive = getItemStack("oliveitem");
+			ItemStack itemGrapefruit = getItemStack("grapefruititem");
+			ItemStack itemPomegranate = getItemStack("pomegranateitem");
+			ItemStack itemCashew = getItemStack("cashewitem");
+			ItemStack itemVanilla = getItemStack("vanillaitem");
+			ItemStack itemStarfruit = getItemStack("starfruititem");
+			ItemStack itemBanana = getItemStack("bananaitem");
+			ItemStack itemPlum = getItemStack("plumitem");
+			ItemStack itemAvocado = getItemStack("avocadoitem");
+			ItemStack itemPecan = getItemStack("pecanitem");
+			ItemStack itemPistachio = getItemStack("pistachioitem");
+			ItemStack itemLime = getItemStack("limeitem");
+			ItemStack itemPeppercorn = getItemStack("peppercornitem");
+			ItemStack itemAlmond = getItemStack("almonditem");
+			ItemStack itemGooseberry = getItemStack("gooseberryitem");
+			ItemStack itemPeach = getItemStack("peachitem");
+			ItemStack itemChestnut = getItemStack("chestnutitem");
+			ItemStack itemCoconut = getItemStack("coconutitem");
+			ItemStack itemMango = getItemStack("mangoitem");
+			ItemStack itemApricot = getItemStack("apricotitem");
+			ItemStack itemOrange = getItemStack("orangeitem");
+			ItemStack itemWalnut = getItemStack("walnutitem");
+			ItemStack itemPersimmon = getItemStack("persimmonitem");
+			ItemStack itemNutmeg = getItemStack("nutmegitem");
+			ItemStack itemDurian = getItemStack("durianitem");
 
-			ItemStack fishAnchovy = getItem("anchovyrawitem");
-			ItemStack fishBass = getItem("bassrawitem");
-			ItemStack fishCarp = getItem("carprawitem");
-			ItemStack fishCatfish = getItem("catfishrawitem");
-			ItemStack fishCharr = getItem("charrrawitem");
-			ItemStack fishEel = getItem("eelrawitem");
-			ItemStack fishGrouper = getItem("grouperrawitem");
-			ItemStack fishHerring = getItem("herringrawitem");
-			ItemStack fishMudfish = getItem("mudfishrawitem");
-			ItemStack fishPerch = getItem("perchrawitem");
-			ItemStack fishSnapper = getItem("snapperrawitem");
-			ItemStack fishTilapia = getItem("tilapiarawitem");
-			ItemStack fishTrout = getItem("troutrawitem");
-			ItemStack fishTuna = getItem("tunarawitem");
-			ItemStack fishWalleye = getItem("walleyerawitem");
+			ItemStack fishAnchovy = getItemStack("anchovyrawitem");
+			ItemStack fishBass = getItemStack("bassrawitem");
+			ItemStack fishCarp = getItemStack("carprawitem");
+			ItemStack fishCatfish = getItemStack("catfishrawitem");
+			ItemStack fishCharr = getItemStack("charrrawitem");
+			ItemStack fishEel = getItemStack("eelrawitem");
+			ItemStack fishGrouper = getItemStack("grouperrawitem");
+			ItemStack fishHerring = getItemStack("herringrawitem");
+			ItemStack fishMudfish = getItemStack("mudfishrawitem");
+			ItemStack fishPerch = getItemStack("perchrawitem");
+			ItemStack fishSnapper = getItemStack("snapperrawitem");
+			ItemStack fishTilapia = getItemStack("tilapiarawitem");
+			ItemStack fishTrout = getItemStack("troutrawitem");
+			ItemStack fishTuna = getItemStack("tunarawitem");
+			ItemStack fishWalleye = getItemStack("walleyerawitem");
 
 			/* Currently omitting the following:
 				clam
@@ -150,8 +155,8 @@ public class HarvestcraftPlugin {
 			 */
 
 			// These seem to not have much of a use yet, so also omitting.
-			ItemStack fishGreenHeart = getItem("greenheartfishitem");
-			ItemStack fishSardine = getItem("sardinerawitem");
+			ItemStack fishGreenHeart = getItemStack("greenheartfishitem");
+			ItemStack fishSardine = getItemStack("sardinerawitem");
 
 			/* INSOLATOR */
 			{
@@ -216,54 +221,14 @@ public class HarvestcraftPlugin {
 				FisherManager.addFish(fishTuna, 20);
 				FisherManager.addFish(fishWalleye, 20);
 			}
-
-			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
+			error = true;
 		}
-	}
-
-	/* HELPERS */
-	private static ItemStack getBlockStack(String name, int amount, int meta) {
-
-		Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return block != null ? new ItemStack(block, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getBlockStack(String name, int amount) {
-
-		return getBlockStack(name, amount, 0);
-	}
-
-	private static ItemStack getBlockStack(String name) {
-
-		return getBlockStack(name, 1, 0);
-	}
-
-	private static Block getBlock(String name) {
-
-		return ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-	}
-
-	private static ItemStack getItem(String name, int amount, int meta) {
-
-		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return item != null ? new ItemStack(item, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getItem(String name) {
-
-		return getItem(name, 1, 0);
-	}
-
-	private static void addLeafMapping(Block logBlock, Block leafBlock, int metadata) {
-
-		IBlockState logState = logBlock.getStateFromMeta(metadata);
-
-		for (Boolean check_decay : BlockLeaves.CHECK_DECAY.getAllowedValues()) {
-			IBlockState leafState = leafBlock.getStateFromMeta(metadata).withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE).withProperty(BlockLeaves.CHECK_DECAY, check_decay);
-			TapperManager.addLeafMappingDirect(logState, leafState);
+		if (!error) {
+			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 		}
+		return !error;
 	}
 
 }

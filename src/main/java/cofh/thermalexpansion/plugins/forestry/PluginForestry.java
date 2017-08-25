@@ -1,85 +1,93 @@
 package cofh.thermalexpansion.plugins.forestry;
 
+import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
 import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
 import cofh.thermalexpansion.util.managers.machine.RefineryManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
-import net.minecraft.block.Block;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class ForestryPlugin {
-
-	private ForestryPlugin() {
-
-	}
+public class PluginForestry extends ModPlugin {
 
 	public static final String MOD_ID = "forestry";
 	public static final String MOD_NAME = "Forestry";
 
-	public static void initialize() {
+	public PluginForestry() {
+
+		super(MOD_ID, MOD_NAME);
+	}
+
+	/* IInitializer */
+	@Override
+	public boolean initialize() {
 
 		String category = "Plugins";
 		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
+		enable = Loader.isModLoaded(MOD_ID) && ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
 
-		boolean enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
+		if (!enable) {
+			return false;
+		}
+		return !error;
+	}
 
-		if (!enable || !Loader.isModLoaded(MOD_ID)) {
-			return;
+	@Override
+	public boolean register() {
+
+		if (!enable) {
+			return false;
 		}
 		try {
 			ItemStack woodPile = getBlockStack("wood_pile", 1);
 
-			ItemStack combHoney = getItem("bee_combs", 1, 0);
-			ItemStack combCocoa = getItem("bee_combs", 1, 1);
-			ItemStack combSimmering = getItem("bee_combs", 1, 2);
-			ItemStack combStringy = getItem("bee_combs", 1, 3);
-			ItemStack combFrozen = getItem("bee_combs", 1, 4);
-			ItemStack combDripping = getItem("bee_combs", 1, 5);
-			ItemStack combSilky = getItem("bee_combs", 1, 6);
-			ItemStack combParched = getItem("bee_combs", 1, 7);
-			ItemStack combMysterious = getItem("bee_combs", 1, 8);
-			ItemStack combIrradiated = getItem("bee_combs", 1, 9);
-			ItemStack combPowdery = getItem("bee_combs", 1, 10);
-			ItemStack combReddened = getItem("bee_combs", 1, 11);
-			ItemStack combDarkened = getItem("bee_combs", 1, 12);
-			ItemStack combOmega = getItem("bee_combs", 1, 13);
-			ItemStack combWheat = getItem("bee_combs", 1, 14);
-			ItemStack combMossy = getItem("bee_combs", 1, 15);
-			ItemStack combMellow = getItem("bee_combs", 1, 16);
+			ItemStack combHoney = getItemStack("bee_combs", 1, 0);
+			ItemStack combCocoa = getItemStack("bee_combs", 1, 1);
+			ItemStack combSimmering = getItemStack("bee_combs", 1, 2);
+			ItemStack combStringy = getItemStack("bee_combs", 1, 3);
+			ItemStack combFrozen = getItemStack("bee_combs", 1, 4);
+			ItemStack combDripping = getItemStack("bee_combs", 1, 5);
+			ItemStack combSilky = getItemStack("bee_combs", 1, 6);
+			ItemStack combParched = getItemStack("bee_combs", 1, 7);
+			ItemStack combMysterious = getItemStack("bee_combs", 1, 8);
+			ItemStack combIrradiated = getItemStack("bee_combs", 1, 9);
+			ItemStack combPowdery = getItemStack("bee_combs", 1, 10);
+			ItemStack combReddened = getItemStack("bee_combs", 1, 11);
+			ItemStack combDarkened = getItemStack("bee_combs", 1, 12);
+			ItemStack combOmega = getItemStack("bee_combs", 1, 13);
+			ItemStack combWheat = getItemStack("bee_combs", 1, 14);
+			ItemStack combMossy = getItemStack("bee_combs", 1, 15);
+			ItemStack combMellow = getItemStack("bee_combs", 1, 16);
 
-			ItemStack honeydew = getItem("honeydew");
-			ItemStack dropHoney = getItem("honey_drop", 1, 0);
-			ItemStack dropHoneyCharged = getItem("honey_drop", 1, 1);
-			ItemStack dropHoneyOmega = getItem("honey_drop", 1, 2);
+			ItemStack honeydew = getItemStack("honeydew");
+			ItemStack dropHoney = getItemStack("honey_drop", 1, 0);
+			ItemStack dropHoneyCharged = getItemStack("honey_drop", 1, 1);
+			ItemStack dropHoneyOmega = getItemStack("honey_drop", 1, 2);
 
-			ItemStack pollenCrystalline = getItem("pollen", 1, 1);
+			ItemStack pollenCrystalline = getItemStack("pollen", 1, 1);
 
-			ItemStack propolis = getItem("propolis", 1, 0);
-			ItemStack propolisSticky = getItem("propolis", 1, 1);
-			ItemStack propolisPulsating = getItem("propolis", 1, 2);
-			ItemStack propolisSilky = getItem("propolis", 1, 3);
+			ItemStack propolis = getItemStack("propolis", 1, 0);
+			ItemStack propolisSticky = getItemStack("propolis", 1, 1);
+			ItemStack propolisPulsating = getItemStack("propolis", 1, 2);
+			ItemStack propolisSilky = getItemStack("propolis", 1, 3);
 
-			ItemStack wax = getItem("beeswax");
-			ItemStack waxRefractory = getItem("refractory_wax");
+			ItemStack wax = getItemStack("beeswax");
+			ItemStack waxRefractory = getItemStack("refractory_wax");
 
-			ItemStack silkWisp = getItem("crafting_material", 1, 2);
+			ItemStack silkWisp = getItemStack("crafting_material", 1, 2);
 
-			ItemStack mulch = getItem("mulch");
-			ItemStack phosphor = getItem("phosphor");
+			ItemStack mulch = getItemStack("mulch");
+			ItemStack phosphor = getItemStack("phosphor");
 
 			Fluid biomass = FluidRegistry.getFluid("biomass");
 			Fluid ethanol = FluidRegistry.getFluid("bio.ethanol");
@@ -101,13 +109,12 @@ public class ForestryPlugin {
 
 			/* TRANSPOSER */
 			{
-				int energy = 4000;
+				int energy = 2400;
 
 				if (honey != null) {
 					TransposerManager.addExtractRecipe(energy, honeydew, ItemStack.EMPTY, new FluidStack(honey, 100), 0, false);
 					TransposerManager.addExtractRecipe(energy, dropHoney, propolis, new FluidStack(honey, 100), 5, false);
 				}
-				energy = 2400;
 
 				if (juice != null) {
 					TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(Items.APPLE, 1), mulch, new FluidStack(juice, 200), 20, false);
@@ -151,14 +158,14 @@ public class ForestryPlugin {
 
 				CentrifugeManager.addRecipe(energy, propolisSilky, Arrays.asList(silkWisp, propolis), Arrays.asList(60, 10), null);
 			}
-
-			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
+			error = true;
 		}
-
-		ExtraBeesPlugin.initialize();
-		MagicBeesPlugin.initialize();
+		if (!error) {
+			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
+		}
+		return !error;
 	}
 
 	/* HELPERS */
@@ -177,28 +184,6 @@ public class ForestryPlugin {
 				TransposerManager.addExtractRecipe(2400, ItemHelper.cloneStack(seed.get(0), 1), ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
 			}
 		}
-	}
-
-	private static ItemStack getBlockStack(String name, int amount, int meta) {
-
-		Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return block != null ? new ItemStack(block, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getBlockStack(String name, int amount) {
-
-		return getBlockStack(name, amount, 0);
-	}
-
-	private static ItemStack getItem(String name, int amount, int meta) {
-
-		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return item != null ? new ItemStack(item, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getItem(String name) {
-
-		return getItem(name, 1, 0);
 	}
 
 }

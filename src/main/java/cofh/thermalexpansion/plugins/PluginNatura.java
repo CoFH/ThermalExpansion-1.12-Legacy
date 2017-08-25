@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins;
 
+import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.TapperManager;
@@ -10,47 +11,55 @@ import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-public class NaturaPlugin {
-
-	private NaturaPlugin() {
-
-	}
+public class PluginNatura extends ModPlugin {
 
 	public static final String MOD_ID = "natura";
 	public static final String MOD_NAME = "Natura";
 
-	public static void initialize() {
+	public PluginNatura() {
+
+		super(MOD_ID, MOD_NAME);
+	}
+
+	/* IInitializer */
+	@Override
+	public boolean initialize() {
 
 		String category = "Plugins";
 		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
+		enable = Loader.isModLoaded(MOD_ID) && ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
 
-		boolean enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
+		if (!enable) {
+			return false;
+		}
+		return !error;
+	}
 
-		if (!enable || !Loader.isModLoaded(MOD_ID)) {
-			return;
+	@Override
+	public boolean register() {
+
+		if (!enable) {
+			return false;
 		}
 		try {
-			ItemStack seedBarley = getItem("overworld_seeds", 1, 0);
-			ItemStack seedCotton = getItem("overworld_seeds", 1, 1);
+			ItemStack seedBarley = getItemStack("overworld_seeds", 1, 0);
+			ItemStack seedCotton = getItemStack("overworld_seeds", 1, 1);
 
-			ItemStack raspberry = getItem("edibles", 1, 2);
-			ItemStack blueberry = getItem("edibles", 1, 3);
-			ItemStack blackberry = getItem("edibles", 1, 4);
-			ItemStack maloberry = getItem("edibles", 1, 5);
+			ItemStack raspberry = getItemStack("edibles", 1, 2);
+			ItemStack blueberry = getItemStack("edibles", 1, 3);
+			ItemStack blackberry = getItemStack("edibles", 1, 4);
+			ItemStack maloberry = getItemStack("edibles", 1, 5);
 
-			ItemStack blightberry = getItem("edibles", 1, 6);
-			ItemStack duskberry = getItem("edibles", 1, 7);
-			ItemStack skyberry = getItem("edibles", 1, 8);
-			ItemStack stingberry = getItem("edibles", 1, 9);
+			ItemStack blightberry = getItemStack("edibles", 1, 6);
+			ItemStack duskberry = getItemStack("edibles", 1, 7);
+			ItemStack skyberry = getItemStack("edibles", 1, 8);
+			ItemStack stingberry = getItemStack("edibles", 1, 9);
 
 			ItemStack bushRaspberry = getBlockStack("overworld_berrybush_raspberry", 1, 0);
 			ItemStack bushBlueberry = getBlockStack("overworld_berrybush_raspberry", 1, 0);
@@ -62,7 +71,7 @@ public class NaturaPlugin {
 			ItemStack bushSkyberry = getBlockStack("nether_berrybush_skyberry", 1, 0);
 			ItemStack bushStingberry = getBlockStack("nether_berrybush_stingberry", 1, 0);
 
-			ItemStack saguaroFruit = getItem("saguaro_fruit_item");
+			ItemStack saguaroFruit = getItemStack("saguaro_fruit_item");
 			ItemStack saguaroCactus = getBlockStack("saguaro", 1, 0);
 			ItemStack saguaroCactusBaby = getBlockStack("saguaro_baby", 1, 0);
 
@@ -80,20 +89,20 @@ public class NaturaPlugin {
 			ItemStack logHopseed = getBlockStack("overworld_logs2", 1, 2);
 			ItemStack logSakura = getBlockStack("overworld_logs2", 1, 3);
 
-			ItemStack saplingMaple = getItem("overworld_sapling", 1, 0);
-			ItemStack saplingSilverbell = getItem("overworld_sapling", 1, 1);
-			ItemStack saplingAmaranth = getItem("overworld_sapling", 1, 2);
-			ItemStack saplingTigerwood = getItem("overworld_sapling", 1, 3);
+			ItemStack saplingMaple = getItemStack("overworld_sapling", 1, 0);
+			ItemStack saplingSilverbell = getItemStack("overworld_sapling", 1, 1);
+			ItemStack saplingAmaranth = getItemStack("overworld_sapling", 1, 2);
+			ItemStack saplingTigerwood = getItemStack("overworld_sapling", 1, 3);
 
-			ItemStack saplingWillow = getItem("overworld_sapling2", 1, 0);
-			ItemStack saplingEucalyptus = getItem("overworld_sapling2", 1, 1);
-			ItemStack saplingHopseed = getItem("overworld_sapling2", 1, 2);
-			ItemStack saplingSakura = getItem("overworld_sapling2", 1, 3);
+			ItemStack saplingWillow = getItemStack("overworld_sapling2", 1, 0);
+			ItemStack saplingEucalyptus = getItemStack("overworld_sapling2", 1, 1);
+			ItemStack saplingHopseed = getItemStack("overworld_sapling2", 1, 2);
+			ItemStack saplingSakura = getItemStack("overworld_sapling2", 1, 3);
 
-			ItemStack saplingGhostwood = getItem("nether_sapling", 1, 0);
-			ItemStack saplingFusewood = getItem("nether_sapling", 1, 1);
-			ItemStack saplingDarkwood = getItem("nether_sapling", 1, 2);
-			ItemStack saplingBloodwood = getItem("nether_sapling2", 1, 0);
+			ItemStack saplingGhostwood = getItemStack("nether_sapling", 1, 0);
+			ItemStack saplingFusewood = getItemStack("nether_sapling", 1, 1);
+			ItemStack saplingDarkwood = getItemStack("nether_sapling", 1, 2);
+			ItemStack saplingBloodwood = getItemStack("nether_sapling2", 1, 0);
 
 			ItemStack logGhostwood = getBlockStack("nether_logs", 1, 0);
 			ItemStack logFusewood = getBlockStack("nether_logs", 1, 1);
@@ -173,42 +182,18 @@ public class NaturaPlugin {
 				addLeafMapping(log2, leaves2, 2);
 				addLeafMapping(log2, leaves2, 3);
 			}
-
-			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
+			error = true;
 		}
+		if (!error) {
+			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
+		}
+		return !error;
 	}
 
 	/* HELPERS */
-	private static ItemStack getBlockStack(String name, int amount, int meta) {
-
-		Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return block != null ? new ItemStack(block, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getBlockStack(String name, int amount) {
-
-		return getBlockStack(name, amount, 0);
-	}
-
-	private static Block getBlock(String name) {
-
-		return ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-	}
-
-	private static ItemStack getItem(String name, int amount, int meta) {
-
-		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return item != null ? new ItemStack(item, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getItem(String name) {
-
-		return getItem(name, 1, 0);
-	}
-
-	private static void addLeafMapping(Block logBlock, Block leafBlock, int metadata) {
+	private void addLeafMapping(Block logBlock, Block leafBlock, int metadata) {
 
 		IBlockState logState = logBlock.getStateFromMeta(metadata);
 

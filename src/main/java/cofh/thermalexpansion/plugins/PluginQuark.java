@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins;
 
+import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -9,44 +10,50 @@ import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager;
 import cofh.thermalfoundation.item.ItemMaterial;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.util.Locale;
 
-public class QuarkPlugin {
-
-	private QuarkPlugin() {
-
-	}
+public class PluginQuark extends ModPlugin {
 
 	public static final String MOD_ID = "quark";
 	public static final String MOD_NAME = "Quark";
 
-	public static void initialize() {
+	public PluginQuark() {
+
+		super(MOD_ID, MOD_NAME);
+	}
+
+	/* IInitializer */
+	@Override
+	public boolean initialize() {
 
 		String category = "Plugins";
 		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
+		enable = Loader.isModLoaded(MOD_ID) && ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
 
-		boolean enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
+		if (!enable) {
+			return false;
+		}
+		return !error;
+	}
 
-		if (!enable || !Loader.isModLoaded(MOD_ID)) {
-			return;
+	@Override
+	public boolean register() {
+
+		if (!enable) {
+			return false;
 		}
 		try {
-
 			/* PULVERIZER */
 			{
 				int energy = PulverizerManager.DEFAULT_ENERGY;
 
-				PulverizerManager.addRecipe(energy, getBlockStack("biotite_ore", 1), getItem("biotite", 3, 0), new ItemStack(Items.ENDER_PEARL), 5);
+				PulverizerManager.addRecipe(energy, getBlockStack("biotite_ore", 1), getItemStack("biotite", 3, 0), new ItemStack(Items.ENDER_PEARL), 5);
 				PulverizerManager.addRecipe(energy, getBlockStack("blaze_lantern", 1), new ItemStack(Items.BLAZE_POWDER, 16));
 
 				PulverizerManager.addRecipe(energy, getBlockStack("biome_cobblestone", 1, 0), new ItemStack(Blocks.GRAVEL), new ItemStack(Items.BLAZE_POWDER), 5);
@@ -56,7 +63,7 @@ public class QuarkPlugin {
 				PulverizerManager.addRecipe(energy, getBlockStack("soul_sandstone", 1), ItemHelper.cloneStack(Blocks.SOUL_SAND, 2), ItemMaterial.dustSulfur, 40);
 
 				for (int i = 0; i < 2; i++) {
-					PulverizerManager.addRecipe(energy, getBlockStack("biotite_block", 1, i), getItem("biotite", 4, 0));
+					PulverizerManager.addRecipe(energy, getBlockStack("biotite_block", 1, i), getItemStack("biotite", 4, 0));
 					PulverizerManager.addRecipe(energy, getBlockStack("sandstone_new", 1, i), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 40);
 					PulverizerManager.addRecipe(energy, getBlockStack("sandstone_new", 1, 2 + i), new ItemStack(Blocks.SAND, 2, 1), ItemMaterial.dustNiter, 40);
 					PulverizerManager.addRecipe(energy, getBlockStack("sandstone_new", 1, 4 + i), new ItemStack(Blocks.SOUL_SAND, 2), ItemMaterial.dustSulfur, 40);
@@ -64,14 +71,14 @@ public class QuarkPlugin {
 
 				/* STAIRS */
 				PulverizerManager.addRecipe(energy, getBlockStack("soul_sandstone_stairs", 1), new ItemStack(Blocks.SOUL_SAND, 2), ItemMaterial.dustSulfur, 20);
-				PulverizerManager.addRecipe(energy, getBlockStack("biotite_stairs", 1), getItem("biotite", 3, 0));
+				PulverizerManager.addRecipe(energy, getBlockStack("biotite_stairs", 1), getItemStack("biotite", 3, 0));
 				PulverizerManager.addRecipe(energy, getBlockStack("sandstone_bricks_stairs", 1), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 20);
 				PulverizerManager.addRecipe(energy, getBlockStack("red_sandstone_bricks_stairs", 1), new ItemStack(Blocks.SAND, 2, 1), ItemMaterial.dustNiter, 20);
 				PulverizerManager.addRecipe(energy, getBlockStack("soul_sandstone_bricks_stairs", 1), new ItemStack(Blocks.SOUL_SAND, 2), ItemMaterial.dustSulfur, 20);
 
 				/* SLABS */
 				PulverizerManager.addRecipe(energy / 2, getBlockStack("soul_sandstone_slab", 1), new ItemStack(Blocks.SOUL_SAND, 1), ItemMaterial.dustSulfur, 20);
-				PulverizerManager.addRecipe(energy / 2, getBlockStack("biotite_slab", 1), getItem("biotite", 2, 0));
+				PulverizerManager.addRecipe(energy / 2, getBlockStack("biotite_slab", 1), getItemStack("biotite", 2, 0));
 				PulverizerManager.addRecipe(energy / 2, getBlockStack("sandstone_smooth_slab", 1), new ItemStack(Blocks.SAND, 1), ItemMaterial.dustNiter, 20);
 				PulverizerManager.addRecipe(energy / 2, getBlockStack("sandstone_bricks_slab", 1), new ItemStack(Blocks.SAND, 1), ItemMaterial.dustNiter, 20);
 				PulverizerManager.addRecipe(energy / 2, getBlockStack("red_sandstone_smooth_slab", 1), new ItemStack(Blocks.SAND, 1, 1), ItemMaterial.dustNiter, 20);
@@ -170,39 +177,14 @@ public class QuarkPlugin {
 
 				InsolatorManager.addDefaultRecipe(glowshroom, ItemHelper.cloneStack(glowshroom, 2), ItemStack.EMPTY, 0, false, Type.MYCELIUM);
 			}
-
-			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
+			error = true;
 		}
-	}
-
-	/* HELPERS */
-	private static ItemStack getBlockStack(String name, int amount, int meta) {
-
-		Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return block != null ? new ItemStack(block, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getBlockStack(String name, int amount) {
-
-		return getBlockStack(name, amount, 0);
-	}
-
-	private static Block getBlock(String name) {
-
-		return ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-	}
-
-	private static ItemStack getItem(String name, int amount, int meta) {
-
-		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return item != null ? new ItemStack(item, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getItem(String name) {
-
-		return getItem(name, 1, 0);
+		if (!error) {
+			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
+		}
+		return !error;
 	}
 
 }

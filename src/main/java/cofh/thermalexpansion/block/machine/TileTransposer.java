@@ -54,6 +54,8 @@ public class TileTransposer extends TileMachineBase {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
+
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion:machine_transposer");
 
 		config();

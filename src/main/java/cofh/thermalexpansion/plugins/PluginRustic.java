@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins;
 
+import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.TapperManager;
@@ -12,70 +13,79 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RusticPlugin {
-
-	private RusticPlugin() {
-
-	}
+public class PluginRustic extends ModPlugin {
 
 	public static final String MOD_ID = "rustic";
 	public static final String MOD_NAME = "Rustic";
 
-	public static void initialize() {
+	public PluginRustic() {
+
+		super(MOD_ID, MOD_NAME);
+	}
+
+	/* IInitializer */
+	@Override
+	public boolean initialize() {
 
 		String category = "Plugins";
 		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
+		enable = Loader.isModLoaded(MOD_ID) && ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
 
-		boolean enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
+		if (!enable) {
+			return false;
+		}
+		return !error;
+	}
 
-		if (!enable || !Loader.isModLoaded(MOD_ID)) {
-			return;
+	@Override
+	public boolean register() {
+
+		if (!enable) {
+			return false;
 		}
 		try {
-			ItemStack beeswax = getItem("beeswax");
-			ItemStack chiliPepper = getItem("chili_pepper");
-			ItemStack honeycomb = getItem("honeycomb");
-			ItemStack grapes = getItem("grapes");
-			ItemStack ironberries = getItem("ironberries");
-			ItemStack olives = getItem("olives");
-			ItemStack tomato = getItem("tomato");
-			ItemStack wildberries = getItem("wildberries");
+			ItemStack beeswax = getItemStack("beeswax");
+			ItemStack chiliPepper = getItemStack("chili_pepper");
+			ItemStack honeycomb = getItemStack("honeycomb");
+			ItemStack grapes = getItemStack("grapes");
+			ItemStack ironberries = getItemStack("ironberries");
+			ItemStack olives = getItemStack("olives");
+			ItemStack tomato = getItemStack("tomato");
+			ItemStack wildberries = getItemStack("wildberries");
 
-			ItemStack seedApple = getItem("apple_seeds");
-			ItemStack seedChiliPepper = getItem("chili_pepper_seeds");
-			ItemStack seedGrape = getItem("grape_stem");
-			ItemStack seedTomato = getItem("tomato_seeds");
+			ItemStack seedApple = getItemStack("apple_seeds");
+			ItemStack seedChiliPepper = getItemStack("chili_pepper_seeds");
+			ItemStack seedGrape = getItemStack("grape_stem");
+			ItemStack seedTomato = getItemStack("tomato_seeds");
 
-			ItemStack aloeVera = getItem("aloe_vera");
-			ItemStack bloodOrchid = getItem("blood_orchid");
-			ItemStack chamomile = getItem("chamomile");
-			ItemStack cloudsbluff = getItem("cloudsbluff");
-			ItemStack cohosh = getItem("cohosh");
-			ItemStack coreRoot = getItem("core_root");
-			ItemStack deathstalkMushroom = getItem("deathstalk_mushroom");
-			ItemStack ginseng = getItem("ginseng");
-			ItemStack horsetail = getItem("horsetail");
-			ItemStack marshMallow = getItem("marsh_mallow");
-			ItemStack mooncapMushroom = getItem("mooncap_mushroom");
-			ItemStack windThistle = getItem("wind_thistle");
+			ItemStack aloeVera = getItemStack("aloe_vera");
+			ItemStack bloodOrchid = getItemStack("blood_orchid");
+			ItemStack chamomile = getItemStack("chamomile");
+			ItemStack cloudsbluff = getItemStack("cloudsbluff");
+			ItemStack cohosh = getItemStack("cohosh");
+			ItemStack coreRoot = getItemStack("core_root");
+			ItemStack deathstalkMushroom = getItemStack("deathstalk_mushroom");
+			ItemStack ginseng = getItemStack("ginseng");
+			ItemStack horsetail = getItemStack("horsetail");
+			ItemStack marshMallow = getItemStack("marsh_mallow");
+			ItemStack mooncapMushroom = getItemStack("mooncap_mushroom");
+			ItemStack windThistle = getItemStack("wind_thistle");
 
 			ItemStack logOlive = getBlockStack("log", 1, 0);
 			ItemStack logIronwood = getBlockStack("log", 1, 1);
 
-			ItemStack saplingOlive = getItem("sapling", 1, 0);
-			ItemStack saplingIronwood = getItem("sapling", 1, 1);
-			ItemStack saplingApple = getItem("sapling_apple", 1, 0);
+			ItemStack saplingOlive = getItemStack("sapling", 1, 0);
+			ItemStack saplingIronwood = getItemStack("sapling", 1, 1);
+			ItemStack saplingApple = getItemStack("sapling_apple", 1, 0);
 
 			Block log = getBlock("log");
 
@@ -83,10 +93,10 @@ public class RusticPlugin {
 			Block leavesApple = getBlock("leaves_apple");
 
 			Fluid honey = FluidRegistry.getFluid("honey");
-			Fluid grapejuice = FluidRegistry.getFluid("grapejuice");
-			Fluid ironberryjuice = FluidRegistry.getFluid("ironberryjuice");
-			Fluid oliveoil = FluidRegistry.getFluid("oliveoil");
-			Fluid wildberryjuice = FluidRegistry.getFluid("wildberryjuice");
+			Fluid juiceGrape = FluidRegistry.getFluid("grapejuice");
+			Fluid juiceIronberry = FluidRegistry.getFluid("ironberryjuice");
+			Fluid juiceWildberry = FluidRegistry.getFluid("wildberryjuice");
+			Fluid oilOlive = FluidRegistry.getFluid("oliveoil");
 
 			Fluid seed_oil = FluidRegistry.getFluid("seed.oil");
 
@@ -119,18 +129,6 @@ public class RusticPlugin {
 			{
 				int energy = 2400;
 
-				if (grapejuice != null) {
-					TransposerManager.addExtractRecipe(energy, grapes, ItemStack.EMPTY, new FluidStack(grapejuice, 250), 0, false);
-				}
-				if (ironberryjuice != null) {
-					TransposerManager.addExtractRecipe(energy, ironberries, ItemStack.EMPTY, new FluidStack(ironberryjuice, 250), 0, false);
-				}
-				if (oliveoil != null) {
-					TransposerManager.addExtractRecipe(energy, olives, ItemStack.EMPTY, new FluidStack(oliveoil, 250), 0, false);
-				}
-				if (wildberryjuice != null) {
-					TransposerManager.addExtractRecipe(energy, wildberries, ItemStack.EMPTY, new FluidStack(wildberryjuice, 250), 0, false);
-				}
 				if (seed_oil != null) {
 					TransposerManager.addExtractRecipe(energy, seedApple, ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
 					TransposerManager.addExtractRecipe(energy, seedChiliPepper, ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
@@ -146,6 +144,18 @@ public class RusticPlugin {
 				if (honey != null) {
 					CentrifugeManager.addRecipe(energy, honeycomb, Arrays.asList(beeswax), new FluidStack(honey, 250));
 				}
+				if (juiceGrape != null) {
+					CentrifugeManager.addRecipe(energy, grapes, new ArrayList<>(), new FluidStack(juiceGrape, 250));
+				}
+				if (juiceIronberry != null) {
+					CentrifugeManager.addRecipe(energy, ironberries, new ArrayList<>(), new FluidStack(juiceIronberry, 250));
+				}
+				if (juiceWildberry != null) {
+					CentrifugeManager.addRecipe(energy, wildberries, new ArrayList<>(), new FluidStack(juiceWildberry, 250));
+				}
+				if (oilOlive != null) {
+					CentrifugeManager.addRecipe(energy, olives, new ArrayList<>(), new FluidStack(oilOlive, 250));
+				}
 			}
 
 			/* TAPPER */
@@ -157,42 +167,18 @@ public class RusticPlugin {
 				addLeafMapping(log, leaves, 1);
 				addLeafMapping(Blocks.LOG, leavesApple, 0);
 			}
-
-			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
+			error = true;
 		}
+		if (!error) {
+			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
+		}
+		return !error;
 	}
 
 	/* HELPERS */
-	private static ItemStack getBlockStack(String name, int amount, int meta) {
-
-		Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return block != null ? new ItemStack(block, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getBlockStack(String name, int amount) {
-
-		return getBlockStack(name, amount, 0);
-	}
-
-	private static Block getBlock(String name) {
-
-		return ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-	}
-
-	private static ItemStack getItem(String name, int amount, int meta) {
-
-		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return item != null ? new ItemStack(item, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getItem(String name) {
-
-		return getItem(name, 1, 0);
-	}
-
-	private static void addLeafMapping(Block logBlock, Block leafBlock, int metadata) {
+	private void addLeafMapping(Block logBlock, Block leafBlock, int metadata) {
 
 		IBlockState logState = logBlock.getStateFromMeta(metadata);
 

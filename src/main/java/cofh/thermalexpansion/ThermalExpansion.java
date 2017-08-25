@@ -5,14 +5,9 @@ import cofh.CoFHCore;
 import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
 import cofh.thermalexpansion.gui.GuiHandler;
-import cofh.thermalexpansion.init.TEBlocks;
-import cofh.thermalexpansion.init.TEItems;
-import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.init.TESounds;
+import cofh.thermalexpansion.init.*;
 import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalexpansion.network.PacketTEBase;
-import cofh.thermalexpansion.plugins.*;
-import cofh.thermalexpansion.plugins.forestry.ForestryPlugin;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.managers.CoolantManager;
@@ -92,14 +87,16 @@ public class ThermalExpansion {
 	@EventHandler
 	public void initialize(FMLInitializationEvent event) {
 
+		TEPlugins.initialize();
+
 		proxy.initialize(event);
 	}
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 
+		TEPlugins.postInit();
 		managerInitialize();
-		pluginInitialize();
 
 		proxy.postInit(event);
 	}
@@ -189,19 +186,6 @@ public class ThermalExpansion {
 		ReactantManager.refresh();
 		EnervationManager.refresh();
 		NumismaticManager.refresh();
-	}
-
-	private void pluginInitialize() {
-
-		ActuallyAdditionsPlugin.initialize();
-		BiomesOPlentyPlugin.initialize();
-		ForestryPlugin.initialize();
-		HarvestcraftPlugin.initialize();
-		IndustrialCraftPlugin.initialize();
-		NaturaPlugin.initialize();
-		QuarkPlugin.initialize();
-		RusticPlugin.initialize();
-		TConstructPlugin.initialize();
 	}
 
 }

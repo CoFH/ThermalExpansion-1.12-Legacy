@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins;
 
+import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.TapperManager;
@@ -12,38 +13,43 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-public class BiomesOPlentyPlugin {
-
-	private BiomesOPlentyPlugin() {
-
-	}
+public class PluginBiomesOPlenty extends ModPlugin {
 
 	public static final String MOD_ID = "biomesoplenty";
 	public static final String MOD_NAME = "Biomes O' Plenty";
 
-	public static void initialize() {
+	public PluginBiomesOPlenty() {
+
+		super(MOD_ID, MOD_NAME);
+	}
+
+	/* IInitializer */
+	@Override
+	public boolean initialize() {
 
 		String category = "Plugins";
 		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
+		enable = Loader.isModLoaded(MOD_ID) && ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
 
-		boolean enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
+		if (!enable) {
+			return false;
+		}
+		return !error;
+	}
 
-		if (!enable || !Loader.isModLoaded(MOD_ID)) {
-			return;
+	@Override
+	public boolean register() {
+
+		if (!enable) {
+			return false;
 		}
 		try {
 			ItemStack sandWhite = getBlockStack("white_sand", 1, 0);
-			ItemStack sandstoneWhite = getBlockStack("white_sandstone", 1, 0);
-			ItemStack sandstoneStairsWhite = getBlockStack("white_sandstone_stairs", 1, 0);
-			ItemStack sandstoneSlabWhite = getBlockStack("other_slab", 1, 1);
 
 			ItemStack logYellowAutumn = new ItemStack(Blocks.LOG, 1, 2);
 			ItemStack logOrangeAutumn = new ItemStack(Blocks.LOG2, 1, 1);
@@ -72,32 +78,32 @@ public class BiomesOPlentyPlugin {
 			ItemStack logEbony = getBlockStack("log_3", 1, 6);
 			ItemStack logEucalyptus = getBlockStack("log_3", 1, 7);
 
-			ItemStack saplingYellowAutumn = getItem("sapling_0", 1, 0);
-			ItemStack saplingOrangeAutumn = getItem("sapling_0", 1, 1);
-			ItemStack saplingBamboo = getItem("sapling_0", 1, 2);
-			ItemStack saplingMagic = getItem("sapling_0", 1, 3);
-			ItemStack saplingUmbran = getItem("sapling_0", 1, 4);
-			ItemStack saplingDead = getItem("sapling_0", 1, 5);
-			ItemStack saplingFir = getItem("sapling_0", 1, 6);
-			ItemStack saplingEthereal = getItem("sapling_0", 1, 7);
+			ItemStack saplingYellowAutumn = getItemStack("sapling_0", 1, 0);
+			ItemStack saplingOrangeAutumn = getItemStack("sapling_0", 1, 1);
+			ItemStack saplingBamboo = getItemStack("sapling_0", 1, 2);
+			ItemStack saplingMagic = getItemStack("sapling_0", 1, 3);
+			ItemStack saplingUmbran = getItemStack("sapling_0", 1, 4);
+			ItemStack saplingDead = getItemStack("sapling_0", 1, 5);
+			ItemStack saplingFir = getItemStack("sapling_0", 1, 6);
+			ItemStack saplingEthereal = getItemStack("sapling_0", 1, 7);
 
-			ItemStack saplingOrigin = getItem("sapling_1", 1, 0);
-			ItemStack saplingPinkCherry = getItem("sapling_1", 1, 1);
-			ItemStack saplingWhiteCherry = getItem("sapling_1", 1, 2);
-			ItemStack saplingMaple = getItem("sapling_1", 1, 3);
-			ItemStack saplingHellback = getItem("sapling_1", 1, 4);
-			ItemStack saplingFloweringOak = getItem("sapling_1", 1, 5);
-			ItemStack saplingJacaranda = getItem("sapling_1", 1, 6);
-			ItemStack saplingSacredOak = getItem("sapling_1", 1, 7);
+			ItemStack saplingOrigin = getItemStack("sapling_1", 1, 0);
+			ItemStack saplingPinkCherry = getItemStack("sapling_1", 1, 1);
+			ItemStack saplingWhiteCherry = getItemStack("sapling_1", 1, 2);
+			ItemStack saplingMaple = getItemStack("sapling_1", 1, 3);
+			ItemStack saplingHellback = getItemStack("sapling_1", 1, 4);
+			ItemStack saplingFloweringOak = getItemStack("sapling_1", 1, 5);
+			ItemStack saplingJacaranda = getItemStack("sapling_1", 1, 6);
+			ItemStack saplingSacredOak = getItemStack("sapling_1", 1, 7);
 
-			ItemStack saplingMangrove = getItem("sapling_2", 1, 0);
-			ItemStack saplingPalm = getItem("sapling_2", 1, 1);
-			ItemStack saplingRedwood = getItem("sapling_2", 1, 2);
-			ItemStack saplingWillow = getItem("sapling_2", 1, 3);
-			ItemStack saplingPine = getItem("sapling_2", 1, 4);
-			ItemStack saplingMahogany = getItem("sapling_2", 1, 5);
-			ItemStack saplingEbony = getItem("sapling_2", 1, 6);
-			ItemStack saplingEucalyptus = getItem("sapling_2", 1, 7);
+			ItemStack saplingMangrove = getItemStack("sapling_2", 1, 0);
+			ItemStack saplingPalm = getItemStack("sapling_2", 1, 1);
+			ItemStack saplingRedwood = getItemStack("sapling_2", 1, 2);
+			ItemStack saplingWillow = getItemStack("sapling_2", 1, 3);
+			ItemStack saplingPine = getItemStack("sapling_2", 1, 4);
+			ItemStack saplingMahogany = getItemStack("sapling_2", 1, 5);
+			ItemStack saplingEbony = getItemStack("sapling_2", 1, 6);
+			ItemStack saplingEucalyptus = getItemStack("sapling_2", 1, 7);
 
 			Block bamboo = getBlock("bamboo");
 			Block log0 = getBlock("log_0");
@@ -117,10 +123,10 @@ public class BiomesOPlentyPlugin {
 				int energy = PulverizerManager.DEFAULT_ENERGY * 3 / 4;
 
 				for (int i = 0; i < 3; i++) {
-					PulverizerManager.addRecipe(energy, new ItemStack(getBlock("white_sandstone"), 1, i), ItemHelper.cloneStack(sandWhite, 2), ItemMaterial.dustNiter, 50);
+					PulverizerManager.addRecipe(energy, new ItemStack(getBlock("white_sandstone"), 1, i), ItemHelper.cloneStack(sandWhite, 2), ItemMaterial.dustNiter, 40);
 				}
-				PulverizerManager.addRecipe(energy, new ItemStack(getBlock("white_sandstone_stairs")), ItemHelper.cloneStack(sandWhite, 2), ItemMaterial.dustNiter, 75);
-				PulverizerManager.addRecipe(energy, new ItemStack(getBlock("other_slab"), 1, 1), ItemHelper.cloneStack(sandWhite, 1), ItemMaterial.dustNiter, 25);
+				PulverizerManager.addRecipe(energy, new ItemStack(getBlock("white_sandstone_stairs")), ItemHelper.cloneStack(sandWhite, 2), ItemMaterial.dustNiter, 20);
+				PulverizerManager.addRecipe(energy, new ItemStack(getBlock("other_slab"), 1, 1), ItemHelper.cloneStack(sandWhite, 1), ItemMaterial.dustNiter, 20);
 			}
 
 			/* INSOLATOR */
@@ -209,42 +215,18 @@ public class BiomesOPlentyPlugin {
 				addLeafMapping(log3, 6, leaves5, 10);
 				addLeafMapping(log3, 7, leaves5, 11);
 			}
-
-			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
+			error = true;
 		}
+		if (!error) {
+			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
+		}
+		return !error;
 	}
 
 	/* HELPERS */
-	private static ItemStack getBlockStack(String name, int amount, int meta) {
-
-		Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return block != null ? new ItemStack(block, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getBlockStack(String name, int amount) {
-
-		return getBlockStack(name, amount, 0);
-	}
-
-	private static Block getBlock(String name) {
-
-		return ForgeRegistries.BLOCKS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-	}
-
-	private static ItemStack getItem(String name, int amount, int meta) {
-
-		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID + ":" + name));
-		return item != null ? new ItemStack(item, amount, meta) : ItemStack.EMPTY;
-	}
-
-	private static ItemStack getItem(String name) {
-
-		return getItem(name, 1, 0);
-	}
-
-	private static void addLeafMapping(Block logBlock, int logMetadata, Block leafBlock, int leafMetadata) {
+	private void addLeafMapping(Block logBlock, int logMetadata, Block leafBlock, int leafMetadata) {
 
 		IBlockState logState = logBlock.getStateFromMeta(logMetadata);
 

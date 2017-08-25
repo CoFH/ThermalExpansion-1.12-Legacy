@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins;
 
+import cofh.core.util.ModPlugin;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.RefineryManager;
 import net.minecraft.item.ItemStack;
@@ -8,27 +9,37 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
 
-public class ActuallyAdditionsPlugin {
-
-	private ActuallyAdditionsPlugin() {
-
-	}
+public class PluginActuallyAdditions extends ModPlugin {
 
 	public static final String MOD_ID = "actuallyadditions";
 	public static final String MOD_NAME = "Actually Additions";
 
-	public static void initialize() {
+	public PluginActuallyAdditions() {
+
+		super(MOD_ID, MOD_NAME);
+	}
+
+	/* IInitializer */
+	@Override
+	public boolean initialize() {
 
 		String category = "Plugins";
 		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
+		enable = Loader.isModLoaded(MOD_ID) && ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
 
-		boolean enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
+		if (!enable) {
+			return false;
+		}
+		return !error;
+	}
 
-		if (!enable || !Loader.isModLoaded(MOD_ID)) {
-			return;
+	@Override
+	public boolean register() {
+
+		if (!enable) {
+			return false;
 		}
 		try {
-
 			Fluid canola_oil = FluidRegistry.getFluid("canolaoil");
 			Fluid refined_canola_oil = FluidRegistry.getFluid("refinedcanolaoil");
 
@@ -40,11 +51,14 @@ public class ActuallyAdditionsPlugin {
 					RefineryManager.addRecipe(energy / 5, new FluidStack(canola_oil, 100), new FluidStack(refined_canola_oil, 100), ItemStack.EMPTY);
 				}
 			}
-
-			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
+			error = true;
 		}
+		if (!error) {
+			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
+		}
+		return !error;
 	}
 
 }
