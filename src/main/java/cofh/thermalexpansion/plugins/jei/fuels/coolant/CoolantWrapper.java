@@ -57,7 +57,7 @@ public class CoolantWrapper extends BaseFuelWrapper {
 		energyMeter.draw(minecraft, 71, 7);
 
 		minecraft.fontRenderer.drawString(StringHelper.formatNumber(energy) + " TC", 96, (recipeHeight - 9) / 2, 0x0a76d0);
-		minecraft.fontRenderer.drawString(decimalFormat.format(factor) + "%", 96, 10 + (recipeHeight - 9) / 2, 0xd0650b);
+		minecraft.fontRenderer.drawString(factor + "%", 96, 10 + (recipeHeight - 9) / 2, 0xd0650b);
 	}
 
 	@Nullable

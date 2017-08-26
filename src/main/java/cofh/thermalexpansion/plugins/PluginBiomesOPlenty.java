@@ -49,34 +49,34 @@ public class PluginBiomesOPlenty extends ModPlugin {
 			return false;
 		}
 		try {
-			ItemStack sandWhite = getBlockStack("white_sand", 1, 0);
+			ItemStack sandWhite = getItemStack("white_sand", 1, 0);
 
 			ItemStack logYellowAutumn = new ItemStack(Blocks.LOG, 1, 2);
 			ItemStack logOrangeAutumn = new ItemStack(Blocks.LOG2, 1, 1);
-			ItemStack logBamboo = getBlockStack("bamboo", 1, 0);
-			ItemStack logMagic = getBlockStack("log_1", 1, 5);
-			ItemStack logUmbral = getBlockStack("log_0", 1, 6);
+			ItemStack logBamboo = getItemStack("bamboo", 1, 0);
+			ItemStack logMagic = getItemStack("log_1", 1, 5);
+			ItemStack logUmbral = getItemStack("log_0", 1, 6);
 			// Dead
-			ItemStack logFir = getBlockStack("log_0", 1, 7);
+			ItemStack logFir = getItemStack("log_0", 1, 7);
 			// Ethereal
 
 			ItemStack logOrigin = new ItemStack(Blocks.LOG, 1, 0);
-			ItemStack logCherry = getBlockStack("log_0", 1, 5);
+			ItemStack logCherry = getItemStack("log_0", 1, 5);
 			// White Cherry
 			ItemStack logMaple = new ItemStack(Blocks.LOG, 1, 0);
-			ItemStack logHellbark = getBlockStack("log_2", 1, 7);
+			ItemStack logHellbark = getItemStack("log_2", 1, 7);
 			ItemStack logFloweringOak = new ItemStack(Blocks.LOG, 1, 0);
-			ItemStack logJacaranda = getBlockStack("log_3", 1, 4);
-			ItemStack logSacredOak = getBlockStack("log_0", 1, 4);
+			ItemStack logJacaranda = getItemStack("log_3", 1, 4);
+			ItemStack logSacredOak = getItemStack("log_0", 1, 4);
 
-			ItemStack logMangrove = getBlockStack("log_1", 1, 6);
-			ItemStack logPalm = getBlockStack("log_1", 1, 7);
-			ItemStack logRedwood = getBlockStack("log_2", 1, 4);
-			ItemStack logWillow = getBlockStack("log_2", 1, 5);
-			ItemStack logPine = getBlockStack("log_2", 1, 6);
-			ItemStack logMahogany = getBlockStack("log_3", 1, 5);
-			ItemStack logEbony = getBlockStack("log_3", 1, 6);
-			ItemStack logEucalyptus = getBlockStack("log_3", 1, 7);
+			ItemStack logMangrove = getItemStack("log_1", 1, 6);
+			ItemStack logPalm = getItemStack("log_1", 1, 7);
+			ItemStack logRedwood = getItemStack("log_2", 1, 4);
+			ItemStack logWillow = getItemStack("log_2", 1, 5);
+			ItemStack logPine = getItemStack("log_2", 1, 6);
+			ItemStack logMahogany = getItemStack("log_3", 1, 5);
+			ItemStack logEbony = getItemStack("log_3", 1, 6);
+			ItemStack logEucalyptus = getItemStack("log_3", 1, 7);
 
 			ItemStack saplingYellowAutumn = getItemStack("sapling_0", 1, 0);
 			ItemStack saplingOrangeAutumn = getItemStack("sapling_0", 1, 1);

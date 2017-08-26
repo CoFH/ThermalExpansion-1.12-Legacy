@@ -80,8 +80,8 @@ public class PluginRustic extends ModPlugin {
 			ItemStack mooncapMushroom = getItemStack("mooncap_mushroom");
 			ItemStack windThistle = getItemStack("wind_thistle");
 
-			ItemStack logOlive = getBlockStack("log", 1, 0);
-			ItemStack logIronwood = getBlockStack("log", 1, 1);
+			ItemStack logOlive = getItemStack("log", 1, 0);
+			ItemStack logIronwood = getItemStack("log", 1, 1);
 
 			ItemStack saplingOlive = getItemStack("sapling", 1, 0);
 			ItemStack saplingIronwood = getItemStack("sapling", 1, 1);

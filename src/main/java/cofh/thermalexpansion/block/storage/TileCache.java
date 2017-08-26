@@ -11,6 +11,11 @@ import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalexpansion.plugins.top.PluginTOP;
+import mcjty.theoneprobe.api.ElementAlignment;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
+import mcjty.theoneprobe.api.TextStyleClass;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -567,6 +572,18 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	public boolean retainInventory() {
 
 		return true;
+	}
+
+	/* PLUGIN METHODS */
+	@Override
+	public void provideInfo(ProbeMode mode, IProbeInfo info, EnumFacing facing, EntityPlayer player) {
+
+		if (mode != ProbeMode.NORMAL) {
+			IProbeInfo infoSub = info.horizontal(info.defaultLayoutStyle().alignment(ElementAlignment.ALIGN_CENTER).borderColor(PluginTOP.chestContentsBorderColor).spacing(10));
+
+			ItemStack stored = getStoredItemType();
+			infoSub.item(stored, info.defaultItemStyle().width(16).height(16)).text(TextStyleClass.INFO + stored.getDisplayName());
+		}
 	}
 
 }

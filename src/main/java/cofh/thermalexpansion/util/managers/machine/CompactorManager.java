@@ -2,6 +2,7 @@ package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.inventory.ComparableItemStack;
 import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.helpers.StringHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalfoundation.block.BlockStorage;
 import cofh.thermalfoundation.block.BlockStorageAlloy;
@@ -17,6 +18,7 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -92,27 +94,27 @@ public class CompactorManager {
 
 		/* PRESS */
 		{
-			addDefaultPressRecipe(ItemMaterial.ingotIron, ItemMaterial.plateIron);
-			addDefaultPressRecipe(ItemMaterial.ingotGold, ItemMaterial.plateGold);
-
-			addDefaultPressRecipe(ItemMaterial.ingotCopper, ItemMaterial.plateCopper);
-			addDefaultPressRecipe(ItemMaterial.ingotTin, ItemMaterial.plateTin);
-			addDefaultPressRecipe(ItemMaterial.ingotSilver, ItemMaterial.plateSilver);
-			addDefaultPressRecipe(ItemMaterial.ingotLead, ItemMaterial.plateLead);
-			addDefaultPressRecipe(ItemMaterial.ingotAluminum, ItemMaterial.plateAluminum);
-			addDefaultPressRecipe(ItemMaterial.ingotNickel, ItemMaterial.plateNickel);
-			addDefaultPressRecipe(ItemMaterial.ingotPlatinum, ItemMaterial.platePlatinum);
-			addDefaultPressRecipe(ItemMaterial.ingotIridium, ItemMaterial.plateIridium);
-			addDefaultPressRecipe(ItemMaterial.ingotMithril, ItemMaterial.plateMithril);
-
-			addDefaultPressRecipe(ItemMaterial.ingotSteel, ItemMaterial.plateSteel);
-			addDefaultPressRecipe(ItemMaterial.ingotElectrum, ItemMaterial.plateElectrum);
-			addDefaultPressRecipe(ItemMaterial.ingotInvar, ItemMaterial.plateInvar);
-			addDefaultPressRecipe(ItemMaterial.ingotBronze, ItemMaterial.plateBronze);
-			addDefaultPressRecipe(ItemMaterial.ingotConstantan, ItemMaterial.plateConstantan);
-			addDefaultPressRecipe(ItemMaterial.ingotSignalum, ItemMaterial.plateSignalum);
-			addDefaultPressRecipe(ItemMaterial.ingotLumium, ItemMaterial.plateLumium);
-			addDefaultPressRecipe(ItemMaterial.ingotEnderium, ItemMaterial.plateEnderium);
+			//			addDefaultPressRecipe(ItemMaterial.ingotIron, ItemMaterial.plateIron);
+			//			addDefaultPressRecipe(ItemMaterial.ingotGold, ItemMaterial.plateGold);
+			//
+			//			addDefaultPressRecipe(ItemMaterial.ingotCopper, ItemMaterial.plateCopper);
+			//			addDefaultPressRecipe(ItemMaterial.ingotTin, ItemMaterial.plateTin);
+			//			addDefaultPressRecipe(ItemMaterial.ingotSilver, ItemMaterial.plateSilver);
+			//			addDefaultPressRecipe(ItemMaterial.ingotLead, ItemMaterial.plateLead);
+			//			addDefaultPressRecipe(ItemMaterial.ingotAluminum, ItemMaterial.plateAluminum);
+			//			addDefaultPressRecipe(ItemMaterial.ingotNickel, ItemMaterial.plateNickel);
+			//			addDefaultPressRecipe(ItemMaterial.ingotPlatinum, ItemMaterial.platePlatinum);
+			//			addDefaultPressRecipe(ItemMaterial.ingotIridium, ItemMaterial.plateIridium);
+			//			addDefaultPressRecipe(ItemMaterial.ingotMithril, ItemMaterial.plateMithril);
+			//
+			//			addDefaultPressRecipe(ItemMaterial.ingotSteel, ItemMaterial.plateSteel);
+			//			addDefaultPressRecipe(ItemMaterial.ingotElectrum, ItemMaterial.plateElectrum);
+			//			addDefaultPressRecipe(ItemMaterial.ingotInvar, ItemMaterial.plateInvar);
+			//			addDefaultPressRecipe(ItemMaterial.ingotBronze, ItemMaterial.plateBronze);
+			//			addDefaultPressRecipe(ItemMaterial.ingotConstantan, ItemMaterial.plateConstantan);
+			//			addDefaultPressRecipe(ItemMaterial.ingotSignalum, ItemMaterial.plateSignalum);
+			//			addDefaultPressRecipe(ItemMaterial.ingotLumium, ItemMaterial.plateLumium);
+			//			addDefaultPressRecipe(ItemMaterial.ingotEnderium, ItemMaterial.plateEnderium);
 		}
 
 		/* STORAGE */
@@ -197,6 +199,18 @@ public class CompactorManager {
 
 	public static void loadRecipes() {
 
+		/* PRESS */
+		String[] oreNames = OreDictionary.getOreNames();
+		String oreType;
+
+		for (String oreName : oreNames) {
+			if (oreName.startsWith("plate")) {
+				oreType = oreName.substring(5, oreName.length());
+				addDefaultPlateRecipe(oreType);
+			}
+		}
+
+		/* STORAGE */
 		for (IRecipe recipe : CraftingManager.REGISTRY) {
 			if (recipe instanceof ShapedRecipes) {
 				ShapedRecipes target = (ShapedRecipes) recipe;
@@ -289,6 +303,37 @@ public class CompactorManager {
 	}
 
 	/* HELPERS */
+	private static void addDefaultPlateRecipe(String oreType) {
+
+		if (oreType == null || oreType.isEmpty()) {
+			return;
+		}
+		String plateName = "plate" + StringHelper.titleCase(oreType);
+		String ingotName = "ingot" + StringHelper.titleCase(oreType);
+		String gemName = "gem" + StringHelper.titleCase(oreType);
+		String blockName = "block" + StringHelper.titleCase(oreType);
+
+		List<ItemStack> registeredPlate = OreDictionary.getOres(plateName, false);
+		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName, false);
+		List<ItemStack> registeredGem = OreDictionary.getOres(gemName, false);
+		List<ItemStack> registeredBlock = OreDictionary.getOres(blockName, false);
+
+		if (registeredPlate.isEmpty()) {
+			return;
+		}
+		ItemStack plate = registeredPlate.get(0);
+
+		if (!registeredIngot.isEmpty()) {
+			addDefaultPressRecipe(ItemHelper.cloneStack(registeredIngot.get(0), 1), ItemHelper.cloneStack(plate, 1));
+		}
+		if (!registeredGem.isEmpty()) {
+			addDefaultPressRecipe(ItemHelper.cloneStack(registeredGem.get(0), 1), ItemHelper.cloneStack(plate, 1));
+		}
+		if (!registeredBlock.isEmpty()) {
+			addRecipe(DEFAULT_ENERGY * 8, ItemHelper.cloneStack(registeredBlock.get(0), 1), ItemHelper.cloneStack(plate, 9), Mode.PRESS);
+		}
+	}
+
 	private static void addDefaultPressRecipe(ItemStack input, ItemStack output) {
 
 		addRecipe(DEFAULT_ENERGY, input, output, Mode.PRESS);

@@ -11,6 +11,7 @@ import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -73,6 +74,26 @@ public class TransposerManager {
 			addExtractRecipe(2400, new ItemStack(Blocks.REEDS), new ItemStack(Items.SUGAR, 2), new FluidStack(FluidRegistry.WATER, 250), 0, false);
 		}
 
+		/* CRYOTHEUM */
+		{
+			int energy = 2000;
+
+			FluidStack cryoFluid = new FluidStack(TFFluids.fluidCryotheum, 200);
+
+			addFillRecipe(energy, ItemMaterial.crystalRedstone, new ItemStack(Items.REDSTONE, 2), cryoFluid, false);
+			addFillRecipe(energy, ItemMaterial.crystalGlowstone, new ItemStack(Items.GLOWSTONE_DUST), cryoFluid, false);
+			addFillRecipe(energy, ItemMaterial.crystalEnder, new ItemStack(Items.ENDER_PEARL), cryoFluid, false);
+
+			energy = 400;
+
+			addFillRecipe(energy, new ItemStack(Blocks.ICE), new ItemStack(Blocks.PACKED_ICE), cryoFluid, false);
+
+			addFillRecipe(energy, ItemMaterial.dustCryotheum, new ItemStack(Blocks.ICE), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), false);
+			addFillRecipe(energy, ItemMaterial.dustCryotheum, new ItemStack(Items.REDSTONE, 10), new FluidStack(TFFluids.fluidRedstone, Fluid.BUCKET_VOLUME), false);
+			addFillRecipe(energy, ItemMaterial.dustCryotheum, new ItemStack(Items.GLOWSTONE_DUST, 4), new FluidStack(TFFluids.fluidGlowstone, Fluid.BUCKET_VOLUME), false);
+			addFillRecipe(energy, ItemMaterial.dustCryotheum, new ItemStack(Items.ENDER_PEARL, 4), new FluidStack(TFFluids.fluidEnder, Fluid.BUCKET_VOLUME), false);
+		}
+
 		/* ELEMENTAL */
 		{
 			addFillRecipe(4000, new ItemStack(Items.GLOWSTONE_DUST), new ItemStack(Items.BLAZE_POWDER), new FluidStack(TFFluids.fluidRedstone, 200), false);
@@ -91,7 +112,9 @@ public class TransposerManager {
 
 	public static void loadRecipes() {
 
-		addFillRecipe(2000, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(ItemMaterial.crystalCinnabar, 1), new FluidStack(TFFluids.fluidCryotheum, 200), false);
+		FluidStack cryoStack = new FluidStack(TFFluids.fluidCryotheum, 200);
+
+		addFillRecipe(2000, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(ItemMaterial.crystalCinnabar, 2), cryoStack, false);
 	}
 
 	public static void refresh() {

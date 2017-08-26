@@ -489,7 +489,7 @@ public class SmelterManager {
 
 	private static void addDefaultOreDictionaryRecipe(String oreType, String relatedType) {
 
-		if (oreType.length() <= 0) {
+		if (oreType == null || oreType.isEmpty()) {
 			return;
 		}
 		String oreName = "ore" + StringHelper.titleCase(oreType);

@@ -360,21 +360,20 @@ public class PulverizerManager {
 
 	private static void addDefaultOreDictionaryRecipe(String oreType, String relatedType) {
 
-		if (oreType.isEmpty()) {
+		if (oreType == null || oreType.isEmpty()) {
 			return;
 		}
 		String oreName = "ore" + StringHelper.titleCase(oreType);
 		String dustName = "dust" + StringHelper.titleCase(oreType);
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
+		String clusterName = "cluster" + StringHelper.titleCase(oreType);
 		String relatedName = null;
 
 		List<ItemStack> registeredOre = OreDictionary.getOres(oreName, false);
 		List<ItemStack> registeredDust = OreDictionary.getOres(dustName, false);
 		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName, false);
-		List<ItemStack> registeredRelated = new ArrayList<>();
-
-		String clusterName = "cluster" + StringHelper.titleCase(oreType);
 		List<ItemStack> registeredCluster = OreDictionary.getOres(clusterName, false);
+		List<ItemStack> registeredRelated = new ArrayList<>();
 
 		if (!relatedType.isEmpty()) {
 			relatedName = "dust" + StringHelper.titleCase(relatedType);
@@ -410,7 +409,7 @@ public class PulverizerManager {
 
 	private static void addDefaultOreDictionaryRecipeGem(String oreType, String relatedType) {
 
-		if (oreType.isEmpty()) {
+		if (oreType == null || oreType.isEmpty()) {
 			return;
 		}
 		String oreName = "ore" + StringHelper.titleCase(oreType);

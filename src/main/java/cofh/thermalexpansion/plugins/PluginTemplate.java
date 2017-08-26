@@ -34,7 +34,12 @@ public class PluginTemplate extends ModPlugin {
 		if (!enable) {
 			return false;
 		}
+		try {
 
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
+			error = true;
+		}
 		if (!error) {
 			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 		}

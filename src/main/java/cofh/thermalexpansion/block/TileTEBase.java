@@ -10,6 +10,7 @@ import cofh.core.network.PacketHandler;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
 import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -192,10 +193,8 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	}
 
 	/* PLUGIN METHODS */
-	public void provideInfo(IProbeInfo info, EnumFacing facing, EntityPlayer player) {
+	public void provideInfo(ProbeMode mode, IProbeInfo info, EnumFacing facing, EntityPlayer player) {
 
-		info.text("Progress: ");
-		info.progress(getScaledProgress(100), 100);
 	}
 
 	/* ENERGY CONFIG */

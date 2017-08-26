@@ -61,33 +61,33 @@ public class PluginNatura extends ModPlugin {
 			ItemStack skyberry = getItemStack("edibles", 1, 8);
 			ItemStack stingberry = getItemStack("edibles", 1, 9);
 
-			ItemStack bushRaspberry = getBlockStack("overworld_berrybush_raspberry", 1, 0);
-			ItemStack bushBlueberry = getBlockStack("overworld_berrybush_raspberry", 1, 0);
-			ItemStack bushBlackberry = getBlockStack("overworld_berrybush_raspberry", 1, 0);
-			ItemStack bushMaloberry = getBlockStack("overworld_berrybush_raspberry", 1, 0);
+			ItemStack bushRaspberry = getItemStack("overworld_berrybush_raspberry", 1, 0);
+			ItemStack bushBlueberry = getItemStack("overworld_berrybush_raspberry", 1, 0);
+			ItemStack bushBlackberry = getItemStack("overworld_berrybush_raspberry", 1, 0);
+			ItemStack bushMaloberry = getItemStack("overworld_berrybush_raspberry", 1, 0);
 
-			ItemStack bushBlightberry = getBlockStack("nether_berrybush_blightberry", 1, 0);
-			ItemStack bushDuskberry = getBlockStack("nether_berrybush_duskberry", 1, 0);
-			ItemStack bushSkyberry = getBlockStack("nether_berrybush_skyberry", 1, 0);
-			ItemStack bushStingberry = getBlockStack("nether_berrybush_stingberry", 1, 0);
+			ItemStack bushBlightberry = getItemStack("nether_berrybush_blightberry", 1, 0);
+			ItemStack bushDuskberry = getItemStack("nether_berrybush_duskberry", 1, 0);
+			ItemStack bushSkyberry = getItemStack("nether_berrybush_skyberry", 1, 0);
+			ItemStack bushStingberry = getItemStack("nether_berrybush_stingberry", 1, 0);
 
 			ItemStack saguaroFruit = getItemStack("saguaro_fruit_item");
-			ItemStack saguaroCactus = getBlockStack("saguaro", 1, 0);
-			ItemStack saguaroCactusBaby = getBlockStack("saguaro_baby", 1, 0);
+			ItemStack saguaroCactus = getItemStack("saguaro", 1, 0);
+			ItemStack saguaroCactusBaby = getItemStack("saguaro_baby", 1, 0);
 
-			ItemStack glowshroomGreen = getBlockStack("nether_glowshroom", 1, 0);
-			ItemStack glowshroomBlue = getBlockStack("nether_glowshroom", 1, 1);
-			ItemStack glowshroomPurple = getBlockStack("nether_glowshroom", 1, 2);
+			ItemStack glowshroomGreen = getItemStack("nether_glowshroom", 1, 0);
+			ItemStack glowshroomBlue = getItemStack("nether_glowshroom", 1, 1);
+			ItemStack glowshroomPurple = getItemStack("nether_glowshroom", 1, 2);
 
-			ItemStack logMaple = getBlockStack("overworld_logs", 1, 0);
-			ItemStack logSilverbell = getBlockStack("overworld_logs", 1, 1);
-			ItemStack logAmaranth = getBlockStack("overworld_logs", 1, 2);
-			ItemStack logTigerwood = getBlockStack("overworld_logs", 1, 3);
+			ItemStack logMaple = getItemStack("overworld_logs", 1, 0);
+			ItemStack logSilverbell = getItemStack("overworld_logs", 1, 1);
+			ItemStack logAmaranth = getItemStack("overworld_logs", 1, 2);
+			ItemStack logTigerwood = getItemStack("overworld_logs", 1, 3);
 
-			ItemStack logWillow = getBlockStack("overworld_logs2", 1, 0);
-			ItemStack logEucalyptus = getBlockStack("overworld_logs2", 1, 1);
-			ItemStack logHopseed = getBlockStack("overworld_logs2", 1, 2);
-			ItemStack logSakura = getBlockStack("overworld_logs2", 1, 3);
+			ItemStack logWillow = getItemStack("overworld_logs2", 1, 0);
+			ItemStack logEucalyptus = getItemStack("overworld_logs2", 1, 1);
+			ItemStack logHopseed = getItemStack("overworld_logs2", 1, 2);
+			ItemStack logSakura = getItemStack("overworld_logs2", 1, 3);
 
 			ItemStack saplingMaple = getItemStack("overworld_sapling", 1, 0);
 			ItemStack saplingSilverbell = getItemStack("overworld_sapling", 1, 1);
@@ -104,10 +104,10 @@ public class PluginNatura extends ModPlugin {
 			ItemStack saplingDarkwood = getItemStack("nether_sapling", 1, 2);
 			ItemStack saplingBloodwood = getItemStack("nether_sapling2", 1, 0);
 
-			ItemStack logGhostwood = getBlockStack("nether_logs", 1, 0);
-			ItemStack logFusewood = getBlockStack("nether_logs", 1, 1);
-			ItemStack logDarkwood = getBlockStack("nether_logs", 1, 2);
-			ItemStack logBloodwood = getBlockStack("nether_logs2", 1, 0);
+			ItemStack logGhostwood = getItemStack("nether_logs", 1, 0);
+			ItemStack logFusewood = getItemStack("nether_logs", 1, 1);
+			ItemStack logDarkwood = getItemStack("nether_logs", 1, 2);
+			ItemStack logBloodwood = getItemStack("nether_logs2", 1, 0);
 
 			Block log = getBlock("overworld_logs");
 			Block log2 = getBlock("overworld_logs2");

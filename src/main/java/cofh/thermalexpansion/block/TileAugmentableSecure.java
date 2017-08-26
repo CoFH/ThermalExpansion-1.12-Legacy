@@ -174,7 +174,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		if (ServerHelper.isServerWorld(world)) {
 			player.sendMessage(new TextComponentTranslation("chat.cofh.secure.warning", getOwnerName()));
 		}
-		return false;
+		return hasGui();
 	}
 
 	/* NBT METHODS */

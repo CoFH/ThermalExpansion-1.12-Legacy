@@ -52,8 +52,8 @@ public class PluginTConstruct extends ModPlugin {
 			return false;
 		}
 		try {
-			ItemStack slimeCongealed = getBlockStack("slime_congealed", 1, 0);
-			ItemStack slimeCongealedMagma = getBlockStack("slime_congealed", 1, 4);
+			ItemStack slimeCongealed = getItemStack("slime_congealed", 1, 0);
+			ItemStack slimeCongealedMagma = getItemStack("slime_congealed", 1, 4);
 
 			ItemStack saplingSlimeBlue = getItemStack("slime_sapling", 1, 0);
 			ItemStack saplingSlimePurple = getItemStack("slime_sapling", 1, 1);

@@ -118,10 +118,24 @@ public class NumismaticManager {
 
 		/* REDSTONE ARSENAL */
 		{
+			if (ItemHelper.oreNameExists("gemRedGarnet")) {
+				addGemFuel(ItemHelper.getOre("gemRedGarnet"), 200000);
+			}
+			if (ItemHelper.oreNameExists("gemYellowGarnet")) {
+				addGemFuel(ItemHelper.getOre("gemYellowGarnet"), 200000);
+			}
+		}
+
+		/* TECH REBORN */
+		{
+			if (ItemHelper.oreNameExists("gemCrystalFlux")) {
+				addGemFuel(ItemHelper.getOre("gemCrystalFlux"), 1500000);
+			}
 			if (ItemHelper.oreNameExists("gemCrystalFlux")) {
 				addGemFuel(ItemHelper.getOre("gemCrystalFlux"), 1500000);
 			}
 		}
+
 	}
 
 	public static void refresh() {

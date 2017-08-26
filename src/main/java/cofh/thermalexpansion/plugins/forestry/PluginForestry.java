@@ -49,7 +49,7 @@ public class PluginForestry extends ModPlugin {
 			return false;
 		}
 		try {
-			ItemStack woodPile = getBlockStack("wood_pile", 1);
+			ItemStack woodPile = getItemStack("wood_pile", 1);
 
 			ItemStack combHoney = getItemStack("bee_combs", 1, 0);
 			ItemStack combCocoa = getItemStack("bee_combs", 1, 1);
