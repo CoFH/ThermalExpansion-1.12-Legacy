@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.item;
 
+import baubles.api.cap.IBaublesItemHandler;
 import cofh.api.item.IMultiModeItem;
 import cofh.api.item.INBTCopyIngredient;
 import cofh.core.init.CoreEnchantments;
@@ -16,6 +17,7 @@ import cofh.core.util.helpers.StringHelper;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.util.EnergyContainerItemWrapper;
 import cofh.thermalexpansion.ThermalExpansion;
+import com.google.common.collect.Iterables;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -34,18 +36,26 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem, INBTCopyIngredient {
+
+	@CapabilityInject(IBaublesItemHandler.class)
+	private static Capability<IBaublesItemHandler> CAPABILITY_BAUBLES = null;
 
 	public ItemCapacitor() {
 
@@ -150,10 +160,10 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 				equipment = entity.getHeldEquipment();
 				break;
 			case ARMOR:
-				equipment = entity.getArmorInventoryList();
+				equipment = Iterables.concat(entity.getArmorInventoryList(), getBaubles(entity));
 				break;
 			default:
-				equipment = entity.getEquipmentAndArmor();
+				equipment = Iterables.concat(entity.getEquipmentAndArmor(), getBaubles(entity));
 		}
 		for (ItemStack equipmentStack : equipment) {
 			if (EnergyHelper.isEnergyContainerItem(equipmentStack)) {
@@ -165,6 +175,23 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 				}
 			}
 		}
+	}
+
+	private static Iterable<ItemStack> getBaubles(Entity entity) {
+
+		if (CAPABILITY_BAUBLES == null) {
+			return Collections.emptyList();
+		}
+
+		IBaublesItemHandler handler = entity.getCapability(CAPABILITY_BAUBLES, null);
+		if (handler == null) {
+			return Collections.emptyList();
+		}
+
+		return IntStream.range(0, handler.getSlots())	//
+				.mapToObj(handler::getStackInSlot)		//
+				.filter(stack -> !stack.isEmpty())		//
+				.collect(Collectors.toList());			//
 	}
 
 	@Override
