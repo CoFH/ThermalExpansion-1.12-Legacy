@@ -210,7 +210,7 @@ public class InsolatorManager {
 		if (primaryInput == null || secondaryInput == null || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
 			return null;
 		}
-		RecipeInsolator recipe = new RecipeInsolator(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy, copyNBT, type);
+		RecipeInsolator recipe = new RecipeInsolator(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryOutput == null ? 0 : secondaryChance, energy, copyNBT, type);
 		recipeMap.put(Arrays.asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)), recipe);
 		validationSet.add(new ComparableItemStackInsolator(primaryInput));
 		validationSet.add(new ComparableItemStackInsolator(secondaryInput));

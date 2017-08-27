@@ -325,7 +325,7 @@ public class PulverizerManager {
 		if (input == null || primaryOutput == null || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
-		RecipePulverizer recipe = new RecipePulverizer(input, primaryOutput, secondaryOutput, secondaryChance, energy);
+		RecipePulverizer recipe = new RecipePulverizer(input, primaryOutput, secondaryOutput, secondaryOutput == null ? 0 : secondaryChance, energy);
 		recipeMap.put(new ComparableItemStackPulverizer(input), recipe);
 		return recipe;
 	}

@@ -416,7 +416,7 @@ public class SmelterManager {
 		if (primaryInput == null || secondaryInput == null || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
 			return null;
 		}
-		RecipeSmelter recipe = new RecipeSmelter(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy);
+		RecipeSmelter recipe = new RecipeSmelter(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryOutput == null ? 0 : secondaryChance, energy);
 		recipeMap.put(Arrays.asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput)), recipe);
 		validationSet.add(new ComparableItemStackSmelter(primaryInput));
 		validationSet.add(new ComparableItemStackSmelter(secondaryInput));
