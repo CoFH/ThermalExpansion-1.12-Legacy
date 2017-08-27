@@ -54,9 +54,6 @@ import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem, INBTCopyIngredient {
 
-	@CapabilityInject(IBaublesItemHandler.class)
-	private static Capability<IBaublesItemHandler> CAPABILITY_BAUBLES = null;
-
 	public ItemCapacitor() {
 
 		super("thermalexpansion");
@@ -175,23 +172,6 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 				}
 			}
 		}
-	}
-
-	private static Iterable<ItemStack> getBaubles(Entity entity) {
-
-		if (CAPABILITY_BAUBLES == null) {
-			return Collections.emptyList();
-		}
-
-		IBaublesItemHandler handler = entity.getCapability(CAPABILITY_BAUBLES, null);
-		if (handler == null) {
-			return Collections.emptyList();
-		}
-
-		return IntStream.range(0, handler.getSlots())	//
-				.mapToObj(handler::getStackInSlot)		//
-				.filter(stack -> !stack.isEmpty())		//
-				.collect(Collectors.toList());			//
 	}
 
 	@Override
@@ -424,6 +404,23 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 
 		return new EnergyContainerItemWrapper(stack, this);
+	}
+
+	/* BAUBLES */
+	@CapabilityInject (IBaublesItemHandler.class)
+	private static Capability<IBaublesItemHandler> CAPABILITY_BAUBLES = null;
+
+	private static Iterable<ItemStack> getBaubles(Entity entity) {
+
+		if (CAPABILITY_BAUBLES == null) {
+			return Collections.emptyList();
+		}
+		IBaublesItemHandler handler = entity.getCapability(CAPABILITY_BAUBLES, null);
+
+		if (handler == null) {
+			return Collections.emptyList();
+		}
+		return IntStream.range(0, handler.getSlots()).mapToObj(handler::getStackInSlot).filter(stack -> !stack.isEmpty()).collect(Collectors.toList());
 	}
 
 	/* IInitializer */
