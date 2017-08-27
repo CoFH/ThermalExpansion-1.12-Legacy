@@ -225,7 +225,7 @@ public class SawmillManager {
 		if (input.isEmpty() || primaryOutput.isEmpty() || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
-		SawmillRecipe recipe = new SawmillRecipe(input, primaryOutput, secondaryOutput, secondaryChance, energy);
+		SawmillRecipe recipe = new SawmillRecipe(input, primaryOutput, secondaryOutput, secondaryOutput.isEmpty() ? 0 : secondaryChance, energy);
 		recipeMap.put(new ComparableItemStackSawmill(input), recipe);
 		return recipe;
 	}

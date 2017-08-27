@@ -39,7 +39,7 @@ public class ThermalExpansion {
 	public static final String MOD_ID = "thermalexpansion";
 	public static final String MOD_NAME = "Thermal Expansion";
 
-	public static final String VERSION = "5.2.6";
+	public static final String VERSION = "5.2.7";
 	public static final String VERSION_MAX = "5.3.0";
 	public static final String VERSION_GROUP = "required-after:" + MOD_ID + "@[" + VERSION + "," + VERSION_MAX + ");";
 	public static final String UPDATE_URL = "https://raw.github.com/cofh/version/master/" + MOD_ID + "_update.json";
@@ -116,7 +116,7 @@ public class ThermalExpansion {
 	@EventHandler
 	public void loadComplete(FMLLoadCompleteEvent event) {
 
-		IMCHandler.instance.handleIMC(FMLInterModComms.fetchRuntimeMessages(this));
+		IMCHandler.INSTANCE.handleIMC(FMLInterModComms.fetchRuntimeMessages(this));
 
 		TEProps.loadComplete();
 		CONFIG.cleanUp(false, true);
@@ -134,7 +134,7 @@ public class ThermalExpansion {
 	@EventHandler
 	public void handleIMC(IMCEvent event) {
 
-		IMCHandler.instance.handleIMC(event.getMessages());
+		IMCHandler.INSTANCE.handleIMC(event.getMessages());
 	}
 
 	@EventHandler

@@ -211,7 +211,7 @@ public class InsolatorManager {
 		if (primaryInput.isEmpty() || secondaryInput.isEmpty() || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
 			return null;
 		}
-		InsolatorRecipe recipe = new InsolatorRecipe(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy, copyNBT, type);
+		InsolatorRecipe recipe = new InsolatorRecipe(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryOutput.isEmpty() ? 0 : secondaryChance, energy, copyNBT, type);
 		recipeMap.put(Arrays.asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)), recipe);
 		validationSet.add(new ComparableItemStackInsolator(primaryInput));
 		validationSet.add(new ComparableItemStackInsolator(secondaryInput));
