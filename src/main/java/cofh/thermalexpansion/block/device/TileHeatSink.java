@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.api.core.IAccelerable;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.gui.GuiCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.RenderHelper;
@@ -163,6 +164,12 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 	/* GUI METHODS */
 	@Override
+	public int getScaledSpeed(int scale) {
+
+		return isActive ? GuiCore.SPEED : 0;
+	}
+
+	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiHeatSink(inventory, this);
@@ -186,6 +193,16 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		return tank.getFluid();
 	}
 
+	public int getCoolantRF() {
+
+		return coolantRF;
+	}
+
+	public int getCoolantFactor() {
+
+		return coolantFactor;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -193,7 +210,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		super.readFromNBT(nbt);
 
 		coolantRF = nbt.getInteger("Coolant");
-		coolantFactor = nbt.getInteger("CoolFactor");
+		coolantFactor = nbt.getInteger("CoolantFactor");
 		tank.readFromNBT(nbt);
 
 		if (!CoolantManager.isValidCoolant(tank.getFluid())) {
@@ -233,6 +250,9 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
+		payload.addInt(coolantRF);
+		payload.addInt(coolantFactor);
+
 		if (tank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
 		} else {
@@ -269,6 +289,8 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 		super.handleGuiPacket(payload);
 
+		coolantRF = payload.getInt();
+		coolantFactor = payload.getInt();
 		tank.setFluid(payload.getFluidStack());
 	}
 

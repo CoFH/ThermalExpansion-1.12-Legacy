@@ -121,7 +121,6 @@ public class PulverizerManager {
 			dyeChance[EnumDyeColor.WHITE.getMetadata()] = 0;
 			dyeChance[EnumDyeColor.BROWN.getMetadata()] = 0;
 			dyeChance[EnumDyeColor.BLUE.getMetadata()] = 0;
-			dyeChance[EnumDyeColor.GREEN.getMetadata()] = 0;
 			dyeChance[EnumDyeColor.BLACK.getMetadata()] = 0;
 
 			ItemStack stringStack = ItemHelper.cloneStack(Items.STRING, 4);

@@ -144,6 +144,8 @@ public class EnchanterManager {
 		/* COFH ENCHANTS */
 		{
 			addDefaultEnchantmentRecipe(new ItemStack(Blocks.CHEST), "cofhcore:holding", 0);
+			addDefaultEnchantmentRecipe(new ItemStack(Items.EXPERIENCE_BOTTLE), "cofhcore:insight", 1);
+			addDefaultEnchantmentRecipe(new ItemStack(Blocks.SOUL_SAND), "cofhcore:leech", 1);
 			addDefaultEnchantmentRecipe(new ItemStack(Items.ARROW), "cofhcore:multishot", 2);
 			// addDefaultEnchantmentRecipe(new ItemStack(Items.SKULL), "cofhcore:vorpal", 3);
 		}

@@ -3,6 +3,7 @@ package cofh.thermalexpansion.plugins.jei.fuels.coolant;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
+import cofh.thermalexpansion.gui.client.device.GuiHeatSink;
 import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
@@ -49,6 +50,7 @@ public class CoolantCategory extends BaseFuelCategory<CoolantWrapper> {
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.COOLANT);
+		registry.addRecipeClickArea(GuiHeatSink.class, 44, 35, 16, 16, RecipeUidsTE.COOLANT);
 		registry.addRecipeCatalyst(BlockDevice.deviceHeatSink, RecipeUidsTE.COOLANT);
 		registry.addRecipeCatalyst(BlockDynamo.dynamoCompression, RecipeUidsTE.COOLANT);
 		registry.addRecipeCatalyst(ItemAugment.dynamoMagmaticCoolant, RecipeUidsTE.COOLANT);

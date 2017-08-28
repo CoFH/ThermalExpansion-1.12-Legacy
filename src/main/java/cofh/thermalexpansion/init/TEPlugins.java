@@ -28,6 +28,7 @@ public class TEPlugins {
 		pluginHarvestcraft = new PluginHarvestcraft();
 		pluginIC2 = new PluginIC2();
 		pluginNatura = new PluginNatura();
+		pluginPlants = new PluginPlants();
 		pluginQuark = new PluginQuark();
 		pluginRustic = new PluginRustic();
 		pluginTConstruct = new PluginTConstruct();
@@ -47,6 +48,7 @@ public class TEPlugins {
 		initList.add(pluginHarvestcraft);
 		initList.add(pluginIC2);
 		initList.add(pluginNatura);
+		initList.add(pluginPlants);
 		initList.add(pluginQuark);
 		initList.add(pluginRustic);
 		initList.add(pluginTConstruct);
@@ -81,6 +83,7 @@ public class TEPlugins {
 	public static PluginHarvestcraft pluginHarvestcraft;
 	public static PluginIC2 pluginIC2;
 	public static PluginNatura pluginNatura;
+	public static PluginPlants pluginPlants;
 	public static PluginQuark pluginQuark;
 	public static PluginRustic pluginRustic;
 	public static PluginTConstruct pluginTConstruct;
