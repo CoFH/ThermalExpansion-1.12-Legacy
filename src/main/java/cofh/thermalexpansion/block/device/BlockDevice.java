@@ -285,7 +285,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		deviceNullifier = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.NULLIFIER.getMetadata()));
 		deviceHeatSink = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.HEAT_SINK.getMetadata()));
 		deviceTapper = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.TAPPER.getMetadata()));
-		deviceFisher = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.TAPPER.getMetadata()));
+		deviceFisher = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FISHER.getMetadata()));
 		deviceItemBuffer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
 
 		addRecipes();
@@ -348,6 +348,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 			);
 		}
 		if (enable[Type.FISHER.getMetadata()]) {
+			System.out.println("yes this fired");
+
 			addShapedRecipe(deviceFisher,
 					" X ",
 					"YCY",

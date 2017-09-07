@@ -3,6 +3,7 @@ package cofh.thermalexpansion.util.managers;
 import cofh.core.inventory.ComparableItemStack;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.MathHelper;
+import cofh.thermalfoundation.item.ItemBait;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
@@ -51,17 +52,17 @@ public class FisherManager {
 
 		/* BAIT */
 		{
-			addBait(ItemFertilizer.fertilizerBasic, 2);
-			addBait(ItemFertilizer.fertilizerRich, 3);
-			addBait(ItemFertilizer.fertilizerFlux, 4);
+			addBait(ItemBait.baitBasic, 2);
+			addBait(ItemBait.baitRich, 3);
+			addBait(ItemBait.baitFlux, 4);
 		}
 
 		/* FISH */
 		{
-			addFish(new ItemStack(Items.FISH, 1, 0), 60);
-			addFish(new ItemStack(Items.FISH, 1, 1), 25);
-			addFish(new ItemStack(Items.FISH, 1, 2), 2);
-			addFish(new ItemStack(Items.FISH, 1, 3), 13);
+			addFish(new ItemStack(Items.FISH, 1, 0), 2 * 60);
+			addFish(new ItemStack(Items.FISH, 1, 1), 2 * 25);
+			addFish(new ItemStack(Items.FISH, 1, 2), 2 * 2);
+			addFish(new ItemStack(Items.FISH, 1, 3), 2 * 13);
 		}
 
 		/* LOAD MAPPINGS */

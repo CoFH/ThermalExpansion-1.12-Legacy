@@ -4,6 +4,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.ServerHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiFisher;
 import cofh.thermalexpansion.gui.container.device.ContainerFisher;
@@ -47,7 +48,7 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	public static void config() {
 
 		String category = "Device.Fisher";
-		// BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	private static final int TARGET_WATER[] = { 10, 20, 30 };

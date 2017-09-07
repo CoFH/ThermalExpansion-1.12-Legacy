@@ -118,6 +118,7 @@ public class InsolatorManager {
 			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 0), new ItemStack(Blocks.DOUBLE_PLANT, 3, 0), ItemStack.EMPTY, 0);
 			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 1), new ItemStack(Blocks.DOUBLE_PLANT, 3, 1), ItemStack.EMPTY, 0);
 			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), new ItemStack(Blocks.DOUBLE_PLANT, 3, 4), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 5), new ItemStack(Blocks.DOUBLE_PLANT, 3, 5), ItemStack.EMPTY, 0);
 		}
 
 		/* MYCELIUM */

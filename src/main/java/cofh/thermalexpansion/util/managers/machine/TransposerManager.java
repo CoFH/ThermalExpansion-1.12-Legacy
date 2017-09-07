@@ -74,6 +74,15 @@ public class TransposerManager {
 			addExtractRecipe(2400, new ItemStack(Blocks.REEDS), new ItemStack(Items.SUGAR, 2), new FluidStack(FluidRegistry.WATER, 250), 0, false);
 		}
 
+		/* CONCRETE */
+		{
+			FluidStack water = new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
+
+			for (int i = 0; i < 16; i++) {
+				addFillRecipe(400, new ItemStack(Blocks.CONCRETE_POWDER, 1, i), new ItemStack(Blocks.CONCRETE, 1, i), water, false);
+			}
+		}
+
 		/* CRYOTHEUM */
 		{
 			int energy = 2000;
@@ -104,7 +113,7 @@ public class TransposerManager {
 
 		addFillRecipe(4000, new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Blocks.SPONGE, 1, 1), new FluidStack(FluidRegistry.WATER, 1000), true);
 		addFillRecipe(2000, ItemHelper.cloneStack(ItemFertilizer.fertilizerBasic), ItemHelper.cloneStack(ItemFertilizer.fertilizerRich), new FluidStack(TFFluids.fluidSap, 500), false);
-		addFillRecipe(200, new ItemStack(Items.BOWL), new ItemStack(Items.MUSHROOM_STEW), new FluidStack(TFFluids.fluidMushroomStew, 250), true);
+		addFillRecipe(400, new ItemStack(Items.BOWL), new ItemStack(Items.MUSHROOM_STEW), new FluidStack(TFFluids.fluidMushroomStew, 250), true);
 
 		/* LOAD RECIPES */
 		loadRecipes();
