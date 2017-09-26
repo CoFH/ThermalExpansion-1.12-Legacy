@@ -192,9 +192,9 @@ public class TileSmelter extends TileMachineBase {
 		boolean augmentPyrotheumCheck = augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() >= fluidAmount;
 
 		if (augmentPyrotheumCheck) {
-			tank.modifyFluidStored(-fluidAmount);
 			if (inventory[2].getCount() < inventory[2].getMaxStackSize()) {
 				inventory[2].grow(1);
+				tank.modifyFluidStored(-fluidAmount);
 			}
 		}
 		if (!secondaryItem.isEmpty()) {

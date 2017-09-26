@@ -1,32 +1,37 @@
 package cofh.thermalexpansion.block;
 
+import cofh.api.item.ICreativeItem;
+import cofh.api.item.INBTCopyIngredient;
 import cofh.core.block.ItemBlockCore;
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
-public abstract class ItemBlockTEBase extends ItemBlockCore {
+public abstract class ItemBlockTEBase extends ItemBlockCore implements INBTCopyIngredient, ICreativeItem {
 
 	public ItemBlockTEBase(Block block) {
 
 		super(block);
 	}
 
-	public boolean isCreative(ItemStack stack) {
-
-		if (stack.getTagCompound() == null) {
-			setDefaultTag(stack);
-		}
-		return stack.getTagCompound().getBoolean("Creative");
-	}
-
-	public byte getLevel(ItemStack stack) {
+	/* ILeveledItem */
+	public int getLevel(ItemStack stack) {
 
 		if (stack.getTagCompound() == null) {
 			setDefaultTag(stack);
 		}
 		return stack.getTagCompound().getByte("Level");
+	}
+
+	public ItemStack setLevel(ItemStack stack, int level) {
+
+		if (stack.getTagCompound() == null) {
+			return setDefaultTag(stack, level);
+		}
+		stack.getTagCompound().setByte("Level", (byte) level);
+		return stack;
 	}
 
 	public ItemStack setDefaultTag(ItemStack stack) {
@@ -36,10 +41,19 @@ public abstract class ItemBlockTEBase extends ItemBlockCore {
 
 	public abstract ItemStack setDefaultTag(ItemStack stack, int level);
 
-	public ItemStack setCreativeTag(ItemStack stack, int level) {
+	/* ICreativeItem */
+	public boolean isCreative(ItemStack stack) {
 
 		if (stack.getTagCompound() == null) {
-			setDefaultTag(stack, level);
+			setDefaultTag(stack);
+		}
+		return stack.getTagCompound().getBoolean("Creative");
+	}
+
+	public ItemStack setCreativeTag(ItemStack stack) {
+
+		if (stack.getTagCompound() == null) {
+			setDefaultTag(stack, TEProps.LEVEL_MAX);
 		}
 		stack.getTagCompound().setBoolean("Creative", true);
 		return stack;

@@ -210,6 +210,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 				}
 			}
 		}
+		CONFIG_FLORBS.cleanUp(false, true);
 	}
 
 	/* IModelRegister */

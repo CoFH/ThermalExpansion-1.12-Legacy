@@ -97,7 +97,7 @@ public class PluginForestry extends ModPlugin {
 
 			/* FURNACE */
 			{
-				FurnaceManager.addRecipePyrolysis(8000, woodPile, new ItemStack(Items.COAL, 6, 1), 400);
+				FurnaceManager.addRecipePyrolysis(4000, woodPile, new ItemStack(Items.COAL, 6, 1), 600);
 			}
 
 			/* REFINERY */

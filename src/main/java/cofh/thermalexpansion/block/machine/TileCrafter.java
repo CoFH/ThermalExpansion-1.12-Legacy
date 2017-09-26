@@ -4,14 +4,13 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.inventory.InventoryCraftingFalse;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.ItemHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiCrafter;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrafter;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -31,6 +30,8 @@ public class TileCrafter extends TileMachineBase {
 
 	private static final int TYPE = Type.CRAFTER.getMetadata();
 	public static int basePower = 20;
+
+	public static final int DEFAULT_ENERGY = 400;
 
 	private static final int SLOT_OUTPUT = 9;
 	private static final int SLOT_SCHEMATIC = 10;
@@ -56,14 +57,15 @@ public class TileCrafter extends TileMachineBase {
 
 	public static void config() {
 
-		String category = "Machine.Crafter";
-		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
-
-		String comment = "Adjust this value to change the Energy consumption (in RF/t) for a Cyclic Assembler. This base value will scale with block level and Augments.";
-		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
-
-		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
+		BlockMachine.enable[TYPE] = false;
+		//		String category = "Machine.Crafter";
+		//		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+		//
+		//		String comment = "Adjust this value to change the Energy consumption (in RF/t) for a Cyclic Assembler. This base value will scale with block level and Augments.";
+		//		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
+		//
+		//		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		//		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTracker;
@@ -89,16 +91,53 @@ public class TileCrafter extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[SLOT_SCHEMATIC].isEmpty() || energyStorage.getEnergyStored() <= 0) {
+		if (energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		IRecipe recipe = ItemHelper.getCraftingRecipe(craftMatrix, world);
-
-		if (recipe == null) {
-			return false;
-		}
+		//		if (inventory[SLOT_SCHEMATIC].isEmpty() || energyStorage.getEnergyStored() <= 0) {
+		//			return false;
+		//		}
+		//		IRecipe recipe = ItemHelper.getCraftingRecipe(craftMatrix, world);
+		//
+		//		if (recipe == null) {
+		//			return false;
+		//		}
 
 		return true;
+	}
+
+	@Override
+	protected boolean hasValidInput() {
+
+		//		PulverizerRecipe recipe = PulverizerManager.getRecipe(inventory[0]);
+		//		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
+		return true;
+	}
+
+	@Override
+	protected void processStart() {
+
+		processMax = DEFAULT_ENERGY;
+		processRem = processMax;
+	}
+
+	@Override
+	protected void processFinish() {
+
+		//		IRecipe recipe = ItemHelper.getCraftingRecipe(craftMatrix, world);
+		//
+		//		if (recipe == null) {
+		//			processOff();
+		//			return;
+		//		}
+		//		ItemStack output = recipe.getCraftingResult(craftMatrix);
+		ItemStack output = new ItemStack(Blocks.MAGMA);
+
+		if (inventory[SLOT_OUTPUT].isEmpty()) {
+			inventory[SLOT_OUTPUT] = ItemHelper.cloneStack(output);
+		} else {
+			inventory[SLOT_OUTPUT].grow(output.getCount());
+		}
 	}
 
 	@Override

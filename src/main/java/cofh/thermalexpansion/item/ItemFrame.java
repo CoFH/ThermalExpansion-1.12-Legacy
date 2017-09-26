@@ -7,9 +7,11 @@ import codechicken.lib.model.bakery.generation.IBakery;
 import cofh.core.item.ItemMulti;
 import cofh.core.util.core.IInitializer;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.storage.BlockCell;
 import cofh.thermalexpansion.render.RenderFrame;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -64,13 +66,17 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 	@Override
 	public boolean initialize() {
 
-		frameMachine = addItem(0, "frameMachine");
+		frameMachine = addItem(MACHINE, "frameMachine");
 		// frameApparatus = addItem(32, "frameApparatus");
-		frameDevice = addItem(64, "frameDevice");
-		frameCell0 = addItem(128, "frameCell");
-		//		frameCell2 = addItem(130, "frameCell2");
-		//		frameCell3 = addItem(131, "frameCell3");
-		//		frameCell4 = addItem(132, "frameCell4");
+		frameDevice = addItem(DEVICE, "frameDevice");
+		frameCell0 = addItem(CELL, "frameCell");
+		frameCell1 = addItem(CELL + 1, "frameCell1");
+		frameCell2 = addItem(CELL + 2, "frameCell2", EnumRarity.UNCOMMON);
+		frameCell3 = addItem(CELL + 3, "frameCell3", EnumRarity.UNCOMMON);
+		frameCell4 = addItem(CELL + 4, "frameCell4", EnumRarity.RARE);
+		frameCell2Filled = addItem(CELL + 2 + 16, "frameCell2Filled", EnumRarity.UNCOMMON);
+		frameCell3Filled = addItem(CELL + 3 + 16, "frameCell3Filled", EnumRarity.UNCOMMON);
+		frameCell4Filled = addItem(CELL + 4 + 16, "frameCell4Filled", EnumRarity.RARE);
 		// frameLight = addItem(160, "frameLight");
 
 		ThermalExpansion.proxy.addIModelRegister(this);
@@ -115,6 +121,52 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 				'G', "blockGlass",
 				'I', "ingotIron"
 		);
+		if (BlockCell.enableClassicRecipes) {
+			addShapedRecipe(frameCell1,
+				" I ",
+				"ICI",
+				" I ",
+				'C', frameCell0,
+				'I', "ingotInvar"
+			);
+			addShapedRecipe(frameCell2,
+				"IGI",
+				"GCG",
+				"IGI",
+				'C', "gemDiamond",
+				'G', "blockGlassHardened",
+				'I', "ingotElectrum"
+			);
+			addShapedRecipe(frameCell3,
+				" I ",
+				"ICI",
+				" I ",
+				'C', frameCell2,
+				'I', "ingotSignalum"
+			);
+			addShapedRecipe(frameCell3Filled,
+				" I ",
+				"ICI",
+				" I ",
+				'C', frameCell2Filled,
+				'I', "ingotSignalum"
+			);
+			addShapedRecipe(frameCell4,
+				" I ",
+				"ICI",
+				" I ",
+				'C', frameCell3,
+				'I', "ingotEnderium"
+			);
+			addShapedRecipe(frameCell4Filled,
+				" I ",
+				"ICI",
+				" I ",
+				'C', frameCell3Filled,
+				'I', "ingotEnderium"
+			);
+		}
+
 //		addShapedRecipe(ItemHelper.cloneStack(frameLight, 2),
 //				" Q ",
 //				"G G",
@@ -129,14 +181,23 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 		return true;
 	}
 
+	public static final int MACHINE = 0;
+	public static final int DEVICE = 64;
+	public static final int CELL = 128;
+	public static final int LIGHT = 160;
+
 	/* REFERENCES */
 	public static ItemStack frameMachine;
 	public static ItemStack frameApparatus;
 	public static ItemStack frameDevice;
 	public static ItemStack frameCell0;
+	public static ItemStack frameCell1;
 	public static ItemStack frameCell2;
 	public static ItemStack frameCell3;
 	public static ItemStack frameCell4;
+	public static ItemStack frameCell2Filled;
+	public static ItemStack frameCell3Filled;
+	public static ItemStack frameCell4Filled;
 	public static ItemStack frameLight;
 
 }

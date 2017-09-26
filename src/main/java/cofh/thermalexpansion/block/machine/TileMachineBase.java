@@ -46,7 +46,10 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public static void config() {
 
 		String comment = "Enable this to allow for Machines to be securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Machine.Securable", true, comment);
+		enableSecurity = ThermalExpansion.CONFIG.get("Machine", "Securable", true, comment);
+
+		comment = "Enable this to allow upgrading in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		BlockMachine.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get("Machine", "UpgradeKitCrafting", BlockMachine.enableUpgradeKitCrafting, comment);
 	}
 
 	int processMax;

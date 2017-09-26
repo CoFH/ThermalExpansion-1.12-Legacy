@@ -4,7 +4,6 @@ import cofh.core.inventory.ComparableItemStack;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalfoundation.item.ItemBait;
-import cofh.thermalfoundation.item.ItemFertilizer;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.init.Items;

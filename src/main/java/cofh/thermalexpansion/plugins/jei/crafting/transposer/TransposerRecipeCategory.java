@@ -51,7 +51,7 @@ public abstract class TransposerRecipeCategory extends BaseRecipeCategory<Transp
 		background = guiHelper.createDrawable(GuiTransposer.TEXTURE, 73, 8, 96, 62, 0, 0, 24, 44);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		bubble = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_BUBBLE);
-		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(0);
+		tankOverlay = Drawables.getDrawables(guiHelper).getTankLargeOverlay(0);
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.transposer.name");
 	}
 

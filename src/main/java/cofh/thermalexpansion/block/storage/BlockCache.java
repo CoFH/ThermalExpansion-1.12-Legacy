@@ -16,6 +16,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalexpansion.item.ItemUpgrade;
 import cofh.thermalexpansion.util.Utils;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
@@ -41,7 +42,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.*;
 
 public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
@@ -83,7 +84,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, 0), TEProps.creativeTabLevel));
 			}
 			if (TEProps.creativeTabShowCreative) {
-				items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, 0), 4));
+				items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, 0)));
 			}
 		}
 	}
@@ -367,7 +368,11 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		for (int i = 0; i < 5; i++) {
 			cache[i] = itemBlock.setDefaultTag(new ItemStack(this), i);
 		}
+		cacheCreative = itemBlock.setCreativeTag(new ItemStack(this));
+
 		addRecipes();
+		addUpgradeRecipes();
+		addClassicRecipes();
 
 		return true;
 	}
@@ -389,10 +394,80 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		// @formatter:on
 	}
 
+	private void addUpgradeRecipes() {
+
+		if (!enableUpgradeKitCrafting || !enable) {
+			return;
+		}
+		if (!enableClassicRecipes) {
+			for (int j = 0; j < 4; j++) {
+				addShapelessUpgradeKitRecipe(cache[j + 1], cache[j], ItemUpgrade.upgradeIncremental[j]);
+			}
+			for (int j = 1; j < 4; j++) {
+				for (int k = 0; k <= j; k++) {
+					addShapelessUpgradeKitRecipe(cache[j + 1], cache[k], ItemUpgrade.upgradeFull[j]);
+				}
+			}
+		}
+		for (int j = 0; j < 5; j++) {
+			addShapelessUpgradeKitRecipe(cacheCreative, cache[j], ItemUpgrade.upgradeCreative);
+		}
+	}
+
+	private void addClassicRecipes() {
+
+		if (!enableClassicRecipes || !enable) {
+			return;
+		}
+		// @formatter:off
+		addShapedRecipe(cache[1],
+				"YIY",
+				"ICI",
+				"YPY",
+				'C', "chestWood",
+				'I', "ingotTin",
+				'P', ItemMaterial.redstoneServo,
+				'Y', "ingotInvar"
+		);
+		addShapedUpgradeRecipe(cache[1],
+				" I ",
+				"ICI",
+				" I ",
+				'C', cache[0],
+				'I', "ingotInvar"
+		);
+		addShapedUpgradeRecipe(cache[2],
+				"YIY",
+				"ICI",
+				"YIY",
+				'C', cache[1],
+				'I', "ingotElectrum",
+				'Y', "blockGlassHardened"
+		);
+		addShapedUpgradeRecipe(cache[3],
+				" I ",
+				"ICI",
+				" I ",
+				'C', cache[2],
+				'I', "ingotSignalum"
+		);
+		addShapedUpgradeRecipe(cache[4],
+				" I ",
+				"ICI",
+				" I ",
+				'C', cache[3],
+				'I', "ingotEnderium"
+		);
+		// @formatter:on
+	}
+
 	public static boolean enable;
+	public static boolean enableClassicRecipes;
+	public static boolean enableUpgradeKitCrafting;
 
 	/* REFERENCES */
 	public static ItemStack cache[];
+	public static ItemStack cacheCreative;
 	public static ItemBlockCache itemBlock;
 
 }

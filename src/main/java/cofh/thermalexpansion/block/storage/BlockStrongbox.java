@@ -6,6 +6,7 @@ import cofh.core.render.IModelRegister;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.item.ItemUpgrade;
 import cofh.thermalexpansion.render.RenderStrongbox;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -33,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.*;
 
 public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 
@@ -60,7 +61,7 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, 0), TEProps.creativeTabLevel));
 			}
 			if (TEProps.creativeTabShowCreative) {
-				items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, 0), 4));
+				items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, 0)));
 			}
 		}
 	}
@@ -196,7 +197,11 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 		for (int i = 0; i < 5; i++) {
 			strongbox[i] = itemBlock.setDefaultTag(new ItemStack(this), i);
 		}
+		strongboxCreative = itemBlock.setCreativeTag(new ItemStack(this));
+
 		addRecipes();
+		addUpgradeRecipes();
+		addClassicRecipes();
 
 		return true;
 	}
@@ -217,10 +222,79 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 		// @formatter:on
 	}
 
+	private void addUpgradeRecipes() {
+
+		if (!enableUpgradeKitCrafting || !enable) {
+			return;
+		}
+		if (!enableClassicRecipes) {
+			for (int j = 0; j < 4; j++) {
+				addShapelessUpgradeKitRecipe(strongbox[j + 1], strongbox[j], ItemUpgrade.upgradeIncremental[j]);
+			}
+			for (int j = 1; j < 4; j++) {
+				for (int k = 0; k <= j; k++) {
+					addShapelessUpgradeKitRecipe(strongbox[j + 1], strongbox[k], ItemUpgrade.upgradeFull[j]);
+				}
+			}
+		}
+		for (int j = 0; j < 5; j++) {
+			addShapelessUpgradeKitRecipe(strongboxCreative, strongbox[j], ItemUpgrade.upgradeCreative);
+		}
+	}
+
+	private void addClassicRecipes() {
+
+		if (!enableClassicRecipes || !enable) {
+			return;
+		}
+		// @formatter:off
+		addShapedRecipe(strongbox[1],
+				"YIY",
+				"ICI",
+				"YIY",
+				'C', "chestWood",
+				'I', "ingotTin",
+				'Y', "ingotInvar"
+		);
+		addShapedUpgradeRecipe(strongbox[1],
+				" I ",
+				"ICI",
+				" I ",
+				'C', strongbox[0],
+				'I', "ingotInvar"
+		);
+		addShapedUpgradeRecipe(strongbox[2],
+				"YIY",
+				"ICI",
+				"YIY",
+				'C', strongbox[1],
+				'I', "ingotElectrum",
+				'Y', "blockGlassHardened"
+		);
+		addShapedUpgradeRecipe(strongbox[3],
+				" I ",
+				"ICI",
+				" I ",
+				'C', strongbox[2],
+				'I', "ingotSignalum"
+		);
+		addShapedUpgradeRecipe(strongbox[4],
+				" I ",
+				"ICI",
+				" I ",
+				'C', strongbox[3],
+				'I', "ingotEnderium"
+		);
+		// @formatter:on
+	}
+
 	public static boolean enable;
+	public static boolean enableClassicRecipes;
+	public static boolean enableUpgradeKitCrafting;
 
 	/* REFERENCES */
 	public static ItemStack strongbox[];
+	public static ItemStack strongboxCreative;
 	public static ItemBlockStrongbox itemBlock;
 
 }

@@ -4,7 +4,6 @@ import cofh.core.gui.element.ElementBase;
 import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementFluidTank;
 import cofh.thermalexpansion.block.device.TileHeatSink;
-import cofh.thermalexpansion.block.device.TileTapper;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;

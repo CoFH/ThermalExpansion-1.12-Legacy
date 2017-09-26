@@ -166,10 +166,9 @@ public class TilePulverizer extends TileMachineBase {
 		boolean augmentPetrotheumCheck = augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() >= fluidAmount;
 
 		if (augmentPetrotheumCheck) {
-			tank.modifyFluidStored(-fluidAmount);
-
 			if (inventory[1].getCount() < inventory[1].getMaxStackSize()) {
 				inventory[1].grow(1);
+				tank.modifyFluidStored(-fluidAmount);
 			}
 		}
 		if (!secondaryItem.isEmpty()) {

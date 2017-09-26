@@ -9,7 +9,6 @@ import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.InventoryHelper;
 import cofh.core.util.helpers.ServerHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.block.apparatus.BlockApparatus.Type;
 import cofh.thermalexpansion.init.TEProps;
@@ -48,7 +47,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	public static void config() {
 
 		String comment = "Enable this to allow for Apparatus to be securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Apparatus.Securable", true, comment);
+		// enableSecurity = ThermalExpansion.CONFIG.get("Apparatus", "Securable", true, comment);
 	}
 
 	int processMax;

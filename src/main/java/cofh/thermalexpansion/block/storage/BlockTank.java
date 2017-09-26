@@ -12,6 +12,7 @@ import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.item.ItemUpgrade;
 import cofh.thermalexpansion.render.RenderTank;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
@@ -42,7 +43,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.*;
 
 public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelRegister {
 
@@ -84,7 +85,7 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, 0), TEProps.creativeTabLevel));
 			}
 			if (TEProps.creativeTabShowCreative) {
-				items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, 0), 4));
+				items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, 0)));
 			}
 		}
 	}
@@ -282,7 +283,11 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 		for (int i = 0; i < 5; i++) {
 			tank[i] = itemBlock.setDefaultTag(new ItemStack(this), i);
 		}
+		tankCreative = itemBlock.setCreativeTag(new ItemStack(this));
+
 		addRecipes();
+		addUpgradeRecipes();
+		addClassicRecipes();
 
 		return true;
 	}
@@ -304,10 +309,80 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 		// @formatter:on
 	}
 
+	private void addUpgradeRecipes() {
+
+		if (!enableUpgradeKitCrafting || !enable) {
+			return;
+		}
+		if (!enableClassicRecipes) {
+			for (int j = 0; j < 4; j++) {
+				addShapelessUpgradeKitRecipe(tank[j + 1], tank[j], ItemUpgrade.upgradeIncremental[j]);
+			}
+			for (int j = 1; j < 4; j++) {
+				for (int k = 0; k <= j; k++) {
+					addShapelessUpgradeKitRecipe(tank[j + 1], tank[k], ItemUpgrade.upgradeFull[j]);
+				}
+			}
+		}
+		for (int j = 0; j < 5; j++) {
+			addShapelessUpgradeKitRecipe(tankCreative, tank[j], ItemUpgrade.upgradeCreative);
+		}
+	}
+
+	private void addClassicRecipes() {
+
+		if (!enableClassicRecipes || !enable) {
+			return;
+		}
+		// @formatter:off
+		addShapedRecipe(tank[1],
+				"YIY",
+				"ICI",
+				"YPY",
+				'C', "ingotCopper",
+				'I', "blockGlass",
+				'P', ItemMaterial.redstoneServo,
+				'Y', "ingotInvar"
+		);
+		addShapedUpgradeRecipe(tank[1],
+				" I ",
+				"ICI",
+				" I ",
+				'C', tank[0],
+				'I', "ingotInvar"
+		);
+		addShapedUpgradeRecipe(tank[2],
+				"YIY",
+				"ICI",
+				"YIY",
+				'C', tank[1],
+				'I', "ingotElectrum",
+				'Y', "blockGlassHardened"
+		);
+		addShapedUpgradeRecipe(tank[3],
+				" I ",
+				"ICI",
+				" I ",
+				'C', tank[2],
+				'I', "ingotSignalum"
+		);
+		addShapedUpgradeRecipe(tank[4],
+				" I ",
+				"ICI",
+				" I ",
+				'C', tank[3],
+				'I', "ingotEnderium"
+		);
+		// @formatter:on
+	}
+
 	public static boolean enable;
+	public static boolean enableClassicRecipes;
+	public static boolean enableUpgradeKitCrafting;
 
 	/* REFERENCES */
 	public static ItemStack tank[];
+	public static ItemStack tankCreative;
 	public static ItemBlockTank itemBlock;
 
 }

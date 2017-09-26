@@ -1,12 +1,13 @@
 package cofh.thermalexpansion.block.storage;
 
-import cofh.api.item.IUpgradeItem;
-import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.helpers.*;
+import cofh.core.util.helpers.BlockHelper;
+import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.helpers.MathHelper;
+import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.gui.client.storage.GuiStrongbox;
@@ -45,11 +46,18 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 	public static void config() {
 
-		String comment = "Enable this to allow for Strongboxes to be securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Strongbox.Securable", enableSecurity, comment);
-
 		String category = "Storage.Strongbox";
+		String comment = "Enable this to allow for Strongboxes to be securable.";
+
+		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", enableSecurity, comment);
+
 		BlockStrongbox.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		comment = "Enable this for 'Classic' Crafting and Upgrades - Non-Creative Upgrade Kits WILL NOT WORK.";
+		BlockStrongbox.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockStrongbox.enableClassicRecipes, comment);
+
+		comment = "Enable this to allow upgrading in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		BlockStrongbox.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockStrongbox.enableUpgradeKitCrafting, comment);
 	}
 
 	private static final int TIME_CONSTANT = 200;
@@ -381,33 +389,6 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
 		return access.isPublic();
-	}
-
-	/* IUpgradeable */
-	@Override
-	public boolean canUpgrade(ItemStack upgrade) {
-
-		if (!AugmentHelper.isUpgradeItem(upgrade)) {
-			return false;
-		}
-		UpgradeType uType = ((IUpgradeItem) upgrade.getItem()).getUpgradeType(upgrade);
-		int uLevel = ((IUpgradeItem) upgrade.getItem()).getUpgradeLevel(upgrade);
-
-		switch (uType) {
-			case INCREMENTAL:
-				if (uLevel == level + 1) {
-					return true;
-				}
-				break;
-			case FULL:
-				if (uLevel > level) {
-					return true;
-				}
-				break;
-			case CREATIVE:
-				return !isCreative;
-		}
-		return false;
 	}
 
 	/* IInventoryRetainer */

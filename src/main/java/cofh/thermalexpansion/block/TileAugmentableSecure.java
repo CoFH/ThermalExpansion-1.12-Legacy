@@ -536,7 +536,27 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	@Override
 	public boolean canUpgrade(ItemStack upgrade) {
 
-		return true;
+		if (!AugmentHelper.isUpgradeItem(upgrade)) {
+			return false;
+		}
+		UpgradeType uType = ((IUpgradeItem) upgrade.getItem()).getUpgradeType(upgrade);
+		int uLevel = ((IUpgradeItem) upgrade.getItem()).getUpgradeLevel(upgrade);
+
+		switch (uType) {
+			case INCREMENTAL:
+				if (uLevel == level + 1) {
+					return true;
+				}
+				break;
+			case FULL:
+				if (uLevel > level) {
+					return true;
+				}
+				break;
+			case CREATIVE:
+				return !isCreative;
+		}
+		return false;
 	}
 
 	@Override

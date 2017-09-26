@@ -76,7 +76,7 @@ public class CentrifugeManager {
 		{
 			int[] dyeChance = new int[ColorHelper.WOOL_COLOR_CONFIG.length];
 			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
-				dyeChance[i] = 5;
+				dyeChance[i] = 10;
 			}
 			dyeChance[EnumDyeColor.WHITE.getMetadata()] = 0;
 			dyeChance[EnumDyeColor.BROWN.getMetadata()] = 0;

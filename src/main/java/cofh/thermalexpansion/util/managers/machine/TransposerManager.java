@@ -3,6 +3,8 @@ package cofh.thermalexpansion.util.managers.machine;
 import cofh.core.inventory.ComparableItemStack;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
+import cofh.thermalexpansion.block.storage.BlockCell;
+import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -105,10 +107,23 @@ public class TransposerManager {
 
 		/* ELEMENTAL */
 		{
-			addFillRecipe(4000, new ItemStack(Items.GLOWSTONE_DUST), new ItemStack(Items.BLAZE_POWDER), new FluidStack(TFFluids.fluidRedstone, 200), false);
-			addFillRecipe(4000, new ItemStack(Items.SNOWBALL), ItemHelper.cloneStack(ItemMaterial.dustBlizz, 1), new FluidStack(TFFluids.fluidRedstone, 200), false);
-			addFillRecipe(4000, new ItemStack(Blocks.SAND), ItemHelper.cloneStack(ItemMaterial.dustBlitz), new FluidStack(TFFluids.fluidRedstone, 200), false);
-			addFillRecipe(4000, ItemHelper.cloneStack(ItemMaterial.dustObsidian), ItemHelper.cloneStack(ItemMaterial.dustBasalz), new FluidStack(TFFluids.fluidRedstone, 200), false);
+			FluidStack redstoneFluid = new FluidStack(TFFluids.fluidRedstone, 200);
+
+			addFillRecipe(4000, new ItemStack(Items.GLOWSTONE_DUST), new ItemStack(Items.BLAZE_POWDER), redstoneFluid, false);
+			addFillRecipe(4000, new ItemStack(Items.SNOWBALL), ItemHelper.cloneStack(ItemMaterial.dustBlizz, 1), redstoneFluid, false);
+			addFillRecipe(4000, new ItemStack(Blocks.SAND), ItemHelper.cloneStack(ItemMaterial.dustBlitz), redstoneFluid, false);
+			addFillRecipe(4000, ItemHelper.cloneStack(ItemMaterial.dustObsidian), ItemHelper.cloneStack(ItemMaterial.dustBasalz), redstoneFluid, false);
+		}
+
+		/* CELLS */
+		{
+			FluidStack redstoneFluid = new FluidStack(TFFluids.fluidRedstone, 4000);
+
+			if (BlockCell.enableClassicRecipes) {
+				addFillRecipe(16000, ItemFrame.frameCell2, ItemFrame.frameCell2Filled, redstoneFluid, false);
+				addFillRecipe(16000, ItemFrame.frameCell3, ItemFrame.frameCell3Filled, redstoneFluid, false);
+				addFillRecipe(16000, ItemFrame.frameCell4, ItemFrame.frameCell4Filled, redstoneFluid, false);
+			}
 		}
 
 		addFillRecipe(4000, new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Blocks.SPONGE, 1, 1), new FluidStack(FluidRegistry.WATER, 1000), true);

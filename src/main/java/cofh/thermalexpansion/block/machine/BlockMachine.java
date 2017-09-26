@@ -15,6 +15,7 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
+import cofh.thermalexpansion.item.ItemUpgrade;
 import cofh.thermalexpansion.plugins.jei.crafting.centrifuge.CentrifugeRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.compactor.CompactorRecipeCategory;
@@ -57,6 +58,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.addShapelessUpgradeKitRecipe;
 
 public class BlockMachine extends BlockTEBase implements IModelRegister, IBakeryProvider, IWorldBlockTextureProvider {
 
@@ -103,7 +105,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i), TEProps.creativeTabLevel));
 				}
 				if (TEProps.creativeTabShowCreative) {
-					items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, i), 4));
+					items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, i)));
 				}
 			}
 		}
@@ -158,8 +160,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 				return new TileCharger();
 			case CENTRIFUGE:
 				return new TileCentrifuge();
-			case CRAFTER:                       // TODO
-				return null;
+			case CRAFTER:
+				return new TileCrafter();
 			case BREWER:                        // TODO
 				return null;
 			case ENCHANTER:
@@ -338,7 +340,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		TileTransposer.initialize();
 		TileCharger.initialize();
 		TileCentrifuge.initialize();
-		// TileCrafter.initialize();
+		TileCrafter.initialize();
 		// TileBrewer.initialize();
 		// TileEnchanter.initialize();
 		TilePrecipitator.initialize();
@@ -363,13 +365,14 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		machineTransposer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));
 		machineCharger = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
 		machineCentrifuge = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CENTRIFUGE.getMetadata()));
-		// machineCrafter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
+		machineCrafter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
 		// machineBrewer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.BREWER.getMetadata()));
 		// machineEnchanter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ENCHANTER.getMetadata()));
 		machinePrecipitator = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.PRECIPITATOR.getMetadata()));
 		machineExtruder = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.EXTRUDER.getMetadata()));
 
 		addRecipes();
+		addUpgradeRecipes();
 
 		return true;
 	}
@@ -536,18 +539,18 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		} else {
 			CentrifugeRecipeCategory.enable = false;
 		}
-//		if (enable[Type.CRAFTER.getMetadata()]) {
-//			addShapedRecipe(machineCrafter,
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', ItemFrame.frameMachine,
-//					'I', copperPart,
-//					'P', ItemMaterial.powerCoilGold,
-//					'X', "chestWood",
-//					'Y', "gearTin"
-//			);
-//		}
+		if (enable[Type.CRAFTER.getMetadata()]) {
+			addShapedRecipe(machineCrafter,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameMachine,
+					'I', copperPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', "chestWood",
+					'Y', "gearTin"
+			);
+		}
 //		if (enable[Type.ENCHANTER.getMetadata()]) {
 //			addShapedRecipe(machineEnchanter,
 //					" X ",
@@ -585,6 +588,30 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 			);
 		}
 		// @formatter:on
+	}
+
+	private void addUpgradeRecipes() {
+
+		if (!enableUpgradeKitCrafting) {
+			return;
+		}
+		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+			if (enable[i]) {
+				ItemStack[] block = new ItemStack[5];
+
+				for (int j = 0; j < 5; j++) {
+					block[j] = itemBlock.setDefaultTag(new ItemStack(this, 1, i), j);
+				}
+				for (int j = 0; j < 4; j++) {
+					addShapelessUpgradeKitRecipe(block[j + 1], block[j], ItemUpgrade.upgradeIncremental[j]);
+				}
+				for (int j = 1; j < 4; j++) {
+					for (int k = 0; k <= j; k++) {
+						addShapelessUpgradeKitRecipe(block[j + 1], block[k], ItemUpgrade.upgradeFull[j]);
+					}
+				}
+			}
+		}
 	}
 
 	/* TYPE */
@@ -646,6 +673,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 	}
 
 	public static boolean[] enable = new boolean[Type.values().length];
+	public static boolean enableUpgradeKitCrafting;
 
 	/* REFERENCES */
 	public static ItemStack machineFurnace;

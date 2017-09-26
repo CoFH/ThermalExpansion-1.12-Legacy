@@ -10,6 +10,7 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.init.TEProps;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -125,7 +126,7 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 		return upgradeMap.get(ItemHelper.getItemDamage(stack)).type;
 	}
 
-	public int getUpgradeLevel(ItemStack stack) {
+	public byte getUpgradeLevel(ItemStack stack) {
 
 		return upgradeMap.get(ItemHelper.getItemDamage(stack)).level;
 	}
@@ -136,20 +137,20 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 
 		upgradeIncremental = new ItemStack[4];
 		for (int i = 0; i < 4; i++) {
-			int level = i + 1;
+			byte level = (byte) (i + 1);
 			upgradeIncremental[i] = addItem(i, "incremental" + level, EnumRarity.values()[level / 2]);
 			addUpgradeEntry(i, UpgradeType.INCREMENTAL, level);
 		}
 
 		upgradeFull = new ItemStack[4];
 		for (int i = 1; i < 4; i++) {
-			int level = i + 1;
+			byte level = (byte) (i + 1);
 			upgradeFull[i] = addItem(32 + i, "full" + level, EnumRarity.values()[level / 2]);
 			addUpgradeEntry(32 + i, UpgradeType.FULL, level);
 		}
 
 		upgradeCreative = addItem(256, "creative", EnumRarity.EPIC);
-		addUpgradeEntry(256, UpgradeType.CREATIVE, Byte.MAX_VALUE);
+		addUpgradeEntry(256, UpgradeType.CREATIVE, TEProps.LEVEL_MAX);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -234,16 +235,16 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 	public class UpgradeEntry {
 
 		public final UpgradeType type;
-		public final int level;
+		public final byte level;
 
-		UpgradeEntry(UpgradeType type, int level) {
+		UpgradeEntry(UpgradeType type, byte level) {
 
 			this.type = type;
 			this.level = level;
 		}
 	}
 
-	private void addUpgradeEntry(int metadata, UpgradeType type, int level) {
+	private void addUpgradeEntry(int metadata, UpgradeType type, byte level) {
 
 		upgradeMap.put(metadata, new UpgradeEntry(type, level));
 	}

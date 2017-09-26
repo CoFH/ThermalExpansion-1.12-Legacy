@@ -8,32 +8,10 @@ import cofh.thermalexpansion.init.TEProps;
 
 public class ElementSlotOverlayCrafter extends ElementBase {
 
-	public int slotColor;
-	public int slotRender;
-
 	public ElementSlotOverlayCrafter(GuiCore gui, int posX, int posY) {
 
 		super(gui, posX, posY);
 		this.texture = TEProps.textureGuiSlots9;
-	}
-
-	public ElementSlotOverlayCrafter setSlotInfo(int color, int render) {
-
-		slotColor = color;
-		slotRender = render;
-		return this;
-	}
-
-	public ElementSlotOverlayCrafter setSlotColor(int color) {
-
-		slotColor = color;
-		return this;
-	}
-
-	public ElementSlotOverlayCrafter setSlotRender(int render) {
-
-		slotRender = render;
-		return this;
 	}
 
 	@Override
@@ -63,48 +41,24 @@ public class ElementSlotOverlayCrafter extends ElementBase {
 
 	protected void drawSlotNoBorder(int x, int y) {
 
-		sizeX = 160;
-		sizeY = 34;
+		sizeX = 52;
+		sizeY = 52;
 		int offsetX = 8;
-		int offsetY = 4 + slotColor * 40;
+		int offsetY = 198;
 
-		switch (slotRender) {
-			case 0:
-				sizeY /= 2;
-				break;
-			case 1:
-				sizeY /= 2;
-				y += sizeY;
-				offsetY += sizeY;
-				break;
-			default:
-				break;
-		}
 		gui.drawTexturedModalRect(x, y, offsetX, offsetY, sizeX, sizeY);
 	}
 
 	protected void drawSlotWithBorder(int x, int y) {
 
-		int sizeX = 164;
-		int sizeY = 38;
+		int sizeX = 56;
+		int sizeY = 56;
 		int offsetX = 6;
-		int offsetY = 2 + slotColor * 40;
+		int offsetY = 196;
 
 		x -= 2;
 		y -= 2;
 
-		switch (slotRender) {
-			case 0:
-				sizeY /= 2;
-				break;
-			case 1:
-				sizeY /= 2;
-				y += sizeY;
-				offsetY += sizeY;
-				break;
-			default:
-				break;
-		}
 		gui.drawTexturedModalRect(x, y, offsetX, offsetY, sizeX, sizeY);
 	}
 

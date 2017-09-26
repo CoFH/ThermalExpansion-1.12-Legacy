@@ -30,6 +30,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		setMaxStackSize(1);
 	}
 
+	/* ILeveledItem */
 	@Override
 	public ItemStack setDefaultTag(ItemStack stack, int level) {
 
@@ -45,14 +46,15 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		return stack;
 	}
 
+	/* ICreativeItem */
 	@Override
-	public ItemStack setCreativeTag(ItemStack stack, int level) {
+	public ItemStack setCreativeTag(ItemStack stack) {
 
 		if (stack.getTagCompound() == null) {
-			setDefaultTag(stack, level);
+			setDefaultTag(stack, TEProps.LEVEL_MAX);
 		}
 		ReconfigurableHelper.setSideCache(stack, TileCell.CREATIVE_SIDES);
-		EnergyHelper.setDefaultEnergyTag(stack, TileCell.CAPACITY[level]);
+		EnergyHelper.setDefaultEnergyTag(stack, TileCell.CAPACITY[TEProps.LEVEL_MAX]);
 		stack.getTagCompound().setBoolean("Creative", true);
 		return stack;
 	}

@@ -43,7 +43,6 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 				sideCache[i] = 0;
 			}
 		}
-
 		if (hasAutoInput) {
 			enableAutoInput = tag.getBoolean("EnableIn");
 		}

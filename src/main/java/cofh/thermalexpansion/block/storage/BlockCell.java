@@ -13,6 +13,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.ItemFrame;
+import cofh.thermalexpansion.item.ItemUpgrade;
 import cofh.thermalexpansion.render.RenderCell;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -38,7 +39,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.*;
 
 public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelRegister {
 
@@ -74,13 +75,13 @@ public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelReg
 		if (enable) {
 			if (TEProps.creativeTabShowAllLevels) {
 				for (int j = 0; j < 5; j++) {
-					items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, 0), j));
+					items.add(itemBlock.setDefaultTag(new ItemStack(this), j));
 				}
 			} else {
-				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, 0), TEProps.creativeTabLevel));
+				items.add(itemBlock.setDefaultTag(new ItemStack(this), TEProps.creativeTabLevel));
 			}
 			if (TEProps.creativeTabShowCreative) {
-				items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, 0), 4));
+				items.add(itemBlock.setCreativeTag(new ItemStack(this)));
 			}
 		}
 	}
@@ -240,7 +241,11 @@ public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelReg
 		for (int i = 0; i < 5; i++) {
 			cell[i] = itemBlock.setDefaultTag(new ItemStack(this), i);
 		}
+		cellCreative = itemBlock.setCreativeTag(new ItemStack(this));
+
 		addRecipes();
+		addUpgradeRecipes();
+		addClassicRecipes();
 
 		return true;
 	}
@@ -263,10 +268,110 @@ public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelReg
 		// @formatter:on
 	}
 
+	private void addUpgradeRecipes() {
+
+		if (!enableUpgradeKitCrafting || !enable) {
+			return;
+		}
+		if (!enableClassicRecipes) {
+			for (int j = 0; j < 4; j++) {
+				addShapelessUpgradeKitRecipe(cell[j + 1], cell[j], ItemUpgrade.upgradeIncremental[j]);
+			}
+			for (int j = 1; j < 4; j++) {
+				for (int k = 0; k <= j; k++) {
+					addShapelessUpgradeKitRecipe(cell[j + 1], cell[k], ItemUpgrade.upgradeFull[j]);
+				}
+			}
+		}
+		for (int j = 0; j < 5; j++) {
+			addShapelessUpgradeKitRecipe(cellCreative, cell[j], ItemUpgrade.upgradeCreative);
+		}
+	}
+
+	private void addClassicRecipes() {
+
+		if (!enableClassicRecipes || !enable) {
+			return;
+		}
+		// @formatter:off
+		addShapedRecipe(cell[1],
+				"YXY",
+				"ICI",
+				"YPY",
+				'C', ItemFrame.frameCell0,
+				'I', "ingotLead",
+				'P', ItemMaterial.powerCoilElectrum,
+				'X', Blocks.REDSTONE_BLOCK,
+				'Y', "ingotInvar"
+		);
+		addShapedRecipe(cell[1],
+				" X ",
+				"ICI",
+				" P ",
+				'C', ItemFrame.frameCell1,
+				'I', "ingotLead",
+				'P', ItemMaterial.powerCoilElectrum,
+				'X', Blocks.REDSTONE_BLOCK
+		);
+		addShapedRecipe(cell[2],
+				" X ",
+				"ICI",
+				" P ",
+				'C', ItemFrame.frameCell2Filled,
+				'I', "ingotLead",
+				'P', ItemMaterial.powerCoilElectrum,
+				'X', "ingotSilver"
+		);
+		addShapedRecipe(cell[3],
+				" X ",
+				"ICI",
+				" P ",
+				'C', ItemFrame.frameCell3Filled,
+				'I', "ingotLead",
+				'P', ItemMaterial.powerCoilElectrum,
+				'X', "ingotSilver"
+		);
+		addShapedRecipe(cell[4],
+				" X ",
+				"ICI",
+				" P ",
+				'C', ItemFrame.frameCell4Filled,
+				'I', "ingotLead",
+				'P', ItemMaterial.powerCoilElectrum,
+				'X', "ingotSilver"
+		);
+
+		addShapedUpgradeRecipe(cell[1],
+				" I ",
+				"ICI",
+				" I ",
+				'C', cell[0],
+				'I', "ingotInvar"
+		);
+		addShapedUpgradeRecipe(cell[3],
+				" I ",
+				"ICI",
+				" I ",
+				'C', cell[2],
+				'I', "ingotSignalum"
+		);
+		addShapedUpgradeRecipe(cell[4],
+				" I ",
+				"ICI",
+				" I ",
+				'C', cell[3],
+				'I', "ingotEnderium"
+		);
+		// @formatter:on
+	}
+
 	public static boolean enable;
+	public static boolean enableClassicRecipes;
+	public static boolean enableUpgradeKitCrafting;
 
 	/* REFERENCES */
 	public static ItemStack cell[];
+	public static ItemStack cellCreative;
 	public static ItemBlockCell itemBlock;
 
 }

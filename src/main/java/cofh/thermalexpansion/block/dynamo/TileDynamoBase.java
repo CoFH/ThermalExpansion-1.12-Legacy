@@ -65,7 +65,10 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	public static void config() {
 
 		String comment = "Enable this to allow for Dynamos to be securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Dynamo.Securable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.CONFIG.get("Dynamo", "Securable", enableSecurity, comment);
+
+		comment = "Enable this to allow upgrading in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		BlockDynamo.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get("Dynamo", "UpgradeKitCrafting", BlockDynamo.enableUpgradeKitCrafting, comment);
 	}
 
 	byte facing = 1;

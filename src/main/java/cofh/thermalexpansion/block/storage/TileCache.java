@@ -1,13 +1,14 @@
 package cofh.thermalexpansion.block.storage;
 
-import cofh.api.item.IUpgradeItem;
-import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.ISidedTexture;
-import cofh.core.util.helpers.*;
+import cofh.core.util.helpers.BlockHelper;
+import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.helpers.MathHelper;
+import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.init.TETextures;
@@ -48,11 +49,18 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 	public static void config() {
 
-		String comment = "Enable this to allow for Caches to be securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Cache.Securable", true, comment);
-
 		String category = "Storage.Cache";
+		String comment = "Enable this to allow for Caches to be securable.";
+
+		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", true, comment);
+
 		BlockCache.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		comment = "Enable this for 'Classic' Crafting and Upgrades - Non-Creative Upgrade Kits WILL NOT WORK.";
+		BlockCache.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockCache.enableClassicRecipes, comment);
+
+		comment = "Enable this to allow upgrading in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		BlockCache.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockCache.enableUpgradeKitCrafting, comment);
 
 		int capacity = CAPACITY_BASE;
 		comment = "Adjust this value to change the amount of Items stored by a Basic Cache. This base value will scale with block level.";
@@ -538,33 +546,6 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty")));
 		}
 		info.add(new TextComponentString(locked ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
-	}
-
-	/* IUpgradeable */
-	@Override
-	public boolean canUpgrade(ItemStack upgrade) {
-
-		if (!AugmentHelper.isUpgradeItem(upgrade)) {
-			return false;
-		}
-		UpgradeType uType = ((IUpgradeItem) upgrade.getItem()).getUpgradeType(upgrade);
-		int uLevel = ((IUpgradeItem) upgrade.getItem()).getUpgradeLevel(upgrade);
-
-		switch (uType) {
-			case INCREMENTAL:
-				if (uLevel == level + 1) {
-					return true;
-				}
-				break;
-			case FULL:
-				if (uLevel > level) {
-					return true;
-				}
-				break;
-			case CREATIVE:
-				return !isCreative;
-		}
-		return false;
 	}
 
 	/* IInventoryRetainer */

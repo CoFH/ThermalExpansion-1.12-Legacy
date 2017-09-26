@@ -15,6 +15,7 @@ import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.item.ItemUpgrade;
 import cofh.thermalexpansion.render.RenderDynamo;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
@@ -50,6 +51,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.addShapelessUpgradeKitRecipe;
 
 public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelRegister {
 
@@ -115,7 +117,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 					items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i), TEProps.creativeTabLevel));
 				}
 				if (TEProps.creativeTabShowCreative) {
-					items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, i), 4));
+					items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, i)));
 				}
 			}
 		}
@@ -343,6 +345,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		dynamoNumismatic = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.NUMISMATIC.getMetadata()));
 
 		addRecipes();
+		addUpgradeRecipes();
 
 		return true;
 	}
@@ -420,6 +423,30 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		// @formatter:on
 	}
 
+	private void addUpgradeRecipes() {
+
+		if (!enableUpgradeKitCrafting) {
+			return;
+		}
+		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+			if (enable[i]) {
+				ItemStack[] block = new ItemStack[5];
+
+				for (int j = 0; j < 5; j++) {
+					block[j] = itemBlock.setDefaultTag(new ItemStack(this, 1, i), j);
+				}
+				for (int j = 0; j < 4; j++) {
+					addShapelessUpgradeKitRecipe(block[j + 1], block[j], ItemUpgrade.upgradeIncremental[j]);
+				}
+				for (int j = 1; j < 4; j++) {
+					for (int k = 0; k <= j; k++) {
+						addShapelessUpgradeKitRecipe(block[j + 1], block[k], ItemUpgrade.upgradeFull[j]);
+					}
+				}
+			}
+		}
+	}
+
 	/* TYPE */
 	public enum Type implements IStringSerializable {
 
@@ -469,6 +496,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 	}
 
 	public static boolean[] enable = new boolean[Type.values().length];
+	public static boolean enableUpgradeKitCrafting;
 
 	/* REFERENCES */
 	public static ItemStack dynamoSteam;

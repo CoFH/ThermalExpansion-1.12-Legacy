@@ -1,7 +1,10 @@
 package cofh.thermalexpansion.block.storage;
 
+import cofh.api.item.IUpgradeItem;
+import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.EnergyHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.ServerHelper;
@@ -50,11 +53,18 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 	public static void config() {
 
-		String comment = "Enable this to allow for Energy Cells to be securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Cell.Securable", enableSecurity, comment);
-
 		String category = "Storage.Cell";
+		String comment = "Enable this to allow for Energy Cells to be securable.";
+
+		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", enableSecurity, comment);
+
 		BlockCell.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		comment = "Enable this for 'Classic' Crafting and Upgrades - Non-Creative Upgrade Kits WILL NOT WORK.";
+		BlockCell.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockCell.enableClassicRecipes, comment);
+
+		comment = "Enable this to allow upgrading in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		BlockCell.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockCell.enableUpgradeKitCrafting, comment);
 
 		int capacity = CAPACITY_BASE;
 		comment = "Adjust this value to change the amount of Energy (in RF) stored by a Basic Cell. This base value will scale with block level.";
@@ -126,6 +136,33 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	public boolean enableSecurity() {
 
 		return enableSecurity;
+	}
+
+	/* IUpgradeable */
+	@Override
+	public boolean canUpgrade(ItemStack upgrade) {
+
+		if (!AugmentHelper.isUpgradeItem(upgrade)) {
+			return false;
+		}
+		UpgradeType uType = ((IUpgradeItem) upgrade.getItem()).getUpgradeType(upgrade);
+		int uLevel = ((IUpgradeItem) upgrade.getItem()).getUpgradeLevel(upgrade);
+
+		switch (uType) {
+			case INCREMENTAL:
+				if (uLevel == level + 1) {
+					return !BlockCell.enableClassicRecipes;
+				}
+				break;
+			case FULL:
+				if (uLevel > level) {
+					return !BlockCell.enableClassicRecipes;
+				}
+				break;
+			case CREATIVE:
+				return !isCreative;
+		}
+		return false;
 	}
 
 	@Override

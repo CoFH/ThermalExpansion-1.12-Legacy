@@ -4,9 +4,9 @@ import codechicken.lib.model.bakedmodels.ModelProperties.PerspectiveProperties;
 import codechicken.lib.model.bakery.generation.IItemBakery;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
-import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalexpansion.item.ItemFrame;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -37,10 +37,10 @@ public class RenderFrame implements IItemBakery {
 					RenderCell.modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, new IconTransformation(inner));
 				}
 			}
-			//			TextureAtlasSprite center = getCenterTexture(stack);
-			//			if (center != null) {
-			//				RenderCell.modelCenter.render(ccrs, new IconTransformation(center));
-			//			}
+			TextureAtlasSprite center = getCenterTexture(stack);
+			if (center != null) {
+				RenderCell.modelCenter.render(ccrs, new IconTransformation(center));
+			}
 			buffer.finishDrawing();
 			return buffer.bake();
 		}
@@ -56,7 +56,7 @@ public class RenderFrame implements IItemBakery {
 	private TextureAtlasSprite getFrameTexture(EnumFacing face, ItemStack stack) {
 
 		switch (stack.getMetadata()) {
-			case 0: // Machine
+			case ItemFrame.MACHINE:
 				if (face == EnumFacing.UP) {
 					return TETextures.MACHINE_FRAME_TOP;
 				} else if (face == EnumFacing.DOWN) {
@@ -64,7 +64,7 @@ public class RenderFrame implements IItemBakery {
 				} else {
 					return TETextures.MACHINE_FRAME_SIDE;
 				}
-			case 64: // Device
+			case ItemFrame.DEVICE:
 				if (face == EnumFacing.UP) {
 					return TETextures.DEVICE_FRAME_TOP;
 				} else if (face == EnumFacing.DOWN) {
@@ -72,25 +72,47 @@ public class RenderFrame implements IItemBakery {
 				} else {
 					return TETextures.DEVICE_FRAME_SIDE;
 				}
-			case 128: // Cell
+			case ItemFrame.CELL:
 				return TETextures.CELL_SIDE_0;
-			case 160: // Illuminator
+			case ItemFrame.CELL + 1:
+				return TETextures.CELL_SIDE_1;
+			case ItemFrame.CELL + 2:
+			case ItemFrame.CELL + 2 + 16:
+				return TETextures.CELL_SIDE_2;
+			case ItemFrame.CELL + 3:
+			case ItemFrame.CELL + 3 + 16:
+				return TETextures.CELL_SIDE_3;
+			case ItemFrame.CELL + 4:
+			case ItemFrame.CELL + 4 + 16:
+				return TETextures.CELL_SIDE_4;
+			case ItemFrame.LIGHT:
 				return TETextures.ILLUMINATOR_FRAME;
 			default:
-				return TextureUtils.getMissingSprite();
+				return TETextures.MACHINE_OVERLAY_0;
 		}
 	}
 
 	private TextureAtlasSprite getInnerTexture(EnumFacing face, ItemStack stack) {
 
 		switch (stack.getMetadata()) {
-			case 0: // Machine
+			case ItemFrame.MACHINE:
 				return TETextures.MACHINE_FRAME_INNER;
-			case 64: // Device
+			case ItemFrame.DEVICE:
 				return TETextures.DEVICE_FRAME_INNER;
-			case 128: // Cell
+			case ItemFrame.CELL:
 				return TETextures.CELL_INNER_0;
-			case 160: // Illuminator
+			case ItemFrame.CELL + 1:
+				return TETextures.CELL_INNER_1;
+			case ItemFrame.CELL + 2:
+			case ItemFrame.CELL + 2 + 16:
+				return TETextures.CELL_INNER_2;
+			case ItemFrame.CELL + 3:
+			case ItemFrame.CELL + 3 + 16:
+				return TETextures.CELL_INNER_3;
+			case ItemFrame.CELL + 4:
+			case ItemFrame.CELL + 4 + 16:
+				return TETextures.CELL_INNER_4;
+			case ItemFrame.LIGHT:
 			default:
 				return null;
 		}
@@ -99,13 +121,11 @@ public class RenderFrame implements IItemBakery {
 	private TextureAtlasSprite getCenterTexture(ItemStack stack) {
 
 		switch (stack.getMetadata()) {
-			case 0:
-				return TextureUtils.getBlockTexture("thermalfoundation:storage/block_tin");
-			case 64:
-				return TextureUtils.getBlockTexture("thermalfoundation:storage/block_copper");
-			case 128: // Cell
-				return TextureUtils.getBlockTexture("thermalfoundation:storage/block_lead");
-			case 160: // Illuminator
+			case ItemFrame.CELL + 2 + 16:
+			case ItemFrame.CELL + 3 + 16:
+			case ItemFrame.CELL + 4 + 16:
+				return TETextures.CELL_CENTER_1;
+			case ItemFrame.LIGHT:
 			default:
 				return null;
 		}

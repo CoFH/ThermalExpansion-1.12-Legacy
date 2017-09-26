@@ -19,7 +19,7 @@ public abstract class TileDeviceBase extends TilePowered {
 	public static void config() {
 
 		String comment = "Enable this to allow for Devices to be securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Device.Securable", true, comment);
+		enableSecurity = ThermalExpansion.CONFIG.get("Device", "Securable", true, comment);
 	}
 
 	public TileDeviceBase() {
