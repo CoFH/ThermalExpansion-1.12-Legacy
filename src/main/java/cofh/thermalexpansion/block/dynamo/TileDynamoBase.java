@@ -237,7 +237,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	int calcEnergy() {
 
-		if (energyStorage.getEnergyStored() < energyConfig.minPowerLevel) {
+		if (energyStorage.getEnergyStored() <= energyConfig.minPowerLevel) {
 			return energyConfig.maxPower;
 		}
 		if (energyStorage.getEnergyStored() > energyConfig.maxPowerLevel) {

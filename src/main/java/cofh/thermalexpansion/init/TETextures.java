@@ -26,7 +26,7 @@ public class TETextures {
 		CONFIG_GREEN =						registerCB(CONFIG_ + "green");
 		CONFIG_PURPLE =						registerCB(CONFIG_ + "purple");
 		CONFIG_OPEN =						register(CONFIG_ + "open");
-		CONFIG_OMNI =                       register(CONFIG_ + "omni");
+		CONFIG_OMNI =                       registerCB(CONFIG_ + "omni");
 
 		/* MACHINES */
 		MACHINE_TOP =                       register(MACHINE_ + "top");

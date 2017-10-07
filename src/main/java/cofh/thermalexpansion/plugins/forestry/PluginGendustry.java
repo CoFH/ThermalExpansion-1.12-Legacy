@@ -48,9 +48,9 @@ public class PluginGendustry extends ModPlugin {
 
 			int tintedStart = 10;
 
-			for (int i = tintedStart; i < 16 + tintedStart; i++) {
-				tintedCombs[i] = getItemStack("honey_comb", 1, i);
-				tintedDrops[i] = getItemStack("honey_drop", 1, i);
+			for (int i = 0; i < 16; i++) {
+				tintedCombs[i] = getItemStack("honey_comb", 1, i + tintedStart);
+				tintedDrops[i] = getItemStack("honey_drop", 1, i + tintedStart);
 			}
 
 			/* CENTRIFUGE */

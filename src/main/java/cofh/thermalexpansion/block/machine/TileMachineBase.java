@@ -152,7 +152,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 	protected int calcEnergy() {
 
-		if (energyStorage.getEnergyStored() > energyConfig.maxPowerLevel) {
+		if (energyStorage.getEnergyStored() >= energyConfig.maxPowerLevel) {
 			return energyConfig.maxPower;
 		}
 		if (energyStorage.getEnergyStored() < energyConfig.minPowerLevel) {

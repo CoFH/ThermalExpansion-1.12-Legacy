@@ -200,8 +200,8 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	/* ENERGY CONFIG */
 	public static class EnergyConfig {
 
-		public int minPower = 8;
-		public int maxPower = 80;
+		public int minPower = 2;
+		public int maxPower = 20;
 		public int maxEnergy = 20000;
 		public int minPowerLevel = maxEnergy / 10;
 		public int maxPowerLevel = 9 * maxEnergy / 10;
@@ -232,8 +232,24 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 			minPower = basePower / 10;
 			maxEnergy = basePower * 1000;
 			maxPowerLevel = 9 * maxEnergy / 10;
-			minPowerLevel = maxPowerLevel / 10;
+			minPowerLevel = maxEnergy / 10;
 			energyRamp = maxPowerLevel / basePower;
+
+			return true;
+		}
+
+		// If scaling is disabled, the maximum power value will always be used. Small storage also forces this option to minimize CPU impact.
+		public boolean setDefaultParams(int basePower, boolean smallStorage, boolean disableScaling) {
+
+			if (!smallStorage && !disableScaling) {
+				return setDefaultParams(basePower);
+			}
+			maxPower = basePower;
+			minPower = basePower;
+			maxEnergy = basePower * (smallStorage ? 10 : 1000);
+			maxPowerLevel = maxPower;
+			minPowerLevel = maxPower - 1;
+			energyRamp = 1;
 
 			return true;
 		}
