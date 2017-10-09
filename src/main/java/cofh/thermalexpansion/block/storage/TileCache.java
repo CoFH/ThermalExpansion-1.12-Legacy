@@ -121,6 +121,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		if (super.setLevel(level)) {
 			if (storedStack != ItemStack.EMPTY) {
 				maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
+				balanceStacks();
 			} else {
 				maxCacheStackSize = getCapacity(level, enchantHolding) - 64 * 2;
 			}

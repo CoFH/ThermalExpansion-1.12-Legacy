@@ -334,21 +334,12 @@ public class CompactorManager {
 		}
 	}
 
-	private static void addDefaultPressRecipe(ItemStack input, ItemStack output) {
+	public static void addDefaultPressRecipe(ItemStack input, ItemStack output) {
 
 		addRecipe(DEFAULT_ENERGY, input, output, Mode.PRESS);
 	}
 
-	private static void addDefaultStorageRecipe(ItemStack input, ItemStack output) {
-
-		ItemStack inputStack = ItemHelper.cloneStack(input, 9);
-
-		if (!recipeExists(inputStack, Mode.STORAGE)) {
-			addRecipe(DEFAULT_ENERGY_STORAGE, inputStack, output, Mode.STORAGE);
-		}
-	}
-
-	private static void addDefaultStorageRecipe(ItemStack input, ItemStack output, int count) {
+	public static void addDefaultStorageRecipe(ItemStack input, ItemStack output, int count) {
 
 		ItemStack inputStack = ItemHelper.cloneStack(input, count);
 
@@ -357,7 +348,12 @@ public class CompactorManager {
 		}
 	}
 
-	private static void addDefaultMintRecipe(ItemStack nugget, ItemStack ingot, ItemStack block, ItemStack output) {
+	public static void addDefaultStorageRecipe(ItemStack input, ItemStack output) {
+
+		addDefaultStorageRecipe(input, output, 9);
+	}
+
+	public static void addDefaultMintRecipe(ItemStack nugget, ItemStack ingot, ItemStack block, ItemStack output) {
 
 		addRecipe(DEFAULT_ENERGY / 2, ItemHelper.cloneStack(nugget, 3), ItemHelper.cloneStack(output, 1), Mode.MINT);
 		addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(ingot, 1), ItemHelper.cloneStack(output, 3), Mode.MINT);

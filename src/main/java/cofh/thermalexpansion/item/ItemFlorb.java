@@ -155,7 +155,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 
 			if (ServerHelper.isServerWorld(world)) {
 				EntityFlorb florb = new EntityFlorb(world, player, fluid);
-				florb.setHeadingFromThrower(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
+				florb.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
 				world.spawnEntity(florb);
 			}
 		}
