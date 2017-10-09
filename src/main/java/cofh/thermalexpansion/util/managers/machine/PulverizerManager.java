@@ -199,7 +199,7 @@ public class PulverizerManager {
 			for (int i = 0; i < 15; i++) {
 				addRecipe(energy, new ItemStack(Blocks.STAINED_GLASS, 1, i), new ItemStack(Blocks.SAND));
 			}
-			addRecipe(energy, new ItemStack(Blocks.REDSTONE_LAMP), new ItemStack(Items.GLOWSTONE_DUST, 4), new ItemStack(Items.REDSTONE, 4));
+			addRecipe(energy, new ItemStack(Blocks.REDSTONE_LAMP), new ItemStack(Items.REDSTONE, 4), new ItemStack(Items.GLOWSTONE_DUST, 2));
 			addRecipe(energy, new ItemStack(Blocks.BRICK_BLOCK), new ItemStack(Items.BRICK, 4));
 			addRecipe(energy, new ItemStack(Blocks.NETHER_BRICK), new ItemStack(Items.NETHERBRICK, 4));
 
