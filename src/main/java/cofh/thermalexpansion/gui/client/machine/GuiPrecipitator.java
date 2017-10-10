@@ -44,7 +44,9 @@ public class GuiPrecipitator extends GuiPoweredBase {
 		slotInput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.BLUE, SlotType.TANK, SlotRender.FULL));
 		slotOutput = addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
 
-		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
+		if (!myTile.smallStorage()) {
+			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
+		}
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setAlwaysShow(true));
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 112, 49).setFluid(myTile.getTankFluid()).setSize(24, 16));
 		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_LEFT, 64, 16));

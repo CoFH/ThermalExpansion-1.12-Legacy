@@ -51,20 +51,20 @@ public class PluginNatura extends ModPlugin {
 			ItemStack seedBarley = getItemStack("overworld_seeds", 1, 0);
 			ItemStack seedCotton = getItemStack("overworld_seeds", 1, 1);
 
-			ItemStack raspberry = getItemStack("edibles", 1, 2);
-			ItemStack blueberry = getItemStack("edibles", 1, 3);
-			ItemStack blackberry = getItemStack("edibles", 1, 4);
-			ItemStack maloberry = getItemStack("edibles", 1, 5);
+			ItemStack cropRaspberry = getItemStack("edibles", 1, 2);
+			ItemStack cropBlueberry = getItemStack("edibles", 1, 3);
+			ItemStack cropBlackberry = getItemStack("edibles", 1, 4);
+			ItemStack cropMaloberry = getItemStack("edibles", 1, 5);
 
-			ItemStack blightberry = getItemStack("edibles", 1, 6);
-			ItemStack duskberry = getItemStack("edibles", 1, 7);
-			ItemStack skyberry = getItemStack("edibles", 1, 8);
-			ItemStack stingberry = getItemStack("edibles", 1, 9);
+			ItemStack cropBlightberry = getItemStack("edibles", 1, 6);
+			ItemStack cropDuskberry = getItemStack("edibles", 1, 7);
+			ItemStack cropSkyberry = getItemStack("edibles", 1, 8);
+			ItemStack cropStingberry = getItemStack("edibles", 1, 9);
 
 			ItemStack bushRaspberry = getItemStack("overworld_berrybush_raspberry", 1, 0);
-			ItemStack bushBlueberry = getItemStack("overworld_berrybush_raspberry", 1, 0);
-			ItemStack bushBlackberry = getItemStack("overworld_berrybush_raspberry", 1, 0);
-			ItemStack bushMaloberry = getItemStack("overworld_berrybush_raspberry", 1, 0);
+			ItemStack bushBlueberry = getItemStack("overworld_berrybush_blueberry", 1, 0);
+			ItemStack bushBlackberry = getItemStack("overworld_berrybush_blackberry", 1, 0);
+			ItemStack bushMaloberry = getItemStack("overworld_berrybush_maloberry", 1, 0);
 
 			ItemStack bushBlightberry = getItemStack("nether_berrybush_blightberry", 1, 0);
 			ItemStack bushDuskberry = getItemStack("nether_berrybush_duskberry", 1, 0);
@@ -105,8 +105,8 @@ public class PluginNatura extends ModPlugin {
 			ItemStack saplingBloodwood = getItemStack("nether_sapling2", 1, 0);
 
 			ItemStack logGhostwood = getItemStack("nether_logs", 1, 0);
-			ItemStack logFusewood = getItemStack("nether_logs", 1, 1);
-			ItemStack logDarkwood = getItemStack("nether_logs", 1, 2);
+			ItemStack logFusewood = getItemStack("nether_logs", 1, 2);
+			ItemStack logDarkwood = getItemStack("nether_logs", 1, 1);
 			ItemStack logBloodwood = getItemStack("nether_logs2", 1, 0);
 
 			Block log = getBlock("overworld_logs");
@@ -119,37 +119,37 @@ public class PluginNatura extends ModPlugin {
 
 			/* INSOLATOR */
 			{
-				InsolatorManager.addDefaultRecipe(bushRaspberry, ItemHelper.cloneStack(raspberry, 2), bushRaspberry, 100);
-				InsolatorManager.addDefaultRecipe(bushBlueberry, ItemHelper.cloneStack(blueberry, 2), bushBlueberry, 100);
-				InsolatorManager.addDefaultRecipe(bushBlackberry, ItemHelper.cloneStack(blackberry, 2), bushBlackberry, 100);
-				InsolatorManager.addDefaultRecipe(bushMaloberry, ItemHelper.cloneStack(maloberry, 2), bushMaloberry, 100);
+				InsolatorManager.addDefaultRecipe(bushRaspberry, ItemHelper.cloneStack(cropRaspberry, 2), bushRaspberry, 100);
+				InsolatorManager.addDefaultRecipe(bushBlueberry, ItemHelper.cloneStack(cropBlueberry, 2), bushBlueberry, 100);
+				InsolatorManager.addDefaultRecipe(bushBlackberry, ItemHelper.cloneStack(cropBlackberry, 2), bushBlackberry, 100);
+				InsolatorManager.addDefaultRecipe(bushMaloberry, ItemHelper.cloneStack(cropMaloberry, 2), bushMaloberry, 100);
 
-				InsolatorManager.addDefaultRecipe(bushBlightberry, ItemHelper.cloneStack(blightberry, 2), bushBlightberry, 100, false, Type.NETHER);
-				InsolatorManager.addDefaultRecipe(bushDuskberry, ItemHelper.cloneStack(duskberry, 2), bushDuskberry, 100, false, Type.NETHER);
-				InsolatorManager.addDefaultRecipe(bushSkyberry, ItemHelper.cloneStack(skyberry, 2), bushSkyberry, 100, false, Type.NETHER);
-				InsolatorManager.addDefaultRecipe(bushStingberry, ItemHelper.cloneStack(stingberry, 2), bushStingberry, 100, false, Type.NETHER);
+				InsolatorManager.addDefaultRecipe(bushBlightberry, ItemHelper.cloneStack(cropBlightberry, 2), bushBlightberry, 100, Type.NETHER);
+				InsolatorManager.addDefaultRecipe(bushDuskberry, ItemHelper.cloneStack(cropDuskberry, 2), bushDuskberry, 100, Type.NETHER);
+				InsolatorManager.addDefaultRecipe(bushSkyberry, ItemHelper.cloneStack(cropSkyberry, 2), bushSkyberry, 100, Type.NETHER);
+				InsolatorManager.addDefaultRecipe(bushStingberry, ItemHelper.cloneStack(cropStingberry, 2), bushStingberry, 100, Type.NETHER);
 
 				InsolatorManager.addDefaultRecipe(saguaroFruit, saguaroCactusBaby, ItemStack.EMPTY, 0);
 				InsolatorManager.addDefaultRecipe(saguaroCactusBaby, ItemHelper.cloneStack(saguaroFruit, 2), saguaroCactus, 0);
 
-				InsolatorManager.addDefaultRecipe(glowshroomGreen, ItemHelper.cloneStack(glowshroomGreen, 2), ItemStack.EMPTY, 0, false, Type.NETHER);
-				InsolatorManager.addDefaultRecipe(glowshroomBlue, ItemHelper.cloneStack(glowshroomBlue, 2), ItemStack.EMPTY, 0, false, Type.NETHER);
-				InsolatorManager.addDefaultRecipe(glowshroomPurple, ItemHelper.cloneStack(glowshroomPurple, 2), ItemStack.EMPTY, 0, false, Type.NETHER);
+				InsolatorManager.addDefaultRecipe(glowshroomGreen, ItemHelper.cloneStack(glowshroomGreen, 2), ItemStack.EMPTY, 0, Type.NETHER);
+				InsolatorManager.addDefaultRecipe(glowshroomBlue, ItemHelper.cloneStack(glowshroomBlue, 2), ItemStack.EMPTY, 0, Type.NETHER);
+				InsolatorManager.addDefaultRecipe(glowshroomPurple, ItemHelper.cloneStack(glowshroomPurple, 2), ItemStack.EMPTY, 0, Type.NETHER);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingMaple, ItemHelper.cloneStack(logMaple, 4), saplingMaple, 50, false, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingSilverbell, ItemHelper.cloneStack(logSilverbell, 4), saplingSilverbell, 50, false, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingAmaranth, ItemHelper.cloneStack(logAmaranth, 4), saplingAmaranth, 50, false, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingTigerwood, ItemHelper.cloneStack(logTigerwood, 4), saplingTigerwood, 50, false, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingMaple, ItemHelper.cloneStack(logMaple, 4), saplingMaple, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingSilverbell, ItemHelper.cloneStack(logSilverbell, 4), saplingSilverbell, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingAmaranth, ItemHelper.cloneStack(logAmaranth, 4), saplingAmaranth, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingTigerwood, ItemHelper.cloneStack(logTigerwood, 4), saplingTigerwood, 50, Type.TREE);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingWillow, ItemHelper.cloneStack(logWillow, 4), saplingWillow, 50, false, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingEucalyptus, ItemHelper.cloneStack(logEucalyptus, 4), saplingEucalyptus, 50, false, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingHopseed, ItemHelper.cloneStack(logHopseed, 4), saplingHopseed, 50, false, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingSakura, ItemHelper.cloneStack(logSakura, 4), saplingSakura, 50, false, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingWillow, ItemHelper.cloneStack(logWillow, 4), saplingWillow, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingEucalyptus, ItemHelper.cloneStack(logEucalyptus, 4), saplingEucalyptus, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingHopseed, ItemHelper.cloneStack(logHopseed, 4), saplingHopseed, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingSakura, ItemHelper.cloneStack(logSakura, 4), saplingSakura, 50, Type.TREE);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingGhostwood, ItemHelper.cloneStack(logGhostwood, 4), saplingGhostwood, 50, false, Type.NETHER_TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingFusewood, ItemHelper.cloneStack(logDarkwood, 4), saplingFusewood, 50, false, Type.NETHER_TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingDarkwood, ItemHelper.cloneStack(logFusewood, 4), saplingDarkwood, 50, false, Type.NETHER_TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingBloodwood, ItemHelper.cloneStack(logBloodwood, 4), saplingBloodwood, 50, false, Type.NETHER_TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingGhostwood, ItemHelper.cloneStack(logGhostwood, 4), saplingGhostwood, 50, Type.NETHER_TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingFusewood, ItemHelper.cloneStack(logFusewood, 4), saplingFusewood, 50, Type.NETHER_TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingDarkwood, ItemHelper.cloneStack(logDarkwood, 4), saplingDarkwood, 50, Type.NETHER_TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingBloodwood, ItemHelper.cloneStack(logBloodwood, 4), saplingBloodwood, 50, Type.NETHER_TREE);
 			}
 
 			/* TRANSPOSER */

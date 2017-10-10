@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.gui.client.storage;
 
 import cofh.api.core.ISecurable;
-import cofh.core.gui.GuiCore;
+import cofh.core.gui.GuiContainerCore;
 import cofh.core.gui.element.tab.TabInfo;
 import cofh.core.gui.element.tab.TabSecurity;
 import cofh.core.init.CoreProps;
@@ -15,7 +15,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import java.util.UUID;
 
-public class GuiSatchel extends GuiCore {
+public class GuiSatchel extends GuiContainerCore {
 
 	int level;
 	boolean secure;

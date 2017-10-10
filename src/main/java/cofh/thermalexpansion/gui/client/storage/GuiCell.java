@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.gui.client.storage;
 
-import cofh.core.gui.GuiCore;
+import cofh.core.gui.GuiContainerCore;
 import cofh.core.gui.element.ElementButton;
 import cofh.core.gui.element.ElementEnergyStored;
 import cofh.core.gui.element.ElementSimple;
@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.UUID;
 
-public class GuiCell extends GuiCore {
+public class GuiCell extends GuiContainerCore {
 
 	public static final String TEX_PATH = TEProps.PATH_GUI_STORAGE + "cell.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);

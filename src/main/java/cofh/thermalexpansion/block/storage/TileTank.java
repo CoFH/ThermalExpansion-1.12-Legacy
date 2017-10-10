@@ -45,16 +45,16 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	public static void config() {
 
 		String category = "Storage.Tank";
-		String comment = "Enable this to allow for Tanks to be securable.";
-
+		String comment = "If TRUE, Tanks are securable.";
 		// enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", true, comment);
 
-		BlockTank.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+		comment = "If TRUE, Tanks are enabled.";
+		BlockTank.enable = ThermalExpansion.CONFIG.get(category, "Enable", true, comment);
 
-		comment = "Enable this for 'Classic' Crafting and Upgrades - Non-Creative Upgrade Kits WILL NOT WORK.";
+		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK.";
 		BlockTank.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockTank.enableClassicRecipes, comment);
 
-		comment = "Enable this to allow upgrading in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		comment = "If TRUE, Tanks can be upgraded in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockTank.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockTank.enableUpgradeKitCrafting, comment);
 
 		int capacity = CAPACITY_BASE;

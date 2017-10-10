@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.gui.client.device;
 
-import cofh.core.gui.GuiCore;
+import cofh.core.gui.GuiContainerCore;
 import cofh.core.gui.element.tab.*;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.block.device.TileDeviceBase;
@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.UUID;
 
-public class GuiDeviceBase extends GuiCore {
+public class GuiDeviceBase extends GuiContainerCore {
 
 	protected TileDeviceBase baseTile;
 	protected UUID playerName;

@@ -128,7 +128,7 @@ public class InsolatorManager {
 			crops.add(new ItemStack(Blocks.RED_MUSHROOM));
 
 			for (ItemStack input : crops) {
-				addDefaultRecipe(input, ItemHelper.cloneStack(input, 2), ItemStack.EMPTY, 0, false, Type.MYCELIUM);
+				addDefaultRecipe(input, ItemHelper.cloneStack(input, 2), ItemStack.EMPTY, 0, Type.MYCELIUM);
 			}
 		}
 
@@ -138,7 +138,7 @@ public class InsolatorManager {
 			crops.add(new ItemStack(Items.NETHER_WART));
 
 			for (ItemStack input : crops) {
-				addDefaultRecipe(input, ItemHelper.cloneStack(input, 2), ItemStack.EMPTY, 0, false, Type.NETHER);
+				addDefaultRecipe(input, ItemHelper.cloneStack(input, 2), ItemStack.EMPTY, 0, Type.NETHER);
 			}
 		}
 
@@ -147,17 +147,17 @@ public class InsolatorManager {
 			ItemStack input = new ItemStack(Blocks.CHORUS_FLOWER);
 			ItemStack output = new ItemStack(Blocks.CHORUS_PLANT);
 
-			addDefaultRecipe(input, ItemHelper.cloneStack(output, 2), input, 100, false, Type.END);
+			addDefaultRecipe(input, ItemHelper.cloneStack(output, 2), input, 100, Type.END);
 		}
 
 		/* TREE */
 		{
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 0), new ItemStack(Blocks.LOG, 4, 0), new ItemStack(Blocks.SAPLING, 1, 0), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 1), new ItemStack(Blocks.LOG, 4, 1), new ItemStack(Blocks.SAPLING, 1, 1), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 2), new ItemStack(Blocks.LOG, 4, 2), new ItemStack(Blocks.SAPLING, 1, 2), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 3), new ItemStack(Blocks.LOG, 4, 3), new ItemStack(Blocks.SAPLING, 1, 3), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.LOG2, 4, 0), new ItemStack(Blocks.SAPLING, 1, 4), 50, false, Type.TREE);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 5), new ItemStack(Blocks.LOG2, 4, 1), new ItemStack(Blocks.SAPLING, 1, 5), 50, false, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 0), new ItemStack(Blocks.LOG, 4, 0), new ItemStack(Blocks.SAPLING, 1, 0), 50, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 1), new ItemStack(Blocks.LOG, 4, 1), new ItemStack(Blocks.SAPLING, 1, 1), 50, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 2), new ItemStack(Blocks.LOG, 4, 2), new ItemStack(Blocks.SAPLING, 1, 2), 50, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 3), new ItemStack(Blocks.LOG, 4, 3), new ItemStack(Blocks.SAPLING, 1, 3), 50, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.LOG2, 4, 0), new ItemStack(Blocks.SAPLING, 1, 4), 50, Type.TREE);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 5), new ItemStack(Blocks.LOG2, 4, 1), new ItemStack(Blocks.SAPLING, 1, 5), 50, Type.TREE);
 		}
 
 		/* LOAD RECIPES */
@@ -282,6 +282,16 @@ public class InsolatorManager {
 		}
 	}
 
+	public static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+
+		addDefaultRecipe(primaryInput, primaryOutput, secondaryOutput, secondaryChance, false, Type.STANDARD);
+	}
+
+	public static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, Type type) {
+
+		addDefaultRecipe(primaryInput, primaryOutput, secondaryOutput, secondaryChance, false, type);
+	}
+
 	public static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
 
 		if (!secondaryOutput.isEmpty()) {
@@ -295,6 +305,11 @@ public class InsolatorManager {
 		}
 	}
 
+	public static void addDefaultTreeRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, Type type) {
+
+		addDefaultTreeRecipe(primaryInput, primaryOutput, secondaryOutput, secondaryChance, false, type);
+	}
+
 	public static void addDefaultTreeRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Type type) {
 
 		if (!secondaryOutput.isEmpty()) {
@@ -306,11 +321,6 @@ public class InsolatorManager {
 			addRecipe(DEFAULT_ENERGY_RICH * 2, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), ItemStack.EMPTY, 0, copyNBT, type);
 			addRecipe(DEFAULT_ENERGY_FLUX * 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), ItemStack.EMPTY, 0, copyNBT, type);
 		}
-	}
-
-	public static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
-
-		addDefaultRecipe(primaryInput, primaryOutput, secondaryOutput, secondaryChance, false, Type.STANDARD);
 	}
 
 	/* RECIPE CLASS */

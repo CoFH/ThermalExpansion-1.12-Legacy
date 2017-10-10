@@ -117,12 +117,12 @@ public class PluginRustic extends ModPlugin {
 				InsolatorManager.addDefaultRecipe(marshMallow, ItemHelper.cloneStack(marshMallow, 3), ItemStack.EMPTY, 0);
 				InsolatorManager.addDefaultRecipe(windThistle, ItemHelper.cloneStack(windThistle, 3), ItemStack.EMPTY, 0);
 
-				InsolatorManager.addDefaultRecipe(deathstalkMushroom, ItemHelper.cloneStack(deathstalkMushroom, 2), ItemStack.EMPTY, 0, false, Type.MYCELIUM);
-				InsolatorManager.addDefaultRecipe(mooncapMushroom, ItemHelper.cloneStack(mooncapMushroom, 2), ItemStack.EMPTY, 0, false, Type.MYCELIUM);
+				InsolatorManager.addDefaultRecipe(deathstalkMushroom, ItemHelper.cloneStack(deathstalkMushroom, 2), ItemStack.EMPTY, 0, Type.MYCELIUM);
+				InsolatorManager.addDefaultRecipe(mooncapMushroom, ItemHelper.cloneStack(mooncapMushroom, 2), ItemStack.EMPTY, 0, Type.MYCELIUM);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingOlive, ItemHelper.cloneStack(logOlive, 4), saplingOlive, 50, false, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingIronwood, ItemHelper.cloneStack(logIronwood, 4), saplingIronwood, 50, false, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingApple, new ItemStack(Blocks.LOG, 4, 0), saplingApple, 50, false, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingOlive, ItemHelper.cloneStack(logOlive, 4), saplingOlive, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingIronwood, ItemHelper.cloneStack(logIronwood, 4), saplingIronwood, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingApple, new ItemStack(Blocks.LOG, 4, 0), saplingApple, 50, Type.TREE);
 			}
 
 			/* TRANSPOSER */

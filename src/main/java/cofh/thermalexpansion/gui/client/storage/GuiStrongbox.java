@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.gui.client.storage;
 
-import cofh.core.gui.GuiCore;
+import cofh.core.gui.GuiContainerCore;
 import cofh.core.gui.element.tab.TabBase;
 import cofh.core.gui.element.tab.TabInfo;
 import cofh.core.gui.element.tab.TabSecurity;
@@ -20,7 +20,7 @@ import vazkii.quark.api.IChestButtonCallback;
 import java.util.UUID;
 
 @Optional.Interface (iface = "vazkii.quark.api.IChestButtonCallback", modid = "quark")
-public class GuiStrongbox extends GuiCore implements IChestButtonCallback {
+public class GuiStrongbox extends GuiContainerCore implements IChestButtonCallback {
 
 	protected TileStrongbox baseTile;
 	protected UUID playerName;

@@ -33,7 +33,9 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public static final int MIN_BASE_POWER = 10;
 	public static final int MAX_BASE_POWER = 200;
 
-	private static boolean enableSecurity = true;
+	protected static boolean enableSecurity = true;
+	protected static boolean smallStorage = false;
+	protected static boolean disableScaling = false;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 	protected static final int ENERGY_BASE = 100;
@@ -45,11 +47,18 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 	public static void config() {
 
-		String comment = "Enable this to allow for Machines to be securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get("Machine", "Securable", true, comment);
+		String category = "Machine";
+		String comment = "If TRUE, Machines are securable.";
+		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", true, comment);
 
-		comment = "Enable this to allow upgrading in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
-		BlockMachine.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get("Machine", "UpgradeKitCrafting", BlockMachine.enableUpgradeKitCrafting, comment);
+		comment = "If TRUE, Machines can be upgraded in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		BlockMachine.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockMachine.enableUpgradeKitCrafting, comment);
+
+		comment = "If TRUE, Machines will have much smaller internal energy (RF) storage. Processing speed will no longer scale with internal energy.";
+		smallStorage = ThermalExpansion.CONFIG.get(category, "SmallStorage", smallStorage, comment);
+
+		//		comment = "If TRUE, Machine processing speed will be constant (max), regardless of stored internal energy (RF).";
+		//		disableScaling = ThermalExpansion.CONFIG.get(category, "MaxProcessingSpeed", disableScaling, comment);
 	}
 
 	int processMax;
@@ -93,11 +102,16 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		return enableSecurity;
 	}
 
+	public boolean smallStorage() {
+
+		return smallStorage;
+	}
+
 	@Override
 	protected boolean setLevel(int level) {
 
 		if (super.setLevel(level)) {
-			energyConfig.setDefaultParams(getBasePower(this.level));
+			energyConfig.setDefaultParams(getBasePower(this.level), smallStorage, disableScaling);
 			energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 4);
 			return true;
 		}
@@ -304,7 +318,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	@Override
 	protected void preAugmentInstall() {
 
-		energyConfig.setDefaultParams(getBasePower(this.level));
+		energyConfig.setDefaultParams(getBasePower(this.level), smallStorage, disableScaling);
 
 		energyMod = ENERGY_BASE;
 		secondaryChance = SECONDARY_BASE;
@@ -341,7 +355,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 		if (TEProps.MACHINE_POWER.equals(id)) {
 			// Power Boost
-			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level));
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level), smallStorage, disableScaling);
 
 			// Efficiency Loss
 			energyMod += 15;

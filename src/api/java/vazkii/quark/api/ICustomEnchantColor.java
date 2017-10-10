@@ -26,6 +26,7 @@ public interface ICustomEnchantColor {
 	 * as bright as possible, up to complete opaque if (255, 255, 255).
 	 */
 	public default boolean shouldTruncateColorBrightness(ItemStack stack) {
+
 		return true;
 	}
 

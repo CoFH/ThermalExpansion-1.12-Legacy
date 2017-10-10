@@ -74,7 +74,7 @@ public class TileSmelter extends TileMachineBase {
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
 
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage, disableScaling);
 	}
 
 	private int inputTrackerPrimary;

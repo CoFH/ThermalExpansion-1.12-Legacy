@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.gui.client.dynamo;
 
-import cofh.core.gui.GuiCore;
+import cofh.core.gui.GuiContainerCore;
 import cofh.core.gui.container.IAugmentableContainer;
 import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementEnergyStored;
@@ -15,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.UUID;
 
-public abstract class GuiDynamoBase extends GuiCore {
+public abstract class GuiDynamoBase extends GuiContainerCore {
 
 	protected TileDynamoBase baseTile;
 	protected UUID playerName;

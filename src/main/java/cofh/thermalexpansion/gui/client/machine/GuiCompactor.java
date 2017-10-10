@@ -55,8 +55,9 @@ public class GuiCompactor extends GuiPoweredBase {
 		slotInput = addElement(new ElementSlotOverlay(this, 53, 26).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
 		slotOutput = addElement(new ElementSlotOverlay(this, 112, 31).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
 
-		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
-
+		if (!myTile.smallStorage()) {
+			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
+		}
 		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 79, 34).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 53, 44).setSize(16, 16).setTexture(TEX_COMPACT, 32, 16));
 		modeSel = (ElementButton) addElement(new ElementButton(this, 80, 53, "Mode", 176, 0, 176, 16, 176, 32, 16, 16, TEX_PATH));

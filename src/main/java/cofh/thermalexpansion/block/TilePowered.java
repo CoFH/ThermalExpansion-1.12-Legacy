@@ -19,6 +19,11 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 
 	protected EnergyStorage energyStorage = new EnergyStorage(0);
 
+	public boolean smallStorage() {
+
+		return false;
+	}
+
 	protected boolean hasEnergy(int energy) {
 
 		return energyStorage.getEnergyStored() >= energy;

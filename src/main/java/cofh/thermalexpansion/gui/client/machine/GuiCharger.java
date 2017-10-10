@@ -3,6 +3,7 @@ package cofh.thermalexpansion.gui.client.machine;
 import cofh.core.gui.element.ElementBase;
 import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementEnergyStored;
+import cofh.thermalexpansion.block.machine.TileCharger;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerCharger;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
@@ -18,6 +19,8 @@ public class GuiCharger extends GuiPoweredBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "charger.png");
 
+	private TileCharger myTile;
+
 	private ElementBase slotInput;
 	private ElementBase slotOutput;
 	private ElementDualScaled progress;
@@ -27,6 +30,8 @@ public class GuiCharger extends GuiPoweredBase {
 		super(new ContainerCharger(inventory, tile), tile, inventory.player, TEXTURE);
 
 		generateInfo("tab.thermalexpansion.machine.charger");
+
+		myTile = (TileCharger) tile;
 	}
 
 	@Override
@@ -37,7 +42,9 @@ public class GuiCharger extends GuiPoweredBase {
 		slotInput = addElement(new ElementSlotOverlay(this, 44, 35).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
 		slotOutput = addElement(new ElementSlotOverlay(this, 121, 31).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
 
-		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
+		if (!myTile.smallStorage()) {
+			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
+		}
 		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 80, 53).setSize(16, 16).setTexture(TEX_FLUX, 32, 16));
 	}
 

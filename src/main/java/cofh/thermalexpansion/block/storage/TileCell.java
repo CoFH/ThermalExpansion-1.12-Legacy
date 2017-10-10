@@ -54,16 +54,16 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	public static void config() {
 
 		String category = "Storage.Cell";
-		String comment = "Enable this to allow for Energy Cells to be securable.";
-
+		String comment = "If TRUE, Energy Cells are securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", enableSecurity, comment);
 
-		BlockCell.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+		comment = "If TRUE, Energy Cells are enabled.";
+		BlockCell.enable = ThermalExpansion.CONFIG.get(category, "Enable", true, comment);
 
-		comment = "Enable this for 'Classic' Crafting and Upgrades - Non-Creative Upgrade Kits WILL NOT WORK.";
+		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK.";
 		BlockCell.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockCell.enableClassicRecipes, comment);
 
-		comment = "Enable this to allow upgrading in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		comment = "If TRUE, Energy Cells can be upgraded in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockCell.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockCell.enableUpgradeKitCrafting, comment);
 
 		int capacity = CAPACITY_BASE;

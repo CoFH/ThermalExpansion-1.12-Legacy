@@ -348,8 +348,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 			);
 		}
 		if (enable[Type.FISHER.getMetadata()]) {
-			System.out.println("yes this fired");
-
 			addShapedRecipe(deviceFisher,
 					" X ",
 					"YCY",
@@ -357,7 +355,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					'C', ItemFrame.frameDevice,
 					'I', tinPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', "blockWool",
+					'X', Items.FISHING_ROD,
 					'Y', Blocks.IRON_BARS
 			);
 		}

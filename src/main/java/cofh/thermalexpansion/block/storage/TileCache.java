@@ -50,16 +50,16 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	public static void config() {
 
 		String category = "Storage.Cache";
-		String comment = "Enable this to allow for Caches to be securable.";
-
+		String comment = "If TRUE, Caches are securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", true, comment);
 
-		BlockCache.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+		comment = "If TRUE, Caches are enabled.";
+		BlockCache.enable = ThermalExpansion.CONFIG.get(category, "Enable", true, comment);
 
-		comment = "Enable this for 'Classic' Crafting and Upgrades - Non-Creative Upgrade Kits WILL NOT WORK.";
+		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK.";
 		BlockCache.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockCache.enableClassicRecipes, comment);
 
-		comment = "Enable this to allow upgrading in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		comment = "If TRUE, Caches can be upgraded in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockCache.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockCache.enableUpgradeKitCrafting, comment);
 
 		int capacity = CAPACITY_BASE;

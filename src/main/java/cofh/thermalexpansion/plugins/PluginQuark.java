@@ -174,7 +174,7 @@ public class PluginQuark extends ModPlugin {
 			{
 				ItemStack glowshroom = getItemStack("glowshroom", 1, 0);
 
-				InsolatorManager.addDefaultRecipe(glowshroom, ItemHelper.cloneStack(glowshroom, 2), ItemStack.EMPTY, 0, false, Type.MYCELIUM);
+				InsolatorManager.addDefaultRecipe(glowshroom, ItemHelper.cloneStack(glowshroom, 2), ItemStack.EMPTY, 0, Type.MYCELIUM);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);

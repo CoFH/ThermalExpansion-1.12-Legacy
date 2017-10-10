@@ -14,10 +14,10 @@ import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Implement on a TileEntity to allow it to receive dropoff, and to have
- * chest buttons on the client. 
+ * chest buttons on the client.
  */
 public interface IDropoffManager {
 
 	public boolean acceptsDropoff(EntityPlayer player);
-	
+
 }

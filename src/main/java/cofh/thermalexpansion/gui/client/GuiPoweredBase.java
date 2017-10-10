@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.gui.client;
 
-import cofh.core.gui.GuiCore;
+import cofh.core.gui.GuiContainerCore;
 import cofh.core.gui.container.IAugmentableContainer;
 import cofh.core.gui.element.tab.*;
 import cofh.core.util.helpers.SecurityHelper;
@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.UUID;
 
-public abstract class GuiPoweredBase extends GuiCore {
+public abstract class GuiPoweredBase extends GuiContainerCore {
 
 	protected TilePowered baseTile;
 	protected UUID playerName;
@@ -49,7 +49,7 @@ public abstract class GuiPoweredBase extends GuiCore {
 		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 
 		if (baseTile.getMaxEnergyStored(null) > 0) {
-			addTab(new TabEnergy(this, baseTile, false));
+			addTab(new TabEnergy(this, baseTile, false).displayStored(!baseTile.smallStorage()));
 		}
 		if (!myInfo.isEmpty()) {
 			addTab(new TabInfo(this, myInfo));

@@ -3,14 +3,17 @@ package cofh.thermalexpansion.block.device;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.MathHelper;
+import cofh.core.util.helpers.RenderHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiFisher;
 import cofh.thermalexpansion.gui.container.device.ContainerFisher;
+import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.managers.FisherManager;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -19,6 +22,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -371,6 +375,23 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
 		return FisherManager.isValidBait(stack);
+	}
+
+	/* ISidedTexture */
+	@Override
+	public TextureAtlasSprite getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			if (side == 0) {
+				return TETextures.DEVICE_BOTTOM;
+			} else if (side == 1) {
+				return TETextures.DEVICE_TOP;
+			}
+			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.WATER) : TETextures.DEVICE_FACE[TYPE];
+		} else if (side < 6) {
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
+		}
+		return TETextures.DEVICE_SIDE;
 	}
 
 }

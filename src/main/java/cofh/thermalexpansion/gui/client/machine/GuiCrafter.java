@@ -4,6 +4,7 @@ import cofh.core.gui.element.ElementBase;
 import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementEnergyStored;
 import cofh.core.gui.element.ElementFluidTank;
+import cofh.thermalexpansion.block.machine.TileCrafter;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrafter;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
@@ -18,7 +19,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiCrafter extends GuiPoweredBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "crafter.png");
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "crafter.png");
+
+	private TileCrafter myTile;
 
 	ElementSlotOverlayCrafter slotInput;
 	ElementBase slotOutput;
@@ -32,6 +35,8 @@ public class GuiCrafter extends GuiPoweredBase {
 		super(new ContainerCrafter(inventory, tile), tile, inventory.player, TEXTURE);
 
 		generateInfo("tab.thermalexpansion.machine.crafter");
+
+		myTile = (TileCrafter) tile;
 	}
 
 	@Override
@@ -44,9 +49,10 @@ public class GuiCrafter extends GuiPoweredBase {
 
 		slotTank = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.BLUE, SlotType.TANK, SlotRender.FULL));
 
-		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
+		if (!myTile.smallStorage()) {
+			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
+		}
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setGauge(1).setAlwaysShow(true));
-
 		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 92, 27).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
 	}
 

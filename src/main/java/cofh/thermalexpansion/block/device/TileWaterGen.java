@@ -62,8 +62,8 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		String category = "Device.WaterGen";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		String comment = "Set this to TRUE to enable passive generation (less than two adjacent sources) for the Aqueous Accumulator.";
-		passiveGen = ThermalExpansion.CONFIG.getConfiguration().get(category, "PassiveGeneration", false, comment).getBoolean();
+		String comment = "If TRUE, the Aqueous Accumulator will produce water very slowly even without adjacent source blocks.";
+		passiveGen = ThermalExpansion.CONFIG.get(category, "PassiveGeneration", false, comment);
 	}
 
 	private static final int TIME_CONSTANT = 40;

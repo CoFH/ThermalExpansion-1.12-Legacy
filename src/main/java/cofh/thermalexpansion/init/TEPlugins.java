@@ -36,6 +36,7 @@ public class TEPlugins {
 		pluginTConstruct = new PluginTConstruct();
 		pluginTraverse = new PluginTraverse();
 		pluginTechReborn = new PluginTechReborn();
+		pluginTwilightForest = new PluginTwilightForest();
 
 		initList.add(pluginTOP);
 
@@ -58,6 +59,7 @@ public class TEPlugins {
 		initList.add(pluginTConstruct);
 		initList.add(pluginTraverse);
 		initList.add(pluginTechReborn);
+		initList.add(pluginTwilightForest);
 
 		for (IInitializer init : initList) {
 			init.initialize();
@@ -95,5 +97,6 @@ public class TEPlugins {
 	public static PluginTConstruct pluginTConstruct;
 	public static PluginTraverse pluginTraverse;
 	public static PluginTechReborn pluginTechReborn;
+	public static PluginTwilightForest pluginTwilightForest;
 
 }

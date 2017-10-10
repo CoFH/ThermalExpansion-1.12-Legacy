@@ -48,6 +48,8 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	public static final int MAX_BASE_POWER = 200;
 
 	private static boolean enableSecurity = true;
+	private static boolean smallStorage = false;
+	private static boolean disableScaling = false;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 	protected static final int ENERGY_BASE = 100;
@@ -64,11 +66,12 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	public static void config() {
 
-		String comment = "Enable this to allow for Dynamos to be securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get("Dynamo", "Securable", enableSecurity, comment);
+		String category = "Dynamo";
+		String comment = "If TRUE, Dynamos are securable.";
+		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", enableSecurity, comment);
 
-		comment = "Enable this to allow upgrading in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
-		BlockDynamo.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get("Dynamo", "UpgradeKitCrafting", BlockDynamo.enableUpgradeKitCrafting, comment);
+		comment = "If TRUE, Dynamos can be upgraded in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		BlockDynamo.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockDynamo.enableUpgradeKitCrafting, comment);
 	}
 
 	byte facing = 1;

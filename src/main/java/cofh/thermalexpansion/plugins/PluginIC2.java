@@ -51,7 +51,7 @@ public class PluginIC2 extends ModPlugin {
 				ItemStack logRubber = getItemStack("rubber_wood", 1, 0);
 				ItemStack saplingRubber = getItemStack("sapling", 1, 0);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingRubber, ItemHelper.cloneStack(logRubber, 4), saplingRubber, 50, false, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingRubber, ItemHelper.cloneStack(logRubber, 4), saplingRubber, 50, Type.TREE);
 			}
 
 			/* COMPACTOR */

@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.api.core.IAccelerable;
 import cofh.core.fluid.FluidTankCore;
-import cofh.core.gui.GuiCore;
+import cofh.core.gui.GuiContainerCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.RenderHelper;
@@ -166,7 +166,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	@Override
 	public int getScaledSpeed(int scale) {
 
-		return isActive ? GuiCore.SPEED : 0;
+		return isActive ? GuiContainerCore.SPEED : 0;
 	}
 
 	@Override

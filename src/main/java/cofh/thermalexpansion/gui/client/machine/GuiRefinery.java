@@ -47,7 +47,9 @@ public class GuiRefinery extends GuiPoweredBase {
 		slotTankOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.ORANGE, SlotType.TANK, SlotRender.FULL).setVisible(false));
 		slotTankOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.RED, SlotType.TANK, SlotRender.BOTTOM).setVisible(false));
 
-		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
+		if (!myTile.smallStorage()) {
+			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
+		}
 		addElement(new ElementFluidTank(this, 44, 19, myTile.getTank(0)).setGauge(0).setAlwaysShow(true).setShort());
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)).setGauge(1).setAlwaysShow(true));
 

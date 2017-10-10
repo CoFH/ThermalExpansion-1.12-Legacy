@@ -4,6 +4,7 @@ import cofh.core.gui.element.ElementBase;
 import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementEnergyStored;
 import cofh.core.gui.element.ElementFluidTank;
+import cofh.thermalexpansion.block.machine.TileCentrifuge;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerCentrifuge;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
@@ -20,6 +21,8 @@ public class GuiCentrifuge extends GuiPoweredBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "centrifuge.png");
 
+	private TileCentrifuge myTile;
+
 	private ElementBase slotInput;
 	private ElementSlotOverlayQuad[] slotOutput = new ElementSlotOverlayQuad[2];
 	private ElementSlotOverlay[] slotTank = new ElementSlotOverlay[2];
@@ -32,6 +35,8 @@ public class GuiCentrifuge extends GuiPoweredBase {
 		super(new ContainerCentrifuge(inventory, tile), tile, inventory.player, TEXTURE);
 
 		generateInfo("tab.thermalexpansion.machine.centrifuge");
+
+		myTile = (TileCentrifuge) tile;
 	}
 
 	@Override
@@ -47,9 +52,10 @@ public class GuiCentrifuge extends GuiPoweredBase {
 		slotTank[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.ORANGE, SlotType.TANK, SlotRender.FULL));
 		slotTank[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.YELLOW, SlotType.TANK, SlotRender.BOTTOM));
 
-		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
+		if (!myTile.smallStorage()) {
+			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
+		}
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setGauge(0).setAlwaysShow(true));
-
 		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 72, 34).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 44).setSize(16, 16).setTexture(TEX_SPIN, 32, 16));
 	}

@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.gui.client.machine;
 
 import cofh.core.gui.element.*;
+import cofh.thermalexpansion.block.machine.TileCrucible;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrucible;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
@@ -16,6 +17,8 @@ public class GuiCrucible extends GuiPoweredBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "crucible.png");
 
+	private TileCrucible myTile;
+
 	private ElementBase slotInput;
 	private ElementBase slotOutput;
 	private ElementFluid progressFluid;
@@ -27,6 +30,8 @@ public class GuiCrucible extends GuiPoweredBase {
 		super(new ContainerCrucible(inventory, tile), tile, inventory.player, TEXTURE);
 
 		generateInfo("tab.thermalexpansion.machine.crucible");
+
+		myTile = (TileCrucible) tile;
 	}
 
 	@Override
@@ -37,7 +42,9 @@ public class GuiCrucible extends GuiPoweredBase {
 		slotInput = addElement(new ElementSlotOverlay(this, 53, 26).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
 		slotOutput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.ORANGE, SlotType.TANK, SlotRender.FULL));
 
-		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
+		if (!myTile.smallStorage()) {
+			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
+		}
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setGauge(1).setAlwaysShow(true));
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 103, 34).setFluid(baseTile.getTankFluid()).setSize(24, 16));
 		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 103, 34).setMode(1).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 64, 16));

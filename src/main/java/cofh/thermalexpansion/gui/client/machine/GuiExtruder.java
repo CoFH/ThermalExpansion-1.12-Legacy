@@ -48,7 +48,9 @@ public class GuiExtruder extends GuiPoweredBase {
 		slotInput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.BLUE, SlotType.TANK, SlotRender.FULL));
 		slotOutput = addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
 
-		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
+		if (!myTile.smallStorage()) {
+			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
+		}
 		coldTank = (ElementFluidTank) addElement(new ElementFluidTank(this, 161, 9, myTile.getTank(1)).setAlwaysShow(true).setThin());
 		hotTank = (ElementFluidTank) addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(0)).setAlwaysShow(true).setThin());
 

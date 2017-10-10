@@ -249,7 +249,8 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@Override
 	public int getNumModes(ItemStack stack) {
 
-		return 3;
+		// return 3;
+		return 1;
 	}
 
 	@Override

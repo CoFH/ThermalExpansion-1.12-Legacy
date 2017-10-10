@@ -12,14 +12,16 @@ public interface IItemSearchBar {
 	 * in this method.
 	 */
 	public void onSearchBarAdded(GuiTextField bar);
-		
+
 	/**
 	 * Called to render the text field background.
-	 * @return false to render the default one, true to not. If you return true you should 
+	 *
+	 * @return false to render the default one, true to not. If you return true you should
 	 * probably render your own here.
 	 */
 	public default boolean renderBackground(int x, int y) {
+
 		return false;
 	}
-	
+
 }
