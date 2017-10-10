@@ -75,6 +75,8 @@ public class PluginNatura extends ModPlugin {
 			ItemStack saguaroCactus = getItemStack("saguaro", 1, 0);
 			ItemStack saguaroCactusBaby = getItemStack("saguaro_baby", 1, 0);
 
+			ItemStack plantThornvine = getItemStack("nether_thorn_vines", 1, 0);
+
 			ItemStack glowshroomGreen = getItemStack("nether_glowshroom", 1, 0);
 			ItemStack glowshroomBlue = getItemStack("nether_glowshroom", 1, 1);
 			ItemStack glowshroomPurple = getItemStack("nether_glowshroom", 1, 2);
@@ -131,6 +133,8 @@ public class PluginNatura extends ModPlugin {
 
 				InsolatorManager.addDefaultRecipe(saguaroFruit, saguaroCactusBaby, ItemStack.EMPTY, 0);
 				InsolatorManager.addDefaultRecipe(saguaroCactusBaby, ItemHelper.cloneStack(saguaroFruit, 2), saguaroCactus, 0);
+
+				InsolatorManager.addDefaultRecipe(plantThornvine, ItemHelper.cloneStack(plantThornvine, 2), ItemStack.EMPTY, 0, Type.NETHER);
 
 				InsolatorManager.addDefaultRecipe(glowshroomGreen, ItemHelper.cloneStack(glowshroomGreen, 2), ItemStack.EMPTY, 0, Type.NETHER);
 				InsolatorManager.addDefaultRecipe(glowshroomBlue, ItemHelper.cloneStack(glowshroomBlue, 2), ItemStack.EMPTY, 0, Type.NETHER);

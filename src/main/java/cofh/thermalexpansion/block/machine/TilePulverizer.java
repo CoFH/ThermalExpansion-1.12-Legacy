@@ -118,6 +118,9 @@ public class TilePulverizer extends TileMachineBase {
 		if (inventory[0].getCount() < recipe.getInput().getCount()) {
 			return false;
 		}
+		if (augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() < fluidAmount) {
+			return false;
+		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
@@ -136,6 +139,10 @@ public class TilePulverizer extends TileMachineBase {
 	protected boolean hasValidInput() {
 
 		PulverizerRecipe recipe = PulverizerManager.getRecipe(inventory[0]);
+
+		if (augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() < fluidAmount) {
+			return false;
+		}
 		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 	}
 

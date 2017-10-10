@@ -13,7 +13,7 @@ public class TEPlugins {
 
 	}
 
-	public static void initialize() {
+	public static void preInit() {
 
 		pluginTOP = new PluginTOP();
 

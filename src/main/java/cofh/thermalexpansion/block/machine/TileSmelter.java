@@ -131,6 +131,9 @@ public class TileSmelter extends TileMachineBase {
 				return false;
 			}
 		}
+		if (augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() < fluidAmount) {
+			return false;
+		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
@@ -161,6 +164,9 @@ public class TileSmelter extends TileMachineBase {
 			if (recipe.getPrimaryInput().getCount() > inventory[0].getCount() || recipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
 				return false;
 			}
+		}
+		if (augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() < fluidAmount) {
+			return false;
 		}
 		return true;
 	}

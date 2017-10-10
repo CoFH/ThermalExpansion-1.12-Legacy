@@ -51,6 +51,8 @@ public class PluginBiomesOPlenty extends ModPlugin {
 		try {
 			ItemStack sandWhite = getItemStack("white_sand", 1, 0);
 
+			ItemStack plantFlowerVine = getItemStack("flower_vine", 1, 0);
+
 			ItemStack logYellowAutumn = new ItemStack(Blocks.LOG, 1, 2);
 			ItemStack logOrangeAutumn = new ItemStack(Blocks.LOG2, 1, 1);
 			ItemStack logBamboo = getItemStack("bamboo", 1, 0);
@@ -131,6 +133,8 @@ public class PluginBiomesOPlenty extends ModPlugin {
 
 			/* INSOLATOR */
 			{
+				InsolatorManager.addDefaultRecipe(plantFlowerVine, ItemHelper.cloneStack(plantFlowerVine, 2), ItemStack.EMPTY, 0);
+
 				InsolatorManager.addDefaultTreeRecipe(saplingYellowAutumn, ItemHelper.cloneStack(logYellowAutumn, 4), saplingYellowAutumn, 50, Type.TREE);
 				InsolatorManager.addDefaultTreeRecipe(saplingOrangeAutumn, ItemHelper.cloneStack(logOrangeAutumn, 4), saplingOrangeAutumn, 50, Type.TREE);
 				InsolatorManager.addDefaultTreeRecipe(saplingBamboo, ItemHelper.cloneStack(logBamboo, 4), saplingBamboo, 50, Type.TREE);

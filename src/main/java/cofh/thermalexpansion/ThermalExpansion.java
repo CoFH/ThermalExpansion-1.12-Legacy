@@ -77,6 +77,7 @@ public class ThermalExpansion {
 		TEBlocks.preInit();
 		TEItems.preInit();
 		TESounds.preInit();
+		TEPlugins.preInit();
 
 		/* Register Handlers */
 		registerHandlers();
@@ -86,8 +87,6 @@ public class ThermalExpansion {
 
 	@EventHandler
 	public void initialize(FMLInitializationEvent event) {
-
-		TEPlugins.initialize();
 
 		proxy.initialize(event);
 	}
