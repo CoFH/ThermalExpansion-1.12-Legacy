@@ -454,15 +454,6 @@ public class FurnaceManager {
 			super(stack);
 			oreID = getOreID(stack);
 		}
-
-		@Override
-		public ComparableItemStackFurnace set(ItemStack stack) {
-
-			super.set(stack);
-			oreID = getOreID(stack);
-
-			return this;
-		}
 	}
 
 }

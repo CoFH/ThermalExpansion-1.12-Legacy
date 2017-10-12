@@ -47,9 +47,8 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	public static final int MIN_BASE_POWER = 10;
 	public static final int MAX_BASE_POWER = 200;
 
-	private static boolean enableSecurity = true;
-	private static boolean smallStorage = false;
-	private static boolean disableScaling = false;
+	protected static boolean enableSecurity = true;
+	protected static boolean smallStorage = false;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 	protected static final int ENERGY_BASE = 100;
@@ -70,8 +69,14 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		String comment = "If TRUE, Dynamos are securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", enableSecurity, comment);
 
+		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK.";
+		BlockDynamo.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockDynamo.enableClassicRecipes, comment);
+
 		comment = "If TRUE, Dynamos can be upgraded in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockDynamo.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockDynamo.enableUpgradeKitCrafting, comment);
+
+		comment = "If TRUE, Dynamos will have much smaller internal energy (RF) storage. Generation speed will no longer scale with internal energy.";
+		smallStorage = ThermalExpansion.CONFIG.get(category, "SmallStorage", smallStorage, comment);
 	}
 
 	byte facing = 1;
@@ -133,7 +138,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	protected boolean setLevel(int level) {
 
 		if (super.setLevel(level)) {
-			energyConfig.setDefaultParams(getBasePower(this.level));
+			energyConfig.setDefaultParams(getBasePower(this.level), smallStorage);
 			energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 4);
 			return true;
 		}
@@ -465,7 +470,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	/* HELPERS */
 	protected void preAugmentInstall() {
 
-		energyConfig.setDefaultParams(getBasePower(this.level));
+		energyConfig.setDefaultParams(getBasePower(this.level), smallStorage);
 
 		energyMod = ENERGY_BASE;
 		hasModeAugment = false;
@@ -516,7 +521,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		if (TEProps.DYNAMO_POWER.equals(id)) {
 			// Power Boost
-			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level));
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level), smallStorage);
 
 			// Efficiency Loss
 			energyMod -= 10;

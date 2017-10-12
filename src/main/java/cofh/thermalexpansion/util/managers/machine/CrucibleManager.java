@@ -223,15 +223,6 @@ public class CrucibleManager {
 			super(stack);
 			oreID = getOreID(stack);
 		}
-
-		@Override
-		public ComparableItemStackCrucible set(ItemStack stack) {
-
-			super.set(stack);
-			oreID = getOreID(stack);
-
-			return this;
-		}
 	}
 
 }

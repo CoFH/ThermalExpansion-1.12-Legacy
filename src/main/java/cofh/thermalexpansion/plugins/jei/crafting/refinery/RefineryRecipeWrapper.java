@@ -29,6 +29,8 @@ public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 	final int chance;
 
 	/* Animation */
+	final IDrawableStatic progressBack;
+	final IDrawableStatic speedBack;
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
@@ -51,6 +53,9 @@ public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 		energy = recipe.getEnergy();
 		chance = recipe.getChance();
 
+		progressBack = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
+		speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_FLAME);
+
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_DROP);
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLAME);
@@ -72,6 +77,9 @@ public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		progressBack.draw(minecraft, 46, 23);
+		speedBack.draw(minecraft, 22, 40);
 
 		JEIPluginTE.drawFluid(46, 23, inputFluids.get(0).get(0), 24, 16);
 

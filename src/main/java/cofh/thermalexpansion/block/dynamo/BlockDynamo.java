@@ -50,8 +50,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
-import static cofh.core.util.helpers.RecipeHelper.addShapelessUpgradeKitRecipe;
+import static cofh.core.util.helpers.RecipeHelper.*;
 
 public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelRegister {
 
@@ -346,6 +345,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 
 		addRecipes();
 		addUpgradeRecipes();
+		addClassicRecipes();
 
 		return true;
 	}
@@ -447,6 +447,50 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		}
 	}
 
+	private void addClassicRecipes() {
+
+		if (!enableClassicRecipes) {
+			return;
+		}
+		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+			if (enable[i]) {
+				ItemStack[] dynamo = new ItemStack[5];
+
+				for (int j = 0; j < 5; j++) {
+					dynamo[j] = (itemBlock.setDefaultTag(new ItemStack(this, 1, i), j));
+				}
+				// @formatter:off
+				addShapedUpgradeRecipe(dynamo[1],
+						" I ",
+						"ICI",
+						" I ",
+						'C', dynamo[0],
+						'I', "ingotInvar"
+				);
+				addShapedUpgradeRecipe(dynamo[2], "YIY",
+						"ICI",
+						"YIY",
+						'C', dynamo[1],
+						'I', "ingotElectrum",
+						'Y', "blockGlassHardened"
+				);
+				addShapedUpgradeRecipe(dynamo[3], " I ",
+						"ICI",
+						" I ",
+						'C', dynamo[2],
+						'I', "ingotSignalum"
+				);
+				addShapedUpgradeRecipe(dynamo[4], " I ",
+						"ICI",
+						" I ",
+						'C', dynamo[3],
+						'I', "ingotEnderium"
+				);
+				// @formatter:on
+			}
+		}
+	}
+
 	/* TYPE */
 	public enum Type implements IStringSerializable {
 
@@ -496,6 +540,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 	}
 
 	public static boolean[] enable = new boolean[Type.values().length];
+	public static boolean enableClassicRecipes;
 	public static boolean enableUpgradeKitCrafting;
 
 	/* REFERENCES */

@@ -418,15 +418,6 @@ public class InsolatorManager {
 			super(stack);
 			oreID = getOreID(stack);
 		}
-
-		@Override
-		public ComparableItemStackInsolator set(ItemStack stack) {
-
-			super.set(stack);
-			oreID = getOreID(stack);
-
-			return this;
-		}
 	}
 
 }

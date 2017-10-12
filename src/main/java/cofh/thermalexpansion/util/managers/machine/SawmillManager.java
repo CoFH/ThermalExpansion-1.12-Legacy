@@ -370,15 +370,6 @@ public class SawmillManager {
 			super(stack);
 			oreID = getOreID(stack);
 		}
-
-		@Override
-		public ComparableItemStackSawmill set(ItemStack stack) {
-
-			super.set(stack);
-			oreID = getOreID(stack);
-
-			return this;
-		}
 	}
 
 }

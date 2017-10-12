@@ -108,7 +108,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 				for (int j = 0; j < inventory.length; j++) {
 					if (extractItem(j, amountInput, EnumFacing.VALUES[side])) {
 						inputTracker = side;
-						return;
+						break;
 					}
 				}
 			}
@@ -127,7 +127,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 				for (int j = inventory.length - 1; j >= 0; j--) {
 					if (transferItem(j, amountOutput, EnumFacing.VALUES[side])) {
 						outputTracker = side;
-						return;
+						break;
 					}
 				}
 			}

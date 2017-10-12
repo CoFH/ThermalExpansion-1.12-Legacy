@@ -100,18 +100,16 @@ public class TETextures {
 		DEVICE_FACE_HEAT_SINK =             register(DEVICE_FACE_ + "heat_sink");
 		DEVICE_FACE_TAPPER =                register(DEVICE_FACE_ + "tapper");
 		DEVICE_FACE_FISHER =                register(DEVICE_FACE_ + "fisher");
-
 		DEVICE_FACE_ITEM_BUFFER =			register(DEVICE_FACE_ + "item_buffer");
-		DEVICE_FACE_EXTENDER =				map.getMissingSprite();//TODO register(DEVICE_FACE_ + "extender");
+		DEVICE_FACE_FLUID_BUFFER =			register(DEVICE_FACE_ + "fluid_buffer");
 
 		DEVICE_ACTIVE_WATER_GEN =			register(DEVICE_ACTIVE_ + "water_gen");
 		DEVICE_ACTIVE_NULLIFIER =			register(DEVICE_ACTIVE_ + "nullifier");
 		DEVICE_ACTIVE_HEAT_SINK =           register(DEVICE_ACTIVE_ + "heat_sink");
 		DEVICE_ACTIVE_TAPPER =              register(DEVICE_ACTIVE_ + "tapper");
 		DEVICE_ACTIVE_FISHER =              register(DEVICE_ACTIVE_ + "fisher");
-
 		DEVICE_ACTIVE_ITEM_BUFFER =			register(DEVICE_ACTIVE_ + "item_buffer");
-		DEVICE_ACTIVE_EXTENDER =			map.getMissingSprite();//TODO register(DEVICE_ACTIVE_ + "extender");
+		DEVICE_ACTIVE_FLUID_BUFFER =		register(DEVICE_ACTIVE_ + "fluid_buffer");
 
         DEVICE_FRAME_TOP =                  register(DEVICE_ + "frame_top");
 		DEVICE_FRAME_SIDE =                 register(DEVICE_ + "frame_side");
@@ -334,11 +332,11 @@ public class TETextures {
 				DEVICE_FACE_HEAT_SINK,
 				DEVICE_FACE_TAPPER,
 				DEVICE_FACE_FISHER,
-				DEVICE_FACE_ITEM_BUFFER
+				DEVICE_FACE_ITEM_BUFFER,
+				DEVICE_FACE_FLUID_BUFFER
 
 //				DEVICE_FACE_EXTENDER,
 //				DEVICE_FACE_CONCENTRATOR,
-//				DEVICE_FACE_FLUID_BUFFER,
 //				DEVICE_FACE_ENERGY_BUFFER
 		};
 
@@ -348,11 +346,11 @@ public class TETextures {
 				DEVICE_ACTIVE_HEAT_SINK,
 				DEVICE_ACTIVE_TAPPER,
 				DEVICE_ACTIVE_FISHER,
-				DEVICE_ACTIVE_ITEM_BUFFER
+				DEVICE_ACTIVE_ITEM_BUFFER,
+				DEVICE_ACTIVE_FLUID_BUFFER
 
 //				DEVICE_ACTIVE_EXTENDER,
 //				DEVICE_ACTIVE_CONCENTRATOR,
-//				DEVICE_ACTIVE_FLUID_BUFFER,
 //				DEVICE_ACTIVE_ENERGY_BUFFER
 		};
 
@@ -518,6 +516,8 @@ public class TETextures {
 	}
 
 	/* HELPERS */
+	private static TextureMap textureMap;
+
 	private static TextureAtlasSprite register(String sprite) {
 
 		return textureMap.registerSprite(new ResourceLocation(sprite));
@@ -531,7 +531,6 @@ public class TETextures {
 		return register(sprite);
 	}
 
-	private static TextureMap textureMap;
 	private static String CB_POSTFIX = "_cb";
 
 	private static final String BLOCKS_ = "thermalexpansion:blocks/";
@@ -641,11 +640,11 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_FACE_HEAT_SINK;
 	public static TextureAtlasSprite DEVICE_FACE_TAPPER;
 	public static TextureAtlasSprite DEVICE_FACE_FISHER;
+	public static TextureAtlasSprite DEVICE_FACE_ITEM_BUFFER;
+	public static TextureAtlasSprite DEVICE_FACE_FLUID_BUFFER;
 
 	public static TextureAtlasSprite DEVICE_FACE_EXTENDER;
 	public static TextureAtlasSprite DEVICE_FACE_CONCENTRATOR;
-	public static TextureAtlasSprite DEVICE_FACE_ITEM_BUFFER;
-	public static TextureAtlasSprite DEVICE_FACE_FLUID_BUFFER;
 	public static TextureAtlasSprite DEVICE_FACE_ENERGY_BUFFER;
 
 	public static TextureAtlasSprite[] DEVICE_ACTIVE;
@@ -654,11 +653,11 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_ACTIVE_HEAT_SINK;
 	public static TextureAtlasSprite DEVICE_ACTIVE_TAPPER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_FISHER;
+	public static TextureAtlasSprite DEVICE_ACTIVE_ITEM_BUFFER;
+	public static TextureAtlasSprite DEVICE_ACTIVE_FLUID_BUFFER;
 
 	public static TextureAtlasSprite DEVICE_ACTIVE_EXTENDER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_CONCENTRATOR;
-	public static TextureAtlasSprite DEVICE_ACTIVE_ITEM_BUFFER;
-	public static TextureAtlasSprite DEVICE_ACTIVE_FLUID_BUFFER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_ENERGY_BUFFER;
 
 	public static TextureAtlasSprite DEVICE_FRAME_TOP;

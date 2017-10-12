@@ -303,15 +303,6 @@ public class TransposerManager {
 			super(stack);
 			oreID = getOreID(stack);
 		}
-
-		@Override
-		public ComparableItemStackTransposer set(ItemStack stack) {
-
-			super.set(stack);
-			oreID = getOreID(stack);
-
-			return this;
-		}
 	}
 
 }

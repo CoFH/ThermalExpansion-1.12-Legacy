@@ -124,11 +124,11 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 				return new TileFisher();
 			case ITEM_BUFFER:
 				return new TileItemBuffer();
+			case FLUID_BUFFER:
+				return new TileFluidBuffer();
 			//			case EXTENDER:
 			//				return new TileExtender();
 			//			case CONCENTRATOR:                      // TODO
-			//				return null;
-			//			case FLUID_BUFFER:                      // TODO
 			//				return null;
 			//			case ENERGY_BUFFER:                     // TODO
 			//				return null;
@@ -270,8 +270,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		TileHeatSink.initialize();
 		TileTapper.initialize();
 		TileFisher.initialize();
-
 		TileItemBuffer.initialize();
+		TileFluidBuffer.initialize();
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -287,6 +287,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		deviceTapper = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.TAPPER.getMetadata()));
 		deviceFisher = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FISHER.getMetadata()));
 		deviceItemBuffer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
+		deviceFluidBuffer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FLUID_BUFFER.getMetadata()));
 
 		addRecipes();
 
@@ -371,6 +372,18 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					'Y', "dustRedstone"
 			);
 		}
+		if (enable[Type.FLUID_BUFFER.getMetadata()]) {
+			addShapedRecipe(deviceFluidBuffer,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameDevice,
+					'I', tinPart,
+					'P', ItemMaterial.redstoneServo,
+					'X', Items.CAULDRON,
+					'Y', "ingotCopper"
+			);
+		}
 		// @formatter:on
 	}
 
@@ -383,7 +396,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		HEAT_SINK(2, "heat_sink"),
 		TAPPER(3, "tapper"),
 		FISHER(4, "fisher"),
-		ITEM_BUFFER(5, "item_buffer");
+		ITEM_BUFFER(5, "item_buffer"),
+		FLUID_BUFFER(6, "fluid_buffer");
 
 		// OREDICT
 		// CHUNK_LOADER
@@ -447,11 +461,11 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	public static ItemStack deviceTapper;
 	public static ItemStack deviceFisher;
 	public static ItemStack deviceItemBuffer;
+	public static ItemStack deviceFluidBuffer;
+	public static ItemStack deviceEnergyBuffer;
 
 	public static ItemStack deviceTrader;
 
-	public static ItemStack deviceFluidBuffer;
-	public static ItemStack deviceEnergyBuffer;
 	public static ItemStack deviceLexicon;
 	public static ItemStack deviceChunkLoader;
 

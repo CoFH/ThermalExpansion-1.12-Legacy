@@ -59,7 +59,7 @@ public class TileCompactor extends TileMachineBase {
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
 
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage, disableScaling);
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
 	private int inputTracker;

@@ -29,6 +29,8 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 	final List<FluidStack> outputFluids;
 
 	/* Animation */
+	final IDrawableStatic progressBack;
+	final IDrawableStatic speedBack;
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
@@ -60,6 +62,9 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 
 		energy = recipe.getEnergy();
 
+		progressBack = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
+		speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_FLAME);
+
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_DROP);
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLAME);
@@ -88,6 +93,9 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		progressBack.draw(minecraft, 69, 23);
+		speedBack.draw(minecraft, 43, 33);
 
 		JEIPluginTE.drawFluid(69, 23, outputFluids.get(0), 24, 16);
 

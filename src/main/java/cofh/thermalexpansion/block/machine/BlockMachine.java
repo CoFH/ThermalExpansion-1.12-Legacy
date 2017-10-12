@@ -57,8 +57,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
-import static cofh.core.util.helpers.RecipeHelper.addShapelessUpgradeKitRecipe;
+import static cofh.core.util.helpers.RecipeHelper.*;
 
 public class BlockMachine extends BlockTEBase implements IModelRegister, IBakeryProvider, IWorldBlockTextureProvider {
 
@@ -162,8 +161,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 				return new TileCentrifuge();
 			case CRAFTER:
 				return new TileCrafter();
-			case BREWER:                        // TODO
-				return null;
+			case BREWER:
+				return new TileBrewer();
 			case ENCHANTER:
 				return new TileEnchanter();
 			case PRECIPITATOR:
@@ -340,7 +339,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		TileTransposer.initialize();
 		TileCharger.initialize();
 		TileCentrifuge.initialize();
-		TileCrafter.initialize();
+		// TileCrafter.initialize();
 		// TileBrewer.initialize();
 		// TileEnchanter.initialize();
 		TilePrecipitator.initialize();
@@ -365,7 +364,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		machineTransposer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));
 		machineCharger = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
 		machineCentrifuge = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CENTRIFUGE.getMetadata()));
-		machineCrafter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
+		// machineCrafter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
 		// machineBrewer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.BREWER.getMetadata()));
 		// machineEnchanter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ENCHANTER.getMetadata()));
 		machinePrecipitator = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.PRECIPITATOR.getMetadata()));
@@ -373,6 +372,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 
 		addRecipes();
 		addUpgradeRecipes();
+		addClassicRecipes();
 
 		return true;
 	}
@@ -547,22 +547,34 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'C', ItemFrame.frameMachine,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', "chestWood",
+					'X', "workbench",
 					'Y', "gearTin"
 			);
 		}
-//		if (enable[Type.ENCHANTER.getMetadata()]) {
-//			addShapedRecipe(machineEnchanter,
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', ItemFrame.frameMachine,
-//					'I', constantanPart,
-//					'P', ItemMaterial.powerCoilGold,
-//					'X', Blocks.ENCHANTING_TABLE,
-//					'Y', "blockLapis"
-//			);
-//		}
+		if (enable[Type.BREWER.getMetadata()]) {
+			addShapedRecipe(machineEnchanter,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameMachine,
+					'I', constantanPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', Blocks.BREWING_STAND,
+					'Y', "blockGlassHardened"
+			);
+		}
+		if (enable[Type.ENCHANTER.getMetadata()]) {
+			addShapedRecipe(machineEnchanter,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameMachine,
+					'I', constantanPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', Blocks.ENCHANTING_TABLE,
+					'Y', "blockLapis"
+			);
+		}
 		if (enable[Type.PRECIPITATOR.getMetadata()]) {
 			addShapedRecipe(machinePrecipitator,
 					" X ",
@@ -610,6 +622,50 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 						addShapelessUpgradeKitRecipe(block[j + 1], block[k], ItemUpgrade.upgradeFull[j]);
 					}
 				}
+			}
+		}
+	}
+
+	private void addClassicRecipes() {
+
+		if (!enableClassicRecipes) {
+			return;
+		}
+		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+			if (enable[i]) {
+				ItemStack[] machine = new ItemStack[5];
+
+				for (int j = 0; j < 5; j++) {
+					machine[j] = (itemBlock.setDefaultTag(new ItemStack(this, 1, i), j));
+				}
+				// @formatter:off
+				addShapedUpgradeRecipe(machine[1],
+						" I ",
+						"ICI",
+						" I ",
+						'C', machine[0],
+						'I', "ingotInvar"
+				);
+				addShapedUpgradeRecipe(machine[2], "YIY",
+						"ICI",
+						"YIY",
+						'C', machine[1],
+						'I', "ingotElectrum",
+						'Y', "blockGlassHardened"
+				);
+				addShapedUpgradeRecipe(machine[3], " I ",
+						"ICI",
+						" I ",
+						'C', machine[2],
+						'I', "ingotSignalum"
+				);
+				addShapedUpgradeRecipe(machine[4], " I ",
+						"ICI",
+						" I ",
+						'C', machine[3],
+						'I', "ingotEnderium"
+				);
+				// @formatter:on
 			}
 		}
 	}
@@ -673,6 +729,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 	}
 
 	public static boolean[] enable = new boolean[Type.values().length];
+	public static boolean enableClassicRecipes;
 	public static boolean enableUpgradeKitCrafting;
 
 	/* REFERENCES */

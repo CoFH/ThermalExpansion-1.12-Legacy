@@ -17,7 +17,6 @@ import cofh.thermalexpansion.util.managers.dynamo.*;
 import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalfoundation.ThermalFoundation;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -128,7 +127,6 @@ public class ThermalExpansion {
 	private void registerHandlers() {
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, GUI_HANDLER);
-		MinecraftForge.EVENT_BUS.register(proxy);
 
 		PacketTEBase.initialize();
 	}

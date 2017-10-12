@@ -209,6 +209,7 @@ info.thermalexpansion.coolant=Coolant
 
 info.thermalexpansion.device.extender=Allows for more connections to a given block.
 info.thermalexpansion.device.fisher=Catches fish and other aquatic life.
+info.thermalexpansion.device.fluid_buffer=Stores and transfers fluid.
 info.thermalexpansion.device.heat_sink=Improves operational speed of nearby machines.
 info.thermalexpansion.device.item_buffer=Stores and transfers items.
 info.thermalexpansion.device.nullifier=Removes things from existence.
@@ -367,6 +368,9 @@ tab.thermalexpansion.device.extender.1=Ta-da! It now has more sides.
 tab.thermalexpansion.device.fisher.0=Captures assorted aquatic life. Use bait to boost production.
 tab.thermalexpansion.device.fisher.1=Must be placed in a body of water.
 tab.thermalexpansion.device.fisher.2=Hang up your fishing rod.
+tab.thermalexpansion.device.fluid_buffer.0=Stores and transfers fluids. Can automatically extract.
+tab.thermalexpansion.device.fluid_buffer.1=It's like a hopper, for fluids!
+tab.thermalexpansion.device.fluid_buffer.2=Hold Shift or Ctrl to fine tune quantities.
 tab.thermalexpansion.device.heat_sink.0=Cools down adjacent blocks, improving their speed.
 tab.thermalexpansion.device.heat_sink.1=Just fill with coolant and watch it work!
 tab.thermalexpansion.device.heat_sink.2=Coolants have varying degrees of effectiveness.
@@ -460,6 +464,7 @@ tile.thermalexpansion.apparatus.collector.name=Acquisition Apparatus
 
 tile.thermalexpansion.device.extender.name=Surface Junction
 tile.thermalexpansion.device.fisher.name=Aquatic Entangler
+tile.thermalexpansion.device.fluid_buffer.name=Fluid Allocator
 tile.thermalexpansion.device.heat_sink.name=Thermal Mediator
 tile.thermalexpansion.device.item_buffer.name=Item Allocator
 tile.thermalexpansion.device.nullifier.name=Nullifier

@@ -60,7 +60,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
 
 		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
-		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
+		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
 	private FluidTankCore fuelTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
@@ -270,7 +270,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		if (!augmentBoiler && TEProps.DYNAMO_BOILER.equals(id)) {
 			augmentBoiler = true;
 			hasModeAugment = true;
-			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level));
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level), smallStorage);
 			energyStorage.setEnergyStored(0);
 			energyMod -= 30;
 			return true;
@@ -283,7 +283,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		if (!augmentFuel && TEProps.DYNAMO_COMPRESSION_FUEL.equals(id)) {
 			augmentFuel = true;
 			hasModeAugment = true;
-			energyConfig.setDefaultParams(energyConfig.maxPower + 3 * getBasePower(this.level));
+			energyConfig.setDefaultParams(energyConfig.maxPower + 3 * getBasePower(this.level), smallStorage);
 			energyMod += 50;
 			return true;
 		}

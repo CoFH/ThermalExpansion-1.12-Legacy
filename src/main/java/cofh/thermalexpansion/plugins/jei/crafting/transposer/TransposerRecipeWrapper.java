@@ -33,7 +33,8 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 	final int chance;
 
 	/* Animation */
-	final IDrawableStatic drop;
+	final IDrawableStatic progressBack;
+	final IDrawableStatic speedBack;
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
@@ -72,17 +73,21 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 		chance = recipe.getChance();
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
+			progressBack = Drawables.getDrawables(guiHelper).getProgressLeft(Drawables.PROGRESS_DROP);
+			speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_BUBBLE);
+
 			IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgressLeft(Drawables.PROGRESS_DROP);
 			IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressLeftFill(Drawables.PROGRESS_DROP);
 
-			drop = Drawables.getDrawables(guiHelper).getProgressLeft(Drawables.PROGRESS_DROP);
 			fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileTransposer.basePower, StartDirection.RIGHT, true);
 			progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileTransposer.basePower, StartDirection.RIGHT, false);
 		} else {
+			progressBack = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
+			speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_BUBBLE);
+
 			IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
 			IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_DROP);
 
-			drop = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
 			fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileTransposer.basePower, StartDirection.LEFT, true);
 			progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileTransposer.basePower, StartDirection.LEFT, false);
 		}
@@ -109,7 +114,8 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
-		drop.draw(minecraft, 63, 11);
+		progressBack.draw(minecraft, 63, 11);
+		speedBack.draw(minecraft, 68, 41);
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
 			JEIPluginTE.drawFluid(63, 11, inputFluids.get(0).get(0), 24, 16);

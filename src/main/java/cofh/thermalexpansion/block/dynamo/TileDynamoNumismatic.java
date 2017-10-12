@@ -46,7 +46,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
 
 		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
-		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
+		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
 	/* AUGMENTS */
@@ -178,7 +178,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		if (!augmentGem && TEProps.DYNAMO_NUMISMATIC_GEM.equals(id)) {
 			augmentGem = true;
 			hasModeAugment = true;
-			energyConfig.setDefaultParams(energyConfig.maxPower + 4 * getBasePower(this.level));
+			energyConfig.setDefaultParams(energyConfig.maxPower + 4 * getBasePower(this.level), smallStorage);
 			energyMod += 25;
 			return true;
 		}

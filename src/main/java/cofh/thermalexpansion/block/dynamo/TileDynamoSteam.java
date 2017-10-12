@@ -60,7 +60,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
 
 		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
-		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
+		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
 	public static final int STEAM_RF = 25000;
@@ -297,7 +297,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		if (!augmentBoiler && TEProps.DYNAMO_BOILER.equals(id)) {
 			augmentBoiler = true;
 			hasModeAugment = true;
-			energyConfig.setDefaultParams(energyConfig.maxPower + 3 * getBasePower(this.level));
+			energyConfig.setDefaultParams(energyConfig.maxPower + 3 * getBasePower(this.level), smallStorage);
 			energyStorage.setEnergyStored(0);
 			energyMod += 15;
 			return true;
@@ -305,7 +305,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		if (!augmentTurbine && TEProps.DYNAMO_STEAM_TURBINE.equals(id)) {
 			augmentTurbine = true;
 			hasModeAugment = true;
-			energyConfig.setDefaultParams(energyConfig.maxPower + 3 * getBasePower(this.level));
+			energyConfig.setDefaultParams(energyConfig.maxPower + 3 * getBasePower(this.level), smallStorage);
 			fuelRF = 0;
 			waterRF = 0;
 			return true;

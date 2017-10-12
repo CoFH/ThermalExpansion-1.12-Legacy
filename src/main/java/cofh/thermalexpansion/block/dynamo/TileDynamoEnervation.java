@@ -45,7 +45,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
 
 		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
-		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
+		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
 	public TileDynamoEnervation() {

@@ -60,7 +60,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
 
 		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
-		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
+		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
@@ -239,7 +239,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 		if (!augmentElemental && TEProps.DYNAMO_REACTANT_ELEMENTAL.equals(id)) {
 			augmentElemental = true;
 			hasModeAugment = true;
-			energyConfig.setDefaultParams(energyConfig.maxPower + 4 * getBasePower(this.level));
+			energyConfig.setDefaultParams(energyConfig.maxPower + 4 * getBasePower(this.level), smallStorage);
 			energyMod += 25;
 			return true;
 		}

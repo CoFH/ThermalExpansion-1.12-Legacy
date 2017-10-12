@@ -238,10 +238,9 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 			return true;
 		}
 
-		// If scaling is disabled, the maximum power value will always be used. Small storage also forces this option to minimize CPU impact.
-		public boolean setDefaultParams(int basePower, boolean smallStorage, boolean disableScaling) {
+		public boolean setDefaultParams(int basePower, boolean smallStorage) {
 
-			if (!smallStorage && !disableScaling) {
+			if (!smallStorage) {
 				return setDefaultParams(basePower);
 			}
 			maxPower = basePower;

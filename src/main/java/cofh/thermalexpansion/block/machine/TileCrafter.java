@@ -4,6 +4,7 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.inventory.InventoryCraftingFalse;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.ItemHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiCrafter;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrafter;
@@ -57,15 +58,14 @@ public class TileCrafter extends TileMachineBase {
 
 	public static void config() {
 
-		BlockMachine.enable[TYPE] = false;
-		//		String category = "Machine.Crafter";
-		//		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
-		//
-		//		String comment = "Adjust this value to change the Energy consumption (in RF/t) for a Cyclic Assembler. This base value will scale with block level and Augments.";
-		//		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
-		//
-		//		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		//		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
+		String category = "Machine.Crafter";
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		String comment = "Adjust this value to change the Energy consumption (in RF/t) for a Cyclic Assembler. This base value will scale with block level and Augments.";
+		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
+
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
 	private int inputTracker;

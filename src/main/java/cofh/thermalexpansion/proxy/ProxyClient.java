@@ -4,17 +4,15 @@ import cofh.core.render.IModelRegister;
 import cofh.thermalexpansion.block.storage.TileCache;
 import cofh.thermalexpansion.block.storage.TileStrongbox;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
-import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.render.RenderCache;
 import cofh.thermalexpansion.render.RenderStrongbox;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
-import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
 
@@ -25,6 +23,8 @@ public class ProxyClient extends Proxy {
 	public void preInit(FMLPreInitializationEvent event) {
 
 		super.preInit(event);
+
+		MinecraftForge.EVENT_BUS.register(EventHandlerClient.INSTANCE);
 
 		for (IModelRegister register : modelList) {
 			register.registerModels();
@@ -53,13 +53,6 @@ public class ProxyClient extends Proxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityFlorb.class, RenderEntityFlorb::new);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCache.class, RenderCache.INSTANCE);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileStrongbox.class, RenderStrongbox.INSTANCE);
-	}
-
-	/* EVENT HANDLING */
-	@SubscribeEvent
-	public void handleTextureStitchEventPre(TextureStitchEvent.Pre event) {
-
-		TETextures.registerTextures(event.getMap());
 	}
 
 	/* HELPERS */

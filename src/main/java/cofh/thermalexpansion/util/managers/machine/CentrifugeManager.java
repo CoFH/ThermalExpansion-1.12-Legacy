@@ -221,19 +221,10 @@ public class CentrifugeManager {
 			return -1;
 		}
 
-		ComparableItemStackCentrifuge(ItemStack stack) {
+		public ComparableItemStackCentrifuge(ItemStack stack) {
 
 			super(stack);
 			oreID = getOreID(stack);
-		}
-
-		@Override
-		public ComparableItemStackCentrifuge set(ItemStack stack) {
-
-			super.set(stack);
-			oreID = getOreID(stack);
-
-			return this;
 		}
 	}
 
