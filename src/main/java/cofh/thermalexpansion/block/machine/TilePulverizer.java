@@ -36,6 +36,8 @@ public class TilePulverizer extends TileMachineBase {
 	public static int basePower = 20;
 	public static int fluidAmount = 100;
 
+	public static final int PETROTHEUM_ENERGY_MOD = 50;
+
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
@@ -359,7 +361,7 @@ public class TilePulverizer extends TileMachineBase {
 		if (!augmentPetrotheum && TEProps.MACHINE_PULVERIZER_PETROTHEUM.equals(id)) {
 			augmentPetrotheum = true;
 			hasModeAugment = true;
-			energyMod += 50;
+			energyMod += PETROTHEUM_ENERGY_MOD;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

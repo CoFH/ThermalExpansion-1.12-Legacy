@@ -34,9 +34,11 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 
 	final int chance;
 
-	final Type substrate;
+	final Type type;
 
 	/* Animation */
+	final IDrawableStatic progressBack;
+	final IDrawableStatic speedBack;
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
@@ -88,7 +90,10 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 		energy = recipe.getEnergy();
 		chance = recipe.getSecondaryOutputChance();
 
-		substrate = recipe.getType();
+		type = recipe.getType();
+
+		progressBack = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
+		speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_SUN);
 
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_ARROW_FLUID);
@@ -111,6 +116,9 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		progressBack.draw(minecraft, 69, 23);
+		speedBack.draw(minecraft, 34, 34);
 
 		JEIPluginTE.drawFluid(69, 23, inputFluids.get(0).get(0), 24, 16);
 

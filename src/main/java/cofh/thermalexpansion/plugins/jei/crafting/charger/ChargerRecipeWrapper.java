@@ -23,6 +23,7 @@ public class ChargerRecipeWrapper extends BaseRecipeWrapper {
 	final List<ItemStack> outputs;
 
 	/* Animation */
+	final IDrawableStatic progressBack;
 	final IDrawableAnimated progress;
 
 	public ChargerRecipeWrapper(IGuiHelper guiHelper, ChargerRecipe recipe) {
@@ -37,6 +38,8 @@ public class ChargerRecipeWrapper extends BaseRecipeWrapper {
 		outputs = recipeOutputs;
 
 		energy = recipe.getEnergy();
+
+		progressBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_FLUX);
 
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLUX);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
@@ -54,6 +57,8 @@ public class ChargerRecipeWrapper extends BaseRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		progressBack.draw(minecraft, 34, 43);
 
 		progress.draw(minecraft, 34, 43);
 		energyMeter.draw(minecraft, 2, 8);

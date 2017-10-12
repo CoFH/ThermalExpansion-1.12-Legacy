@@ -4,6 +4,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.machine.TileCrucible;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
+import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager.ComparableItemStackCrucible;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager.CrucibleRecipe;
@@ -28,11 +29,20 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 	final List<FluidStack> outputFluids;
 
 	/* Animation */
+	final IDrawableStatic progressBack;
+	final IDrawableStatic speedBack;
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
 	public CrucibleRecipeWrapper(IGuiHelper guiHelper, CrucibleRecipe recipe) {
+
+		this(guiHelper, recipe, RecipeUidsTE.CRUCIBLE);
+	}
+
+	public CrucibleRecipeWrapper(IGuiHelper guiHelper, CrucibleRecipe recipe, String uIdIn) {
+
+		uId = uIdIn;
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 
@@ -52,15 +62,21 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 
 		energy = recipe.getEnergy();
 
+		progressBack = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
+		speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_FLAME);
+
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_DROP);
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLAME);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileCrucible.basePower, StartDirection.LEFT, true);
-		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileCrucible.basePower, StartDirection.LEFT, false);
+		int basePower = TileCrucible.basePower;
+
+		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / basePower, StartDirection.LEFT, true);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / basePower, StartDirection.LEFT, false);
 		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
+
 	}
 
 	@Override
@@ -72,6 +88,9 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		progressBack.draw(minecraft, 69, 23);
+		speedBack.draw(minecraft, 43, 33);
 
 		JEIPluginTE.drawFluid(69, 23, outputFluids.get(0), 24, 16);
 

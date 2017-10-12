@@ -34,6 +34,8 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 	final int chance;
 
 	/* Animation */
+	final IDrawableStatic progressBack;
+	final IDrawableStatic speedBack;
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
@@ -77,7 +79,7 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 			recipeInputFluids.add(new FluidStack(TFFluids.fluidPyrotheum, TileSmelter.fluidAmount));
 			inputFluids = Collections.singletonList(recipeInputFluids);
 			recipeOutputs.add(ItemHelper.cloneStack(recipe.getPrimaryOutput(), recipe.getPrimaryOutput().getCount() + 1));
-			energy = recipe.getEnergy() * 3 / 2;
+			energy = recipe.getEnergy() * (100 + TileSmelter.PYROTHEUM_ENERGY_MOD) / 100;
 		} else {
 			inputFluids = Collections.emptyList();
 			recipeOutputs.add(recipe.getPrimaryOutput());
@@ -90,6 +92,9 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 		outputs = recipeOutputs;
 
 		chance = recipe.getSecondaryOutputChance();
+
+		progressBack = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
+		speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_FLAME);
 
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(uId.equals(RecipeUidsTE.SMELTER_PYROTHEUM) ? Drawables.PROGRESS_ARROW_FLUID : Drawables.PROGRESS_ARROW);
@@ -112,6 +117,9 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		progressBack.draw(minecraft, 69, 23);
+		speedBack.draw(minecraft, 34, 33);
 
 		if (uId.equals(RecipeUidsTE.SMELTER_PYROTHEUM)) {
 			JEIPluginTE.drawFluid(69, 23, inputFluids.get(0).get(0), 24, 16);

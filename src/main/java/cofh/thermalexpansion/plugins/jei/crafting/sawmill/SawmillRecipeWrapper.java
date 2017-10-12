@@ -34,6 +34,8 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 	final int chance;
 
 	/* Animation */
+	final IDrawableStatic progressBack;
+	final IDrawableStatic speedBack;
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
@@ -70,7 +72,7 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 
 			recipeOutputFluids.add(treeFluid);
 			outputFluids = recipeOutputFluids;
-			energy = recipe.getEnergy() * 3 / 2;
+			energy = recipe.getEnergy() * (100 + TileSawmill.TAPPER_ENERGY_MOD) / 100;
 		} else {
 			outputFluids = Collections.emptyList();
 			energy = recipe.getEnergy();
@@ -79,6 +81,9 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 		outputs = recipeOutputs;
 
 		chance = recipe.getSecondaryOutputChance();
+
+		progressBack = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
+		speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_SAW);
 
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(uId.equals(RecipeUidsTE.SAWMILL_TAPPER) ? Drawables.PROGRESS_ARROW_FLUID : Drawables.PROGRESS_ARROW);
@@ -101,6 +106,9 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		progressBack.draw(minecraft, 69, 23);
+		speedBack.draw(minecraft, 43, 33);
 
 		if (uId.equals(RecipeUidsTE.SAWMILL_TAPPER)) {
 			JEIPluginTE.drawFluid(69, 23, outputFluids.get(0), 24, 16);

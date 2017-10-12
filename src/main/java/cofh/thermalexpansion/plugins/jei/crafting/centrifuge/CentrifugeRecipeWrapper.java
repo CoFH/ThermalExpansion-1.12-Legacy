@@ -30,6 +30,8 @@ public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 	final List<Integer> chance;
 
 	/* Animation */
+	final IDrawableStatic progressBack;
+	final IDrawableStatic speedBack;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
@@ -58,6 +60,9 @@ public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 		chance = recipe.getChance();
 		energy = recipe.getEnergy();
 
+		progressBack = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
+		speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_SPIN);
+
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_ARROW);
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_SPIN);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
@@ -77,6 +82,9 @@ public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		progressBack.draw(minecraft, 62, 23);
+		speedBack.draw(minecraft, 34, 32);
 
 		progress.draw(minecraft, 62, 23);
 		speed.draw(minecraft, 34, 32);

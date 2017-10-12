@@ -41,6 +41,8 @@ public class TileSawmill extends TileMachineBase {
 	public static int basePower = 20;
 	public static int fluidFactor = 5;
 
+	public static final int TAPPER_ENERGY_MOD = 50;
+
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
@@ -420,7 +422,7 @@ public class TileSawmill extends TileMachineBase {
 		if (!augmentTapper && TEProps.MACHINE_SAWMILL_TAPPER.equals(id)) {
 			augmentTapper = true;
 			hasModeAugment = true;
-			energyMod += 50;
+			energyMod += TAPPER_ENERGY_MOD;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

@@ -34,6 +34,8 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 	final int chance;
 
 	/* Animation */
+	final IDrawableStatic progressBack;
+	final IDrawableStatic speedBack;
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
@@ -63,7 +65,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 			recipeInputFluids.add(new FluidStack(TFFluids.fluidPetrotheum, TilePulverizer.fluidAmount));
 			inputFluids = Collections.singletonList(recipeInputFluids);
 			recipeOutputs.add(ItemHelper.cloneStack(recipe.getPrimaryOutput(), recipe.getPrimaryOutput().getCount() + 1));
-			energy = recipe.getEnergy() * 3 / 2;
+			energy = recipe.getEnergy() * (100 + TilePulverizer.PETROTHEUM_ENERGY_MOD) / 100;
 		} else {
 			inputFluids = Collections.emptyList();
 			recipeOutputs.add(recipe.getPrimaryOutput());
@@ -76,6 +78,9 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 		outputs = recipeOutputs;
 
 		chance = recipe.getSecondaryOutputChance();
+
+		progressBack = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
+		speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_CRUSH);
 
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(uId.equals(RecipeUidsTE.PULVERIZER_PETROTHEUM) ? Drawables.PROGRESS_ARROW_FLUID : Drawables.PROGRESS_ARROW);
@@ -98,6 +103,9 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+		progressBack.draw(minecraft, 69, 23);
+		speedBack.draw(minecraft, 43, 33);
 
 		if (uId.equals(RecipeUidsTE.PULVERIZER_PETROTHEUM)) {
 			JEIPluginTE.drawFluid(69, 23, inputFluids.get(0).get(0), 24, 16);
