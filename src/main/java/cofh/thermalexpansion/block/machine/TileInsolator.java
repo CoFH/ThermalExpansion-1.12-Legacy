@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
@@ -471,6 +472,15 @@ public class TileInsolator extends TileMachineBase {
 		augmentNether = false;
 		augmentEnd = false;
 		augmentTree = false;
+	}
+
+	@Override
+	protected boolean isValidAugment(AugmentType type, String id) {
+
+		if (augmentTree && TEProps.MACHINE_INSOLATOR_TREE.equals(id)) {
+			return false;
+		}
+		return super.isValidAugment(type, id);
 	}
 
 	@Override

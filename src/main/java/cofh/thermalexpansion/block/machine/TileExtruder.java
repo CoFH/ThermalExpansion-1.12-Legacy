@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.gui.container.ICustomInventory;
 import cofh.core.network.PacketCoFHBase;
@@ -432,6 +433,15 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	}
 
 	@Override
+	protected boolean isValidAugment(AugmentType type, String id) {
+
+		if (augmentNoWater && TEProps.MACHINE_EXTRUDER_NO_WATER.equals(id)) {
+			return false;
+		}
+		return super.isValidAugment(type, id);
+	}
+
+	@Override
 	protected boolean installAugmentToSlot(int slot) {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
@@ -475,7 +485,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	}
 
 	@Override
-	public void onSlotUpdate() {
+	public void onSlotUpdate(int slotIndex) {
 
 		markChunkDirty();
 	}

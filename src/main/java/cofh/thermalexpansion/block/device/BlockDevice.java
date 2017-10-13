@@ -16,6 +16,7 @@ import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
+import cofh.thermalfoundation.item.ItemTome;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -126,6 +127,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 				return new TileItemBuffer();
 			case FLUID_BUFFER:
 				return new TileFluidBuffer();
+			case LEXICON:
+				return new TileLexicon();
 			//			case EXTENDER:
 			//				return new TileExtender();
 			//			case CONCENTRATOR:                      // TODO
@@ -148,8 +151,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		if (stack.getTagCompound() != null) {
 			TileDeviceBase tile = (TileDeviceBase) world.getTileEntity(pos);
 
-			tile.readAugmentsFromNBT(stack.getTagCompound());
-			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
+			// tile.readAugmentsFromNBT(stack.getTagCompound());
+			// tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
 			int storedFacing = ReconfigurableHelper.getFacing(stack);
@@ -272,6 +275,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		TileFisher.initialize();
 		TileItemBuffer.initialize();
 		TileFluidBuffer.initialize();
+		TileLexicon.initialize();
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -288,6 +292,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		deviceFisher = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FISHER.getMetadata()));
 		deviceItemBuffer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
 		deviceFluidBuffer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FLUID_BUFFER.getMetadata()));
+		deviceLexicon = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.LEXICON.getMetadata()));
 
 		addRecipes();
 
@@ -384,6 +389,18 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					'Y', "ingotCopper"
 			);
 		}
+		if (enable[Type.LEXICON.getMetadata()]) {
+			addShapedRecipe(deviceLexicon,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameDevice,
+					'I', tinPart,
+					'P', ItemMaterial.redstoneServo,
+					'X', ItemTome.tomeLexicon,
+					'Y', "ingotLead"
+			);
+		}
 		// @formatter:on
 	}
 
@@ -397,7 +414,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		TAPPER(3, "tapper"),
 		FISHER(4, "fisher"),
 		ITEM_BUFFER(5, "item_buffer"),
-		FLUID_BUFFER(6, "fluid_buffer");
+		FLUID_BUFFER(6, "fluid_buffer"),
+		LEXICON(7, "lexicon");
 
 		// OREDICT
 		// CHUNK_LOADER

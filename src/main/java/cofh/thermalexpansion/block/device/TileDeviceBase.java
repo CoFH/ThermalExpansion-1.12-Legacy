@@ -2,13 +2,14 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
+import cofh.thermalexpansion.block.TileReconfigurable;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class TileDeviceBase extends TilePowered {
+public abstract class TileDeviceBase extends TileReconfigurable {
 
 	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[Type.values().length];
 	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[Type.values().length];

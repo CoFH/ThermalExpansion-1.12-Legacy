@@ -102,6 +102,7 @@ public class TETextures {
 		DEVICE_FACE_FISHER =                register(DEVICE_FACE_ + "fisher");
 		DEVICE_FACE_ITEM_BUFFER =			register(DEVICE_FACE_ + "item_buffer");
 		DEVICE_FACE_FLUID_BUFFER =			register(DEVICE_FACE_ + "fluid_buffer");
+		DEVICE_FACE_LEXICON =	    		register(DEVICE_FACE_ + "lexicon");
 
 		DEVICE_ACTIVE_WATER_GEN =			register(DEVICE_ACTIVE_ + "water_gen");
 		DEVICE_ACTIVE_NULLIFIER =			register(DEVICE_ACTIVE_ + "nullifier");
@@ -110,6 +111,7 @@ public class TETextures {
 		DEVICE_ACTIVE_FISHER =              register(DEVICE_ACTIVE_ + "fisher");
 		DEVICE_ACTIVE_ITEM_BUFFER =			register(DEVICE_ACTIVE_ + "item_buffer");
 		DEVICE_ACTIVE_FLUID_BUFFER =		register(DEVICE_ACTIVE_ + "fluid_buffer");
+		DEVICE_ACTIVE_LEXICON =	        	register(DEVICE_ACTIVE_ + "lexicon");
 
         DEVICE_FRAME_TOP =                  register(DEVICE_ + "frame_top");
 		DEVICE_FRAME_SIDE =                 register(DEVICE_ + "frame_side");
@@ -333,7 +335,8 @@ public class TETextures {
 				DEVICE_FACE_TAPPER,
 				DEVICE_FACE_FISHER,
 				DEVICE_FACE_ITEM_BUFFER,
-				DEVICE_FACE_FLUID_BUFFER
+				DEVICE_FACE_FLUID_BUFFER,
+				DEVICE_FACE_LEXICON
 
 //				DEVICE_FACE_EXTENDER,
 //				DEVICE_FACE_CONCENTRATOR,
@@ -347,7 +350,8 @@ public class TETextures {
 				DEVICE_ACTIVE_TAPPER,
 				DEVICE_ACTIVE_FISHER,
 				DEVICE_ACTIVE_ITEM_BUFFER,
-				DEVICE_ACTIVE_FLUID_BUFFER
+				DEVICE_ACTIVE_FLUID_BUFFER,
+				DEVICE_ACTIVE_LEXICON
 
 //				DEVICE_ACTIVE_EXTENDER,
 //				DEVICE_ACTIVE_CONCENTRATOR,
@@ -642,6 +646,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_FACE_FISHER;
 	public static TextureAtlasSprite DEVICE_FACE_ITEM_BUFFER;
 	public static TextureAtlasSprite DEVICE_FACE_FLUID_BUFFER;
+	public static TextureAtlasSprite DEVICE_FACE_LEXICON;
 
 	public static TextureAtlasSprite DEVICE_FACE_EXTENDER;
 	public static TextureAtlasSprite DEVICE_FACE_CONCENTRATOR;
@@ -655,6 +660,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_ACTIVE_FISHER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_ITEM_BUFFER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_FLUID_BUFFER;
+	public static TextureAtlasSprite DEVICE_ACTIVE_LEXICON;
 
 	public static TextureAtlasSprite DEVICE_ACTIVE_EXTENDER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_CONCENTRATOR;
