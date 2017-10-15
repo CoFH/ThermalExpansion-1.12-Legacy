@@ -340,7 +340,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		TileCharger.initialize();
 		TileCentrifuge.initialize();
 		// TileCrafter.initialize();
-		// TileBrewer.initialize();
+		TileBrewer.initialize();
 		// TileEnchanter.initialize();
 		TilePrecipitator.initialize();
 		TileExtruder.initialize();
@@ -365,7 +365,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		machineCharger = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
 		machineCentrifuge = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CENTRIFUGE.getMetadata()));
 		// machineCrafter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
-		// machineBrewer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.BREWER.getMetadata()));
+		machineBrewer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.BREWER.getMetadata()));
 		// machineEnchanter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ENCHANTER.getMetadata()));
 		machinePrecipitator = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.PRECIPITATOR.getMetadata()));
 		machineExtruder = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.EXTRUDER.getMetadata()));
@@ -552,7 +552,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 			);
 		}
 		if (enable[Type.BREWER.getMetadata()]) {
-			addShapedRecipe(machineEnchanter,
+			addShapedRecipe(machineBrewer,
 					" X ",
 					"YCY",
 					"IPI",

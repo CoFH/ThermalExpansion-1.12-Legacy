@@ -5,6 +5,9 @@ chat.thermalexpansion.augment.install.success=Augment successfully installed!
 chat.thermalexpansion.upgrade.install.failure=Unable to upgrade block.
 chat.thermalexpansion.upgrade.install.success=Block successfully upgraded!
 
+gui.thermalexpansion.device.fluid_buffer.tankLocked=Tank Locked
+gui.thermalexpansion.device.fluid_buffer.tankUnlocked=Tank Unlocked
+
 gui.thermalexpansion.device.item_buffer.decInput=Decrease Input by
 gui.thermalexpansion.device.item_buffer.decOutput=Decrease Output by
 gui.thermalexpansion.device.item_buffer.incInput=Increase Input by
@@ -207,15 +210,15 @@ info.thermalexpansion.capacitor.d.0=Must remain in hotbar.
 
 info.thermalexpansion.coolant=Coolant
 
-info.thermalexpansion.device.extender=Allows for more connections to a given block.
 info.thermalexpansion.device.fisher=Catches fish and other aquatic life.
 info.thermalexpansion.device.fluid_buffer=Stores and transfers fluid.
-info.thermalexpansion.device.heat_sink=Improves operational speed of nearby machines.
+info.thermalexpansion.device.heat_sink=Improves operational speed of adjacent blocks.
 info.thermalexpansion.device.item_buffer=Stores and transfers items.
 info.thermalexpansion.device.lexicon=Transmutes items among equivalent forms.
 info.thermalexpansion.device.nullifier=Removes things from existence.
 info.thermalexpansion.device.tapper=Extracts fluid from a tree.
 info.thermalexpansion.device.water_gen=Pulls water from surroundings.
+info.thermalexpansion.device.xp_collector=Collects experience in an area.
 
 info.thermalexpansion.dynamo.0=Generates Energy (Redstone Flux).
 info.thermalexpansion.dynamo.compression=Requires fluid fuel and coolant.
@@ -239,7 +242,7 @@ info.thermalexpansion.level.3=Signalum
 info.thermalexpansion.level.4=Resonant
 info.thermalexpansion.level.creative=Creative
 
-info.thermalexpansion.machine.brewer=WIP
+info.thermalexpansion.machine.brewer=Brews potions.
 info.thermalexpansion.machine.centrifuge=Separates items into component parts.
 info.thermalexpansion.machine.charger=Charges items with RF.
 info.thermalexpansion.machine.compactor=Compresses items.
@@ -387,6 +390,9 @@ tab.thermalexpansion.device.tapper.2=Put down the axe.
 tab.thermalexpansion.device.water_gen.0=Extracts water from its surroundings.
 tab.thermalexpansion.device.water_gen.1=Place in a pool of water to speed this up.
 tab.thermalexpansion.device.water_gen.2=Don't drown.
+tab.thermalexpansion.device.xp_collector.0=Collects experience from the nearby area.
+tab.thermalexpansion.device.xp_collector.1=Experience is converted to a versatile fluid form.
+tab.thermalexpansion.device.xp_collector.2=Certain catalysts will boost production.
 
 tab.thermalexpansion.dynamo.0=Generation rate varies according to energy demand.
 tab.thermalexpansion.dynamo.compression.0=Generates Redstone Flux using fluid fuels and coolants.
@@ -400,7 +406,7 @@ tab.thermalexpansion.dynamo.reactant.1=A solid reactant and a fluid fuel must be
 tab.thermalexpansion.dynamo.steam.0=Generates Redstone Flux using Steam.
 tab.thermalexpansion.dynamo.steam.1=Solid Fuels and Water can be used to generate Steam.
 
-tab.thermalexpansion.machine.brewer.0=WIP
+tab.thermalexpansion.machine.brewer.0=Brews potions using Redstone Flux.
 tab.thermalexpansion.machine.brewer.1=WIP
 tab.thermalexpansion.machine.brewer.2=WIP
 tab.thermalexpansion.machine.centrifuge.0=Separates items into their components.
@@ -464,15 +470,15 @@ tab.thermalexpansion.storage.strongbox.0=It's a box! It stores things. Well, mos
 tile.thermalexpansion.apparatus.breaker.name=Terrain Smasher
 tile.thermalexpansion.apparatus.collector.name=Acquisition Apparatus
 
-tile.thermalexpansion.device.extender.name=Surface Junction
 tile.thermalexpansion.device.fisher.name=Aquatic Entangler
 tile.thermalexpansion.device.fluid_buffer.name=Fluid Allocator
 tile.thermalexpansion.device.heat_sink.name=Thermal Mediator
 tile.thermalexpansion.device.item_buffer.name=Item Allocator
-tile.thermalexpansion.device.lexicon.name=Thes-ore-us
+tile.thermalexpansion.device.lexicon.name=Lexical Transmuter
 tile.thermalexpansion.device.nullifier.name=Nullifier
 tile.thermalexpansion.device.tapper.name=Arboreal Extractor
 tile.thermalexpansion.device.water_gen.name=Aqueous Accumulator
+tile.thermalexpansion.device.xp_collector.name=Insightful Condenser
 
 tile.thermalexpansion.dynamo.compression.name=Compression Dynamo
 tile.thermalexpansion.dynamo.enervation.name=Enervation Dynamo

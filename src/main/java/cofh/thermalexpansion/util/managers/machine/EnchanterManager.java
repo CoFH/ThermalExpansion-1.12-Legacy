@@ -147,7 +147,8 @@ public class EnchanterManager {
 			addDefaultEnchantmentRecipe(new ItemStack(Items.EXPERIENCE_BOTTLE), "cofhcore:insight", 1);
 			addDefaultEnchantmentRecipe(new ItemStack(Blocks.SOUL_SAND), "cofhcore:leech", 1);
 			addDefaultEnchantmentRecipe(new ItemStack(Items.ARROW), "cofhcore:multishot", 2);
-			// addDefaultEnchantmentRecipe(new ItemStack(Items.SKULL), "cofhcore:vorpal", 3);
+			addDefaultEnchantmentRecipe(new ItemStack(Blocks.FURNACE), "cofhcore:smelting", 1);
+			addDefaultEnchantmentRecipe(new ItemStack(Items.SKULL), "cofhcore:vorpal", 3);
 		}
 
 		/* LOAD RECIPES */

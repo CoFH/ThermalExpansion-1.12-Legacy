@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.block.TileReconfigurable;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.init.TETextures;

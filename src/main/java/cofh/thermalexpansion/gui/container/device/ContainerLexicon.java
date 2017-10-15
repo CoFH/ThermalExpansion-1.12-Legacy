@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.gui.container.device;
 
 import cofh.core.gui.slot.ISlotValidator;
-import cofh.core.gui.slot.SlotFalseCopy;
 import cofh.core.gui.slot.SlotRemoveOnly;
 import cofh.core.gui.slot.SlotValidated;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.device.TileLexicon;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.slot.SlotLexicon;
@@ -26,7 +26,7 @@ public class ContainerLexicon extends ContainerTEBase implements ISlotValidator 
 		/* Custom Inventory */
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				addSlotToContainer(new SlotLexicon(myTile, null, j + i * 3, 62 + j * 18, 17 + i * 18));
+				addSlotToContainer(new SlotLexicon(myTile, 2 + j + i * 3, 62 + j * 18, 17 + i * 18));
 			}
 		}
 	}
@@ -34,7 +34,7 @@ public class ContainerLexicon extends ContainerTEBase implements ISlotValidator 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		return myTile.hasPreferredStack(stack);
+		return myTile.hasPreferredStack(stack) && !ItemHelper.itemsIdentical(stack, myTile.getPreferredStack(stack));
 	}
 
 }

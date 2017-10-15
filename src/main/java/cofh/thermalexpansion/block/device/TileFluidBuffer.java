@@ -59,6 +59,7 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 	private int outputTracker;
 
 	private FluidTankCore[] tanks = new FluidTankCore[3];
+	public boolean[] locks = new boolean[3];
 
 	public int amountInput = 500;
 	public int amountOutput = 500;
@@ -69,8 +70,8 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 		for (int i = 0; i < tanks.length; i++) {
 			tanks[i] = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
+			locks[i] = false;
 		}
-
 		hasAutoInput = true;
 		hasAutoOutput = true;
 
@@ -190,6 +191,7 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 		for (int i = 0; i < tanks.length; i++) {
 			tanks[i].readFromNBT(nbt.getCompoundTag("Tank" + i));
+			locks[i] = tanks[i].isLocked();
 		}
 	}
 
@@ -221,6 +223,9 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 		payload.addInt(MathHelper.clamp(amountInput, 0, 8000));
 		payload.addInt(MathHelper.clamp(amountOutput, 0, 8000));
 
+		for (boolean lock : locks) {
+			payload.addBool(lock);
+		}
 		return payload;
 	}
 
@@ -231,6 +236,16 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 		amountInput = payload.getInt();
 		amountOutput = payload.getInt();
+
+		for (int i = 0; i < locks.length; i++) {
+			locks[i] = payload.getBool();
+
+			if (locks[i]) {
+				tanks[i].setLocked();
+			} else {
+				tanks[i].clearLocked();
+			}
+		}
 	}
 
 	/* SERVER -> CLIENT */
@@ -244,6 +259,9 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 		for (FluidTankCore tank : tanks) {
 			payload.addFluidStack(tank.getFluid());
+		}
+		for (boolean lock : locks) {
+			payload.addBool(lock);
 		}
 		return payload;
 	}
@@ -269,6 +287,9 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 		for (FluidTankCore tank : tanks) {
 			tank.setFluid(payload.getFluidStack());
+		}
+		for (int i = 0; i < locks.length; i++) {
+			locks[i] = payload.getBool();
 		}
 	}
 

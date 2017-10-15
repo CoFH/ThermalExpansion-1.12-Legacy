@@ -52,8 +52,8 @@ public class TETextures {
 		MACHINE_FACE_CHARGER =				register(MACHINE_FACE_ + "charger");
 		MACHINE_FACE_CENTRIFUGE =			register(MACHINE_FACE_ + "centrifuge");
 		MACHINE_FACE_CRAFTER =				register(MACHINE_FACE_ + "crafter");
-		MACHINE_FACE_BREWER =				map.getMissingSprite();//TODO register(MACHINE_FACE_ + "brewer");
-		MACHINE_FACE_ENCHANTER =			map.getMissingSprite();//TODO register(MACHINE_FACE_ + "enchanter");
+		MACHINE_FACE_BREWER =				register(MACHINE_FACE_ + "brewer");
+		MACHINE_FACE_ENCHANTER =			register(MACHINE_FACE_ + "enchanter");
 		MACHINE_FACE_PRECIPITATOR =			register(MACHINE_FACE_ + "precipitator");
 		MACHINE_FACE_EXTRUDER =				register(MACHINE_FACE_ + "extruder");
 
@@ -69,8 +69,8 @@ public class TETextures {
 		MACHINE_ACTIVE_CHARGER =			register(MACHINE_ACTIVE_ + "charger");
 		MACHINE_ACTIVE_CENTRIFUGE =			register(MACHINE_ACTIVE_ + "centrifuge");
 		MACHINE_ACTIVE_CRAFTER =			register(MACHINE_ACTIVE_ + "crafter");
-		MACHINE_ACTIVE_BREWER =				map.getMissingSprite();//TODO register(MACHINE_ACTIVE_ + "brewer");
-		MACHINE_ACTIVE_ENCHANTER =			map.getMissingSprite();//TODO register(MACHINE_ACTIVE_ + "enchanter");
+		MACHINE_ACTIVE_BREWER =				register(MACHINE_ACTIVE_ + "brewer");
+		MACHINE_ACTIVE_ENCHANTER =			register(MACHINE_ACTIVE_ + "enchanter");
 		MACHINE_ACTIVE_PRECIPITATOR =		register(MACHINE_ACTIVE_ + "precipitator");
 		MACHINE_ACTIVE_EXTRUDER =			register(MACHINE_ACTIVE_ + "extruder");
 
@@ -103,6 +103,7 @@ public class TETextures {
 		DEVICE_FACE_ITEM_BUFFER =			register(DEVICE_FACE_ + "item_buffer");
 		DEVICE_FACE_FLUID_BUFFER =			register(DEVICE_FACE_ + "fluid_buffer");
 		DEVICE_FACE_LEXICON =	    		register(DEVICE_FACE_ + "lexicon");
+		DEVICE_FACE_XP_COLLECTOR =    		register(DEVICE_FACE_ + "xp_collector");
 
 		DEVICE_ACTIVE_WATER_GEN =			register(DEVICE_ACTIVE_ + "water_gen");
 		DEVICE_ACTIVE_NULLIFIER =			register(DEVICE_ACTIVE_ + "nullifier");
@@ -112,6 +113,7 @@ public class TETextures {
 		DEVICE_ACTIVE_ITEM_BUFFER =			register(DEVICE_ACTIVE_ + "item_buffer");
 		DEVICE_ACTIVE_FLUID_BUFFER =		register(DEVICE_ACTIVE_ + "fluid_buffer");
 		DEVICE_ACTIVE_LEXICON =	        	register(DEVICE_ACTIVE_ + "lexicon");
+		DEVICE_ACTIVE_XP_COLLECTOR =      	register(DEVICE_ACTIVE_ + "xp_collector");
 
         DEVICE_FRAME_TOP =                  register(DEVICE_ + "frame_top");
 		DEVICE_FRAME_SIDE =                 register(DEVICE_ + "frame_side");
@@ -336,11 +338,8 @@ public class TETextures {
 				DEVICE_FACE_FISHER,
 				DEVICE_FACE_ITEM_BUFFER,
 				DEVICE_FACE_FLUID_BUFFER,
-				DEVICE_FACE_LEXICON
-
-//				DEVICE_FACE_EXTENDER,
-//				DEVICE_FACE_CONCENTRATOR,
-//				DEVICE_FACE_ENERGY_BUFFER
+				DEVICE_FACE_LEXICON,
+				DEVICE_FACE_XP_COLLECTOR
 		};
 
 		DEVICE_ACTIVE = new TextureAtlasSprite[] {
@@ -351,11 +350,8 @@ public class TETextures {
 				DEVICE_ACTIVE_FISHER,
 				DEVICE_ACTIVE_ITEM_BUFFER,
 				DEVICE_ACTIVE_FLUID_BUFFER,
-				DEVICE_ACTIVE_LEXICON
-
-//				DEVICE_ACTIVE_EXTENDER,
-//				DEVICE_ACTIVE_CONCENTRATOR,
-//				DEVICE_ACTIVE_ENERGY_BUFFER
+				DEVICE_ACTIVE_LEXICON,
+				DEVICE_ACTIVE_XP_COLLECTOR
 		};
 
 		DYNAMO_COIL = new TextureAtlasSprite[] {
@@ -647,10 +643,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_FACE_ITEM_BUFFER;
 	public static TextureAtlasSprite DEVICE_FACE_FLUID_BUFFER;
 	public static TextureAtlasSprite DEVICE_FACE_LEXICON;
-
-	public static TextureAtlasSprite DEVICE_FACE_EXTENDER;
-	public static TextureAtlasSprite DEVICE_FACE_CONCENTRATOR;
-	public static TextureAtlasSprite DEVICE_FACE_ENERGY_BUFFER;
+	public static TextureAtlasSprite DEVICE_FACE_XP_COLLECTOR;
 
 	public static TextureAtlasSprite[] DEVICE_ACTIVE;
 	public static TextureAtlasSprite DEVICE_ACTIVE_WATER_GEN;
@@ -661,10 +654,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_ACTIVE_ITEM_BUFFER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_FLUID_BUFFER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_LEXICON;
-
-	public static TextureAtlasSprite DEVICE_ACTIVE_EXTENDER;
-	public static TextureAtlasSprite DEVICE_ACTIVE_CONCENTRATOR;
-	public static TextureAtlasSprite DEVICE_ACTIVE_ENERGY_BUFFER;
+	public static TextureAtlasSprite DEVICE_ACTIVE_XP_COLLECTOR;
 
 	public static TextureAtlasSprite DEVICE_FRAME_TOP;
 	public static TextureAtlasSprite DEVICE_FRAME_SIDE;

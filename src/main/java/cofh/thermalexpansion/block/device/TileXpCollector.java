@@ -4,28 +4,23 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
-import cofh.core.util.helpers.RenderHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
-import cofh.thermalexpansion.gui.client.device.GuiWaterGen;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.gui.client.device.GuiXpCollector;
+import cofh.thermalexpansion.gui.container.device.ContainerXpCollector;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.init.TESounds;
-import cofh.thermalexpansion.init.TETextures;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import cofh.thermalexpansion.util.managers.machine.XpManager;
+import cofh.thermalfoundation.init.TFFluids;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Biomes;
-import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -35,58 +30,66 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
 
-public class TileWaterGen extends TileDeviceBase implements ITickable {
+public class TileXpCollector extends TileDeviceBase implements ITickable {
 
-	private static final int TYPE = Type.WATER_GEN.getMetadata();
+	private static final int TYPE = Type.XP_COLLECTOR.getMetadata();
 
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 2;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {} };
-		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 4 };
-		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
+		SIDE_CONFIGS[TYPE].numConfig = 5;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 }, { 0 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
-		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
-		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false };
 
-		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion:device_water_gen");
+		LIGHT_VALUES[TYPE] = 5;
+
+		GameRegistry.registerTileEntity(TileXpCollector.class, "thermalexpansion:device_xp_collector");
 
 		config();
 	}
 
 	public static void config() {
 
-		String category = "Device.WaterGen";
+		String category = "Device.XpCollector";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
-
-		String comment = "If TRUE, the Aqueous Accumulator will produce water very slowly even without adjacent source blocks.";
-		passiveGen = ThermalExpansion.CONFIG.get(category, "PassiveGeneration", false, comment);
 	}
 
-	private static final int TIME_CONSTANT = 40;
-	private static int genRate = 25 * TIME_CONSTANT;
-	private static int genRatePassive = TIME_CONSTANT;
-	private static boolean passiveGen = false;
+	private static final int RADIUS_ORB = 4;
+	private static final int TIME_CONSTANT = 32;
 
-	private int adjacentSources = -1;
+	private int inputTracker;
 	private int outputTracker;
-	private boolean inHell;
+
+	private int xpBuffer;
+	private int boostXp;
+	private int boostFactor;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
 
 	private int offset;
 
-	public TileWaterGen() {
+	public TileXpCollector() {
 
 		super();
-		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
-		tank.setLock(FluidRegistry.WATER);
+		inventory = new ItemStack[1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
+		createAllSlots(inventory.length);
 
+		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
+		tank.setLock(TFFluids.fluidExperience);
+
+		hasAutoInput = true;
 		hasAutoOutput = true;
 
+		enableAutoInput = true;
 		enableAutoOutput = true;
 	}
 
@@ -94,13 +97,6 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	public int getType() {
 
 		return TYPE;
-	}
-
-	@Override
-	public void onNeighborBlockChange() {
-
-		super.onNeighborBlockChange();
-		updateValidity();
 	}
 
 	@Override
@@ -112,54 +108,40 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		if (!timeCheckOffset()) {
 			return;
 		}
+		convertXp();
 		transferOutputFluid();
+		transferInput();
 
 		boolean curActive = isActive;
 
 		if (isActive) {
-			if (adjacentSources >= 2) {
-				tank.modifyFluidStored(genRate * (adjacentSources - 1));
-			} else {
-				if (world.isRaining() && world.canSeeSky(getPos())) {
-					tank.modifyFluidStored(genRate);
-				} else if (passiveGen) {
-					tank.modifyFluidStored(genRatePassive);
-				}
+			if (xpBuffer <= 0) {
+				collectXpOrbs();
 			}
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
 			}
-		} else if (redstoneControlOrDisable() && !inHell) {
+		} else if (redstoneControlOrDisable()) {
 			isActive = true;
 		}
-		if (adjacentSources < 0) {
-			updateValidity();
-		}
 		updateIfChanged(curActive);
+
 	}
 
-	protected void updateValidity() {
+	protected void transferInput() {
 
-		inHell = world.getBiome(pos) == Biomes.HELL;
-		adjacentSources = 0;
-
-		if (isWater(world.getBlockState(pos.down()))) {
-			adjacentSources++;
+		if (!enableAutoInput) {
+			return;
 		}
-		if (isWater(world.getBlockState(pos.up()))) {
-			adjacentSources++;
-		}
-		if (isWater(world.getBlockState(pos.west()))) {
-			adjacentSources++;
-		}
-		if (isWater(world.getBlockState(pos.east()))) {
-			adjacentSources++;
-		}
-		if (isWater(world.getBlockState(pos.north()))) {
-			adjacentSources++;
-		}
-		if (isWater(world.getBlockState(pos.south()))) {
-			adjacentSources++;
+		int side;
+		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
+			side = i % 6;
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
+				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+					inputTracker = side;
+					break;
+				}
+			}
 		}
 	}
 
@@ -169,7 +151,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 			return;
 		}
 		int side;
-		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), Fluid.BUCKET_VOLUME * 2));
+		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), tank.getCapacity()));
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1) {
@@ -183,9 +165,56 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		}
 	}
 
-	protected static boolean isWater(IBlockState state) {
+	protected void collectXpOrbs() {
 
-		return (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) && state.getValue(BlockLiquid.LEVEL) == 0;
+		AxisAlignedBB area = new AxisAlignedBB(pos.add(-RADIUS_ORB, -RADIUS_ORB, -RADIUS_ORB), pos.add(1 + RADIUS_ORB, 1 + RADIUS_ORB, 1 + RADIUS_ORB));
+		List<EntityXPOrb> xpOrbs = world.getEntitiesWithinAABB(EntityXPOrb.class, area, EntitySelectors.IS_ALIVE);
+
+		for (EntityXPOrb orb : xpOrbs) {
+			xpBuffer += orb.getXpValue();
+			orb.setDead();
+		}
+	}
+
+	protected void collectMachineXp() {
+
+	}
+
+	protected void convertXp() {
+
+		if (boostXp <= 0 && XpManager.getCatalystFactor(inventory[0]) > 0) {
+			boostXp = XpManager.getCatalystXp(inventory[0]);
+			boostFactor = XpManager.getCatalystFactor(inventory[0]);
+
+			inventory[0].shrink(1);
+			if (inventory[0].getCount() <= 0) {
+				inventory[0] = ItemStack.EMPTY;
+			}
+		}
+		int conversion = (XpManager.XP_CONVERSION * (100 + boostFactor)) / 100;
+		int toConvert;
+
+		if (xpBuffer * conversion <= tank.getSpace()) {
+			tank.modifyFluidStored(xpBuffer * conversion);
+			toConvert = xpBuffer;
+			xpBuffer = 0;
+		} else {
+			tank.modifyFluidStored(tank.getSpace());
+			toConvert = tank.getSpace() / conversion;
+			xpBuffer -= toConvert;
+		}
+		boostXp -= toConvert * boostFactor / 100;
+
+		if (boostXp <= 0) {
+			boostXp = 0;
+			boostFactor = 0;
+		}
+		/* If anyone reads this and thinks "Hey, that means that catalysts are inconsistent and randomly worth more XP,"
+		you are correct. This is an intentional compromise on my part to keep CPU usage down. It wouldn't be difficult
+		to be super picky here and subdivide "regular" XP and "bonus" XP, and then run extra calculations and item
+		consumptions, but that level of bookkeeping gets in the way of just having the thing work efficiently. So yeah,
+		sometimes the catalysts work a little better than their "raw" value would suggest. I'm okay with that, and you
+		should be too. :) */
 	}
 
 	protected boolean timeCheckOffset() {
@@ -193,17 +222,22 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		return (world.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
 	}
 
+	public int getBoostFactor() {
+
+		return boostFactor;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
-		return new GuiWaterGen(inventory, this);
+		return new GuiXpCollector(inventory, this);
 	}
 
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerXpCollector(inventory, this);
 	}
 
 	@Override
@@ -224,10 +258,12 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
-		inHell = nbt.getBoolean("Hell");
-		adjacentSources = nbt.getInteger("Sources");
+		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
 		tank.readFromNBT(nbt);
+
+		boostXp = nbt.getInteger("BoostXp");
+		boostFactor = nbt.getInteger("BoostFactor");
 	}
 
 	@Override
@@ -235,10 +271,13 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
-		nbt.setBoolean("Hell", inHell);
-		nbt.setInteger("Sources", adjacentSources);
+		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
 		tank.writeToNBT(nbt);
+
+		nbt.setInteger("BoostXp", boostXp);
+		nbt.setInteger("BoostFactor", boostFactor);
+
 		return nbt;
 	}
 
@@ -247,6 +286,9 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addInt(boostXp);
+		payload.addInt(boostFactor);
 		payload.addInt(tank.getFluidAmount());
 
 		return payload;
@@ -257,31 +299,16 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		super.handleGuiPacket(payload);
 
+		boostXp = payload.getInt();
+		boostFactor = payload.getInt();
 		tank.getFluid().amount = payload.getInt();
 	}
 
-	/* ISidedTexture */
+	/* IInventory */
 	@Override
-	public TextureAtlasSprite getTexture(int side, int pass) {
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		if (pass == 0) {
-			if (side == 0) {
-				return TETextures.DEVICE_BOTTOM;
-			} else if (side == 1) {
-				return TETextures.DEVICE_TOP;
-			}
-			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.WATER) : TETextures.DEVICE_FACE[TYPE];
-		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
-		}
-		return TETextures.DEVICE_SIDE;
-	}
-
-	/* ISoundSource */
-	@Override
-	public SoundEvent getSoundEvent() {
-
-		return TESounds.deviceWaterGen;
+		return XpManager.getCatalystFactor(stack) > 0;
 	}
 
 	/* CAPABILITIES */

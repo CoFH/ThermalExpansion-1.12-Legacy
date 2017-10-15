@@ -245,8 +245,8 @@ public class TileDynamoCompression extends TileDynamoBase {
 		augmentCoolant = false;
 		augmentFuel = false;
 
-		fuelTank.clearLock();
-		coolantTank.clearLock();
+		fuelTank.clearLocked();
+		coolantTank.clearLocked();
 	}
 
 	@Override

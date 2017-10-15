@@ -5,14 +5,14 @@ import cofh.core.gui.element.ElementFluidTank;
 import cofh.core.gui.element.ElementSimple;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.device.TileFluidBuffer;
-import cofh.thermalexpansion.block.device.TileItemBuffer;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-import cofh.thermalexpansion.gui.container.device.ContainerItemBuffer;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GuiFluidBuffer extends GuiDeviceBase {
 
@@ -25,6 +25,8 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 	private ElementButton incInput;
 	private ElementButton decOutput;
 	private ElementButton incOutput;
+
+	private ElementButton[] lock = new ElementButton[3];
 
 	public GuiFluidBuffer(InventoryPlayer inventory, TileEntity tile) {
 
@@ -59,6 +61,11 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		addElement(incInput);
 		addElement(decOutput);
 		addElement(incOutput);
+
+		for (int i = 0; i < lock.length; i++) {
+			lock[i] = new ElementButton(this, 62 + i * 18, 55, "Lock" + i, 176, 48, 176, 64, 176, 80, 16, 16, TEX_PATH).setToolTipLocalized(true);
+			addElement(lock[i]);
+		}
 	}
 
 	@Override
@@ -107,6 +114,27 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 			incOutput.setDisabled();
 			incOutput.clearToolTip();
 		}
+
+		for (int i = 0; i < lock.length; i++) {
+			if (myTile.locks[i]) {
+				String color = StringHelper.WHITE;
+				FluidStack fluid = myTile.getTank(i).getFluid();
+				if (fluid.getFluid().getRarity() == EnumRarity.UNCOMMON) {
+					color = StringHelper.YELLOW;
+				} else if (fluid.getFluid().getRarity() == EnumRarity.RARE) {
+					color = StringHelper.BRIGHT_BLUE;
+				} else if (fluid.getFluid().getRarity() == EnumRarity.EPIC) {
+					color = StringHelper.PINK;
+				}
+				lock[i].setToolTip(StringHelper.localize("gui.thermalexpansion.device.fluid_buffer.tankLocked") + ": " + color + StringHelper.localize(fluid.getFluid().getLocalizedName(fluid)) + StringHelper.END);
+				lock[i].setSheetX(176);
+				lock[i].setHoverX(176);
+			} else {
+				lock[i].setToolTip(StringHelper.localize("gui.thermalexpansion.device.fluid_buffer.tankUnlocked"));
+				lock[i].setSheetX(192);
+				lock[i].setHoverX(192);
+			}
+		}
 	}
 
 	@Override
@@ -139,6 +167,7 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		}
 		int curInput = myTile.amountInput;
 		int curOutput = myTile.amountOutput;
+		boolean[] curLocks = myTile.locks.clone();
 
 		if (buttonName.equalsIgnoreCase("DecInput")) {
 			myTile.amountInput -= change;
@@ -152,6 +181,30 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		} else if (buttonName.equalsIgnoreCase("IncOutput")) {
 			myTile.amountOutput += change;
 			pitch += 0.1F;
+		} else if (buttonName.equalsIgnoreCase("Lock0")) {
+			if (myTile.locks[0]) {
+				myTile.locks[0] = false;
+				pitch = 0.6F;
+			} else {
+				myTile.locks[0] = true;
+				pitch = 0.8F;
+			}
+		} else if (buttonName.equalsIgnoreCase("Lock1")) {
+			if (myTile.locks[1]) {
+				myTile.locks[1] = false;
+				pitch = 0.6F;
+			} else {
+				myTile.locks[1] = true;
+				pitch = 0.8F;
+			}
+		} else if (buttonName.equalsIgnoreCase("Lock2")) {
+			if (myTile.locks[2]) {
+				myTile.locks[2] = false;
+				pitch = 0.6F;
+			} else {
+				myTile.locks[2] = true;
+				pitch = 0.8F;
+			}
 		}
 		playClickSound(pitch);
 
@@ -159,6 +212,7 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 
 		myTile.amountInput = curInput;
 		myTile.amountOutput = curOutput;
+		myTile.locks = curLocks;
 	}
 
 	@Override

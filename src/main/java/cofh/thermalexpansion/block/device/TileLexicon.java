@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
-import cofh.core.gui.container.ICustomInventory;
 import cofh.core.init.CoreProps;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -13,7 +13,6 @@ import gnu.trove.map.hash.THashMap;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -21,7 +20,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import java.util.Arrays;
 import java.util.Map;
 
-public class TileLexicon extends TileDeviceBase implements ITickable, ICustomInventory {
+public class TileLexicon extends TileDeviceBase implements ITickable {
 
 	private static final int TYPE = Type.LEXICON.getMetadata();
 
@@ -52,16 +51,13 @@ public class TileLexicon extends TileDeviceBase implements ITickable, ICustomInv
 	private int outputTracker;
 
 	private Map<String, ItemStack> preferredStacks = new THashMap<>();
-	private ItemStack[] transmuteInv = new ItemStack[9];
 
 	public TileLexicon() {
 
 		super();
-		inventory = new ItemStack[2];
+		inventory = new ItemStack[11];
 		Arrays.fill(inventory, ItemStack.EMPTY);
-		createAllSlots(inventory.length);
-
-		Arrays.fill(transmuteInv, ItemStack.EMPTY);
+		createAllSlots(inventory.length - 9);
 
 		hasAutoInput = true;
 		hasAutoOutput = true;
@@ -103,12 +99,26 @@ public class TileLexicon extends TileDeviceBase implements ITickable, ICustomInv
 
 	protected void transmute() {
 
-		//		if (inventory[0].isEmpty()) {
-		//			return;
-		//		}
-		//		if (hasPreferredStack(inventory[0])) {
-		//
-		//		}
+		if (inventory[0].isEmpty()) {
+			return;
+		}
+		if (hasPreferredStack(inventory[0])) {
+			ItemStack transmuteStack = ItemHelper.cloneStack(getPreferredStack(inventory[0]), inventory[0].getCount());
+
+			if (inventory[1].isEmpty()) {
+				inventory[0] = ItemStack.EMPTY;
+				inventory[1] = transmuteStack;
+			} else if (inventory[1].isItemEqual(transmuteStack)) {
+				int total = inventory[1].getCount() + transmuteStack.getCount();
+				if (total <= inventory[1].getMaxStackSize()) {
+					inventory[0] = ItemStack.EMPTY;
+					inventory[1].grow(transmuteStack.getCount());
+				} else {
+					inventory[0].shrink(inventory[1].getMaxStackSize() - inventory[1].getCount());
+					inventory[1].setCount(inventory[1].getMaxStackSize());
+				}
+			}
+		}
 	}
 
 	protected void transferInput() {
@@ -145,18 +155,25 @@ public class TileLexicon extends TileDeviceBase implements ITickable, ICustomInv
 		}
 	}
 
-	protected void updatePreferredStacks() {
+	public void updatePreferredStacks() {
 
 		preferredStacks.clear();
 
-		for (ItemStack transmuteItem : transmuteInv) {
-			preferredStacks.put(OreDictionaryArbiter.getOreName(transmuteItem), transmuteItem);
+		for (int i = 2; i < inventory.length; i++) {
+			if (!inventory[i].isEmpty()) {
+				preferredStacks.put(OreDictionaryArbiter.getOreName(inventory[i]), inventory[i]);
+			}
 		}
 	}
 
 	public boolean hasPreferredStack(ItemStack stack) {
 
 		return preferredStacks.containsKey(OreDictionaryArbiter.getOreName(stack));
+	}
+
+	public ItemStack getPreferredStack(ItemStack stack) {
+
+		return preferredStacks.get(OreDictionaryArbiter.getOreName(stack));
 	}
 
 	/* GUI METHODS */
@@ -181,7 +198,7 @@ public class TileLexicon extends TileDeviceBase implements ITickable, ICustomInv
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
 
-		readTransmuteFromNBT(nbt);
+		updatePreferredStacks();
 	}
 
 	@Override
@@ -192,70 +209,20 @@ public class TileLexicon extends TileDeviceBase implements ITickable, ICustomInv
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
 
-		writeTransmuteToNBT(nbt);
-
 		return nbt;
-	}
-
-	public void readTransmuteFromNBT(NBTTagCompound nbt) {
-
-		NBTTagList list = nbt.getTagList("Transmute", 10);
-		transmuteInv = new ItemStack[transmuteInv.length];
-		Arrays.fill(transmuteInv, ItemStack.EMPTY);
-		for (int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound tag = list.getCompoundTagAt(i);
-			int slot = tag.getInteger("Slot");
-
-			if (slot >= 0 && slot < transmuteInv.length) {
-				transmuteInv[slot] = new ItemStack(tag);
-			}
-		}
-	}
-
-	public void writeTransmuteToNBT(NBTTagCompound nbt) {
-
-		if (transmuteInv.length <= 0) {
-			return;
-		}
-		NBTTagList list = new NBTTagList();
-		for (int i = 0; i < transmuteInv.length; i++) {
-			if (!transmuteInv[i].isEmpty()) {
-				NBTTagCompound tag = new NBTTagCompound();
-				tag.setInteger("Slot", i);
-				transmuteInv[i].writeToNBT(tag);
-				list.appendTag(tag);
-			}
-		}
-		if (list.tagCount() > 0) {
-			nbt.setTag("Transmute", list);
-		}
-	}
-
-	/* ICustomInventory */
-	@Override
-	public ItemStack[] getInventorySlots(int inventoryIndex) {
-
-		return transmuteInv;
-	}
-
-	@Override
-	public int getSlotStackLimit(int slotIndex) {
-
-		return 1;
-	}
-
-	@Override
-	public void onSlotUpdate(int slotIndex) {
-
-		updatePreferredStacks();
-		markChunkDirty();
 	}
 
 	/* IInventory */
 	@Override
+	public int getSizeInventory() {
+
+		return 2;
+	}
+
+	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot != 0 || LexiconManager.validOre(stack) && hasPreferredStack(stack);
+		return slot != 0 || LexiconManager.validOre(stack) && hasPreferredStack(stack) && !ItemHelper.itemsIdentical(stack, getPreferredStack(stack));
 	}
 
 }

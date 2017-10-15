@@ -118,13 +118,13 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
 		progressBack.draw(minecraft, 69, 23);
-		speedBack.draw(minecraft, 34, 34);
+		speedBack.draw(minecraft, 34, 33);
 
 		JEIPluginTE.drawFluid(69, 23, inputFluids.get(0).get(0), 24, 16);
 
 		fluid.draw(minecraft, 69, 23);
 		progress.draw(minecraft, 69, 23);
-		speed.draw(minecraft, 34, 34);
+		speed.draw(minecraft, 34, 33);
 		energyMeter.draw(minecraft, 2, 8);
 
 		if (chance > 0) {

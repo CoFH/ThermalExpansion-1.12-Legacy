@@ -274,7 +274,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 		augmentTurbine = false;
 
-		tank.clearLock();
+		tank.clearLocked();
 	}
 
 	@Override
