@@ -329,6 +329,9 @@ public class TileCharger extends TileMachineBase {
 		if (!enableAutoOutput) {
 			return;
 		}
+		if (inventory[2].isEmpty()) {
+			return;
+		}
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;

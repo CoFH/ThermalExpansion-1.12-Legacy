@@ -11,6 +11,7 @@ import cofh.thermalexpansion.util.managers.machine.PulverizerManager.PulverizerR
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
+import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
@@ -63,11 +64,17 @@ public class PulverizerRecipeCategory extends BaseRecipeCategory<PulverizerRecip
 		return recipes;
 	}
 
+	final IDrawableStatic progress;
+	final IDrawableStatic speed;
+
 	public PulverizerRecipeCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiPulverizer.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.pulverizer.name");
+
+		progress = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
+		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_CRUSH);
 	}
 
 	@Nonnull
@@ -80,6 +87,8 @@ public class PulverizerRecipeCategory extends BaseRecipeCategory<PulverizerRecip
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
+		progress.draw(minecraft, 69, 23);
+		speed.draw(minecraft, 43, 33);
 		energyMeter.draw(minecraft, 2, 8);
 	}
 

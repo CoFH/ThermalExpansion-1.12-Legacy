@@ -11,6 +11,7 @@ import cofh.thermalexpansion.gui.container.machine.ContainerEnchanter;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager.EnchanterRecipe;
+import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -88,7 +89,7 @@ public class TileEnchanter extends TileMachineBase {
 		inventory = new ItemStack[2 + 1 + 1];
 		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
-		tank.setLock(FluidRegistry.WATER);
+		tank.setLock(TFFluids.fluidExperience);
 	}
 
 	@Override
@@ -232,7 +233,7 @@ public class TileEnchanter extends TileMachineBase {
 				}
 			}
 		}
-		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
+		for (int i = inputTrackerSecondary + 1; i <= inputTrackerSecondary + 6; i++) {
 			side = i % 6;
 			if (isSecondaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				if (extractItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
@@ -249,15 +250,16 @@ public class TileEnchanter extends TileMachineBase {
 		if (!enableAutoOutput) {
 			return;
 		}
+		if (inventory[2].isEmpty()) {
+			return;
+		}
 		int side;
-		if (!inventory[2].isEmpty()) {
-			for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
-				side = i % 6;
-				if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
-					if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
-						outputTracker = side;
-						break;
-					}
+		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
+			side = i % 6;
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
+				if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+					outputTracker = side;
+					break;
 				}
 			}
 		}
@@ -372,7 +374,7 @@ public class TileEnchanter extends TileMachineBase {
 		PacketCoFHBase payload = super.getGuiPacket();
 
 		payload.addBool(lockPrimary);
-		payload.addInt(tank.getFluidAmount());
+		payload.addFluidStack(tank.getFluid());
 
 		return payload;
 	}
@@ -383,7 +385,7 @@ public class TileEnchanter extends TileMachineBase {
 		super.handleGuiPacket(payload);
 
 		lockPrimary = payload.getBool();
-		tank.getFluid().amount = payload.getInt();
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	/* HELPERS */

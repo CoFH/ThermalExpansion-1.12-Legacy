@@ -63,17 +63,22 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 		return recipes;
 	}
 
-	IDrawableStatic tank;
-	IDrawableStatic tankOverlay;
+	final IDrawableStatic progress;
+	final IDrawableStatic speed;
+	final IDrawableStatic tank;
+	final IDrawableStatic tankOverlay;
 
 	public CentrifugeRecipeCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiCentrifuge.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
-
-		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
-		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.centrifuge.name");
+
+		progress = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
+		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_SPIN);
+		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
+		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK);
+
 	}
 
 	@Nonnull
@@ -86,6 +91,8 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
+		progress.draw(minecraft, 62, 23);
+		speed.draw(minecraft, 34, 32);
 		tank.draw(minecraft, 140, 0);
 		energyMeter.draw(minecraft, 2, 8);
 	}

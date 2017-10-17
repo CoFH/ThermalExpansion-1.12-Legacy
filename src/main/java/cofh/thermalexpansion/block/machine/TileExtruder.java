@@ -370,8 +370,8 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		payload.addByte(curSelection);
 		payload.addByte(prevSelection);
-		payload.addInt(hotTank.getFluidAmount());
-		payload.addInt(coldTank.getFluidAmount());
+		payload.addFluidStack(hotTank.getFluid());
+		payload.addFluidStack(coldTank.getFluid());
 
 		payload.addBool(augmentNoWater);
 
@@ -395,8 +395,8 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		curSelection = payload.getByte();
 		prevSelection = payload.getByte();
-		hotTank.getFluid().amount = payload.getInt();
-		coldTank.getFluid().amount = payload.getInt();
+		hotTank.setFluid(payload.getFluidStack());
+		coldTank.setFluid(payload.getFluidStack());
 
 		augmentNoWater = payload.getBool();
 		flagNoWater = augmentNoWater;

@@ -1,6 +1,9 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStack;
+import cofh.core.init.CorePotions;
+import cofh.core.init.CoreProps;
+import cofh.core.inventory.ComparableItemStackNBT;
+import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalexpansion.block.storage.BlockCell;
@@ -12,7 +15,12 @@ import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionType;
+import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -30,7 +38,7 @@ public class TransposerManager {
 
 	public static TransposerRecipe getFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return input.isEmpty() || fluid == null ? null : recipeMapFill.get(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().getName().hashCode()));
+		return input.isEmpty() || fluid == null ? null : recipeMapFill.get(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), FluidHelper.getFluidHash(fluid)));
 	}
 
 	public static TransposerRecipe getExtractRecipe(ItemStack input) {
@@ -130,8 +138,86 @@ public class TransposerManager {
 		addFillRecipe(2000, ItemHelper.cloneStack(ItemFertilizer.fertilizerBasic), ItemHelper.cloneStack(ItemFertilizer.fertilizerRich), new FluidStack(TFFluids.fluidSap, 500), false);
 		addFillRecipe(400, new ItemStack(Items.BOWL), new ItemStack(Items.MUSHROOM_STEW), new FluidStack(TFFluids.fluidMushroomStew, 250), true);
 
+		/* LOAD POTIONS */
+		loadPotions();
+
 		/* LOAD RECIPES */
 		loadRecipes();
+	}
+
+	public static void loadPotions() {
+
+		/* VANILLA */
+		{
+			addDefaultPotionRecipes(PotionTypes.MUNDANE);
+			addDefaultPotionRecipes(PotionTypes.THICK);
+			addDefaultPotionRecipes(PotionTypes.AWKWARD);
+
+			addDefaultPotionRecipes(PotionTypes.NIGHT_VISION);
+			addDefaultPotionRecipes(PotionTypes.LONG_NIGHT_VISION);
+
+			addDefaultPotionRecipes(PotionTypes.INVISIBILITY);
+			addDefaultPotionRecipes(PotionTypes.LONG_INVISIBILITY);
+
+			addDefaultPotionRecipes(PotionTypes.LEAPING);
+			addDefaultPotionRecipes(PotionTypes.LONG_LEAPING);
+			addDefaultPotionRecipes(PotionTypes.STRONG_LEAPING);
+
+			addDefaultPotionRecipes(PotionTypes.FIRE_RESISTANCE);
+			addDefaultPotionRecipes(PotionTypes.LONG_FIRE_RESISTANCE);
+
+			addDefaultPotionRecipes(PotionTypes.SWIFTNESS);
+			addDefaultPotionRecipes(PotionTypes.LONG_SWIFTNESS);
+			addDefaultPotionRecipes(PotionTypes.STRONG_SWIFTNESS);
+
+			addDefaultPotionRecipes(PotionTypes.SLOWNESS);
+			addDefaultPotionRecipes(PotionTypes.LONG_SLOWNESS);
+
+			addDefaultPotionRecipes(PotionTypes.WATER_BREATHING);
+			addDefaultPotionRecipes(PotionTypes.LONG_WATER_BREATHING);
+
+			addDefaultPotionRecipes(PotionTypes.HEALING);
+			addDefaultPotionRecipes(PotionTypes.STRONG_HEALING);
+
+			addDefaultPotionRecipes(PotionTypes.HARMING);
+			addDefaultPotionRecipes(PotionTypes.STRONG_HARMING);
+
+			addDefaultPotionRecipes(PotionTypes.POISON);
+			addDefaultPotionRecipes(PotionTypes.LONG_POISON);
+			addDefaultPotionRecipes(PotionTypes.STRONG_POISON);
+
+			addDefaultPotionRecipes(PotionTypes.REGENERATION);
+			addDefaultPotionRecipes(PotionTypes.LONG_REGENERATION);
+			addDefaultPotionRecipes(PotionTypes.STRONG_REGENERATION);
+
+			addDefaultPotionRecipes(PotionTypes.STRENGTH);
+			addDefaultPotionRecipes(PotionTypes.LONG_STRENGTH);
+			addDefaultPotionRecipes(PotionTypes.STRONG_STRENGTH);
+
+			addDefaultPotionRecipes(PotionTypes.WEAKNESS);
+			addDefaultPotionRecipes(PotionTypes.LONG_WEAKNESS);
+		}
+
+		/* COFH */
+		{
+			addDefaultPotionRecipes(CorePotions.haste);
+			addDefaultPotionRecipes(CorePotions.hasteLong);
+			addDefaultPotionRecipes(CorePotions.hasteStrong);
+
+			addDefaultPotionRecipes(CorePotions.resistance);
+			addDefaultPotionRecipes(CorePotions.resistanceLong);
+			addDefaultPotionRecipes(CorePotions.resistanceStrong);
+
+			addDefaultPotionRecipes(CorePotions.levitation);
+			addDefaultPotionRecipes(CorePotions.levitationLong);
+
+			addDefaultPotionRecipes(CorePotions.absorption);
+			addDefaultPotionRecipes(CorePotions.absorptionLong);
+			addDefaultPotionRecipes(CorePotions.absorptionStrong);
+
+			addDefaultPotionRecipes(CorePotions.saturation);
+			addDefaultPotionRecipes(CorePotions.saturationStrong);
+		}
 	}
 
 	public static void loadRecipes() {
@@ -151,8 +237,7 @@ public class TransposerManager {
 		for (Entry<List<Integer>, TransposerRecipe> entry : recipeMapFill.entrySet()) {
 			tempRecipe = entry.getValue();
 			ComparableItemStackTransposer input = new ComparableItemStackTransposer(tempRecipe.input);
-			FluidStack fluid = tempRecipe.fluid.copy();
-			tempFill.put(Arrays.asList(input.hashCode(), fluid.getFluid().getName().hashCode()), tempRecipe);
+			tempFill.put(Arrays.asList(input.hashCode(), FluidHelper.getFluidHash(tempRecipe.fluid)), tempRecipe);
 			tempSet.add(input);
 		}
 		for (Entry<ComparableItemStackTransposer, TransposerRecipe> entry : recipeMapExtract.entrySet()) {
@@ -181,7 +266,7 @@ public class TransposerManager {
 			return null;
 		}
 		TransposerRecipe recipeFill = new TransposerRecipe(input, output, fluid, energy, 100);
-		recipeMapFill.put(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().getName().hashCode()), recipeFill);
+		recipeMapFill.put(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), FluidHelper.getFluidHash(fluid)), recipeFill);
 		validationSet.add(new ComparableItemStackTransposer(input));
 
 		if (reversible) {
@@ -214,12 +299,58 @@ public class TransposerManager {
 	/* REMOVE RECIPES */
 	public static TransposerRecipe removeFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return recipeMapFill.remove(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().getName().hashCode()));
+		return recipeMapFill.remove(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), FluidHelper.getFluidHash(fluid)));
 	}
 
 	public static TransposerRecipe removeExtractRecipe(ItemStack input) {
 
 		return recipeMapExtract.remove(new ComparableItemStackTransposer(input));
+	}
+
+	/* HELPERS */
+	public static void addDefaultPotionRecipes(PotionType type) {
+
+		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(ItemHelper.cloneStack(Items.POTIONITEM, 1), type), getPotion(CoreProps.BOTTLE_VOLUME, type), true);
+		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(ItemHelper.cloneStack(Items.SPLASH_POTION, 1), type), getSplashPotion(CoreProps.BOTTLE_VOLUME, type), true);
+		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(ItemHelper.cloneStack(Items.LINGERING_POTION, 1), type), getLingeringPotion(CoreProps.BOTTLE_VOLUME, type), true);
+	}
+
+	public static FluidStack getPotion(int amount, PotionType type) {
+
+		if (type == PotionTypes.WATER) {
+			return new FluidStack(FluidRegistry.WATER, amount);
+		}
+		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, amount), type);
+	}
+
+	public static FluidStack getSplashPotion(int amount, PotionType type) {
+
+		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, amount), type);
+	}
+
+	public static FluidStack getLingeringPotion(int amount, PotionType type) {
+
+		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, amount), type);
+	}
+
+	public static FluidStack addPotionToFluidStack(FluidStack stack, PotionType type) {
+
+		ResourceLocation resourcelocation = PotionType.REGISTRY.getNameForObject(type);
+
+		if (type == PotionTypes.EMPTY) {
+			if (stack.tag != null) {
+				stack.tag.removeTag("Potion");
+				if (stack.tag.hasNoTags()) {
+					stack.tag = null;
+				}
+			}
+		} else {
+			if (stack.tag == null) {
+				stack.tag = new NBTTagCompound();
+			}
+			stack.tag.setString("Potion", resourcelocation.toString());
+		}
+		return stack;
 	}
 
 	/* RECIPE CLASS */
@@ -268,7 +399,7 @@ public class TransposerManager {
 	}
 
 	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackTransposer extends ComparableItemStack {
+	public static class ComparableItemStackTransposer extends ComparableItemStackNBT {
 
 		public static final String CROP = "crop";
 		public static final String SEED = "seed";

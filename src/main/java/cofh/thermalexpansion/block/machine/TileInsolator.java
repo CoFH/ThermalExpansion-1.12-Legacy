@@ -294,7 +294,7 @@ public class TileInsolator extends TileMachineBase {
 				}
 			}
 		}
-		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
+		for (int i = inputTrackerSecondary + 1; i <= inputTrackerSecondary + 6; i++) {
 			side = i % 6;
 			if (isSecondaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				if (extractItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
@@ -448,7 +448,7 @@ public class TileInsolator extends TileMachineBase {
 		PacketCoFHBase payload = super.getGuiPacket();
 
 		payload.addBool(lockPrimary);
-		payload.addInt(tank.getFluidAmount());
+		payload.addFluidStack(tank.getFluid());
 
 		return payload;
 	}
@@ -459,7 +459,7 @@ public class TileInsolator extends TileMachineBase {
 		super.handleGuiPacket(payload);
 
 		lockPrimary = payload.getBool();
-		tank.getFluid().amount = payload.getInt();
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	/* HELPERS */

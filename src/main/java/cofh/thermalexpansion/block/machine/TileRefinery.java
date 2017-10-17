@@ -213,15 +213,16 @@ public class TileRefinery extends TileMachineBase {
 		if (!enableAutoOutput) {
 			return;
 		}
+		if (inventory[0].isEmpty()) {
+			return;
+		}
 		int side;
-		if (!inventory[0].isEmpty()) {
-			for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
-				side = i % 6;
-				if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {
-					if (transferItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
-						outputTracker = side;
-						break;
-					}
+		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
+			side = i % 6;
+			if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {
+				if (transferItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+					outputTracker = side;
+					break;
 				}
 			}
 		}
@@ -239,10 +240,8 @@ public class TileRefinery extends TileMachineBase {
 		FluidStack output = new FluidStack(outputTank.getFluid(), Math.min(outputTank.getFluidAmount(), FLUID_TRANSFER[level]));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
-
 			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
-
 				if (toDrain > 0) {
 					outputTank.drain(toDrain, true);
 					outputTrackerFluid = side;

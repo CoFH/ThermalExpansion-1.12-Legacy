@@ -34,7 +34,6 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Animation */
 	final IDrawableStatic progressBack;
-	final IDrawableStatic speedBack;
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
@@ -74,7 +73,6 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
 			progressBack = Drawables.getDrawables(guiHelper).getProgressLeft(Drawables.PROGRESS_DROP);
-			speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_BUBBLE);
 
 			IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgressLeft(Drawables.PROGRESS_DROP);
 			IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressLeftFill(Drawables.PROGRESS_DROP);
@@ -83,7 +81,6 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 			progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileTransposer.basePower, StartDirection.RIGHT, false);
 		} else {
 			progressBack = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
-			speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_BUBBLE);
 
 			IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
 			IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_DROP);
@@ -115,7 +112,6 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
 		progressBack.draw(minecraft, 63, 11);
-		speedBack.draw(minecraft, 68, 41);
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
 			JEIPluginTE.drawFluid(63, 11, inputFluids.get(0).get(0), 24, 16);

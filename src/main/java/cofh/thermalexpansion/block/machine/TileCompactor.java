@@ -109,7 +109,6 @@ public class TileCompactor extends TileMachineBase {
 	protected boolean hasValidInput() {
 
 		CompactorRecipe recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
-
 		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 	}
 

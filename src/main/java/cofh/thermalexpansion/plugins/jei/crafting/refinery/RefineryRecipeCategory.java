@@ -63,22 +63,25 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 		return recipes;
 	}
 
-	IDrawableStatic drop;
-	IDrawableStatic slot;
-	IDrawableStatic tank;
-	IDrawableStatic tankOverlayInput;
-	IDrawableStatic tankOverlayOutput;
+	final IDrawableStatic progress;
+	final IDrawableStatic speed;
+	final IDrawableStatic slot;
+	final IDrawableStatic tank;
+	final IDrawableStatic tankOverlayInput;
+	final IDrawableStatic tankOverlayOutput;
 
 	public RefineryRecipeCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiRefinery.TEXTURE, 38, 11, 24, 62, 0, 0, 16, 124);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
-		drop = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
+		localizedName = StringHelper.localize("tile.thermalexpansion.machine.refinery.name");
+
+		progress = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
+		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_FLAME);
 		slot = Drawables.getDrawables(guiHelper).getSlot(Drawables.SLOT_OUTPUT);
 		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
 		tankOverlayInput = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK_SHORT);
 		tankOverlayOutput = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK);
-		localizedName = StringHelper.localize("tile.thermalexpansion.machine.refinery.name");
 	}
 
 	@Nonnull
@@ -91,7 +94,8 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
-		drop.draw(minecraft, 46, 23);
+		progress.draw(minecraft, 46, 23);
+		speed.draw(minecraft, 22, 40);
 		slot.draw(minecraft, 77, 19);
 		tank.draw(minecraft, 116, 0);
 		energyMeter.draw(minecraft, 2, 8);
@@ -100,19 +104,19 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 	@Override
 	public void setRecipe(IRecipeLayout recipeLayout, RefineryRecipeWrapper recipeWrapper, IIngredients ingredients) {
 
-		List<List<FluidStack>> inputs = ingredients.getInputs(FluidStack.class);
-		List<List<ItemStack>> outputItems = ingredients.getOutputs(ItemStack.class);
+		List<List<FluidStack>> inputFluids = ingredients.getInputs(FluidStack.class);
 		List<List<FluidStack>> outputFluids = ingredients.getOutputs(FluidStack.class);
+		List<List<ItemStack>> outputItems = ingredients.getOutputs(ItemStack.class);
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-		guiFluidStacks.init(0, true, 22, 8, 16, 30, 1000, false, tankOverlayInput);
 		guiItemStacks.init(0, false, 81, 23);
+		guiFluidStacks.init(0, true, 22, 8, 16, 30, 1000, false, tankOverlayInput);
 		guiFluidStacks.init(1, false, 117, 1, 16, 60, 1000, false, tankOverlayOutput);
 
-		guiFluidStacks.set(0, inputs.get(0));
 		guiItemStacks.set(0, outputItems.get(0));
+		guiFluidStacks.set(0, inputFluids.get(0));
 		guiFluidStacks.set(1, outputFluids.get(0));
 
 		guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {

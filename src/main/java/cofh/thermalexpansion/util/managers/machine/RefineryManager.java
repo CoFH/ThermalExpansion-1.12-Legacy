@@ -1,9 +1,18 @@
 package cofh.thermalexpansion.util.managers.machine;
 
+import cofh.core.init.CoreProps;
+import cofh.core.util.helpers.FluidHelper;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionType;
+import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,7 +25,7 @@ public class RefineryManager {
 
 	public static RefineryRecipe getRecipe(FluidStack input) {
 
-		return input == null ? null : recipeMap.get(input.getFluid().getName().hashCode());
+		return input == null ? null : recipeMap.get(FluidHelper.getFluidHash(input));
 	}
 
 	public static boolean recipeExists(FluidStack input) {
@@ -65,7 +74,7 @@ public class RefineryManager {
 			return null;
 		}
 		RefineryRecipe recipe = new RefineryRecipe(input, outputFluid, outputItem, energy, chance);
-		recipeMap.put(input.getFluid().getName().hashCode(), recipe);
+		recipeMap.put(FluidHelper.getFluidHash(input), recipe);
 		return recipe;
 	}
 
@@ -85,10 +94,51 @@ public class RefineryManager {
 		if (input == null) {
 			return null;
 		}
-		return recipeMap.remove(input.getFluid().getName().hashCode());
+		return recipeMap.remove(FluidHelper.getFluidHash(input));
 	}
 
 	/* HELPERS */
+	public static void addDefaultPotionRecipes(PotionType input, PotionType output) {
+
+	}
+
+	public static FluidStack getPotion(int amount, PotionType type) {
+
+		if (type == PotionTypes.WATER) {
+			return new FluidStack(FluidRegistry.WATER, amount);
+		}
+		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, amount), type);
+	}
+
+	public static FluidStack getSplashPotion(int amount, PotionType type) {
+
+		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, amount), type);
+	}
+
+	public static FluidStack getLingeringPotion(int amount, PotionType type) {
+
+		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, amount), type);
+	}
+
+	public static FluidStack addPotionToFluidStack(FluidStack stack, PotionType type) {
+
+		ResourceLocation resourcelocation = PotionType.REGISTRY.getNameForObject(type);
+
+		if (type == PotionTypes.EMPTY) {
+			if (stack.tag != null) {
+				stack.tag.removeTag("Potion");
+				if (stack.tag.hasNoTags()) {
+					stack.tag = null;
+				}
+			}
+		} else {
+			if (stack.tag == null) {
+				stack.tag = new NBTTagCompound();
+			}
+			stack.tag.setString("Potion", resourcelocation.toString());
+		}
+		return stack;
+	}
 
 	/* RECIPE CLASS */
 	public static class RefineryRecipe {

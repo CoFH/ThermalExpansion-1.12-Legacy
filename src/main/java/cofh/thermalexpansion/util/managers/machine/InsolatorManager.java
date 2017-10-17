@@ -194,6 +194,7 @@ public class InsolatorManager {
 		}
 		recipeMap.clear();
 		recipeMap = tempMap;
+
 		validationSet.clear();
 		validationSet = tempSet;
 

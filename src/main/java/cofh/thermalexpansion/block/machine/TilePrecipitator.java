@@ -318,7 +318,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		payload.addByte(curSelection);
 		payload.addByte(prevSelection);
-		payload.addInt(tank.getFluidAmount());
+		payload.addFluidStack(tank.getFluid());
 
 		return payload;
 	}
@@ -330,7 +330,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		curSelection = payload.getByte();
 		prevSelection = payload.getByte();
-		tank.getFluid().amount = payload.getInt();
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	/* HELPERS */

@@ -9,6 +9,7 @@ import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager.ComparableItemStackEnchanter;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager.EnchanterRecipe;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager.Type;
+import cofh.thermalfoundation.init.TFFluids;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -34,8 +35,6 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 	final Type type;
 
 	/* Animation */
-	final IDrawableStatic progressBack;
-	final IDrawableStatic speedBack;
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
@@ -72,7 +71,7 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 		}
 		recipeInputs.add(recipeInputsPrimary);
 		recipeInputs.add(recipeInputsSecondary);
-		recipeInputFluids.add(new FluidStack(FluidRegistry.WATER, recipe.getExperience()));
+		recipeInputFluids.add(new FluidStack(TFFluids.fluidExperience, recipe.getExperience()));
 
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 		recipeOutputs.add(recipe.getOutput());
@@ -84,9 +83,6 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 		energy = recipe.getEnergy();
 
 		type = recipe.getType();
-
-		progressBack = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
-		speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_SUN);
 
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_ARROW_FLUID);
@@ -109,9 +105,6 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-
-		progressBack.draw(minecraft, 69, 23);
-		speedBack.draw(minecraft, 34, 33);
 
 		JEIPluginTE.drawFluid(69, 23, inputFluids.get(0).get(0), 24, 16);
 

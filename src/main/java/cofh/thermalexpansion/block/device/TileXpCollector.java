@@ -289,7 +289,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 		payload.addInt(boostXp);
 		payload.addInt(boostFactor);
-		payload.addInt(tank.getFluidAmount());
+		payload.addFluidStack(tank.getFluid());
 
 		return payload;
 	}
@@ -301,7 +301,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 		boostXp = payload.getInt();
 		boostFactor = payload.getInt();
-		tank.getFluid().amount = payload.getInt();
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	/* IInventory */

@@ -241,7 +241,10 @@ public class TileFurnace extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
+		if (!enableAutoOutput) {
+			return;
+		}
+		if (tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;

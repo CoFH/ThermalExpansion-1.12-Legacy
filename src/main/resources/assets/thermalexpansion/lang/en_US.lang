@@ -23,6 +23,9 @@ gui.thermalexpansion.machine.compactor.modeMint=Mode: Mint
 gui.thermalexpansion.machine.compactor.modePress=Mode: Press
 gui.thermalexpansion.machine.compactor.modeStorage=Mode: Storage
 
+gui.thermalexpansion.machine.enchanter.modeLocked=Arcana Slot Locked
+gui.thermalexpansion.machine.enchanter.modeUnlocked=Arcana Slot Unlocked
+
 gui.thermalexpansion.machine.insolator.modeLocked=Fertilizer Slot Locked
 gui.thermalexpansion.machine.insolator.modeUnlocked=Fertilizer Slot Unlocked
 
@@ -210,6 +213,7 @@ info.thermalexpansion.capacitor.d.0=Must remain in hotbar.
 
 info.thermalexpansion.coolant=Coolant
 
+info.thermalexpansion.device.diffuser=Spreads potion effects to an area.
 info.thermalexpansion.device.fisher=Catches fish and other aquatic life.
 info.thermalexpansion.device.fluid_buffer=Stores and transfers fluid.
 info.thermalexpansion.device.heat_sink=Improves operational speed of adjacent blocks.
@@ -248,7 +252,7 @@ info.thermalexpansion.machine.charger=Charges items with RF.
 info.thermalexpansion.machine.compactor=Compresses items.
 info.thermalexpansion.machine.crafter=Crafts items.
 info.thermalexpansion.machine.crucible=Melts items into fluids.
-info.thermalexpansion.machine.enchanter=WIP
+info.thermalexpansion.machine.enchanter=Creates magical tomes and scrolls.
 info.thermalexpansion.machine.extruder=Mixes hot and cold fluids.
 info.thermalexpansion.machine.furnace=Smelts items.
 info.thermalexpansion.machine.insolator=Infuses plants with 'sun' and RF.
@@ -367,6 +371,9 @@ tab.thermalexpansion.apparatus.collector.0=Picks up items in an area.
 tab.thermalexpansion.apparatus.collector.1=Anything not nailed down is fair game!
 tab.thermalexpansion.apparatus.collector.2=Probably won't steal from your inventory. Probably.
 
+tab.thermalexpansion.device.diffuser.0=Spreads potions into the nearby area.
+tab.thermalexpansion.device.diffuser.1=This can have various effects on creatures and monsters.
+tab.thermalexpansion.device.diffuser.2=Breathe deep.
 tab.thermalexpansion.device.fisher.0=Captures assorted aquatic life. Use bait to boost production.
 tab.thermalexpansion.device.fisher.1=Must be placed in a body of water.
 tab.thermalexpansion.device.fisher.2=Hang up your fishing rod.
@@ -382,7 +389,7 @@ tab.thermalexpansion.device.item_buffer.2=Hold Shift or Ctrl to fine tune quanti
 tab.thermalexpansion.device.lexicon.0=Transmutes equivalent items.
 tab.thermalexpansion.device.lexicon.1=Place preferred items into the transmutation array.
 tab.thermalexpansion.device.lexicon.2=Items may be restricted by higher powers.
-tab.thermalexpansion.device.nullifier.0=Sends all the things to /dev/null!
+tab.thermalexpansion.device.nullifier.0=Sends all the things to /dve/null!
 tab.thermalexpansion.device.nullifier.1=It is a horrible place; even fluids cannot escape.
 tab.thermalexpansion.device.tapper.0=Extracts fluids from adjacent trees. Use fertilizer to boost production.
 tab.thermalexpansion.device.tapper.1=Not every tree will be productive.
@@ -406,9 +413,9 @@ tab.thermalexpansion.dynamo.reactant.1=A solid reactant and a fluid fuel must be
 tab.thermalexpansion.dynamo.steam.0=Generates Redstone Flux using Steam.
 tab.thermalexpansion.dynamo.steam.1=Solid Fuels and Water can be used to generate Steam.
 
-tab.thermalexpansion.machine.brewer.0=Brews potions using Redstone Flux.
-tab.thermalexpansion.machine.brewer.1=WIP
-tab.thermalexpansion.machine.brewer.2=WIP
+tab.thermalexpansion.machine.brewer.0=Brews potions and imbues fluids.
+tab.thermalexpansion.machine.brewer.1=You might want a few of these in a row.
+tab.thermalexpansion.machine.brewer.2=Bottles not included.
 tab.thermalexpansion.machine.centrifuge.0=Separates items into their components.
 tab.thermalexpansion.machine.centrifuge.1=Some items will result in a fluid component.
 tab.thermalexpansion.machine.centrifuge.2=Spin to win!
@@ -424,9 +431,10 @@ tab.thermalexpansion.machine.crafter.2=No, it won't craft that.
 tab.thermalexpansion.machine.crucible.0=Turns solid materials into fluids!
 tab.thermalexpansion.machine.crucible.1=Very useful for building advanced blocks.
 tab.thermalexpansion.machine.crucible.2=Keep away from small children and pets.
-tab.thermalexpansion.machine.enchanter.0=WIP
-tab.thermalexpansion.machine.enchanter.1=WIP
-tab.thermalexpansion.machine.enchanter.2=WIP
+tab.thermalexpansion.machine.enchanter.0=Enchants books and other arcana.
+tab.thermalexpansion.machine.enchanter.1=Useful for acquiring a specific tome of enchantment.
+tab.thermalexpansion.machine.enchanter.2=Left slot can be locked to only contain certain items.
+tab.thermalexpansion.machine.enchanter.3=Shine on.
 tab.thermalexpansion.machine.extruder.0=Mixes water and lava to make different types of igneous rock.
 tab.thermalexpansion.machine.extruder.1=The selected item is what you'll get, if there is enough water and lava in the tanks.
 tab.thermalexpansion.machine.extruder.2=Minecraft physics are fun!
@@ -470,6 +478,7 @@ tab.thermalexpansion.storage.strongbox.0=It's a box! It stores things. Well, mos
 tile.thermalexpansion.apparatus.breaker.name=Terrain Smasher
 tile.thermalexpansion.apparatus.collector.name=Acquisition Apparatus
 
+tile.thermalexpansion.device.diffuser.name=Decoctive Diffuser
 tile.thermalexpansion.device.fisher.name=Aquatic Entangler
 tile.thermalexpansion.device.fluid_buffer.name=Fluid Allocator
 tile.thermalexpansion.device.heat_sink.name=Thermal Mediator
@@ -487,7 +496,7 @@ tile.thermalexpansion.dynamo.numismatic.name=Numismatic Dynamo
 tile.thermalexpansion.dynamo.reactant.name=Reactant Dynamo
 tile.thermalexpansion.dynamo.steam.name=Steam Dynamo
 
-tile.thermalexpansion.machine.brewer.name=WIP
+tile.thermalexpansion.machine.brewer.name=Alchemical Imbuer
 tile.thermalexpansion.machine.centrifuge.name=Centrifugal Separator
 tile.thermalexpansion.machine.charger.name=Energetic Infuser
 tile.thermalexpansion.machine.compactor.name=Compactor

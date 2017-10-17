@@ -75,16 +75,21 @@ public class InsolatorRecipeCategory extends BaseRecipeCategory<InsolatorRecipeW
 		return recipes;
 	}
 
-	IDrawableStatic tank;
-	IDrawableStatic tankOverlay;
+	final IDrawableStatic progress;
+	final IDrawableStatic speed;
+	final IDrawableStatic tank;
+	final IDrawableStatic tankOverlay;
 
 	public InsolatorRecipeCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiInsolator.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
-		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
-		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.insolator.name");
+
+		progress = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
+		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_SUN);
+		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
+		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK);
 	}
 
 	@Nonnull
@@ -97,6 +102,8 @@ public class InsolatorRecipeCategory extends BaseRecipeCategory<InsolatorRecipeW
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
+		progress.draw(minecraft, 69, 23);
+		speed.draw(minecraft, 34, 33);
 		tank.draw(minecraft, 140, 0);
 		energyMeter.draw(minecraft, 2, 8);
 	}

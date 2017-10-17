@@ -66,19 +66,21 @@ public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWra
 		return recipes;
 	}
 
-	IDrawableStatic drop;
-	IDrawableStatic tank;
-	IDrawableStatic tankOverlay;
+	final IDrawableStatic progress;
+	final IDrawableStatic speed;
+	final IDrawableStatic tank;
+	final IDrawableStatic tankOverlay;
 
 	public CrucibleRecipeCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiCrucible.TEXTURE, 26, 11, 72, 62, 0, 0, 16, 76);
-
-		drop = Drawables.getDrawables(guiHelper).getProgress(2);
-		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
-		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.crucible.name");
+
+		progress = Drawables.getDrawables(guiHelper).getProgress(2);
+		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_FLAME);
+		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
+		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK);
 	}
 
 	@Nonnull
@@ -91,7 +93,8 @@ public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWra
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
-		drop.draw(minecraft, 69, 23);
+		progress.draw(minecraft, 69, 23);
+		speed.draw(minecraft, 43, 33);
 		tank.draw(minecraft, 105, 0);
 		energyMeter.draw(minecraft, 2, 8);
 	}

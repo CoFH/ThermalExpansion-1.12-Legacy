@@ -131,6 +131,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 				return new TileLexicon();
 			case XP_COLLECTOR:
 				return new TileXpCollector();
+			case DIFFUSER:
+				return new TileDiffuser();
 			//			case CHUNK_LOADER:                      // TODO
 			//				return null;
 			default:
@@ -271,6 +273,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		TileFluidBuffer.initialize();
 		TileLexicon.initialize();
 		TileXpCollector.initialize();
+		TileDiffuser.initialize();
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -289,6 +292,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		deviceFluidBuffer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FLUID_BUFFER.getMetadata()));
 		deviceLexicon = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.LEXICON.getMetadata()));
 		deviceExpCollector = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.XP_COLLECTOR.getMetadata()));
+		deviceDiffuser = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.DIFFUSER.getMetadata()));
 
 		addRecipes();
 
@@ -424,7 +428,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		ITEM_BUFFER(5, "item_buffer"),
 		FLUID_BUFFER(6, "fluid_buffer"),
 		LEXICON(7, "lexicon"),
-		XP_COLLECTOR(8, "xp_collector");
+		XP_COLLECTOR(8, "xp_collector"),
+		DIFFUSER(9, "diffuser");
 
 		// OREDICT
 		// CHUNK_LOADER
@@ -491,6 +496,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	public static ItemStack deviceFluidBuffer;
 	public static ItemStack deviceLexicon;
 	public static ItemStack deviceExpCollector;
+	public static ItemStack deviceDiffuser;
 	public static ItemStack deviceChunkLoader;
 	public static ItemStack deviceTrader;
 

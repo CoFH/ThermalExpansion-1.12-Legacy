@@ -9,6 +9,7 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
@@ -47,11 +48,17 @@ public abstract class CompactorRecipeCategory extends BaseRecipeCategory<Compact
 		registry.addRecipeClickArea(GuiCompactor.class, 79, 34, 24, 16, RecipeUidsTE.COMPACTOR_PRESS, RecipeUidsTE.COMPACTOR_STORAGE, RecipeUidsTE.COMPACTOR_MINT);
 	}
 
+	final IDrawableStatic progress;
+	final IDrawableStatic speed;
+
 	public CompactorRecipeCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiCompactor.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.compactor.name");
+
+		progress = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
+		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_COMPACT);
 	}
 
 	@Override
@@ -63,6 +70,8 @@ public abstract class CompactorRecipeCategory extends BaseRecipeCategory<Compact
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
+		progress.draw(minecraft, 69, 23);
+		speed.draw(minecraft, 43, 33);
 		energyMeter.draw(minecraft, 2, 8);
 	}
 

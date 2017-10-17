@@ -203,8 +203,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
 
-		// machineEnchanterTreasure = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_TREASURE, AugmentType.ADVANCED);
-		// machineEnchanterEmpowered = addAugmentItem(465, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.ADVANCED);
+		machineEnchanterTreasure = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_TREASURE, AugmentType.ADVANCED);
+		machineEnchanterEmpowered = addAugmentItem(465, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.ADVANCED);
 
 		machinePrecipitatorSnowLayer = addAugmentItem(481, TEProps.MACHINE_PRECIPITATOR_SNOW_LAYER, AugmentType.MODE);
 		machinePrecipitatorPackedIce = addAugmentItem(482, TEProps.MACHINE_PRECIPITATOR_PACKED_ICE, AugmentType.MODE);

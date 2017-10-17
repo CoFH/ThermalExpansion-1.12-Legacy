@@ -43,14 +43,14 @@ public abstract class TransposerRecipeCategory extends BaseRecipeCategory<Transp
 		registry.addRecipeClickArea(GuiTransposer.class, 112, 19, 24, 16, RecipeUidsTE.TRANSPOSER_FILL, RecipeUidsTE.TRANSPOSER_EXTRACT);
 	}
 
-	IDrawableStatic bubble;
-	IDrawableStatic tankOverlay;
+	final IDrawableStatic speed;
+	final IDrawableStatic tankOverlay;
 
 	public TransposerRecipeCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiTransposer.TEXTURE, 73, 8, 96, 62, 0, 0, 24, 44);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
-		bubble = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_BUBBLE);
+		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_BUBBLE);
 		tankOverlay = Drawables.getDrawables(guiHelper).getTankLargeOverlay(0);
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.transposer.name");
 	}
@@ -58,7 +58,7 @@ public abstract class TransposerRecipeCategory extends BaseRecipeCategory<Transp
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
-		bubble.draw(minecraft, 68, 41);
+		speed.draw(minecraft, 68, 41);
 		energyMeter.draw(minecraft, 2, 8);
 	}
 

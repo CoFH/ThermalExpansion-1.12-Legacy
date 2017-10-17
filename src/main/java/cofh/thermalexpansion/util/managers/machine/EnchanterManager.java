@@ -19,7 +19,6 @@ import java.util.Map.Entry;
 public class EnchanterManager {
 
 	private static Map<List<ComparableItemStackEnchanter>, EnchanterRecipe> recipeMap = new THashMap<>();
-	private static Map<List<ComparableItemStackEnchanter>, EnchanterRecipe> recipeMapEmpowered = new THashMap<>();
 	private static Set<ComparableItemStackEnchanter> validationSet = new THashSet<>();
 	private static Set<ComparableItemStackEnchanter> lockSet = new THashSet<>();
 
@@ -93,6 +92,7 @@ public class EnchanterManager {
 		{
 			addDefaultEnchantmentRecipe(new ItemStack(Blocks.OBSIDIAN), "unbreaking", 1);
 			addDefaultEnchantmentRecipe(new ItemStack(Items.NETHER_STAR), "mending", 3);
+			addDefaultEnchantmentRecipe(new ItemStack(Items.CHORUS_FRUIT_POPPED), "binding_curse", 3);
 		}
 
 		/* ARMOR */
@@ -107,6 +107,7 @@ public class EnchanterManager {
 			addDefaultEnchantmentRecipe(new ItemStack(Items.PRISMARINE_SHARD), "depth_strider", 2);
 			addDefaultEnchantmentRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), "thorns", 3);
 			addDefaultEnchantmentRecipe(new ItemStack(Blocks.ICE), "frost_walker", 3);
+			addDefaultEnchantmentRecipe(new ItemStack(Items.GHAST_TEAR), "vanishing_curse", 3);
 		}
 
 		/* SWORDS */

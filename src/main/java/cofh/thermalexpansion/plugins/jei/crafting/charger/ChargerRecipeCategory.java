@@ -14,6 +14,7 @@ import cofh.thermalexpansion.util.managers.machine.ChargerManager.ChargerRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
+import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
@@ -97,12 +98,15 @@ public class ChargerRecipeCategory extends BaseRecipeCategory<ChargerRecipeWrapp
 		return recipes;
 	}
 
+	final IDrawableStatic progress;
+
 	public ChargerRecipeCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiCharger.TEXTURE, 62, 11, 88, 62, 0, 0, 16, 24);
-
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.charger.name");
+
+		progress = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_FLUX);
 	}
 
 	@Nonnull
@@ -115,6 +119,7 @@ public class ChargerRecipeCategory extends BaseRecipeCategory<ChargerRecipeWrapp
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
+		progress.draw(minecraft, 34, 43);
 		energyMeter.draw(minecraft, 2, 8);
 	}
 

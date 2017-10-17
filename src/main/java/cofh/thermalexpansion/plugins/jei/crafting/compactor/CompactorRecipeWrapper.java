@@ -26,8 +26,6 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 	final List<ItemStack> outputs;
 
 	/* Animation */
-	final IDrawableStatic progressBack;
-	final IDrawableStatic speedBack;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 
@@ -53,9 +51,6 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 
 		energy = recipe.getEnergy();
 
-		progressBack = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
-		speedBack = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_COMPACT);
-
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_ARROW);
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_COMPACT);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
@@ -74,9 +69,6 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-
-		progressBack.draw(minecraft, 69, 23);
-		speedBack.draw(minecraft, 43, 33);
 
 		progress.draw(minecraft, 69, 23);
 		speed.draw(minecraft, 43, 33);

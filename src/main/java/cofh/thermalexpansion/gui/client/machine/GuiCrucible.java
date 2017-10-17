@@ -20,7 +20,7 @@ public class GuiCrucible extends GuiPoweredBase {
 	private TileCrucible myTile;
 
 	private ElementBase slotInput;
-	private ElementBase slotOutput;
+	private ElementBase slotTankOutput;
 	private ElementFluid progressFluid;
 	private ElementDualScaled progressOverlay;
 	private ElementDualScaled speed;
@@ -40,12 +40,13 @@ public class GuiCrucible extends GuiPoweredBase {
 		super.initGui();
 
 		slotInput = addElement(new ElementSlotOverlay(this, 53, 26).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
-		slotOutput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.ORANGE, SlotType.TANK, SlotRender.FULL));
+		slotTankOutput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.ORANGE, SlotType.TANK, SlotRender.FULL));
 
 		if (!myTile.smallStorage()) {
 			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		}
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setGauge(1).setAlwaysShow(true));
+
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 103, 34).setFluid(baseTile.getTankFluid()).setSize(24, 16));
 		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 103, 34).setMode(1).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 53, 44).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
@@ -57,7 +58,7 @@ public class GuiCrucible extends GuiPoweredBase {
 		super.updateElementInformation();
 
 		slotInput.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
-		slotOutput.setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotTankOutput.setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
 		progressFluid.setFluid(baseTile.getTankFluid());
 		progressFluid.setSize(baseTile.getScaledProgress(PROGRESS), 16);

@@ -156,6 +156,9 @@ public class TileSmelter extends TileMachineBase {
 		if (recipe == null) {
 			return false;
 		}
+		if (augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() < fluidAmount) {
+			return false;
+		}
 		if (SmelterManager.isRecipeReversed(inventory[0], inventory[1])) {
 			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
 				return false;
@@ -164,9 +167,6 @@ public class TileSmelter extends TileMachineBase {
 			if (recipe.getPrimaryInput().getCount() > inventory[0].getCount() || recipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
 				return false;
 			}
-		}
-		if (augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() < fluidAmount) {
-			return false;
 		}
 		return true;
 	}
@@ -257,7 +257,7 @@ public class TileSmelter extends TileMachineBase {
 				}
 			}
 		}
-		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
+		for (int i = inputTrackerSecondary + 1; i <= inputTrackerSecondary + 6; i++) {
 			side = i % 6;
 			if (isSecondaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				if (extractItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {

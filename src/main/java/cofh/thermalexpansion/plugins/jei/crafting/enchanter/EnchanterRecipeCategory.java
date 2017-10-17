@@ -71,16 +71,21 @@ public class EnchanterRecipeCategory extends BaseRecipeCategory<EnchanterRecipeW
 		return recipes;
 	}
 
-	IDrawableStatic tank;
-	IDrawableStatic tankOverlay;
+	final IDrawableStatic progress;
+	final IDrawableStatic speed;
+	final IDrawableStatic tank;
+	final IDrawableStatic tankOverlay;
 
 	public EnchanterRecipeCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiEnchanter.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
-		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
-		tankOverlay = Drawables.getDrawables(guiHelper).getTankLargeOverlay(Drawables.TANK);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.enchanter.name");
+
+		progress = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
+		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_SUN);
+		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
+		tankOverlay = Drawables.getDrawables(guiHelper).getTankLargeOverlay(Drawables.TANK);
 	}
 
 	@Nonnull
@@ -93,6 +98,8 @@ public class EnchanterRecipeCategory extends BaseRecipeCategory<EnchanterRecipeW
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
+		progress.draw(minecraft, 69, 23);
+		speed.draw(minecraft, 34, 33);
 		tank.draw(minecraft, 140, 0);
 		energyMeter.draw(minecraft, 2, 8);
 	}

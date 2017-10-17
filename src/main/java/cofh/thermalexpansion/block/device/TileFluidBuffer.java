@@ -119,12 +119,14 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 			side = i % 6;
 			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]]) && FluidHelper.isAdjacentFluidHandler(this, EnumFacing.VALUES[side])) {
 				FluidStack input = FluidHelper.extractFluidFromAdjacentFluidHandler(this, EnumFacing.VALUES[side], amountInput, false);
+
 				if (input != null) {
 					for (int j = 0; j < tanks.length; j++) {
 						if (tanks[j].getSpace() > 0) {
 							int toFill = tanks[j].fill(input, true);
+
 							if (toFill > 0) {
-								FluidHelper.extractFluidFromAdjacentFluidHandler(this, EnumFacing.VALUES[side], amountInput, true);
+								FluidHelper.extractFluidFromAdjacentFluidHandler(this, EnumFacing.VALUES[side], toFill, true);
 								inputTracker = side;
 								break;
 							}
@@ -148,6 +150,7 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 					if (tanks[j].getFluidAmount() > 0) {
 						FluidStack output = new FluidStack(tanks[j].getFluid(), Math.min(tanks[j].getFluidAmount(), amountOutput));
 						int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
+
 						if (toDrain > 0) {
 							tanks[j].drain(toDrain, true);
 							outputTracker = side;

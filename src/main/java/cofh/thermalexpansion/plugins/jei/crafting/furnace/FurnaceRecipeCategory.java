@@ -11,6 +11,7 @@ import cofh.thermalexpansion.util.managers.machine.FurnaceManager.FurnaceRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
+import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
@@ -67,11 +68,17 @@ public class FurnaceRecipeCategory extends BaseRecipeCategory<FurnaceRecipeWrapp
 		return recipes;
 	}
 
+	final IDrawableStatic progress;
+	final IDrawableStatic speed;
+
 	public FurnaceRecipeCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiFurnace.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.furnace.name");
+
+		progress = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
+		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_FLAME);
 	}
 
 	@Nonnull
@@ -84,6 +91,8 @@ public class FurnaceRecipeCategory extends BaseRecipeCategory<FurnaceRecipeWrapp
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
+		progress.draw(minecraft, 69, 23);
+		speed.draw(minecraft, 43, 33);
 		energyMeter.draw(minecraft, 2, 8);
 	}
 

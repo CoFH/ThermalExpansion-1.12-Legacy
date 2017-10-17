@@ -247,7 +247,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
-		payload.addInt(tank.getFluidAmount());
+		payload.addFluidStack(tank.getFluid());
 
 		return payload;
 	}
@@ -257,7 +257,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		super.handleGuiPacket(payload);
 
-		tank.getFluid().amount = payload.getInt();
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	/* ISidedTexture */
