@@ -385,7 +385,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 						if (resource.isFluidEqual(tank.getFluid())) {
 							return 0;
 						}
-						tank.setFluid(new FluidStack(resource.getFluid(), getCapacity(level, enchantHolding)));
+						tank.setFluid(new FluidStack(resource, getCapacity(level, enchantHolding)));
 						sendTilePacket(Side.CLIENT);
 						updateRender();
 						return 0;

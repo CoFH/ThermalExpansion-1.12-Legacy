@@ -32,7 +32,7 @@ public class EnchanterRecipeCategoryEmpowered extends EnchanterRecipeCategory {
 		List<EnchanterRecipeWrapper> recipes = new ArrayList<>();
 
 		for (EnchanterRecipe recipe : EnchanterManager.getRecipeList()) {
-			if (recipe.getType() == Type.EMPOWERED || recipe.getType() == Type.TREASURE_EMPOWERED) {
+			if (recipe.getType() == Type.EMPOWERED) {
 				recipes.add(new EnchanterRecipeWrapper(guiHelper, recipe, RecipeUidsTE.ENCHANTER_EMPOWERED));
 			}
 		}

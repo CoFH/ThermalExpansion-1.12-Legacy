@@ -390,10 +390,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 					if (resource == null || from == null || !augmentCoilDuct && from.ordinal() == facing) {
 						return null;
 					}
-					if (resource.getFluid() == FluidRegistry.WATER) {
-						return tank.drain(resource.amount, doDrain);
-					}
-					return null;
+					return tank.drain(resource, doDrain);
 				}
 
 				@Nullable

@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -80,7 +79,6 @@ public class TileEnchanter extends TileMachineBase {
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 
 	/* AUGMENTS */
-	protected boolean augmentTreasure;
 	protected boolean augmentEmpowered;
 
 	public TileEnchanter() {
@@ -115,25 +113,8 @@ public class TileEnchanter extends TileMachineBase {
 		if (recipe == null || tank.getFluidAmount() < recipe.getExperience()) {
 			return false;
 		}
-		EnchanterManager.Type type = recipe.getType();
-		switch (type) {
-			case STANDARD:
-				break;
-			case TREASURE:
-				if (!augmentTreasure) {
-					return false;
-				}
-				break;
-			case EMPOWERED:
-				if (!augmentEmpowered) {
-					return false;
-				}
-				break;
-			case TREASURE_EMPOWERED:
-				if (!augmentTreasure || !augmentEmpowered) {
-					return false;
-				}
-				break;
+		if (recipe.getType() == EnchanterManager.Type.EMPOWERED && !augmentEmpowered) {
+			return false;
 		}
 		if (EnchanterManager.isRecipeReversed(inventory[0], inventory[1])) {
 			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
@@ -394,7 +375,6 @@ public class TileEnchanter extends TileMachineBase {
 
 		super.preAugmentInstall();
 
-		augmentTreasure = false;
 		augmentEmpowered = false;
 	}
 
@@ -403,14 +383,8 @@ public class TileEnchanter extends TileMachineBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-		if (!augmentTreasure && TEProps.MACHINE_ENCHANTER_TREASURE.equals(id)) {
-			augmentTreasure = true;
-			energyMod += 50;
-			return true;
-		}
 		if (!augmentEmpowered && TEProps.MACHINE_ENCHANTER_EMPOWERED.equals(id)) {
 			augmentEmpowered = true;
-			energyMod += 100;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

@@ -169,7 +169,7 @@ public class TileTransposer extends TileMachineBase {
 		IFluidTankProperties[] tankProperties = handler.getTankProperties();
 
 		FluidStack handlerStack = tankProperties[0].getContents();
-		String prevID = renderFluid.getFluid().getName();
+		FluidStack prevStack = renderFluid.copy();
 
 		if (!extractMode) {
 			renderFluid = tank.getFluid() == null ? null : tank.getFluid().copy();
@@ -184,7 +184,7 @@ public class TileTransposer extends TileMachineBase {
 		processMax = TransposerManager.DEFAULT_ENERGY * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
-		if (!prevID.equals(renderFluid.getFluid().getName())) {
+		if (!FluidHelper.isFluidEqual(prevStack, renderFluid)) {
 			sendFluidPacket();
 		}
 	}
@@ -364,7 +364,7 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	protected void processStart() {
 
-		String prevID = renderFluid.getFluid().getName();
+		FluidStack prevStack = renderFluid.copy();
 		TransposerRecipe recipe;
 
 		if (!extractMode) {
@@ -385,7 +385,7 @@ public class TileTransposer extends TileMachineBase {
 		if (inventory[0].getCount() <= 0) {
 			inventory[0] = ItemStack.EMPTY;
 		}
-		if (!prevID.equals(renderFluid.getFluid().getName())) {
+		if (!FluidHelper.isFluidEqual(prevStack, renderFluid)) {
 			sendFluidPacket();
 		}
 	}

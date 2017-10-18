@@ -304,10 +304,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 					if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
 						return null;
 					}
-					if (resource.equals(tank.getFluid())) {
-						return tank.drain(resource.amount, doDrain);
-					}
-					return null;
+					return tank.drain(resource, doDrain);
 				}
 
 				@Nullable

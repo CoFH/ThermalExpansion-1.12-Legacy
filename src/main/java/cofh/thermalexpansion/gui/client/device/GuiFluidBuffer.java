@@ -116,6 +116,11 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		}
 
 		for (int i = 0; i < lock.length; i++) {
+			if (myTile.getTank(i).getFluid() == null) {
+				lock[i].setDisabled();
+			} else {
+				lock[i].setActive();
+			}
 			if (myTile.locks[i]) {
 				String color = StringHelper.WHITE;
 				FluidStack fluid = myTile.getTank(i).getFluid();

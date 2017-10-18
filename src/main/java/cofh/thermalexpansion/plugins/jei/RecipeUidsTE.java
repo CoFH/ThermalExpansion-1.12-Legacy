@@ -17,9 +17,6 @@ public class RecipeUidsTE {
 	public static final String SMELTER_PYROTHEUM = "thermalexpansion.smelter_pyrotheum";
 
 	public static final String INSOLATOR = "thermalexpansion.insolator";
-	public static final String INSOLATOR_MYCELIUM = "thermalexpansion.insolator_mycelium";
-	public static final String INSOLATOR_NETHER = "thermalexpansion.insolator_nether";
-	public static final String INSOLATOR_END = "thermalexpansion.insolator_end";
 	public static final String INSOLATOR_TREE = "thermalexpansion.insolator_tree";
 
 	public static final String COMPACTOR_PRESS = "thermalexpansion.compactor_press";

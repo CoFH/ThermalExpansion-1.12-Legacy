@@ -166,11 +166,11 @@ public class TileCrucible extends TileMachineBase {
 		processMax = CrucibleManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
-		String prevID = renderFluid.getFluid().getName();
+		FluidStack prevStack = renderFluid.copy();
 		renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput().copy();
 		renderFluid.amount = 0;
 
-		if (!prevID.equals(renderFluid.getFluid().getName())) {
+		if (!FluidHelper.isFluidEqual(prevStack, renderFluid)) {
 			sendFluidPacket();
 		}
 	}
@@ -458,10 +458,7 @@ public class TileCrucible extends TileMachineBase {
 					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
-					if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
-						return null;
-					}
-					return tank.drain(resource.amount, doDrain);
+					return tank.drain(resource, doDrain);
 				}
 
 				@Nullable

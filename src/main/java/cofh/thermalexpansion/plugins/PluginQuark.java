@@ -5,7 +5,6 @@ import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager;
@@ -174,7 +173,7 @@ public class PluginQuark extends ModPlugin {
 			{
 				ItemStack glowshroom = getItemStack("glowshroom", 1, 0);
 
-				InsolatorManager.addDefaultRecipe(glowshroom, ItemHelper.cloneStack(glowshroom, 2), ItemStack.EMPTY, 0, Type.MYCELIUM);
+				InsolatorManager.addDefaultRecipe(glowshroom, ItemHelper.cloneStack(glowshroom, 2), ItemStack.EMPTY, 0);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);

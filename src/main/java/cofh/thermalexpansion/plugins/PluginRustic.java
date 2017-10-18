@@ -6,7 +6,6 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.block.Block;
@@ -117,12 +116,12 @@ public class PluginRustic extends ModPlugin {
 				InsolatorManager.addDefaultRecipe(marshMallow, ItemHelper.cloneStack(marshMallow, 3), ItemStack.EMPTY, 0);
 				InsolatorManager.addDefaultRecipe(windThistle, ItemHelper.cloneStack(windThistle, 3), ItemStack.EMPTY, 0);
 
-				InsolatorManager.addDefaultRecipe(deathstalkMushroom, ItemHelper.cloneStack(deathstalkMushroom, 2), ItemStack.EMPTY, 0, Type.MYCELIUM);
-				InsolatorManager.addDefaultRecipe(mooncapMushroom, ItemHelper.cloneStack(mooncapMushroom, 2), ItemStack.EMPTY, 0, Type.MYCELIUM);
+				InsolatorManager.addDefaultRecipe(deathstalkMushroom, ItemHelper.cloneStack(deathstalkMushroom, 2), ItemStack.EMPTY, 0);
+				InsolatorManager.addDefaultRecipe(mooncapMushroom, ItemHelper.cloneStack(mooncapMushroom, 2), ItemStack.EMPTY, 0);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingOlive, ItemHelper.cloneStack(logOlive, 4), saplingOlive, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingIronwood, ItemHelper.cloneStack(logIronwood, 4), saplingIronwood, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingApple, new ItemStack(Blocks.LOG, 4, 0), saplingApple, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingOlive, ItemHelper.cloneStack(logOlive, 4), saplingOlive, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingIronwood, ItemHelper.cloneStack(logIronwood, 4), saplingIronwood, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingApple, new ItemStack(Blocks.LOG, 4, 0), saplingApple, 50);
 			}
 
 			/* TRANSPOSER */

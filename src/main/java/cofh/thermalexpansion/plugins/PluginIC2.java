@@ -6,7 +6,6 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import cofh.thermalexpansion.util.managers.machine.RefineryManager;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.item.ItemStack;
@@ -51,7 +50,7 @@ public class PluginIC2 extends ModPlugin {
 				ItemStack logRubber = getItemStack("rubber_wood", 1, 0);
 				ItemStack saplingRubber = getItemStack("sapling", 1, 0);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingRubber, ItemHelper.cloneStack(logRubber, 4), saplingRubber, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingRubber, ItemHelper.cloneStack(logRubber, 4), saplingRubber, 50);
 			}
 
 			/* COMPACTOR */

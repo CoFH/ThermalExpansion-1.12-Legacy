@@ -191,10 +191,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineSmelterPyrotheum = addAugmentItem(304, TEProps.MACHINE_SMELTER_PYROTHEUM, AugmentType.MODE);
 
-		machineInsolatorMycelium = addAugmentItem(320, TEProps.MACHINE_INSOLATOR_MYCELIUM, AugmentType.MODE);
-		machineInsolatorNether = addAugmentItem(321, TEProps.MACHINE_INSOLATOR_NETHER, AugmentType.MODE);
-		machineInsolatorEnd = addAugmentItem(322, TEProps.MACHINE_INSOLATOR_END, AugmentType.MODE);
-		machineInsolatorTree = addAugmentItem(323, TEProps.MACHINE_INSOLATOR_TREE, AugmentType.ADVANCED);
+		machineInsolatorTree = addAugmentItem(323, TEProps.MACHINE_INSOLATOR_TREE, AugmentType.MODE);
 
 		machineCompactorMint = addAugmentItem(336, TEProps.MACHINE_COMPACTOR_MINT, AugmentType.MODE);
 
@@ -203,8 +200,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
 
-		machineEnchanterTreasure = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_TREASURE, AugmentType.ADVANCED);
-		machineEnchanterEmpowered = addAugmentItem(465, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.ADVANCED);
+		machineEnchanterEmpowered = addAugmentItem(465, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.MODE);
 
 		machinePrecipitatorSnowLayer = addAugmentItem(481, TEProps.MACHINE_PRECIPITATOR_SNOW_LAYER, AugmentType.MODE);
 		machinePrecipitatorPackedIce = addAugmentItem(482, TEProps.MACHINE_PRECIPITATOR_PACKED_ICE, AugmentType.MODE);
@@ -347,36 +343,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Y', "dustPyrotheum"
 		);
 
-		addShapedRecipe(machineInsolatorMycelium,
-				" G ",
-				"ICI",
-				"YXY",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearCopper",
-				'I', "plateLead",
-				'X', Blocks.MYCELIUM,
-				'Y', "dustRedstone"
-		);
-		addShapedRecipe(machineInsolatorNether,
-				" G ",
-				"ICI",
-				"YXY",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearSilver",
-				'I', "plateTin",
-				'X', Blocks.SOUL_SAND,
-				'Y', "dustGlowstone"
-		);
-		addShapedRecipe(machineInsolatorEnd,
-				" G ",
-				"ICI",
-				"YXY",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearNickel",
-				'I', "plateSilver",
-				'X', Blocks.END_STONE,
-				'Y', "dustCryotheum"
-		);
 		addShapedRecipe(machineInsolatorTree,
 				" G ",
 				"ICI",
@@ -700,9 +666,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineSmelterPyrotheum;
 
-	public static ItemStack machineInsolatorMycelium;
-	public static ItemStack machineInsolatorNether;
-	public static ItemStack machineInsolatorEnd;
 	public static ItemStack machineInsolatorTree;
 
 	public static ItemStack machineCompactorMint;
@@ -714,7 +677,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineCentrifugeMobs;              // Enstabulation Chamber
 
-	public static ItemStack machineEnchanterTreasure;
 	public static ItemStack machineEnchanterEmpowered;
 
 	public static ItemStack machinePrecipitatorSnowLayer;

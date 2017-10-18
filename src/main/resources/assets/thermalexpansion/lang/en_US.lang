@@ -103,13 +103,9 @@ info.thermalexpansion.augment.machineCrucibleLava.0=Magma Crucible: Specializati
 info.thermalexpansion.augment.machineCrucibleLava.a.0=Greatly increases Lava production speed.
 info.thermalexpansion.augment.machineCrucibleLava.b.0=Only Lava can be created.
 
-info.thermalexpansion.augment.machineEnchanterEmpowered.0=Arcane Ensorcellator: Functionality
+info.thermalexpansion.augment.machineEnchanterEmpowered.0=Arcane Ensorcellator: Specialization
 info.thermalexpansion.augment.machineEnchanterEmpowered.a.0=Focuses and aligns arcane energies to maximize enchantment strength.
 info.thermalexpansion.augment.machineEnchanterEmpowered.b.0=Additional resources are required.
-
-info.thermalexpansion.augment.machineEnchanterTreasure.0=Arcane Ensorcellator: Functionality
-info.thermalexpansion.augment.machineEnchanterTreasure.a.0=Allows for extremely rare enchantments to be imbued.
-info.thermalexpansion.augment.machineEnchanterTreasure.b.0=Additional energy is required.
 
 info.thermalexpansion.augment.machineExtruderAndesite.0=Igneous Extruder: Specialization
 info.thermalexpansion.augment.machineExtruderAndesite.a.0=Allows for the creation of Andesite.
@@ -140,21 +136,8 @@ info.thermalexpansion.augment.machineFurnacePyrolysis.a.0=Allows for pyrolysis a
 info.thermalexpansion.augment.machineFurnacePyrolysis.b.0=Only certain items can be processed.
 info.thermalexpansion.augment.machineFurnacePyrolysis.b.1=Processing speed is greatly reduced.
 
-info.thermalexpansion.augment.machineInsolatorEnd.0=Phytogenic Insolator: Specialization
-info.thermalexpansion.augment.machineInsolatorEnd.a.0=Allows for non-standard crops to be grown.
-info.thermalexpansion.augment.machineInsolatorEnd.a.1=Suitable for Ender crops.
-
-info.thermalexpansion.augment.machineInsolatorMycelium.0=Phytogenic Insolator: Specialization
-info.thermalexpansion.augment.machineInsolatorMycelium.a.0=Allows for non-standard crops to be grown.
-info.thermalexpansion.augment.machineInsolatorMycelium.a.1=Suitable for Fungi and Slime.
-
-info.thermalexpansion.augment.machineInsolatorNether.0=Phytogenic Insolator: Specialization
-info.thermalexpansion.augment.machineInsolatorNether.a.0=Allows for non-standard crops to be grown.
-info.thermalexpansion.augment.machineInsolatorNether.a.1=Suitable for Nether crops.
-
-info.thermalexpansion.augment.machineInsolatorTree.0=Phytogenic Insolator: Functionality
+info.thermalexpansion.augment.machineInsolatorTree.0=Phytogenic Insolator: Specialization
 info.thermalexpansion.augment.machineInsolatorTree.a.0=Allows for trees to be grown.
-info.thermalexpansion.augment.machineInsolatorTree.c.0=Can be used with Substrate Augments.
 
 info.thermalexpansion.augment.machinePower.0=Machines: Processing Speed
 info.thermalexpansion.augment.machinePower.a.0=Increases maximum power usage.
@@ -298,14 +281,10 @@ item.thermalexpansion.augment.machineFurnaceFood.name=Trivection Chamber
 item.thermalexpansion.augment.machineFurnaceOre.name=Flux Anodizers
 item.thermalexpansion.augment.machineFurnacePyrolysis.name=Pyrolytic Conversion
 item.thermalexpansion.augment.machineEnchanterEmpowered.name=Recombinant Focus
-item.thermalexpansion.augment.machineEnchanterTreasure.name=Esoteric Arcanum
 item.thermalexpansion.augment.machineExtruderAndesite.name=Andesitic Subduction
 item.thermalexpansion.augment.machineExtruderDiorite.name=Dioritic Subduction
 item.thermalexpansion.augment.machineExtruderGranite.name=Granitic Subduction
 item.thermalexpansion.augment.machineExtruderNoWater.name=Pyroclastic Injection
-item.thermalexpansion.augment.machineInsolatorEnd.name=Ender Substrate
-item.thermalexpansion.augment.machineInsolatorMycelium.name=Mycelium Substrate
-item.thermalexpansion.augment.machineInsolatorNether.name=Nether Substrate
 item.thermalexpansion.augment.machineInsolatorTree.name=Sapling Infuser
 item.thermalexpansion.augment.machinePower.name=Auxiliary Reception Coil
 item.thermalexpansion.augment.machinePrecipitatorPackedIce.name=Permafrost Compressor

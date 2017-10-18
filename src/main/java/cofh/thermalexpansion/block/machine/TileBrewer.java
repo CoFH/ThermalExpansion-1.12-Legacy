@@ -338,19 +338,22 @@ public class TileBrewer extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
+					if (from != null && isPrimaryInput(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return inputTank.drain(resource, doDrain);
+					}
 					if (from != null && isPrimaryOutput(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
-					if (resource == null || !resource.isFluidEqual(outputTank.getFluid())) {
-						return null;
-					}
-					return outputTank.drain(resource.amount, doDrain);
+					return outputTank.drain(resource, doDrain);
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
+					if (from != null && isPrimaryInput(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return inputTank.drain(maxDrain, doDrain);
+					}
 					if (from != null && isPrimaryOutput(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}

@@ -454,10 +454,7 @@ public class TileFurnace extends TileMachineBase {
 					if (from != null && sideCache[from.ordinal()] < 2) {
 						return null;
 					}
-					if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
-						return null;
-					}
-					return tank.drain(resource.amount, doDrain);
+					return tank.drain(resource, doDrain);
 				}
 
 				@Nullable

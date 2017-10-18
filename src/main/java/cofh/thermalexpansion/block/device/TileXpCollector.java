@@ -10,7 +10,7 @@ import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiXpCollector;
 import cofh.thermalexpansion.gui.container.device.ContainerXpCollector;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.util.managers.machine.XpManager;
+import cofh.thermalexpansion.util.managers.XpCollectorManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -182,16 +182,16 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 	protected void convertXp() {
 
-		if (boostXp <= 0 && XpManager.getCatalystFactor(inventory[0]) > 0) {
-			boostXp = XpManager.getCatalystXp(inventory[0]);
-			boostFactor = XpManager.getCatalystFactor(inventory[0]);
+		if (boostXp <= 0 && XpCollectorManager.getCatalystFactor(inventory[0]) > 0) {
+			boostXp = XpCollectorManager.getCatalystXp(inventory[0]);
+			boostFactor = XpCollectorManager.getCatalystFactor(inventory[0]);
 
 			inventory[0].shrink(1);
 			if (inventory[0].getCount() <= 0) {
 				inventory[0] = ItemStack.EMPTY;
 			}
 		}
-		int conversion = (XpManager.XP_CONVERSION * (100 + boostFactor)) / 100;
+		int conversion = (XpCollectorManager.XP_CONVERSION * (100 + boostFactor)) / 100;
 		int toConvert;
 
 		if (xpBuffer * conversion <= tank.getSpace()) {
@@ -308,7 +308,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return XpManager.getCatalystFactor(stack) > 0;
+		return XpCollectorManager.getCatalystFactor(stack) > 0;
 	}
 
 	/* CAPABILITIES */

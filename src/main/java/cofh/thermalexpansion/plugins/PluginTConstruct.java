@@ -7,7 +7,6 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
@@ -102,9 +101,9 @@ public class PluginTConstruct extends ModPlugin {
 
 			/* INSOLATOR */
 			{
-				InsolatorManager.addDefaultTreeRecipe(saplingSlimeBlue, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimeBlue, 50, Type.MYCELIUM_TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingSlimePurple, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimePurple, 50, Type.MYCELIUM_TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingSlimeMagma, ItemHelper.cloneStack(slimeCongealedMagma, 4), saplingSlimeMagma, 50, Type.MYCELIUM_TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingSlimeBlue, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimeBlue, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingSlimePurple, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimePurple, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingSlimeMagma, ItemHelper.cloneStack(slimeCongealedMagma, 4), saplingSlimeMagma, 50);
 			}
 
 			/* TAPPER */

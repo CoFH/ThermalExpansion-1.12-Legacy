@@ -482,10 +482,7 @@ public class TileSawmill extends TileMachineBase {
 					if (from != null && sideCache[from.ordinal()] < 3) {
 						return null;
 					}
-					if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
-						return null;
-					}
-					return tank.drain(resource.amount, doDrain);
+					return tank.drain(resource, doDrain);
 				}
 
 				@Nullable

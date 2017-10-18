@@ -39,9 +39,6 @@ public class InsolatorRecipeCategory extends BaseRecipeCategory<InsolatorRecipeW
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipeCategories(new InsolatorRecipeCategory(guiHelper));
-		registry.addRecipeCategories(new InsolatorRecipeCategoryMycelium(guiHelper));
-		registry.addRecipeCategories(new InsolatorRecipeCategoryNether(guiHelper));
-		registry.addRecipeCategories(new InsolatorRecipeCategoryEnd(guiHelper));
 		registry.addRecipeCategories(new InsolatorRecipeCategoryTree(guiHelper));
 	}
 
@@ -54,12 +51,9 @@ public class InsolatorRecipeCategory extends BaseRecipeCategory<InsolatorRecipeW
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.INSOLATOR);
-		registry.addRecipeClickArea(GuiInsolator.class, 79, 34, 24, 16, RecipeUidsTE.INSOLATOR, RecipeUidsTE.INSOLATOR_MYCELIUM, RecipeUidsTE.INSOLATOR_NETHER, RecipeUidsTE.INSOLATOR_END, RecipeUidsTE.INSOLATOR_TREE);
+		registry.addRecipeClickArea(GuiInsolator.class, 79, 34, 24, 16, RecipeUidsTE.INSOLATOR, RecipeUidsTE.INSOLATOR_TREE);
 		registry.addRecipeCatalyst(BlockMachine.machineInsolator, RecipeUidsTE.INSOLATOR);
 
-		InsolatorRecipeCategoryMycelium.initialize(registry);
-		InsolatorRecipeCategoryNether.initialize(registry);
-		InsolatorRecipeCategoryEnd.initialize(registry);
 		InsolatorRecipeCategoryTree.initialize(registry);
 	}
 

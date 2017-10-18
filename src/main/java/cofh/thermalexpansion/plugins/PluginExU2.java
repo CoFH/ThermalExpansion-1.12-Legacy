@@ -4,7 +4,6 @@ import cofh.core.util.ModPlugin;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -73,7 +72,7 @@ public class PluginExU2 extends ModPlugin {
 
 			/* INSOLATOR */
 			{
-				InsolatorManager.addDefaultRecipe(enderLily, new ItemStack(Items.ENDER_PEARL), enderLily, 100, Type.END);
+				InsolatorManager.addDefaultRecipe(enderLily, new ItemStack(Items.ENDER_PEARL), enderLily, 100);
 				InsolatorManager.addDefaultRecipe(redOrchid, new ItemStack(Items.REDSTONE), redOrchid, 100);
 			}
 

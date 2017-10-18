@@ -74,7 +74,6 @@ public class BrewerManager {
 		{
 			addDefaultPotionRecipes(PotionTypes.WATER, new ItemStack(Items.NETHER_WART), PotionTypes.AWKWARD);
 
-			addDefaultPotionRecipes(PotionTypes.WATER, goldenCarrot, PotionTypes.MUNDANE);
 			addDefaultPotionRecipes(PotionTypes.WATER, rabbitFoot, PotionTypes.MUNDANE);
 			addDefaultPotionRecipes(PotionTypes.WATER, magmaCream, PotionTypes.MUNDANE);
 			addDefaultPotionRecipes(PotionTypes.WATER, sugar, PotionTypes.MUNDANE);
@@ -132,11 +131,11 @@ public class BrewerManager {
 
 		/* COFH */
 		{
-			addDefaultPotionRecipes(PotionTypes.WATER, ItemMaterial.dustBasalz, CorePotions.haste);
-			addDefaultPotionRecipes(PotionTypes.WATER, ItemMaterial.dustObsidian, CorePotions.resistance);
-			addDefaultPotionRecipes(PotionTypes.WATER, ItemMaterial.dustBlitz, CorePotions.levitation);
-			addDefaultPotionRecipes(PotionTypes.WATER, ItemMaterial.dustBlizz, CorePotions.absorption);
-			addDefaultPotionRecipes(PotionTypes.WATER, new ItemStack(Items.POISONOUS_POTATO), CorePotions.saturation);
+			addDefaultPotionRecipes(PotionTypes.AWKWARD, ItemMaterial.dustBasalz, CorePotions.haste);
+			addDefaultPotionRecipes(PotionTypes.AWKWARD, ItemMaterial.dustObsidian, CorePotions.resistance);
+			addDefaultPotionRecipes(PotionTypes.AWKWARD, ItemMaterial.dustBlitz, CorePotions.levitation);
+			addDefaultPotionRecipes(PotionTypes.AWKWARD, ItemMaterial.dustBlizz, CorePotions.absorption);
+			addDefaultPotionRecipes(PotionTypes.AWKWARD, new ItemStack(Items.POISONOUS_POTATO), CorePotions.saturation);
 		}
 
 		/* LOAD RECIPES */

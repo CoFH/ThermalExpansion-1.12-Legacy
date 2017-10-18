@@ -4,7 +4,6 @@ import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 
@@ -76,19 +75,19 @@ public class PluginTwilightForest extends ModPlugin {
 				InsolatorManager.addDefaultRecipe(plantCloverPatch, ItemHelper.cloneStack(plantCloverPatch, 3), ItemStack.EMPTY, 0);
 				InsolatorManager.addDefaultRecipe(plantFiddlehead, ItemHelper.cloneStack(plantFiddlehead, 3), ItemStack.EMPTY, 0);
 
-				InsolatorManager.addDefaultRecipe(plantMushgloom, ItemHelper.cloneStack(plantMushgloom, 2), ItemStack.EMPTY, 0, Type.MYCELIUM);
+				InsolatorManager.addDefaultRecipe(plantMushgloom, ItemHelper.cloneStack(plantMushgloom, 2), ItemStack.EMPTY, 0);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingTwilightOak, ItemHelper.cloneStack(logTwilightOak, 4), saplingTwilightOak, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingCanopy, ItemHelper.cloneStack(logCanopy, 4), saplingCanopy, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingMangrove, ItemHelper.cloneStack(logMangrove, 4), saplingMangrove, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingDarkwood, ItemHelper.cloneStack(logDarkwood, 4), saplingDarkwood, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingTwilightOak, ItemHelper.cloneStack(logTwilightOak, 4), saplingTwilightOak, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingCanopy, ItemHelper.cloneStack(logCanopy, 4), saplingCanopy, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingMangrove, ItemHelper.cloneStack(logMangrove, 4), saplingMangrove, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingDarkwood, ItemHelper.cloneStack(logDarkwood, 4), saplingDarkwood, 50);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingTimewood, ItemHelper.cloneStack(logTimewood, 6), saplingTimewood, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingTranswood, ItemHelper.cloneStack(logTranswood, 6), saplingTranswood, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingMinewood, ItemHelper.cloneStack(logMinewood, 6), saplingMinewood, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingSortingwood, ItemHelper.cloneStack(logSortingwood, 6), saplingSortingwood, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingTimewood, ItemHelper.cloneStack(logTimewood, 6), saplingTimewood, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingTranswood, ItemHelper.cloneStack(logTranswood, 6), saplingTranswood, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingMinewood, ItemHelper.cloneStack(logMinewood, 6), saplingMinewood, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingSortingwood, ItemHelper.cloneStack(logSortingwood, 6), saplingSortingwood, 50);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingRainbow, ItemHelper.cloneStack(logTwilightOak, 4), saplingRainbow, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingRainbow, ItemHelper.cloneStack(logTwilightOak, 4), saplingRainbow, 50);
 			}
 
 		} catch (Throwable t) {

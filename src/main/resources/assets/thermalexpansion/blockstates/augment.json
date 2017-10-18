@@ -59,21 +59,6 @@
 					"layer0": "thermalexpansion:items/augment/machine_smelter_pyrotheum"
 				}
 			},
-			"machineinsolatormycelium": {
-				"textures": {
-					"layer0": "thermalexpansion:items/augment/machine_insolator_mycelium"
-				}
-			},
-			"machineinsolatornether": {
-				"textures": {
-					"layer0": "thermalexpansion:items/augment/machine_insolator_nether"
-				}
-			},
-			"machineinsolatorend": {
-				"textures": {
-					"layer0": "thermalexpansion:items/augment/machine_insolator_end"
-				}
-			},
 			"machineinsolatortree": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/machine_insolator_tree"
@@ -97,11 +82,6 @@
 			"machinechargerthroughput": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/machine_charger_throughput"
-				}
-			},
-			"machineenchantertreasure": {
-				"textures": {
-					"layer0": "thermalexpansion:items/augment/machine_enchanter_treasure"
 				}
 			},
 			"machineenchanterempowered": {

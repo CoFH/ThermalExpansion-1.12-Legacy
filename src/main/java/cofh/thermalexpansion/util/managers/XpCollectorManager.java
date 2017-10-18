@@ -1,7 +1,6 @@
-package cofh.thermalexpansion.util.managers.machine;
+package cofh.thermalexpansion.util.managers;
 
 import cofh.core.inventory.ComparableItemStack;
-import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
@@ -9,7 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class XpManager {
+public class XpCollectorManager {
 
 	private static TObjectIntHashMap<ComparableItemStack> catalystMap = new TObjectIntHashMap<>();
 	private static TObjectIntHashMap<ComparableItemStack> catalystFactorMap = new TObjectIntHashMap<>();
@@ -38,7 +37,7 @@ public class XpManager {
 		{
 			addCatalyst(new ItemStack(Blocks.SOUL_SAND), 200, 50);
 			addCatalyst(new ItemStack(Items.DYE, 1, 4), 400, 100);
-			addCatalyst(ItemHelper.cloneStack(ItemMaterial.dustMana), 800, 150);
+			addCatalyst(ItemMaterial.dustMana, 800, 150);
 		}
 	}
 

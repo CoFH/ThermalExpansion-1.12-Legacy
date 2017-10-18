@@ -431,10 +431,7 @@ public class TileRefinery extends TileMachineBase {
 					if (from != null && isPrimaryOutput(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
-					if (resource == null || !resource.isFluidEqual(outputTank.getFluid())) {
-						return null;
-					}
-					return outputTank.drain(resource.amount, doDrain);
+					return outputTank.drain(resource, doDrain);
 				}
 
 				@Nullable

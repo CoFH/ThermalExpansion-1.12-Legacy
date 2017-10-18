@@ -13,6 +13,7 @@ import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.managers.CoolantManager;
 import cofh.thermalexpansion.util.managers.FisherManager;
 import cofh.thermalexpansion.util.managers.TapperManager;
+import cofh.thermalexpansion.util.managers.XpCollectorManager;
 import cofh.thermalexpansion.util.managers.dynamo.*;
 import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalfoundation.ThermalFoundation;
@@ -150,7 +151,7 @@ public class ThermalExpansion {
 		CoolantManager.initialize();
 		TapperManager.initialize();
 		FisherManager.initialize();
-		XpManager.initialize();
+		XpCollectorManager.initialize();
 
 		SteamManager.initialize();
 		MagmaticManager.initialize();
@@ -180,7 +181,7 @@ public class ThermalExpansion {
 
 		TapperManager.refresh();
 		FisherManager.refresh();
-		XpManager.refresh();
+		XpCollectorManager.refresh();
 
 		SteamManager.refresh();
 		MagmaticManager.refresh();

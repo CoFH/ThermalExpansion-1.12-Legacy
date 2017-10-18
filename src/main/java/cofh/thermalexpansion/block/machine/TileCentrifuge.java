@@ -348,10 +348,7 @@ public class TileCentrifuge extends TileMachineBase {
 					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
-					if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
-						return null;
-					}
-					return tank.drain(resource.amount, doDrain);
+					return tank.drain(resource, doDrain);
 				}
 
 				@Nullable

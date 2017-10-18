@@ -5,7 +5,6 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -75,11 +74,11 @@ public class PluginTraverse extends ModPlugin {
 
 			/* INSOLATOR */
 			{
-				InsolatorManager.addDefaultTreeRecipe(saplingRed, new ItemStack(Blocks.LOG, 4), saplingRed, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingBrown, new ItemStack(Blocks.LOG, 4), saplingBrown, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingOrange, new ItemStack(Blocks.LOG, 4), saplingOrange, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingYellow, new ItemStack(Blocks.LOG, 4), saplingYellow, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingFir, ItemHelper.cloneStack(logFir, 4), saplingFir, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingRed, new ItemStack(Blocks.LOG, 4), saplingRed, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingBrown, new ItemStack(Blocks.LOG, 4), saplingBrown, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingOrange, new ItemStack(Blocks.LOG, 4), saplingOrange, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingYellow, new ItemStack(Blocks.LOG, 4), saplingYellow, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingFir, ItemHelper.cloneStack(logFir, 4), saplingFir, 50);
 			}
 
 			/* TAPPER */

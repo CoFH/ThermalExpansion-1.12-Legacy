@@ -4,7 +4,6 @@ import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
@@ -184,24 +183,24 @@ public class PluginPlants extends ModPlugin {
 				InsolatorManager.addDefaultRecipe(plantClimbingNightshade, ItemHelper.cloneStack(harvestClimbingNightshade, 2), plantClimbingNightshade, 100);
 				InsolatorManager.addDefaultRecipe(plantBlackNightshade, ItemHelper.cloneStack(harvestBlackNightshade, 2), plantBlackNightshade, 100);
 
-				InsolatorManager.addDefaultRecipe(plantBlazingOrchid, ItemHelper.cloneStack(harvestBlazingOrchid, 2), plantBlazingOrchid, 100, Type.NETHER);
-				InsolatorManager.addDefaultRecipe(plantFloweringMagma, ItemHelper.cloneStack(harvestFloweringMagma, 2), plantFloweringMagma, 100, Type.NETHER);
-				InsolatorManager.addDefaultRecipe(plantGoldenFlame, ItemHelper.cloneStack(Items.SPECKLED_MELON, 2), plantGoldenFlame, 100, Type.NETHER);
-				InsolatorManager.addDefaultRecipe(plantEmberian, ItemHelper.cloneStack(harvestEmberian, 2), plantEmberian, 100, Type.NETHER);
-				InsolatorManager.addDefaultRecipe(plantSmolderingBerry, ItemHelper.cloneStack(harvestSmolderingBerry, 2), plantSmolderingBerry, 100, Type.NETHER);
+				InsolatorManager.addDefaultRecipe(plantBlazingOrchid, ItemHelper.cloneStack(harvestBlazingOrchid, 2), plantBlazingOrchid, 100);
+				InsolatorManager.addDefaultRecipe(plantFloweringMagma, ItemHelper.cloneStack(harvestFloweringMagma, 2), plantFloweringMagma, 100);
+				InsolatorManager.addDefaultRecipe(plantGoldenFlame, ItemHelper.cloneStack(Items.SPECKLED_MELON, 2), plantGoldenFlame, 100);
+				InsolatorManager.addDefaultRecipe(plantEmberian, ItemHelper.cloneStack(harvestEmberian, 2), plantEmberian, 100);
+				InsolatorManager.addDefaultRecipe(plantSmolderingBerry, ItemHelper.cloneStack(harvestSmolderingBerry, 2), plantSmolderingBerry, 100);
 
 				InsolatorManager.addDefaultRecipe(plantDysentery, ItemHelper.cloneStack(harvestDysentery, 2), plantDysentery, 100);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingBlackKauri, ItemHelper.cloneStack(logBlackKauri, 4), saplingBlackKauri, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingBrazilianPine, ItemHelper.cloneStack(logBrazilianPine, 4), saplingBrazilianPine, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingIntenseCedar, ItemHelper.cloneStack(logIntenseCedar, 4), saplingIntenseCedar, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingMurrayPine, ItemHelper.cloneStack(logMurrayPine, 4), saplingMurrayPine, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingBlackKauri, ItemHelper.cloneStack(logBlackKauri, 4), saplingBlackKauri, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingBrazilianPine, ItemHelper.cloneStack(logBrazilianPine, 4), saplingBrazilianPine, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingIntenseCedar, ItemHelper.cloneStack(logIntenseCedar, 4), saplingIntenseCedar, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingMurrayPine, ItemHelper.cloneStack(logMurrayPine, 4), saplingMurrayPine, 50);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingAshen, ItemHelper.cloneStack(logAshen, 4), saplingAshen, 50, Type.NETHER_TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingBlazing, ItemHelper.cloneStack(logBlazing, 4), saplingBlazing, 50, Type.NETHER_TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingAshen, ItemHelper.cloneStack(logAshen, 4), saplingAshen, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingBlazing, ItemHelper.cloneStack(logBlazing, 4), saplingBlazing, 50);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingCrystal, ItemHelper.cloneStack(logCrystal, 4), saplingCrystal, 50, Type.TREE);
-				InsolatorManager.addDefaultTreeRecipe(saplingDarkCrystal, ItemHelper.cloneStack(logDarkCrystal, 4), saplingDarkCrystal, 50, Type.TREE);
+				InsolatorManager.addDefaultTreeRecipe(saplingCrystal, ItemHelper.cloneStack(logCrystal, 4), saplingCrystal, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingDarkCrystal, ItemHelper.cloneStack(logDarkCrystal, 4), saplingDarkCrystal, 50);
 			}
 
 			/* TAPPER */
