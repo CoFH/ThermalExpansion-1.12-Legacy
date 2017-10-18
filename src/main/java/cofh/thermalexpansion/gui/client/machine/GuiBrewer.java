@@ -54,7 +54,7 @@ public class GuiBrewer extends GuiPoweredBase {
 		addElement(new ElementFluidTank(this, 32, 27, myTile.getTank(0)).setGauge(0).setAlwaysShow(true).setShort());
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)).setGauge(1).setAlwaysShow(true));
 
-		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 112, 34).setFluid(myTile.getTankFluid(0)).setSize(24, 16));
+		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 112, 34).setFluid(myTile.getTankFluid(1)).setSize(24, 16));
 		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 34).setMode(1).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 57, 34).setSize(16, 16).setTexture(TEX_ALCHEMY, 32, 16));
 	}

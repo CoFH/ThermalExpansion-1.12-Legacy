@@ -328,11 +328,6 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		return TapperManager.mappingExists(world.getBlockState(checkPos)) && TapperManager.mappingExists(world.getBlockState(checkPos.up())) && TapperManager.mappingExists(world.getBlockState(checkPos.up(2)));
 	}
 
-	public int getBoostMult() {
-
-		return boostMult;
-	}
-
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -365,6 +360,11 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	public FluidStack getTankFluid() {
 
 		return tank.getFluid();
+	}
+
+	public int getBoostMult() {
+
+		return boostMult;
 	}
 
 	/* NBT METHODS */
@@ -512,9 +512,6 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
 					return tank.drain(resource, doDrain);
 				}
 
@@ -522,9 +519,6 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
 					return tank.drain(maxDrain, doDrain);
 				}
 			});

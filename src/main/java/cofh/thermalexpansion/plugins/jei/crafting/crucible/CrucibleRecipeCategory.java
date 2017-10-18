@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.crafting.crucible;
 
+import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
@@ -113,6 +114,13 @@ public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWra
 
 		guiItemStacks.set(0, inputs.get(0));
 		guiFluidStacks.set(0, outputs.get(0));
+
+		guiFluidStacks.addTooltipCallback((i, b, fluidStack, list) -> {
+
+			if (FluidHelper.isPotionFluid(fluidStack)) {
+				FluidHelper.addPotionTooltip(fluidStack, list);
+			}
+		});
 	}
 
 }

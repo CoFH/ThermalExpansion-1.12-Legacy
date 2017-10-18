@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.crafting.transposer;
 
+import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
@@ -111,6 +112,13 @@ public class TransposerRecipeCategoryExtract extends TransposerRecipeCategory {
 
 			if (slotIndex == 1 && recipeWrapper.chance < 100) {
 				tooltip.add(StringHelper.localize("info.cofh.chance") + ": " + recipeWrapper.chance + "%");
+			}
+		});
+
+		guiFluidStacks.addTooltipCallback((i, b, fluidStack, list) -> {
+
+			if (FluidHelper.isPotionFluid(fluidStack)) {
+				FluidHelper.addPotionTooltip(fluidStack, list);
 			}
 		});
 	}

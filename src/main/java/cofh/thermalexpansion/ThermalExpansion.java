@@ -10,10 +10,7 @@ import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
-import cofh.thermalexpansion.util.managers.CoolantManager;
-import cofh.thermalexpansion.util.managers.FisherManager;
-import cofh.thermalexpansion.util.managers.TapperManager;
-import cofh.thermalexpansion.util.managers.XpCollectorManager;
+import cofh.thermalexpansion.util.managers.*;
 import cofh.thermalexpansion.util.managers.dynamo.*;
 import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalfoundation.ThermalFoundation;
@@ -152,6 +149,7 @@ public class ThermalExpansion {
 		TapperManager.initialize();
 		FisherManager.initialize();
 		XpCollectorManager.initialize();
+		DiffuserManager.initialize();
 
 		SteamManager.initialize();
 		MagmaticManager.initialize();
@@ -182,6 +180,7 @@ public class ThermalExpansion {
 		TapperManager.refresh();
 		FisherManager.refresh();
 		XpCollectorManager.refresh();
+		DiffuserManager.refresh();
 
 		SteamManager.refresh();
 		MagmaticManager.refresh();

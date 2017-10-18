@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.crafting.brewer;
 
+import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiBrewer;
@@ -11,10 +12,7 @@ import cofh.thermalexpansion.util.managers.machine.BrewerManager.BrewerRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.gui.IDrawableStatic;
-import mezz.jei.api.gui.IGuiFluidStackGroup;
-import mezz.jei.api.gui.IGuiItemStackGroup;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
@@ -116,6 +114,13 @@ public class BrewerRecipeCategory extends BaseRecipeCategory<BrewerRecipeWrapper
 		guiItemStacks.set(0, inputItems.get(0));
 		guiFluidStacks.set(0, inputFluids.get(0));
 		guiFluidStacks.set(1, outputFluids.get(0));
+
+		guiFluidStacks.addTooltipCallback((i, b, fluidStack, list) -> {
+
+			if (FluidHelper.isPotionFluid(fluidStack)) {
+				FluidHelper.addPotionTooltip(fluidStack, list);
+			}
+		});
 	}
 
 }

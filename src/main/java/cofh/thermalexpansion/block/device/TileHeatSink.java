@@ -353,9 +353,6 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
 					return tank.drain(resource, doDrain);
 				}
 
@@ -363,9 +360,6 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
 					return tank.drain(maxDrain, doDrain);
 				}
 			});

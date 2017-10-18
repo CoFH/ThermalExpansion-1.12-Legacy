@@ -159,11 +159,11 @@ public class TileRefinery extends TileMachineBase {
 		processMax = RefineryManager.getRecipe(inputTank.getFluid()).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
-		String prevID = renderFluid.getFluid().getName();
+		FluidStack prevStack = renderFluid.copy();
 		renderFluid = inputTank.getFluid().copy();
 		renderFluid.amount = 0;
 
-		if (!prevID.equals(renderFluid.getFluid().getName())) {
+		if (!FluidHelper.isFluidEqual(prevStack, renderFluid)) {
 			sendFluidPacket();
 		}
 	}

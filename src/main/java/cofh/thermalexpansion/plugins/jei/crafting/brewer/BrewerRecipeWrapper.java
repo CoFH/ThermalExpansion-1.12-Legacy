@@ -78,7 +78,7 @@ public class BrewerRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
-		JEIPluginTE.drawFluid(94, 23, inputFluids.get(0).get(0), 24, 16);
+		JEIPluginTE.drawFluid(94, 23, outputFluids.get(0), 24, 16);
 
 		fluid.draw(minecraft, 94, 23);
 		progress.draw(minecraft, 94, 23);

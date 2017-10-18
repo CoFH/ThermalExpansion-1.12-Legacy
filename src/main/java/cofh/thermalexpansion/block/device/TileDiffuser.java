@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
-import cofh.core.gui.GuiContainerCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
@@ -9,11 +8,13 @@ import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiDiffuser;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.gui.container.device.ContainerDiffuser;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.util.managers.DiffuserManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -34,6 +35,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.List;
 
 public class TileDiffuser extends TileDeviceBase implements ITickable {
@@ -44,14 +46,14 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 2;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {} };
-		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1 };
+		SIDE_CONFIGS[TYPE].numConfig = 5;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 0 }, {}, { 0 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 5, 6, 7 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
-		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
-		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false };
 
 		LIGHT_VALUES[TYPE] = 5;
 
@@ -67,20 +69,34 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	}
 
 	private static final int TIME_CONSTANT = 60;
+	private static final int BOOST_TIME = 15;
 	private static final int RADIUS_POTION = 3;
 	private static final int RADIUS_SPLASH = 4;
 	private static final int RADIUS_LINGERING = 5;
 
+	private int inputTracker;
+
+	private int boostAmp;
+	private int boostDur;
+	private int boostTime;
+
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
-	FluidStack renderFluid;
+	private FluidStack renderFluid;
 
 	private int offset;
 
 	public TileDiffuser() {
 
 		super();
+		inventory = new ItemStack[1];
+		Arrays.fill(inventory, ItemStack.EMPTY);
+		createAllSlots(inventory.length);
 
 		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
+
+		hasAutoInput = true;
+
+		enableAutoInput = true;
 	}
 
 	@Override
@@ -105,6 +121,8 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 		if (!timeCheckOffset()) {
 			return;
 		}
+		transferInput();
+
 		boolean curActive = isActive;
 
 		if (isActive) {
@@ -117,6 +135,23 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 			isActive = true;
 		}
 		updateIfChanged(curActive);
+	}
+
+	protected void transferInput() {
+
+		if (!enableAutoInput) {
+			return;
+		}
+		int side;
+		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
+			side = i % 6;
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
+				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+					inputTracker = side;
+					break;
+				}
+			}
+		}
 	}
 
 	protected void diffuseClient() {
@@ -143,7 +178,27 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	protected void diffuse() {
 
 		if (tank.getFluidAmount() < fluidAmount) {
+			if (renderFluid != null) {
+				renderFluid = null;
+				sendFluidPacket();
+			}
 			return;
+		}
+		if (boostTime <= 0) {
+			boostAmp = 0;
+			boostDur = 0;
+			if (DiffuserManager.isValidReagent(inventory[0])) {
+				boostAmp = DiffuserManager.getReagentAmplifier(inventory[0]);
+				boostDur = DiffuserManager.getReagentDuration(inventory[0]);
+				boostTime = BOOST_TIME - 1;
+
+				inventory[0].shrink(1);
+				if (inventory[0].getCount() <= 0) {
+					inventory[0] = ItemStack.EMPTY;
+				}
+			}
+		} else {
+			boostTime--;
 		}
 		FluidStack potionFluid = getTankFluid();
 
@@ -168,9 +223,9 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 					Potion potion = effect.getPotion();
 
 					if (potion.isInstant()) {
-						potion.affectEntity(null, null, entity, effect.getAmplifier(), 0.5D);
+						potion.affectEntity(null, null, entity, effect.getAmplifier() + boostAmp, 0.5D);
 					} else {
-						entity.addPotionEffect(new PotionEffect(potion, effect.getDuration() / 4, effect.getAmplifier(), effect.getIsAmbient(), effect.doesShowParticles()));
+						entity.addPotionEffect(new PotionEffect(potion, (effect.getDuration() / 4) * (1 + boostDur), effect.getAmplifier() + boostAmp, effect.getIsAmbient(), effect.doesShowParticles()));
 					}
 				}
 			}
@@ -199,12 +254,6 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 	/* GUI METHODS */
 	@Override
-	public int getScaledSpeed(int scale) {
-
-		return isActive ? GuiContainerCore.SPEED : 0;
-	}
-
-	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiDiffuser(inventory, this);
@@ -213,7 +262,16 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerDiffuser(inventory, this);
+	}
+
+	@Override
+	public int getScaledSpeed(int scale) {
+
+		if (!isActive) {
+			return 0;
+		}
+		return MathHelper.round(scale * boostTime / BOOST_TIME);
 	}
 
 	@Override
@@ -228,13 +286,28 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 		return tank.getFluid();
 	}
 
+	public int getBoostAmp() {
+
+		return boostAmp;
+	}
+
+	public int getBoostDur() {
+
+		return boostDur;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
 
+		inputTracker = nbt.getInteger("TrackIn");
 		tank.readFromNBT(nbt);
+
+		boostAmp = nbt.getInteger("BoostAmp");
+		boostDur = nbt.getInteger("BoostDur");
+		boostTime = nbt.getInteger("BoostTime");
 	}
 
 	@Override
@@ -243,6 +316,11 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 		super.writeToNBT(nbt);
 
 		tank.writeToNBT(nbt);
+
+		nbt.setInteger("BoostAmp", boostAmp);
+		nbt.setInteger("BoostDur", boostDur);
+		nbt.setInteger("BoostTime", boostTime);
+
 		return nbt;
 	}
 
@@ -264,6 +342,9 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
+		payload.addInt(boostAmp);
+		payload.addInt(boostDur);
+		payload.addInt(boostTime);
 		payload.addFluidStack(tank.getFluid());
 
 		return payload;
@@ -299,6 +380,9 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 		super.handleGuiPacket(payload);
 
+		boostAmp = payload.getInt();
+		boostDur = payload.getInt();
+		boostTime = payload.getInt();
 		tank.setFluid(payload.getFluidStack());
 	}
 
@@ -310,6 +394,13 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 		offset = payload.getInt();
 		renderFluid = payload.getFluidStack();
+	}
+
+	/* IInventory */
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return DiffuserManager.isValidReagent(stack);
 	}
 
 	/* CAPABILITIES */
@@ -345,9 +436,6 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
 					return tank.drain(resource, doDrain);
 				}
 
@@ -355,9 +443,6 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
 					return tank.drain(maxDrain, doDrain);
 				}
 			});

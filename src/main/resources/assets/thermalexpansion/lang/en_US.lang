@@ -350,9 +350,9 @@ tab.thermalexpansion.apparatus.collector.0=Picks up items in an area.
 tab.thermalexpansion.apparatus.collector.1=Anything not nailed down is fair game!
 tab.thermalexpansion.apparatus.collector.2=Probably won't steal from your inventory. Probably.
 
-tab.thermalexpansion.device.diffuser.0=Spreads potions into the nearby area.
-tab.thermalexpansion.device.diffuser.1=This can have various effects on creatures and monsters.
-tab.thermalexpansion.device.diffuser.2=Breathe deep.
+tab.thermalexpansion.device.diffuser.0=Spreads potions within the nearby area.
+tab.thermalexpansion.device.diffuser.1=Potion duration is reduced compared to drinking.
+tab.thermalexpansion.device.diffuser.2=Certain reagents will boost the effect.
 tab.thermalexpansion.device.fisher.0=Captures assorted aquatic life. Use bait to boost production.
 tab.thermalexpansion.device.fisher.1=Must be placed in a body of water.
 tab.thermalexpansion.device.fisher.2=Hang up your fishing rod.

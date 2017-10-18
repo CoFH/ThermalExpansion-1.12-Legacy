@@ -11,11 +11,13 @@ import cofh.thermalexpansion.gui.container.machine.ContainerBrewer;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.machine.BrewerManager;
 import cofh.thermalexpansion.util.managers.machine.BrewerManager.BrewerRecipe;
+import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -70,6 +72,7 @@ public class TileBrewer extends TileMachineBase {
 
 	private FluidTankCore inputTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 	private FluidTankCore outputTank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
+	private FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
 
 	public TileBrewer() {
 
@@ -129,6 +132,14 @@ public class TileBrewer extends TileMachineBase {
 
 		processMax = BrewerManager.getRecipe(inventory[0], inputTank.getFluid()).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
+
+		FluidStack prevStack = renderFluid.copy();
+		renderFluid = BrewerManager.getRecipe(inventory[0], inputTank.getFluid()).getOutputFluid().copy();
+		renderFluid.amount = 0;
+
+		if (!FluidHelper.isFluidEqual(prevStack, renderFluid)) {
+			sendFluidPacket();
+		}
 	}
 
 	@Override
@@ -277,19 +288,45 @@ public class TileBrewer extends TileMachineBase {
 
 	/* SERVER -> CLIENT */
 	@Override
+	public PacketCoFHBase getFluidPacket() {
+
+		PacketCoFHBase payload = super.getFluidPacket();
+
+		payload.addFluidStack(renderFluid);
+
+		return payload;
+	}
+
+	@Override
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
 		payload.addFluidStack(inputTank.getFluid());
-		payload.addFluidStack(outputTank.getFluid());
+
+		if (outputTank.getFluid() == null) {
+			payload.addFluidStack(renderFluid);
+		} else {
+			payload.addFluidStack(outputTank.getFluid());
+		}
 		return payload;
+	}
+
+	@Override
+	protected void handleFluidPacket(PacketCoFHBase payload) {
+
+		super.handleFluidPacket(payload);
+
+		renderFluid = payload.getFluidStack();
+
+		callBlockUpdate();
 	}
 
 	@Override
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
+
 		inputTank.setFluid(payload.getFluidStack());
 		outputTank.setFluid(payload.getFluidStack());
 	}

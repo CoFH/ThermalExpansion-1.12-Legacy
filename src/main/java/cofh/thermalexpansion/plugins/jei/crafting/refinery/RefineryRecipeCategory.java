@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.crafting.refinery;
 
+import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiRefinery;
@@ -123,6 +124,13 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 
 			if (slotIndex == 0 && recipeWrapper.chance < 100) {
 				tooltip.add(StringHelper.localize("info.cofh.chance") + ": " + recipeWrapper.chance + "%");
+			}
+		});
+
+		guiFluidStacks.addTooltipCallback((i, b, fluidStack, list) -> {
+
+			if (FluidHelper.isPotionFluid(fluidStack)) {
+				FluidHelper.addPotionTooltip(fluidStack, list);
 			}
 		});
 	}
