@@ -1,9 +1,11 @@
 package cofh.thermalexpansion.util.managers.machine;
 
+import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,9 +15,13 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.Set;
+
 public class RefineryManager {
 
 	private static TIntObjectHashMap<RefineryRecipe> recipeMap = new TIntObjectHashMap<>();
+	private static TIntObjectHashMap<RefineryRecipe> recipeMapPotion = new TIntObjectHashMap<>();
+	private static Set<String> oilFluids = new THashSet<>();
 
 	public static final int DEFAULT_ENERGY = 5000;
 
@@ -24,9 +30,19 @@ public class RefineryManager {
 		return input == null ? null : recipeMap.get(FluidHelper.getFluidHash(input));
 	}
 
+	public static RefineryRecipe getRecipePotion(FluidStack input) {
+
+		return input == null ? null : recipeMapPotion.get(FluidHelper.getFluidHash(input));
+	}
+
 	public static boolean recipeExists(FluidStack input) {
 
 		return getRecipe(input) != null;
+	}
+
+	public static boolean recipeExistsPotion(FluidStack input) {
+
+		return getRecipePotion(input) != null;
 	}
 
 	public static RefineryRecipe[] getRecipeList() {
@@ -34,15 +50,45 @@ public class RefineryManager {
 		return recipeMap.values(new RefineryRecipe[recipeMap.size()]);
 	}
 
+	public static RefineryRecipe[] getRecipeListPotion() {
+
+		return recipeMapPotion.values(new RefineryRecipe[recipeMapPotion.size()]);
+	}
+
+	public static boolean isFossilFuel(FluidStack fluid) {
+
+		return fluid != null && oilFluids.contains(fluid.getFluid().getName());
+	}
+
 	public static void initialize() {
 
 		int energy = DEFAULT_ENERGY;
-		addRecipe(energy, new FluidStack(TFFluids.fluidCoal, 100), new FluidStack(TFFluids.fluidRefinedOil, 50), ItemMaterial.globTar, 75);
-		addRecipe(energy, new FluidStack(TFFluids.fluidCrudeOil, 100), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar, 50);
-		addRecipe(energy, new FluidStack(TFFluids.fluidRefinedOil, 100), new FluidStack(TFFluids.fluidFuel, 100), ItemMaterial.dustSulfur, 50);
 
-		energy = DEFAULT_ENERGY / 2;
+		/* FOSSIL FUELS */
+		{
+			addFossilFuel(TFFluids.fluidCoal);
+			addFossilFuel(TFFluids.fluidCrudeOil);
+			addFossilFuel(TFFluids.fluidRefinedOil);
+
+			addRecipe(energy, new FluidStack(TFFluids.fluidCoal, 200), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar, 75);
+			addRecipe(energy, new FluidStack(TFFluids.fluidCrudeOil, 200), new FluidStack(TFFluids.fluidRefinedOil, 150), ItemMaterial.globTar, 50);
+			addRecipe(energy, new FluidStack(TFFluids.fluidRefinedOil, 150), new FluidStack(TFFluids.fluidFuel, 100), ItemMaterial.dustSulfur, 50);
+		}
+
 		addRecipe(energy, new FluidStack(TFFluids.fluidResin, 100), new FluidStack(TFFluids.fluidTreeOil, 50), ItemMaterial.globRosin, 75);
+
+		addStrongPotionRecipes("leaping", CoreProps.POTION_MAX);
+		addStrongPotionRecipes("swiftness", CoreProps.POTION_MAX);
+		addStrongPotionRecipes("healing", CoreProps.POTION_MAX);
+		addStrongPotionRecipes("harming", CoreProps.POTION_MAX);
+		addStrongPotionRecipes("poison", CoreProps.POTION_MAX);
+		addStrongPotionRecipes("regeneration", CoreProps.POTION_MAX);
+		addStrongPotionRecipes("strength", CoreProps.POTION_MAX);
+
+		addStrongPotionRecipes("haste", CoreProps.POTION_MAX - 1);
+		addStrongPotionRecipes("resistance", CoreProps.POTION_MAX);
+		addStrongPotionRecipes("absorption", CoreProps.POTION_MAX);
+		addStrongPotionRecipes("wither", CoreProps.POTION_MAX);
 
 		/* LOAD RECIPES */
 		loadRecipes();
@@ -54,7 +100,8 @@ public class RefineryManager {
 		{
 			Fluid oil = FluidRegistry.getFluid("oil");
 			if (oil != null) {
-				addRecipe(DEFAULT_ENERGY, new FluidStack(oil, 100), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar, 50);
+				addFossilFuel(oil);
+				addRecipe(DEFAULT_ENERGY, new FluidStack(oil, 200), new FluidStack(TFFluids.fluidRefinedOil, 150), ItemMaterial.globTar, 50);
 			}
 		}
 	}
@@ -84,6 +131,16 @@ public class RefineryManager {
 		return addRecipe(energy, input, outputFluid, ItemStack.EMPTY, 0);
 	}
 
+	public static RefineryRecipe addRecipePotion(int energy, FluidStack input, FluidStack outputFluid) {
+
+		if (input == null || outputFluid == null || energy <= 0 || recipeExistsPotion(input)) {
+			return null;
+		}
+		RefineryRecipe recipe = new RefineryRecipe(input, outputFluid, null, energy, 0);
+		recipeMapPotion.put(FluidHelper.getFluidHash(input), recipe);
+		return recipe;
+	}
+
 	/* REMOVE RECIPES */
 	public static RefineryRecipe removeRecipe(FluidStack input) {
 
@@ -93,9 +150,67 @@ public class RefineryManager {
 		return recipeMap.remove(FluidHelper.getFluidHash(input));
 	}
 
-	/* HELPERS */
-	public static void addDefaultPotionRecipes(PotionType input, PotionType output) {
+	public static RefineryRecipe removeRecipePotion(FluidStack input) {
 
+		if (input == null) {
+			return null;
+		}
+		return recipeMapPotion.remove(FluidHelper.getFluidHash(input));
+	}
+
+	/* HELPERS */
+	private static void addFossilFuel(Fluid fluid) {
+
+		if (fluid == null) {
+			return;
+		}
+		oilFluids.add(fluid.getName());
+	}
+
+	public static void addStrongPotionRecipes(String baseName, int maxRank) {
+
+		int inputAmount = 200;
+		int outputAmount = 100;
+
+		for (int i = maxRank; i > 2; i--) {
+			PotionType inputType = getPotionType(baseName, i - 1);
+			PotionType outputType = getPotionType(baseName, i);
+
+			if (inputType == PotionTypes.EMPTY || outputType == PotionTypes.EMPTY) {
+				continue;
+			}
+			FluidStack inputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, inputAmount), inputType);
+			FluidStack outputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, outputAmount), outputType);
+			addRecipePotion(DEFAULT_ENERGY, inputPotion, outputPotion);
+
+			inputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, inputAmount), inputType);
+			outputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, outputAmount), outputType);
+			addRecipePotion(DEFAULT_ENERGY, inputPotion, outputPotion);
+
+			inputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, inputAmount), inputType);
+			outputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, outputAmount), outputType);
+			addRecipePotion(DEFAULT_ENERGY, inputPotion, outputPotion);
+		}
+	}
+
+	public static PotionType getPotionType(String baseName, int rank) {
+
+		PotionType ret;
+
+		switch (rank) {
+			case 1:
+				ret = PotionType.getPotionTypeForName(baseName);
+				break;
+			case 2:
+				ret = PotionType.getPotionTypeForName("cofhcore:" + baseName + 2);
+				if (ret == PotionTypes.EMPTY) { // Vanilla Potion
+					ret = PotionType.getPotionTypeForName("strong_" + baseName);
+				}
+				break;
+			default:
+				ret = PotionType.getPotionTypeForName("cofhcore:" + baseName + rank);
+		}
+		return ret;
 	}
 
 	public static FluidStack getPotion(int amount, PotionType type) {

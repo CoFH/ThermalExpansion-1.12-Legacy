@@ -160,6 +160,15 @@ info.thermalexpansion.augment.machinePulverizerPetrotheum.a.0=Increases yield fr
 info.thermalexpansion.augment.machinePulverizerPetrotheum.b.0=Additional energy is required per operation.
 info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=Tectonic Petrotheum must be supplied.
 
+info.thermalexpansion.augment.machineRefineryOil.0=Fractionating Still: Specialization
+info.thermalexpansion.augment.machineRefineryOil.a.0=Greatly increases conversion efficiency for fossil fuels.
+info.thermalexpansion.augment.machineRefineryOil.b.0=Only fossil fuels can be processed.
+info.thermalexpansion.augment.machineRefineryOil.b.1=Additional energy is required per operation.
+
+info.thermalexpansion.augment.machineRefineryPotion.0=Fractionating Still: Specialization
+info.thermalexpansion.augment.machineRefineryPotion.a.0=Allows for Potions to be refined.
+info.thermalexpansion.augment.machineRefineryPotion.b.0=Only Potions can be processed.
+
 info.thermalexpansion.augment.machineSawmillTapper.0=Sawmill: Specialization
 info.thermalexpansion.augment.machineSawmillTapper.a.0=Allows for fluids to be extracted from logs.
 info.thermalexpansion.augment.machineSawmillTapper.b.0=Additional energy is required per operation.
@@ -291,6 +300,8 @@ item.thermalexpansion.augment.machinePrecipitatorPackedIce.name=Permafrost Compr
 item.thermalexpansion.augment.machinePrecipitatorSnowLayer.name=Flurry Stratum
 item.thermalexpansion.augment.machinePulverizerGeode.name=Geode Tumbler
 item.thermalexpansion.augment.machinePulverizerPetrotheum.name=Tectonic Initiator
+item.thermalexpansion.augment.machineRefineryOil.name=Reflux Column
+item.thermalexpansion.augment.machineRefineryPotion.name=Alchemical Retort
 item.thermalexpansion.augment.machineSawmillTapper.name=Resin Funnel
 item.thermalexpansion.augment.machineSmelterPyrotheum.name=Pyro-Concentrator
 item.thermalexpansion.augment.machineSecondary.name=Auxiliary Sieve

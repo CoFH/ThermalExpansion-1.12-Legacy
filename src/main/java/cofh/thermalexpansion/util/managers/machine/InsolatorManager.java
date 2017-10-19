@@ -89,8 +89,8 @@ public class InsolatorManager {
 
 		/* CROPS */
 		{
-			addDefaultRecipe(new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.WHEAT), new ItemStack(Items.WHEAT_SEEDS), 110);
-			addDefaultRecipe(new ItemStack(Items.BEETROOT_SEEDS), new ItemStack(Items.BEETROOT), new ItemStack(Items.BEETROOT_SEEDS), 110);
+			addDefaultRecipe(new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.WHEAT, 2), new ItemStack(Items.WHEAT_SEEDS), 110);
+			addDefaultRecipe(new ItemStack(Items.BEETROOT_SEEDS), new ItemStack(Items.BEETROOT, 2), new ItemStack(Items.BEETROOT_SEEDS), 110);
 			addDefaultRecipe(new ItemStack(Items.POTATO), new ItemStack(Items.POTATO, 3), new ItemStack(Items.POISONOUS_POTATO), 5);
 			addDefaultRecipe(new ItemStack(Items.CARROT), new ItemStack(Items.CARROT, 3), ItemStack.EMPTY, 0);
 			addDefaultRecipe(new ItemStack(Items.DYE, 1, 3), new ItemStack(Items.DYE, 3, 3), ItemStack.EMPTY, 0);
@@ -98,8 +98,8 @@ public class InsolatorManager {
 			addDefaultRecipe(new ItemStack(Blocks.CACTUS), new ItemStack(Blocks.CACTUS, 2), ItemStack.EMPTY, 0);
 			addDefaultRecipe(new ItemStack(Blocks.VINE), new ItemStack(Blocks.VINE, 2), ItemStack.EMPTY, 0);
 			addDefaultRecipe(new ItemStack(Blocks.WATERLILY), new ItemStack(Blocks.WATERLILY, 2), ItemStack.EMPTY, 0);
-			addDefaultRecipe(new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Blocks.PUMPKIN), ItemStack.EMPTY, 0);
-			addDefaultRecipe(new ItemStack(Items.MELON_SEEDS), new ItemStack(Blocks.MELON_BLOCK), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Blocks.PUMPKIN), new ItemStack(Items.PUMPKIN_SEEDS), 100);
+			addDefaultRecipe(new ItemStack(Items.MELON_SEEDS), new ItemStack(Blocks.MELON_BLOCK), new ItemStack(Items.MELON_SEEDS), 100);
 		}
 
 		/* FLOWERS */

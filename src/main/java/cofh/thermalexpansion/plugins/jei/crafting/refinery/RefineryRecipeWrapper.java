@@ -44,17 +44,21 @@ public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 		uId = uIdIn;
 
 		List<FluidStack> recipeInputFluids = new ArrayList<>();
+		List<FluidStack> recipeOutputFluids = new ArrayList<>();
+		List<ItemStack> recipeOutputItems = new ArrayList<>();
+
 		recipeInputFluids.add(recipe.getInput());
 
-		List<FluidStack> recipeOutputFluids = new ArrayList<>();
-		recipeOutputFluids.add(recipe.getOutputFluid());
-
-		List<ItemStack> recipeOutputs = new ArrayList<>();
-		recipeOutputs.add(recipe.getOutputItem());
+		if (uId.equals(RecipeUidsTE.REFINERY_OIL)) {
+			recipeOutputFluids.add(new FluidStack(recipe.getOutputFluid(), recipe.getOutputFluid().amount + TileRefinery.OIL_FLUID_BOOST));
+		} else {
+			recipeOutputFluids.add(recipe.getOutputFluid());
+		}
+		recipeOutputItems.add(recipe.getOutputItem());
 
 		inputFluids = Collections.singletonList(recipeInputFluids);
 		outputFluids = recipeOutputFluids;
-		outputItems = recipeOutputs;
+		outputItems = recipeOutputItems;
 
 		energy = recipe.getEnergy();
 		chance = recipe.getChance();

@@ -74,6 +74,9 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	private static final int RADIUS_SPLASH = 4;
 	private static final int RADIUS_LINGERING = 5;
 
+	private static final int MAX_AMPLIFIER = 4;
+	private static final int MAX_DURATION = 7200;
+
 	private int inputTracker;
 
 	private int boostAmp;
@@ -225,7 +228,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 					if (potion.isInstant()) {
 						potion.affectEntity(null, null, entity, effect.getAmplifier() + boostAmp, 0.5D);
 					} else {
-						entity.addPotionEffect(new PotionEffect(potion, (effect.getDuration() / 4) * (1 + boostDur), effect.getAmplifier() + boostAmp, effect.getIsAmbient(), effect.doesShowParticles()));
+						entity.addPotionEffect(new PotionEffect(potion, Math.min((effect.getDuration() / 4) * (1 + boostDur), MAX_DURATION), Math.min(effect.getAmplifier() + boostAmp, MAX_AMPLIFIER), effect.getIsAmbient(), effect.doesShowParticles()));
 					}
 				}
 			}

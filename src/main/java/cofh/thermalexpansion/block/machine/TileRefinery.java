@@ -2,10 +2,7 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.helpers.FluidHelper;
-import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.helpers.RenderHelper;
-import cofh.core.util.helpers.ServerHelper;
+import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiRefinery;
@@ -40,6 +37,9 @@ public class TileRefinery extends TileMachineBase {
 	private static final int TYPE = Type.REFINERY.getMetadata();
 	public static int basePower = 20;
 
+	public static final int OIL_ENERGY_MOD = 100;
+	public static final int OIL_FLUID_BOOST = 50;
+
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
@@ -53,6 +53,8 @@ public class TileRefinery extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_REFINERY_OIL);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_REFINERY_POTION);
 
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
@@ -80,6 +82,10 @@ public class TileRefinery extends TileMachineBase {
 	private FluidTankCore inputTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 	private FluidTankCore outputTank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, 0);
+
+	/* AUGMENTS */
+	protected boolean augmentOil;
+	protected boolean augmentPotion;
 
 	public TileRefinery() {
 
@@ -148,15 +154,22 @@ public class TileRefinery extends TileMachineBase {
 	}
 
 	@Override
-	protected boolean canFinish() {
+	protected boolean hasValidInput() {
 
-		return processRem <= 0;
+		RefineryRecipe recipe;
+
+		if (augmentPotion) {
+			recipe = RefineryManager.getRecipePotion(inputTank.getFluid());
+		} else {
+			recipe = RefineryManager.getRecipe(inputTank.getFluid());
+		}
+		return recipe != null;
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = RefineryManager.getRecipe(inputTank.getFluid()).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = augmentPotion ? RefineryManager.getRecipePotion(inputTank.getFluid()).getEnergy() * energyMod / ENERGY_BASE : RefineryManager.getRecipe(inputTank.getFluid()).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
 		FluidStack prevStack = renderFluid.copy();
@@ -171,14 +184,17 @@ public class TileRefinery extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		RefineryRecipe recipe = RefineryManager.getRecipe(inputTank.getFluid());
+		RefineryRecipe recipe = augmentPotion ? RefineryManager.getRecipePotion(inputTank.getFluid()) : RefineryManager.getRecipe(inputTank.getFluid());
 
 		if (recipe == null) {
 			processOff();
 			return;
 		}
-		outputTank.fill(recipe.getOutputFluid(), true);
-
+		if (augmentOil && RefineryManager.isFossilFuel(recipe.getInput())) {
+			outputTank.fill(new FluidStack(recipe.getOutputFluid(), recipe.getOutputFluid().amount + OIL_FLUID_BOOST), true);
+		} else {
+			outputTank.fill(recipe.getOutputFluid(), true);
+		}
 		ItemStack outputItem = recipe.getOutputItem();
 
 		if (!outputItem.isEmpty()) {
@@ -372,6 +388,35 @@ public class TileRefinery extends TileMachineBase {
 		super.handleTilePacket(payload);
 
 		renderFluid = payload.getFluidStack();
+	}
+
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		augmentOil = false;
+		augmentPotion = false;
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentOil && TEProps.MACHINE_REFINERY_OIL.equals(id)) {
+			augmentOil = true;
+			hasModeAugment = true;
+			energyMod += OIL_ENERGY_MOD;
+			return true;
+		}
+		if (!augmentPotion && TEProps.MACHINE_REFINERY_POTION.equals(id)) {
+			augmentPotion = true;
+			hasModeAugment = true;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* ISidedTexture */

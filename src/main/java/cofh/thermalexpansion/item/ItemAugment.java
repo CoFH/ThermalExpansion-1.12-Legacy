@@ -198,6 +198,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		machineCrucibleLava = addAugmentItem(352, TEProps.MACHINE_CRUCIBLE_LAVA, AugmentType.MODE);
 		// machineCrucibleAlloy = addAugmentItem(353, TEProps.MACHINE_CRUCIBLE_ALLOY, AugmentType.MODE);
 
+		machineRefineryOil = addAugmentItem(368, TEProps.MACHINE_REFINERY_OIL, AugmentType.MODE);
+		machineRefineryPotion = addAugmentItem(369, TEProps.MACHINE_REFINERY_POTION, AugmentType.MODE);
+
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
 
 		machineEnchanterEmpowered = addAugmentItem(465, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.MODE);
@@ -672,6 +675,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineCrucibleLava;
 	public static ItemStack machineCrucibleAlloy;
+
+	public static ItemStack machineRefineryOil;
+	public static ItemStack machineRefineryPotion;
 
 	public static ItemStack machineChargerThroughput;
 

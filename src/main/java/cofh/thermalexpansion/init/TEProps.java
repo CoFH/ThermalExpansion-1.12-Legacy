@@ -217,15 +217,15 @@ public class TEProps {
 
 	public static final String MACHINE_SMELTER_PYROTHEUM = "machineSmelterPyrotheum";
 
-	public static final String MACHINE_INSOLATOR_MYCELIUM = "machineInsolatorMycelium";
-	public static final String MACHINE_INSOLATOR_NETHER = "machineInsolatorNether";
-	public static final String MACHINE_INSOLATOR_END = "machineInsolatorEnd";
 	public static final String MACHINE_INSOLATOR_TREE = "machineInsolatorTree";
 
 	public static final String MACHINE_COMPACTOR_MINT = "machineCompactorMint";
 
 	public static final String MACHINE_CRUCIBLE_LAVA = "machineCrucibleLava";
 	public static final String MACHINE_CRUCIBLE_ALLOY = "machineCrucibleAlloy";
+
+	public static final String MACHINE_REFINERY_OIL = "machineRefineryOil";
+	public static final String MACHINE_REFINERY_POTION = "machineRefineryPotion";
 
 	public static final String MACHINE_CHARGER_THROUGHPUT = "machineChargerThroughput";
 

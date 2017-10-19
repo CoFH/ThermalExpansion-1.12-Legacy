@@ -25,7 +25,6 @@ public class FurnaceManager {
 	private static Map<ComparableItemStackFurnace, FurnaceRecipe> recipeMapPyrolysis = new THashMap<>();
 	private static Set<ComparableItemStackFurnace> foodSet = new THashSet<>();
 	private static Set<ComparableItemStackFurnace> oreSet = new THashSet<>();
-	private static Map<String, ItemStack> reservedMap = new THashMap<>();
 
 	public static final int DEFAULT_ENERGY = 2000;
 
@@ -236,6 +235,7 @@ public class FurnaceManager {
 
 		Map<ItemStack, ItemStack> smeltingList = FurnaceRecipes.instance().getSmeltingList();
 		Set<Block> handledBlocks = new THashSet<>();
+		Map<String, ItemStack> reservedMap = new THashMap<>();
 		ItemStack output;
 
 		handledBlocks.add(Blocks.CACTUS);

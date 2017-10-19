@@ -79,6 +79,16 @@
 					"layer0": "thermalexpansion:items/augment/placeholder"
 				}
 			},
+			"machinerefineryoil": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machinerefinerypotion": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
 			"machinechargerthroughput": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/machine_charger_throughput"

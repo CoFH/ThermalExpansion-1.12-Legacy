@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.init.CorePotions;
 import cofh.core.init.CoreProps;
 import cofh.core.inventory.ComparableItemStackNBT;
 import cofh.core.util.helpers.FluidHelper;
@@ -148,76 +147,84 @@ public class TransposerManager {
 
 	public static void loadPotions() {
 
-		/* VANILLA */
-		{
-			addDefaultPotionRecipes(PotionTypes.MUNDANE);
-			addDefaultPotionRecipes(PotionTypes.THICK);
-			addDefaultPotionRecipes(PotionTypes.AWKWARD);
+		//		/* VANILLA */
+		//		{
+		//			addDefaultPotionRecipes(PotionTypes.MUNDANE);
+		//			addDefaultPotionRecipes(PotionTypes.THICK);
+		//			addDefaultPotionRecipes(PotionTypes.AWKWARD);
+		//
+		//			addDefaultPotionRecipes(PotionTypes.NIGHT_VISION);
+		//			addDefaultPotionRecipes(PotionTypes.LONG_NIGHT_VISION);
+		//
+		//			addDefaultPotionRecipes(PotionTypes.INVISIBILITY);
+		//			addDefaultPotionRecipes(PotionTypes.LONG_INVISIBILITY);
+		//
+		//			addDefaultPotionRecipes(PotionTypes.LEAPING);
+		//			addDefaultPotionRecipes(PotionTypes.LONG_LEAPING);
+		//			addDefaultPotionRecipes(PotionTypes.STRONG_LEAPING);
+		//
+		//			addDefaultPotionRecipes(PotionTypes.FIRE_RESISTANCE);
+		//			addDefaultPotionRecipes(PotionTypes.LONG_FIRE_RESISTANCE);
+		//
+		//			addDefaultPotionRecipes(PotionTypes.SWIFTNESS);
+		//			addDefaultPotionRecipes(PotionTypes.LONG_SWIFTNESS);
+		//			addDefaultPotionRecipes(PotionTypes.STRONG_SWIFTNESS);
+		//
+		//			addDefaultPotionRecipes(PotionTypes.SLOWNESS);
+		//			addDefaultPotionRecipes(PotionTypes.LONG_SLOWNESS);
+		//
+		//			addDefaultPotionRecipes(PotionTypes.WATER_BREATHING);
+		//			addDefaultPotionRecipes(PotionTypes.LONG_WATER_BREATHING);
+		//
+		//			addDefaultPotionRecipes(PotionTypes.HEALING);
+		//			addDefaultPotionRecipes(PotionTypes.STRONG_HEALING);
+		//
+		//			addDefaultPotionRecipes(PotionTypes.HARMING);
+		//			addDefaultPotionRecipes(PotionTypes.STRONG_HARMING);
+		//
+		//			addDefaultPotionRecipes(PotionTypes.POISON);
+		//			addDefaultPotionRecipes(PotionTypes.LONG_POISON);
+		//			addDefaultPotionRecipes(PotionTypes.STRONG_POISON);
+		//
+		//			addDefaultPotionRecipes(PotionTypes.REGENERATION);
+		//			addDefaultPotionRecipes(PotionTypes.LONG_REGENERATION);
+		//			addDefaultPotionRecipes(PotionTypes.STRONG_REGENERATION);
+		//
+		//			addDefaultPotionRecipes(PotionTypes.STRENGTH);
+		//			addDefaultPotionRecipes(PotionTypes.LONG_STRENGTH);
+		//			addDefaultPotionRecipes(PotionTypes.STRONG_STRENGTH);
+		//
+		//			addDefaultPotionRecipes(PotionTypes.WEAKNESS);
+		//			addDefaultPotionRecipes(PotionTypes.LONG_WEAKNESS);
+		//		}
+		//
+		//		/* COFH */
+		//		{
+		//			addDefaultPotionRecipes(CorePotions.haste);
+		//			addDefaultPotionRecipes(CorePotions.hasteLong);
+		//			addDefaultPotionRecipes(CorePotions.hasteStrong);
+		//
+		//			addDefaultPotionRecipes(CorePotions.resistance);
+		//			addDefaultPotionRecipes(CorePotions.resistanceLong);
+		//			addDefaultPotionRecipes(CorePotions.resistanceStrong);
+		//
+		//			addDefaultPotionRecipes(CorePotions.levitation);
+		//			addDefaultPotionRecipes(CorePotions.levitationLong);
+		//
+		//			addDefaultPotionRecipes(CorePotions.absorption);
+		//			addDefaultPotionRecipes(CorePotions.absorptionLong);
+		//			addDefaultPotionRecipes(CorePotions.absorptionStrong);
+		//
+		//			addDefaultPotionRecipes(CorePotions.wither);
+		//			addDefaultPotionRecipes(CorePotions.witherLong);
+		//			addDefaultPotionRecipes(CorePotions.witherStrong);
+		//		}
 
-			addDefaultPotionRecipes(PotionTypes.NIGHT_VISION);
-			addDefaultPotionRecipes(PotionTypes.LONG_NIGHT_VISION);
+		for (PotionType type : PotionType.REGISTRY) {
 
-			addDefaultPotionRecipes(PotionTypes.INVISIBILITY);
-			addDefaultPotionRecipes(PotionTypes.LONG_INVISIBILITY);
-
-			addDefaultPotionRecipes(PotionTypes.LEAPING);
-			addDefaultPotionRecipes(PotionTypes.LONG_LEAPING);
-			addDefaultPotionRecipes(PotionTypes.STRONG_LEAPING);
-
-			addDefaultPotionRecipes(PotionTypes.FIRE_RESISTANCE);
-			addDefaultPotionRecipes(PotionTypes.LONG_FIRE_RESISTANCE);
-
-			addDefaultPotionRecipes(PotionTypes.SWIFTNESS);
-			addDefaultPotionRecipes(PotionTypes.LONG_SWIFTNESS);
-			addDefaultPotionRecipes(PotionTypes.STRONG_SWIFTNESS);
-
-			addDefaultPotionRecipes(PotionTypes.SLOWNESS);
-			addDefaultPotionRecipes(PotionTypes.LONG_SLOWNESS);
-
-			addDefaultPotionRecipes(PotionTypes.WATER_BREATHING);
-			addDefaultPotionRecipes(PotionTypes.LONG_WATER_BREATHING);
-
-			addDefaultPotionRecipes(PotionTypes.HEALING);
-			addDefaultPotionRecipes(PotionTypes.STRONG_HEALING);
-
-			addDefaultPotionRecipes(PotionTypes.HARMING);
-			addDefaultPotionRecipes(PotionTypes.STRONG_HARMING);
-
-			addDefaultPotionRecipes(PotionTypes.POISON);
-			addDefaultPotionRecipes(PotionTypes.LONG_POISON);
-			addDefaultPotionRecipes(PotionTypes.STRONG_POISON);
-
-			addDefaultPotionRecipes(PotionTypes.REGENERATION);
-			addDefaultPotionRecipes(PotionTypes.LONG_REGENERATION);
-			addDefaultPotionRecipes(PotionTypes.STRONG_REGENERATION);
-
-			addDefaultPotionRecipes(PotionTypes.STRENGTH);
-			addDefaultPotionRecipes(PotionTypes.LONG_STRENGTH);
-			addDefaultPotionRecipes(PotionTypes.STRONG_STRENGTH);
-
-			addDefaultPotionRecipes(PotionTypes.WEAKNESS);
-			addDefaultPotionRecipes(PotionTypes.LONG_WEAKNESS);
-		}
-
-		/* COFH */
-		{
-			addDefaultPotionRecipes(CorePotions.haste);
-			addDefaultPotionRecipes(CorePotions.hasteLong);
-			addDefaultPotionRecipes(CorePotions.hasteStrong);
-
-			addDefaultPotionRecipes(CorePotions.resistance);
-			addDefaultPotionRecipes(CorePotions.resistanceLong);
-			addDefaultPotionRecipes(CorePotions.resistanceStrong);
-
-			addDefaultPotionRecipes(CorePotions.levitation);
-			addDefaultPotionRecipes(CorePotions.levitationLong);
-
-			addDefaultPotionRecipes(CorePotions.absorption);
-			addDefaultPotionRecipes(CorePotions.absorptionLong);
-			addDefaultPotionRecipes(CorePotions.absorptionStrong);
-
-			addDefaultPotionRecipes(CorePotions.saturation);
-			addDefaultPotionRecipes(CorePotions.saturationStrong);
+			if (type != PotionTypes.EMPTY) {
+				addDefaultPotionRecipes(type);
+			}
 		}
 	}
 

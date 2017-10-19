@@ -309,7 +309,6 @@ public class TileCompactor extends TileMachineBase {
 			modeFlag = 0;
 			processOff();
 		}
-
 	}
 
 	@Override

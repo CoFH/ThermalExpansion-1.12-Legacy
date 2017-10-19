@@ -39,6 +39,8 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipeCategories(new RefineryRecipeCategory(guiHelper));
+		registry.addRecipeCategories(new RefineryRecipeCategoryOil(guiHelper));
+		registry.addRecipeCategories(new RefineryRecipeCategoryPotion(guiHelper));
 	}
 
 	public static void initialize(IModRegistry registry) {
@@ -50,8 +52,11 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.REFINERY);
-		registry.addRecipeClickArea(GuiRefinery.class, 76, 34, 24, 16, RecipeUidsTE.REFINERY);
+		registry.addRecipeClickArea(GuiRefinery.class, 76, 34, 24, 16, RecipeUidsTE.REFINERY, RecipeUidsTE.REFINERY_OIL, RecipeUidsTE.REFINERY_POTION);
 		registry.addRecipeCatalyst(BlockMachine.machineRefinery, RecipeUidsTE.REFINERY);
+
+		RefineryRecipeCategoryOil.initialize(registry);
+		RefineryRecipeCategoryPotion.initialize(registry);
 	}
 
 	public static List<RefineryRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

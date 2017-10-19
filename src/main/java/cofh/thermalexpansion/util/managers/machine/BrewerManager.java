@@ -135,7 +135,18 @@ public class BrewerManager {
 			addDefaultPotionRecipes(PotionTypes.AWKWARD, ItemMaterial.dustObsidian, CorePotions.resistance);
 			addDefaultPotionRecipes(PotionTypes.AWKWARD, ItemMaterial.dustBlitz, CorePotions.levitation);
 			addDefaultPotionRecipes(PotionTypes.AWKWARD, ItemMaterial.dustBlizz, CorePotions.absorption);
-			addDefaultPotionRecipes(PotionTypes.AWKWARD, new ItemStack(Items.POISONOUS_POTATO), CorePotions.saturation);
+			addDefaultPotionRecipes(PotionTypes.REGENERATION, fermentedSpiderEye, CorePotions.wither);
+
+			addDefaultPotionRecipes(CorePotions.haste, redstone, CorePotions.hasteLong);
+			addDefaultPotionRecipes(CorePotions.resistance, redstone, CorePotions.resistanceLong);
+			addDefaultPotionRecipes(CorePotions.levitation, redstone, CorePotions.levitationLong);
+			addDefaultPotionRecipes(CorePotions.absorption, redstone, CorePotions.absorptionLong);
+			addDefaultPotionRecipes(CorePotions.wither, redstone, CorePotions.witherLong);
+
+			addDefaultPotionRecipes(CorePotions.haste, glowstone, CorePotions.hasteStrong);
+			addDefaultPotionRecipes(CorePotions.resistance, glowstone, CorePotions.resistanceStrong);
+			addDefaultPotionRecipes(CorePotions.absorption, glowstone, CorePotions.absorptionStrong);
+			addDefaultPotionRecipes(CorePotions.wither, glowstone, CorePotions.witherStrong);
 		}
 
 		/* LOAD RECIPES */

@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.init.CoreProps;
-import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackNBT;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalfoundation.block.BlockOreFluid;
@@ -190,7 +190,7 @@ public class CrucibleManager {
 	}
 
 	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackCrucible extends ComparableItemStack {
+	public static class ComparableItemStackCrucible extends ComparableItemStackNBT {
 
 		public static final String NUGGET = "nugget";
 		public static final String INGOT = "ingot";

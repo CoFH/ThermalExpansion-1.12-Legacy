@@ -11,7 +11,6 @@ import cofh.thermalexpansion.gui.container.machine.ContainerBrewer;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.machine.BrewerManager;
 import cofh.thermalexpansion.util.managers.machine.BrewerManager.BrewerRecipe;
-import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
