@@ -214,7 +214,7 @@ public class EnchanterManager {
 		}
 		addRecipe(DEFAULT_ENERGY[tier], ITEM_BOOK, input, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, 1)), DEFAULT_EXPERIENCE[tier], Type.STANDARD);
 		if (enchant.getMaxLevel() > 1) {
-			addRecipe(DEFAULT_ENERGY[Math.min(tier + 1, 4)] * 2, ITEM_BOOK2, input, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, enchant.getMaxLevel())), DEFAULT_EXPERIENCE[Math.min(tier + 1, 4)], Type.EMPOWERED);
+			addRecipe(DEFAULT_ENERGY[Math.min(tier + 1, 4)] * 3, ITEM_BOOK2, input, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, enchant.getMaxLevel())), DEFAULT_EXPERIENCE[Math.min(tier + 1, 4)], Type.EMPOWERED);
 		}
 	}
 
