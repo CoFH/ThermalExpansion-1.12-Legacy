@@ -425,14 +425,20 @@ public class TilePulverizer extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					return null;
+					if (isActive) {
+						return null;
+					}
+					return tank.drain(resource, doDrain);
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					return null;
+					if (isActive) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
 				}
 			});
 		}

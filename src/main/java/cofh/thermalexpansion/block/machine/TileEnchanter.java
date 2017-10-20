@@ -48,7 +48,6 @@ public class TileEnchanter extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, false, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
-		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_ENCHANTER_TREASURE);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_ENCHANTER_EMPOWERED);
 
 		LIGHT_VALUES[TYPE] = 12;

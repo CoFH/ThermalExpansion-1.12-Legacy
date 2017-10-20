@@ -29,8 +29,8 @@ gui.thermalexpansion.machine.enchanter.modeUnlocked=Arcana Slot Unlocked
 gui.thermalexpansion.machine.insolator.modeLocked=Fertilizer Slot Locked
 gui.thermalexpansion.machine.insolator.modeUnlocked=Fertilizer Slot Unlocked
 
-gui.thermalexpansion.machine.smelter.modeLocked=Flux Slot Locked
-gui.thermalexpansion.machine.smelter.modeUnlocked=Flux Slot Unlocked
+gui.thermalexpansion.machine.smelter.modeLocked=Metallurgical Flux Slot Locked
+gui.thermalexpansion.machine.smelter.modeUnlocked=Metallurgical Flux Slot Unlocked
 
 gui.thermalexpansion.machine.transposer.modeEmpty=Mode: Empty
 gui.thermalexpansion.machine.transposer.modeFill=Mode: Fill
@@ -86,6 +86,10 @@ info.thermalexpansion.augment.dynamoSteamTurbine.b.0=Steam must be provided from
 info.thermalexpansion.augment.dynamoThrottle.0=Dynamos: Advanced Throttle
 info.thermalexpansion.augment.dynamoThrottle.a.0=Prevents RF loss due to flux coil saturation.
 
+info.thermalexpansion.augment.machineBrewerReagent.0=Alchemical Imbuer: Efficiency
+info.thermalexpansion.augment.machineBrewerReagent.a.0=Provides a chance to not consume Reagent.
+info.thermalexpansion.augment.machineBrewerReagent.b.0=Additional energy is required per operation.
+
 info.thermalexpansion.augment.machineChargerThroughput.0=Energetic Infuser: Specialization
 info.thermalexpansion.augment.machineChargerThroughput.a.0=Allows for rechargeable items to be charged very rapidly.
 info.thermalexpansion.augment.machineChargerThroughput.c.0=Will not exceed charge rate of the item itself.
@@ -136,6 +140,10 @@ info.thermalexpansion.augment.machineFurnacePyrolysis.a.0=Allows for pyrolysis a
 info.thermalexpansion.augment.machineFurnacePyrolysis.b.0=Only certain items can be processed.
 info.thermalexpansion.augment.machineFurnacePyrolysis.b.1=Processing speed is greatly reduced.
 
+info.thermalexpansion.augment.machineInsolatorFertilizer.0=Phytogenic Insolator: Efficiency
+info.thermalexpansion.augment.machineInsolatorFertilizer.a.0=Provides a chance to not consume Fertilizer.
+info.thermalexpansion.augment.machineInsolatorFertilizer.b.0=Additional energy is required per operation.
+
 info.thermalexpansion.augment.machineInsolatorTree.0=Phytogenic Insolator: Specialization
 info.thermalexpansion.augment.machineInsolatorTree.a.0=Allows for trees to be grown.
 
@@ -180,6 +188,10 @@ info.thermalexpansion.augment.machineSecondary.b.0=Additional energy is required
 info.thermalexpansion.augment.machineSecondaryNull.0=Machines: Secondary Nullifier
 info.thermalexpansion.augment.machineSecondaryNull.a.0=Destroys excess secondary outputs.
 info.thermalexpansion.augment.machineSecondaryNull.b.0=Really. They just disappear. Gone.
+
+info.thermalexpansion.augment.machineSmelterFlux.0=Induction Smelter: Efficiency
+info.thermalexpansion.augment.machineSmelterFlux.a.0=Provides a chance to not consume Metallurgical Flux.
+info.thermalexpansion.augment.machineSmelterFlux.b.0=Additional energy is required per operation.
 
 info.thermalexpansion.augment.machineSmelterPyrotheum.0=Induction Smelter: Specialization
 info.thermalexpansion.augment.machineSmelterPyrotheum.a.0=Increases yield from ores.
@@ -283,6 +295,7 @@ item.thermalexpansion.augment.dynamoReactantElemental.name=Elemental Catalyzer
 item.thermalexpansion.augment.dynamoSteamTurbine.name=Turbine Conversion
 item.thermalexpansion.augment.dynamoThrottle.name=Excitation Field Limiter
 
+item.thermalexpansion.augment.machineBrewerReagent.name=Reagent Recovery
 item.thermalexpansion.augment.machineChargerThroughput.name=Flux Linkage Concentrator
 item.thermalexpansion.augment.machineCompactorMint.name=Numismatic Press
 item.thermalexpansion.augment.machineCrucibleLava.name=Pyroconvective Loop
@@ -294,6 +307,8 @@ item.thermalexpansion.augment.machineExtruderAndesite.name=Andesitic Subduction
 item.thermalexpansion.augment.machineExtruderDiorite.name=Dioritic Subduction
 item.thermalexpansion.augment.machineExtruderGranite.name=Granitic Subduction
 item.thermalexpansion.augment.machineExtruderNoWater.name=Pyroclastic Injection
+item.thermalexpansion.augment.machineInsolatorFertilizer.name=Nutrient Recovery
+item.thermalexpansion.augment.machineInsolatorRecycle.name=Monoculture
 item.thermalexpansion.augment.machineInsolatorTree.name=Sapling Infuser
 item.thermalexpansion.augment.machinePower.name=Auxiliary Reception Coil
 item.thermalexpansion.augment.machinePrecipitatorPackedIce.name=Permafrost Compressor
@@ -303,6 +318,7 @@ item.thermalexpansion.augment.machinePulverizerPetrotheum.name=Tectonic Initiato
 item.thermalexpansion.augment.machineRefineryOil.name=Reflux Column
 item.thermalexpansion.augment.machineRefineryPotion.name=Alchemical Retort
 item.thermalexpansion.augment.machineSawmillTapper.name=Resin Funnel
+item.thermalexpansion.augment.machineSmelterFlux.name=Metallurgical Recovery
 item.thermalexpansion.augment.machineSmelterPyrotheum.name=Pyro-Concentrator
 item.thermalexpansion.augment.machineSecondary.name=Auxiliary Sieve
 item.thermalexpansion.augment.machineSecondaryNull.name=Nullification Chamber

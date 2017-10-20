@@ -12,6 +12,7 @@ import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.TileExtruder;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalfoundation.item.ItemFertilizer;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.block.Block;
@@ -189,8 +190,11 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineSawmillTapper = addAugmentItem(288, TEProps.MACHINE_SAWMILL_TAPPER, AugmentType.MODE);
 
+		machineSmelterFlux = addAugmentItem(303, TEProps.MACHINE_SMELTER_FLUX);
 		machineSmelterPyrotheum = addAugmentItem(304, TEProps.MACHINE_SMELTER_PYROTHEUM, AugmentType.MODE);
 
+		machineInsolatorFertilizer = addAugmentItem(320, TEProps.MACHINE_INSOLATOR_FERTILIZER);
+		machineInsolatorRecycle = addAugmentItem(321, TEProps.MACHINE_INSOLATOR_RECYCLE, AugmentType.ADVANCED);
 		machineInsolatorTree = addAugmentItem(323, TEProps.MACHINE_INSOLATOR_TREE, AugmentType.MODE);
 
 		machineCompactorMint = addAugmentItem(336, TEProps.MACHINE_COMPACTOR_MINT, AugmentType.MODE);
@@ -203,7 +207,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
 
-		machineEnchanterEmpowered = addAugmentItem(465, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.MODE);
+		machineBrewerReagent = addAugmentItem(448, TEProps.MACHINE_BREWER_REAGENT);
+
+		machineEnchanterEmpowered = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.MODE);
 
 		machinePrecipitatorSnowLayer = addAugmentItem(481, TEProps.MACHINE_PRECIPITATOR_SNOW_LAYER, AugmentType.MODE);
 		machinePrecipitatorPackedIce = addAugmentItem(482, TEProps.MACHINE_PRECIPITATOR_PACKED_ICE, AugmentType.MODE);
@@ -335,6 +341,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Y', "dustRedstone"
 		);
 
+		addShapedRecipe(machineSmelterFlux,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearSilver",
+				'I', "ingotTin",
+				'X', "blockGlassHardened",
+				'Y', ItemMaterial.crystalSlagRich
+		);
 		addShapedRecipe(machineSmelterPyrotheum,
 				" G ",
 				"ICI",
@@ -346,6 +362,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Y', "dustPyrotheum"
 		);
 
+		addShapedRecipe(machineInsolatorFertilizer,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearSilver",
+				'I', "ingotTin",
+				'X', "blockGlassHardened",
+				'Y', ItemFertilizer.fertilizerRich
+		);
 		addShapedRecipe(machineInsolatorTree,
 				" G ",
 				"ICI",
@@ -389,6 +415,27 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 //				'Y', "dustCryotheum"
 //		);
 
+		addShapedRecipe(machineRefineryOil,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearNickel",
+				'I', "blockGlassHardened",
+				'X', Items.BLAZE_ROD,
+				'Y', "dustRedstone"
+		);
+		addShapedRecipe(machineRefineryPotion,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearSignalum",
+				'I', "plateLead",
+				'X', Items.CAULDRON,
+				'Y', "dustRedstone"
+		);
+
 		addShapedRecipe(machineChargerThroughput,
 				" G ",
 				"ICI",
@@ -398,6 +445,18 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateSilver",
 				'X', "ingotLead",
 				'Y', "dustRedstone"
+		);
+
+		addShapedRecipe(machineBrewerReagent,
+				" G ",
+				"ICI",
+				"YXZ",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearSilver",
+				'I', "ingotTin",
+				'X', "blockGlassHardened",
+				'Y', "dustGlowstone",
+				'Z', "dustRedstone"
 		);
 
 		addShapedRecipe(machineExtruderNoWater,
@@ -668,7 +727,10 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineSawmillTapper;
 
 	public static ItemStack machineSmelterPyrotheum;
+	public static ItemStack machineSmelterFlux;
 
+	public static ItemStack machineInsolatorRecycle;
+	public static ItemStack machineInsolatorFertilizer;
 	public static ItemStack machineInsolatorTree;
 
 	public static ItemStack machineCompactorMint;
@@ -682,6 +744,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineChargerThroughput;
 
 	public static ItemStack machineCentrifugeMobs;              // Enstabulation Chamber
+
+	public static ItemStack machineBrewerReagent;
 
 	public static ItemStack machineEnchanterEmpowered;
 

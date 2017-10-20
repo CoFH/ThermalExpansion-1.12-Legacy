@@ -85,7 +85,7 @@ public class RefineryManager {
 		addStrongPotionRecipes("regeneration", CoreProps.POTION_MAX);
 		addStrongPotionRecipes("strength", CoreProps.POTION_MAX);
 
-		addStrongPotionRecipes("haste", CoreProps.POTION_MAX - 1);
+		addStrongPotionRecipes("haste", 4);
 		addStrongPotionRecipes("resistance", CoreProps.POTION_MAX);
 		addStrongPotionRecipes("absorption", CoreProps.POTION_MAX);
 		addStrongPotionRecipes("wither", CoreProps.POTION_MAX);
@@ -169,10 +169,14 @@ public class RefineryManager {
 
 	public static void addStrongPotionRecipes(String baseName, int maxRank) {
 
-		int inputAmount = 200;
-		int outputAmount = 100;
+		int baseAmount = CoreProps.BOTTLE_VOLUME / 5;
+		int inputAmount;
+		int outputAmount;
 
 		for (int i = maxRank; i > 2; i--) {
+			outputAmount = baseAmount + baseAmount * (CoreProps.POTION_MAX - i);
+			inputAmount = outputAmount + baseAmount;
+
 			PotionType inputType = getPotionType(baseName, i - 1);
 			PotionType outputType = getPotionType(baseName, i);
 
@@ -181,15 +185,15 @@ public class RefineryManager {
 			}
 			FluidStack inputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, inputAmount), inputType);
 			FluidStack outputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, outputAmount), outputType);
-			addRecipePotion(DEFAULT_ENERGY, inputPotion, outputPotion);
+			addRecipePotion(DEFAULT_ENERGY / 2, inputPotion, outputPotion);
 
 			inputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, inputAmount), inputType);
 			outputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, outputAmount), outputType);
-			addRecipePotion(DEFAULT_ENERGY, inputPotion, outputPotion);
+			addRecipePotion(DEFAULT_ENERGY / 2, inputPotion, outputPotion);
 
 			inputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, inputAmount), inputType);
 			outputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, outputAmount), outputType);
-			addRecipePotion(DEFAULT_ENERGY, inputPotion, outputPotion);
+			addRecipePotion(DEFAULT_ENERGY / 2, inputPotion, outputPotion);
 		}
 	}
 

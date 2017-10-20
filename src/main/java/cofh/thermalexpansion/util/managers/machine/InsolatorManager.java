@@ -23,9 +23,10 @@ public class InsolatorManager {
 
 	static final int CROP_MULTIPLIER_RICH = 3;
 	static final int CROP_MULTIPLIER_FLUX = 4;
-	public static final int DEFAULT_ENERGY = 5000;
-	public static final int DEFAULT_ENERGY_RICH = 7500;
-	public static final int DEFAULT_ENERGY_FLUX = 10000;
+
+	public static final int DEFAULT_ENERGY = 2400;
+	public static final int DEFAULT_ENERGY_RICH = 3000;
+	public static final int DEFAULT_ENERGY_FLUX = 3600;
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
 

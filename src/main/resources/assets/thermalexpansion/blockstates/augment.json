@@ -54,9 +54,24 @@
 					"layer0": "thermalexpansion:items/augment/machine_sawmill_tapper"
 				}
 			},
+			"machinesmelterflux": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_smelter_flux"
+				}
+			},
 			"machinesmelterpyrotheum": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/machine_smelter_pyrotheum"
+				}
+			},
+			"machineinsolatorfertilizer": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_insolator_fertilizer"
+				}
+			},
+			"machineinsolatorrecycle": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
 				}
 			},
 			"machineinsolatortree": {
@@ -86,12 +101,17 @@
 			},
 			"machinerefinerypotion": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_refinery_potion"
 				}
 			},
 			"machinechargerthroughput": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/machine_charger_throughput"
+				}
+			},
+			"machinebrewerreagent": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_brewer_reagent"
 				}
 			},
 			"machineenchanterempowered": {

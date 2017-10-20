@@ -53,6 +53,7 @@ public class TileSmelter extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, false, true, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SMELTER_FLUX);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SMELTER_PYROTHEUM);
 
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
@@ -226,12 +227,44 @@ public class TileSmelter extends TileMachineBase {
 				}
 			}
 		}
-		if (SmelterManager.isRecipeReversed(inventory[0], inventory[1])) {
-			inventory[1].shrink(recipe.getPrimaryInput().getCount());
-			inventory[0].shrink(recipe.getSecondaryInput().getCount());
+		boolean isReversed = SmelterManager.isRecipeReversed(inventory[0], inventory[1]);
+		int count1 = recipe.getPrimaryInput().getCount();
+		int count2 = recipe.getSecondaryInput().getCount();
+
+		if (reuseChance > 0) {
+			if (isReversed) {
+				if (SmelterManager.isItemFlux(inventory[1])) {
+					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
+						inventory[1].shrink(count1);
+					}
+					inventory[0].shrink(count2);
+				} else if (SmelterManager.isItemFlux(inventory[0])) {
+					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
+						inventory[0].shrink(count1);
+					}
+					inventory[1].shrink(count2);
+				}
+			} else {
+				if (SmelterManager.isItemFlux(inventory[0])) {
+					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
+						inventory[0].shrink(count1);
+					}
+					inventory[1].shrink(count2);
+				} else if (SmelterManager.isItemFlux(inventory[1])) {
+					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
+						inventory[1].shrink(count1);
+					}
+					inventory[0].shrink(count2);
+				}
+			}
 		} else {
-			inventory[0].shrink(recipe.getPrimaryInput().getCount());
-			inventory[1].shrink(recipe.getSecondaryInput().getCount());
+			if (isReversed) {
+				inventory[1].shrink(count1);
+				inventory[0].shrink(count2);
+			} else {
+				inventory[0].shrink(count1);
+				inventory[1].shrink(count2);
+			}
 		}
 		if (inventory[0].getCount() <= 0) {
 			inventory[0] = ItemStack.EMPTY;
@@ -462,6 +495,10 @@ public class TileSmelter extends TileMachineBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
+		if (TEProps.MACHINE_SMELTER_FLUX.equals(id)) {
+			reuseChance += 10;
+			energyMod += 10;
+		}
 		if (!augmentPyrotheum && TEProps.MACHINE_SMELTER_PYROTHEUM.equals(id)) {
 			augmentPyrotheum = true;
 			hasModeAugment = true;
@@ -526,14 +563,20 @@ public class TileSmelter extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					return null;
+					if (isActive) {
+						return null;
+					}
+					return tank.drain(resource, doDrain);
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					return null;
+					if (isActive) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
 				}
 			});
 		}

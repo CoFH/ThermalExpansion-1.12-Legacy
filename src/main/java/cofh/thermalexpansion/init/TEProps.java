@@ -216,7 +216,10 @@ public class TEProps {
 	public static final String MACHINE_SAWMILL_TAPPER = "machineSawmillTapper";
 
 	public static final String MACHINE_SMELTER_PYROTHEUM = "machineSmelterPyrotheum";
+	public static final String MACHINE_SMELTER_FLUX = "machineSmelterFlux";
 
+	public static final String MACHINE_INSOLATOR_RECYCLE = "machineInsolatorRecycle";
+	public static final String MACHINE_INSOLATOR_FERTILIZER = "machineInsolatorFertilizer";
 	public static final String MACHINE_INSOLATOR_TREE = "machineInsolatorTree";
 
 	public static final String MACHINE_COMPACTOR_MINT = "machineCompactorMint";
@@ -229,7 +232,8 @@ public class TEProps {
 
 	public static final String MACHINE_CHARGER_THROUGHPUT = "machineChargerThroughput";
 
-	public static final String MACHINE_ENCHANTER_TREASURE = "machineEnchanterTreasure";
+	public static final String MACHINE_BREWER_REAGENT = "machineBrewerReagent";
+
 	public static final String MACHINE_ENCHANTER_EMPOWERED = "machineEnchanterEmpowered";
 
 	public static final String MACHINE_PRECIPITATOR_SNOW_LAYER = "machinePrecipitatorSnowLayer";

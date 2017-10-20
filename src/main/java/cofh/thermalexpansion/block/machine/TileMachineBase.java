@@ -69,6 +69,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 	int energyMod = ENERGY_BASE;
 	int secondaryChance = SECONDARY_BASE;
+	int reuseChance = 0;
 
 	/* AUGMENTS */
 	protected boolean augmentSecondaryNull;
@@ -321,6 +322,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 		energyMod = ENERGY_BASE;
 		secondaryChance = SECONDARY_BASE;
+		reuseChance = 0;
 		hasModeAugment = false;
 
 		augmentSecondaryNull = false;
@@ -353,18 +355,12 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
 		if (TEProps.MACHINE_POWER.equals(id)) {
-			// Power Boost
 			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level), smallStorage);
-
-			// Efficiency Loss
 			energyMod += 15;
 			return true;
 		}
 		if (TEProps.MACHINE_SECONDARY.equals(id)) {
-			// SeoondaryChance
 			secondaryChance -= 15;
-
-			// Efficiency Loss
 			energyMod += 10;
 			return true;
 		}

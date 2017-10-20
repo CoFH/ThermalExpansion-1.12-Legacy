@@ -31,6 +31,7 @@ public class SmelterManager {
 
 	static final int ORE_MULTIPLIER = 2;
 	static final int ORE_MULTIPLIER_SPECIAL = 3;
+
 	public static final int DEFAULT_ENERGY = 4000;
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {

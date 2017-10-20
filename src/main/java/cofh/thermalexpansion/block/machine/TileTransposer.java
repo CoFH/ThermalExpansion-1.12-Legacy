@@ -759,7 +759,7 @@ public class TileTransposer extends TileMachineBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (extractMode || from == null || sideCache[from.ordinal()] != 1) {
+					if (extractMode || from == null || !allowInsertion(sideCache[from.ordinal()])) {
 						return 0;
 					}
 					return tank.fill(resource, doFill);

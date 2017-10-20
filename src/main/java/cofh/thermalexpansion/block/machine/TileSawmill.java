@@ -479,7 +479,7 @@ public class TileSawmill extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && sideCache[from.ordinal()] < 3) {
+					if (from != null && !allowExtraction(sideCache[from.ordinal()])) {
 						return null;
 					}
 					return tank.drain(resource, doDrain);
@@ -489,7 +489,7 @@ public class TileSawmill extends TileMachineBase {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && sideCache[from.ordinal()] < 3) {
+					if (from != null && !allowExtraction(sideCache[from.ordinal()])) {
 						return null;
 					}
 					return tank.drain(maxDrain, doDrain);

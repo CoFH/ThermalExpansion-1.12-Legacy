@@ -28,7 +28,7 @@ public class BrewerManager {
 	private static Set<ComparableItemStackBrewer> validationSet = new THashSet<>();
 	private static Set<String> validationFluids = new THashSet<>();
 
-	public static final int DEFAULT_ENERGY = 1600;
+	public static final int DEFAULT_ENERGY = 2400;
 	public static final int DEFAULT_AMOUNT = CoreProps.BOTTLE_VOLUME * 3;
 
 	public static BrewerRecipe getRecipe(ItemStack input, FluidStack fluid) {

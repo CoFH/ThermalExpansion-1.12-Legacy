@@ -49,6 +49,8 @@ public class TileInsolator extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, false, true, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_FERTILIZER);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_RECYCLE);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_TREE);
 
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
@@ -210,12 +212,44 @@ public class TileInsolator extends TileMachineBase {
 				}
 			}
 		}
-		if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
-			inventory[1].shrink(recipe.getPrimaryInput().getCount());
-			inventory[0].shrink(recipe.getSecondaryInput().getCount());
+		boolean isReversed = InsolatorManager.isRecipeReversed(inventory[0], inventory[1]);
+		int count1 = recipe.getPrimaryInput().getCount();
+		int count2 = recipe.getSecondaryInput().getCount();
+
+		if (reuseChance > 0) {
+			if (isReversed) {
+				if (InsolatorManager.isItemFertilizer(inventory[1])) {
+					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
+						inventory[1].shrink(count1);
+					}
+					inventory[0].shrink(count2);
+				} else if (InsolatorManager.isItemFertilizer(inventory[0])) {
+					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
+						inventory[0].shrink(count1);
+					}
+					inventory[1].shrink(count2);
+				}
+			} else {
+				if (InsolatorManager.isItemFertilizer(inventory[0])) {
+					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
+						inventory[0].shrink(count1);
+					}
+					inventory[1].shrink(count2);
+				} else if (InsolatorManager.isItemFertilizer(inventory[1])) {
+					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
+						inventory[1].shrink(count1);
+					}
+					inventory[0].shrink(count2);
+				}
+			}
 		} else {
-			inventory[0].shrink(recipe.getPrimaryInput().getCount());
-			inventory[1].shrink(recipe.getSecondaryInput().getCount());
+			if (isReversed) {
+				inventory[1].shrink(count1);
+				inventory[0].shrink(count2);
+			} else {
+				inventory[0].shrink(count1);
+				inventory[1].shrink(count2);
+			}
 		}
 		if (inventory[0].getCount() <= 0) {
 			inventory[0] = ItemStack.EMPTY;
@@ -442,6 +476,10 @@ public class TileInsolator extends TileMachineBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
+		if (TEProps.MACHINE_INSOLATOR_FERTILIZER.equals(id)) {
+			reuseChance += 15;
+			energyMod += 5;
+		}
 		if (!augmentTree && TEProps.MACHINE_INSOLATOR_TREE.equals(id)) {
 			augmentTree = true;
 			hasModeAugment = true;
@@ -498,14 +536,20 @@ public class TileInsolator extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					return null;
+					if (isActive) {
+						return null;
+					}
+					return tank.drain(resource, doDrain);
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					return null;
+					if (isActive) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
 				}
 			});
 		}

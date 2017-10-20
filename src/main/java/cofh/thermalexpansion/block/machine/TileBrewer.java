@@ -1,7 +1,9 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -47,6 +49,7 @@ public class TileBrewer extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_BREWER_REAGENT);
 
 		GameRegistry.registerTileEntity(TileBrewer.class, "thermalexpansion:machine_brewer");
 
@@ -153,8 +156,15 @@ public class TileBrewer extends TileMachineBase {
 		outputTank.fill(recipe.getOutputFluid(), true);
 		inputTank.drain(recipe.getInputFluid().amount, true);
 
-		inventory[0].shrink(recipe.getInput().getCount());
+		int count = recipe.getInput().getCount();
 
+		if (reuseChance > 0) {
+			if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
+				inventory[0].shrink(count);
+			}
+		} else {
+			inventory[0].shrink(count);
+		}
 		if (inventory[0].getCount() <= 0) {
 			inventory[0] = ItemStack.EMPTY;
 		}
@@ -330,6 +340,32 @@ public class TileBrewer extends TileMachineBase {
 		outputTank.setFluid(payload.getFluidStack());
 	}
 
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+	}
+
+	@Override
+	protected boolean isValidAugment(AugmentType type, String id) {
+
+		return super.isValidAugment(type, id);
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (TEProps.MACHINE_BREWER_REAGENT.equals(id)) {
+			reuseChance += 10;
+			energyMod += 10;
+		}
+		return super.installAugmentToSlot(slot);
+	}
+
 	/* IInventory */
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
@@ -374,10 +410,12 @@ public class TileBrewer extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && isPrimaryInput(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return inputTank.drain(resource, doDrain);
+					if (!isActive) {
+						if (from != null && allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+							return inputTank.drain(resource, doDrain);
+						}
 					}
-					if (from != null && isPrimaryOutput(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
 					return outputTank.drain(resource, doDrain);
@@ -387,10 +425,12 @@ public class TileBrewer extends TileMachineBase {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && isPrimaryInput(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return inputTank.drain(maxDrain, doDrain);
+					if (!isActive) {
+						if (from != null && allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+							return inputTank.drain(maxDrain, doDrain);
+						}
 					}
-					if (from != null && isPrimaryOutput(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
 					return outputTank.drain(maxDrain, doDrain);
