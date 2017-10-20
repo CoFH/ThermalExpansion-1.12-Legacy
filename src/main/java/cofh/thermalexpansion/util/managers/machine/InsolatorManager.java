@@ -153,12 +153,12 @@ public class InsolatorManager {
 
 		/* TREE */
 		{
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 0), new ItemStack(Blocks.LOG, 4, 0), new ItemStack(Blocks.SAPLING, 1, 0), 50);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 1), new ItemStack(Blocks.LOG, 4, 1), new ItemStack(Blocks.SAPLING, 1, 1), 50);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 2), new ItemStack(Blocks.LOG, 4, 2), new ItemStack(Blocks.SAPLING, 1, 2), 50);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 3), new ItemStack(Blocks.LOG, 4, 3), new ItemStack(Blocks.SAPLING, 1, 3), 50);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.LOG2, 4, 0), new ItemStack(Blocks.SAPLING, 1, 4), 50);
-			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 5), new ItemStack(Blocks.LOG2, 4, 1), new ItemStack(Blocks.SAPLING, 1, 5), 50);
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 0), new ItemStack(Blocks.LOG, 4, 0), new ItemStack(Blocks.SAPLING, 1, 0));
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 1), new ItemStack(Blocks.LOG, 4, 1), new ItemStack(Blocks.SAPLING, 1, 1));
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 2), new ItemStack(Blocks.LOG, 4, 2), new ItemStack(Blocks.SAPLING, 1, 2));
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 3), new ItemStack(Blocks.LOG, 4, 3), new ItemStack(Blocks.SAPLING, 1, 3));
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.LOG2, 4, 0), new ItemStack(Blocks.SAPLING, 1, 4));
+			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 5), new ItemStack(Blocks.LOG2, 4, 1), new ItemStack(Blocks.SAPLING, 1, 5));
 		}
 
 		/* LOAD RECIPES */
@@ -307,6 +307,11 @@ public class InsolatorManager {
 		}
 	}
 
+	public static void addDefaultTreeRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
+
+		addDefaultTreeRecipe(primaryInput, primaryOutput, secondaryOutput, 100, false, Type.TREE);
+	}
+
 	public static void addDefaultTreeRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		addDefaultTreeRecipe(primaryInput, primaryOutput, secondaryOutput, secondaryChance, false, Type.TREE);
@@ -334,19 +339,26 @@ public class InsolatorManager {
 		final ItemStack secondaryOutput;
 		final int secondaryChance;
 		final int energy;
+		final boolean hasFertilizer;
 		final boolean copyNBT;
 		final Type type;
 
 		InsolatorRecipe(ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy, boolean copyNBT, Type type) {
 
-			this.primaryInput = primaryInput;
-			this.secondaryInput = secondaryInput;
+			if (isItemFertilizer(primaryInput) && !isItemFertilizer(secondaryInput)) {
+				this.primaryInput = secondaryInput;
+				this.secondaryInput = primaryInput;
+			} else {
+				this.primaryInput = primaryInput;
+				this.secondaryInput = secondaryInput;
+			}
 			this.primaryOutput = primaryOutput;
 			this.secondaryOutput = secondaryOutput;
 			this.secondaryChance = secondaryChance;
 			this.energy = energy;
 			this.copyNBT = copyNBT;
 			this.type = type;
+			this.hasFertilizer = isItemFertilizer(secondaryInput) || isItemFertilizer(primaryInput);
 		}
 
 		public ItemStack getPrimaryInput() {
@@ -383,6 +395,11 @@ public class InsolatorManager {
 
 			return type;
 		}
+
+		public boolean hasFertilizer() {
+
+			return hasFertilizer;
+		}
 	}
 
 	/* TYPE ENUM */
@@ -395,10 +412,11 @@ public class InsolatorManager {
 
 		public static final String SEED = "seed";
 		public static final String CROP = "crop";
+		public static final String SEEDS_TIER = "seedsTier";
 
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(SEED) || oreName.startsWith(CROP);
+			return !oreName.startsWith(SEEDS_TIER) && (oreName.startsWith(SEED) || oreName.startsWith(CROP));
 		}
 
 		public static int getOreID(ItemStack stack) {

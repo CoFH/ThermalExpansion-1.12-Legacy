@@ -66,7 +66,7 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 		}
 		if (uId.equals(RecipeUidsTE.SAWMILL_TAPPER)) {
 			FluidStack treeFluid = TapperManager.getFluid(recipe.getInput()).copy();
-			treeFluid.amount /= TileSawmill.fluidFactor;
+			treeFluid.amount /= TileSawmill.FLUID_FACTOR;
 
 			recipeOutputFluids.add(treeFluid);
 			outputFluids = recipeOutputFluids;

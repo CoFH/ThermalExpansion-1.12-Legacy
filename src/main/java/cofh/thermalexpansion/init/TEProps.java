@@ -218,8 +218,8 @@ public class TEProps {
 	public static final String MACHINE_SMELTER_PYROTHEUM = "machineSmelterPyrotheum";
 	public static final String MACHINE_SMELTER_FLUX = "machineSmelterFlux";
 
-	public static final String MACHINE_INSOLATOR_RECYCLE = "machineInsolatorRecycle";
 	public static final String MACHINE_INSOLATOR_FERTILIZER = "machineInsolatorFertilizer";
+	public static final String MACHINE_INSOLATOR_MONOCULTURE = "machineInsolatorMonoculture";
 	public static final String MACHINE_INSOLATOR_TREE = "machineInsolatorTree";
 
 	public static final String MACHINE_COMPACTOR_MINT = "machineCompactorMint";

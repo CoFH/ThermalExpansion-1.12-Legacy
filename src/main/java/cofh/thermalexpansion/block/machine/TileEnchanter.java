@@ -107,7 +107,7 @@ public class TileEnchanter extends TileMachineBase {
 		if (inventory[0].isEmpty() || inventory[1].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[0], inventory[1]);
+		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[1], inventory[0]);
 
 		if (recipe == null || tank.getFluidAmount() < recipe.getExperience()) {
 			return false;
@@ -132,7 +132,7 @@ public class TileEnchanter extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[0], inventory[1]);
+		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[1], inventory[0]);
 
 		if (recipe == null) {
 			return false;
@@ -152,14 +152,14 @@ public class TileEnchanter extends TileMachineBase {
 	@Override
 	protected void processStart() {
 
-		processMax = EnchanterManager.getRecipe(inventory[0], inventory[1]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = EnchanterManager.getRecipe(inventory[1], inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[0], inventory[1]);
+		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[1], inventory[0]);
 
 		if (recipe == null) {
 			processOff();

@@ -60,7 +60,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 			recipeInputs.add(recipe.getInput());
 		}
 		if (uId.equals(RecipeUidsTE.PULVERIZER_PETROTHEUM)) {
-			recipeInputFluids.add(new FluidStack(TFFluids.fluidPetrotheum, TilePulverizer.fluidAmount));
+			recipeInputFluids.add(new FluidStack(TFFluids.fluidPetrotheum, TilePulverizer.FLUID_AMOUNT));
 			inputFluids = Collections.singletonList(recipeInputFluids);
 			recipeOutputs.add(ItemHelper.cloneStack(recipe.getPrimaryOutput(), recipe.getPrimaryOutput().getCount() + 1));
 			energy = recipe.getEnergy() * (100 + TilePulverizer.PETROTHEUM_ENERGY_MOD) / 100;

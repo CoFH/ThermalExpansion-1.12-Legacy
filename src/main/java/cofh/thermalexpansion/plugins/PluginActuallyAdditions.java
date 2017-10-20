@@ -2,7 +2,9 @@ package cofh.thermalexpansion.plugins;
 
 import cofh.core.util.ModPlugin;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
 import cofh.thermalexpansion.util.managers.machine.RefineryManager;
+import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -42,6 +44,13 @@ public class PluginActuallyAdditions extends ModPlugin {
 		try {
 			Fluid canola_oil = FluidRegistry.getFluid("canolaoil");
 			Fluid refined_canola_oil = FluidRegistry.getFluid("refinedcanolaoil");
+
+			/* CRUCIBLE */
+			{
+				int energy = CrucibleManager.DEFAULT_ENERGY;
+
+				CrucibleManager.addRecipe(energy / 4, getItemStack("item_solidified_experience"), new FluidStack(TFFluids.fluidExperience, 160));
+			}
 
 			/* REFINERY */
 			{

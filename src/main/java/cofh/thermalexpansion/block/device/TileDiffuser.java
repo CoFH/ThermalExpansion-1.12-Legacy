@@ -41,7 +41,6 @@ import java.util.List;
 public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 	private static final int TYPE = Type.DIFFUSER.getMetadata();
-	public static int fluidAmount = 50;
 
 	public static void initialize() {
 
@@ -66,16 +65,22 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 		String category = "Device.Diffuser";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		category = "Device.Diffuser";
+		enableParticles = ThermalExpansion.CONFIG_CLIENT.get(category, "EnableParticles", true);
 	}
 
 	private static final int TIME_CONSTANT = 60;
 	private static final int BOOST_TIME = 15;
+	private static final int FLUID_AMOUNT = 50;
 	private static final int RADIUS_POTION = 3;
 	private static final int RADIUS_SPLASH = 4;
 	private static final int RADIUS_LINGERING = 5;
 
 	private static final int MAX_AMPLIFIER = 4;
 	private static final int MAX_DURATION = 7200;
+
+	public static boolean enableParticles = true;
 
 	private int inputTracker;
 
@@ -112,7 +117,9 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	public void update() {
 
 		if (ServerHelper.isClientWorld(world)) {
-
+			if (!enableParticles) {
+				return;
+			}
 			if (!timeCheckOffset()) {
 				return;
 			}
@@ -180,7 +187,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 	protected void diffuse() {
 
-		if (tank.getFluidAmount() < fluidAmount) {
+		if (tank.getFluidAmount() < FLUID_AMOUNT) {
 			if (renderFluid != null) {
 				renderFluid = null;
 				sendFluidPacket();
@@ -213,7 +220,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 		AxisAlignedBB area = new AxisAlignedBB(pos.add(-radius, 1 - radius, -radius), pos.add(1 + radius, radius, 1 + radius));
 		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, area);
-		tank.drain(fluidAmount, true);
+		tank.drain(FLUID_AMOUNT, true);
 
 		if (entities.isEmpty()) {
 			return;

@@ -10,6 +10,7 @@ import cofh.thermalexpansion.gui.client.machine.GuiSmelter;
 import cofh.thermalexpansion.gui.container.machine.ContainerSmelter;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TESounds;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager.SmelterRecipe;
 import cofh.thermalfoundation.init.TFFluids;
@@ -36,8 +37,8 @@ public class TileSmelter extends TileMachineBase {
 
 	private static final int TYPE = Type.SMELTER.getMetadata();
 	public static int basePower = 20;
-	public static int fluidAmount = 100;
 
+	public static final int FLUID_AMOUNT = 100;
 	public static final int PYROTHEUM_ENERGY_MOD = 50;
 
 	public static void initialize() {
@@ -118,7 +119,7 @@ public class TileSmelter extends TileMachineBase {
 		if (inventory[0].isEmpty() || inventory[1].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		SmelterRecipe recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
+		SmelterRecipe recipe = SmelterManager.getRecipe(inventory[1], inventory[0]);
 
 		if (recipe == null) {
 			return false;
@@ -132,7 +133,7 @@ public class TileSmelter extends TileMachineBase {
 				return false;
 			}
 		}
-		if (augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() < fluidAmount) {
+		if (augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() < FLUID_AMOUNT) {
 			return false;
 		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
@@ -152,12 +153,12 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		SmelterRecipe recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
+		SmelterRecipe recipe = SmelterManager.getRecipe(inventory[1], inventory[0]);
 
 		if (recipe == null) {
 			return false;
 		}
-		if (augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() < fluidAmount) {
+		if (augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() < FLUID_AMOUNT) {
 			return false;
 		}
 		if (SmelterManager.isRecipeReversed(inventory[0], inventory[1])) {
@@ -175,14 +176,14 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	protected void processStart() {
 
-		processMax = SmelterManager.getRecipe(inventory[0], inventory[1]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = SmelterManager.getRecipe(inventory[1], inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		SmelterRecipe recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
+		SmelterRecipe recipe = SmelterManager.getRecipe(inventory[1], inventory[0]);
 
 		if (recipe == null) {
 			processOff();
@@ -196,12 +197,12 @@ public class TileSmelter extends TileMachineBase {
 		} else {
 			inventory[2].grow(primaryItem.getCount());
 		}
-		boolean augmentPyrotheumCheck = augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() >= fluidAmount;
+		boolean augmentPyrotheumCheck = augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() >= FLUID_AMOUNT;
 
 		if (augmentPyrotheumCheck) {
 			if (inventory[2].getCount() < inventory[2].getMaxStackSize()) {
 				inventory[2].grow(1);
-				tank.modifyFluidStored(-fluidAmount);
+				tank.modifyFluidStored(-FLUID_AMOUNT);
 			}
 		}
 		if (!secondaryItem.isEmpty()) {
@@ -227,38 +228,36 @@ public class TileSmelter extends TileMachineBase {
 				}
 			}
 		}
-		boolean isReversed = SmelterManager.isRecipeReversed(inventory[0], inventory[1]);
-		int count1 = recipe.getPrimaryInput().getCount();
-		int count2 = recipe.getSecondaryInput().getCount();
+		if (recipe.hasFlux()) { // Flux is *always* secondary input, if present.
+			int countInput = recipe.getPrimaryInput().getCount();
+			int countFlux = recipe.getSecondaryInput().getCount();
 
-		if (reuseChance > 0) {
-			if (isReversed) {
-				if (SmelterManager.isItemFlux(inventory[1])) {
+			if (reuseChance > 0) {
+				if (SmelterManager.isItemFlux(inventory[0])) {
 					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
-						inventory[1].shrink(count1);
+						inventory[0].shrink(countFlux);
 					}
-					inventory[0].shrink(count2);
-				} else if (SmelterManager.isItemFlux(inventory[0])) {
+					inventory[1].shrink(countInput);
+				} else {
 					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
-						inventory[0].shrink(count1);
+						inventory[1].shrink(countFlux);
 					}
-					inventory[1].shrink(count2);
+					inventory[0].shrink(countInput);
 				}
 			} else {
 				if (SmelterManager.isItemFlux(inventory[0])) {
-					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
-						inventory[0].shrink(count1);
-					}
-					inventory[1].shrink(count2);
-				} else if (SmelterManager.isItemFlux(inventory[1])) {
-					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
-						inventory[1].shrink(count1);
-					}
-					inventory[0].shrink(count2);
+					inventory[0].shrink(countFlux);
+					inventory[1].shrink(countInput);
+				} else {
+					inventory[1].shrink(countFlux);
+					inventory[0].shrink(countInput);
 				}
 			}
 		} else {
-			if (isReversed) {
+			int count1 = recipe.getPrimaryInput().getCount();
+			int count2 = recipe.getSecondaryInput().getCount();
+
+			if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
 				inventory[1].shrink(count1);
 				inventory[0].shrink(count2);
 			} else {
@@ -385,7 +384,7 @@ public class TileSmelter extends TileMachineBase {
 
 	public boolean fluidArrow() {
 
-		return augmentPyrotheum && tank.getFluidAmount() >= fluidAmount && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1]));
+		return augmentPyrotheum && tank.getFluidAmount() >= FLUID_AMOUNT && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1]));
 	}
 
 	public void setMode(boolean mode) {

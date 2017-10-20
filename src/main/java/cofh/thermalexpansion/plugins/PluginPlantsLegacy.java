@@ -73,7 +73,6 @@ public class PluginPlantsLegacy extends ModPlugin {
 					InsolatorManager.addDefaultRecipe(getItemStack(cosmeticPlant, 1, i), getItemStack(cosmeticPlant, 3, i), ItemStack.EMPTY, 0);
 				}
 			}
-
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
 			error = true;

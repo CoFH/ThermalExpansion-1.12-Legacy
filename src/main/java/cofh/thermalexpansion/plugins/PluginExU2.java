@@ -100,7 +100,6 @@ public class PluginExU2 extends ModPlugin {
 					CompactorManager.addDefaultStorageRecipe(netherrack[i], netherrack[i + 1]);
 				}
 			}
-
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
 			error = true;

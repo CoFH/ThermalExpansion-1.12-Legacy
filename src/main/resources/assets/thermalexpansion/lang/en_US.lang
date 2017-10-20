@@ -144,7 +144,12 @@ info.thermalexpansion.augment.machineInsolatorFertilizer.0=Phytogenic Insolator:
 info.thermalexpansion.augment.machineInsolatorFertilizer.a.0=Provides a chance to not consume Fertilizer.
 info.thermalexpansion.augment.machineInsolatorFertilizer.b.0=Additional energy is required per operation.
 
-info.thermalexpansion.augment.machineInsolatorTree.0=Phytogenic Insolator: Specialization
+info.thermalexpansion.augment.machineInsolatorMonoculture.0=Phytogenic Insolator: Specialization
+info.thermalexpansion.augment.machineInsolatorMonoculture.a.0=Non-fertilizer inputs are not consumed, improving yield and automation.
+info.thermalexpansion.augment.machineInsolatorMonoculture.b.0=Additional energy is required per operation.
+info.thermalexpansion.augment.machineInsolatorMonoculture.b.1=Secondary output chance is substantially reduced.
+
+info.thermalexpansion.augment.machineInsolatorTree.0=Phytogenic Insolator: Functionality
 info.thermalexpansion.augment.machineInsolatorTree.a.0=Allows for trees to be grown.
 
 info.thermalexpansion.augment.machinePower.0=Machines: Processing Speed
@@ -308,7 +313,7 @@ item.thermalexpansion.augment.machineExtruderDiorite.name=Dioritic Subduction
 item.thermalexpansion.augment.machineExtruderGranite.name=Granitic Subduction
 item.thermalexpansion.augment.machineExtruderNoWater.name=Pyroclastic Injection
 item.thermalexpansion.augment.machineInsolatorFertilizer.name=Nutrient Recovery
-item.thermalexpansion.augment.machineInsolatorRecycle.name=Monoculture
+item.thermalexpansion.augment.machineInsolatorMonoculture.name=Monoculture Cycle
 item.thermalexpansion.augment.machineInsolatorTree.name=Sapling Infuser
 item.thermalexpansion.augment.machinePower.name=Auxiliary Reception Coil
 item.thermalexpansion.augment.machinePrecipitatorPackedIce.name=Permafrost Compressor

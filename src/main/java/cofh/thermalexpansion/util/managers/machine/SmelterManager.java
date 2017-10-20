@@ -601,15 +601,22 @@ public class SmelterManager {
 		final ItemStack secondaryOutput;
 		final int secondaryChance;
 		final int energy;
+		final boolean hasFlux;
 
 		SmelterRecipe(ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy) {
 
-			this.primaryInput = primaryInput;
-			this.secondaryInput = secondaryInput;
+			if (isItemFlux(primaryInput) && !isItemFlux(secondaryInput)) {
+				this.primaryInput = secondaryInput;
+				this.secondaryInput = primaryInput;
+			} else {
+				this.primaryInput = primaryInput;
+				this.secondaryInput = secondaryInput;
+			}
 			this.primaryOutput = primaryOutput;
 			this.secondaryOutput = secondaryOutput;
 			this.secondaryChance = secondaryChance;
 			this.energy = energy;
+			this.hasFlux = isItemFlux(secondaryInput) || isItemFlux(primaryInput);
 		}
 
 		public ItemStack getPrimaryInput() {
@@ -640,6 +647,11 @@ public class SmelterManager {
 		public int getEnergy() {
 
 			return energy;
+		}
+
+		public boolean hasFlux() {
+
+			return hasFlux;
 		}
 	}
 

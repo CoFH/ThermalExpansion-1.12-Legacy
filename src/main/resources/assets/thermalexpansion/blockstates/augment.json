@@ -69,14 +69,14 @@
 					"layer0": "thermalexpansion:items/augment/machine_insolator_fertilizer"
 				}
 			},
-			"machineinsolatorrecycle": {
-				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
-				}
-			},
 			"machineinsolatortree": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/machine_insolator_tree"
+				}
+			},
+			"machineinsolatormonoculture": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
 				}
 			},
 			"machinecompactormint": {

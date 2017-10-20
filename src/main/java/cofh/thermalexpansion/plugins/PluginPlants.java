@@ -207,7 +207,6 @@ public class PluginPlants extends ModPlugin {
 			{
 
 			}
-
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
 			error = true;

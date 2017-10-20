@@ -40,8 +40,8 @@ public class TileSawmill extends TileMachineBase {
 
 	private static final int TYPE = Type.SAWMILL.getMetadata();
 	public static int basePower = 20;
-	public static int fluidFactor = 5;
 
+	public static final int FLUID_FACTOR = 5;
 	public static final int TAPPER_ENERGY_MOD = 50;
 
 	public static void initialize() {
@@ -204,7 +204,7 @@ public class TileSawmill extends TileMachineBase {
 		}
 		if (augmentTapper && TapperManager.mappingExists(inventory[0])) {
 			FluidStack treeFluid = TapperManager.getFluid(inventory[0]).copy();
-			treeFluid.amount /= fluidFactor;
+			treeFluid.amount /= FLUID_FACTOR;
 			tank.fill(treeFluid, true);
 		}
 		inventory[0].shrink(recipe.getInput().getCount());

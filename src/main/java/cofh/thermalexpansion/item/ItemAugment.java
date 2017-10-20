@@ -194,8 +194,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		machineSmelterPyrotheum = addAugmentItem(304, TEProps.MACHINE_SMELTER_PYROTHEUM, AugmentType.MODE);
 
 		machineInsolatorFertilizer = addAugmentItem(320, TEProps.MACHINE_INSOLATOR_FERTILIZER);
-		machineInsolatorRecycle = addAugmentItem(321, TEProps.MACHINE_INSOLATOR_RECYCLE, AugmentType.ADVANCED);
-		machineInsolatorTree = addAugmentItem(323, TEProps.MACHINE_INSOLATOR_TREE, AugmentType.MODE);
+		machineInsolatorTree = addAugmentItem(323, TEProps.MACHINE_INSOLATOR_TREE, AugmentType.ADVANCED);
+		machineInsolatorMonoculture = addAugmentItem(324, TEProps.MACHINE_INSOLATOR_MONOCULTURE, AugmentType.MODE);
 
 		machineCompactorMint = addAugmentItem(336, TEProps.MACHINE_COMPACTOR_MINT, AugmentType.MODE);
 
@@ -372,12 +372,22 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "blockGlassHardened",
 				'Y', ItemFertilizer.fertilizerRich
 		);
+		addShapedRecipe(machineInsolatorMonoculture,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearSignalum",
+				'I', "plateNickel",
+				'X', Blocks.HOPPER,
+				'Y', ItemFertilizer.fertilizerFlux
+		);
 		addShapedRecipe(machineInsolatorTree,
 				" G ",
 				"ICI",
 				"YXY",
 				'C', ItemMaterial.redstoneServo,
-				'G', "gearSignalum",
+				'G', "gearInvar",
 				'I', "plateLumium",
 				'X', Blocks.PISTON,
 				'Y', "dustAerotheum"
@@ -729,7 +739,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineSmelterPyrotheum;
 	public static ItemStack machineSmelterFlux;
 
-	public static ItemStack machineInsolatorRecycle;
+	public static ItemStack machineInsolatorMonoculture;
 	public static ItemStack machineInsolatorFertilizer;
 	public static ItemStack machineInsolatorTree;
 

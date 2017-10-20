@@ -35,8 +35,8 @@ public class TilePulverizer extends TileMachineBase {
 
 	private static final int TYPE = Type.PULVERIZER.getMetadata();
 	public static int basePower = 20;
-	public static int fluidAmount = 100;
 
+	public static final int FLUID_AMOUNT = 100;
 	public static final int GEODE_ENERGY_MOD = 25;
 	public static final int PETROTHEUM_ENERGY_MOD = 50;
 
@@ -118,7 +118,7 @@ public class TilePulverizer extends TileMachineBase {
 		if (inventory[0].getCount() < recipe.getInput().getCount()) {
 			return false;
 		}
-		if (augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() < fluidAmount) {
+		if (augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() < FLUID_AMOUNT) {
 			return false;
 		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
@@ -140,7 +140,7 @@ public class TilePulverizer extends TileMachineBase {
 
 		PulverizerRecipe recipe = PulverizerManager.getRecipe(inventory[0]);
 
-		if (augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() < fluidAmount) {
+		if (augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() < FLUID_AMOUNT) {
 			return false;
 		}
 		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
@@ -170,12 +170,12 @@ public class TilePulverizer extends TileMachineBase {
 		} else {
 			inventory[1].grow(primaryItem.getCount());
 		}
-		boolean augmentPetrotheumCheck = augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() >= fluidAmount;
+		boolean augmentPetrotheumCheck = augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() >= FLUID_AMOUNT;
 
 		if (augmentPetrotheumCheck) {
 			if (inventory[1].getCount() < inventory[1].getMaxStackSize()) {
 				inventory[1].grow(1);
-				tank.modifyFluidStored(-fluidAmount);
+				tank.modifyFluidStored(-FLUID_AMOUNT);
 			}
 		}
 		if (!secondaryItem.isEmpty()) {
@@ -290,7 +290,7 @@ public class TilePulverizer extends TileMachineBase {
 
 	public boolean fluidArrow() {
 
-		return augmentPetrotheum && tank.getFluidAmount() >= fluidAmount && (ItemHelper.isOre(inventory[0]));
+		return augmentPetrotheum && tank.getFluidAmount() >= FLUID_AMOUNT && (ItemHelper.isOre(inventory[0]));
 	}
 
 	/* NBT METHODS */
