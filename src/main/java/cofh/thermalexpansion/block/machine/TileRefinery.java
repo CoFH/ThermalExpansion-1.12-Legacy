@@ -143,11 +143,13 @@ public class TileRefinery extends TileMachineBase {
 		ItemStack outputItem = recipe.getOutputItem();
 
 		if (!outputItem.isEmpty() && !inventory[0].isEmpty()) {
-			if (!augmentSecondaryNull && !inventory[0].isItemEqual(outputItem)) {
-				return false;
-			}
-			if (!augmentSecondaryNull && inventory[0].getCount() + outputItem.getCount() > outputItem.getMaxStackSize()) {
-				return false;
+			if (!augmentSecondaryNull) {
+				if (!inventory[0].isItemEqual(outputItem)) {
+					return false;
+				}
+				if (inventory[0].getCount() + outputItem.getCount() > outputItem.getMaxStackSize()) {
+					return false;
+				}
 			}
 		}
 		return outputTank.fill(outputFluid, false) == outputFluid.amount;

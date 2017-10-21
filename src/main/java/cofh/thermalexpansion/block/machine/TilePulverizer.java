@@ -38,7 +38,8 @@ public class TilePulverizer extends TileMachineBase {
 
 	public static final int FLUID_AMOUNT = 100;
 	public static final int GEODE_ENERGY_MOD = 25;
-	public static final int PETROTHEUM_ENERGY_MOD = 50;
+	public static final int PETROTHEUM_ENERGY_MOD = 50;     // This is a penalty.
+	public static final int PETROTHEUM_SECONDARY_MOD = 25;  // This is a bonus, it's subtracted.
 
 	public static void initialize() {
 
@@ -76,6 +77,12 @@ public class TilePulverizer extends TileMachineBase {
 
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
+	}
+
+	public static int getPetrotheumOutputAmount(ItemStack stack) {
+
+		int amount = stack.getCount();
+		return amount + Math.max(1, amount * 50 / 100);
 	}
 
 	private int inputTracker;
@@ -118,21 +125,25 @@ public class TilePulverizer extends TileMachineBase {
 		if (inventory[0].getCount() < recipe.getInput().getCount()) {
 			return false;
 		}
-		if (augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() < FLUID_AMOUNT) {
+		boolean augmentPetrotheumCheck = augmentPetrotheum && ItemHelper.isOre(inventory[0]);
+
+		if (augmentPetrotheumCheck && tank.getFluidAmount() < FLUID_AMOUNT) {
 			return false;
 		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
 		if (!secondaryItem.isEmpty() && !inventory[2].isEmpty()) {
-			if (!augmentSecondaryNull && !inventory[2].isItemEqual(secondaryItem)) {
-				return false;
-			}
-			if (!augmentSecondaryNull && inventory[2].getCount() + secondaryItem.getCount() > secondaryItem.getMaxStackSize()) {
-				return false;
+			if (!augmentSecondaryNull) {
+				if (!inventory[2].isItemEqual(secondaryItem)) {
+					return false;
+				}
+				if (inventory[2].getCount() + secondaryItem.getCount() > secondaryItem.getMaxStackSize()) {
+					return false;
+				}
 			}
 		}
-		return inventory[1].isEmpty() || inventory[1].isItemEqual(primaryItem) && inventory[1].getCount() + primaryItem.getCount() <= primaryItem.getMaxStackSize();
+		return inventory[1].isEmpty() || inventory[1].isItemEqual(primaryItem) && inventory[1].getCount() + (augmentPetrotheumCheck ? getPetrotheumOutputAmount(primaryItem) : primaryItem.getCount()) <= primaryItem.getMaxStackSize();
 	}
 
 	@Override
@@ -165,21 +176,23 @@ public class TilePulverizer extends TileMachineBase {
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		if (inventory[1].isEmpty()) {
-			inventory[1] = ItemHelper.cloneStack(primaryItem);
-		} else {
-			inventory[1].grow(primaryItem.getCount());
-		}
 		boolean augmentPetrotheumCheck = augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() >= FLUID_AMOUNT;
 
 		if (augmentPetrotheumCheck) {
-			if (inventory[1].getCount() < inventory[1].getMaxStackSize()) {
-				inventory[1].grow(1);
-				tank.modifyFluidStored(-FLUID_AMOUNT);
+			if (inventory[1].isEmpty()) {
+				inventory[1] = ItemHelper.cloneStack(primaryItem, getPetrotheumOutputAmount(primaryItem));
+			} else {
+				inventory[1].grow(getPetrotheumOutputAmount(primaryItem));
+			}
+		} else {
+			if (inventory[1].isEmpty()) {
+				inventory[1] = ItemHelper.cloneStack(primaryItem);
+			} else {
+				inventory[1].grow(primaryItem.getCount());
 			}
 		}
 		if (!secondaryItem.isEmpty()) {
-			int modifiedChance = augmentPetrotheumCheck ? secondaryChance - 25 : secondaryChance;
+			int modifiedChance = augmentPetrotheumCheck ? secondaryChance - PETROTHEUM_SECONDARY_MOD : secondaryChance;
 
 			int recipeChance = recipe.getSecondaryOutputChance();
 			if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {

@@ -8,9 +8,7 @@ import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionType;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -183,16 +181,16 @@ public class RefineryManager {
 			if (inputType == PotionTypes.EMPTY || outputType == PotionTypes.EMPTY) {
 				continue;
 			}
-			FluidStack inputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, inputAmount), inputType);
-			FluidStack outputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, outputAmount), outputType);
+			FluidStack inputPotion = TFFluids.addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, inputAmount), inputType);
+			FluidStack outputPotion = TFFluids.addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, outputAmount), outputType);
 			addRecipePotion(DEFAULT_ENERGY / 2, inputPotion, outputPotion);
 
-			inputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, inputAmount), inputType);
-			outputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, outputAmount), outputType);
+			inputPotion = TFFluids.addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, inputAmount), inputType);
+			outputPotion = TFFluids.addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, outputAmount), outputType);
 			addRecipePotion(DEFAULT_ENERGY / 2, inputPotion, outputPotion);
 
-			inputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, inputAmount), inputType);
-			outputPotion = addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, outputAmount), outputType);
+			inputPotion = TFFluids.addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, inputAmount), inputType);
+			outputPotion = TFFluids.addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, outputAmount), outputType);
 			addRecipePotion(DEFAULT_ENERGY / 2, inputPotion, outputPotion);
 		}
 	}
@@ -215,44 +213,6 @@ public class RefineryManager {
 				ret = PotionType.getPotionTypeForName("cofhcore:" + baseName + rank);
 		}
 		return ret;
-	}
-
-	public static FluidStack getPotion(int amount, PotionType type) {
-
-		if (type == PotionTypes.WATER) {
-			return new FluidStack(FluidRegistry.WATER, amount);
-		}
-		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, amount), type);
-	}
-
-	public static FluidStack getSplashPotion(int amount, PotionType type) {
-
-		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, amount), type);
-	}
-
-	public static FluidStack getLingeringPotion(int amount, PotionType type) {
-
-		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, amount), type);
-	}
-
-	public static FluidStack addPotionToFluidStack(FluidStack stack, PotionType type) {
-
-		ResourceLocation resourcelocation = PotionType.REGISTRY.getNameForObject(type);
-
-		if (type == PotionTypes.EMPTY) {
-			if (stack.tag != null) {
-				stack.tag.removeTag("Potion");
-				if (stack.tag.hasNoTags()) {
-					stack.tag = null;
-				}
-			}
-		} else {
-			if (stack.tag == null) {
-				stack.tag = new NBTTagCompound();
-			}
-			stack.tag.setString("Potion", resourcelocation.toString());
-		}
-		return stack;
 	}
 
 	/* RECIPE CLASS */

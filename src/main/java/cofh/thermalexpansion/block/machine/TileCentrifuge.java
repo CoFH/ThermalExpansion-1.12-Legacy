@@ -125,7 +125,6 @@ public class TileCentrifuge extends TileMachineBase {
 		if (fluid != null && !augmentSecondaryNull && tank.fill(fluid, false) != fluid.amount) {
 			return false;
 		}
-
 		boolean valid = true;
 		for (int i = 0; i < outputs.size(); i++) {
 			ItemStack output = outputs.get(i);

@@ -135,11 +135,13 @@ public class TileSawmill extends TileMachineBase {
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
 		if (!secondaryItem.isEmpty() && !inventory[2].isEmpty()) {
-			if (!augmentSecondaryNull && !inventory[2].isItemEqual(secondaryItem)) {
-				return false;
-			}
-			if (!augmentSecondaryNull && inventory[2].getCount() + secondaryItem.getCount() > secondaryItem.getMaxStackSize()) {
-				return false;
+			if (!augmentSecondaryNull) {
+				if (!inventory[2].isItemEqual(secondaryItem)) {
+					return false;
+				}
+				if (inventory[2].getCount() + secondaryItem.getCount() > secondaryItem.getMaxStackSize()) {
+					return false;
+				}
 			}
 		}
 		return inventory[1].isEmpty() || inventory[1].isItemEqual(primaryItem) && inventory[1].getCount() + primaryItem.getCount() <= primaryItem.getMaxStackSize();

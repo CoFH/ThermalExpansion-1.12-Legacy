@@ -11,7 +11,7 @@ public class ElementSlotOverlayCrafter extends ElementBase {
 	public ElementSlotOverlayCrafter(GuiContainerCore gui, int posX, int posY) {
 
 		super(gui, posX, posY);
-		this.texture = TEProps.textureGuiSlots9;
+		this.texture = TEProps.textureGuiSlotsCrafter;
 	}
 
 	@Override
@@ -41,8 +41,8 @@ public class ElementSlotOverlayCrafter extends ElementBase {
 
 	protected void drawSlotNoBorder(int x, int y) {
 
-		sizeX = 52;
-		sizeY = 52;
+		sizeX = 160;
+		sizeY = 34;
 		int offsetX = 8;
 		int offsetY = 198;
 
@@ -51,8 +51,8 @@ public class ElementSlotOverlayCrafter extends ElementBase {
 
 	protected void drawSlotWithBorder(int x, int y) {
 
-		int sizeX = 56;
-		int sizeY = 56;
+		int sizeX = 164;
+		int sizeY = 38;
 		int offsetX = 6;
 		int offsetY = 196;
 

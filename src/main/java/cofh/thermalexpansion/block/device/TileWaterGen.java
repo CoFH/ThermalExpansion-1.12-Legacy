@@ -46,7 +46,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		SIDE_CONFIGS[TYPE].numConfig = 2;
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {} };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 4 };
-		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 0, 0, 0, 0 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};

@@ -1,5 +1,8 @@
 package cofh.thermalexpansion.gui.container.machine;
 
+import cofh.core.gui.slot.SlotEnergy;
+import cofh.core.gui.slot.SlotFalseCopy;
+import cofh.core.gui.slot.SlotRemoveOnly;
 import cofh.thermalexpansion.block.machine.TileCrafter;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -15,28 +18,31 @@ public class ContainerCrafter extends ContainerTEBase {
 	protected InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
 	protected IInventory craftResult = new InventoryCraftResult();
 
-	private Slot craftSlots[] = new Slot[9];
-	private Slot resultSlot;
-
 	public ContainerCrafter(InventoryPlayer inventory, TileEntity tile) {
 
 		super(inventory, tile);
-		//
-		//		myTile = (TileCrafter) tile;
-		//		for (int i = 0; i < 2; i++) {
-		//			for (int j = 0; j < 9; j++) {
-		//				addSlotToContainer(new Slot(myTile, 3 + j + i * 9, 8 + j * 18, 74 + i * 18));
-		//			}
-		//		}
-		//		addSlotToContainer(new SlotSpecificItem(myTile, 0, 56, 34, ItemDiagram.schematic).setSlotStackLimit(1));
-		//		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 116, 35));
-		//		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
-		//
-		//		/* Crafting Grid */
-		//		for (int i = 0; i < 9; i++) {
-		//			craftSlots[i] = addSlotToContainer(new SlotFalseCopy(craftMatrix, i, 0, 0));
-		//		}
-		//		resultSlot = addSlotToContainer(new SlotCraftingLocked(inventory.player, craftMatrix, craftResult, 0, 0, 0));
+
+		myTile = (TileCrafter) tile;
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 9; j++) {
+				addSlotToContainer(new Slot(myTile, j + i * 9, 8 + j * 18, 77 + i * 18));
+			}
+		}
+		addSlotToContainer(new SlotRemoveOnly(myTile, TileCrafter.SLOT_OUTPUT, 125, 35));
+		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
+
+		/* Crafting Grid */
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				addSlotToContainer(new SlotFalseCopy(myTile, TileCrafter.SLOT_CRAFTING_START + j + i * 3, 35 + j * 18, 17 + i * 18));
+			}
+		}
+	}
+
+	@Override
+	protected int getPlayerInventoryVerticalOffset() {
+
+		return 126;
 	}
 
 }

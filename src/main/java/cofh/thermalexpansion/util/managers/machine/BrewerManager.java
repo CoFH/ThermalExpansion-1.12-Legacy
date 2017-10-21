@@ -13,10 +13,7 @@ import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.*;
@@ -155,6 +152,11 @@ public class BrewerManager {
 
 	public static void loadRecipes() {
 
+		//		for (PotionType type : PotionType.REGISTRY) {
+		//			System.out.println(type.getRegistryName());
+		//			System.out.println(type.getNamePrefixed(""));
+		//			System.out.println(type.getEffects());
+		//		}
 	}
 
 	public static void refresh() {
@@ -198,53 +200,15 @@ public class BrewerManager {
 	/* HELPERS */
 	public static void addDefaultPotionRecipes(PotionType input, ItemStack reagent, PotionType output) {
 
-		addRecipe(DEFAULT_ENERGY, reagent, getPotion(DEFAULT_AMOUNT, input), getPotion(DEFAULT_AMOUNT, output));
-		addRecipe(DEFAULT_ENERGY, reagent, getSplashPotion(DEFAULT_AMOUNT, input), getSplashPotion(DEFAULT_AMOUNT, output));
-		addRecipe(DEFAULT_ENERGY, reagent, getLingeringPotion(DEFAULT_AMOUNT, input), getLingeringPotion(DEFAULT_AMOUNT, output));
+		addRecipe(DEFAULT_ENERGY, reagent, TFFluids.getPotion(DEFAULT_AMOUNT, input), TFFluids.getPotion(DEFAULT_AMOUNT, output));
+		addRecipe(DEFAULT_ENERGY, reagent, TFFluids.getSplashPotion(DEFAULT_AMOUNT, input), TFFluids.getSplashPotion(DEFAULT_AMOUNT, output));
+		addRecipe(DEFAULT_ENERGY, reagent, TFFluids.getLingeringPotion(DEFAULT_AMOUNT, input), TFFluids.getLingeringPotion(DEFAULT_AMOUNT, output));
 
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.GUNPOWDER), getPotion(DEFAULT_AMOUNT, input), getSplashPotion(DEFAULT_AMOUNT, input));
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.DRAGON_BREATH), getSplashPotion(DEFAULT_AMOUNT, input), getLingeringPotion(DEFAULT_AMOUNT, input));
+		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.GUNPOWDER), TFFluids.getPotion(DEFAULT_AMOUNT, input), TFFluids.getSplashPotion(DEFAULT_AMOUNT, input));
+		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.DRAGON_BREATH), TFFluids.getSplashPotion(DEFAULT_AMOUNT, input), TFFluids.getLingeringPotion(DEFAULT_AMOUNT, input));
 
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.GUNPOWDER), getPotion(DEFAULT_AMOUNT, output), getSplashPotion(DEFAULT_AMOUNT, output));
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.DRAGON_BREATH), getSplashPotion(DEFAULT_AMOUNT, output), getLingeringPotion(DEFAULT_AMOUNT, output));
-	}
-
-	public static FluidStack getPotion(int amount, PotionType type) {
-
-		if (type == PotionTypes.WATER) {
-			return new FluidStack(FluidRegistry.WATER, amount);
-		}
-		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, amount), type);
-	}
-
-	public static FluidStack getSplashPotion(int amount, PotionType type) {
-
-		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, amount), type);
-	}
-
-	public static FluidStack getLingeringPotion(int amount, PotionType type) {
-
-		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, amount), type);
-	}
-
-	public static FluidStack addPotionToFluidStack(FluidStack stack, PotionType type) {
-
-		ResourceLocation resourcelocation = PotionType.REGISTRY.getNameForObject(type);
-
-		if (type == PotionTypes.EMPTY) {
-			if (stack.tag != null) {
-				stack.tag.removeTag("Potion");
-				if (stack.tag.hasNoTags()) {
-					stack.tag = null;
-				}
-			}
-		} else {
-			if (stack.tag == null) {
-				stack.tag = new NBTTagCompound();
-			}
-			stack.tag.setString("Potion", resourcelocation.toString());
-		}
-		return stack;
+		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.GUNPOWDER), TFFluids.getPotion(DEFAULT_AMOUNT, output), TFFluids.getSplashPotion(DEFAULT_AMOUNT, output));
+		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.DRAGON_BREATH), TFFluids.getSplashPotion(DEFAULT_AMOUNT, output), TFFluids.getLingeringPotion(DEFAULT_AMOUNT, output));
 	}
 
 	/* RECIPE CLASS */

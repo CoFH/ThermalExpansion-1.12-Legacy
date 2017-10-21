@@ -37,6 +37,7 @@ public class GuiCrafter extends GuiPoweredBase {
 		generateInfo("tab.thermalexpansion.machine.crafter");
 
 		myTile = (TileCrafter) tile;
+		ySize = 208;
 	}
 
 	@Override
@@ -44,16 +45,16 @@ public class GuiCrafter extends GuiPoweredBase {
 
 		super.initGui();
 
-		slotInput = (ElementSlotOverlayCrafter) addElement(new ElementSlotOverlayCrafter(this, 35, 17));
-		slotOutput = addElement(new ElementSlotOverlay(this, 121, 22).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
+		slotInput = (ElementSlotOverlayCrafter) addElement(new ElementSlotOverlayCrafter(this, 8, 77));
+		slotOutput = addElement(new ElementSlotOverlay(this, 121, 31).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
 
-		slotTank = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.BLUE, SlotType.TANK, SlotRender.FULL));
+		//slotTank = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.BLUE, SlotType.TANK, SlotRender.FULL));
 
 		if (!myTile.smallStorage()) {
 			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		}
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setGauge(1).setAlwaysShow(true));
-		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 92, 27).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
+		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 92, 35).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class GuiCrafter extends GuiPoweredBase {
 		slotInput.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
 		slotOutput.setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
-		slotTank.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
+		//slotTank.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
 
 		progress.setQuantity(baseTile.getScaledProgress(PROGRESS));
 	}

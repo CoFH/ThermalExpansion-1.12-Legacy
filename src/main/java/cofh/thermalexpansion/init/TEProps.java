@@ -164,18 +164,14 @@ public class TEProps {
 	public static final String PATH_GUI_MACHINE = PATH_GUI + "machine/";
 	public static final String PATH_GUI_STORAGE = PATH_GUI + "storage/";
 
-	public static final ResourceLocation PATH_COMMON = new ResourceLocation(PATH_ELEMENTS + "slots.png");
-	public static final ResourceLocation PATH_COMMON_CB = new ResourceLocation(PATH_ELEMENTS + "slots_cb.png");
+	public static final ResourceLocation PATH_SLOTS = new ResourceLocation(PATH_ELEMENTS + "slots.png");
 	public static final ResourceLocation PATH_SLOTS_4 = new ResourceLocation(PATH_ELEMENTS + "slots_4.png");
-	public static final ResourceLocation PATH_CENTRIFUGE_CB = new ResourceLocation(PATH_ELEMENTS + "slots_4_cb.png");
-	public static final ResourceLocation PATH_SLOTS_9 = new ResourceLocation(PATH_ELEMENTS + "slots.png");
-	public static final ResourceLocation PATH_CRAFTER_CB = new ResourceLocation(PATH_ELEMENTS + "slots_cb.png");
 
 	public static final String TEXTURE_DEFAULT = "config_";
 
-	public static ResourceLocation textureGuiCommon = PATH_COMMON;
+	public static ResourceLocation textureGuiCommon = PATH_SLOTS;
 	public static ResourceLocation textureGuiSlots4 = PATH_SLOTS_4;
-	public static ResourceLocation textureGuiSlots9 = PATH_SLOTS_9;
+	public static ResourceLocation textureGuiSlotsCrafter = PATH_SLOTS;
 	public static String textureSelection = TEXTURE_DEFAULT;
 	public static boolean useAlternateStarfieldShader = false;
 

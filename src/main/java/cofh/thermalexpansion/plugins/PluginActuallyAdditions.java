@@ -2,6 +2,7 @@ package cofh.thermalexpansion.plugins;
 
 import cofh.core.util.ModPlugin;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.util.managers.XpCollectorManager;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
 import cofh.thermalexpansion.util.managers.machine.RefineryManager;
 import cofh.thermalfoundation.init.TFFluids;
@@ -49,7 +50,7 @@ public class PluginActuallyAdditions extends ModPlugin {
 			{
 				int energy = CrucibleManager.DEFAULT_ENERGY;
 
-				CrucibleManager.addRecipe(energy / 4, getItemStack("item_solidified_experience"), new FluidStack(TFFluids.fluidExperience, 160));
+				CrucibleManager.addRecipe(energy / 4, getItemStack("item_solidified_experience"), new FluidStack(TFFluids.fluidExperience, 8 * XpCollectorManager.XP_CONVERSION));
 			}
 
 			/* REFINERY */

@@ -23,7 +23,6 @@ public class ContainerLexicon extends ContainerTEBase implements ISlotValidator 
 		addSlotToContainer(new SlotValidated(this, myTile, 0, 26, 35));
 		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 134, 35));
 
-		/* Custom Inventory */
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				addSlotToContainer(new SlotLexicon(myTile, 2 + j + i * 3, 62 + j * 18, 17 + i * 18));

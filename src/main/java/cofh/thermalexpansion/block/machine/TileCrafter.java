@@ -34,20 +34,20 @@ public class TileCrafter extends TileMachineBase {
 
 	public static final int DEFAULT_ENERGY = 400;
 
-	private static final int SLOT_OUTPUT = 9;
-	private static final int SLOT_SCHEMATIC = 10;
+	public static final int SLOT_OUTPUT = 18;
+	public static final int SLOT_CRAFTING_START = 20;
 
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 5;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 9 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 } };
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 }, { 18 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
-		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, false, false, false };
-		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, false, false, false, false, false, false, false, false, true, false, false };
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 
@@ -77,15 +77,21 @@ public class TileCrafter extends TileMachineBase {
 	public TileCrafter() {
 
 		super();
-		inventory = new ItemStack[9 + 1 + 1 + 1];
+		inventory = new ItemStack[18 + 1 + 1 + 9];
 		Arrays.fill(inventory, ItemStack.EMPTY);
-		createAllSlots(inventory.length);
+		createAllSlots(inventory.length - 9);
 	}
 
 	@Override
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	public int getChargeSlot() {
+
+		return inventory.length - 10;
 	}
 
 	@Override
@@ -276,6 +282,9 @@ public class TileCrafter extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
+					if (isActive) {
+						return null;
+					}
 					return tank.drain(resource, doDrain);
 				}
 
@@ -283,6 +292,9 @@ public class TileCrafter extends TileMachineBase {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
+					if (isActive) {
+						return null;
+					}
 					return tank.drain(maxDrain, doDrain);
 				}
 			});

@@ -25,6 +25,7 @@ public class TEPlugins {
 
 		pluginActuallyAdditions = new PluginActuallyAdditions();
 		pluginBiomesOPlenty = new PluginBiomesOPlenty();
+		pluginExtraAlchemy = new PluginExtraAlchemy();
 		pluginExU2 = new PluginExU2();
 		pluginHarvestcraft = new PluginHarvestcraft();
 		pluginIC2 = new PluginIC2();
@@ -49,6 +50,7 @@ public class TEPlugins {
 
 		initList.add(pluginActuallyAdditions);
 		initList.add(pluginBiomesOPlenty);
+		initList.add(pluginExtraAlchemy);
 		initList.add(pluginExU2);
 		initList.add(pluginHarvestcraft);
 		initList.add(pluginIC2);
@@ -88,6 +90,7 @@ public class TEPlugins {
 
 	public static PluginActuallyAdditions pluginActuallyAdditions;
 	public static PluginBiomesOPlenty pluginBiomesOPlenty;
+	public static PluginExtraAlchemy pluginExtraAlchemy;
 	public static PluginExU2 pluginExU2;
 	public static PluginHarvestcraft pluginHarvestcraft;
 	public static PluginIC2 pluginIC2;

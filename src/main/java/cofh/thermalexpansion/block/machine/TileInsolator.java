@@ -139,11 +139,13 @@ public class TileInsolator extends TileMachineBase {
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
 		if (!secondaryItem.isEmpty() && !inventory[3].isEmpty()) {
-			if (!augmentSecondaryNull && !inventory[3].isItemEqual(secondaryItem)) {
-				return false;
-			}
-			if (!augmentSecondaryNull && inventory[3].getCount() + secondaryItem.getCount() > secondaryItem.getMaxStackSize()) {
-				return false;
+			if (!augmentSecondaryNull) {
+				if (!inventory[3].isItemEqual(secondaryItem)) {
+					return false;
+				}
+				if (inventory[3].getCount() + secondaryItem.getCount() > secondaryItem.getMaxStackSize()) {
+					return false;
+				}
 			}
 		}
 		return inventory[2].isEmpty() || inventory[2].isItemEqual(primaryItem) && inventory[2].getCount() + primaryItem.getCount() <= primaryItem.getMaxStackSize();
