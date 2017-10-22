@@ -4,6 +4,7 @@ import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.render.IModelRegister;
@@ -59,12 +60,8 @@ public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelReg
 
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
 		// UnListed
-		builder.add(TEProps.CREATIVE);
-		builder.add(TEProps.LEVEL);
-		builder.add(TEProps.HOLDING);
-		builder.add(TEProps.FACING);
-		builder.add(TEProps.SIDE_CONFIG);
-		builder.add(TEProps.SCALE);
+		builder.add(ModelErrorStateProperty.ERROR_STATE);
+		builder.add(TEProps.TILE_CELL);
 
 		return builder.build();
 	}
@@ -199,13 +196,14 @@ public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelReg
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
 			StringBuilder builder = new StringBuilder(ModelBakery.defaultBlockKeyGenerator.generateKey(state));
-			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
-			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
-			builder.append(",holding=").append(state.getValue(TEProps.HOLDING));
-			builder.append(",facing=").append(state.getValue(TEProps.FACING));
-			builder.append(",scale=").append(state.getValue(TEProps.SCALE));
+			TileCell cell = state.getValue(TEProps.TILE_CELL);
+			builder.append(",creative=").append(cell.isCreative);
+			builder.append(",level=").append(cell.getLevel());
+			builder.append(",holding=").append(cell.enchantHolding);
+			builder.append(",facing=").append(cell.getFacing());
+			builder.append(",scale=").append(cell.getLightValue());
 			builder.append(",side_config{");
-			for (int i : state.getValue(TEProps.SIDE_CONFIG)) {
+			for (int i : cell.sideCache) {
 				builder.append(",").append(i);
 			}
 			builder.append("}");

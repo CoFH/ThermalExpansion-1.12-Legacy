@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.render;
 
+import codechicken.lib.model.bakery.ModelErrorStateProperty;
+import codechicken.lib.model.bakery.ModelErrorStateProperty.ErrorState;
 import codechicken.lib.model.bakery.generation.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
@@ -112,16 +114,13 @@ public class RenderTank implements ILayeredBlockBakery {
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess world, BlockPos pos) {
 
-		TileTank tank = ((TileTank) world.getTileEntity(pos));
+		TileTank tank = (TileTank) world.getTileEntity(pos);
 
 		if (tank == null) {
-			return null;
+			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Null tile. Position: %s", pos));
 		}
-		state = state.withProperty(TEProps.CREATIVE, tank.isCreative);
-		state = state.withProperty(TEProps.LEVEL, tank.getLevel());
-		state = state.withProperty(TEProps.HOLDING, (int) tank.enchantHolding);
-		state = state.withProperty(TEProps.ACTIVE, tank.enableAutoOutput);
-		state = state.withProperty(TEProps.FLUID, tank.getTankFluid());
+		state = state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.OK);
+		state = state.withProperty(TEProps.TILE_TANK, tank);
 
 		return state;
 	}
@@ -157,11 +156,12 @@ public class RenderTank implements ILayeredBlockBakery {
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 
 		if (face == null && state != null) {
-			boolean creative = state.getValue(TEProps.CREATIVE);
-			int level = state.getValue(TEProps.LEVEL);
-			int holding = state.getValue(TEProps.HOLDING);
-			int mode = state.getValue(TEProps.ACTIVE) ? 1 : 0;
-			FluidStack fluidStack = state.getValue(TEProps.FLUID);
+			TileTank tank = state.getValue(TEProps.TILE_TANK);
+			boolean creative = tank.isCreative;
+			int level = tank.getLevel();
+			int holding = tank.enchantHolding;
+			int mode = tank.enableAutoOutput ? 1 : 0;
+			FluidStack fluidStack = tank.getTankFluid();
 
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);

@@ -4,6 +4,7 @@ import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.render.IModelRegister;
@@ -64,11 +65,8 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
 
 		// UnListed
-		builder.add(TEProps.CREATIVE);
-		builder.add(TEProps.LEVEL);
-		builder.add(TEProps.HOLDING);
-		builder.add(TEProps.ACTIVE);
-		builder.add(TEProps.FLUID);
+		builder.add(ModelErrorStateProperty.ERROR_STATE);
+		builder.add(TEProps.TILE_TANK);
 
 		return builder.build();
 	}
@@ -230,15 +228,15 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
 			StringBuilder builder = new StringBuilder(ModelBakery.defaultBlockKeyGenerator.generateKey(state));
-			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
-			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
-			builder.append(",holding=").append(state.getValue(TEProps.HOLDING));
-			builder.append(",output=").append(state.getValue(TEProps.ACTIVE));
-			FluidStack stack = state.getValue(TEProps.FLUID);
+			TileTank tank = state.getValue(TEProps.TILE_TANK);
+			builder.append(",creative=").append(tank.isCreative);
+			builder.append(",level=").append(tank.getLevel());
+			builder.append(",holding=").append(tank.enchantHolding);
+			builder.append(",output=").append(tank.enableAutoOutput);
+			FluidStack stack = tank.getTankFluid();
 
 			if (stack != null) {
-				builder.append(",fluid=").append(stack.getFluid().getName());
-				builder.append(",amount=").append(stack.amount);
+				builder.append(",fluid=").append(stack.hashCode());
 			}
 			return builder.toString();
 		});

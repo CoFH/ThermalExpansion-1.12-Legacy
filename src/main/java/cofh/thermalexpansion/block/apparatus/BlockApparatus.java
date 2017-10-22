@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.apparatus;
 import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IModelRegister;
@@ -59,12 +60,8 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		// Listed
 		builder.add(VARIANT);
 		// UnListed
-		builder.add(TEProps.CREATIVE);
-		builder.add(TEProps.LEVEL);
-		builder.add(TEProps.ACTIVE);
-		builder.add(TEProps.FACING);
-		builder.add(TEProps.SIDE_CONFIG);
-		builder.add(TEProps.TILE);
+		builder.add(ModelErrorStateProperty.ERROR_STATE);
+		builder.add(TEProps.TILE_APPARATUS);
 
 		return builder.build();
 	}

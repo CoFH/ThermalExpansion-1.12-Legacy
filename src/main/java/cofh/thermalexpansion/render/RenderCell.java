@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.render;
 
+import codechicken.lib.model.bakery.ModelErrorStateProperty;
+import codechicken.lib.model.bakery.ModelErrorStateProperty.ErrorState;
 import codechicken.lib.model.bakery.generation.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
@@ -92,14 +94,10 @@ public class RenderCell implements ILayeredBlockBakery {
 		TileCell cell = (TileCell) world.getTileEntity(pos);
 
 		if (cell == null) {
-			return null;
+			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Null tile. Position: %s", pos));
 		}
-		state = state.withProperty(TEProps.CREATIVE, cell.isCreative);
-		state = state.withProperty(TEProps.LEVEL, cell.getLevel());
-		state = state.withProperty(TEProps.HOLDING, (int) cell.enchantHolding);
-		state = state.withProperty(TEProps.SCALE, cell.getLightValue());
-		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[cell.getFacing()]);
-		state = state.withProperty(TEProps.SIDE_CONFIG, cell.sideCache.clone());
+		state = state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.OK);
+		state = state.withProperty(TEProps.TILE_CELL, cell);
 		return state;
 	}
 
@@ -132,13 +130,14 @@ public class RenderCell implements ILayeredBlockBakery {
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 
 		if (face == null && state != null) {
-			boolean creative = state.getValue(TEProps.CREATIVE);
-			int level = state.getValue(TEProps.LEVEL);
-			int scale = state.getValue(TEProps.SCALE);
-			TextureAtlasSprite meter = creative ? TETextures.CELL_METER_C : TETextures.CELL_METER[state.getValue(TEProps.SCALE)];
+			TileCell cell = state.getValue(TEProps.TILE_CELL);
+			boolean creative = cell.isCreative;
+			int level = cell.getLevel();
+			int scale = cell.getLightValue();
+			TextureAtlasSprite meter = creative ? TETextures.CELL_METER_C : TETextures.CELL_METER[scale];
 
-			int facing = state.getValue(TEProps.FACING).ordinal();
-			byte[] sideCache = state.getValue(TEProps.SIDE_CONFIG);
+			int facing = cell.getFacing();
+			byte[] sideCache = cell.sideCache;
 
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);

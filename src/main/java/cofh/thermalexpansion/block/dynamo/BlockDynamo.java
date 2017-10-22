@@ -4,6 +4,7 @@ import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
@@ -93,13 +94,8 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		// Listed
 		builder.add(VARIANT);
 		// UnListed
-		builder.add(TEProps.CREATIVE);
-		builder.add(TEProps.LEVEL);
-		builder.add(TEProps.ACTIVE);
-		builder.add(TEProps.FACING);
-		builder.add(TEProps.COIL);
-		builder.add(TEProps.COIL_ANIM);
-		builder.add(TEProps.BASE_ANIM);
+		builder.add(ModelErrorStateProperty.ERROR_STATE);
+		builder.add(TEProps.TILE_DYNAMO);
 		return builder.build();
 	}
 
@@ -295,13 +291,14 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
 			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
-			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
-			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
-			builder.append(",facing=").append(state.getValue(TEProps.FACING));
-			builder.append(",active=").append(state.getValue(TEProps.ACTIVE));
-			builder.append(",coil=").append(state.getValue(TEProps.COIL));
-			builder.append(",coil_anim=").append(state.getValue(TEProps.COIL_ANIM));
-			builder.append(",base_anim=").append(state.getValue(TEProps.BASE_ANIM));
+			TileDynamoBase dynamo = state.getValue(TEProps.TILE_DYNAMO);
+			builder.append(",creative=").append(dynamo.isCreative);
+			builder.append(",level=").append(dynamo.getLevel());
+			builder.append(",facing=").append(dynamo.getFacing());
+			builder.append(",active=").append(dynamo.isActive);
+			builder.append(",coil=").append(dynamo.getCoil());
+			builder.append(",coil_anim=").append(dynamo.getCoilUnderlayTexture().getIconName());
+			builder.append(",base_anim=").append(dynamo.getBaseUnderlayTexture().getIconName());
 			return builder.toString();
 		});
 

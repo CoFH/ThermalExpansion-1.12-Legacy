@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.render;
 
+import codechicken.lib.model.bakery.ModelErrorStateProperty;
+import codechicken.lib.model.bakery.ModelErrorStateProperty.ErrorState;
 import codechicken.lib.model.bakery.generation.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
@@ -7,7 +9,6 @@ import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
-import cofh.core.render.TextureHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
@@ -19,7 +20,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.property.IExtendedBlockState;
@@ -158,27 +158,21 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		return TETextures.DYNAMO_OVERLAY[level];
 	}
 
-	/* ICustomBlockBakery */
+	/* IBlockBakery */
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess world, BlockPos pos) {
 
 		TileDynamoBase dynamo = (TileDynamoBase) world.getTileEntity(pos);
 
 		if (dynamo == null) {
-			return null;
+			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Null tile. Position: %s", pos));
 		}
-		state = state.withProperty(TEProps.CREATIVE, dynamo.isCreative);
-		state = state.withProperty(TEProps.LEVEL, dynamo.getLevel());
-		state = state.withProperty(TEProps.ACTIVE, dynamo.isActive);
-		state = state.withProperty(TEProps.COIL, dynamo.getCoil());
-
-		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[dynamo.getFacing()]);
-
-		state = state.withProperty(TEProps.COIL_ANIM, new ResourceLocation(dynamo.getCoilUnderlayTexture().getIconName()));
-		state = state.withProperty(TEProps.BASE_ANIM, new ResourceLocation(dynamo.getBaseUnderlayTexture().getIconName()));
+		state = state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.OK);
+		state = state.withProperty(TEProps.TILE_DYNAMO, dynamo);
 		return state;
 	}
 
+	/* IItemBakery */
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
 
@@ -208,15 +202,16 @@ public class RenderDynamo implements ILayeredBlockBakery {
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 
 		if (face == null && state != null) {
-			boolean creative = state.getValue(TEProps.CREATIVE);
-			boolean active = state.getValue(TEProps.ACTIVE);
-			int level = state.getValue(TEProps.LEVEL);
-			int facing = state.getValue(TEProps.FACING).ordinal();
-			int coil = state.getValue(TEProps.COIL);
+			TileDynamoBase dynamo = state.getValue(TEProps.TILE_DYNAMO);
+			boolean creative = dynamo.isCreative;
+			boolean active = dynamo.isActive;
+			int level = dynamo.getLevel();
+			int facing = dynamo.getFacing();
+			int coil = dynamo.getCoil();
 			int type = state.getValue(BlockDynamo.VARIANT).getMetadata();
 
-			TextureAtlasSprite coilUnderlay = TextureHelper.getTexture(state.getValue(TEProps.COIL_ANIM));
-			TextureAtlasSprite baseUnderlay = TextureHelper.getTexture(state.getValue(TEProps.BASE_ANIM));
+			TextureAtlasSprite coilUnderlay = dynamo.getCoilUnderlayTexture();
+			TextureAtlasSprite baseUnderlay = dynamo.getBaseUnderlayTexture();
 
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);
