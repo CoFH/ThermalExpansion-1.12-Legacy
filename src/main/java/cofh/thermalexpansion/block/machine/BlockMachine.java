@@ -539,18 +539,18 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		} else {
 			CentrifugeRecipeCategory.enable = false;
 		}
-		if (enable[Type.CRAFTER.getMetadata()]) {
-			addShapedRecipe(machineCrafter,
-					" X ",
-					"YCY",
-					"IPI",
-					'C', ItemFrame.frameMachine,
-					'I', copperPart,
-					'P', ItemMaterial.powerCoilGold,
-					'X', "workbench",
-					'Y', "gearTin"
-			);
-		}
+//		if (enable[Type.CRAFTER.getMetadata()]) {
+//			addShapedRecipe(machineCrafter,
+//					" X ",
+//					"YCY",
+//					"IPI",
+//					'C', ItemFrame.frameMachine,
+//					'I', copperPart,
+//					'P', ItemMaterial.powerCoilGold,
+//					'X', "workbench",
+//					'Y', "gearTin"
+//			);
+//		}
 		if (enable[Type.BREWER.getMetadata()]) {
 			addShapedRecipe(machineBrewer,
 					" X ",

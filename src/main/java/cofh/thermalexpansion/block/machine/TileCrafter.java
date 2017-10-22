@@ -11,6 +11,7 @@ import cofh.thermalexpansion.gui.container.machine.ContainerCrafter;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -72,6 +73,7 @@ public class TileCrafter extends TileMachineBase {
 	private int outputTracker;
 
 	private InventoryCraftingFalse craftMatrix = new InventoryCraftingFalse(3, 3);
+	private InventoryCraftResult craftResult = new InventoryCraftResult();
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 
 	public TileCrafter() {

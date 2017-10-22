@@ -112,8 +112,6 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		if (!timeCheckOffset()) {
 			return;
 		}
-		transferOutputFluid();
-
 		boolean curActive = isActive;
 
 		if (isActive) {
@@ -135,6 +133,8 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		if (adjacentSources < 0) {
 			updateValidity();
 		}
+		transferOutput();
+
 		updateIfChanged(curActive);
 	}
 
@@ -163,7 +163,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		}
 	}
 
-	protected void transferOutputFluid() {
+	protected void transferOutput() {
 
 		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
 			return;

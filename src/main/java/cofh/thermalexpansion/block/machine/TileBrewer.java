@@ -5,17 +5,14 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
-import cofh.core.util.helpers.RenderHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiBrewer;
 import cofh.thermalexpansion.gui.container.machine.ContainerBrewer;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.managers.machine.BrewerManager;
 import cofh.thermalexpansion.util.managers.machine.BrewerManager.BrewerRecipe;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,6 +50,8 @@ public class TileBrewer extends TileMachineBase {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_BREWER_REAGENT);
+
+		LIGHT_VALUES[TYPE] = 12;
 
 		GameRegistry.registerTileEntity(TileBrewer.class, "thermalexpansion:machine_brewer");
 
@@ -374,23 +373,6 @@ public class TileBrewer extends TileMachineBase {
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
 		return slot != 0 || BrewerManager.isItemValid(stack);
-	}
-
-	/* ISidedTexture */
-	@Override
-	public TextureAtlasSprite getTexture(int side, int pass) {
-
-		if (pass == 0) {
-			if (side == 0) {
-				return TETextures.MACHINE_BOTTOM;
-			} else if (side == 1) {
-				return TETextures.MACHINE_TOP;
-			}
-			return side != facing ? TETextures.MACHINE_SIDE : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.MACHINE_FACE[TYPE];
-		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
-		}
-		return TETextures.MACHINE_SIDE;
 	}
 
 	/* CAPABILITIES */

@@ -145,7 +145,6 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		if (!timeCheckOffset()) {
 			return;
 		}
-		transferOutputFluid();
 		transferInput();
 
 		boolean curActive = isActive;
@@ -184,6 +183,8 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		if (curFluid != genFluid.getFluid()) {
 			sendTilePacket(Side.CLIENT);
 		}
+		transferOutput();
+
 		updateIfChanged(curActive);
 	}
 
@@ -204,7 +205,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		}
 	}
 
-	protected void transferOutputFluid() {
+	protected void transferOutput() {
 
 		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
 			return;

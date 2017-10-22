@@ -123,7 +123,6 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		if (!timeCheckOffset()) {
 			return;
 		}
-		transferOutput();
 		transferInput();
 
 		boolean curActive = isActive;
@@ -158,6 +157,8 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		} else if (targetWater >= TARGET_WATER[0] && redstoneControlOrDisable()) {
 			isActive = true;
 		}
+		transferOutput();
+
 		updateIfChanged(curActive);
 	}
 

@@ -36,6 +36,8 @@ public class TileLexicon extends TileDeviceBase implements ITickable {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, true };
 
+		LIGHT_VALUES[TYPE] = 12;
+
 		GameRegistry.registerTileEntity(TileLexicon.class, "thermalexpansion:device_lexicon");
 
 		config();
@@ -81,12 +83,12 @@ public class TileLexicon extends TileDeviceBase implements ITickable {
 		if (world.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF != 0) {
 			return;
 		}
+		transferInput();
+
 		boolean curActive = isActive;
 
 		if (isActive) {
 			transmute();
-			transferOutput();
-			transferInput();
 
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
@@ -94,6 +96,8 @@ public class TileLexicon extends TileDeviceBase implements ITickable {
 		} else if (redstoneControlOrDisable()) {
 			isActive = true;
 		}
+		transferOutput();
+
 		updateIfChanged(curActive);
 	}
 
