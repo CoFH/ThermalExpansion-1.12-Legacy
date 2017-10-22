@@ -443,10 +443,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		XP_COLLECTOR(8, "xp_collector"),
 		DIFFUSER(9, "diffuser"),
 		CHUNK_LOADER(10, "chunk_loader");
-
-		// OREDICT
-		// CHUNK_LOADER
-
 		// @formatter:on
 
 		private static final Type[] METADATA_LOOKUP = new Type[values().length];

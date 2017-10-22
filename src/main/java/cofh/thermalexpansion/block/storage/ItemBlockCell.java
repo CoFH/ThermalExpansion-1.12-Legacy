@@ -89,12 +89,6 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	}
 
 	@Override
-	public boolean isDamaged(ItemStack stack) {
-
-		return true;
-	}
-
-	@Override
 	public boolean isEnchantable(ItemStack stack) {
 
 		return true;

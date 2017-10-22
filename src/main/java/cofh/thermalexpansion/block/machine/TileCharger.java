@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
@@ -10,14 +11,23 @@ import cofh.thermalexpansion.gui.container.machine.ContainerCharger;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.machine.ChargerManager;
 import cofh.thermalexpansion.util.managers.machine.ChargerManager.ChargerRecipe;
+import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -41,6 +51,7 @@ public class TileCharger extends TileMachineBase {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_CHARGER_THROUGHPUT);
+		// VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_CHARGER_REPAIR);
 
 		LIGHT_VALUES[TYPE] = 7;
 
@@ -70,16 +81,19 @@ public class TileCharger extends TileMachineBase {
 	private IEnergyStorage handler = null;
 	private boolean hasEnergyHandler = false;
 
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+
 	/* AUGMENTS */
 	protected boolean augmentThroughput;
+	protected boolean augmentRepair;
 
 	public TileCharger() {
 
 		super();
 		inventory = new ItemStack[1 + 1 + 1 + 1];
 		Arrays.fill(inventory, ItemStack.EMPTY);
-
 		createAllSlots(inventory.length);
+		tank.setLock(TFFluids.fluidExperience);
 	}
 
 	@Override
@@ -205,12 +219,16 @@ public class TileCharger extends TileMachineBase {
 		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
-		if (hasContainerItem) {
-			updateContainerItem();
-		} else if (hasEnergyHandler) {
-			updateHandler();
+		if (augmentRepair) {
+
 		} else {
-			super.update();
+			if (hasContainerItem) {
+				updateContainerItem();
+			} else if (hasEnergyHandler) {
+				updateHandler();
+			} else {
+				super.update();
+			}
 		}
 	}
 
@@ -431,6 +449,7 @@ public class TileCharger extends TileMachineBase {
 			handler = inventory[1].getCapability(CapabilityEnergy.ENERGY, null);
 			hasEnergyHandler = true;
 		}
+		tank.readFromNBT(nbt);
 	}
 
 	@Override
@@ -440,6 +459,7 @@ public class TileCharger extends TileMachineBase {
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
+		tank.writeToNBT(nbt);
 		return nbt;
 	}
 
@@ -492,6 +512,11 @@ public class TileCharger extends TileMachineBase {
 
 		if (!augmentThroughput && TEProps.MACHINE_CHARGER_THROUGHPUT.equals(id)) {
 			augmentThroughput = true;
+			hasModeAugment = true;
+			return true;
+		}
+		if (!augmentRepair && TEProps.MACHINE_CHARGER_REPAIR.equals(id)) {
+			augmentRepair = true;
 			hasModeAugment = true;
 			return true;
 		}
@@ -600,7 +625,63 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
+		if (augmentRepair) {
+			return slot != 0 || stack.isItemStackDamageable();
+		}
 		return slot != 0 || (EnergyHelper.isEnergyContainerItem(stack) || EnergyHelper.isEnergyHandler(stack) || ChargerManager.recipeExists(stack));
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
+
+		return super.hasCapability(capability, from) || augmentRepair && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+
+		if (augmentRepair && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
+
+					FluidTankInfo info = tank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, false) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return 0;
+					}
+					return tank.fill(resource, doFill);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					if (isActive) {
+						return null;
+					}
+					return tank.drain(resource, doDrain);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					if (isActive) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
+				}
+			});
+		}
+		return super.getCapability(capability, from);
 	}
 
 }

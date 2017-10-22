@@ -109,6 +109,11 @@
 					"layer0": "thermalexpansion:items/augment/machine_charger_throughput"
 				}
 			},
+			"machinechargerrepair": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
 			"machinebrewerreagent": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/machine_brewer_reagent"

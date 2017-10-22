@@ -175,12 +175,6 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	@Override
-	public boolean isDamaged(ItemStack stack) {
-
-		return true;
-	}
-
-	@Override
 	public boolean isFull3D() {
 
 		return true;

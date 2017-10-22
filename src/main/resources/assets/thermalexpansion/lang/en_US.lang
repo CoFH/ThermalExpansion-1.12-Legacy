@@ -90,6 +90,11 @@ info.thermalexpansion.augment.machineBrewerReagent.0=Alchemical Imbuer: Efficien
 info.thermalexpansion.augment.machineBrewerReagent.a.0=Provides a chance to not consume Reagent.
 info.thermalexpansion.augment.machineBrewerReagent.b.0=Additional energy is required per operation.
 
+info.thermalexpansion.augment.machineChargerRepair.0=Energetic Infuser: Specialization
+info.thermalexpansion.augment.machineChargerRepair.a.0=Allows for damaged items to be repaired.
+info.thermalexpansion.augment.machineChargerRepair.b.0=Will no longer recharge items.
+info.thermalexpansion.augment.machineChargerRepair.c.0=Essence of Knowledge must be supplied.
+
 info.thermalexpansion.augment.machineChargerThroughput.0=Energetic Infuser: Specialization
 info.thermalexpansion.augment.machineChargerThroughput.a.0=Allows for rechargeable items to be charged very rapidly.
 info.thermalexpansion.augment.machineChargerThroughput.c.0=Will not exceed charge rate of the item itself.
@@ -301,6 +306,7 @@ item.thermalexpansion.augment.dynamoSteamTurbine.name=Turbine Conversion
 item.thermalexpansion.augment.dynamoThrottle.name=Excitation Field Limiter
 
 item.thermalexpansion.augment.machineBrewerReagent.name=Reagent Recovery
+item.thermalexpansion.augment.machineChargerRepair.name=Flux Reconstruction
 item.thermalexpansion.augment.machineChargerThroughput.name=Flux Linkage Concentrator
 item.thermalexpansion.augment.machineCompactorMint.name=Numismatic Press
 item.thermalexpansion.augment.machineCrucibleLava.name=Pyroconvective Loop
@@ -506,6 +512,7 @@ tile.thermalexpansion.dynamo.magmatic.name=Magmatic Dynamo
 tile.thermalexpansion.dynamo.numismatic.name=Numismatic Dynamo
 tile.thermalexpansion.dynamo.reactant.name=Reactant Dynamo
 tile.thermalexpansion.dynamo.steam.name=Steam Dynamo
+tile.thermalexpansion.dynamo=Dynamo
 
 tile.thermalexpansion.machine.brewer.name=Alchemical Imbuer
 tile.thermalexpansion.machine.centrifuge.name=Centrifugal Separator
