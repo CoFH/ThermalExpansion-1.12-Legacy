@@ -325,6 +325,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
+		nbt.setInteger("TrackIn", inputTracker);
 		tank.writeToNBT(nbt);
 
 		nbt.setInteger("BoostAmp", boostAmp);

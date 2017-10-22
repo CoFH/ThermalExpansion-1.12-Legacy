@@ -76,7 +76,7 @@
 			},
 			"machineinsolatormonoculture": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_insolator_monoculture"
 				}
 			},
 			"machinecompactormint": {

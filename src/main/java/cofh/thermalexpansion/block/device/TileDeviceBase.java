@@ -37,6 +37,13 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 		return "tile.thermalexpansion.device." + Type.byMetadata(getType()).getName() + ".name";
 	}
 
+	@Override
+	public int getLightValue() {
+
+		return isActive ? LIGHT_VALUES[getType()] : 0;
+	}
+
+	@Override
 	public boolean isAugmentable() {
 
 		return false;

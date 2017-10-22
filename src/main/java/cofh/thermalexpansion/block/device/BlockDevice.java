@@ -413,6 +413,18 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 //					'Y', "ingotGold"
 //			);
 //		}
+		if (enable[Type.DIFFUSER.getMetadata()]) {
+			addShapedRecipe(deviceLexicon,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameDevice,
+					'I', tinPart,
+					'P', ItemMaterial.redstoneServo,
+					'X', Blocks.DISPENSER,
+					'Y', "ingotSilver"
+			);
+		}
 		// @formatter:on
 	}
 
@@ -429,7 +441,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		FLUID_BUFFER(6, "fluid_buffer"),
 		LEXICON(7, "lexicon"),
 		XP_COLLECTOR(8, "xp_collector"),
-		DIFFUSER(9, "diffuser");
+		DIFFUSER(9, "diffuser"),
+		CHUNK_LOADER(10, "chunk_loader");
 
 		// OREDICT
 		// CHUNK_LOADER
