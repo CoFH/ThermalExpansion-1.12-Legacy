@@ -274,7 +274,7 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
+		if (inventory[0].isEmpty() || !inventory[1].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		if (!hasFluidHandler && FluidHelper.isFluidHandler(inventory[0])) {
