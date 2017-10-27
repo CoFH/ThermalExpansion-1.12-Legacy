@@ -559,7 +559,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'C', ItemFrame.frameMachine,
 					'I', constantanPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', Blocks.BREWING_STAND,
+					'X', Items.BREWING_STAND,
 					'Y', "blockGlassHardened"
 			);
 		}

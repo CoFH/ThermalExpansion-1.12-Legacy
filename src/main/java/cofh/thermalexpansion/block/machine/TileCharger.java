@@ -9,6 +9,7 @@ import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;
 import cofh.thermalexpansion.gui.container.machine.ContainerCharger;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.util.managers.XpCollectorManager;
 import cofh.thermalexpansion.util.managers.machine.ChargerManager;
 import cofh.thermalexpansion.util.managers.machine.ChargerManager.ChargerRecipe;
 import cofh.thermalfoundation.init.TFFluids;
@@ -38,7 +39,7 @@ public class TileCharger extends TileMachineBase {
 	public static int basePower = 50;
 
 	public static final int REPAIR_ENERGY = 500;
-	public static final int FLUID_AMOUNT = 10;
+	public static final int FLUID_AMOUNT = XpCollectorManager.XP_CONVERSION / 4;
 
 	public static void initialize() {
 
