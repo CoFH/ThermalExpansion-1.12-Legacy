@@ -132,7 +132,7 @@ public class TileFurnace extends TileMachineBase {
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !FurnaceManager.isOre(inventory[0])) {
+		if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !ItemHelper.isOre(inventory[0])) {
 			return false;
 		}
 		FurnaceRecipe recipe = augmentPyrolysis ? FurnaceManager.getRecipePyrolysis(inventory[0]) : FurnaceManager.getRecipe(inventory[0]);
@@ -157,7 +157,7 @@ public class TileFurnace extends TileMachineBase {
 			recipe = FurnaceManager.getRecipePyrolysis(inventory[0]);
 		} else {
 			recipe = FurnaceManager.getRecipe(inventory[0]);
-			if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !FurnaceManager.isOre(inventory[0])) {
+			if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !ItemHelper.isOre(inventory[0])) {
 				return false;
 			}
 		}
@@ -189,7 +189,7 @@ public class TileFurnace extends TileMachineBase {
 		if (augmentPyrolysis) {
 			tank.fill(new FluidStack(TFFluids.fluidCreosote, recipe.getCreosote()), true);
 		} else {
-			if ((augmentFood && FurnaceManager.isFood(inventory[0]) || augmentOre && FurnaceManager.isOre(inventory[0])) && inventory[1].getCount() < inventory[1].getMaxStackSize()) {
+			if ((augmentFood && FurnaceManager.isFood(inventory[0]) || augmentOre && ItemHelper.isOre(inventory[0])) && inventory[1].getCount() < inventory[1].getMaxStackSize()) {
 				inventory[1].grow(output.getCount());
 			}
 		}
@@ -411,7 +411,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot != 0 || (augmentFood ? FurnaceManager.isFood(stack) : augmentOre ? FurnaceManager.isOre(stack) : augmentPyrolysis ? FurnaceManager.recipeExistsPyrolysis(stack) : FurnaceManager.recipeExists(stack));
+		return slot != 0 || (augmentFood ? FurnaceManager.isFood(stack) : augmentOre ? ItemHelper.isOre(stack) : augmentPyrolysis ? FurnaceManager.recipeExistsPyrolysis(stack) : FurnaceManager.recipeExists(stack));
 	}
 
 	/* ISoundSource */

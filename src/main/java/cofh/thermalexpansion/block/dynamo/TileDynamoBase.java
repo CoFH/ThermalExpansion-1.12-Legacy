@@ -152,24 +152,6 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	}
 
 	@Override
-	public void blockPlaced() {
-
-		super.blockPlaced();
-
-		byte oldFacing = facing;
-		for (int i = facing + 1, e = facing + 6; i < e; i++) {
-			if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, EnumFacing.VALUES[i % 6]) || (EnergyHelper.isAdjacentEnergyHandler(this, EnumFacing.VALUES[i % 6]) && EnergyHelper.canAdjacentEnergyHandlerReceive(this, EnumFacing.VALUES[i % 6]))) {
-				facing = (byte) (i % 6);
-				if (facing != oldFacing) {
-					updateAdjacentHandlers();
-					markChunkDirty();
-					sendTilePacket(Side.CLIENT);
-				}
-			}
-		}
-	}
-
-	@Override
 	public void invalidate() {
 
 		cached = false;

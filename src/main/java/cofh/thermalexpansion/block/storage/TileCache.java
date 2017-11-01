@@ -104,6 +104,12 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	}
 
 	@Override
+	public boolean onWrench(EntityPlayer player, EnumFacing side) {
+
+		return rotateBlock();
+	}
+
+	@Override
 	public int getComparatorInputOverride() {
 
 		return compareTracker;

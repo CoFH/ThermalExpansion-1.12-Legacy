@@ -136,7 +136,7 @@ info.thermalexpansion.augment.machineFurnaceFood.a.0=Gain additional food when c
 info.thermalexpansion.augment.machineFurnaceFood.b.0=Only food items can be processed.
 
 info.thermalexpansion.augment.machineFurnaceOre.0=Redstone Furnace: Specialization
-info.thermalexpansion.augment.machineFurnaceOre.a.0=Gain an additional ingot when smelting ores.
+info.thermalexpansion.augment.machineFurnaceOre.a.0=Gain additional output when smelting ores.
 info.thermalexpansion.augment.machineFurnaceOre.b.0=Only ores can be processed.
 info.thermalexpansion.augment.machineFurnaceOre.b.1=Additional energy is required per operation.
 

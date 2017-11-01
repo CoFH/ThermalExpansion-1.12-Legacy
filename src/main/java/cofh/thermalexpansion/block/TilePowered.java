@@ -52,6 +52,12 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 			if (inventory[chargeSlot].getCount() <= 0) {
 				inventory[chargeSlot] = ItemStack.EMPTY;
 			}
+		} else if (EnergyHelper.isEnergyHandler(inventory[chargeSlot])) {
+			int energyRequest = Math.min(energyStorage.getMaxReceive(), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
+			energyStorage.receiveEnergy(inventory[chargeSlot].getCapability(CapabilityEnergy.ENERGY, null).extractEnergy(energyRequest, false), false);
+			if (inventory[chargeSlot].getCount() <= 0) {
+				inventory[chargeSlot] = ItemStack.EMPTY;
+			}
 		}
 	}
 

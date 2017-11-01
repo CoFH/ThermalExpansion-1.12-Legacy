@@ -61,8 +61,9 @@ public class PluginIC2 extends ModPlugin {
 
 				int energy = CompactorManager.DEFAULT_ENERGY;
 
+				CompactorManager.addRecipe(energy, ItemHelper.cloneStack(ItemMaterial.dustCoal, 8), coalBall, Mode.PRESS);
 				CompactorManager.addRecipe(energy, coalBall, coalBallCompressed, Mode.PRESS);
-				CompactorManager.addRecipe(energy, coalBallCompressed, coalChunk, Mode.PRESS);
+				CompactorManager.addRecipe(energy, ItemHelper.cloneStack(coalBallCompressed, 8), coalChunk, Mode.PRESS);
 				CompactorManager.addRecipe(energy, coalChunk, ItemMaterial.gemDiamond, Mode.PRESS);
 			}
 

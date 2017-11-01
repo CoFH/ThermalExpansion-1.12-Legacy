@@ -24,7 +24,6 @@ public class FurnaceManager {
 	private static Map<ComparableItemStackFurnace, FurnaceRecipe> recipeMap = new THashMap<>();
 	private static Map<ComparableItemStackFurnace, FurnaceRecipe> recipeMapPyrolysis = new THashMap<>();
 	private static Set<ComparableItemStackFurnace> foodSet = new THashSet<>();
-	private static Set<ComparableItemStackFurnace> oreSet = new THashSet<>();
 
 	public static final int DEFAULT_ENERGY = 2000;
 
@@ -92,20 +91,6 @@ public class FurnaceManager {
 		}
 		query.metadata = OreDictionary.WILDCARD_VALUE;
 		return foodSet.contains(query);
-	}
-
-	public static boolean isOre(ItemStack input) {
-
-		if (input.isEmpty()) {
-			return false;
-		}
-		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
-
-		if (oreSet.contains(query)) {
-			return true;
-		}
-		query.metadata = OreDictionary.WILDCARD_VALUE;
-		return oreSet.contains(query);
 	}
 
 	public static void initialize() {
@@ -319,10 +304,6 @@ public class FurnaceManager {
 			ComparableItemStackFurnace food = new ComparableItemStackFurnace(new ItemStack(entry.item, entry.stackSize, entry.metadata));
 			tempFood.add(food);
 		}
-		for (ComparableItemStackFurnace entry : oreSet) {
-			ComparableItemStackFurnace ore = new ComparableItemStackFurnace(new ItemStack(entry.item, entry.stackSize, entry.metadata));
-			tempOre.add(ore);
-		}
 		recipeMap.clear();
 		recipeMap = tempMap;
 
@@ -331,9 +312,6 @@ public class FurnaceManager {
 
 		foodSet.clear();
 		foodSet = tempFood;
-
-		oreSet.clear();
-		oreSet = tempOre;
 	}
 
 	/* ADD RECIPES */
@@ -373,10 +351,6 @@ public class FurnaceManager {
 
 		if (ItemHelper.oreNameExists(oreName) && !recipeExists(OreDictionary.getOres(oreName, false).get(0))) {
 			addRecipe(energy, ItemHelper.cloneStack(OreDictionary.getOres(oreName, false).get(0), 1), output);
-
-			if (oreName.startsWith("ore") && ItemHelper.isIngot(output)) {
-				oreSet.add(new ComparableItemStackFurnace(OreDictionary.getOres(oreName, false).get(0)));
-			}
 		}
 	}
 
