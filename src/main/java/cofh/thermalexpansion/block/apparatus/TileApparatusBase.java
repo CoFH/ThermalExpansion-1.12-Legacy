@@ -109,9 +109,6 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		if (world.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
 			if (!isStuffingEmpty()) {
 				outputBuffer();

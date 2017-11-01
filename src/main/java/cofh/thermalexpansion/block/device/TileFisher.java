@@ -117,9 +117,6 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		if (!timeCheckOffset()) {
 			return;
 		}

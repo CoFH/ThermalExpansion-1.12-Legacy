@@ -245,9 +245,6 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		if (extractMode) {
 			transferOutputFluid();
 		}

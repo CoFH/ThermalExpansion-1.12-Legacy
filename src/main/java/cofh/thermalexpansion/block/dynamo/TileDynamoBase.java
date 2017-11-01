@@ -180,9 +180,6 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		boolean curActive = isActive;
 
 		if (isActive) {

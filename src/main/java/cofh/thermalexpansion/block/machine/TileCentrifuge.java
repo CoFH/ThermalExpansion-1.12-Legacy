@@ -4,7 +4,6 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiCentrifuge;
@@ -94,9 +93,6 @@ public class TileCentrifuge extends TileMachineBase {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		transferOutputFluid();
 
 		super.update();

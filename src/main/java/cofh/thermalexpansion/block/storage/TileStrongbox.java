@@ -122,6 +122,12 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	}
 
 	@Override
+	public boolean hasClientUpdate() {
+
+		return true;
+	}
+
+	@Override
 	public boolean onWrench(EntityPlayer player, EnumFacing side) {
 
 		return rotateBlock();

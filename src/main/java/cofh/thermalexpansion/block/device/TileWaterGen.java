@@ -5,7 +5,6 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.RenderHelper;
-import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiWaterGen;
@@ -106,9 +105,6 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		if (!timeCheckOffset()) {
 			return;
 		}

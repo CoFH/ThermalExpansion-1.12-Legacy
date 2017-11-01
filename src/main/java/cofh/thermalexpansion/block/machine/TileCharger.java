@@ -292,9 +292,6 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		if (hasContainerItem) {
 			updateContainerItem();
 		} else if (hasEnergyHandler) {

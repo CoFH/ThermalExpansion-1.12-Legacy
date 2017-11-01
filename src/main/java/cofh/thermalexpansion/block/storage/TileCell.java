@@ -7,7 +7,6 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.EnergyHelper;
 import cofh.core.util.helpers.MathHelper;
-import cofh.core.util.helpers.ServerHelper;
 import cofh.redstoneflux.api.IEnergyProvider;
 import cofh.redstoneflux.impl.EnergyStorage;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -228,9 +227,6 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		if (redstoneControlOrDisable()) {
 			transferEnergy();
 		}

@@ -114,6 +114,12 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
+	public boolean hasClientUpdate() {
+
+		return true;
+	}
+
+	@Override
 	public void update() {
 
 		if (ServerHelper.isClientWorld(world)) {
@@ -245,21 +251,6 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	protected boolean timeCheckOffset() {
 
 		return (world.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
-	}
-
-	protected static boolean isSplashPotion(FluidStack stack) {
-
-		return stack != null && stack.getFluid() == TFFluids.fluidPotionSplash;
-	}
-
-	protected static boolean isLingeringPotion(FluidStack stack) {
-
-		return stack != null && stack.getFluid() == TFFluids.fluidPotionLingering;
-	}
-
-	protected static boolean isValidPotion(FluidStack stack) {
-
-		return stack != null && (stack.getFluid() == TFFluids.fluidPotion || stack.getFluid() == TFFluids.fluidPotionSplash || stack.getFluid() == TFFluids.fluidPotionLingering);
 	}
 
 	/* GUI METHODS */
@@ -405,6 +396,22 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 		offset = payload.getInt();
 		renderFluid = payload.getFluidStack();
+	}
+
+	/* HELPERS */
+	protected static boolean isSplashPotion(FluidStack stack) {
+
+		return stack != null && stack.getFluid() == TFFluids.fluidPotionSplash;
+	}
+
+	protected static boolean isLingeringPotion(FluidStack stack) {
+
+		return stack != null && stack.getFluid() == TFFluids.fluidPotionLingering;
+	}
+
+	protected static boolean isValidPotion(FluidStack stack) {
+
+		return stack != null && (stack.getFluid() == TFFluids.fluidPotion || stack.getFluid() == TFFluids.fluidPotionSplash || stack.getFluid() == TFFluids.fluidPotionLingering);
 	}
 
 	/* IInventory */

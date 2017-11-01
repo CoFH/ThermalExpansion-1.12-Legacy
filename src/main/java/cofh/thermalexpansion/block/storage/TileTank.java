@@ -149,9 +149,6 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		transferFluid();
 
 		if (timeCheck()) {

@@ -2,9 +2,7 @@ package cofh.thermalexpansion.gui.client.device;
 
 import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementFluidTank;
-import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.device.TileChunkLoader;
-import cofh.thermalexpansion.block.device.TileDiffuser;
 import cofh.thermalexpansion.gui.container.device.ContainerDiffuser;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;

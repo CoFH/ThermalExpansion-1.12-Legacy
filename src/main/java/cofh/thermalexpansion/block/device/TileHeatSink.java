@@ -6,7 +6,6 @@ import cofh.core.gui.GuiContainerCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.RenderHelper;
-import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiHeatSink;
@@ -96,9 +95,6 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		boolean curActive = isActive;
 
 		if (isActive) {

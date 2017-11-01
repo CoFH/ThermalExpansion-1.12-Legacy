@@ -5,7 +5,6 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiFurnace;
@@ -108,9 +107,6 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		if (augmentPyrolysis) {
 			transferOutputFluid();
 		}

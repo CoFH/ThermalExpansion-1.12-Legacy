@@ -2,7 +2,6 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
@@ -77,9 +76,6 @@ public class TileLexicon extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		if (world.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF != 0) {
 			return;
 		}

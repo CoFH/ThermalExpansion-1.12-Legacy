@@ -2,7 +2,6 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.util.helpers.MathHelper;
-import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiChunkLoader;
@@ -86,9 +85,6 @@ public class TileChunkLoader extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		if (!timeCheckOffset()) {
 			return;
 		}

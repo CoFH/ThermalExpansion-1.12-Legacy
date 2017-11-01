@@ -3,7 +3,6 @@ package cofh.thermalexpansion.block.device;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.MathHelper;
-import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiItemBuffer;
@@ -75,9 +74,6 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
-		if (ServerHelper.isClientWorld(world)) {
-			return;
-		}
 		if (world.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF != 0) {
 			return;
 		}
