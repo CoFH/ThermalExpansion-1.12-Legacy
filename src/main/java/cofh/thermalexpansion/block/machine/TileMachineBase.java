@@ -17,7 +17,10 @@ import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.HashSet;
@@ -462,6 +465,22 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 			return TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]];
 		}
 		return TETextures.MACHINE_SIDE;
+	}
+
+	/* Rendering */
+	public boolean hasFluidUnderlay() {
+
+		return false;
+	}
+
+	public FluidStack getRenderFluid() {
+
+		return null;
+	}
+
+	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+
+		return 0xFFFFFFFF;
 	}
 
 }

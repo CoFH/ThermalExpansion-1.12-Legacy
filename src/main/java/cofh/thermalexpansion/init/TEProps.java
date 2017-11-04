@@ -8,6 +8,7 @@ import cofh.core.util.TimeTracker;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
+import cofh.thermalexpansion.block.machine.TileMachineBase;
 import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.item.ItemStack;
@@ -176,22 +177,35 @@ public class TEProps {
 	public static boolean useAlternateStarfieldShader = false;
 
 	/* BLOCKSTATE PROPERTIES */
+	public static final UnlistedGenericTile<TileMachineBase> TILE_MACHINE = new UnlistedGenericTile<>("tile_machine", TileMachineBase.class);
+	@Deprecated
 	public static final UnlistedBooleanProperty ACTIVE = new UnlistedBooleanProperty("active");
+	@Deprecated
 	public static final UnlistedBooleanProperty CREATIVE = new UnlistedBooleanProperty("creative");
+	@Deprecated
 	public static final UnlistedEnumFacingProperty FACING = new UnlistedEnumFacingProperty("facing");
 
+	@Deprecated
 	public static final UnlistedIntegerProperty LEVEL = new UnlistedIntegerProperty("level");
+	@Deprecated
 	public static final UnlistedIntegerProperty HOLDING = new UnlistedIntegerProperty("enchant_holding");
+	@Deprecated
 	public static final UnlistedIntegerProperty SCALE = new UnlistedIntegerProperty("scale");
+	@Deprecated
 	public static final UnlistedIntegerProperty COIL = new UnlistedIntegerProperty("coil");
 
+	@Deprecated
 	public static final UnlistedByteArrayProperty SIDE_CONFIG = new UnlistedByteArrayProperty("side_config");
 
+	@Deprecated
 	public static final UnlistedFluidStackProperty FLUID = new UnlistedFluidStackProperty("fluid");
 
+	@Deprecated
 	public static final UnlistedTileEntityProperty TILE = new UnlistedTileEntityProperty("tile");
 
+	@Deprecated
 	public static final UnlistedResourceLocationProperty COIL_ANIM = new UnlistedResourceLocationProperty("coil_anim");
+	@Deprecated
 	public static final UnlistedResourceLocationProperty BASE_ANIM = new UnlistedResourceLocationProperty("base_anim");
 
 	/* AUGMENT IDENTIFIERS */

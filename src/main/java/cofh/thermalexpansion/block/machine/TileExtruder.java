@@ -507,6 +507,19 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		return TETextures.MACHINE_SIDE;
 	}
 
+	/* Rendering */
+	@Override
+	public boolean hasFluidUnderlay() {
+
+		return true;
+	}
+
+	@Override
+	public FluidStack getRenderFluid() {
+
+		return null;//hasFluidUnderlay returning true and this returning null is special cased for this, to use the sprite name instead of the render fluid hashcode.
+	}
+
 	/* CAPABILITIES */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing from) {

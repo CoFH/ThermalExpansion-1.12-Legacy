@@ -4,6 +4,7 @@ import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
@@ -51,6 +52,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -81,12 +83,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		// Listed
 		builder.add(VARIANT);
 		// UnListed
-		builder.add(TEProps.CREATIVE);
-		builder.add(TEProps.LEVEL);
-		builder.add(TEProps.ACTIVE);
-		builder.add(TEProps.FACING);
-		builder.add(TEProps.SIDE_CONFIG);
-		builder.add(TEProps.TILE);
+		builder.add(ModelErrorStateProperty.ERROR_STATE);
+		builder.add(TEProps.TILE_MACHINE);
 
 		return builder.build();
 	}
@@ -272,7 +270,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileMachineBase) {
-			TileMachineBase tile = ((TileMachineBase) tileEntity);
+			TileMachineBase tile = (TileMachineBase) tileEntity;
 			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
 		}
 		return TextureUtils.getMissingSprite();
@@ -295,19 +293,27 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			TileMachineBase tile = ((TileMachineBase) state.getValue(TEProps.TILE));
+			TileMachineBase tile = state.getValue(TEProps.TILE_MACHINE);
 			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
-			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
-			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
-			builder.append(",facing=").append(state.getValue(TEProps.FACING));
-			builder.append(",active=").append(state.getValue(TEProps.ACTIVE));
+			builder.append(",creative=").append(tile.isCreative);
+			builder.append(",level=").append(tile.getLevel());
+			builder.append(",facing=").append(tile.getFacing());
+			builder.append(",active=").append(tile.isActive);
 			builder.append(",side_config={");
-			for (int i : state.getValue(TEProps.SIDE_CONFIG)) {
+			for (int i : tile.sideCache) {
 				builder.append(",").append(i);
 			}
 			builder.append("}");
-			if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) && tile.isActive) {
-				builder.append(",front=").append(tile.getTexture(tile.getFacing(), 0).getIconName());
+			if (tile.hasFluidUnderlay() && tile.isActive) {
+				FluidStack stack = tile.getRenderFluid();
+				int code = 1;
+				if (stack != null) {//Create a hash not including the fluid amount.
+					code = 31 * code + stack.getFluid().hashCode();
+					if (stack.tag != null) {
+						code = 31 * code + stack.tag.hashCode();
+					}
+				}
+				builder.append(",fluid=").append(stack != null ? code : tile.getTexture(tile.getFacing(), 0).getIconName());
 			}
 			return builder.toString();
 		});

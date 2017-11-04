@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.render;
 
+import codechicken.lib.model.bakery.ModelErrorStateProperty;
+import codechicken.lib.model.bakery.ModelErrorStateProperty.ErrorState;
 import codechicken.lib.model.bakery.generation.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
@@ -28,38 +30,11 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderMachine implements ILayeredBlockBakery {
+public class RenderMachine extends CubeBakeryBase {
 
 	public static final RenderMachine INSTANCE = new RenderMachine();
 
-	static CCModel model = CCModel.quadModel(48);
-
-	static {
-		model.generateBlock(0, Cuboid6.full);
-		model.generateBlock(24, Cuboid6.full.copy().expand(.0004F));
-		model.computeNormals();
-		model.shrinkUVs(RenderHelper.RENDER_OFFSET);
-	}
-
-	/* RENDER */
-	public void renderFace(CCRenderState ccrs, EnumFacing face, TextureAtlasSprite sprite) {
-
-		if (sprite != null) {
-			int i = face.ordinal();
-			model.render(ccrs, i * 4, i * 4 + 4, new IconTransformation(sprite));
-		}
-	}
-
-	public void renderFaceOverlay(CCRenderState ccrs, EnumFacing face, TextureAtlasSprite sprite) {
-
-		if (sprite != null) {
-			int i = face.ordinal();
-			model.render(ccrs, i * 4 + 24, i * 4 + 4 + 24, new IconTransformation(sprite));
-		}
-	}
-
 	/* HELPERS */
-
 	/**
 	 * Used to get the overlay texture for the given side.
 	 * This should specifically relate to the level of the machine and not it's state.
@@ -76,24 +51,21 @@ public class RenderMachine implements ILayeredBlockBakery {
 		return TETextures.MACHINE_OVERLAY[level];
 	}
 
-	/* ICustomBlockBakery */
+	/* IBlockBakery */
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess world, BlockPos pos) {
 
-		TileMachineBase machineBase = ((TileMachineBase) world.getTileEntity(pos));
+		TileMachineBase machineBase = (TileMachineBase) world.getTileEntity(pos);
 
 		if (machineBase == null) {
-			return null;
+			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Null tile. Position: %s", pos));
 		}
-		state = state.withProperty(TEProps.CREATIVE, machineBase.isCreative);
-		state = state.withProperty(TEProps.LEVEL, machineBase.getLevel());
-		state = state.withProperty(TEProps.ACTIVE, machineBase.isActive);
-		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[machineBase.getFacing()]);
-		state = state.withProperty(TEProps.SIDE_CONFIG, machineBase.sideCache);
-		state = state.withProperty(TEProps.TILE, machineBase); // Kinda hacky, but we need this to grab textures from the block.
+		state = state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.OK);
+		state = state.withProperty(TEProps.TILE_MACHINE, machineBase);
 		return state;
 	}
 
+	/* IItemBakery */
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
 
@@ -109,10 +81,10 @@ public class RenderMachine implements ILayeredBlockBakery {
 			boolean creative = BlockMachine.itemBlock.isCreative(stack);
 			int level = BlockMachine.itemBlock.getLevel(stack);
 			IItemBlockTextureProvider provider = TEBlocks.blockMachine;
-			renderFace(ccrs, face, provider.getTexture(face, stack));
+			renderFace(ccrs, face, provider.getTexture(face, stack), 0xFFFFFFFF);
 
 			if (level > 0) {
-				renderFaceOverlay(ccrs, face, creative ? TETextures.MACHINE_OVERLAY_C : getOverlaySprite(face, level));
+				renderFaceOverlay(ccrs, face, creative ? TETextures.MACHINE_OVERLAY_C : getOverlaySprite(face, level), 0xFFFFFFFF);
 			}
 			buffer.finishDrawing();
 			quads.addAll(buffer.bake());
@@ -128,11 +100,11 @@ public class RenderMachine implements ILayeredBlockBakery {
 
 		if (face != null && state != null) {
 			Block block = state.getBlock();
-			IWorldBlockTextureProvider provider = ((IWorldBlockTextureProvider) block);
+			IWorldBlockTextureProvider provider = (IWorldBlockTextureProvider) block;
+			TileMachineBase tile = state.getValue(TEProps.TILE_MACHINE);
 
-			boolean creative = state.getValue(TEProps.CREATIVE);
-			int level = state.getValue(TEProps.LEVEL);
-			TileMachineBase tile = ((TileMachineBase) state.getValue(TEProps.TILE));
+			boolean creative = tile.isCreative;
+			int level = tile.getLevel();
 
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(0x07, DefaultVertexFormats.ITEM);
@@ -140,10 +112,10 @@ public class RenderMachine implements ILayeredBlockBakery {
 			ccrs.reset();
 			ccrs.bind(buffer);
 
-			renderFace(ccrs, face, provider.getTexture(face, state, layer, tile.getWorld(), tile.getPos()));
+			renderFace(ccrs, face, provider.getTexture(face, state, layer, tile.getWorld(), tile.getPos()), tile.getColorMask(layer, face));
 
 			if (layer == BlockRenderLayer.CUTOUT && level > 0) {
-				renderFace(ccrs, face, creative ? TETextures.MACHINE_OVERLAY_C : getOverlaySprite(face, level));
+				renderFace(ccrs, face, creative ? TETextures.MACHINE_OVERLAY_C : getOverlaySprite(face, level), 0xFFFFFFFF);
 			}
 			buffer.finishDrawing();
 			quads.addAll(buffer.bake());
