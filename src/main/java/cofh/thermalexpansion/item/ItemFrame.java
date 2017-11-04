@@ -8,7 +8,7 @@ import cofh.core.item.ItemMulti;
 import cofh.core.util.core.IInitializer;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.storage.BlockCell;
-import cofh.thermalexpansion.render.RenderFrame;
+import cofh.thermalexpansion.render.BakeryFrame;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.EnumRarity;
@@ -49,7 +49,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 	@SideOnly (Side.CLIENT)
 	public IBakery getBakery() {
 
-		return RenderFrame.INSTANCE;
+		return BakeryFrame.INSTANCE;
 	}
 
 	@Override

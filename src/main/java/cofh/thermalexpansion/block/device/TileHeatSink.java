@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
@@ -314,6 +315,21 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
+	}
+
+	@Override
+	public boolean hasFluidUnderlay() {
+		return true;
+	}
+
+	@Override
+	public FluidStack getRenderFluid() {
+		return renderFluid;
+	}
+
+	@Override
+	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && isActive ? renderFluid.getFluid().getColor(renderFluid) << 8 | 0xFF : super.getColorMask(layer, side);
 	}
 
 	/* CAPABILITIES */

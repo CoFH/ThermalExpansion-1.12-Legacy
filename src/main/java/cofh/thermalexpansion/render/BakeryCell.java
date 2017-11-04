@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SideOnly (Side.CLIENT)
-public class RenderCell implements ILayeredBlockBakery {
+public class BakeryCell implements ILayeredBlockBakery {
 
-	public static final RenderCell INSTANCE = new RenderCell();
+	public static final BakeryCell INSTANCE = new BakeryCell();
 
 	static CCModel modelCenter = CCModel.quadModel(24);
 	static CCModel modelFrame = CCModel.quadModel(48);

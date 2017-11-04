@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
@@ -471,6 +472,21 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
+	}
+
+	@Override
+	public boolean hasFluidUnderlay() {
+		return true;
+	}
+
+	@Override
+	public FluidStack getRenderFluid() {
+		return genFluid;
+	}
+
+	@Override
+	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && isActive ? genFluid.getFluid().getColor(genFluid) << 8 | 0xFF : super.getColorMask(layer, side);
 	}
 
 	/* IInventory */

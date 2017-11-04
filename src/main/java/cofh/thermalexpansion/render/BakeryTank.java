@@ -30,9 +30,9 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderTank implements ILayeredBlockBakery {
+public class BakeryTank implements ILayeredBlockBakery {
 
-	public static final RenderTank INSTANCE = new RenderTank();
+	public static final BakeryTank INSTANCE = new BakeryTank();
 
 	public static final int RENDER_LEVELS = 100;
 

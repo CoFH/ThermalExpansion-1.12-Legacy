@@ -1,9 +1,11 @@
 package cofh.thermalexpansion.block.storage;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.bakery.BlockBakeryProperties;
 import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.ModelErrorStateProperty;
+import codechicken.lib.model.bakery.generation.IBakery;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.init.CoreEnchantments;
@@ -11,12 +13,14 @@ import cofh.core.render.IModelRegister;
 import cofh.core.util.RayTracer;
 import cofh.core.util.StateMapper;
 import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemUpgrade;
+import cofh.thermalexpansion.render.BakeryCache;
 import cofh.thermalexpansion.util.Utils;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
@@ -44,7 +48,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
 
-public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
+public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider, IBakeryProvider {
 
 	public BlockCache() {
 
@@ -62,12 +66,8 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
 		// UnListed
-		builder.add(TEProps.CREATIVE);
-		builder.add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
-		builder.add(TEProps.LEVEL);
-		builder.add(TEProps.HOLDING);
-		builder.add(TEProps.FACING);
-		builder.add(TEProps.SCALE);
+		builder.add(TEProps.TILE_CACHE);
+		builder.add(ModelErrorStateProperty.ERROR_STATE);
 
 		return builder.build();
 	}
@@ -317,6 +317,11 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		return TextureUtils.getMissingSprite();
 	}
 
+	@Override
+	public IBakery getBakery() {
+		return BakeryCache.INSTANCE;
+	}
+
 	/* IModelRegister */
 	@Override
 	@SideOnly (Side.CLIENT)
@@ -330,12 +335,13 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(ModelBakery.defaultBlockKeyGenerator.generateKey(state));
-			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
-			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
-			builder.append(",holding=").append(state.getValue(TEProps.HOLDING));
-			builder.append(",facing=").append(state.getValue(TEProps.FACING));
-			builder.append(",scale=").append(state.getValue(TEProps.SCALE));
+			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString() + "|" + state.getBlock().getMetaFromState(state));
+			TileCache tile = state.getValue(TEProps.TILE_CACHE);
+			builder.append(",creative=").append(tile.isCreative);
+			builder.append(",level=").append(tile.getLevel());
+			builder.append(",holding=").append(tile.enchantHolding);
+			builder.append(",facing=").append(tile.getFacing());
+			builder.append(",scale=").append(MathHelper.clamp(tile.getScaledItemsStored(9), 0, 8));
 			return builder.toString();
 		});
 

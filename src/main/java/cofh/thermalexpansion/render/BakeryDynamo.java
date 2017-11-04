@@ -27,9 +27,9 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderDynamo implements ILayeredBlockBakery {
+public class BakeryDynamo implements ILayeredBlockBakery {
 
-	public static final RenderDynamo INSTANCE = new RenderDynamo();
+	public static final BakeryDynamo INSTANCE = new BakeryDynamo();
 
 	private static CCModel[][] modelCoil = new CCModel[2][6];
 	private static CCModel[][] modelBase = new CCModel[2][6];

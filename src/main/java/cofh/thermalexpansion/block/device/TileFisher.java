@@ -18,11 +18,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -392,4 +394,18 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		return TETextures.DEVICE_SIDE;
 	}
 
+	@Override
+	public boolean hasFluidUnderlay() {
+		return true;
+	}
+
+	@Override
+	public FluidStack getRenderFluid() {
+		return new FluidStack(FluidRegistry.WATER, 1);
+	}
+
+	@Override
+	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && isActive ? FluidRegistry.WATER.getColor() << 8 | 0xFF : super.getColorMask(layer, side);
+	}
 }

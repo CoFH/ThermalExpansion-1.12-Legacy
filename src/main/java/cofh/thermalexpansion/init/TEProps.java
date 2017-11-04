@@ -8,9 +8,11 @@ import cofh.core.util.TimeTracker;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.apparatus.TileApparatusBase;
+import cofh.thermalexpansion.block.device.TileDeviceBase;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.TileMachineBase;
+import cofh.thermalexpansion.block.storage.TileCache;
 import cofh.thermalexpansion.block.storage.TileCell;
 import cofh.thermalexpansion.block.storage.TileTank;
 import cofh.thermalexpansion.item.ItemFlorb;
@@ -186,6 +188,8 @@ public class TEProps {
 	public static final UnlistedGenericTile<TileDynamoBase> TILE_DYNAMO = new UnlistedGenericTile<>("tile_dynamo", TileDynamoBase.class);
 	public static final UnlistedGenericTile<TileTank> TILE_TANK = new UnlistedGenericTile<>("tile_tank", TileTank.class);
 	public static final UnlistedGenericTile<TileCell> TILE_CELL = new UnlistedGenericTile<>("tile_cell", TileCell.class);
+	public static final UnlistedGenericTile<TileCache> TILE_CACHE = new UnlistedGenericTile<>("tile_cache", TileCache.class);
+	public static final UnlistedGenericTile<TileDeviceBase> TILE_DEVICE = new UnlistedGenericTile<>("tile_device", TileDeviceBase.class);
 
 	@Deprecated
 	public static final UnlistedBooleanProperty ACTIVE = new UnlistedBooleanProperty("active");

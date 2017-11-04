@@ -16,9 +16,9 @@ import net.minecraft.util.EnumFacing;
 
 import java.util.List;
 
-public class RenderFrame implements IItemBakery {
+public class BakeryFrame implements IItemBakery {
 
-	public static final RenderFrame INSTANCE = new RenderFrame();
+	public static final BakeryFrame INSTANCE = new BakeryFrame();
 
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing dir, ItemStack stack) {
@@ -31,15 +31,15 @@ public class RenderFrame implements IItemBakery {
 			ccrs.bind(buffer);
 			for (EnumFacing face : EnumFacing.VALUES) {
 				int i = face.ordinal();
-				RenderCell.modelFrame.render(ccrs, i * 4, i * 4 + 4, new IconTransformation(getFrameTexture(face, stack)));
+				BakeryCell.modelFrame.render(ccrs, i * 4, i * 4 + 4, new IconTransformation(getFrameTexture(face, stack)));
 				TextureAtlasSprite inner = getInnerTexture(face, stack);
 				if (inner != null) {
-					RenderCell.modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, new IconTransformation(inner));
+					BakeryCell.modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, new IconTransformation(inner));
 				}
 			}
 			TextureAtlasSprite center = getCenterTexture(stack);
 			if (center != null) {
-				RenderCell.modelCenter.render(ccrs, new IconTransformation(center));
+				BakeryCell.modelCenter.render(ccrs, new IconTransformation(center));
 			}
 			buffer.finishDrawing();
 			return buffer.bake();

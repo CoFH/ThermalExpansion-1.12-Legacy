@@ -1,9 +1,11 @@
 package cofh.thermalexpansion.block.device;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.bakery.BlockBakeryProperties;
 import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.ModelErrorStateProperty;
+import codechicken.lib.model.bakery.generation.IBakery;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IModelRegister;
@@ -14,6 +16,7 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
+import cofh.thermalexpansion.render.BakeryDevice;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import cofh.thermalfoundation.item.ItemTome;
@@ -38,6 +41,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -46,7 +50,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
-public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
+public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider, IBakeryProvider {
 
 	public static final PropertyEnum<Type> VARIANT = PropertyEnum.create("type", Type.class);
 
@@ -68,10 +72,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		// Listed
 		builder.add(VARIANT);
 		// UnListed
-		builder.add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
-		builder.add(TEProps.ACTIVE);
-		builder.add(TEProps.FACING);
-		builder.add(TEProps.SIDE_CONFIG);
+		builder.add(TEProps.TILE_DEVICE);
+		builder.add(ModelErrorStateProperty.ERROR_STATE);
 
 		return builder.build();
 	}
@@ -229,10 +231,15 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileDeviceBase) {
-			TileDeviceBase tile = ((TileDeviceBase) tileEntity);
+			TileDeviceBase tile = (TileDeviceBase) tileEntity;
 			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
 		}
 		return TextureUtils.getMissingSprite();
+	}
+
+	@Override
+	public IBakery getBakery() {
+		return BakeryDevice.INSTANCE;
 	}
 
 	/* IModelRegister */
@@ -249,6 +256,31 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), type.getMetadata(), location);
 		}
 		ModelRegistryHelper.register(location, new CCBakeryModel());
+
+		ModelBakery.registerBlockKeyGenerator(this, state -> {
+
+			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString() + "|" + state.getBlock().getMetaFromState(state));
+			TileDeviceBase tile = state.getValue(TEProps.TILE_DEVICE);
+			builder.append("facing=").append(tile.getFacing());
+			builder.append(",active=").append(tile.isActive);
+			builder.append(",side_config={");
+			for (int i : tile.sideCache) {
+				builder.append(",").append(i);
+			}
+			builder.append("}");
+			if (tile.hasFluidUnderlay() && tile.isActive) {
+				FluidStack stack = tile.getRenderFluid();
+				int code = 1;
+				if (stack != null) {//Create a hash not including the fluid amount.
+					code = 31 * code + stack.getFluid().hashCode();
+					if (stack.tag != null) {
+						code = 31 * code + stack.tag.hashCode();
+					}
+				}
+				builder.append(",fluid=").append(stack != null ? code : tile.getTexture(tile.getFacing(), 0).getIconName());
+			}
+			return builder.toString();
+		});
 	}
 
 	/* IInitializer */

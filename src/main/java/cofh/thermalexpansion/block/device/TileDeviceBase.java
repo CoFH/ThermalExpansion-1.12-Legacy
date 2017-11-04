@@ -6,6 +6,9 @@ import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileDeviceBase extends TileReconfigurable {
@@ -126,6 +129,22 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 			return TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]];
 		}
 		return TETextures.DEVICE_SIDE;
+	}
+
+	/* Rendering */
+	public boolean hasFluidUnderlay() {
+
+		return false;
+	}
+
+	public FluidStack getRenderFluid() {
+
+		return null;
+	}
+
+	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+
+		return 0xFFFFFFFF;
 	}
 
 	/* IUpgradeable */

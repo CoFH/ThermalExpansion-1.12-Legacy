@@ -17,7 +17,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.ItemUpgrade;
-import cofh.thermalexpansion.render.RenderDynamo;
+import cofh.thermalexpansion.render.BakeryDynamo;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -270,7 +270,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 	@Override
 	public IBakery getBakery() {
 
-		return RenderDynamo.INSTANCE;
+		return BakeryDynamo.INSTANCE;
 	}
 
 	/* IModelRegister */

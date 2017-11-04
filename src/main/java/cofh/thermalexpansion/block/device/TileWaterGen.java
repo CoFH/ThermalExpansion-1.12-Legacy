@@ -19,6 +19,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundEvent;
@@ -271,6 +272,21 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
+	}
+
+	@Override
+	public boolean hasFluidUnderlay() {
+		return true;
+	}
+
+	@Override
+	public FluidStack getRenderFluid() {
+		return new FluidStack(FluidRegistry.WATER, 1);
+	}
+
+	@Override
+	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && isActive ? FluidRegistry.WATER.getColor() << 8 | 0xFF : super.getColorMask(layer, side);
 	}
 
 	/* ISoundSource */

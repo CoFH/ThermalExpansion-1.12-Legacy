@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -171,6 +172,21 @@ public class TileNullifier extends TileDeviceBase {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : redstoneControlOrDisable() ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
+	}
+
+	@Override
+	public boolean hasFluidUnderlay() {
+		return true;
+	}
+
+	@Override
+	public FluidStack getRenderFluid() {
+		return new FluidStack(FluidRegistry.LAVA, 1);
+	}
+
+	@Override
+	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && redstoneControlOrDisable() ? FluidRegistry.LAVA.getColor() << 8 | 0xFF : super.getColorMask(layer, side);
 	}
 
 	/* ISidedInventory */

@@ -14,7 +14,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.ItemUpgrade;
-import cofh.thermalexpansion.render.RenderTank;
+import cofh.thermalexpansion.render.BakeryTank;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -211,7 +211,7 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 	@SideOnly (Side.CLIENT)
 	public IBakery getBakery() {
 
-		return RenderTank.INSTANCE;
+		return BakeryTank.INSTANCE;
 	}
 
 	/* IModelRegister */
