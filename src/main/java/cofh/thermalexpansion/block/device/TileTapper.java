@@ -476,16 +476,19 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 	@Override
 	public boolean hasFluidUnderlay() {
+
 		return true;
 	}
 
 	@Override
 	public FluidStack getRenderFluid() {
+
 		return genFluid;
 	}
 
 	@Override
 	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+
 		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && isActive ? genFluid.getFluid().getColor(genFluid) << 8 | 0xFF : super.getColorMask(layer, side);
 	}
 

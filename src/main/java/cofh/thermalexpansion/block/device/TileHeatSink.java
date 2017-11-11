@@ -319,16 +319,19 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 	@Override
 	public boolean hasFluidUnderlay() {
+
 		return true;
 	}
 
 	@Override
 	public FluidStack getRenderFluid() {
+
 		return renderFluid;
 	}
 
 	@Override
 	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+
 		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && isActive ? renderFluid.getFluid().getColor(renderFluid) << 8 | 0xFF : super.getColorMask(layer, side);
 	}
 

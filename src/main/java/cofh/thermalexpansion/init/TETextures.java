@@ -140,11 +140,6 @@ public class TETextures {
 		DYNAMO_OVERLAY_4 =                  register(DYNAMO_ + "overlay_4");
 		DYNAMO_OVERLAY_C =                  register(DYNAMO_ + "overlay_c");
 
-		/* ICONS */
-		ICON_ACCEPT =						map.getMissingSprite();//TODO
-		ICON_ACCEPT_INACTIVE =				map.getMissingSprite();//TODO
-		ICON_SCHEMATIC =					map.getMissingSprite();//TODO
-
 		/* CELLS */
 		CELL_CONFIG_BLUE =                  register(CELL_CONFIG_ + "blue");
 		CELL_CONFIG_ORANGE =                register(CELL_CONFIG_ + "orange");
@@ -689,10 +684,6 @@ public class TETextures {
 	public static TextureAtlasSprite DYNAMO_OVERLAY_3;
 	public static TextureAtlasSprite DYNAMO_OVERLAY_4;
 	public static TextureAtlasSprite DYNAMO_OVERLAY_C;
-
-	public static TextureAtlasSprite ICON_ACCEPT;
-	public static TextureAtlasSprite ICON_ACCEPT_INACTIVE;
-	public static TextureAtlasSprite ICON_SCHEMATIC;
 
 	public static TextureAtlasSprite[] CELL_CONFIG;
 	public static TextureAtlasSprite CELL_CONFIG_BLUE;

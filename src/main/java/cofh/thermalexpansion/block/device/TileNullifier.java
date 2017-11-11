@@ -176,16 +176,19 @@ public class TileNullifier extends TileDeviceBase {
 
 	@Override
 	public boolean hasFluidUnderlay() {
+
 		return true;
 	}
 
 	@Override
 	public FluidStack getRenderFluid() {
+
 		return new FluidStack(FluidRegistry.LAVA, 1);
 	}
 
 	@Override
 	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+
 		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && redstoneControlOrDisable() ? FluidRegistry.LAVA.getColor() << 8 | 0xFF : super.getColorMask(layer, side);
 	}
 

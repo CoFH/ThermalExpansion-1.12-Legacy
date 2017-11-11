@@ -11,7 +11,6 @@ import net.minecraft.util.EnumFacing;
 
 public abstract class CubeBakeryBase implements ILayeredBlockBakery {
 
-
 	static CCModel model = CCModel.quadModel(48);
 
 	static {

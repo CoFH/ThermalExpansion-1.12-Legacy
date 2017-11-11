@@ -319,6 +319,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 	@Override
 	public IBakery getBakery() {
+
 		return BakeryCache.INSTANCE;
 	}
 

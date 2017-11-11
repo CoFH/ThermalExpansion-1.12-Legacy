@@ -239,6 +239,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 	@Override
 	public IBakery getBakery() {
+
 		return BakeryDevice.INSTANCE;
 	}
 
@@ -433,18 +434,18 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					'Y', "ingotLead"
 			);
 		}
-//		if (enable[Type.XP_COLLECTOR.getMetadata()]) {
-//			addShapedRecipe(deviceExpCollector,
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', ItemFrame.frameDevice,
-//					'I', tinPart,
-//					'P', ItemMaterial.redstoneServo,
-//					'X', ItemTome.tomeExperience,
-//					'Y', "ingotGold"
-//			);
-//		}
+		if (enable[Type.XP_COLLECTOR.getMetadata()]) {
+			addShapedRecipe(deviceExpCollector,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameDevice,
+					'I', tinPart,
+					'P', ItemMaterial.redstoneServo,
+					'X', ItemTome.tomeExperience,
+					'Y', "ingotGold"
+			);
+		}
 		if (enable[Type.DIFFUSER.getMetadata()]) {
 			addShapedRecipe(deviceLexicon,
 					" X ",
