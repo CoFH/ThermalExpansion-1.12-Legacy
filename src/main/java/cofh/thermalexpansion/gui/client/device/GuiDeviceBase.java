@@ -61,7 +61,6 @@ public class GuiDeviceBase extends GuiContainerCore {
 			this.mc.player.closeScreen();
 		}
 		redstoneTab.setVisible(baseTile.hasRedstoneControl());
-
 		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 	}
 

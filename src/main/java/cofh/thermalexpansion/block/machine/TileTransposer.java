@@ -786,7 +786,7 @@ public class TileTransposer extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (!extractMode || from == null || sideCache[from.ordinal()] != 3) {
+					if (!extractMode || from == null || !isSecondaryOutput(sideCache[from.ordinal()])) {
 						return null;
 					}
 					return tank.drain(resource, doDrain);
@@ -796,7 +796,7 @@ public class TileTransposer extends TileMachineBase {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (!extractMode || from == null || sideCache[from.ordinal()] != 3) {
+					if (!extractMode || from == null || !isSecondaryOutput(sideCache[from.ordinal()])) {
 						return null;
 					}
 					return tank.drain(maxDrain, doDrain);

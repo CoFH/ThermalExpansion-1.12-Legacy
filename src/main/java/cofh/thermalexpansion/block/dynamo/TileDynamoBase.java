@@ -20,6 +20,7 @@ import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.init.TFFluids;
+import cofh.thermalfoundation.init.TFProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,17 +42,21 @@ import java.util.HashSet;
 
 public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IReconfigurableFacing, ISidedInventory, IEnergyInfo, ISteamInfo {
 
-	protected static final EnergyConfig[] DEFAULT_ENERGY_CONFIG = new EnergyConfig[Type.values().length];
+	protected static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[Type.values().length];
 	protected static final HashSet<String>[] VALID_AUGMENTS = new HashSet[Type.values().length];
 
 	public static final int MIN_BASE_POWER = 10;
 	public static final int MAX_BASE_POWER = 200;
+	public static int[] POWER_SCALING = { 100, 150, 200, 250, 300 };
+	public static int[] CUSTOM_POWER_SCALING = { 100, 150, 250, 400, 600 };
 
 	protected static boolean enableSecurity = true;
+	protected static boolean customScaling = false;
 	protected static boolean smallStorage = false;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 	protected static final int ENERGY_BASE = 100;
+	protected static final int POWER_BASE = 100;
 
 	public static final int[] COIL_LIGHT = { 7, 0 };
 	public static final boolean[] COIL_UNDERLAY = { false, true };
@@ -69,14 +74,42 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		String comment = "If TRUE, Dynamos are securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", enableSecurity, comment);
 
-		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK.";
+		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockDynamo.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockDynamo.enableClassicRecipes, comment);
 
-		comment = "If TRUE, Dynamos can be upgraded in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		comment = "If TRUE, Dynamos can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockDynamo.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockDynamo.enableUpgradeKitCrafting, comment);
+
+		comment = "If TRUE, Dynamo RF scaling will use a custom set of values rather than default behavior. The default custom configuration provides a reasonable alternate progression.";
+		customScaling = ThermalExpansion.CONFIG.get(category, "CustomScaling", customScaling, comment);
 
 		comment = "If TRUE, Dynamos will have much smaller internal energy (RF) storage. Generation speed will no longer scale with internal energy.";
 		smallStorage = ThermalExpansion.CONFIG.get(category, "SmallStorage", smallStorage, comment);
+
+		category = "Dynamo.CustomScaling";
+		comment = "ADVANCED FEATURE - ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING.\nValues are expressed as a percentage of Base Power; Base Scale Factor is 100 percent.\nValues will be checked for validity and rounded down to the nearest 10.";
+
+		ThermalExpansion.CONFIG.getCategory(category).setComment(comment);
+		boolean validScaling = true;
+
+		for (int i = TFProps.LEVEL_MIN + 1; i <= TFProps.LEVEL_MAX; i++) {
+			CUSTOM_POWER_SCALING[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, CUSTOM_POWER_SCALING[i], POWER_BASE + 10 * i, POWER_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Dynamos.");
+		}
+		for (int i = 1; i < CUSTOM_POWER_SCALING.length; i++) {
+			CUSTOM_POWER_SCALING[i] /= 10;
+			CUSTOM_POWER_SCALING[i] *= 10;
+
+			if (CUSTOM_POWER_SCALING[i] <= CUSTOM_POWER_SCALING[i - 1]) {
+				validScaling = false;
+			}
+		}
+		if (customScaling) {
+			if (!validScaling) {
+				ThermalExpansion.LOG.error(category + " settings are invalid. They will not be used.");
+			} else {
+				System.arraycopy(CUSTOM_POWER_SCALING, 0, POWER_SCALING, 0, POWER_SCALING.length);
+			}
+		}
 	}
 
 	byte facing = 1;
@@ -106,7 +139,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	public TileDynamoBase() {
 
-		energyConfig = DEFAULT_ENERGY_CONFIG[this.getType()].copy();
+		energyConfig = ENERGY_CONFIGS[this.getType()].copy();
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 2);
 	}
 
@@ -198,8 +231,6 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 					processStart();
 					processTick();
 					isActive = true;
-				} else {
-					processIdle();
 				}
 			}
 		}
@@ -212,17 +243,20 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 			if (!cached) {
 				updateAdjacentHandlers();
 			}
+			if (!isActive) {
+				processIdle();
+			}
 		}
 		updateIfChanged(curActive);
 	}
 
 	/* COMMON METHODS */
-	int getBasePower(int level) {
+	protected int getBasePower(int level) {
 
-		return DEFAULT_ENERGY_CONFIG[getType()].maxPower + level * DEFAULT_ENERGY_CONFIG[getType()].maxPower / 2;
+		return ENERGY_CONFIGS[getType()].maxPower * POWER_SCALING[MathHelper.clamp(level, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX)] / POWER_BASE;
 	}
 
-	int calcEnergy() {
+	protected int calcEnergy() {
 
 		if (energyStorage.getEnergyStored() <= energyConfig.minPowerLevel) {
 			return energyConfig.maxPower;
@@ -233,19 +267,19 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		return (energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored()) / energyConfig.energyRamp;
 	}
 
-	int getScaledEnergyStored(int scale) {
+	protected int getScaledEnergyStored(int scale) {
 
 		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
 	}
 
-	abstract boolean canStart();
+	protected abstract boolean canStart();
 
-	boolean canFinish() {
+	protected boolean canFinish() {
 
 		return fuelRF <= 0;
 	}
 
-	abstract void processStart();
+	protected abstract void processStart();
 
 	protected void processFinish() {
 

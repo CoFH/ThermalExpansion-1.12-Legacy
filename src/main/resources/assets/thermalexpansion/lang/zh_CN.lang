@@ -23,11 +23,6 @@ achievement.thermalexpansion.machineTransposer=（多数时候）免费续杯
 achievement.thermalexpansion.welcome.desc=欢迎来到热力膨胀的世界！
 achievement.thermalexpansion.welcome=一个正在膨胀的世界
 
-chat.thermalexpansion.augment.install.failure=不能安装升级组件。
-chat.thermalexpansion.augment.install.success=升级组件安装成功！
-chat.thermalexpansion.upgrade.install.failure=不能升级该方块。
-chat.thermalexpansion.upgrade.install.success=方块升级成功！
-
 gui.thermalexpansion.device.item_buffer.decInput=按一下减少输入量
 gui.thermalexpansion.device.item_buffer.decOutput=按一下减少输出量
 gui.thermalexpansion.device.item_buffer.incInput=按一下增加输入量
@@ -265,13 +260,6 @@ info.thermalexpansion.storage.satchel=收集并存储物品。可以被保护。
 info.thermalexpansion.storage.strongbox=存储物品。可以被保护。
 info.thermalexpansion.storage.tank=存储大量流体。
 
-info.thermalexpansion.upgrade.creative.0=将目标方块直接升级至创造级。
-info.thermalexpansion.upgrade.creative.1=可在任何级别的方块上使用。
-info.thermalexpansion.upgrade.full.0=将目标方块完整升级到指定等级。
-info.thermalexpansion.upgrade.full.1=可在任何低级别的方块上使用。
-info.thermalexpansion.upgrade.incremental.0=将目标方块提升一个等级。
-info.thermalexpansion.upgrade.incremental.1=目标方块必须比该升级低一级。
-
 item.thermalexpansion.augment.apparatusDepth.name=WIP
 item.thermalexpansion.augment.apparatusRadius.name=WIP
 
@@ -332,16 +320,6 @@ item.thermalexpansion.satchel.standard1.name=背包 （硬化）
 item.thermalexpansion.satchel.standard2.name=背包 （强化）
 item.thermalexpansion.satchel.standard3.name=背包 （信素）
 item.thermalexpansion.satchel.standard4.name=背包 （谐振）
-
-item.thermalexpansion.upgrade.creative.name=创造转换套件
-item.thermalexpansion.upgrade.full1.name=硬化转换套件
-item.thermalexpansion.upgrade.full2.name=强化转换套件
-item.thermalexpansion.upgrade.full3.name=信素转换套件
-item.thermalexpansion.upgrade.full4.name=谐振转换套件
-item.thermalexpansion.upgrade.incremental1.name=硬化升级套件
-item.thermalexpansion.upgrade.incremental2.name=强化升级套件
-item.thermalexpansion.upgrade.incremental3.name=信素升级套件
-item.thermalexpansion.upgrade.incremental4.name=谐振升级套件
 
 itemGroup.thermalexpansion.creativeTab=热能扩展
 itemGroup.thermalexpansion.creativeTabFlorbs=热能扩展|流体球

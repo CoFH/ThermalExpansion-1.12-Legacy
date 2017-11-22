@@ -19,21 +19,21 @@ public class TEItems {
 
 	public static void preInit() {
 
-		itemFrame = new ItemFrame();
-		itemUpgrade = new ItemUpgrade();
-		itemAugment = new ItemAugment();
-
 		itemCapacitor = new ItemCapacitor();
+		itemReservoir = new ItemReservoir();
 		itemSatchel = new ItemSatchel();
+
+		itemFrame = new ItemFrame();
+		itemAugment = new ItemAugment();
 
 		itemFlorb = new ItemFlorb();
 
-		initList.add(itemFrame);
-		initList.add(itemUpgrade);
-		initList.add(itemAugment);
-
 		initList.add(itemCapacitor);
+		initList.add(itemReservoir);
 		initList.add(itemSatchel);
+
+		initList.add(itemFrame);
+		initList.add(itemAugment);
 
 		initList.add(itemFlorb);
 
@@ -55,12 +55,12 @@ public class TEItems {
 	static ArrayList<IInitializer> initList = new ArrayList<>();
 
 	/* REFERENCES */
-	public static ItemFrame itemFrame;
-	public static ItemUpgrade itemUpgrade;
-	public static ItemAugment itemAugment;
-
 	public static ItemCapacitor itemCapacitor;
+	public static ItemReservoir itemReservoir;
 	public static ItemSatchel itemSatchel;
+
+	public static ItemFrame itemFrame;
+	public static ItemAugment itemAugment;
 
 	public static ItemFlorb itemFlorb;
 

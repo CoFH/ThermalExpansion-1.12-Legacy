@@ -88,7 +88,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 				tooltip.add(StringHelper.localize("info.cofh.level") + ": 0 / " + StringHelper.formatNumber(getCapacity(stack)) + " mB");
 			}
 		}
-		// RedstoneControlHelper.addRSControlInformation(stack, tooltip);
+		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}
 
 	@Override

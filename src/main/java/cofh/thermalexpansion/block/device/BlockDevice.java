@@ -190,8 +190,11 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof TileHeatSink) {
+			ItemStack heldItem = player.getHeldItem(hand);
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-			if (FluidHelper.drainItemToHandler(player.getHeldItem(hand), handler, player, hand)) {
+
+			if (FluidHelper.isFluidHandler(heldItem)) {
+				FluidHelper.drainItemToHandler(heldItem, handler, player, hand);
 				return true;
 			}
 		}
@@ -447,7 +450,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 			);
 		}
 		if (enable[Type.DIFFUSER.getMetadata()]) {
-			addShapedRecipe(deviceLexicon,
+			addShapedRecipe(deviceDiffuser,
 					" X ",
 					"YCY",
 					"IPI",

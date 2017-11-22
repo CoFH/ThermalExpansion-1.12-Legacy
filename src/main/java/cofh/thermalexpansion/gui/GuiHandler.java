@@ -19,10 +19,9 @@ public class GuiHandler implements IGuiHandler {
 	@Override
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 
-		BlockPos pos = new BlockPos(x, y, z);
 		switch (id) {
 			case TILE_ID:
-				TileEntity tile = world.getTileEntity(pos);
+				TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
 				if (tile instanceof TileCore) {
 					return ((TileCore) tile).getGuiClient(player.inventory);
 				}

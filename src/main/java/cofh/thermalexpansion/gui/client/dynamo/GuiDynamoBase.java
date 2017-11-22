@@ -75,7 +75,6 @@ public abstract class GuiDynamoBase extends GuiContainerCore {
 			this.mc.player.closeScreen();
 		}
 		redstoneTab.setVisible(baseTile.hasRedstoneControl());
-
 		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 		energyTab.setVisible(baseTile.showEnergyTab());
 		steamTab.setVisible(baseTile.showSteamTab());

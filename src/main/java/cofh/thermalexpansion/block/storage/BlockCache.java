@@ -19,10 +19,10 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.item.ItemUpgrade;
 import cofh.thermalexpansion.render.BakeryCache;
 import cofh.thermalexpansion.util.Utils;
 import cofh.thermalfoundation.item.ItemMaterial;
+import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -137,7 +137,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
 			tile.enchantHolding = (byte) EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
-			tile.locked = stack.getTagCompound().getBoolean("Lock");
+			tile.lock = stack.getTagCompound().getBoolean("Lock");
 
 			if (stack.getTagCompound().hasKey("Item")) {
 				ItemStack stored = ItemHelper.readItemStackFromNBT(stack.getTagCompound().getCompoundTag("Item"));
@@ -186,7 +186,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 			if (player.isSneaking()) {
 				tile.toggleLock();
 
-				if (tile.locked) {
+				if (tile.lock) {
 					world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.2F, 0.8F);
 				} else {
 					world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
@@ -267,7 +267,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 				CoreEnchantments.addEnchantment(retTag, CoreEnchantments.holding, tile.enchantHolding);
 			}
 			if (!tile.storedStack.isEmpty()) {
-				retTag.setBoolean("Lock", tile.locked);
+				retTag.setBoolean("Lock", tile.lock);
 				retTag.setTag("Item", ItemHelper.writeItemStackToNBT(tile.storedStack, tile.getStoredCount(), new NBTTagCompound()));
 			}
 		}

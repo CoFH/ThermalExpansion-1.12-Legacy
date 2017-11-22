@@ -51,7 +51,7 @@ public class GuiBrewer extends GuiPoweredBase {
 		if (!myTile.smallStorage()) {
 			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		}
-		addElement(new ElementFluidTank(this, 32, 27, myTile.getTank(0)).setGauge(0).setAlwaysShow(true).setShort());
+		addElement(new ElementFluidTank(this, 32, 27, myTile.getTank(0)).setGauge(0).setAlwaysShow(true).setSmall());
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)).setGauge(1).setAlwaysShow(true));
 
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 112, 34).setFluid(myTile.getTankFluid(1)).setSize(24, 16));

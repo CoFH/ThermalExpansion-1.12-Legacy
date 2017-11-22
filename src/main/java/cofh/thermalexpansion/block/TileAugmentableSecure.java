@@ -15,6 +15,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.network.PacketTEBase;
+import cofh.thermalfoundation.init.TFProps;
 import com.google.common.base.Strings;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.EntityPlayer;
@@ -585,9 +586,9 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 				if (isCreative) {
 					return false;
 				}
-				if (level >= TEProps.LEVEL_MIN) {
+				if (level >= TFProps.LEVEL_MIN) {
 					isCreative = true;
-					setLevel(TEProps.LEVEL_MAX);
+					setLevel(TFProps.LEVEL_MAX);
 					break;
 				}
 				return false;

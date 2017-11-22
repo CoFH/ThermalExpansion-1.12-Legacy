@@ -14,6 +14,7 @@ import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalfoundation.init.TFProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,12 +36,16 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 	public static final int MIN_BASE_POWER = 10;
 	public static final int MAX_BASE_POWER = 200;
+	public static final int[] POWER_SCALING = { 100, 150, 200, 250, 300 };
+	public static final int[] CUSTOM_POWER_SCALING = { 100, 150, 250, 400, 600 };
 
 	protected static boolean enableSecurity = true;
+	protected static boolean customScaling = false;
 	protected static boolean smallStorage = false;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 	protected static final int ENERGY_BASE = 100;
+	protected static final int POWER_BASE = 100;
 	protected static final int SECONDARY_BASE = 100;
 
 	static {
@@ -53,14 +58,42 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		String comment = "If TRUE, Machines are securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", true, comment);
 
-		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK.";
+		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockMachine.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockMachine.enableClassicRecipes, comment);
 
-		comment = "If TRUE, Machines can be upgraded in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		comment = "If TRUE, Machines can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockMachine.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockMachine.enableUpgradeKitCrafting, comment);
+
+		comment = "If TRUE, Machine RF scaling will use a custom set of values rather than default behavior. The default custom configuration provides a reasonable alternate progression.";
+		customScaling = ThermalExpansion.CONFIG.get(category, "CustomScaling", customScaling, comment);
 
 		comment = "If TRUE, Machines will have much smaller internal energy (RF) storage. Processing speed will no longer scale with internal energy.";
 		smallStorage = ThermalExpansion.CONFIG.get(category, "SmallStorage", smallStorage, comment);
+
+		category = "Machine.CustomScaling";
+		comment = "ADVANCED FEATURE - ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING.\nValues are expressed as a percentage of Base Power; Base Scale Factor is 100 percent.\nValues will be checked for validity and rounded down to the nearest 10.";
+
+		ThermalExpansion.CONFIG.getCategory(category).setComment(comment);
+		boolean validScaling = true;
+
+		for (int i = TFProps.LEVEL_MIN + 1; i <= TFProps.LEVEL_MAX; i++) {
+			CUSTOM_POWER_SCALING[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, CUSTOM_POWER_SCALING[i], POWER_BASE + 10 * i, POWER_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Machines.");
+		}
+		for (int i = 1; i < CUSTOM_POWER_SCALING.length; i++) {
+			CUSTOM_POWER_SCALING[i] /= 10;
+			CUSTOM_POWER_SCALING[i] *= 10;
+
+			if (CUSTOM_POWER_SCALING[i] <= CUSTOM_POWER_SCALING[i - 1]) {
+				validScaling = false;
+			}
+		}
+		if (customScaling) {
+			if (!validScaling) {
+				ThermalExpansion.LOG.error(category + " settings are invalid. They will not be used.");
+			} else {
+				System.arraycopy(CUSTOM_POWER_SCALING, 0, POWER_SCALING, 0, POWER_SCALING.length);
+			}
+		}
 	}
 
 	int processMax;
@@ -161,7 +194,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	/* COMMON METHODS */
 	protected int getBasePower(int level) {
 
-		return ENERGY_CONFIGS[getType()].maxPower + level * ENERGY_CONFIGS[getType()].maxPower / 2;
+		return ENERGY_CONFIGS[getType()].maxPower * POWER_SCALING[MathHelper.clamp(level, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX)] / POWER_BASE;
 	}
 
 	protected int calcEnergy() {

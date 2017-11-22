@@ -8,8 +8,8 @@ import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.util.EnergyContainerItemWrapper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
+import cofh.thermalfoundation.init.TFProps;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
@@ -51,10 +51,10 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	public ItemStack setCreativeTag(ItemStack stack) {
 
 		if (stack.getTagCompound() == null) {
-			setDefaultTag(stack, TEProps.LEVEL_MAX);
+			setDefaultTag(stack, TFProps.LEVEL_MAX);
 		}
 		ReconfigurableHelper.setSideCache(stack, TileCell.CREATIVE_SIDES);
-		EnergyHelper.setDefaultEnergyTag(stack, TileCell.CAPACITY[TEProps.LEVEL_MAX]);
+		EnergyHelper.setDefaultEnergyTag(stack, TileCell.CAPACITY[TFProps.LEVEL_MAX]);
 		stack.getTagCompound().setBoolean("Creative", true);
 		return stack;
 	}
@@ -150,7 +150,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
 		if (isCreative(container)) {
-			return Math.min(maxExtract, TileCell.SEND[TEProps.LEVEL_MAX]);
+			return Math.min(maxExtract, TileCell.SEND[TFProps.LEVEL_MAX]);
 		}
 		int level = getLevel(container);
 

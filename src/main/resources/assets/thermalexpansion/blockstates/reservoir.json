@@ -1,0 +1,62 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "builtin/generated",
+		"textures": {
+			"layer0": "thermalexpansion:items/capacitor/capacitor_0",
+			"layer1": "thermalexpansion:items/capacitor/mode_0_0"
+		},
+		"transform": "forge:default-item"
+	},
+	"variants": {
+		"mode": {
+			"0": {
+				"textures": {
+					"layer1": "thermalexpansion:items/capacitor/mode_0_0"
+				}
+			},
+			"1": {
+				"textures": {
+					"layer1": "thermalexpansion:items/capacitor/mode_0_1"
+				}
+			},
+			"2": {
+				"textures": {
+					"layer1": "thermalexpansion:items/capacitor/mode_0_2"
+				}
+			}
+		},
+		"type": {
+			"standard0": {
+				"textures": {
+					"layer0": "thermalexpansion:items/capacitor/capacitor_0"
+				}
+			},
+			"standard1": {
+				"textures": {
+					"layer0": "thermalexpansion:items/capacitor/capacitor_1"
+				}
+			},
+			"standard2": {
+				"textures": {
+					"layer0": "thermalexpansion:items/capacitor/capacitor_2"
+				}
+			},
+			"standard3": {
+				"textures": {
+					"layer0": "thermalexpansion:items/capacitor/capacitor_3"
+				}
+			},
+			"standard4": {
+				"textures": {
+					"layer0": "thermalexpansion:items/capacitor/capacitor_4"
+				}
+			},
+			"creative": {
+				"textures": {
+					"layer0": "thermalexpansion:items/capacitor/capacitor_c"
+				}
+			}
+		}
+	}
+}

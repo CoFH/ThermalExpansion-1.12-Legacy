@@ -16,9 +16,9 @@ import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.item.ItemUpgrade;
 import cofh.thermalexpansion.render.BakeryDynamo;
 import cofh.thermalfoundation.item.ItemMaterial;
+import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
@@ -231,8 +231,11 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
 
 		if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+			ItemStack heldItem = player.getHeldItem(hand);
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-			if (FluidHelper.drainItemToHandler(player.getHeldItem(hand), handler, player, hand)) {
+
+			if (FluidHelper.isFluidHandler(heldItem)) {
+				FluidHelper.drainItemToHandler(heldItem, handler, player, hand);
 				return true;
 			}
 		}

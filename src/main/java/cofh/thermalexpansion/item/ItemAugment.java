@@ -373,16 +373,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "blockGlassHardened",
 				'Y', ItemFertilizer.fertilizerRich
 		);
-		addShapedRecipe(machineInsolatorMonoculture,
-				" G ",
-				"ICI",
-				"YXY",
-				'C', ItemMaterial.powerCoilElectrum,
-				'G', "gearSignalum",
-				'I', "plateNickel",
-				'X', Blocks.HOPPER,
-				'Y', ItemFertilizer.fertilizerFlux
-		);
 		addShapedRecipe(machineInsolatorTree,
 				" G ",
 				"ICI",
@@ -392,6 +382,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateLumium",
 				'X', Blocks.PISTON,
 				'Y', "dustAerotheum"
+		);
+		addShapedRecipe(machineInsolatorMonoculture,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearSignalum",
+				'I', "plateNickel",
+				'X', Blocks.HOPPER,
+				'Y', ItemFertilizer.fertilizerFlux
 		);
 
 		addShapedRecipe(machineCompactorMint,
@@ -457,6 +457,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "ingotLead",
 				'Y', "dustRedstone"
 		);
+		addShapedRecipe(machineChargerRepair,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearIron",
+				'I', "blockGlassHardened",
+				'X', "blockIron",
+				'Y', "dustRedstone"
+		);
 
 		addShapedRecipe(machineBrewerReagent,
 				" G ",
@@ -468,6 +478,17 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "blockGlassHardened",
 				'Y', "dustGlowstone",
 				'Z', "dustRedstone"
+		);
+
+		addShapedRecipe(machineEnchanterEmpowered,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearGold",
+				'I', "gemDiamond",
+				'X', "blockLapis",
+				'Y', "dustGlowstone"
 		);
 
 		addShapedRecipe(machineExtruderNoWater,
@@ -740,9 +761,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineSmelterPyrotheum;
 	public static ItemStack machineSmelterFlux;
 
-	public static ItemStack machineInsolatorMonoculture;
 	public static ItemStack machineInsolatorFertilizer;
 	public static ItemStack machineInsolatorTree;
+	public static ItemStack machineInsolatorMonoculture;
 
 	public static ItemStack machineCompactorMint;
 

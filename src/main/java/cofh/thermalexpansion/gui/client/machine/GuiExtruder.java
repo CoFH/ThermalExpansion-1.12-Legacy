@@ -51,8 +51,8 @@ public class GuiExtruder extends GuiPoweredBase {
 		if (!myTile.smallStorage()) {
 			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		}
-		coldTank = (ElementFluidTank) addElement(new ElementFluidTank(this, 161, 9, myTile.getTank(1)).setAlwaysShow(true).setThin());
-		hotTank = (ElementFluidTank) addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(0)).setAlwaysShow(true).setThin());
+		coldTank = (ElementFluidTank) addElement(new ElementFluidTank(this, 161, 9, myTile.getTank(1)).setAlwaysShow(true).setThin(true));
+		hotTank = (ElementFluidTank) addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(0)).setAlwaysShow(true).setThin(true));
 
 		progressLava = (ElementFluid) addElement(new ElementFluid(this, 112, 49).setFluid(FluidRegistry.LAVA).setSize(24, 8));
 		progressWater = (ElementFluid) addElement(new ElementFluid(this, 112, 57).setFluid(FluidRegistry.WATER).setSize(24, 8));
@@ -68,9 +68,9 @@ public class GuiExtruder extends GuiPoweredBase {
 		slotOutput.setVisible(myTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
 		if (myTile.augmentNoWater()) {
-			hotTank.setDefault().drawTank(!slotInput.isVisible());
+			hotTank.setThin(false).drawTank(!slotInput.isVisible());
 		} else {
-			hotTank.setThin().drawTank(false);
+			hotTank.setThin(true).drawTank(false);
 		}
 		coldTank.setVisible(!myTile.augmentNoWater());
 

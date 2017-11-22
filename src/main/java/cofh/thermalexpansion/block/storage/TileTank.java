@@ -6,7 +6,10 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentableSecure;
+import cofh.thermalexpansion.gui.client.storage.GuiTank;
+import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -46,15 +49,15 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		String category = "Storage.Tank";
 		String comment = "If TRUE, Tanks are securable.";
-		// enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", true, comment);
+		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", true, comment);
 
 		comment = "If TRUE, Tanks are enabled.";
 		BlockTank.enable = ThermalExpansion.CONFIG.get(category, "Enable", true, comment);
 
-		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK.";
+		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockTank.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockTank.enableClassicRecipes, comment);
 
-		comment = "If TRUE, Tanks can be upgraded in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		comment = "If TRUE, Tanks can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockTank.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockTank.enableUpgradeKitCrafting, comment);
 
 		int capacity = CAPACITY_BASE;
@@ -76,6 +79,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	boolean adjacentTanks[] = new boolean[2];
 
 	private FluidTankCore tank = new FluidTankCore(getCapacity(0, 0));
+	public boolean lock = false;
 
 	@Override
 	public String getTileName() {
@@ -149,8 +153,9 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	@Override
 	public void update() {
 
-		transferFluid();
-
+		if (redstoneControlOrDisable()) {
+			transferFluid();
+		}
 		if (timeCheck()) {
 			int curScale = getScaledFluidStored(15);
 			if (curScale != compareTracker) {
@@ -232,19 +237,15 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		boolean curAutoOutput = enableAutoOutput;
 
 		adjacentTanks[0] = BlockHelper.getAdjacentTileEntity(this, EnumFacing.DOWN) instanceof TileTank;
-		enableAutoOutput |= adjacentTanks[0];
-
 		adjacentTanks[1] = BlockHelper.getAdjacentTileEntity(this, EnumFacing.UP) instanceof TileTank;
 
+		if (!lock && getTankFluid() == null) {
+			enableAutoOutput |= adjacentTanks[0];
+		}
 		if (packet && curAutoOutput != enableAutoOutput) {
 			sendTilePacket(Side.CLIENT);
 		}
 		cached = true;
-	}
-
-	public int getTankCapacity() {
-
-		return tank.getCapacity();
 	}
 
 	public int getTankFluidAmount() {
@@ -258,7 +259,6 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		boolean sendUpdate = false;
 
 		int curDisplayLevel = 0;
-		int curLight = getLightValue();
 
 		if (tank.getFluidAmount() > 0) {
 			curDisplayLevel = (int) (tank.getFluidAmount() / (float) getCapacity(level, enchantHolding) * (RENDER_LEVELS - 1));
@@ -285,9 +285,21 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 	/* GUI METHODS */
 	@Override
+	public Object getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiTank(inventory, this);
+	}
+
+	@Override
+	public Object getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerTEBase(inventory, this);
+	}
+
+	@Override
 	public boolean hasGui() {
 
-		return false;
+		return true;
 	}
 
 	/* NBT METHODS */
@@ -299,6 +311,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		super.readFromNBT(nbt);
 
 		tank.readFromNBT(nbt);
+		lock = tank.isLocked();
 	}
 
 	@Override
@@ -313,7 +326,43 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 	/* NETWORK METHODS */
 
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addBool(lock);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		lock = payload.getBool();
+
+		if (lock) {
+			tank.setLocked();
+		} else {
+			tank.clearLocked();
+		}
+	}
+
 	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addFluidStack(tank.getFluid());
+		payload.addBool(lock);
+
+		return payload;
+	}
+
 	@Override
 	public PacketCoFHBase getTilePacket() {
 
@@ -321,8 +370,18 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		payload.addByte(enchantHolding);
 		payload.addFluidStack(tank.getFluid());
+		payload.addBool(lock);
 
 		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		tank.setFluid(payload.getFluidStack());
+		lock = payload.getBool();
 	}
 
 	@Override
@@ -333,6 +392,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		enchantHolding = payload.getByte();
 		tank.setFluid(payload.getFluidStack());
+		lock = payload.getBool();
 
 		callBlockUpdate();
 	}

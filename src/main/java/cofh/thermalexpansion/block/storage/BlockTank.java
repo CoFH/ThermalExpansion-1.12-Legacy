@@ -13,9 +13,9 @@ import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.item.ItemUpgrade;
 import cofh.thermalexpansion.render.BakeryTank;
 import cofh.thermalfoundation.item.ItemMaterial;
+import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -110,6 +110,12 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 
 			if (fluid != null) {
 				tile.getTank().setFluid(fluid);
+				tile.lock = stack.getTagCompound().getBoolean("Lock");
+				if (tile.lock) {
+					tile.getTank().setLocked();
+				} else {
+					tile.getTank().clearLocked();
+				}
 			}
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
@@ -148,12 +154,14 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-		ItemStack heldItem = player.getHeldItem(hand);
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile != null) {
+			ItemStack heldItem = player.getHeldItem(hand);
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-			if (FluidHelper.isFluidHandler(heldItem) && FluidHelper.interactWithHandler(heldItem, handler, player, hand)) {
+
+			if (FluidHelper.isFluidHandler(heldItem)) {
+				FluidHelper.interactWithHandler(heldItem, handler, player, hand);
 				return true;
 			}
 		}
@@ -186,6 +194,7 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 			FluidStack fluid = tile.getTankFluid();
 			if (fluid != null) {
 				retTag.setTag("Fluid", fluid.writeToNBT(new NBTTagCompound()));
+				retTag.setBoolean("Lock", tile.lock);
 			}
 		}
 		return retTag;

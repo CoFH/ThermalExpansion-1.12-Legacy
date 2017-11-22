@@ -16,7 +16,6 @@ import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.item.ModelFlorb;
 import cofh.thermalexpansion.util.BehaviorFlorbDispense;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
@@ -193,7 +192,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 
 		for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
 			if (fluid.canBePlacedInWorld()) {
-				if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
+				if (fluid.getTemperature() < CoreProps.MAGMATIC_TEMPERATURE) {
 					addFlorb(ItemHelper.cloneStack(florb), fluid);
 				} else {
 					addFlorb(ItemHelper.cloneStack(florbMagmatic), fluid);
@@ -202,7 +201,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 					continue;
 				}
 				if (CONFIG_FLORBS.get("Whitelist", fluid.getName(), true)) {
-					if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
+					if (fluid.getTemperature() < CoreProps.MAGMATIC_TEMPERATURE) {
 						TransposerManager.addFillRecipe(1600, ItemFlorb.florb, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
 					} else {
 						TransposerManager.addFillRecipe(1600, ItemFlorb.florbMagmatic, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);

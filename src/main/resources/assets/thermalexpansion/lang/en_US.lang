@@ -1,10 +1,5 @@
 #en_US
 
-chat.thermalexpansion.augment.install.failure=Unable to install augment.
-chat.thermalexpansion.augment.install.success=Augment successfully installed!
-chat.thermalexpansion.upgrade.install.failure=Unable to upgrade block.
-chat.thermalexpansion.upgrade.install.success=Block successfully upgraded!
-
 gui.thermalexpansion.device.fluid_buffer.tankLocked=Tank Locked
 gui.thermalexpansion.device.fluid_buffer.tankUnlocked=Tank Unlocked
 
@@ -45,7 +40,8 @@ info.thermalexpansion.augment.0=Augment
 
 info.thermalexpansion.augment.dynamoBoiler.0=Dynamos: Output Specialization
 info.thermalexpansion.augment.dynamoBoiler.a.0=Converts an applicable Dynamo into a Steam Boiler.
-info.thermalexpansion.augment.dynamoBoiler.a.1=Increases fuel efficiency.
+info.thermalexpansion.augment.dynamoBoiler.a.1=Increases effective fuel efficiency.
+info.thermalexpansion.augment.dynamoBoiler.b.0=Generation cannot be throttled.
 info.thermalexpansion.augment.dynamoBoiler.c.0=Steam is produced instead of RF.
 
 info.thermalexpansion.augment.dynamoCoilDuct.0=Dynamos: Side Accessibility
@@ -81,7 +77,7 @@ info.thermalexpansion.augment.dynamoReactantElemental.b.0=Only Elemental Reactio
 
 info.thermalexpansion.augment.dynamoSteamTurbine.0=Steam Dynamo: Specialization
 info.thermalexpansion.augment.dynamoSteamTurbine.a.0=Greatly increases power generation.
-info.thermalexpansion.augment.dynamoSteamTurbine.b.0=Steam must be provided from an external source.
+info.thermalexpansion.augment.dynamoSteamTurbine.c.0=Steam must be provided from an external source.
 
 info.thermalexpansion.augment.dynamoThrottle.0=Dynamos: Advanced Throttle
 info.thermalexpansion.augment.dynamoThrottle.a.0=Prevents RF loss due to flux coil saturation.
@@ -283,13 +279,6 @@ info.thermalexpansion.storage.satchel=Collects and holds items. Can be secured.
 info.thermalexpansion.storage.strongbox=Stores items. Can be secured.
 info.thermalexpansion.storage.tank=Stores a large amount of a fluid.
 
-info.thermalexpansion.upgrade.creative.0=Converts a block to a Creative version.
-info.thermalexpansion.upgrade.creative.1=May be used on any tier of block.
-info.thermalexpansion.upgrade.full.0=Fully upgrades a block to a given tier.
-info.thermalexpansion.upgrade.full.1=May be used on any lower tier.
-info.thermalexpansion.upgrade.incremental.0=Incrementally upgrades a block.
-info.thermalexpansion.upgrade.incremental.1=Requires tier immediately preceding.
-
 item.thermalexpansion.augment.apparatusDepth.name=WIP
 item.thermalexpansion.augment.apparatusRadius.name=WIP
 
@@ -357,6 +346,13 @@ item.thermalexpansion.frame.frameDevice.name=Device Frame
 item.thermalexpansion.frame.frameLight.name=Illuminator Frame
 item.thermalexpansion.frame.frameMachine.name=Machine Frame
 
+item.thermalexpansion.reservoir.creative.name=Reservoir (Creative)
+item.thermalexpansion.reservoir.standard0.name=Reservoir (Basic)
+item.thermalexpansion.reservoir.standard1.name=Reservoir (Hardened)
+item.thermalexpansion.reservoir.standard2.name=Reservoir (Reinforced)
+item.thermalexpansion.reservoir.standard3.name=Reservoir (Signalum)
+item.thermalexpansion.reservoir.standard4.name=Reservoir (Resonant)
+
 item.thermalexpansion.satchel.creative.name=Satchel (Creative)
 item.thermalexpansion.satchel.name=Satchel
 item.thermalexpansion.satchel.standard0.name=Satchel (Basic)
@@ -364,16 +360,6 @@ item.thermalexpansion.satchel.standard1.name=Satchel (Hardened)
 item.thermalexpansion.satchel.standard2.name=Satchel (Reinforced)
 item.thermalexpansion.satchel.standard3.name=Satchel (Signalum)
 item.thermalexpansion.satchel.standard4.name=Satchel (Resonant)
-
-item.thermalexpansion.upgrade.creative.name=Creative Conversion Kit
-item.thermalexpansion.upgrade.full1.name=Hardened Conversion Kit
-item.thermalexpansion.upgrade.full2.name=Reinforced Conversion Kit
-item.thermalexpansion.upgrade.full3.name=Signalum Conversion Kit
-item.thermalexpansion.upgrade.full4.name=Resonant Conversion Kit
-item.thermalexpansion.upgrade.incremental1.name=Hardened Upgrade Kit
-item.thermalexpansion.upgrade.incremental2.name=Reinforced Upgrade Kit
-item.thermalexpansion.upgrade.incremental3.name=Signalum Upgrade Kit
-item.thermalexpansion.upgrade.incremental4.name=Resonant Upgrade Kit
 
 itemGroup.thermalexpansion.creativeTab=Thermal Expansion
 itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florbs
@@ -491,6 +477,9 @@ tab.thermalexpansion.storage.satchel.0=It's a satchel. It lets you carry more th
 tab.thermalexpansion.storage.satchel.1=Will not store some objects.
 
 tab.thermalexpansion.storage.strongbox.0=It's a box! It stores things. Well, most things.
+
+tab.thermalexpansion.storage.tank.0=It's a tank! It stores fluid.
+tab.thermalexpansion.storage.tank.1=Can automatically output from the bottom side.
 
 tile.thermalexpansion.apparatus.breaker.name=Terrain Smasher
 tile.thermalexpansion.apparatus.collector.name=Acquisition Apparatus

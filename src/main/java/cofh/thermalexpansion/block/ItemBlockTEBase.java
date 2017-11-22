@@ -4,7 +4,7 @@ import cofh.api.item.ICreativeItem;
 import cofh.api.item.INBTCopyIngredient;
 import cofh.core.block.ItemBlockCore;
 import cofh.core.util.helpers.StringHelper;
-import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalfoundation.init.TFProps;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -53,7 +53,7 @@ public abstract class ItemBlockTEBase extends ItemBlockCore implements INBTCopyI
 	public ItemStack setCreativeTag(ItemStack stack) {
 
 		if (stack.getTagCompound() == null) {
-			setDefaultTag(stack, TEProps.LEVEL_MAX);
+			setDefaultTag(stack, TFProps.LEVEL_MAX);
 		}
 		stack.getTagCompound().setBoolean("Creative", true);
 		return stack;

@@ -61,7 +61,7 @@ public class GuiCell extends GuiContainerCore {
 		if (!myInfo.isEmpty()) {
 			addTab(new TabInfo(this, myInfo));
 		}
-		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
+		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()).setInfinite(baseTile.isCreative));
 
 		ElementSimple infoInput = (ElementSimple) new ElementSimple(this, 33, 16).setSize(20, 20).setTexture(TEX_INFO_INPUT, 20, 20);
 		ElementSimple infoOutput = (ElementSimple) new ElementSimple(this, 123, 16).setSize(20, 20).setTexture(TEX_INFO_OUTPUT, 20, 20);
@@ -89,7 +89,6 @@ public class GuiCell extends GuiContainerCore {
 			this.mc.player.closeScreen();
 		}
 		redstoneTab.setVisible(baseTile.hasRedstoneControl());
-
 		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 	}
 

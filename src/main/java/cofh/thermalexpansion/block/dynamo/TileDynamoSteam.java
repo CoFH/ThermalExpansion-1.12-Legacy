@@ -59,8 +59,8 @@ public class TileDynamoSteam extends TileDynamoBase {
 		String comment = "Adjust this value to change the Energy generation (in RF/t) for a Steam Dynamo. This base value will scale with block level and Augments.";
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
 
-		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
-		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower, smallStorage);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
 	public static final int STEAM_RF = 25000;
@@ -91,7 +91,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	protected boolean canStart() {
 
 		if (augmentTurbine) {
-			return tank.getFluidAmount() >= STEAM_MINIMUM;
+			return tank.getFluidAmount() > STEAM_MINIMUM;
 		}
 		return (waterRF > 0 || tank.getFluidAmount() >= fluidAmount) && (fuelRF > 0 || SteamManager.getFuelEnergy(inventory[0]) > 0);
 	}
@@ -100,7 +100,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	protected boolean canFinish() {
 
 		if (augmentTurbine) {
-			return tank.getFluidAmount() < STEAM_MINIMUM;
+			return tank.getFluidAmount() <= STEAM_MINIMUM || !redstoneControlOrDisable();
 		}
 		return fuelRF <= 0 || waterRF <= 0;
 	}
@@ -129,7 +129,6 @@ public class TileDynamoSteam extends TileDynamoBase {
 			fuelRF -= energyConfig.maxPower;
 			waterRF -= energyConfig.maxPower;
 			transferSteam();
-
 			return energyConfig.maxPower;
 		}
 		if (augmentTurbine) {
@@ -137,7 +136,6 @@ public class TileDynamoSteam extends TileDynamoBase {
 			energyStorage.modifyEnergyStored(lastEnergy);
 			tank.modifyFluidStored(-lastEnergy / 2);
 			transferEnergy();
-
 			return lastEnergy;
 		}
 		lastEnergy = calcEnergy();
@@ -145,7 +143,6 @@ public class TileDynamoSteam extends TileDynamoBase {
 		fuelRF -= lastEnergy;
 		waterRF -= lastEnergy;
 		transferEnergy();
-
 		return lastEnergy;
 	}
 
@@ -153,7 +150,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	protected void processIdle() {
 
 		if (augmentTurbine) {
-			tank.modifyFluidStored(-500);
+			tank.modifyFluidStored(-250);
 		}
 	}
 

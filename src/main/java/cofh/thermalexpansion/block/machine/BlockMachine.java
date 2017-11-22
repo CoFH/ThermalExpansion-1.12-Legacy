@@ -16,7 +16,6 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
-import cofh.thermalexpansion.item.ItemUpgrade;
 import cofh.thermalexpansion.plugins.jei.crafting.centrifuge.CentrifugeRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.compactor.CompactorRecipeCategory;
@@ -31,6 +30,7 @@ import cofh.thermalexpansion.plugins.jei.crafting.transposer.TransposerRecipeCat
 import cofh.thermalexpansion.render.BakeryMachine;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
+import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -222,8 +222,11 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (!(tile instanceof TileTransposer) && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+			ItemStack heldItem = player.getHeldItem(hand);
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-			if (FluidHelper.drainItemToHandler(player.getHeldItem(hand), handler, player, hand)) {
+
+			if (FluidHelper.isFluidHandler(heldItem)) {
+				FluidHelper.drainItemToHandler(heldItem, handler, player, hand);
 				return true;
 			}
 		}

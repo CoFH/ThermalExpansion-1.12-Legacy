@@ -24,7 +24,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -67,8 +66,8 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	}
 
 	private static final int TIME_CONSTANT = 40;
-	private static int genRate = 25 * TIME_CONSTANT;
-	private static int genRatePassive = TIME_CONSTANT;
+	private static int genRate = 100 * TIME_CONSTANT;
+	private static int genRatePassive = 2 * TIME_CONSTANT;
 	private static boolean passiveGen = false;
 
 	private int adjacentSources = -1;
@@ -166,7 +165,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 			return;
 		}
 		int side;
-		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), Fluid.BUCKET_VOLUME * 2));
+		FluidStack output = new FluidStack(tank.getFluid(), tank.getFluidAmount());
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1) {

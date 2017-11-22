@@ -56,10 +56,10 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		comment = "If TRUE, Caches are enabled.";
 		BlockCache.enable = ThermalExpansion.CONFIG.get(category, "Enable", true, comment);
 
-		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK.";
+		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockCache.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockCache.enableClassicRecipes, comment);
 
-		comment = "If TRUE, Caches can be upgraded in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		comment = "If TRUE, Caches can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockCache.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockCache.enableUpgradeKitCrafting, comment);
 
 		int capacity = CAPACITY_BASE;
@@ -77,7 +77,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	byte facing = 3;
 
 	public byte enchantHolding;
-	public boolean locked;
+	public boolean lock;
 
 	int cacheStackSize;
 	int maxCacheStackSize;
@@ -155,13 +155,13 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 	public boolean toggleLock() {
 
-		locked = !locked;
+		lock = !lock;
 
-		if (getStoredCount() <= 0 && !locked) {
+		if (getStoredCount() <= 0 && !lock) {
 			clearInventory();
 		}
 		sendTilePacket(Side.CLIENT);
-		return locked;
+		return lock;
 	}
 
 	public int getStoredCount() {
@@ -175,7 +175,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			return ItemStack.EMPTY;
 		}
 		if (isCreative) {
-			if (!simulate && !locked) {
+			if (!simulate && !lock) {
 				setStoredItemType(stack, getCapacity(level, enchantHolding));
 			}
 			return stack;
@@ -232,7 +232,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 	protected void clearInventory() {
 
-		if (!locked) {
+		if (!lock) {
 			storedStack = ItemStack.EMPTY;
 			cacheStackSize = 0;
 			sendTilePacket(Side.CLIENT);
@@ -260,6 +260,18 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	}
 
 	/* GUI METHODS */
+	//	@Override
+	//	public Object getGuiClient(InventoryPlayer inventory) {
+	//
+	//		return new GuiCache(inventory, this);
+	//	}
+	//
+	//	@Override
+	//	public Object getGuiServer(InventoryPlayer inventory) {
+	//
+	//		return new ContainerCache(inventory, this);
+	//	}
+
 	@Override
 	public boolean hasGui() {
 
@@ -275,7 +287,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		super.readFromNBT(nbt);
 
 		facing = nbt.getByte("Facing");
-		locked = nbt.getBoolean("Lock");
+		lock = nbt.getBoolean("Lock");
 
 		if (nbt.hasKey("Item")) {
 			storedStack = ItemHelper.readItemStackFromNBT(nbt.getCompoundTag("Item"));
@@ -293,7 +305,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 		nbt.setByte("Facing", facing);
 		nbt.setByte("EncHolding", enchantHolding);
-		nbt.setBoolean("Lock", locked);
+		nbt.setBoolean("Lock", lock);
 
 		if (storedStack != ItemStack.EMPTY) {
 			nbt.setTag("Item", ItemHelper.writeItemStackToNBT(storedStack, new NBTTagCompound()));
@@ -310,7 +322,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 		payload.addByte(facing);
 		payload.addByte(enchantHolding);
-		payload.addBool(locked);
+		payload.addBool(lock);
 		payload.addItemStack(storedStack);
 
 		if (storedStack != ItemStack.EMPTY) {
@@ -327,7 +339,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 		facing = payload.getByte();
 		enchantHolding = payload.getByte();
-		locked = payload.getBool();
+		lock = payload.getBool();
 		storedStack = payload.getItemStack();
 
 		if (storedStack != ItemStack.EMPTY) {
@@ -552,7 +564,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		} else {
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty")));
 		}
-		info.add(new TextComponentString(locked ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
+		info.add(new TextComponentString(lock ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
 	}
 
 	/* IInventoryRetainer */

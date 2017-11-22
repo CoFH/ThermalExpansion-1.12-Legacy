@@ -16,6 +16,7 @@ import cofh.thermalexpansion.block.storage.TileCache;
 import cofh.thermalexpansion.block.storage.TileCell;
 import cofh.thermalexpansion.block.storage.TileTank;
 import cofh.thermalexpansion.item.ItemFlorb;
+import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -45,13 +46,13 @@ public class TEProps {
 		category = "Upgrades";
 
 		comment = "This sets the minimum upgradeable block tier for Automatic Input functionality.";
-		levelAutoInput = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelAutoInput", category, levelAutoInput, LEVEL_MIN, LEVEL_MAX, comment);
+		levelAutoInput = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelAutoInput", category, levelAutoInput, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX, comment);
 
 		comment = "This sets the minimum upgradeable block tier for Automatic Output functionality.";
-		levelAutoOutput = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelAutoOutput", category, levelAutoOutput, LEVEL_MIN, LEVEL_MAX, comment);
+		levelAutoOutput = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelAutoOutput", category, levelAutoOutput, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX, comment);
 
 		comment = "This sets the minimum upgradeable block tier for Redstone Control functionality.";
-		levelRedstoneControl = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelRedstoneControl", category, levelRedstoneControl, LEVEL_MIN, LEVEL_MAX, comment);
+		levelRedstoneControl = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelRedstoneControl", category, levelRedstoneControl, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX, comment);
 	}
 
 	private static void configClient() {
@@ -72,7 +73,7 @@ public class TEProps {
 		category = "Interface.CreativeTabs";
 
 		comment = "Set the default level for the Blocks shown in the Creative Tab, if all levels are not shown.";
-		creativeTabLevel = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getInt("DefaultLevel", category, creativeTabLevel, LEVEL_MIN, LEVEL_MAX, comment);
+		creativeTabLevel = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getInt("DefaultLevel", category, creativeTabLevel, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX, comment);
 
 		comment = "If TRUE, all regular levels for a given Block will show in the Creative Tab.";
 		creativeTabShowAllLevels = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ShowAllBlockLevels", category, creativeTabShowAllLevels, comment);
@@ -141,10 +142,6 @@ public class TEProps {
 	public static final int MAX_FLUID_SMALL = Fluid.BUCKET_VOLUME * 4;
 	public static final int MAX_FLUID_MEDIUM = Fluid.BUCKET_VOLUME * 8;
 	public static final int MAX_FLUID_LARGE = Fluid.BUCKET_VOLUME * 10;
-	public static final int MAGMATIC_TEMPERATURE = 1000;
-
-	public static final byte LEVEL_MIN = 0;
-	public static final byte LEVEL_MAX = 4;
 
 	public static boolean creativeTabShowAllLevels = false;
 	public static boolean creativeTabShowCreative = false;

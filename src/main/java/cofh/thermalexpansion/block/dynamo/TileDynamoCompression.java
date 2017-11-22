@@ -59,8 +59,8 @@ public class TileDynamoCompression extends TileDynamoBase {
 		String comment = "Adjust this value to change the Energy generation (in RF/t) for a Compression Dynamo. This base value will scale with block level and Augments.";
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
 
-		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
-		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower, smallStorage);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
 	private FluidTankCore fuelTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);

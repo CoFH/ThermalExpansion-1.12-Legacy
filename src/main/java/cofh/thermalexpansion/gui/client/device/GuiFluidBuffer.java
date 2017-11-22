@@ -48,9 +48,9 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		addElement(infoInput);
 		addElement(infoOutput);
 
-		addElement(new ElementFluidTank(this, 62, 21, myTile.getTank(0)).setGauge(0).setAlwaysShow(true).setShort());
-		addElement(new ElementFluidTank(this, 80, 21, myTile.getTank(1)).setGauge(0).setAlwaysShow(true).setShort());
-		addElement(new ElementFluidTank(this, 98, 21, myTile.getTank(2)).setGauge(0).setAlwaysShow(true).setShort());
+		addElement(new ElementFluidTank(this, 62, 19, myTile.getTank(0)).setGauge(0).setAlwaysShow(true).setSmall());
+		addElement(new ElementFluidTank(this, 80, 19, myTile.getTank(1)).setGauge(0).setAlwaysShow(true).setSmall());
+		addElement(new ElementFluidTank(this, 98, 19, myTile.getTank(2)).setGauge(0).setAlwaysShow(true).setSmall());
 
 		decInput = new ElementButton(this, 19, 56, "DecInput", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 		incInput = new ElementButton(this, 35, 56, "IncInput", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
@@ -63,7 +63,7 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		addElement(incOutput);
 
 		for (int i = 0; i < lock.length; i++) {
-			lock[i] = new ElementButton(this, 62 + i * 18, 55, "Lock" + i, 176, 48, 176, 64, 176, 80, 16, 16, TEX_PATH).setToolTipLocalized(true);
+			lock[i] = new ElementButton(this, 62 + i * 18, 54, "Lock" + i, 176, 48, 176, 64, 176, 80, 16, 16, TEX_PATH).setToolTipLocalized(true);
 			addElement(lock[i]);
 		}
 	}
@@ -189,7 +189,7 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		} else if (buttonName.equalsIgnoreCase("Lock0")) {
 			if (myTile.locks[0]) {
 				myTile.locks[0] = false;
-				pitch = 0.6F;
+				pitch = 0.4F;
 			} else {
 				myTile.locks[0] = true;
 				pitch = 0.8F;
@@ -197,7 +197,7 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		} else if (buttonName.equalsIgnoreCase("Lock1")) {
 			if (myTile.locks[1]) {
 				myTile.locks[1] = false;
-				pitch = 0.6F;
+				pitch = 0.4F;
 			} else {
 				myTile.locks[1] = true;
 				pitch = 0.8F;
@@ -205,7 +205,7 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		} else if (buttonName.equalsIgnoreCase("Lock2")) {
 			if (myTile.locks[2]) {
 				myTile.locks[2] = false;
-				pitch = 0.6F;
+				pitch = 0.4F;
 			} else {
 				myTile.locks[2] = true;
 				pitch = 0.8F;

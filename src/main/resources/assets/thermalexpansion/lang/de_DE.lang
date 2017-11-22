@@ -23,11 +23,6 @@ achievement.thermalexpansion.machineTransposer=Fluidynamik
 achievement.thermalexpansion.welcome.desc=Willkommen zu Thermal Expansion!
 achievement.thermalexpansion.welcome=Die Welt dehnt sich aus
 
-chat.thermalexpansion.augment.install.failure=Verbesserung konnte nicht installiert werden.
-chat.thermalexpansion.augment.install.success=Verbesserung erfolgreich installiert!
-chat.thermalexpansion.upgrade.install.failure=Upgrade fehlgeschlagen.
-chat.thermalexpansion.upgrade.install.success=Upgrade erfolgreich!
-
 gui.thermalexpansion.jei.category.dynamo.reactant.fluid=Reaktordynamo (Brennstoff)
 gui.thermalexpansion.jei.category.dynamo.reactant.solid=Reaktordynamo (Reaktant)
 gui.thermalexpansion.jei.compactor.modeMint=Prägen
@@ -133,16 +128,6 @@ item.thermalexpansion.frame.frameCell.name=Energiezellenrahmen
 item.thermalexpansion.frame.frameDevice.name=Geräterahmen
 item.thermalexpansion.frame.frameLight.name=Illuminatorrahmen
 item.thermalexpansion.frame.frameMachine.name=Maschinenrahmen
-
-item.thermalexpansion.upgrade.creative.name=Kreativ-Konversionsbausatz
-item.thermalexpansion.upgrade.full1.name=Gehärteter Konversionsbausatz
-item.thermalexpansion.upgrade.full2.name=Verstärkter Konversionsbausatz
-item.thermalexpansion.upgrade.full3.name=Signalumkonversionsbausatz
-item.thermalexpansion.upgrade.full4.name=Resonanter Konversionsbausatz
-item.thermalexpansion.upgrade.incremental1.name=Gehärteter Upgrade-Bausatz
-item.thermalexpansion.upgrade.incremental2.name=Verstärkter Upgrade-Bausatz
-item.thermalexpansion.upgrade.incremental3.name=Signalum-Upgrade-Bausatz
-item.thermalexpansion.upgrade.incremental4.name=Resonanter Upgrade-Bausatz
 
 itemGroup.thermalexpansion.creativeTab=Thermal Expansion
 itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florbs

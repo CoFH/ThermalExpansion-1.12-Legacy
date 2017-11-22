@@ -96,7 +96,7 @@
 			},
 			"machinerefineryoil": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_refinery_oil"
 				}
 			},
 			"machinerefinerypotion": {
@@ -111,7 +111,7 @@
 			},
 			"machinechargerrepair": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_charger_repair"
 				}
 			},
 			"machinebrewerreagent": {

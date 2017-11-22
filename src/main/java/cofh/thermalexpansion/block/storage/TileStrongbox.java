@@ -53,10 +53,10 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 		comment = "If TRUE, Strongboxes are enabled.";
 		BlockStrongbox.enable = ThermalExpansion.CONFIG.get(category, "Enable", true, comment);
 
-		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK.";
+		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockStrongbox.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockStrongbox.enableClassicRecipes, comment);
 
-		comment = "If TRUE, Strongboxes can be upgraded in a Crafting Table using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
+		comment = "If TRUE, Strongboxes can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockStrongbox.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockStrongbox.enableUpgradeKitCrafting, comment);
 	}
 

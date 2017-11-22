@@ -12,6 +12,8 @@ import cofh.core.util.core.IInitializer;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -26,15 +28,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
@@ -63,11 +69,11 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		if (isInCreativeTab(tab)) {
-			for (int metadata : itemList) {
-				items.add(new ItemStack(this, 1, metadata));
-			}
-		}
+		//		if (isInCreativeTab(tab)) {
+		//			for (int metadata : itemList) {
+		//				items.add(new ItemStack(this, 1, metadata));
+		//			}
+		//		}
 	}
 
 	@Override
@@ -271,6 +277,20 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.reservoir.a." + getMode(stack)));
 	}
 
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s,type=%s", this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+
+		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
+			for (int mode = 0; mode < 3; mode++) {
+				ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s,type=%s", mode, entry.getValue().name)));
+			}
+		}
+	}
+
 	/* IFluidContainerItem */
 	@Override
 	public FluidStack getFluid(ItemStack container) {
@@ -384,7 +404,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
 
-		return enchantment == CoreEnchantments.holding;
+		return typeMap.containsKey(ItemHelper.getItemDamage(stack)) && typeMap.get(ItemHelper.getItemDamage(stack)).enchantable && enchantment == CoreEnchantments.holding;
 	}
 
 	/* CAPABILITIES */

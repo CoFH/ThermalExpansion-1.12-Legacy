@@ -27,7 +27,7 @@ public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 		if (tile.storedStack.isEmpty()) {
 			return;
 		}
-		if (tile.locked) {
+		if (tile.lock) {
 			GlStateManager.pushMatrix();
 			GlStateManager.pushMatrix();
 
