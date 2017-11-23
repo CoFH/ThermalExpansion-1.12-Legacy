@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerLexicon extends ContainerTEBase implements ISlotValidator {
 
-	protected TileLexicon myTile;
+	TileLexicon myTile;
 
 	public ContainerLexicon(InventoryPlayer inventory, TileEntity tile) {
 

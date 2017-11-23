@@ -21,7 +21,6 @@ public class ContainerTEBase extends ContainerCore implements IAugmentableContai
 	protected final TileCore baseTile;
 
 	protected Slot[] augmentSlots = new Slot[0];
-	protected boolean[] augmentStatus = new boolean[0];
 
 	protected boolean augmentLock = true;
 

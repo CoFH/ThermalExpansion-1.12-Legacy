@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerEnchanter extends ContainerTEBase {
 
-	protected TileEnchanter myTile;
+	TileEnchanter myTile;
 
 	public ContainerEnchanter(InventoryPlayer inventory, TileEntity tile) {
 

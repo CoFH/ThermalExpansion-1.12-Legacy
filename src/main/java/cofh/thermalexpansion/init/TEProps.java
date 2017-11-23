@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.init;
 
-import codechicken.lib.block.property.unlisted.*;
+import codechicken.lib.block.property.unlisted.UnlistedGenericTile;
 import cofh.CoFHCore;
 import cofh.core.gui.CreativeTabCore;
 import cofh.core.util.CoreUtils;
@@ -187,36 +187,6 @@ public class TEProps {
 	public static final UnlistedGenericTile<TileCell> TILE_CELL = new UnlistedGenericTile<>("tile_cell", TileCell.class);
 	public static final UnlistedGenericTile<TileCache> TILE_CACHE = new UnlistedGenericTile<>("tile_cache", TileCache.class);
 	public static final UnlistedGenericTile<TileDeviceBase> TILE_DEVICE = new UnlistedGenericTile<>("tile_device", TileDeviceBase.class);
-
-	@Deprecated
-	public static final UnlistedBooleanProperty ACTIVE = new UnlistedBooleanProperty("active");
-	@Deprecated
-	public static final UnlistedBooleanProperty CREATIVE = new UnlistedBooleanProperty("creative");
-	@Deprecated
-	public static final UnlistedEnumFacingProperty FACING = new UnlistedEnumFacingProperty("facing");
-
-	@Deprecated
-	public static final UnlistedIntegerProperty LEVEL = new UnlistedIntegerProperty("level");
-	@Deprecated
-	public static final UnlistedIntegerProperty HOLDING = new UnlistedIntegerProperty("enchant_holding");
-	@Deprecated
-	public static final UnlistedIntegerProperty SCALE = new UnlistedIntegerProperty("scale");
-	@Deprecated
-	public static final UnlistedIntegerProperty COIL = new UnlistedIntegerProperty("coil");
-
-	@Deprecated
-	public static final UnlistedByteArrayProperty SIDE_CONFIG = new UnlistedByteArrayProperty("side_config");
-
-	@Deprecated
-	public static final UnlistedFluidStackProperty FLUID = new UnlistedFluidStackProperty("fluid");
-
-	@Deprecated
-	public static final UnlistedTileEntityProperty TILE = new UnlistedTileEntityProperty("tile");
-
-	@Deprecated
-	public static final UnlistedResourceLocationProperty COIL_ANIM = new UnlistedResourceLocationProperty("coil_anim");
-	@Deprecated
-	public static final UnlistedResourceLocationProperty BASE_ANIM = new UnlistedResourceLocationProperty("base_anim");
 
 	/* AUGMENT IDENTIFIERS */
 

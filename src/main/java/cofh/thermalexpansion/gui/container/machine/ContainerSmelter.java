@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerSmelter extends ContainerTEBase {
 
-	protected TileSmelter myTile;
+	TileSmelter myTile;
 
 	public ContainerSmelter(InventoryPlayer inventory, TileEntity tile) {
 

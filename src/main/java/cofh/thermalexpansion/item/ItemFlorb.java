@@ -212,6 +212,14 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 		CONFIG_FLORBS.cleanUp(false, true);
 	}
 
+	/* IBakeryProvider */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public IBakery getBakery() {
+
+		return ModelFlorb.INSTANCE;
+	}
+
 	/* IModelRegister */
 	@Override
 	@SideOnly (Side.CLIENT)
@@ -229,13 +237,6 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 			}
 			return ModelBakery.defaultItemKeyGenerator.generateKey(stack) + fluid;
 		});
-	}
-
-	@Override
-	@SideOnly (Side.CLIENT)
-	public IBakery getBakery() {
-
-		return ModelFlorb.INSTANCE;
 	}
 
 	/* IInitializer */

@@ -403,6 +403,11 @@ public class SmelterManager {
 		{
 			addDefaultOreDictionaryRecipe("cobalt");
 			addDefaultOreDictionaryRecipe("ardite");
+
+			if (ItemHelper.oreNameExists("ingotManyullyn")) {
+				ItemStack output = OreDictionary.getOres("ingotManyullyn", false).get(0);
+				addAlloyRecipe(2400, "ingotCobalt", 1, "ingotArdite", 1, output);
+			}
 		}
 	}
 

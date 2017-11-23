@@ -60,19 +60,22 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 		return 0;
 	}
 
-	public boolean hasGui() {
-
-		return false;
-	}
-
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
 		if (hasGui()) {
 			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, world, pos.getX(), pos.getY(), pos.getZ());
-			return true;
 		}
-		return false;
+		return hasGui();
+	}
+
+	@Override
+	public boolean openConfigGui(EntityPlayer player) {
+
+		if (hasConfigGui()) {
+			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_CONFIG_ID, world, pos.getX(), pos.getY(), pos.getZ());
+		}
+		return hasConfigGui();
 	}
 
 	@Override

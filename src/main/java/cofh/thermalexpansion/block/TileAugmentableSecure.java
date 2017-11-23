@@ -178,6 +178,21 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		return hasGui();
 	}
 
+	@Override
+	public boolean openConfigGui(EntityPlayer player) {
+
+		if (canPlayerAccess(player)) {
+			if (hasConfigGui()) {
+				player.openGui(ThermalExpansion.instance, GuiHandler.TILE_CONFIG_ID, world, pos.getX(), pos.getY(), pos.getZ());
+			}
+			return hasConfigGui();
+		}
+		if (ServerHelper.isServerWorld(world)) {
+			player.sendMessage(new TextComponentTranslation("chat.cofh.secure.warning", getOwnerName()));
+		}
+		return hasConfigGui();
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {

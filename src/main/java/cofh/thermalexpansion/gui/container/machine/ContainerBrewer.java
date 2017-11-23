@@ -12,7 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerBrewer extends ContainerTEBase implements ISlotValidator {
 
-	protected TileBrewer myTile;
+	TileBrewer myTile;
 
 	public ContainerBrewer(InventoryPlayer inventory, TileEntity tile) {
 

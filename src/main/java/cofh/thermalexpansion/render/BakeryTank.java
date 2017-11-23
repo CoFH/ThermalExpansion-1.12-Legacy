@@ -91,6 +91,13 @@ public class BakeryTank implements ILayeredBlockBakery {
 		}
 	}
 
+	protected void renderLock(CCRenderState ccrs) {
+
+		for (int i = 8; i < 24; i += 4) {
+			modelFrame.render(ccrs, i, i + 4, new IconTransformation(TETextures.TANK_SIDE_LOCK)); // Sides
+		}
+	}
+
 	protected void renderFluid(CCRenderState ccrs, boolean creative, int level, int holding, FluidStack stack) {
 
 		if (stack == null || stack.amount <= 0) {
@@ -121,7 +128,6 @@ public class BakeryTank implements ILayeredBlockBakery {
 		}
 		state = state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.OK);
 		state = state.withProperty(TEProps.TILE_TANK, tank);
-
 		return state;
 	}
 
@@ -161,6 +167,7 @@ public class BakeryTank implements ILayeredBlockBakery {
 			int level = tank.getLevel();
 			int holding = tank.enchantHolding;
 			int mode = tank.enableAutoOutput ? 1 : 0;
+			boolean lock = tank.isLocked();
 			FluidStack fluidStack = tank.getTankFluid();
 
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
@@ -171,6 +178,9 @@ public class BakeryTank implements ILayeredBlockBakery {
 
 			if (layer == BlockRenderLayer.CUTOUT) {
 				renderFrame(ccrs, creative, level, mode);
+				if (lock) {
+					renderLock(ccrs);
+				}
 			} else {
 				renderFluid(ccrs, creative, level, holding, fluidStack);
 			}

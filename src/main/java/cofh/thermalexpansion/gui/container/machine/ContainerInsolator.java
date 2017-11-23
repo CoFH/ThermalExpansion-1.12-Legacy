@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerInsolator extends ContainerTEBase {
 
-	protected TileInsolator myTile;
+	TileInsolator myTile;
 
 	public ContainerInsolator(InventoryPlayer inventory, TileEntity tile) {
 

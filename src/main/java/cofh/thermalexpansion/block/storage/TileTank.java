@@ -74,12 +74,12 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 	public byte enchantHolding;
 
+	boolean lock = false;
 	boolean renderFlag = true;
 	boolean cached = false;
 	boolean adjacentTanks[] = new boolean[2];
 
 	private FluidTankCore tank = new FluidTankCore(getCapacity(0, 0));
-	public boolean lock = false;
 
 	@Override
 	public String getTileName() {
@@ -211,11 +211,6 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		return CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * enchant) / 2;
 	}
 
-	public int getScaledFluidStored(int scale) {
-
-		return tank.getFluid() == null ? 0 : tank.getFluid().amount * scale / tank.getCapacity();
-	}
-
 	protected void transferFluid() {
 
 		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
@@ -246,6 +241,26 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 			sendTilePacket(Side.CLIENT);
 		}
 		cached = true;
+	}
+
+	public void setLocked(boolean lock) {
+
+		if (getTankFluid() == null) {
+			lock = false;
+		}
+		this.lock = lock;
+		tank.setLocked(lock);
+		sendTilePacket(Side.CLIENT);
+	}
+
+	public boolean isLocked() {
+
+		return lock;
+	}
+
+	public int getScaledFluidStored(int scale) {
+
+		return tank.getFluid() == null ? 0 : tank.getFluid().amount * scale / tank.getCapacity();
 	}
 
 	public int getTankFluidAmount() {
@@ -285,21 +300,27 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 	/* GUI METHODS */
 	@Override
-	public Object getGuiClient(InventoryPlayer inventory) {
+	public Object getConfigGuiClient(InventoryPlayer inventory) {
 
 		return new GuiTank(inventory, this);
 	}
 
 	@Override
-	public Object getGuiServer(InventoryPlayer inventory) {
+	public Object getConfigGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerTEBase(inventory, this);
 	}
 
 	@Override
-	public boolean hasGui() {
+	public boolean hasConfigGui() {
 
 		return true;
+	}
+
+	// This is ONLY used in GUIs.
+	public void toggleLock() {
+
+		lock = !lock;
 	}
 
 	/* NBT METHODS */
@@ -342,13 +363,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		super.handleModePacket(payload);
 
-		lock = payload.getBool();
-
-		if (lock) {
-			tank.setLocked();
-		} else {
-			tank.clearLocked();
-		}
+		setLocked(payload.getBool());
 	}
 
 	/* SERVER -> CLIENT */
@@ -357,8 +372,8 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
-		payload.addFluidStack(tank.getFluid());
 		payload.addBool(lock);
+		payload.addFluidStack(tank.getFluid());
 
 		return payload;
 	}
@@ -369,8 +384,8 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		PacketCoFHBase payload = super.getTilePacket();
 
 		payload.addByte(enchantHolding);
-		payload.addFluidStack(tank.getFluid());
 		payload.addBool(lock);
+		payload.addFluidStack(tank.getFluid());
 
 		return payload;
 	}
@@ -380,8 +395,8 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		super.handleGuiPacket(payload);
 
-		tank.setFluid(payload.getFluidStack());
 		lock = payload.getBool();
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	@Override
@@ -391,8 +406,8 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		super.handleTilePacket(payload);
 
 		enchantHolding = payload.getByte();
-		tank.setFluid(payload.getFluidStack());
 		lock = payload.getBool();
+		tank.setFluid(payload.getFluidStack());
 
 		callBlockUpdate();
 	}
@@ -407,6 +422,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		if (tank.getFluid() != null) {
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.getFluidName(tank.getFluid())));
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + tank.getFluidAmount() + "/" + tank.getCapacity() + " mB"));
+			info.add(new TextComponentString(lock ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
 		} else {
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty")));
 		}

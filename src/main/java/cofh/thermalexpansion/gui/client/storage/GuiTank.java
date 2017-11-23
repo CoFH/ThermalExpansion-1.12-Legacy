@@ -101,7 +101,7 @@ public class GuiTank extends GuiContainerCore {
 		} else {
 			lock.setActive();
 		}
-		if (baseTile.lock) {
+		if (baseTile.isLocked()) {
 			String color = StringHelper.WHITE;
 			FluidStack fluid = baseTile.getTankFluid();
 			if (fluid.getFluid().getRarity() == EnumRarity.UNCOMMON) {
@@ -111,11 +111,11 @@ public class GuiTank extends GuiContainerCore {
 			} else if (fluid.getFluid().getRarity() == EnumRarity.EPIC) {
 				color = StringHelper.PINK;
 			}
-			lock.setToolTip(StringHelper.localize("gui.thermalexpansion.device.fluid_buffer.tankLocked") + ": " + color + StringHelper.localize(fluid.getFluid().getLocalizedName(fluid)) + StringHelper.END);
+			lock.setToolTip(StringHelper.localize("info.cofh.locked") + ": " + color + StringHelper.localize(fluid.getFluid().getLocalizedName(fluid)) + StringHelper.END);
 			lock.setSheetX(176);
 			lock.setHoverX(176);
 		} else {
-			lock.setToolTip(StringHelper.localize("gui.thermalexpansion.device.fluid_buffer.tankUnlocked"));
+			lock.setToolTip(StringHelper.localize("info.cofh.unlocked"));
 			lock.setSheetX(192);
 			lock.setHoverX(192);
 		}
@@ -129,11 +129,11 @@ public class GuiTank extends GuiContainerCore {
 				playClickSound(baseTile.getTransferOut() ? 0.8F : 0.4F);
 			}
 		} else if (buttonName.equalsIgnoreCase("Lock")) {
-			baseTile.lock = !baseTile.lock;
-			playClickSound(baseTile.lock ? 0.8F : 0.4F);
+			baseTile.toggleLock();
+			playClickSound(baseTile.isLocked() ? 0.8F : 0.4F);
 
 			baseTile.sendModePacket();
-			baseTile.lock = !baseTile.lock;
+			baseTile.toggleLock();
 		}
 	}
 

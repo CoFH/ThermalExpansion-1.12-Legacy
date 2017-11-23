@@ -169,6 +169,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		return ModelBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world, pos);
 	}
 
+	/* IWorldBlockTextureProvider */
 	@Override
 	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 

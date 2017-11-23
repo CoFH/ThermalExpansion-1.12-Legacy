@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerPulverizer extends ContainerTEBase implements ISlotValidator {
 
-	protected TilePulverizer myTile;
+	TilePulverizer myTile;
 
 	public ContainerPulverizer(InventoryPlayer inventory, TileEntity tile) {
 

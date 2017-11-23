@@ -18,10 +18,10 @@ import net.minecraft.world.World;
 
 public class ContainerCrafter extends ContainerTEBase {
 
-	protected TileCrafter myTile;
-	protected InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
-	protected InventoryCraftResult craftResult = new InventoryCraftResult();
-	protected EntityPlayer player;
+	TileCrafter myTile;
+	InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
+	InventoryCraftResult craftResult = new InventoryCraftResult();
+	EntityPlayer player;
 
 	public ContainerCrafter(InventoryPlayer inventory, TileEntity tile) {
 

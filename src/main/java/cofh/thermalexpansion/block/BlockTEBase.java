@@ -41,7 +41,8 @@ import java.util.ArrayList;
 
 public abstract class BlockTEBase extends BlockCoreTile {
 
-	protected boolean basicGui = true;
+	protected boolean standardGui = true;
+	protected boolean configGui = false;
 
 	protected BlockTEBase(Material material) {
 
@@ -91,10 +92,13 @@ public abstract class BlockTEBase extends BlockCoreTile {
 			WrenchHelper.usedWrench(player, traceResult);
 			return true;
 		}
-		if (basicGui && ServerHelper.isServerWorld(world)) {
+		if (onBlockActivatedDelegate(world, pos, state, player, hand, side, hitX, hitY, hitZ)) {
+			return true;
+		}
+		if (standardGui && ServerHelper.isServerWorld(world)) {
 			return tile.openGui(player);
 		}
-		return basicGui;
+		return standardGui;
 	}
 
 	@Override
@@ -117,6 +121,24 @@ public abstract class BlockTEBase extends BlockCoreTile {
 			return ((TileAugmentableSecure) tile).isCreative ? RESISTANCE_CREATIVE : RESISTANCE[(((TileAugmentableSecure) tile).getLevel()) % RESISTANCE.length];
 		}
 		return blockResistance / 5.0F;
+	}
+
+	public boolean onBlockActivatedDelegate(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+
+		return false;
+	}
+
+	public boolean openConfigGui(World world, BlockPos pos, EnumFacing side, EntityPlayer player) {
+
+		TileTEBase tile = (TileTEBase) world.getTileEntity(pos);
+
+		if (tile == null || tile.isInvalid()) {
+			return false;
+		}
+		if (configGui && ServerHelper.isServerWorld(world)) {
+			return tile.openConfigGui(player);
+		}
+		return configGui;
 	}
 
 	/* RENDERING METHODS */

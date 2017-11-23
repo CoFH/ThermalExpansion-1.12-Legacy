@@ -50,7 +50,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
-public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider, IBakeryProvider {
+public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryProvider, IWorldBlockTextureProvider {
 
 	public static final PropertyEnum<Type> VARIANT = PropertyEnum.create("type", Type.class);
 
@@ -72,8 +72,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		// Listed
 		builder.add(VARIANT);
 		// UnListed
-		builder.add(TEProps.TILE_DEVICE);
 		builder.add(ModelErrorStateProperty.ERROR_STATE);
+		builder.add(TEProps.TILE_DEVICE);
 
 		return builder.build();
 	}
@@ -185,7 +185,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivatedDelegate(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		TileEntity tile = world.getTileEntity(pos);
 
@@ -198,7 +198,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 				return true;
 			}
 		}
-		return super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
+		return false;
 	}
 
 	/* RENDERING METHODS */
@@ -216,7 +216,15 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		return ModelBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world, pos);
 	}
 
-	@Override // Inventory
+	/* IBakeryProvider */
+	@Override
+	public IBakery getBakery() {
+
+		return BakeryDevice.INSTANCE;
+	}
+
+	/* IWorldTextureProvider */
+	@Override
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
@@ -238,12 +246,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
 		}
 		return TextureUtils.getMissingSprite();
-	}
-
-	@Override
-	public IBakery getBakery() {
-
-		return BakeryDevice.INSTANCE;
 	}
 
 	/* IModelRegister */

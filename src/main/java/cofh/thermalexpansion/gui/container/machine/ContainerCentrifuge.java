@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerCentrifuge extends ContainerTEBase implements ISlotValidator {
 
-	protected TileCentrifuge myTile;
+	TileCentrifuge myTile;
 
 	public ContainerCentrifuge(InventoryPlayer inventory, TileEntity tile) {
 

@@ -83,7 +83,6 @@ public class BakeryCell implements ILayeredBlockBakery {
 	private int getScaledEnergyStored(ItemStack container, int scale) {
 
 		IEnergyContainerItem containerItem = (IEnergyContainerItem) container.getItem();
-
 		return (int) (containerItem.getEnergyStored(container) * (long) scale / containerItem.getMaxEnergyStored(container));
 	}
 

@@ -10,7 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerExtruder extends ContainerTEBase {
 
-	protected TileExtruder myTile;
+	TileExtruder myTile;
 
 	public ContainerExtruder(InventoryPlayer inventory, TileEntity tile) {
 

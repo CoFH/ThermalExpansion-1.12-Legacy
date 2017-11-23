@@ -53,7 +53,7 @@ import java.util.List;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
 
-public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelRegister {
+public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryProvider {
 
 	public static final PropertyEnum<Type> VARIANT = PropertyEnum.create("type", Type.class);
 
@@ -96,6 +96,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		// UnListed
 		builder.add(ModelErrorStateProperty.ERROR_STATE);
 		builder.add(TEProps.TILE_DYNAMO);
+
 		return builder.build();
 	}
 
@@ -226,7 +227,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivatedDelegate(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
 
@@ -239,7 +240,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 				return true;
 			}
 		}
-		return super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
+		return false;
 	}
 
 	@Nullable
@@ -269,7 +270,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryProvider, IModelR
 		return ModelBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world, pos);
 	}
 
-	/* IBakeryBlock */
+	/* IBakeryProvider */
 	@Override
 	public IBakery getBakery() {
 

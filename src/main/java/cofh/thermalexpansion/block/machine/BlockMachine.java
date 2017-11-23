@@ -217,7 +217,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivatedDelegate(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		TileEntity tile = world.getTileEntity(pos);
 
@@ -230,7 +230,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 				return true;
 			}
 		}
-		return super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
+		return false;
 	}
 
 	/* RENDERING METHODS */
@@ -248,13 +248,15 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		return ModelBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world, pos);
 	}
 
+	/* IBakeryProvider */
 	@Override
 	public IBakery getBakery() {
 
 		return BakeryMachine.INSTANCE;
 	}
 
-	@Override // Inventory
+	/* IWorldBlockTextureProvider */
+	@Override
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
@@ -267,7 +269,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		return side != EnumFacing.NORTH ? TETextures.MACHINE_SIDE : TETextures.MACHINE_FACE[stack.getMetadata() % Type.values().length];
 	}
 
-	@Override // World
+	@Override
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
 

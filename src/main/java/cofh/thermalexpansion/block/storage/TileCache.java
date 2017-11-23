@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.storage;
 import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ITileInfo;
+import cofh.core.gui.container.ICustomInventory;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.ISidedTexture;
 import cofh.core.util.helpers.BlockHelper;
@@ -11,28 +12,37 @@ import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
+import cofh.thermalexpansion.gui.client.storage.GuiCache;
+import cofh.thermalexpansion.gui.container.storage.ContainerCache;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.plugins.top.PluginTOP;
+import com.jaquadro.minecraft.storagedrawers.api.capabilities.IItemRepository;
 import mcjty.theoneprobe.api.ElementAlignment;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
 import mcjty.theoneprobe.api.TextStyleClass;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
-public class TileCache extends TileInventory implements ISidedInventory, IReconfigurableFacing, ISidedTexture, ITileInfo, IInventoryRetainer {
+@Optional.Interface (iface = "com.jaquadro.minecraft.storagedrawers.api.capabilities.IItemRepository", modid = "storagedrawers")
+public class TileCache extends TileInventory implements ISidedInventory, IReconfigurableFacing, ISidedTexture, ITileInfo, ICustomInventory, IInventoryRetainer, IItemRepository {
 
 	public static final int CAPACITY_BASE = 20000;
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
@@ -77,10 +87,11 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	byte facing = 3;
 
 	public byte enchantHolding;
-	public boolean lock;
 
+	boolean lock = false;
 	int cacheStackSize;
 	int maxCacheStackSize;
+
 	public ItemStack storedStack = ItemStack.EMPTY;
 
 	public TileCache() {
@@ -125,7 +136,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	protected boolean setLevel(int level) {
 
 		if (super.setLevel(level)) {
-			if (storedStack != ItemStack.EMPTY) {
+			if (!storedStack.isEmpty()) {
 				maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
 				balanceStacks();
 			} else {
@@ -148,28 +159,75 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		return CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * enchant) / 2;
 	}
 
+	protected void balanceStacks() {
+
+		inventory[0] = ItemStack.EMPTY;
+		inventory[1] = ItemHelper.cloneStack(storedStack, Math.min(storedStack.getMaxStackSize(), cacheStackSize));
+		cacheStackSize -= inventory[1].getCount();
+
+		if (cacheStackSize > maxCacheStackSize) {
+			inventory[0] = ItemHelper.cloneStack(storedStack, cacheStackSize - maxCacheStackSize);
+			cacheStackSize = maxCacheStackSize;
+		}
+	}
+
+	protected void clearInventory() {
+
+		if (!lock) {
+			storedStack = ItemStack.EMPTY;
+			cacheStackSize = 0;
+			sendTilePacket(Side.CLIENT);
+		} else {
+			if (!storedStack.isEmpty()) {
+				cacheStackSize = 0;
+			}
+		}
+		inventory[0] = ItemStack.EMPTY;
+		inventory[1] = ItemStack.EMPTY;
+	}
+
+	protected void updateTrackers() {
+
+		int curScale = getScaledItemsStored(14) + (getStoredCount() > 0 ? 1 : 0);
+		if (compareTracker != curScale) {
+			compareTracker = curScale;
+			callNeighborTileChange();
+		}
+		curScale = Math.min(8, getScaledItemsStored(9));
+		if (meterTracker != curScale) {
+			meterTracker = curScale;
+			sendTilePacket(Side.CLIENT);
+		}
+	}
+
+	public void setLocked(boolean lock) {
+
+		if (storedStack.isEmpty()) {
+			lock = false;
+		}
+		this.lock = lock;
+		if (getStoredCount() <= 0 && !lock) {
+			clearInventory();
+		}
+		sendTilePacket(Side.CLIENT);
+	}
+
+	public boolean isLocked() {
+
+		return lock;
+	}
+
 	public int getScaledItemsStored(int scale) {
 
 		return MathHelper.round((long) getStoredCount() * scale / getCapacity(level, enchantHolding));
 	}
 
-	public boolean toggleLock() {
-
-		lock = !lock;
-
-		if (getStoredCount() <= 0 && !lock) {
-			clearInventory();
-		}
-		sendTilePacket(Side.CLIENT);
-		return lock;
-	}
-
 	public int getStoredCount() {
 
-		return storedStack == ItemStack.EMPTY ? 0 : cacheStackSize + inventory[0].getCount() + inventory[1].getCount();
+		return storedStack.isEmpty() ? 0 : cacheStackSize + inventory[0].getCount() + inventory[1].getCount();
 	}
 
-	public ItemStack insertItem(EnumFacing from, ItemStack stack, boolean simulate) {
+	public ItemStack insertItem(ItemStack stack, boolean simulate) {
 
 		if (stack.isEmpty()) {
 			return ItemStack.EMPTY;
@@ -180,7 +238,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			}
 			return stack;
 		}
-		if (storedStack == ItemStack.EMPTY) {
+		if (storedStack.isEmpty()) {
 			if (!simulate) {
 				setStoredItemType(stack, stack.getCount());
 			}
@@ -205,9 +263,9 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		return stack;
 	}
 
-	public ItemStack extractItem(EnumFacing from, int maxExtract, boolean simulate) {
+	public ItemStack extractItem(int maxExtract, boolean simulate) {
 
-		if (storedStack == ItemStack.EMPTY) {
+		if (storedStack.isEmpty()) {
 			return ItemStack.EMPTY;
 		}
 		ItemStack ret = ItemHelper.cloneStack(storedStack, Math.min(getStoredCount(), Math.min(maxExtract, storedStack.getMaxStackSize())));
@@ -218,64 +276,29 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		return ret;
 	}
 
-	protected void balanceStacks() {
-
-		inventory[0] = ItemStack.EMPTY;
-		inventory[1] = ItemHelper.cloneStack(storedStack, Math.min(storedStack.getMaxStackSize(), cacheStackSize));
-		cacheStackSize -= inventory[1].getCount();
-
-		if (cacheStackSize > maxCacheStackSize) {
-			inventory[0] = ItemHelper.cloneStack(storedStack, cacheStackSize - maxCacheStackSize);
-			cacheStackSize = maxCacheStackSize;
-		}
-	}
-
-	protected void clearInventory() {
-
-		if (!lock) {
-			storedStack = ItemStack.EMPTY;
-			cacheStackSize = 0;
-			sendTilePacket(Side.CLIENT);
-		} else {
-			if (storedStack != ItemStack.EMPTY) {
-				cacheStackSize = 0;
-			}
-		}
-		inventory[0] = ItemStack.EMPTY;
-		inventory[1] = ItemStack.EMPTY;
-	}
-
-	protected void updateTrackers() {
-
-		int curScale = getScaledItemsStored(14) + (getStoredCount() > 0 ? 1 : 0);
-		if (compareTracker != curScale) {
-			compareTracker = curScale;
-			callNeighborTileChange();
-		}
-		curScale = Math.min(8, getScaledItemsStored(9));
-		if (meterTracker != curScale) {
-			meterTracker = curScale;
-			sendTilePacket(Side.CLIENT);
-		}
-	}
-
 	/* GUI METHODS */
-	//	@Override
-	//	public Object getGuiClient(InventoryPlayer inventory) {
-	//
-	//		return new GuiCache(inventory, this);
-	//	}
-	//
-	//	@Override
-	//	public Object getGuiServer(InventoryPlayer inventory) {
-	//
-	//		return new ContainerCache(inventory, this);
-	//	}
+	@Override
+	public Object getConfigGuiClient(InventoryPlayer inventory) {
+
+		return new GuiCache(inventory, this);
+	}
 
 	@Override
-	public boolean hasGui() {
+	public Object getConfigGuiServer(InventoryPlayer inventory) {
 
-		return false;
+		return new ContainerCache(inventory, this);
+	}
+
+	@Override
+	public boolean hasConfigGui() {
+
+		return true;
+	}
+
+	// This is ONLY used in GUIs.
+	public void toggleLock() {
+
+		lock = !lock;
 	}
 
 	/* NBT METHODS */
@@ -295,6 +318,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
 		} else {
 			maxCacheStackSize = getCapacity(level, enchantHolding) - 64 * 2;
+			lock = false;
 		}
 	}
 
@@ -307,7 +331,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		nbt.setByte("EncHolding", enchantHolding);
 		nbt.setBoolean("Lock", lock);
 
-		if (storedStack != ItemStack.EMPTY) {
+		if (!storedStack.isEmpty()) {
 			nbt.setTag("Item", ItemHelper.writeItemStackToNBT(storedStack, new NBTTagCompound()));
 			nbt.setInteger("CacheCount", cacheStackSize);
 		}
@@ -315,6 +339,37 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	}
 
 	/* NETWORK METHODS */
+
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addBool(lock);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		setLocked(payload.getBool());
+	}
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addBool(lock);
+
+		return payload;
+	}
+
 	@Override
 	public PacketCoFHBase getTilePacket() {
 
@@ -325,10 +380,18 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		payload.addBool(lock);
 		payload.addItemStack(storedStack);
 
-		if (storedStack != ItemStack.EMPTY) {
+		if (!storedStack.isEmpty()) {
 			payload.addInt(getStoredCount());
 		}
 		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		lock = payload.getBool();
 	}
 
 	@Override
@@ -342,7 +405,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		lock = payload.getBool();
 		storedStack = payload.getItemStack();
 
-		if (storedStack != ItemStack.EMPTY) {
+		if (!storedStack.isEmpty()) {
 			cacheStackSize = payload.getInt();
 			inventory[1] = ItemStack.EMPTY;
 			balanceStacks();
@@ -364,7 +427,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	//@Override
 	public void setStoredItemCount(int amount) {
 
-		if (storedStack == ItemStack.EMPTY) {
+		if (storedStack.isEmpty()) {
 			return;
 		}
 		cacheStackSize = Math.min(amount, getMaxStoredCount());
@@ -472,13 +535,13 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		}
 		inventory[slot] = stack;
 
-		boolean stackCheck = storedStack == ItemStack.EMPTY;
+		boolean stackCheck = storedStack.isEmpty();
 
 		if (slot == 0) { // insertion!
 			if (inventory[0].isEmpty()) {
 				return;
 			}
-			if (storedStack == ItemStack.EMPTY) {
+			if (storedStack.isEmpty()) {
 				storedStack = ItemHelper.cloneStack(inventory[0], 1);
 				cacheStackSize = inventory[0].getCount();
 				inventory[0] = ItemStack.EMPTY;
@@ -498,7 +561,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		}
 		updateTrackers();
 		markChunkDirty();
-		if (stackCheck != (storedStack == ItemStack.EMPTY)) {
+		if (stackCheck != (storedStack.isEmpty())) {
 			sendTilePacket(Side.CLIENT);
 		}
 	}
@@ -506,7 +569,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot == 0 && (storedStack == ItemStack.EMPTY || ItemHelper.itemsIdentical(stack, storedStack));
+		return slot == 0 && (storedStack.isEmpty() || ItemHelper.itemsIdentical(stack, storedStack));
 	}
 
 	/* ISidedInventory */
@@ -519,7 +582,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
 
-		return slot == 0 && (storedStack == ItemStack.EMPTY || ItemHelper.itemsIdentical(stack, storedStack));
+		return slot == 0 && (storedStack.isEmpty() || ItemHelper.itemsIdentical(stack, storedStack));
 	}
 
 	@Override
@@ -558,13 +621,32 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		if (debug) {
 			return;
 		}
-		if (storedStack != ItemStack.EMPTY) {
+		if (!storedStack.isEmpty()) {
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(storedStack)));
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + getCapacity(level, enchantHolding)));
+			info.add(new TextComponentString(lock ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
 		} else {
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty")));
 		}
-		info.add(new TextComponentString(lock ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
+	}
+
+	/* ICustomInventory */
+	@Override
+	public ItemStack[] getInventorySlots(int inventoryIndex) {
+
+		return new ItemStack[] { storedStack };
+	}
+
+	@Override
+	public int getSlotStackLimit(int slotIndex) {
+
+		return 1;
+	}
+
+	@Override
+	public void onSlotUpdate(int slotIndex) {
+
+		markChunkDirty();
 	}
 
 	/* IInventoryRetainer */
@@ -584,6 +666,28 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			ItemStack stored = getStoredItemType();
 			infoSub.item(stored, info.defaultItemStyle().width(16).height(16)).text(TextStyleClass.INFO + stored.getDisplayName());
 		}
+	}
+
+	/* IItemRepository */
+	@Nonnull
+	@Override
+	public NonNullList<ItemRecord> getAllItems() {
+
+		return NonNullList.from(new ItemRecord(storedStack.copy(), getStoredCount()));
+	}
+
+	@Nonnull
+	@Override
+	public ItemStack insertItem(@Nonnull ItemStack stack, boolean simulate, Predicate<ItemStack> predicate) {
+
+		return insertItem(stack, simulate);
+	}
+
+	@Nonnull
+	@Override
+	public ItemStack extractItem(@Nonnull ItemStack stack, int amount, boolean simulate, Predicate<ItemStack> predicate) {
+
+		return ItemHelper.itemsIdentical(stack, storedStack) ? extractItem(amount, simulate) : ItemStack.EMPTY;
 	}
 
 }

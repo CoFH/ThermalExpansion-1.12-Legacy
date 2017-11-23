@@ -10,7 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerPrecipitator extends ContainerTEBase {
 
-	protected TilePrecipitator myTile;
+	TilePrecipitator myTile;
 
 	public ContainerPrecipitator(InventoryPlayer inventory, TileEntity tile) {
 

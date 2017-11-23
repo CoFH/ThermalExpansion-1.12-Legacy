@@ -14,7 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerFurnace extends ContainerTEBase implements ISlotValidator {
 
-	protected TileFurnace myTile;
+	TileFurnace myTile;
 
 	public ContainerFurnace(InventoryPlayer inventory, TileEntity tile) {
 

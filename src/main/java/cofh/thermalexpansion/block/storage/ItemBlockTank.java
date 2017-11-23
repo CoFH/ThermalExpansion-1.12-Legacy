@@ -32,6 +32,11 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		setMaxStackSize(1);
 	}
 
+	public boolean isLocked(ItemStack stack) {
+
+		return stack.getTagCompound().getBoolean("Lock");
+	}
+
 	@Override
 	public ItemStack setDefaultTag(ItemStack stack, int level) {
 
@@ -60,9 +65,8 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		SecurityHelper.addAccessInformation(stack, tooltip);
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.storage.tank"));
 
-		FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
-
-		if (fluid != null) {
+		if (stack.getTagCompound().hasKey("Fluid")) {
+			FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
 			String color = StringHelper.LIGHT_GRAY;
 
 			if (fluid.getFluid().getRarity() == EnumRarity.UNCOMMON) {
@@ -78,6 +82,11 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));
 			} else {
 				tooltip.add(StringHelper.localize("info.cofh.level") + ": " + StringHelper.formatNumber(fluid.amount) + " / " + StringHelper.formatNumber(getCapacity(stack)) + " mB");
+			}
+			if (isLocked(stack)) {
+				tooltip.add(StringHelper.YELLOW + StringHelper.localize("info.cofh.locked"));
+			} else {
+				tooltip.add(StringHelper.YELLOW + StringHelper.localize("info.cofh.unlocked"));
 			}
 		} else {
 			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
@@ -202,14 +211,20 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		}
 		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
 
-		if (stack == null) {
+		if (stack == null || stack.amount <= 0) {
 			return null;
 		}
 		int drained = Math.min(stack.amount, maxDrain);
 
 		if (doDrain && !isCreative(container)) {
-			if (maxDrain >= stack.amount) {
-				container.getTagCompound().removeTag("Fluid");
+			if (drained >= stack.amount) {
+				if (container.getTagCompound().getBoolean("Lock")) {
+					NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag("Fluid");
+					fluidTag.setInteger("Amount", 0);
+					container.getTagCompound().setTag("Fluid", fluidTag);
+				} else {
+					container.getTagCompound().removeTag("Fluid");
+				}
 				return stack;
 			}
 			NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag("Fluid");

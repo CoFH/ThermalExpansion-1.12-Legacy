@@ -131,11 +131,11 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 				} else if (fluid.getFluid().getRarity() == EnumRarity.EPIC) {
 					color = StringHelper.PINK;
 				}
-				lock[i].setToolTip(StringHelper.localize("gui.thermalexpansion.device.fluid_buffer.tankLocked") + ": " + color + StringHelper.localize(fluid.getFluid().getLocalizedName(fluid)) + StringHelper.END);
+				lock[i].setToolTip(StringHelper.localize("info.cofh.locked") + ": " + color + StringHelper.localize(fluid.getFluid().getLocalizedName(fluid)) + StringHelper.END);
 				lock[i].setSheetX(176);
 				lock[i].setHoverX(176);
 			} else {
-				lock[i].setToolTip(StringHelper.localize("gui.thermalexpansion.device.fluid_buffer.tankUnlocked"));
+				lock[i].setToolTip(StringHelper.localize("info.cofh.unlocked"));
 				lock[i].setSheetX(192);
 				lock[i].setHoverX(192);
 			}

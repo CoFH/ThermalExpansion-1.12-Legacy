@@ -27,7 +27,7 @@ public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 		if (tile.storedStack.isEmpty()) {
 			return;
 		}
-		if (tile.lock) {
+		if (tile.isLocked()) {
 			GlStateManager.pushMatrix();
 			GlStateManager.pushMatrix();
 
@@ -66,7 +66,7 @@ public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 			GlStateManager.popMatrix();
-			net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
+			RenderHelper.enableStandardItemLighting();
 			GlStateManager.popMatrix();
 		}
 		GlStateManager.pushMatrix();

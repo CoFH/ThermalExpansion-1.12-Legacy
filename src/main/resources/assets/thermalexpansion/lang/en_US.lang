@@ -1,8 +1,5 @@
 #en_US
 
-gui.thermalexpansion.device.fluid_buffer.tankLocked=Tank Locked
-gui.thermalexpansion.device.fluid_buffer.tankUnlocked=Tank Unlocked
-
 gui.thermalexpansion.device.item_buffer.decInput=Decrease Input by
 gui.thermalexpansion.device.item_buffer.decOutput=Decrease Output by
 gui.thermalexpansion.device.item_buffer.incInput=Increase Input by

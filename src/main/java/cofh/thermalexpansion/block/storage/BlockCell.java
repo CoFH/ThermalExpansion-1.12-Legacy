@@ -42,7 +42,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
 
-public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelRegister {
+public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryProvider {
 
 	public BlockCell() {
 
@@ -174,7 +174,7 @@ public class BlockCell extends BlockTEBase implements IBakeryProvider, IModelReg
 		return ModelBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world, pos);
 	}
 
-	/* IBakeryBlock */
+	/* IBakeryProvider */
 	@Override
 	@SideOnly (Side.CLIENT)
 	public IBakery getBakery() {

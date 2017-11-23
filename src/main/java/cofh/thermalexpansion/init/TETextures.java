@@ -207,6 +207,8 @@ public class TETextures {
 		TANK_SIDE_1_4 =                     register(TANK_ + "side_1_4");
 		TANK_SIDE_1_C =                     register(TANK_ + "side_1_c");
 
+		TANK_SIDE_LOCK =                    register(TANK_ + "side_lock");
+
 		CACHE_BOTTOM_0 =                    register(CACHE_ + "bottom_0");
 		CACHE_BOTTOM_1 =                    register(CACHE_ + "bottom_1");
 		CACHE_BOTTOM_2 =                    register(CACHE_ + "bottom_2");
@@ -756,6 +758,8 @@ public class TETextures {
 	public static TextureAtlasSprite TANK_SIDE_1_3;
 	public static TextureAtlasSprite TANK_SIDE_1_4;
 	public static TextureAtlasSprite TANK_SIDE_1_C;
+
+	public static TextureAtlasSprite TANK_SIDE_LOCK;
 
 	public static TextureAtlasSprite[] CACHE_TOP;
 	public static TextureAtlasSprite CACHE_TOP_0;

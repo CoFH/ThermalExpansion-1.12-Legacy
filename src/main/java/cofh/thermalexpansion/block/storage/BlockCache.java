@@ -8,9 +8,9 @@ import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
+import cofh.api.block.IConfigGui;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.render.IModelRegister;
-import cofh.core.util.RayTracer;
 import cofh.core.util.StateMapper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.MathHelper;
@@ -20,7 +20,6 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.render.BakeryCache;
-import cofh.thermalexpansion.util.Utils;
 import cofh.thermalfoundation.item.ItemMaterial;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
@@ -48,7 +47,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
 
-public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider, IBakeryProvider {
+public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryProvider, IWorldBlockTextureProvider, IConfigGui {
 
 	public BlockCache() {
 
@@ -59,6 +58,9 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		setHardness(15.0F);
 		setResistance(25.0F);
 		setDefaultState(getBlockState().getBaseState());
+
+		standardGui = false;
+		configGui = true;
 	}
 
 	@Override
@@ -66,8 +68,8 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
 		// UnListed
-		builder.add(TEProps.TILE_CACHE);
 		builder.add(ModelErrorStateProperty.ERROR_STATE);
+		builder.add(TEProps.TILE_CACHE);
 
 		return builder.build();
 	}
@@ -103,27 +105,26 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
-		boolean playSound = false;
 		TileCache tile = (TileCache) world.getTileEntity(pos);
 
 		int extractAmount = !player.isSneaking() && !player.capabilities.isCreativeMode ? 1 : 64;
-		ItemStack extract = tile.extractItem(null, extractAmount, true);
+		ItemStack extract = tile.extractItem(extractAmount, true);
 		if (extract.isEmpty()) {
 			return;
 		}
 		if (!player.capabilities.isCreativeMode) {
 			if (!player.inventory.addItemStackToInventory(extract)) {
-				// apparently this returns false if it succeeds but doesn't have room for all.
-				// apparently designed for inserts of single items but supports > 1 inserts because notch
+				// apparently this returns false if it succeeds but doesn't have room for all
+				// seemingly designed for inserts of single items but supports > 1 inserts because Notch
 				if (extract.getCount() == extractAmount) {
 					return;
 				}
 				extractAmount -= extract.getCount();
 			}
-			tile.extractItem(null, extractAmount, false);
+			tile.extractItem(extractAmount, false);
 		} else {
 			player.inventory.addItemStackToInventory(extract);
-			tile.extractItem(null, extractAmount, false);
+			tile.extractItem(extractAmount, false);
 		}
 		world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.4F, 0.8F);
 	}
@@ -137,11 +138,12 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
 			tile.enchantHolding = (byte) EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
-			tile.lock = stack.getTagCompound().getBoolean("Lock");
 
 			if (stack.getTagCompound().hasKey("Item")) {
 				ItemStack stored = ItemHelper.readItemStackFromNBT(stack.getTagCompound().getCompoundTag("Item"));
+
 				tile.setStoredItemType(stored, stored.getCount());
+				tile.lock = stack.getTagCompound().getBoolean("Lock");
 			}
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
@@ -172,50 +174,44 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivatedDelegate(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-		if (super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ)) {
-			if (Utils.isHoldingUsableWrench(player, RayTracer.retrace(player))) {
-				return true;
-			}
-		}
 		TileCache tile = (TileCache) world.getTileEntity(pos);
-		boolean playSound = false;
 
-		if (ItemHelper.isPlayerHoldingNothing(player)) {
-			if (player.isSneaking()) {
-				tile.toggleLock();
-
-				if (tile.lock) {
-					world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.2F, 0.8F);
-				} else {
-					world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
+		if (tile != null) {
+			if (ItemHelper.isPlayerHoldingNothing(player)) {
+				if (player.isSneaking()) {
+					tile.setLocked(!tile.isLocked());
+					if (tile.isLocked()) {
+						world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.2F, 0.8F);
+					} else {
+						world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
+					}
+					return true;
 				}
-				return true;
 			}
-			if (!tile.getStoredItemType().isEmpty()) {
-				insertAllItemsFromPlayer(tile, player);
+			boolean playSound = false;
+
+			ItemStack heldItem = player.getHeldItem(hand);
+			ItemStack ret = tile.insertItem(heldItem, false);
+			long time = player.getEntityData().getLong("thermalexpansion:CacheClick"), currentTime = world.getTotalWorldTime();
+			player.getEntityData().setLong("thermalexpansion:CacheClick", currentTime);
+
+			if (!player.capabilities.isCreativeMode) {
+				if (ret != heldItem) {
+					player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
+					playSound = true;
+				}
+				if (!tile.getStoredItemType().isEmpty() && currentTime - time < 15) {
+					playSound &= !insertAllItemsFromPlayer(tile, player);
+				}
+			}
+			if (playSound) {
+				world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.1F, 0.7F);
 			}
 			return true;
 		}
-		ItemStack heldStack = ItemHelper.getMainhandStack(player);
-		ItemStack ret = tile.insertItem(null, heldStack, false);
-		long time = player.getEntityData().getLong("thermalexpansion:CacheClick"), currentTime = world.getTotalWorldTime();
-		player.getEntityData().setLong("thermalexpansion:CacheClick", currentTime);
-
-		if (!player.capabilities.isCreativeMode) {
-			if (ret != heldStack) {
-				player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
-				playSound = true;
-			}
-			if (!tile.getStoredItemType().isEmpty() && currentTime - time < 15) {
-				playSound &= !insertAllItemsFromPlayer(tile, player);
-			}
-		}
-		if (playSound) {
-			world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.1F, 0.7F);
-		}
-		return true;
+		return false;
 	}
 
 	@Override
@@ -234,8 +230,8 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 		boolean playSound = false;
 		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-			if (tile.insertItem(null, player.inventory.getStackInSlot(i), true) != player.inventory.getStackInSlot(i)) {
-				player.inventory.setInventorySlotContents(i, tile.insertItem(null, player.inventory.getStackInSlot(i), false));
+			if (tile.insertItem(player.inventory.getStackInSlot(i), true) != player.inventory.getStackInSlot(i)) {
+				player.inventory.setInventorySlotContents(i, tile.insertItem(player.inventory.getStackInSlot(i), false));
 				playSound = true;
 			}
 		}
@@ -267,8 +263,8 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 				CoreEnchantments.addEnchantment(retTag, CoreEnchantments.holding, tile.enchantHolding);
 			}
 			if (!tile.storedStack.isEmpty()) {
-				retTag.setBoolean("Lock", tile.lock);
 				retTag.setTag("Item", ItemHelper.writeItemStackToNBT(tile.storedStack, tile.getStoredCount(), new NBTTagCompound()));
+				retTag.setBoolean("Lock", tile.lock);
 			}
 		}
 		return retTag;
@@ -289,7 +285,15 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		return ModelBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world, pos);
 	}
 
-	@Override // Inventory
+	/* IBakeryProvider */
+	@Override
+	public IBakery getBakery() {
+
+		return BakeryCache.INSTANCE;
+	}
+
+	/* IWorldBlockTextureProvider */
+	@Override
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
@@ -305,7 +309,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		return side != EnumFacing.NORTH ? isCreative ? TETextures.CACHE_SIDE_C : TETextures.CACHE_SIDE[level] : isCreative ? TETextures.CACHE_FACE_C : TETextures.CACHE_FACE[level];
 	}
 
-	@Override // World
+	@Override
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
 
@@ -315,12 +319,6 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
 		}
 		return TextureUtils.getMissingSprite();
-	}
-
-	@Override
-	public IBakery getBakery() {
-
-		return BakeryCache.INSTANCE;
 	}
 
 	/* IModelRegister */

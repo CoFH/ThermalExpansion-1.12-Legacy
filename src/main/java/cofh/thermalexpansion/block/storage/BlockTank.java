@@ -6,10 +6,12 @@ import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
+import cofh.api.block.IConfigGui;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.StateMapper;
 import cofh.core.util.helpers.FluidHelper;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
@@ -24,13 +26,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -46,7 +46,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
 
-public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelRegister {
+public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryProvider, IConfigGui {
 
 	public BlockTank() {
 
@@ -57,13 +57,15 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 		setHardness(15.0F);
 		setResistance(25.0F);
 		setDefaultState(getBlockState().getBaseState());
+
+		standardGui = false;
+		configGui = true;
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
 
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
-
 		// UnListed
 		builder.add(ModelErrorStateProperty.ERROR_STATE);
 		builder.add(TEProps.TILE_TANK);
@@ -106,16 +108,11 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 			tile.enchantHolding = (byte) EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 
-			FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
+			if (stack.getTagCompound().hasKey("Fluid")) {
+				FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
 
-			if (fluid != null) {
 				tile.getTank().setFluid(fluid);
 				tile.lock = stack.getTagCompound().getBoolean("Lock");
-				if (tile.lock) {
-					tile.getTank().setLocked();
-				} else {
-					tile.getTank().clearLocked();
-				}
 			}
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
@@ -152,11 +149,22 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivatedDelegate(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-		TileEntity tile = world.getTileEntity(pos);
+		TileTank tile = (TileTank) world.getTileEntity(pos);
 
 		if (tile != null) {
+			if (ItemHelper.isPlayerHoldingNothing(player)) {
+				if (player.isSneaking()) {
+					tile.setLocked(!tile.isLocked());
+					if (tile.isLocked()) {
+						world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.2F, 0.8F);
+					} else {
+						world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
+					}
+					return true;
+				}
+			}
 			ItemStack heldItem = player.getHeldItem(hand);
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 
@@ -165,7 +173,7 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 				return true;
 			}
 		}
-		return super.onBlockActivated(world, pos, state, player, hand, side, hitX, hitY, hitZ);
+		return false;
 	}
 
 	@Override
@@ -194,7 +202,7 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 			FluidStack fluid = tile.getTankFluid();
 			if (fluid != null) {
 				retTag.setTag("Fluid", fluid.writeToNBT(new NBTTagCompound()));
-				retTag.setBoolean("Lock", tile.lock);
+				retTag.setBoolean("Lock", tile.isLocked());
 			}
 		}
 		return retTag;
@@ -215,7 +223,7 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 		return ModelBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world, pos);
 	}
 
-	/* IBakeryBlock */
+	/* IBakeryProvider */
 	@Override
 	@SideOnly (Side.CLIENT)
 	public IBakery getBakery() {
@@ -242,6 +250,7 @@ public class BlockTank extends BlockTEBase implements IBakeryProvider, IModelReg
 			builder.append(",level=").append(tank.getLevel());
 			builder.append(",holding=").append(tank.enchantHolding);
 			builder.append(",output=").append(tank.enableAutoOutput);
+			builder.append(",lock=").append(tank.isLocked());
 			FluidStack stack = tank.getTankFluid();
 
 			if (stack != null) {

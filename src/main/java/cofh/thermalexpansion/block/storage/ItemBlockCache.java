@@ -26,6 +26,11 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 		setMaxStackSize(1);
 	}
 
+	public boolean isLocked(ItemStack stack) {
+
+		return stack.getTagCompound().getBoolean("Lock");
+	}
+
 	@Override
 	public ItemStack setDefaultTag(ItemStack stack, int level) {
 
@@ -59,26 +64,22 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 		} else {
 			tooltip.add(StringHelper.localize("info.cofh.capacity") + ": " + StringHelper.formatNumber(getSizeInventory(stack)));
 		}
-		if (!stack.getTagCompound().hasKey("Item")) {
-			tooltip.add(StringHelper.localize("info.cofh.empty"));
-			return;
-		}
-		boolean lock = stack.getTagCompound().getBoolean("Lock");
-
-		if (lock) {
-			tooltip.add(StringHelper.YELLOW + StringHelper.localize("info.cofh.locked"));
-		} else {
-			tooltip.add(StringHelper.YELLOW + StringHelper.localize("info.cofh.unlocked"));
-		}
-		tooltip.add(StringHelper.localize("info.cofh.contents") + ":");
-
 		if (stack.getTagCompound().hasKey("Item")) {
 			ItemStack stored = ItemHelper.readItemStackFromNBT(stack.getTagCompound().getCompoundTag("Item"));
+			tooltip.add(StringHelper.localize("info.cofh.contents") + ":");
+
 			if (isCreative(stack)) {
 				tooltip.add("    " + StringHelper.ORANGE + StringHelper.getItemName(stored));
 			} else {
 				tooltip.add("    " + StringHelper.ORANGE + StringHelper.formatNumber(stored.getCount()) + " " + StringHelper.getItemName(stored));
 			}
+			if (isLocked(stack)) {
+				tooltip.add(StringHelper.YELLOW + StringHelper.localize("info.cofh.locked"));
+			} else {
+				tooltip.add(StringHelper.YELLOW + StringHelper.localize("info.cofh.unlocked"));
+			}
+		} else {
+			tooltip.add(StringHelper.localize("info.cofh.empty"));
 		}
 		// RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}

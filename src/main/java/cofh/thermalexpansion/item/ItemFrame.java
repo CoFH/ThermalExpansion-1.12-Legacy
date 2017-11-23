@@ -44,7 +44,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 		return true;
 	}
 
-	/* IBakeryItem */
+	/* IBakeryProvider */
 	@Override
 	@SideOnly (Side.CLIENT)
 	public IBakery getBakery() {
@@ -52,6 +52,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 		return BakeryFrame.INSTANCE;
 	}
 
+	/* IModelRegister */
 	@Override
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {

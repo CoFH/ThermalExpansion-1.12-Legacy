@@ -111,11 +111,9 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.a." + getMode(stack)));
 			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
 			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.c.0"));
-			tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.capacitor.d.0"));
 		} else {
 			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
 			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.c.1"));
-			tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.capacitor.d.0"));
 		}
 		if (ItemHelper.getItemDamage(stack) == CREATIVE) {
 			tooltip.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
@@ -147,7 +145,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		if (CoreUtils.isFakePlayer(entity)) {
 			return;
 		}
-		if (slot > 8 || !isActive(stack)) {
+		if (!isActive(stack)) {
 			return;
 		}
 		Iterable<ItemStack> equipment;
@@ -318,7 +316,6 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	public void onModeChange(EntityPlayer player, ItemStack stack) {
 
 		player.world.playSound(null, player.getPosition(), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, 0.4F, (isActive(stack) ? 0.7F : 0.5F) + 0.1F * getMode(stack));
-
 		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.capacitor.a." + getMode(stack)));
 	}
 

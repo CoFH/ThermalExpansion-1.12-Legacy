@@ -9,7 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerRefinery extends ContainerTEBase {
 
-	protected TileRefinery myTile;
+	TileRefinery myTile;
 
 	public ContainerRefinery(InventoryPlayer inventory, TileEntity tile) {
 
