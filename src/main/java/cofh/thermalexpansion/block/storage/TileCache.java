@@ -1,15 +1,14 @@
 package cofh.thermalexpansion.block.storage;
 
+import cofh.api.item.IUpgradeItem;
+import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.gui.container.ICustomInventory;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.ISidedTexture;
-import cofh.core.util.helpers.BlockHelper;
-import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.helpers.MathHelper;
-import cofh.core.util.helpers.StringHelper;
+import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.gui.client.storage.GuiCache;
@@ -48,8 +47,6 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int[] SLOTS = { 0, 1 };
 
-	private static boolean enableSecurity = true;
-
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileCache.class, "thermalexpansion:storage_cache");
@@ -60,11 +57,14 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	public static void config() {
 
 		String category = "Storage.Cache";
-		String comment = "If TRUE, Caches are securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", true, comment);
+		String comment = "If TRUE, Caches are enabled.";
+		BlockCache.enable = ThermalExpansion.CONFIG.get(category, "Enable", BlockCache.enable, comment);
 
-		comment = "If TRUE, Caches are enabled.";
-		BlockCache.enable = ThermalExpansion.CONFIG.get(category, "Enable", true, comment);
+		comment = "If TRUE, Caches may be turned into Creative versions using a Creative Conversion Kit.";
+		BlockCache.enableCreative = ThermalExpansion.CONFIG.get(category, "Creative", BlockCache.enableCreative, comment);
+
+		comment = "If TRUE, Caches are securable.";
+		BlockCache.enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", BlockCache.enableSecurity, comment);
 
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockCache.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockCache.enableClassicRecipes, comment);
@@ -91,6 +91,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	boolean lock = false;
 	int cacheStackSize;
 	int maxCacheStackSize;
+	int maxCapacity;
 
 	public ItemStack storedStack = ItemStack.EMPTY;
 
@@ -99,7 +100,8 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		inventory = new ItemStack[2];
 		Arrays.fill(inventory, ItemStack.EMPTY);
 
-		maxCacheStackSize = getCapacity(0, 0) - 64 * 2;
+		maxCapacity = getCapacity(0, 0);
+		maxCacheStackSize = maxCapacity - 64 * 2;
 	}
 
 	@Override
@@ -129,7 +131,34 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	@Override
 	public boolean enableSecurity() {
 
-		return enableSecurity;
+		return BlockCache.enableSecurity;
+	}
+
+	/* IUpgradeable */
+	@Override
+	public boolean canUpgrade(ItemStack upgrade) {
+
+		if (!AugmentHelper.isUpgradeItem(upgrade)) {
+			return false;
+		}
+		UpgradeType uType = ((IUpgradeItem) upgrade.getItem()).getUpgradeType(upgrade);
+		int uLevel = ((IUpgradeItem) upgrade.getItem()).getUpgradeLevel(upgrade);
+
+		switch (uType) {
+			case INCREMENTAL:
+				if (uLevel == level + 1) {
+					return !BlockCache.enableClassicRecipes;
+				}
+				break;
+			case FULL:
+				if (uLevel > level) {
+					return !BlockCache.enableClassicRecipes;
+				}
+				break;
+			case CREATIVE:
+				return !isCreative && BlockCache.enableCreative;
+		}
+		return false;
 	}
 
 	@Override
@@ -137,10 +166,12 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 		if (super.setLevel(level)) {
 			if (!storedStack.isEmpty()) {
-				maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
+				maxCapacity = getCapacity(level, enchantHolding);
+				maxCacheStackSize = maxCapacity - storedStack.getMaxStackSize() * 2;
 				balanceStacks();
 			} else {
-				maxCacheStackSize = getCapacity(level, enchantHolding) - 64 * 2;
+				maxCapacity = getCapacity(level, enchantHolding);
+				maxCacheStackSize = maxCapacity - 64 * 2;
 			}
 			return true;
 		}
@@ -292,7 +323,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	@Override
 	public boolean hasConfigGui() {
 
-		return true;
+		return false;
 	}
 
 	// This is ONLY used in GUIs.
@@ -315,9 +346,11 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		if (nbt.hasKey("Item")) {
 			storedStack = ItemHelper.readItemStackFromNBT(nbt.getCompoundTag("Item"));
 			cacheStackSize = nbt.getInteger("CacheCount");
-			maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
+			maxCapacity = getCapacity(level, enchantHolding);
+			maxCacheStackSize = maxCapacity - storedStack.getMaxStackSize() * 2;
 		} else {
-			maxCacheStackSize = getCapacity(level, enchantHolding) - 64 * 2;
+			maxCapacity = getCapacity(level, enchantHolding);
+			maxCacheStackSize = maxCapacity - 64 * 2;
 			lock = false;
 		}
 	}
@@ -449,7 +482,8 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		} else {
 			storedStack = ItemHelper.cloneStack(stack, 1);
 			cacheStackSize = Math.min(amount, getMaxStoredCount());
-			maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
+			maxCapacity = getCapacity(level, enchantHolding);
+			maxCacheStackSize = maxCapacity - storedStack.getMaxStackSize() * 2;
 			balanceStacks();
 		}
 		updateTrackers();
@@ -545,7 +579,8 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 				storedStack = ItemHelper.cloneStack(inventory[0], 1);
 				cacheStackSize = inventory[0].getCount();
 				inventory[0] = ItemStack.EMPTY;
-				maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
+				maxCapacity = getCapacity(level, enchantHolding);
+				maxCacheStackSize = maxCapacity - storedStack.getMaxStackSize() * 2;
 			} else {
 				cacheStackSize += inventory[0].getCount() + inventory[1].getCount();
 			}

@@ -19,7 +19,8 @@ import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalexpansion.render.BakeryDevice;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
-import cofh.thermalfoundation.item.ItemTome;
+import cofh.thermalfoundation.item.tome.ItemTomeExperience;
+import cofh.thermalfoundation.item.tome.ItemTomeLexicon;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -435,7 +436,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'C', ItemFrame.frameDevice,
 					'I', tinPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', ItemTome.tomeLexicon,
+					'X', ItemTomeLexicon.tomeLexicon,
 					'Y', "ingotLead"
 			);
 		}
@@ -447,7 +448,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'C', ItemFrame.frameDevice,
 					'I', tinPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', ItemTome.tomeExperience,
+					'X', ItemTomeExperience.tomeExperience,
 					'Y', "ingotGold"
 			);
 		}

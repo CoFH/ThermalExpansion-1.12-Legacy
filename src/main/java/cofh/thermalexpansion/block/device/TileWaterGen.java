@@ -16,13 +16,13 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -72,7 +72,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 	private int adjacentSources = -1;
 	private int outputTracker;
-	private boolean inHell;
+	private boolean inNether;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
 
@@ -123,7 +123,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
 			}
-		} else if (redstoneControlOrDisable() && !inHell) {
+		} else if (redstoneControlOrDisable() && !inNether) {
 			isActive = true;
 		}
 		if (adjacentSources < 0) {
@@ -136,7 +136,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 	protected void updateValidity() {
 
-		inHell = world.getBiome(pos) == Biomes.HELL;
+		inNether = BiomeDictionary.hasType(world.getBiome(pos), BiomeDictionary.Type.NETHER);
 		adjacentSources = 0;
 
 		if (isWater(world.getBlockState(pos.down()))) {
@@ -220,7 +220,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
-		inHell = nbt.getBoolean("Hell");
+		inNether = nbt.getBoolean("Hell");
 		adjacentSources = nbt.getInteger("Sources");
 		outputTracker = nbt.getInteger("TrackOut");
 		tank.readFromNBT(nbt);
@@ -231,7 +231,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
-		nbt.setBoolean("Hell", inHell);
+		nbt.setBoolean("Hell", inNether);
 		nbt.setInteger("Sources", adjacentSources);
 		nbt.setInteger("TrackOut", outputTracker);
 		tank.writeToNBT(nbt);

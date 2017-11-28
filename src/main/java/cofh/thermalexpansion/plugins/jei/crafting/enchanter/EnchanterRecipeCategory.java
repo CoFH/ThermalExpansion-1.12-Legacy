@@ -54,7 +54,7 @@ public class EnchanterRecipeCategory extends BaseRecipeCategory<EnchanterRecipeW
 		registry.addRecipeClickArea(GuiEnchanter.class, 79, 34, 24, 16, RecipeUidsTE.ENCHANTER, RecipeUidsTE.ENCHANTER_TREASURE, RecipeUidsTE.ENCHANTER_EMPOWERED);
 		registry.addRecipeCatalyst(BlockMachine.machineEnchanter, RecipeUidsTE.ENCHANTER);
 
-		EnchanterRecipeCategoryEmpowered.initialize(registry);
+		// EnchanterRecipeCategoryEmpowered.initialize(registry);
 	}
 
 	public static List<EnchanterRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
@@ -81,7 +81,7 @@ public class EnchanterRecipeCategory extends BaseRecipeCategory<EnchanterRecipeW
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.enchanter.name");
 
 		progress = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW);
-		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_SUN);
+		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_BOOK);
 		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
 		tankOverlay = Drawables.getDrawables(guiHelper).getTankLargeOverlay(Drawables.TANK);
 	}

@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
@@ -187,7 +188,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 				inventory[0] = ItemStack.EMPTY;
 			}
 		}
-		int conversion = (XpCollectorManager.XP_CONVERSION * (100 + boostFactor)) / 100;
+		int conversion = (CoreProps.MB_PER_XP * (100 + boostFactor)) / 100;
 		int toConvert;
 
 		if (xpBuffer * conversion <= tank.getSpace()) {

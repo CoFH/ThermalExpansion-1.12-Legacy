@@ -177,7 +177,6 @@ public class TEProps {
 	public static ResourceLocation textureGuiSlots4 = PATH_SLOTS_4;
 	public static ResourceLocation textureGuiSlotsCrafter = PATH_SLOTS;
 	public static String textureSelection = TEXTURE_DEFAULT;
-	public static boolean useAlternateStarfieldShader = false;
 
 	/* BLOCKSTATE PROPERTIES */
 	public static final UnlistedGenericTile<TileApparatusBase> TILE_APPARATUS = new UnlistedGenericTile<>("tile_apparatus", TileApparatusBase.class);

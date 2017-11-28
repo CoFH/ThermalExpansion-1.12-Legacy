@@ -363,9 +363,12 @@ public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryPro
 		// @formatter:on
 	}
 
-	public static boolean enable;
-	public static boolean enableClassicRecipes;
-	public static boolean enableUpgradeKitCrafting;
+	public static boolean enable = true;
+	public static boolean enableCreative = true;
+	public static boolean enableSecurity = true;
+
+	public static boolean enableClassicRecipes = false;
+	public static boolean enableUpgradeKitCrafting = true;
 
 	/* REFERENCES */
 	public static ItemStack cell[];

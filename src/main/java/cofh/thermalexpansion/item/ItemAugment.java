@@ -149,9 +149,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 						stack.shrink(1);
 					}
 					player.world.playSound(null, player.getPosition(), SoundEvents.BLOCK_ANVIL_PLACE, SoundCategory.PLAYERS, 0.4F, 0.8F);
-					ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.thermalexpansion.augment.install.success"));
+					ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.thermalfoundation.augment.install.success"));
 				} else {
-					ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.thermalexpansion.augment.install.failure"));
+					ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.thermalfoundation.augment.install.failure"));
 				}
 				return EnumActionResult.SUCCESS;
 			}
@@ -210,7 +210,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineBrewerReagent = addAugmentItem(448, TEProps.MACHINE_BREWER_REAGENT);
 
-		machineEnchanterEmpowered = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.MODE);
+		// machineEnchanterEmpowered = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.MODE);
 
 		machinePrecipitatorSnowLayer = addAugmentItem(481, TEProps.MACHINE_PRECIPITATOR_SNOW_LAYER, AugmentType.MODE);
 		machinePrecipitatorPackedIce = addAugmentItem(482, TEProps.MACHINE_PRECIPITATOR_PACKED_ICE, AugmentType.MODE);
@@ -480,16 +480,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Z', "dustRedstone"
 		);
 
-		addShapedRecipe(machineEnchanterEmpowered,
-				" G ",
-				"ICI",
-				"YXY",
-				'C', ItemMaterial.powerCoilElectrum,
-				'G', "gearGold",
-				'I', "gemDiamond",
-				'X', "blockLapis",
-				'Y', "dustGlowstone"
-		);
+//		addShapedRecipe(machineEnchanterEmpowered,
+//				" G ",
+//				"ICI",
+//				"YXY",
+//				'C', ItemMaterial.powerCoilElectrum,
+//				'G', "gearGold",
+//				'I', "gemDiamond",
+//				'X', "blockLapis",
+//				'Y', "dustGlowstone"
+//		);
 
 		addShapedRecipe(machineExtruderNoWater,
 				" G ",

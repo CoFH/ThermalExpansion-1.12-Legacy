@@ -13,8 +13,6 @@ public class XpCollectorManager {
 	private static TObjectIntHashMap<ComparableItemStack> catalystMap = new TObjectIntHashMap<>();
 	private static TObjectIntHashMap<ComparableItemStack> catalystFactorMap = new TObjectIntHashMap<>();
 
-	public static final int XP_CONVERSION = 20; // mB per XP
-
 	public static int getCatalystXp(ItemStack stack) {
 
 		if (stack.isEmpty()) {

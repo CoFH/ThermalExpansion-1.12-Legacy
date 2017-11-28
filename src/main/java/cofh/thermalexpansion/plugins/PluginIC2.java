@@ -3,11 +3,10 @@ package cofh.thermalexpansion.plugins;
 import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.util.managers.machine.CompactorManager;
+import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.RefineryManager;
 import cofh.thermalfoundation.item.ItemMaterial;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -45,6 +44,15 @@ public class PluginIC2 extends ModPlugin {
 			return false;
 		}
 		try {
+			/* PULVERIZER */
+			{
+				ItemStack bioChaff = getItemStack("crafting", 1, 21);
+
+				int energy = PulverizerManager.DEFAULT_ENERGY;
+
+				PulverizerManager.addRecipe(energy, bioChaff, new ItemStack(Blocks.DIRT));
+			}
+
 			/* INSOLATOR */
 			{
 				ItemStack logRubber = getItemStack("rubber_wood", 1, 0);
@@ -78,6 +86,20 @@ public class PluginIC2 extends ModPlugin {
 					RefineryManager.addRecipe(energy, new FluidStack(biomass, 25), new FluidStack(biogas, 500), getItemStack("crop_res", 1, 2), 5);
 				}
 			}
+
+			/* BREWER */
+			{
+				ItemStack bioChaff = getItemStack("crafting", 1, 21);
+				Fluid biomass = FluidRegistry.getFluid("ic2biomass");
+
+				int energy = BrewerManager.DEFAULT_ENERGY * 2;
+
+				if (biomass != null) {
+					BrewerManager.addRecipe(energy, bioChaff, new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), new FluidStack(biomass, Fluid.BUCKET_VOLUME));
+				}
+
+			}
+
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
 			error = true;

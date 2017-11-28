@@ -2,6 +2,8 @@ package cofh.thermalexpansion.block.dynamo;
 
 import cofh.api.core.IAccelerable;
 import cofh.api.item.IAugmentItem.AugmentType;
+import cofh.api.item.IUpgradeItem;
+import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ISteamInfo;
@@ -50,6 +52,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	public static int[] POWER_SCALING = { 100, 150, 200, 250, 300 };
 	public static int[] CUSTOM_POWER_SCALING = { 100, 150, 250, 400, 600 };
 
+	protected static boolean enableCreative = false;
 	protected static boolean enableSecurity = true;
 	protected static boolean customScaling = false;
 	protected static boolean smallStorage = false;
@@ -165,6 +168,38 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	public boolean enableSecurity() {
 
 		return enableSecurity;
+	}
+
+	/* IUpgradeable */
+	@Override
+	public boolean canUpgrade(ItemStack upgrade) {
+
+		if (!AugmentHelper.isUpgradeItem(upgrade)) {
+			return false;
+		}
+		UpgradeType uType = ((IUpgradeItem) upgrade.getItem()).getUpgradeType(upgrade);
+		int uLevel = ((IUpgradeItem) upgrade.getItem()).getUpgradeLevel(upgrade);
+
+		switch (uType) {
+			case INCREMENTAL:
+				if (uLevel == level + 1) {
+					return !BlockDynamo.enableClassicRecipes;
+				}
+				break;
+			case FULL:
+				if (uLevel > level) {
+					return !BlockDynamo.enableClassicRecipes;
+				}
+				break;
+			case CREATIVE:
+				return !isCreative && enableCreative;
+		}
+		return false;
+	}
+
+	public boolean smallStorage() {
+
+		return smallStorage;
 	}
 
 	@Override

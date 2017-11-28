@@ -50,7 +50,6 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 
 		double d4 = 4F / 16F;
 		double d5 = 12F / 16F;
-		double d6 = 8F / 16F;
 
 		modelCoil[0][1] = CCModel.quadModel(48).generateBox(0, -4, 0, -4, 8, 8 - d1, 8, 0, 0, 32, 32, 16);
 		modelCoil[1][1] = CCModel.quadModel(48).generateBox(0, -4, 0, -4, 8, 8 - d1, 8, 0, 16, 32, 32, 16);

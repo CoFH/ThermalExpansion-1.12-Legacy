@@ -91,7 +91,7 @@ public class TileSmelter extends TileMachineBase {
 	private int outputTrackerPrimary;
 	private int outputTrackerSecondary;
 
-	public boolean lockPrimary = false;
+	public boolean lockPrimary = true;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 

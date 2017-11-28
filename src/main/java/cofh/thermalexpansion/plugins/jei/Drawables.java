@@ -42,6 +42,7 @@ public class Drawables {
 	public static final int SCALE_SPIN = 8;
 	public static final int SCALE_SUN = 9;
 	public static final int SCALE_SNOWFLAKE = 10;
+	public static final int SCALE_BOOK = 11;
 
 	public static final ResourceLocation JEI_TEXTURE = new ResourceLocation("thermalexpansion:textures/gui/jei_handler.png");
 
@@ -56,8 +57,8 @@ public class Drawables {
 	private final IDrawableStatic[] progressLeft = new IDrawableStatic[3];
 	private final IDrawableStatic[] progressLeftFill = new IDrawableStatic[3];
 
-	private final IDrawableStatic[] scale = new IDrawableStatic[11];
-	private final IDrawableStatic[] scaleFill = new IDrawableStatic[11];
+	private final IDrawableStatic[] scale = new IDrawableStatic[12];
+	private final IDrawableStatic[] scaleFill = new IDrawableStatic[12];
 
 	private final IDrawableStatic energyEmpty;
 	private final IDrawableStatic energyFill;

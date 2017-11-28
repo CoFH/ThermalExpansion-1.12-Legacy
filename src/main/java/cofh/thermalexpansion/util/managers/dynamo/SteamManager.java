@@ -35,7 +35,15 @@ public class SteamManager {
 		}
 		int energy = fuelMap.get(new ComparableItemStack(stack));
 
-		return energy > 0 ? energy : TileEntityFurnace.getItemBurnTime(stack) * CoreProps.RF_PER_MJ;
+		if (energy > 0) {
+			return energy;
+		}
+		energy = TileEntityFurnace.getItemBurnTime(stack) * CoreProps.RF_PER_MJ;
+
+		if (energy > 200 * CoreProps.RF_PER_MJ) {
+			return energy;
+		}
+		return 0;
 	}
 
 	public static void initialize() {

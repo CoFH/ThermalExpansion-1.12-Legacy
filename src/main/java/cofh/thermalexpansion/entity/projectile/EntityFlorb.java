@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +22,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -127,7 +130,7 @@ public class EntityFlorb extends EntityThrowable {
 				block = Blocks.FLOWING_WATER;
 			}
 			if (world.isAirBlock(pos) || state.getMaterial() == Material.FIRE || state.getBlock().isReplaceable(world, pos)) {
-				if (!fluid.getName().equals("water") || !world.getBiome(pos).getBiomeName().toLowerCase().equals("hell")) {
+				if (!fluid.getName().equals("water") || !BiomeDictionary.hasType(world.getBiome(pos), Type.NETHER)) {
 					world.setBlockState(pos, block.getDefaultState(), 3);
 					world.notifyBlockUpdate(pos, state, state, 3);
 				}

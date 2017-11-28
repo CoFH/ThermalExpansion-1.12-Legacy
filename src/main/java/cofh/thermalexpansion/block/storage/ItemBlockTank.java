@@ -218,7 +218,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 
 		if (doDrain && !isCreative(container)) {
 			if (drained >= stack.amount) {
-				if (container.getTagCompound().getBoolean("Lock")) {
+				if (isLocked(container)) {
 					NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag("Fluid");
 					fluidTag.setInteger("Amount", 0);
 					container.getTagCompound().setTag("Fluid", fluidTag);

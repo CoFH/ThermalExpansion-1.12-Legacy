@@ -3,7 +3,6 @@ package cofh.thermalexpansion.util.managers.machine;
 import cofh.core.inventory.ComparableItemStack;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
-import cofh.thermalfoundation.item.ItemTome;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.enchantment.Enchantment;
@@ -23,7 +22,6 @@ public class EnchanterManager {
 	private static Set<ComparableItemStackEnchanter> lockSet = new THashSet<>();
 
 	public static final ItemStack ITEM_BOOK = new ItemStack(Items.BOOK);
-	public static final ItemStack ITEM_BOOK2 = ItemTome.tomeLexicon;
 
 	public static final int DEFAULT_ENERGY[] = { 4000, 8000, 12000, 16000, 20000 };
 	public static final int DEFAULT_EXPERIENCE[] = { 500, 1500, 3000, 5000, 7500 };
@@ -213,9 +211,9 @@ public class EnchanterManager {
 			return;
 		}
 		addRecipe(DEFAULT_ENERGY[tier], ITEM_BOOK, input, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, 1)), DEFAULT_EXPERIENCE[tier], Type.STANDARD);
-		if (enchant.getMaxLevel() > 1) {
-			addRecipe(DEFAULT_ENERGY[Math.min(tier + 1, 4)] * 3, ITEM_BOOK2, input, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, enchant.getMaxLevel())), DEFAULT_EXPERIENCE[Math.min(tier + 1, 4)], Type.EMPOWERED);
-		}
+		//		if (enchant.getMaxLevel() > 1) {
+		//			addRecipe(DEFAULT_ENERGY[Math.min(tier + 1, 4)] * 3, ITEM_BOOK2, input, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, enchant.getMaxLevel())), DEFAULT_EXPERIENCE[Math.min(tier + 1, 4)], Type.EMPOWERED);
+		//		}
 	}
 
 	/* REMOVE RECIPES */

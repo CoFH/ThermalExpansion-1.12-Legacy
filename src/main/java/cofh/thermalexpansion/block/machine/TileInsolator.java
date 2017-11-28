@@ -83,7 +83,7 @@ public class TileInsolator extends TileMachineBase {
 	private int outputTrackerPrimary;
 	private int outputTrackerSecondary;
 
-	public boolean lockPrimary = false;
+	public boolean lockPrimary = true;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 

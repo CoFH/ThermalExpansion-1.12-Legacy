@@ -5,11 +5,14 @@ import cofh.thermalexpansion.util.managers.dynamo.CompressionManager;
 import cofh.thermalexpansion.util.managers.dynamo.MagmaticManager;
 import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
+import cofh.thermalexpansion.util.managers.machine.EnchanterManager.Type;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,8 +37,8 @@ public class IMCHandler {
 						FurnaceManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(OUTPUT)));
 						continue;
 					case ADD_PULVERIZER_RECIPE:
-						if (nbt.hasKey(SECONDARY_CHANCE)) {
-							PulverizerManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_OUTPUT)), nbt.getInteger(SECONDARY_CHANCE));
+						if (nbt.hasKey(CHANCE)) {
+							PulverizerManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_OUTPUT)), nbt.getInteger(CHANCE));
 						} else if (nbt.hasKey(SECONDARY_OUTPUT)) {
 							PulverizerManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_OUTPUT)));
 						} else {
@@ -43,8 +46,8 @@ public class IMCHandler {
 						}
 						continue;
 					case ADD_SAWMILL_RECIPE:
-						if (nbt.hasKey(SECONDARY_CHANCE)) {
-							SawmillManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_OUTPUT)), nbt.getInteger(SECONDARY_CHANCE));
+						if (nbt.hasKey(CHANCE)) {
+							SawmillManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_OUTPUT)), nbt.getInteger(CHANCE));
 						} else if (nbt.hasKey(SECONDARY_OUTPUT)) {
 							SawmillManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_OUTPUT)));
 						} else {
@@ -52,8 +55,8 @@ public class IMCHandler {
 						}
 						continue;
 					case ADD_SMELTER_RECIPE:
-						if (nbt.hasKey(SECONDARY_CHANCE)) {
-							SmelterManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(PRIMARY_INPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_OUTPUT)), nbt.getInteger(SECONDARY_CHANCE));
+						if (nbt.hasKey(CHANCE)) {
+							SmelterManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(PRIMARY_INPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_OUTPUT)), nbt.getInteger(CHANCE));
 						} else if (nbt.hasKey(SECONDARY_OUTPUT)) {
 							SmelterManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(PRIMARY_INPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_OUTPUT)));
 						} else {
@@ -61,8 +64,8 @@ public class IMCHandler {
 						}
 						continue;
 					case ADD_INSOLATOR_RECIPE:
-						if (nbt.hasKey(SECONDARY_CHANCE)) {
-							InsolatorManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(PRIMARY_INPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_OUTPUT)), nbt.getInteger(SECONDARY_CHANCE));
+						if (nbt.hasKey(CHANCE)) {
+							InsolatorManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(PRIMARY_INPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_OUTPUT)), nbt.getInteger(CHANCE));
 						} else if (nbt.hasKey(SECONDARY_OUTPUT)) {
 							InsolatorManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(PRIMARY_INPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_OUTPUT)));
 						} else {
@@ -85,16 +88,41 @@ public class IMCHandler {
 						RefineryManager.addRecipe(nbt.getInteger(ENERGY), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(INPUT)), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(OUTPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_OUTPUT)));
 						continue;
 					case ADD_TRANSPOSER_FILL_RECIPE:
-						TransposerManager.addFillRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(OUTPUT)), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(FLUID)), nbt.getBoolean("reversible"));
+						TransposerManager.addFillRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(OUTPUT)), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(FLUID)), nbt.getBoolean(REVERSIBLE));
 						continue;
 					case ADD_TRANSPOSER_EXTRACT_RECIPE:
-						TransposerManager.addExtractRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(OUTPUT)), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(FLUID)), nbt.getInteger("chance"), nbt.getBoolean("reversible"));
+						TransposerManager.addExtractRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(OUTPUT)), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(FLUID)), nbt.getInteger(CHANCE), nbt.getBoolean(REVERSIBLE));
 						continue;
 					case ADD_CHARGER_RECIPE:
 						ChargerManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(OUTPUT)));
 						continue;
 					case ADD_CENTRIFUGE_RECIPE:
-						// TODO
+						ArrayList<ItemStack> output = new ArrayList<>();
+						ArrayList<Integer> chance = new ArrayList<>();
+						FluidStack fluid = null;
+
+						if (nbt.hasKey(OUTPUT)) {
+							NBTTagList list = nbt.getTagList(OUTPUT, 10);
+							for (int i = 0; i < list.tagCount(); i++) {
+								NBTTagCompound tag = list.getCompoundTagAt(i);
+								output.add(new ItemStack(tag));
+								if (tag.hasKey(CHANCE)) {
+									chance.add(tag.getInteger(CHANCE));
+								} else {
+									chance.add(100);
+								}
+							}
+						}
+						if (nbt.hasKey(FLUID)) {
+							fluid = FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(FLUID));
+						}
+						CentrifugeManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), output, chance, fluid);
+						continue;
+					case ADD_BREWER_RECIPE:
+						BrewerManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(PRIMARY_INPUT)), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(SECONDARY_INPUT)), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(OUTPUT)));
+						continue;
+					case ADD_ENCHANTER_RECIPE:
+						EnchanterManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(PRIMARY_INPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), nbt.getInteger(EXPERIENCE), Type.STANDARD);
 						continue;
 
 					/* REMOVE RECIPES */
@@ -140,6 +168,12 @@ public class IMCHandler {
 					case REMOVE_CENTRIFUGE_RECIPE:
 						CentrifugeManager.removeRecipe(new ItemStack(nbt.getCompoundTag(INPUT)));
 						continue;
+					case REMOVE_BREWER_RECIPE:
+						BrewerManager.removeRecipe(new ItemStack(nbt.getCompoundTag(INPUT)), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(FLUID)));
+						continue;
+					case REMOVE_ENCHANTER_RECIPE:
+						EnchanterManager.removeRecipe(new ItemStack(nbt.getCompoundTag(PRIMARY_INPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_INPUT)));
+						continue;
 
 					/* FUELS */
 					case ADD_MAGMATIC_FUEL:
@@ -159,8 +193,11 @@ public class IMCHandler {
 
 	/* IMC STRINGS */
 	static final String ENERGY = "energy";
+	static final String EXPERIENCE = "experience";
 	static final String FLUID = "fluid";
 	static final String FLUID_NAME = "fluidName";
+	static final String REVERSIBLE = "reversible";
+	static final String CHANCE = "chance";
 
 	static final String INPUT = "input";
 	static final String OUTPUT = "output";
@@ -168,47 +205,40 @@ public class IMCHandler {
 	static final String SECONDARY_INPUT = "secondaryInput";
 	static final String PRIMARY_OUTPUT = "primaryOutput";
 	static final String SECONDARY_OUTPUT = "secondaryOutput";
-	static final String SECONDARY_CHANCE = "secondaryChance";
 
 	public static final String ADD_FURNACE_RECIPE = "addfurnacerecipe";
 	public static final String ADD_PULVERIZER_RECIPE = "addpulverizerrecipe";
 	public static final String ADD_SAWMILL_RECIPE = "addsawmillrecipe";
 	public static final String ADD_SMELTER_RECIPE = "addsmelterrecipe";
 	public static final String ADD_INSOLATOR_RECIPE = "addinsolatorrecipe";
-
 	public static final String ADD_COMPACTOR_PRESS_RECIPE = "addcompactorpressrecipe";
 	public static final String ADD_COMPACTOR_STORAGE_RECIPE = "addcompactorstoragerecipe";
 	public static final String ADD_COMPACTOR_MINT_RECIPE = "addcompactormintrecipe";
-
 	public static final String ADD_CRUCIBLE_RECIPE = "addcruciblerecipe";
 	public static final String ADD_REFINERY_RECIPE = "addrefineryrecipe";
-
 	public static final String ADD_TRANSPOSER_FILL_RECIPE = "addtransposerfillrecipe";
 	public static final String ADD_TRANSPOSER_EXTRACT_RECIPE = "addtransposerextractrecipe";
-
 	public static final String ADD_CHARGER_RECIPE = "addchargerrecipe";
-
 	public static final String ADD_CENTRIFUGE_RECIPE = "addcentrifugerecipe";
+	public static final String ADD_BREWER_RECIPE = "addbrewerrecipe";
+	public static final String ADD_ENCHANTER_RECIPE = "addenchanterrecipe";
 
 	public static final String REMOVE_FURNACE_RECIPE = "removefurnacerecipe";
 	public static final String REMOVE_PULVERIZER_RECIPE = "removepulverizerrecipe";
 	public static final String REMOVE_SAWMILL_RECIPE = "removesawmillrecipe";
 	public static final String REMOVE_SMELTER_RECIPE = "removesmelterrecipe";
 	public static final String REMOVE_INSOLATOR_RECIPE = "removeinsolatorrecipe";
-
 	public static final String REMOVE_COMPACTOR_PRESS_RECIPE = "removecompactorpressrecipe";
 	public static final String REMOVE_COMPACTOR_STORAGE_RECIPE = "removecompactorstoragerecipe";
 	public static final String REMOVE_COMPACTOR_MINT_RECIPE = "removecompactormintrecipe";
-
 	public static final String REMOVE_CRUCIBLE_RECIPE = "removecruciblerecipe";
 	public static final String REMOVE_REFINERY_RECIPE = "removerefineryrecipe";
-
 	public static final String REMOVE_TRANSPOSER_FILL_RECIPE = "removetransposerfillrecipe";
 	public static final String REMOVE_TRANSPOSER_EXTRACT_RECIPE = "removetransposerextractrecipe";
-
 	public static final String REMOVE_CHARGER_RECIPE = "removechargerrecipe";
-
 	public static final String REMOVE_CENTRIFUGE_RECIPE = "removecentrifugerecipe";
+	public static final String REMOVE_BREWER_RECIPE = "removebrewerrecipe";
+	public static final String REMOVE_ENCHANTER_RECIPE = "removeenchanterrecipe";
 
 	public static final String ADD_MAGMATIC_FUEL = "addmagmaticfuel";
 	public static final String ADD_COMPRESSION_FUEL = "addcompressionfuel";

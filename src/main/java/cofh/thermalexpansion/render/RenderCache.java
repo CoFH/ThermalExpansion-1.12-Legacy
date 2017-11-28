@@ -32,10 +32,6 @@ public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 			GlStateManager.pushMatrix();
 
 			switch (tile.getFacing()) {
-				case 0:
-					break;
-				case 1:
-					break;
 				case 2:
 					GlStateManager.translate(x + 3 / 16f, y + 3 / 16f, z + RenderHelper.RENDER_OFFSET * 150);
 					break;

@@ -76,7 +76,7 @@ public class TileEnchanter extends TileMachineBase {
 	private int inputTrackerSecondary;
 	private int outputTracker;
 
-	public boolean lockPrimary = false;
+	public boolean lockPrimary = true;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 
@@ -457,14 +457,20 @@ public class TileEnchanter extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					return null;
+					if (isActive) {
+						return null;
+					}
+					return tank.drain(resource, doDrain);
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					return null;
+					if (isActive) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
 				}
 			});
 		}

@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.storage;
 
+import cofh.api.item.IUpgradeItem;
+import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
@@ -10,6 +12,7 @@ import cofh.thermalexpansion.gui.client.storage.GuiTank;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -36,8 +39,6 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int RENDER_LEVELS = 100;
 
-	private static boolean enableSecurity = true;
-
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileTank.class, "thermalexpansion:storage_tank");
@@ -48,11 +49,14 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	public static void config() {
 
 		String category = "Storage.Tank";
-		String comment = "If TRUE, Tanks are securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", true, comment);
+		String comment = "If TRUE, Tanks are enabled.";
+		BlockTank.enable = ThermalExpansion.CONFIG.get(category, "Enable", BlockTank.enable, comment);
 
-		comment = "If TRUE, Tanks are enabled.";
-		BlockTank.enable = ThermalExpansion.CONFIG.get(category, "Enable", true, comment);
+		comment = "If TRUE, Tanks may be turned into Creative versions using a Creative Conversion Kit.";
+		BlockTank.enableCreative = ThermalExpansion.CONFIG.get(category, "Creative", BlockTank.enableCreative, comment);
+
+		comment = "If TRUE, Tanks are securable.";
+		BlockTank.enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", BlockTank.enableSecurity, comment);
 
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockTank.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockTank.enableClassicRecipes, comment);
@@ -110,7 +114,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	@Override
 	public boolean enableSecurity() {
 
-		return enableSecurity;
+		return BlockTank.enableSecurity;
 	}
 
 	@Override
@@ -183,6 +187,33 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	public FluidStack getTankFluid() {
 
 		return tank.getFluid();
+	}
+
+	/* IUpgradeable */
+	@Override
+	public boolean canUpgrade(ItemStack upgrade) {
+
+		if (!AugmentHelper.isUpgradeItem(upgrade)) {
+			return false;
+		}
+		UpgradeType uType = ((IUpgradeItem) upgrade.getItem()).getUpgradeType(upgrade);
+		int uLevel = ((IUpgradeItem) upgrade.getItem()).getUpgradeLevel(upgrade);
+
+		switch (uType) {
+			case INCREMENTAL:
+				if (uLevel == level + 1) {
+					return !BlockTank.enableClassicRecipes;
+				}
+				break;
+			case FULL:
+				if (uLevel > level) {
+					return !BlockTank.enableClassicRecipes;
+				}
+				break;
+			case CREATIVE:
+				return !isCreative && BlockTank.enableCreative;
+		}
+		return false;
 	}
 
 	@Override

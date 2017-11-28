@@ -41,8 +41,6 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	public static final int[] RECV = { 1, 4, 9, 16, 25 };
 	public static final int[] SEND = { 1, 4, 9, 16, 25 };
 
-	private static boolean enableSecurity = true;
-
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileCell.class, "thermalexpansion:storage_cell");
@@ -53,11 +51,14 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	public static void config() {
 
 		String category = "Storage.Cell";
-		String comment = "If TRUE, Energy Cells are securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", enableSecurity, comment);
+		String comment = "If TRUE, Energy Cells are enabled.";
+		BlockCell.enable = ThermalExpansion.CONFIG.get(category, "Enable", BlockCell.enable, comment);
 
-		comment = "If TRUE, Energy Cells are enabled.";
-		BlockCell.enable = ThermalExpansion.CONFIG.get(category, "Enable", true, comment);
+		comment = "If TRUE, Energy Cells may be turned into Creative versions using a Creative Conversion Kit.";
+		BlockCell.enableCreative = ThermalExpansion.CONFIG.get(category, "Creative", BlockCell.enableCreative, comment);
+
+		comment = "If TRUE, Energy Cells are securable.";
+		BlockCell.enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", BlockCell.enableSecurity, comment);
 
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockCell.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockCell.enableClassicRecipes, comment);
@@ -134,7 +135,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public boolean enableSecurity() {
 
-		return enableSecurity;
+		return BlockCell.enableSecurity;
 	}
 
 	/* IUpgradeable */
@@ -159,7 +160,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 				}
 				break;
 			case CREATIVE:
-				return !isCreative;
+				return !isCreative && BlockCell.enableCreative;
 		}
 		return false;
 	}

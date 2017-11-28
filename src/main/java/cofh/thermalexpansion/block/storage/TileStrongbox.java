@@ -1,13 +1,12 @@
 package cofh.thermalexpansion.block.storage;
 
+import cofh.api.item.IUpgradeItem;
+import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.helpers.BlockHelper;
-import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.helpers.MathHelper;
-import cofh.core.util.helpers.ServerHelper;
+import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.gui.client.storage.GuiStrongbox;
@@ -35,8 +34,6 @@ import java.util.Arrays;
 @Optional.Interface (iface = "vazkii.quark.api.IDropoffManager", modid = "quark")
 public class TileStrongbox extends TileInventory implements ITickable, ISidedInventory, IReconfigurableFacing, IInventoryRetainer, IDropoffManager {
 
-	private static boolean enableSecurity = true;
-
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileStrongbox.class, "thermalexpansion:storage_strongbox");
@@ -47,11 +44,14 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	public static void config() {
 
 		String category = "Storage.Strongbox";
-		String comment = "If TRUE, Strongboxes are securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", enableSecurity, comment);
+		String comment = "If TRUE, Strongboxes are enabled.";
+		BlockStrongbox.enable = ThermalExpansion.CONFIG.get(category, "Enable", BlockStrongbox.enable, comment);
 
-		comment = "If TRUE, Strongboxes are enabled.";
-		BlockStrongbox.enable = ThermalExpansion.CONFIG.get(category, "Enable", true, comment);
+		comment = "If TRUE, Strongboxes may be turned into Creative versions using a Creative Conversion Kit.";
+		BlockStrongbox.enableCreative = ThermalExpansion.CONFIG.get(category, "Creative", BlockStrongbox.enableCreative, comment);
+
+		comment = "If TRUE, Strongboxes are securable.";
+		BlockStrongbox.enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", BlockStrongbox.enableSecurity, comment);
 
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockStrongbox.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockStrongbox.enableClassicRecipes, comment);
@@ -92,7 +92,34 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	@Override
 	public boolean enableSecurity() {
 
-		return enableSecurity;
+		return BlockStrongbox.enableSecurity;
+	}
+
+	/* IUpgradeable */
+	@Override
+	public boolean canUpgrade(ItemStack upgrade) {
+
+		if (!AugmentHelper.isUpgradeItem(upgrade)) {
+			return false;
+		}
+		UpgradeType uType = ((IUpgradeItem) upgrade.getItem()).getUpgradeType(upgrade);
+		int uLevel = ((IUpgradeItem) upgrade.getItem()).getUpgradeLevel(upgrade);
+
+		switch (uType) {
+			case INCREMENTAL:
+				if (uLevel == level + 1) {
+					return !BlockStrongbox.enableClassicRecipes;
+				}
+				break;
+			case FULL:
+				if (uLevel > level) {
+					return !BlockStrongbox.enableClassicRecipes;
+				}
+				break;
+			case CREATIVE:
+				return !isCreative && BlockStrongbox.enableCreative;
+		}
+		return false;
 	}
 
 	@Override
