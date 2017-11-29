@@ -104,8 +104,8 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 		Reaction reaction = ReactantManager.getReaction(inventory[0], tank.getFluid());
 
-		currentFuelRF = reaction.getEnergy() * energyMod / ENERGY_BASE;
-		fuelRF += currentFuelRF;
+		maxFuelRF = reaction.getEnergy() * energyMod / ENERGY_BASE;
+		fuelRF += maxFuelRF;
 
 		inventory[0] = ItemHelper.consumeItem(inventory[0]);
 		tank.drain(fluidAmount, true);
@@ -133,10 +133,10 @@ public class TileDynamoReactant extends TileDynamoBase {
 	@Override
 	public int getScaledDuration(int scale) {
 
-		if (currentFuelRF <= 0) {
-			currentFuelRF = Math.max(fuelRF, ReactantManager.DEFAULT_ENERGY);
+		if (maxFuelRF <= 0) {
+			maxFuelRF = Math.max(fuelRF, ReactantManager.DEFAULT_ENERGY);
 		}
-		return fuelRF * scale / currentFuelRF;
+		return fuelRF * scale / maxFuelRF;
 	}
 
 	@Override
@@ -151,11 +151,11 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 		super.readFromNBT(nbt);
 
-		currentFuelRF = nbt.getInteger("FuelMax");
+		maxFuelRF = nbt.getInteger("FuelMax");
 		tank.readFromNBT(nbt);
 
-		if (currentFuelRF <= 0) {
-			currentFuelRF = Math.max(fuelRF, ReactantManager.DEFAULT_ENERGY);
+		if (maxFuelRF <= 0) {
+			maxFuelRF = Math.max(fuelRF, ReactantManager.DEFAULT_ENERGY);
 		}
 		if (!ReactantManager.validFluid(tank.getFluid())) {
 			tank.setFluid(null);
@@ -170,7 +170,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("FuelMax", currentFuelRF);
+		nbt.setInteger("FuelMax", maxFuelRF);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
@@ -183,7 +183,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
-		payload.addInt(currentFuelRF);
+		payload.addInt(maxFuelRF);
 		payload.addFluidStack(tank.getFluid());
 
 		return payload;
@@ -204,7 +204,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 		super.handleGuiPacket(payload);
 
-		currentFuelRF = payload.getInt();
+		maxFuelRF = payload.getInt();
 		tank.setFluid(payload.getFluidStack());
 	}
 

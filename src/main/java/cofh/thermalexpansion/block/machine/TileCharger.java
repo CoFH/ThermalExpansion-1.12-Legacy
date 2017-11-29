@@ -279,12 +279,12 @@ public class TileCharger extends TileMachineBase {
 
 		int energy = calcEnergyRepair();
 		processRem += energy;
-
 		if (processRem >= REPAIR_ENERGY) {
 			inventory[1].setItemDamage(inventory[1].getItemDamage() - 1);
 			tank.modifyFluidStored(-FLUID_AMOUNT);
 			processRem -= REPAIR_ENERGY;
 		}
+		energyStorage.modifyEnergyStored(-energy);
 		return energy;
 	}
 

@@ -117,7 +117,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	byte facing = 1;
 	int fuelRF;
-	int currentFuelRF;
+	int maxFuelRF;
 	boolean hasModeAugment;
 
 	int compareTracker;

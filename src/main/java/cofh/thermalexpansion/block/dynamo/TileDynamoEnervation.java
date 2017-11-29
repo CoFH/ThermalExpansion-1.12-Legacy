@@ -70,11 +70,11 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 		if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
 			IEnergyContainerItem container = (IEnergyContainerItem) inventory[0].getItem();
-			currentFuelRF = container.extractEnergy(inventory[0], container.getEnergyStored(inventory[0]), false);
-			fuelRF += currentFuelRF;
+			maxFuelRF = container.extractEnergy(inventory[0], container.getEnergyStored(inventory[0]), false);
+			fuelRF += maxFuelRF;
 		} else {
-			currentFuelRF = EnervationManager.getFuelEnergy(inventory[0]) * energyMod / ENERGY_BASE;
-			fuelRF += currentFuelRF;
+			maxFuelRF = EnervationManager.getFuelEnergy(inventory[0]) * energyMod / ENERGY_BASE;
+			fuelRF += maxFuelRF;
 			inventory[0] = ItemHelper.consumeItem(inventory[0]);
 		}
 	}
@@ -101,12 +101,12 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	@Override
 	public int getScaledDuration(int scale) {
 
-		if (currentFuelRF <= 0) {
-			currentFuelRF = Math.max(fuelRF, EnervationManager.DEFAULT_ENERGY);
+		if (maxFuelRF <= 0) {
+			maxFuelRF = Math.max(fuelRF, EnervationManager.DEFAULT_ENERGY);
 		} else if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
 			return scale;
 		}
-		return fuelRF * scale / currentFuelRF;
+		return fuelRF * scale / maxFuelRF;
 	}
 
 	/* NBT METHODS */
@@ -115,10 +115,10 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 		super.readFromNBT(nbt);
 
-		currentFuelRF = nbt.getInteger("FuelMax");
+		maxFuelRF = nbt.getInteger("FuelMax");
 
-		if (currentFuelRF <= 0) {
-			currentFuelRF = Math.max(fuelRF, EnervationManager.DEFAULT_ENERGY);
+		if (maxFuelRF <= 0) {
+			maxFuelRF = Math.max(fuelRF, EnervationManager.DEFAULT_ENERGY);
 		}
 	}
 
@@ -127,7 +127,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("FuelMax", currentFuelRF);
+		nbt.setInteger("FuelMax", maxFuelRF);
 		return nbt;
 	}
 
@@ -139,7 +139,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
-		payload.addInt(currentFuelRF);
+		payload.addInt(maxFuelRF);
 
 		return payload;
 	}
@@ -149,7 +149,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 		super.handleGuiPacket(payload);
 
-		currentFuelRF = payload.getInt();
+		maxFuelRF = payload.getInt();
 	}
 
 	/* HELPERS */

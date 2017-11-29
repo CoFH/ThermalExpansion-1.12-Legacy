@@ -168,7 +168,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		FluidStack output = new FluidStack(tank.getFluid(), tank.getFluidAmount());
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);

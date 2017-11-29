@@ -62,13 +62,14 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
-	private static final int RADIUS_ORB = 4;
-	private static final int TIME_CONSTANT = 32;
+	private static final int RADIUS_ORB = 5;
+	private static final int TIME_CONSTANT = 16;
 
 	private int inputTracker;
 	private int outputTracker;
 
 	private int xpBuffer;
+	private int maxBoostXp;
 	private int boostXp;
 	private int boostFactor;
 
@@ -151,7 +152,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), tank.getCapacity()));
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);
@@ -219,11 +220,6 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 		return (world.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
 	}
 
-	public int getBoostFactor() {
-
-		return boostFactor;
-	}
-
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -249,6 +245,20 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 		return tank.getFluid();
 	}
 
+	@Override
+	public int getScaledSpeed(int scale) {
+
+		if (maxBoostXp <= 0) {
+			maxBoostXp = Math.max(boostXp, 100);
+		}
+		return boostXp * scale / maxBoostXp;
+	}
+
+	public int getBoostFactor() {
+
+		return boostFactor;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -259,8 +269,13 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 		outputTracker = nbt.getInteger("TrackOut");
 		tank.readFromNBT(nbt);
 
-		boostXp = nbt.getInteger("BoostXp");
 		boostFactor = nbt.getInteger("BoostFactor");
+		boostXp = nbt.getInteger("BoostXp");
+		maxBoostXp = nbt.getInteger("BoostXpMax");
+
+		if (maxBoostXp <= 0) {
+			maxBoostXp = Math.max(boostXp, 100);
+		}
 	}
 
 	@Override
@@ -272,8 +287,9 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 		nbt.setInteger("TrackOut", outputTracker);
 		tank.writeToNBT(nbt);
 
-		nbt.setInteger("BoostXp", boostXp);
 		nbt.setInteger("BoostFactor", boostFactor);
+		nbt.setInteger("BoostXp", boostXp);
+		nbt.setInteger("BoostXpMax", maxBoostXp);
 
 		return nbt;
 	}

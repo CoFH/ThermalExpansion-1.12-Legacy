@@ -42,7 +42,7 @@ public class GuiXpCollector extends GuiDeviceBase {
 		slotInput = addElement(new ElementSlotOverlay(this, 35, 35).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
 		tankOverlay = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.ORANGE, SlotType.TANK, SlotRender.FULL));
 
-		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 62, 35).setSize(16, 16).setTexture(TEX_FLAME_GREEN, 32, 16));
+		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 62, 35).setSize(16, 16).setTexture(TEX_ALCHEMY, 32, 16));
 
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setAlwaysShow(true));
 	}
@@ -53,7 +53,7 @@ public class GuiXpCollector extends GuiDeviceBase {
 		super.updateElementInformation();
 
 		slotInput.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
-		tankOverlay.setVisible(baseTile.hasSideType(OUTPUT_ALL));
+		tankOverlay.setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
 		duration.setQuantity(baseTile.getScaledSpeed(SPEED));
 	}

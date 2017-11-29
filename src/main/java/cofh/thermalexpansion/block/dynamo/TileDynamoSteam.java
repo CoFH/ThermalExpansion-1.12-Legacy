@@ -112,8 +112,8 @@ public class TileDynamoSteam extends TileDynamoBase {
 			return;
 		}
 		if (fuelRF <= 0) {
-			currentFuelRF = SteamManager.getFuelEnergy(inventory[0]) * energyMod / ENERGY_BASE;
-			fuelRF += currentFuelRF;
+			maxFuelRF = SteamManager.getFuelEnergy(inventory[0]) * energyMod / ENERGY_BASE;
+			fuelRF += maxFuelRF;
 			inventory[0] = ItemHelper.consumeItem(inventory[0]);
 		}
 		if (waterRF <= 0) {
@@ -176,10 +176,10 @@ public class TileDynamoSteam extends TileDynamoBase {
 	@Override
 	public int getScaledDuration(int scale) {
 
-		if (currentFuelRF <= 0) {
-			currentFuelRF = Math.max(fuelRF, SteamManager.DEFAULT_ENERGY);
+		if (maxFuelRF <= 0) {
+			maxFuelRF = Math.max(fuelRF, SteamManager.DEFAULT_ENERGY);
 		}
-		return fuelRF * scale / currentFuelRF;
+		return fuelRF * scale / maxFuelRF;
 	}
 
 	@Override
@@ -199,12 +199,12 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 		super.readFromNBT(nbt);
 
-		currentFuelRF = nbt.getInteger("FuelMax");
+		maxFuelRF = nbt.getInteger("FuelMax");
 		waterRF = nbt.getInteger("Water");
 		tank.readFromNBT(nbt);
 
-		if (currentFuelRF <= 0) {
-			currentFuelRF = Math.max(fuelRF, SteamManager.DEFAULT_ENERGY);
+		if (maxFuelRF <= 0) {
+			maxFuelRF = Math.max(fuelRF, SteamManager.DEFAULT_ENERGY);
 		}
 	}
 
@@ -213,7 +213,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("FuelMax", currentFuelRF);
+		nbt.setInteger("FuelMax", maxFuelRF);
 		nbt.setInteger("Water", waterRF);
 		tank.writeToNBT(nbt);
 		return nbt;
@@ -228,7 +228,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		PacketCoFHBase payload = super.getGuiPacket();
 
 		payload.addBool(augmentTurbine);
-		payload.addInt(currentFuelRF);
+		payload.addInt(maxFuelRF);
 		payload.addFluidStack(tank.getFluid());
 
 		return payload;
@@ -250,7 +250,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		super.handleGuiPacket(payload);
 
 		augmentTurbine = payload.getBool();
-		currentFuelRF = payload.getInt();
+		maxFuelRF = payload.getInt();
 		tank.setFluid(payload.getFluidStack());
 	}
 

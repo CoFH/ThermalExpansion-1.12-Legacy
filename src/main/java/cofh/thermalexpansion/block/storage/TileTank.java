@@ -452,7 +452,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		}
 		if (tank.getFluid() != null) {
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.getFluidName(tank.getFluid())));
-			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + tank.getFluidAmount() + "/" + tank.getCapacity() + " mB"));
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + StringHelper.formatNumber(tank.getFluidAmount()) + "/" + StringHelper.formatNumber(tank.getCapacity()) + " mB"));
 			info.add(new TextComponentString(lock ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
 		} else {
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty")));

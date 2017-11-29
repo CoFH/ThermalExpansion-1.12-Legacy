@@ -76,11 +76,11 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	protected void processStart() {
 
 		if (augmentGem) {
-			currentFuelRF = NumismaticManager.getGemFuelEnergy(inventory[0]) * energyMod / ENERGY_BASE;
+			maxFuelRF = NumismaticManager.getGemFuelEnergy(inventory[0]) * energyMod / ENERGY_BASE;
 		} else {
-			currentFuelRF = NumismaticManager.getFuelEnergy(inventory[0]) * energyMod / ENERGY_BASE;
+			maxFuelRF = NumismaticManager.getFuelEnergy(inventory[0]) * energyMod / ENERGY_BASE;
 		}
-		fuelRF += currentFuelRF;
+		fuelRF += maxFuelRF;
 		inventory[0] = ItemHelper.consumeItem(inventory[0]);
 	}
 
@@ -106,10 +106,10 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	@Override
 	public int getScaledDuration(int scale) {
 
-		if (currentFuelRF <= 0) {
-			currentFuelRF = Math.max(fuelRF, NumismaticManager.DEFAULT_ENERGY);
+		if (maxFuelRF <= 0) {
+			maxFuelRF = Math.max(fuelRF, NumismaticManager.DEFAULT_ENERGY);
 		}
-		return fuelRF * scale / currentFuelRF;
+		return fuelRF * scale / maxFuelRF;
 	}
 
 	/* NBT METHODS */
@@ -118,10 +118,10 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 
 		super.readFromNBT(nbt);
 
-		currentFuelRF = nbt.getInteger("FuelMax");
+		maxFuelRF = nbt.getInteger("FuelMax");
 
-		if (currentFuelRF <= 0) {
-			currentFuelRF = Math.max(fuelRF, NumismaticManager.DEFAULT_ENERGY);
+		if (maxFuelRF <= 0) {
+			maxFuelRF = Math.max(fuelRF, NumismaticManager.DEFAULT_ENERGY);
 		}
 	}
 
@@ -130,7 +130,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("FuelMax", currentFuelRF);
+		nbt.setInteger("FuelMax", maxFuelRF);
 		return nbt;
 	}
 
@@ -142,7 +142,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
-		payload.addInt(currentFuelRF);
+		payload.addInt(maxFuelRF);
 
 		return payload;
 	}
@@ -152,7 +152,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 
 		super.handleGuiPacket(payload);
 
-		currentFuelRF = payload.getInt();
+		maxFuelRF = payload.getInt();
 	}
 
 	/* HELPERS */

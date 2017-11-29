@@ -658,7 +658,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		}
 		if (!storedStack.isEmpty()) {
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(storedStack)));
-			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + getCapacity(level, enchantHolding)));
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + StringHelper.formatNumber(getStoredCount()) + " / " + StringHelper.formatNumber(getCapacity(level, enchantHolding))));
 			info.add(new TextComponentString(lock ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
 		} else {
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty")));

@@ -53,4 +53,5 @@ public class GuiDynamoMagmatic extends GuiDynamoBase {
 		tankBackground.setVisible(myTile.showCoolantTank());
 		tank.setVisible(myTile.showCoolantTank());
 	}
+
 }

@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import cofh.core.fluid.FluidTankCore;
-import cofh.core.gui.GuiContainerCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.TextureHelper;
 import cofh.core.util.helpers.AugmentHelper;
@@ -133,7 +132,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 	@Override
 	public int getScaledDuration(int scale) {
 
-		return isActive ? GuiContainerCore.SPEED : 0;
+		return isActive ? scale : 0;
 	}
 
 	@Override

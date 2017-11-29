@@ -33,9 +33,9 @@ public class XpCollectorManager {
 
 		/* CATALYSTS */
 		{
-			addCatalyst(new ItemStack(Blocks.SOUL_SAND), 200, 50);
-			addCatalyst(new ItemStack(Items.DYE, 1, 4), 400, 100);
-			addCatalyst(ItemMaterial.dustMana, 800, 150);
+			addCatalyst(new ItemStack(Blocks.SOUL_SAND), 50, 50);
+			addCatalyst(new ItemStack(Items.DYE, 1, 4), 100, 100);
+			addCatalyst(ItemMaterial.dustMana, 200, 150);
 		}
 	}
 
