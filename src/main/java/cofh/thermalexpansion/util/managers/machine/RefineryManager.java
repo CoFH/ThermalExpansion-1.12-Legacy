@@ -134,7 +134,7 @@ public class RefineryManager {
 		if (input == null || outputFluid == null || energy <= 0 || recipeExistsPotion(input)) {
 			return null;
 		}
-		RefineryRecipe recipe = new RefineryRecipe(input, outputFluid, null, energy, 0);
+		RefineryRecipe recipe = new RefineryRecipe(input, outputFluid, ItemStack.EMPTY, energy, 0);
 		recipeMapPotion.put(FluidHelper.getFluidHash(input), recipe);
 		return recipe;
 	}

@@ -110,7 +110,6 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 
 			if (stack.getTagCompound().hasKey("Fluid")) {
 				FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
-
 				tile.getTank().setFluid(fluid);
 				tile.lock = stack.getTagCompound().getBoolean("Lock");
 			}

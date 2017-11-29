@@ -65,8 +65,8 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		SecurityHelper.addAccessInformation(stack, tooltip);
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.storage.tank"));
 
-		if (stack.getTagCompound().hasKey("Fluid")) {
-			FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
+		FluidStack fluid = getFluid(stack);
+		if (fluid != null) {
 			String color = StringHelper.LIGHT_GRAY;
 
 			if (fluid.getFluid().getRarity() == EnumRarity.UNCOMMON) {

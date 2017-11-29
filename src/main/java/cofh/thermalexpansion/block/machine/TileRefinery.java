@@ -132,7 +132,7 @@ public class TileRefinery extends TileMachineBase {
 		if (energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		RefineryRecipe recipe = RefineryManager.getRecipe(inputTank.getFluid());
+		RefineryRecipe recipe = augmentPotion ? RefineryManager.getRecipePotion(inputTank.getFluid()) : RefineryManager.getRecipe(inputTank.getFluid());
 
 		if (recipe == null) {
 			return false;
@@ -485,7 +485,11 @@ public class TileRefinery extends TileMachineBase {
 					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return 0;
 					}
-					if (!RefineryManager.recipeExists(resource)) {
+					if (augmentPotion) {
+						if (!RefineryManager.recipeExistsPotion(resource)) {
+							return 0;
+						}
+					} else if (!RefineryManager.recipeExists(resource)) {
 						return 0;
 					}
 					return inputTank.fill(resource, doFill);
