@@ -77,17 +77,17 @@ public class PluginTwilightForest extends ModPlugin {
 
 				InsolatorManager.addDefaultRecipe(plantMushgloom, ItemHelper.cloneStack(plantMushgloom, 2), ItemStack.EMPTY, 0);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingTwilightOak, ItemHelper.cloneStack(logTwilightOak, 4), saplingTwilightOak, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingCanopy, ItemHelper.cloneStack(logCanopy, 4), saplingCanopy, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingMangrove, ItemHelper.cloneStack(logMangrove, 4), saplingMangrove, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingDarkwood, ItemHelper.cloneStack(logDarkwood, 4), saplingDarkwood, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingTwilightOak, ItemHelper.cloneStack(logTwilightOak, 4), saplingTwilightOak);
+				InsolatorManager.addDefaultTreeRecipe(saplingCanopy, ItemHelper.cloneStack(logCanopy, 4), saplingCanopy);
+				InsolatorManager.addDefaultTreeRecipe(saplingMangrove, ItemHelper.cloneStack(logMangrove, 4), saplingMangrove);
+				InsolatorManager.addDefaultTreeRecipe(saplingDarkwood, ItemHelper.cloneStack(logDarkwood, 4), saplingDarkwood);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingTimewood, ItemHelper.cloneStack(logTimewood, 6), saplingTimewood, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingTranswood, ItemHelper.cloneStack(logTranswood, 6), saplingTranswood, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingMinewood, ItemHelper.cloneStack(logMinewood, 6), saplingMinewood, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingSortingwood, ItemHelper.cloneStack(logSortingwood, 6), saplingSortingwood, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingTimewood, ItemHelper.cloneStack(logTimewood, 6), saplingTimewood, 30);
+				InsolatorManager.addDefaultTreeRecipe(saplingTranswood, ItemHelper.cloneStack(logTranswood, 6), saplingTranswood, 30);
+				InsolatorManager.addDefaultTreeRecipe(saplingMinewood, ItemHelper.cloneStack(logMinewood, 6), saplingMinewood, 30);
+				InsolatorManager.addDefaultTreeRecipe(saplingSortingwood, ItemHelper.cloneStack(logSortingwood, 6), saplingSortingwood, 30);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingRainbow, ItemHelper.cloneStack(logTwilightOak, 4), saplingRainbow, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingRainbow, ItemHelper.cloneStack(logTwilightOak, 4), saplingRainbow);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);

@@ -159,39 +159,39 @@ public class PluginHarvestcraft extends ModPlugin {
 
 			/* INSOLATOR */
 			{
-				InsolatorManager.addDefaultTreeRecipe(saplingDate, ItemHelper.cloneStack(itemDate, 4), saplingDate, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingPapaya, ItemHelper.cloneStack(itemPapaya, 4), saplingPapaya, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingCherry, ItemHelper.cloneStack(itemCherry, 4), saplingCherry, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingFig, ItemHelper.cloneStack(itemFig, 4), saplingFig, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingDragonfruit, ItemHelper.cloneStack(itemDragonfruit, 4), saplingDragonfruit, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingApple, ItemHelper.cloneStack(Items.APPLE, 4), saplingApple, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingLemon, ItemHelper.cloneStack(itemLemon, 4), saplingLemon, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingPear, ItemHelper.cloneStack(itemPear, 4), saplingPear, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingOlive, ItemHelper.cloneStack(itemOlive, 4), saplingOlive, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingGrapefruit, ItemHelper.cloneStack(itemGrapefruit, 4), saplingGrapefruit, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingPomegranate, ItemHelper.cloneStack(itemPomegranate, 4), saplingPomegranate, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingCashew, ItemHelper.cloneStack(itemCashew, 4), saplingCashew, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingVanilla, ItemHelper.cloneStack(itemVanilla, 4), saplingVanilla, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingStarfruit, ItemHelper.cloneStack(itemStarfruit, 4), saplingStarfruit, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingBanana, ItemHelper.cloneStack(itemBanana, 4), saplingBanana, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingPlum, ItemHelper.cloneStack(itemPlum, 4), saplingPlum, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingAvocado, ItemHelper.cloneStack(itemAvocado, 4), saplingAvocado, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingPecan, ItemHelper.cloneStack(itemPecan, 4), saplingPecan, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingPistachio, ItemHelper.cloneStack(itemPistachio, 4), saplingPistachio, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingLime, ItemHelper.cloneStack(itemLime, 4), saplingLime, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingPeppercorn, ItemHelper.cloneStack(itemPeppercorn, 4), saplingPeppercorn, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingAlmond, ItemHelper.cloneStack(itemAlmond, 4), saplingAlmond, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingGooseberry, ItemHelper.cloneStack(itemGooseberry, 4), saplingGooseberry, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingPeach, ItemHelper.cloneStack(itemPeach, 4), saplingPeach, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingChestnut, ItemHelper.cloneStack(itemChestnut, 4), saplingChestnut, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingCoconut, ItemHelper.cloneStack(itemCoconut, 4), saplingCoconut, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingMango, ItemHelper.cloneStack(itemMango, 4), saplingMango, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingApricot, ItemHelper.cloneStack(itemApricot, 4), saplingApricot, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingOrange, ItemHelper.cloneStack(itemOrange, 4), saplingOrange, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingWalnut, ItemHelper.cloneStack(itemWalnut, 4), saplingWalnut, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingPersimmon, ItemHelper.cloneStack(itemPersimmon, 4), saplingPersimmon, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingNutmeg, ItemHelper.cloneStack(itemNutmeg, 4), saplingNutmeg, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingDurian, ItemHelper.cloneStack(itemDurian, 4), saplingDurian, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingDate, ItemHelper.cloneStack(itemDate, 4), saplingDate);
+				InsolatorManager.addDefaultTreeRecipe(saplingPapaya, ItemHelper.cloneStack(itemPapaya, 4), saplingPapaya);
+				InsolatorManager.addDefaultTreeRecipe(saplingCherry, ItemHelper.cloneStack(itemCherry, 4), saplingCherry);
+				InsolatorManager.addDefaultTreeRecipe(saplingFig, ItemHelper.cloneStack(itemFig, 4), saplingFig);
+				InsolatorManager.addDefaultTreeRecipe(saplingDragonfruit, ItemHelper.cloneStack(itemDragonfruit, 4), saplingDragonfruit);
+				InsolatorManager.addDefaultTreeRecipe(saplingApple, ItemHelper.cloneStack(Items.APPLE, 4), saplingApple);
+				InsolatorManager.addDefaultTreeRecipe(saplingLemon, ItemHelper.cloneStack(itemLemon, 4), saplingLemon);
+				InsolatorManager.addDefaultTreeRecipe(saplingPear, ItemHelper.cloneStack(itemPear, 4), saplingPear);
+				InsolatorManager.addDefaultTreeRecipe(saplingOlive, ItemHelper.cloneStack(itemOlive, 4), saplingOlive);
+				InsolatorManager.addDefaultTreeRecipe(saplingGrapefruit, ItemHelper.cloneStack(itemGrapefruit, 4), saplingGrapefruit);
+				InsolatorManager.addDefaultTreeRecipe(saplingPomegranate, ItemHelper.cloneStack(itemPomegranate, 4), saplingPomegranate);
+				InsolatorManager.addDefaultTreeRecipe(saplingCashew, ItemHelper.cloneStack(itemCashew, 4), saplingCashew);
+				InsolatorManager.addDefaultTreeRecipe(saplingVanilla, ItemHelper.cloneStack(itemVanilla, 4), saplingVanilla);
+				InsolatorManager.addDefaultTreeRecipe(saplingStarfruit, ItemHelper.cloneStack(itemStarfruit, 4), saplingStarfruit);
+				InsolatorManager.addDefaultTreeRecipe(saplingBanana, ItemHelper.cloneStack(itemBanana, 4), saplingBanana);
+				InsolatorManager.addDefaultTreeRecipe(saplingPlum, ItemHelper.cloneStack(itemPlum, 4), saplingPlum);
+				InsolatorManager.addDefaultTreeRecipe(saplingAvocado, ItemHelper.cloneStack(itemAvocado, 4), saplingAvocado);
+				InsolatorManager.addDefaultTreeRecipe(saplingPecan, ItemHelper.cloneStack(itemPecan, 4), saplingPecan);
+				InsolatorManager.addDefaultTreeRecipe(saplingPistachio, ItemHelper.cloneStack(itemPistachio, 4), saplingPistachio);
+				InsolatorManager.addDefaultTreeRecipe(saplingLime, ItemHelper.cloneStack(itemLime, 4), saplingLime);
+				InsolatorManager.addDefaultTreeRecipe(saplingPeppercorn, ItemHelper.cloneStack(itemPeppercorn, 4), saplingPeppercorn);
+				InsolatorManager.addDefaultTreeRecipe(saplingAlmond, ItemHelper.cloneStack(itemAlmond, 4), saplingAlmond);
+				InsolatorManager.addDefaultTreeRecipe(saplingGooseberry, ItemHelper.cloneStack(itemGooseberry, 4), saplingGooseberry);
+				InsolatorManager.addDefaultTreeRecipe(saplingPeach, ItemHelper.cloneStack(itemPeach, 4), saplingPeach);
+				InsolatorManager.addDefaultTreeRecipe(saplingChestnut, ItemHelper.cloneStack(itemChestnut, 4), saplingChestnut);
+				InsolatorManager.addDefaultTreeRecipe(saplingCoconut, ItemHelper.cloneStack(itemCoconut, 4), saplingCoconut);
+				InsolatorManager.addDefaultTreeRecipe(saplingMango, ItemHelper.cloneStack(itemMango, 4), saplingMango);
+				InsolatorManager.addDefaultTreeRecipe(saplingApricot, ItemHelper.cloneStack(itemApricot, 4), saplingApricot);
+				InsolatorManager.addDefaultTreeRecipe(saplingOrange, ItemHelper.cloneStack(itemOrange, 4), saplingOrange);
+				InsolatorManager.addDefaultTreeRecipe(saplingWalnut, ItemHelper.cloneStack(itemWalnut, 4), saplingWalnut);
+				InsolatorManager.addDefaultTreeRecipe(saplingPersimmon, ItemHelper.cloneStack(itemPersimmon, 4), saplingPersimmon);
+				InsolatorManager.addDefaultTreeRecipe(saplingNutmeg, ItemHelper.cloneStack(itemNutmeg, 4), saplingNutmeg);
+				InsolatorManager.addDefaultTreeRecipe(saplingDurian, ItemHelper.cloneStack(itemDurian, 4), saplingDurian);
 			}
 
 			/* CENTRIFUGE */

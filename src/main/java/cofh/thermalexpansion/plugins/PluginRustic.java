@@ -119,9 +119,9 @@ public class PluginRustic extends ModPlugin {
 				InsolatorManager.addDefaultRecipe(deathstalkMushroom, ItemHelper.cloneStack(deathstalkMushroom, 2), ItemStack.EMPTY, 0);
 				InsolatorManager.addDefaultRecipe(mooncapMushroom, ItemHelper.cloneStack(mooncapMushroom, 2), ItemStack.EMPTY, 0);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingOlive, ItemHelper.cloneStack(logOlive, 4), saplingOlive, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingIronwood, ItemHelper.cloneStack(logIronwood, 4), saplingIronwood, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingApple, new ItemStack(Blocks.LOG, 4, 0), saplingApple, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingOlive, ItemHelper.cloneStack(logOlive, 4), saplingOlive);
+				InsolatorManager.addDefaultTreeRecipe(saplingIronwood, ItemHelper.cloneStack(logIronwood, 4), saplingIronwood);
+				InsolatorManager.addDefaultTreeRecipe(saplingApple, new ItemStack(Blocks.LOG, 4, 0), saplingApple);
 			}
 
 			/* TRANSPOSER */

@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -60,8 +61,8 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 	private FluidTankCore[] tanks = new FluidTankCore[3];
 	public boolean[] locks = new boolean[3];
 
-	public int amountInput = 500;
-	public int amountOutput = 500;
+	public int amountInput = Fluid.BUCKET_VOLUME;
+	public int amountOutput = Fluid.BUCKET_VOLUME;
 
 	public TileFluidBuffer() {
 

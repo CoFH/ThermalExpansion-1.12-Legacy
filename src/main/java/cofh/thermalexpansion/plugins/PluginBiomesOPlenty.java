@@ -134,32 +134,32 @@ public class PluginBiomesOPlenty extends ModPlugin {
 			{
 				InsolatorManager.addDefaultRecipe(plantFlowerVine, ItemHelper.cloneStack(plantFlowerVine, 2), ItemStack.EMPTY, 0);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingYellowAutumn, ItemHelper.cloneStack(logYellowAutumn, 4), saplingYellowAutumn, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingOrangeAutumn, ItemHelper.cloneStack(logOrangeAutumn, 4), saplingOrangeAutumn, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingBamboo, ItemHelper.cloneStack(logBamboo, 4), saplingBamboo, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingMagic, ItemHelper.cloneStack(logMagic, 4), saplingMagic, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingUmbran, ItemHelper.cloneStack(logUmbral, 4), saplingUmbran, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingYellowAutumn, ItemHelper.cloneStack(logYellowAutumn, 4), saplingYellowAutumn);
+				InsolatorManager.addDefaultTreeRecipe(saplingOrangeAutumn, ItemHelper.cloneStack(logOrangeAutumn, 4), saplingOrangeAutumn);
+				InsolatorManager.addDefaultTreeRecipe(saplingBamboo, ItemHelper.cloneStack(logBamboo, 4), saplingBamboo);
+				InsolatorManager.addDefaultTreeRecipe(saplingMagic, ItemHelper.cloneStack(logMagic, 4), saplingMagic);
+				InsolatorManager.addDefaultTreeRecipe(saplingUmbran, ItemHelper.cloneStack(logUmbral, 4), saplingUmbran);
 				// Dead
-				InsolatorManager.addDefaultTreeRecipe(saplingFir, ItemHelper.cloneStack(logFir, 4), saplingFir, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingFir, ItemHelper.cloneStack(logFir, 4), saplingFir);
 				// Ethereal
 
-				InsolatorManager.addDefaultTreeRecipe(saplingOrigin, ItemHelper.cloneStack(logOrigin, 4), saplingOrigin, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingPinkCherry, ItemHelper.cloneStack(logCherry, 4), saplingPinkCherry, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingWhiteCherry, ItemHelper.cloneStack(logCherry, 4), saplingWhiteCherry, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingMaple, ItemHelper.cloneStack(logMaple, 4), saplingMaple, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingHellback, ItemHelper.cloneStack(logHellbark, 2), saplingHellback, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingFloweringOak, ItemHelper.cloneStack(logFloweringOak, 4), saplingFloweringOak, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingJacaranda, ItemHelper.cloneStack(logJacaranda, 4), saplingJacaranda, 50);
-				// Sacred Oak InsolatorManager.addDefaultTreeRecipe(saplingSacredOak, ItemHelper.cloneStack(logSacredOak, 4), saplingSacredOak, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingOrigin, ItemHelper.cloneStack(logOrigin, 4), saplingOrigin);
+				InsolatorManager.addDefaultTreeRecipe(saplingPinkCherry, ItemHelper.cloneStack(logCherry, 4), saplingPinkCherry);
+				InsolatorManager.addDefaultTreeRecipe(saplingWhiteCherry, ItemHelper.cloneStack(logCherry, 4), saplingWhiteCherry);
+				InsolatorManager.addDefaultTreeRecipe(saplingMaple, ItemHelper.cloneStack(logMaple, 4), saplingMaple);
+				InsolatorManager.addDefaultTreeRecipe(saplingHellback, ItemHelper.cloneStack(logHellbark, 2), saplingHellback);
+				InsolatorManager.addDefaultTreeRecipe(saplingFloweringOak, ItemHelper.cloneStack(logFloweringOak, 4), saplingFloweringOak);
+				InsolatorManager.addDefaultTreeRecipe(saplingJacaranda, ItemHelper.cloneStack(logJacaranda, 4), saplingJacaranda);
+				// Sacred Oak InsolatorManager.addDefaultTreeRecipe(saplingSacredOak, ItemHelper.cloneStack(logSacredOak, 4), saplingSacredOak);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingMangrove, ItemHelper.cloneStack(logMangrove, 4), saplingMangrove, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingPalm, ItemHelper.cloneStack(logPalm, 4), saplingPalm, 50);
-				// InsolatorManager.addDefaultTreeRecipe(saplingRedwood, ItemHelper.cloneStack(logRedwood, 4), saplingRedwood, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingWillow, ItemHelper.cloneStack(logWillow, 4), saplingWillow, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingPine, ItemHelper.cloneStack(logPine, 4), saplingPine, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingMahogany, ItemHelper.cloneStack(logMahogany, 4), saplingMahogany, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingEbony, ItemHelper.cloneStack(logEbony, 4), saplingEbony, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingEucalyptus, ItemHelper.cloneStack(logEucalyptus, 4), saplingEucalyptus, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingMangrove, ItemHelper.cloneStack(logMangrove, 4), saplingMangrove);
+				InsolatorManager.addDefaultTreeRecipe(saplingPalm, ItemHelper.cloneStack(logPalm, 4), saplingPalm);
+				// InsolatorManager.addDefaultTreeRecipe(saplingRedwood, ItemHelper.cloneStack(logRedwood, 4), saplingRedwood);
+				InsolatorManager.addDefaultTreeRecipe(saplingWillow, ItemHelper.cloneStack(logWillow, 4), saplingWillow);
+				InsolatorManager.addDefaultTreeRecipe(saplingPine, ItemHelper.cloneStack(logPine, 4), saplingPine);
+				InsolatorManager.addDefaultTreeRecipe(saplingMahogany, ItemHelper.cloneStack(logMahogany, 4), saplingMahogany);
+				InsolatorManager.addDefaultTreeRecipe(saplingEbony, ItemHelper.cloneStack(logEbony, 4), saplingEbony);
+				InsolatorManager.addDefaultTreeRecipe(saplingEucalyptus, ItemHelper.cloneStack(logEucalyptus, 4), saplingEucalyptus);
 			}
 
 			/* TAPPER */

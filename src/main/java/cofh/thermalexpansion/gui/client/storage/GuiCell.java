@@ -63,8 +63,8 @@ public class GuiCell extends GuiContainerCore {
 		}
 		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()).setInfinite(baseTile.isCreative));
 
-		ElementSimple infoInput = (ElementSimple) new ElementSimple(this, 33, 16).setSize(20, 20).setTexture(TEX_INFO_INPUT, 20, 20);
-		ElementSimple infoOutput = (ElementSimple) new ElementSimple(this, 123, 16).setSize(20, 20).setTexture(TEX_INFO_OUTPUT, 20, 20);
+		ElementSimple infoInput = (ElementSimple) new ElementSimple(this, 33, 16).setToolTip("info.cofh.input").setSize(20, 20).setTexture(TEX_INFO_INPUT, 20, 20);
+		ElementSimple infoOutput = (ElementSimple) new ElementSimple(this, 123, 16).setToolTip("info.cofh.output").setSize(20, 20).setTexture(TEX_INFO_OUTPUT, 20, 20);
 
 		addElement(infoInput);
 		addElement(infoOutput);

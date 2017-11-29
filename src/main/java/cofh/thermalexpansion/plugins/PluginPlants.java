@@ -191,16 +191,16 @@ public class PluginPlants extends ModPlugin {
 
 				InsolatorManager.addDefaultRecipe(plantDysentery, ItemHelper.cloneStack(harvestDysentery, 2), plantDysentery, 100);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingBlackKauri, ItemHelper.cloneStack(logBlackKauri, 4), saplingBlackKauri, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingBrazilianPine, ItemHelper.cloneStack(logBrazilianPine, 4), saplingBrazilianPine, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingIntenseCedar, ItemHelper.cloneStack(logIntenseCedar, 4), saplingIntenseCedar, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingMurrayPine, ItemHelper.cloneStack(logMurrayPine, 4), saplingMurrayPine, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingBlackKauri, ItemHelper.cloneStack(logBlackKauri, 4), saplingBlackKauri);
+				InsolatorManager.addDefaultTreeRecipe(saplingBrazilianPine, ItemHelper.cloneStack(logBrazilianPine, 4), saplingBrazilianPine);
+				InsolatorManager.addDefaultTreeRecipe(saplingIntenseCedar, ItemHelper.cloneStack(logIntenseCedar, 4), saplingIntenseCedar);
+				InsolatorManager.addDefaultTreeRecipe(saplingMurrayPine, ItemHelper.cloneStack(logMurrayPine, 4), saplingMurrayPine);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingAshen, ItemHelper.cloneStack(logAshen, 4), saplingAshen, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingBlazing, ItemHelper.cloneStack(logBlazing, 4), saplingBlazing, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingAshen, ItemHelper.cloneStack(logAshen, 4), saplingAshen);
+				InsolatorManager.addDefaultTreeRecipe(saplingBlazing, ItemHelper.cloneStack(logBlazing, 4), saplingBlazing);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingCrystal, ItemHelper.cloneStack(logCrystal, 4), saplingCrystal, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingDarkCrystal, ItemHelper.cloneStack(logDarkCrystal, 4), saplingDarkCrystal, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingCrystal, ItemHelper.cloneStack(logCrystal, 4), saplingCrystal);
+				InsolatorManager.addDefaultTreeRecipe(saplingDarkCrystal, ItemHelper.cloneStack(logDarkCrystal, 4), saplingDarkCrystal);
 			}
 
 			/* TAPPER */

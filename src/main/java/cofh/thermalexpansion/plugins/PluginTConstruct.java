@@ -101,9 +101,9 @@ public class PluginTConstruct extends ModPlugin {
 
 			/* INSOLATOR */
 			{
-				InsolatorManager.addDefaultTreeRecipe(saplingSlimeBlue, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimeBlue, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingSlimePurple, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimePurple, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingSlimeMagma, ItemHelper.cloneStack(slimeCongealedMagma, 4), saplingSlimeMagma, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingSlimeBlue, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimeBlue);
+				InsolatorManager.addDefaultTreeRecipe(saplingSlimePurple, ItemHelper.cloneStack(slimeCongealed, 4), saplingSlimePurple);
+				InsolatorManager.addDefaultTreeRecipe(saplingSlimeMagma, ItemHelper.cloneStack(slimeCongealedMagma, 4), saplingSlimeMagma);
 			}
 
 			/* TAPPER */

@@ -74,11 +74,11 @@ public class PluginTraverse extends ModPlugin {
 
 			/* INSOLATOR */
 			{
-				InsolatorManager.addDefaultTreeRecipe(saplingRed, new ItemStack(Blocks.LOG, 4), saplingRed, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingBrown, new ItemStack(Blocks.LOG, 4), saplingBrown, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingOrange, new ItemStack(Blocks.LOG, 4), saplingOrange, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingYellow, new ItemStack(Blocks.LOG, 4), saplingYellow, 50);
-				InsolatorManager.addDefaultTreeRecipe(saplingFir, ItemHelper.cloneStack(logFir, 4), saplingFir, 50);
+				InsolatorManager.addDefaultTreeRecipe(saplingRed, new ItemStack(Blocks.LOG, 4), saplingRed);
+				InsolatorManager.addDefaultTreeRecipe(saplingBrown, new ItemStack(Blocks.LOG, 4), saplingBrown);
+				InsolatorManager.addDefaultTreeRecipe(saplingOrange, new ItemStack(Blocks.LOG, 4), saplingOrange);
+				InsolatorManager.addDefaultTreeRecipe(saplingYellow, new ItemStack(Blocks.LOG, 4), saplingYellow);
+				InsolatorManager.addDefaultTreeRecipe(saplingFir, ItemHelper.cloneStack(logFir, 4), saplingFir);
 			}
 
 			/* TAPPER */
