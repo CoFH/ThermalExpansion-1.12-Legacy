@@ -40,7 +40,7 @@ public class SteamManager {
 		}
 		energy = TileEntityFurnace.getItemBurnTime(stack) * CoreProps.RF_PER_MJ;
 
-		if (energy > 200 * CoreProps.RF_PER_MJ) {
+		if (energy >= 300 * CoreProps.RF_PER_MJ) {
 			return energy;
 		}
 		return 0;

@@ -110,11 +110,14 @@ public class PluginNatura extends ModPlugin {
 			ItemStack logDarkwood = getItemStack("nether_logs", 1, 1);
 			ItemStack logBloodwood = getItemStack("nether_logs2", 1, 0);
 
-			Block log = getBlock("overworld_logs");
-			Block log2 = getBlock("overworld_logs2");
+			Block blockLog = getBlock("overworld_logs");
+			Block blockLog2 = getBlock("overworld_logs2");
+			Block blockLogNether = getBlock("nether_logs");
 
-			Block leaves = getBlock("overworld_leaves");
-			Block leaves2 = getBlock("overworld_leaves2");
+			Block blockLeaves = getBlock("overworld_leaves");
+			Block blockLeaves2 = getBlock("overworld_leaves2");
+			Block blockLeavesNether = getBlock("nether_leaves");
+			Block blockLeavesNether2 = getBlock("nether_leaves2");
 
 			Fluid seed_oil = FluidRegistry.getFluid("seed.oil");
 
@@ -165,25 +168,33 @@ public class PluginNatura extends ModPlugin {
 
 			/* TAPPER */
 			{
-				TapperManager.addMapping(logMaple, new FluidStack(TFFluids.fluidSap, 100));
-				TapperManager.addMapping(logSilverbell, new FluidStack(TFFluids.fluidResin, 50));
-				TapperManager.addMapping(logAmaranth, new FluidStack(TFFluids.fluidResin, 50));
-				TapperManager.addMapping(logTigerwood, new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addStandardMapping(logMaple, new FluidStack(TFFluids.fluidSap, 100));
+				TapperManager.addStandardMapping(logSilverbell, new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addStandardMapping(logAmaranth, new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addStandardMapping(logTigerwood, new FluidStack(TFFluids.fluidResin, 50));
 
-				TapperManager.addMapping(logWillow, new FluidStack(TFFluids.fluidResin, 50));
-				TapperManager.addMapping(logEucalyptus, new FluidStack(TFFluids.fluidResin, 50));
-				TapperManager.addMapping(logHopseed, new FluidStack(TFFluids.fluidResin, 50));
-				TapperManager.addMapping(logSakura, new FluidStack(TFFluids.fluidSap, 50));
+				TapperManager.addStandardMapping(logWillow, new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addStandardMapping(logEucalyptus, new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addStandardMapping(logHopseed, new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addStandardMapping(logSakura, new FluidStack(TFFluids.fluidSap, 50));
 
-				addLeafMapping(log, leaves, 0);
-				addLeafMapping(log, leaves, 1);
-				addLeafMapping(log, leaves, 2);
-				addLeafMapping(log, leaves, 3);
+				TapperManager.addStandardMapping(logGhostwood, new FluidStack(FluidRegistry.LAVA, 25));
+				TapperManager.addStandardMapping(logFusewood, new FluidStack(FluidRegistry.LAVA, 25));
+				TapperManager.addStandardMapping(logDarkwood, new FluidStack(FluidRegistry.LAVA, 25));
 
-				addLeafMapping(log2, leaves2, 0);
-				addLeafMapping(log2, leaves2, 1);
-				addLeafMapping(log2, leaves2, 2);
-				addLeafMapping(log2, leaves2, 3);
+				addLeafMapping(blockLog, 0, blockLeaves, 0);
+				addLeafMapping(blockLog, 1, blockLeaves, 1);
+				addLeafMapping(blockLog, 2, blockLeaves, 2);
+				addLeafMapping(blockLog, 3, blockLeaves, 3);
+
+				addLeafMapping(blockLog2, 0, blockLeaves2, 0);
+				addLeafMapping(blockLog2, 1, blockLeaves2, 1);
+				addLeafMapping(blockLog2, 2, blockLeaves2, 2);
+				addLeafMapping(blockLog2, 3, blockLeaves2, 3);
+
+				addLeafMapping(blockLogNether, 0, blockLeavesNether, 0);
+				addLeafMapping(blockLogNether, 2, blockLeavesNether, 2);
+				addLeafMapping(blockLogNether, 1, blockLeavesNether2, 0);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
@@ -196,13 +207,13 @@ public class PluginNatura extends ModPlugin {
 	}
 
 	/* HELPERS */
-	private void addLeafMapping(Block logBlock, Block leafBlock, int metadata) {
+	private void addLeafMapping(Block logBlock, int logMetadata, Block leafBlock, int leafMetadata) {
 
-		IBlockState logState = logBlock.getStateFromMeta(metadata);
+		IBlockState logState = logBlock.getStateFromMeta(logMetadata);
 
 		for (Boolean check_decay : BlockLeaves.CHECK_DECAY.getAllowedValues()) {
-			IBlockState leafState = leafBlock.getStateFromMeta(metadata).withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE).withProperty(BlockLeaves.CHECK_DECAY, check_decay);
-			TapperManager.addLeafMappingDirect(logState, leafState);
+			IBlockState leafState = leafBlock.getStateFromMeta(leafMetadata).withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE).withProperty(BlockLeaves.CHECK_DECAY, check_decay);
+			TapperManager.addLeafMapping(logState, leafState);
 		}
 	}
 

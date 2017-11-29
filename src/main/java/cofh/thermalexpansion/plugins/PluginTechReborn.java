@@ -4,8 +4,10 @@ import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalfoundation.init.TFFluids;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
 
@@ -43,14 +45,22 @@ public class PluginTechReborn extends ModPlugin {
 		}
 		try {
 
-		/* TRANSPOSER */
+			/* INSOLATOR */
+			{
+				ItemStack logRubber = getItemStack("rubber_log", 1, 0);
+				ItemStack saplingRubber = getItemStack("rubber_sapling", 1, 0);
+
+				InsolatorManager.addDefaultTreeRecipe(saplingRubber, ItemHelper.cloneStack(logRubber, 4), saplingRubber);
+			}
+
+			/* TRANSPOSER */
 			{
 				int energy = 2000;
 
 				TransposerManager.addFillRecipe(energy, ItemHelper.getOre("ingotHotTungstensteel"), ItemHelper.getOre("ingotTungstensteel"), new FluidStack(TFFluids.fluidCryotheum, 200), false);
 			}
 
-		/* CENTRIFUGE */
+			/* CENTRIFUGE */
 			{
 				int energy = CentrifugeManager.DEFAULT_ENERGY;
 

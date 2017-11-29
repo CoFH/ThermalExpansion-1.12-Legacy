@@ -107,17 +107,17 @@ public class PluginBiomesOPlenty extends ModPlugin {
 			ItemStack saplingEucalyptus = getItemStack("sapling_2", 1, 7);
 
 			Block bamboo = getBlock("bamboo");
-			Block log0 = getBlock("log_0");
-			Block log1 = getBlock("log_1");
-			Block log2 = getBlock("log_2");
-			Block log3 = getBlock("log_3");
+			Block blockLog0 = getBlock("log_0");
+			Block blockLog1 = getBlock("log_1");
+			Block blockLog2 = getBlock("log_2");
+			Block blockLog3 = getBlock("log_3");
 
-			Block leaves0 = getBlock("leaves_0");
-			Block leaves1 = getBlock("leaves_1");
-			Block leaves2 = getBlock("leaves_2");
-			Block leaves3 = getBlock("leaves_3");
-			Block leaves4 = getBlock("leaves_4");
-			Block leaves5 = getBlock("leaves_5");
+			Block blockLeaves0 = getBlock("leaves_0");
+			Block blockLeaves1 = getBlock("leaves_1");
+			Block blockLeaves2 = getBlock("leaves_2");
+			Block blockLeaves3 = getBlock("leaves_3");
+			Block blockLeaves4 = getBlock("leaves_4");
+			Block blockLeaves5 = getBlock("leaves_5");
 
 			/* PULVERIZER */
 			{
@@ -166,57 +166,57 @@ public class PluginBiomesOPlenty extends ModPlugin {
 			{
 				// Yellow Autumn
 				// Orange Autumn
-				TapperManager.addMapping(logBamboo, new FluidStack(FluidRegistry.WATER, 25));
-				TapperManager.addMapping(logMagic, new FluidStack(TFFluids.fluidResin, 25));    // TODO: Mana
-				TapperManager.addMapping(logUmbral, new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addStandardMapping(logBamboo, new FluidStack(FluidRegistry.WATER, 25));
+				TapperManager.addStandardMapping(logMagic, new FluidStack(TFFluids.fluidResin, 25));    // TODO: Mana
+				TapperManager.addStandardMapping(logUmbral, new FluidStack(TFFluids.fluidResin, 50));
 				// Dead
-				TapperManager.addMapping(logFir, new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addStandardMapping(logFir, new FluidStack(TFFluids.fluidResin, 50));
 				// Ethereal
 
 				// Origin
-				TapperManager.addMapping(logCherry, new FluidStack(TFFluids.fluidSap, 50));
+				TapperManager.addStandardMapping(logCherry, new FluidStack(TFFluids.fluidSap, 50));
 				// White Cherry
 				// Maple
-				// TapperManager.addMapping(logHellbark, new FluidStack(TFFluids.fluidSap, 50));
+				// TapperManager.addStandardMapping(logHellbark, new FluidStack(TFFluids.fluidSap, 50));
 				// Flowering Oak
-				TapperManager.addMapping(logJacaranda, new FluidStack(TFFluids.fluidSap, 50));
-				// TapperManager.addMapping(logSacredOak, new FluidStack(TFFluids.fluidSap, 50));       // TODO: Allow?
+				TapperManager.addStandardMapping(logJacaranda, new FluidStack(TFFluids.fluidSap, 50));
+				// TapperManager.addStandardMapping(logSacredOak, new FluidStack(TFFluids.fluidSap, 50));       // TODO: Allow?
 
-				TapperManager.addMapping(logMangrove, new FluidStack(TFFluids.fluidResin, 50));
-				// TapperManager.addMapping(logPalm, new FluidStack(TFFluids.fluidSap, 25));            // TODO: Allow?
-				// TapperManager.addMapping(logRedwood, new FluidStack(TFFluids.fluidResin, 50));       // TODO: Allow?
-				TapperManager.addMapping(logWillow, new FluidStack(TFFluids.fluidResin, 50));
-				TapperManager.addMapping(logPine, new FluidStack(TFFluids.fluidResin, 100));
-				TapperManager.addMapping(logMahogany, new FluidStack(TFFluids.fluidResin, 25));
-				TapperManager.addMapping(logEbony, new FluidStack(TFFluids.fluidResin, 25));
-				TapperManager.addMapping(logEucalyptus, new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addStandardMapping(logMangrove, new FluidStack(TFFluids.fluidResin, 50));
+				// TapperManager.addStandardMapping(logPalm, new FluidStack(TFFluids.fluidSap, 25));            // TODO: Allow?
+				// TapperManager.addStandardMapping(logRedwood, new FluidStack(TFFluids.fluidResin, 50));       // TODO: Allow?
+				TapperManager.addStandardMapping(logWillow, new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addStandardMapping(logPine, new FluidStack(TFFluids.fluidResin, 100));
+				TapperManager.addStandardMapping(logMahogany, new FluidStack(TFFluids.fluidResin, 25));
+				TapperManager.addStandardMapping(logEbony, new FluidStack(TFFluids.fluidResin, 25));
+				TapperManager.addStandardMapping(logEucalyptus, new FluidStack(TFFluids.fluidResin, 50));
 
-				addLeafMapping(Blocks.LOG, 2, leaves0, 8);
-				addLeafMapping(Blocks.LOG2, 1, leaves0, 9);
-				addLeafMapping(bamboo, 0, leaves0, 10);
-				addLeafMapping(log1, 5, leaves0, 11);
-				addLeafMapping(log0, 6, leaves1, 0);
+				addLeafMapping(Blocks.LOG, 2, blockLeaves0, 8);
+				addLeafMapping(Blocks.LOG2, 1, blockLeaves0, 9);
+				addLeafMapping(bamboo, 0, blockLeaves0, 10);
+				addLeafMapping(blockLog1, 5, blockLeaves0, 11);
+				addLeafMapping(blockLog0, 6, blockLeaves1, 0);
 				// Dead
-				addLeafMapping(log0, 7, leaves1, 10);
+				addLeafMapping(blockLog0, 7, blockLeaves1, 10);
 				// Ethereal
 
-				addLeafMapping(Blocks.LOG, 0, leaves2, 8);
-				addLeafMapping(log0, 5, leaves2, 9);
-				addLeafMapping(log0, 5, leaves2, 10);
-				addLeafMapping(Blocks.LOG, 0, leaves2, 11);
-				// Hellbark addLeafMapping(log2, 7, leaves3, 8);
-				addLeafMapping(Blocks.LOG, 0, leaves3, 9);
-				addLeafMapping(log3, 4, leaves3, 10);
-				// Sacred Oak addLeafMapping(log0, 4, leaves3, 11);
+				addLeafMapping(Blocks.LOG, 0, blockLeaves2, 8);
+				addLeafMapping(blockLog0, 5, blockLeaves2, 9);
+				addLeafMapping(blockLog0, 5, blockLeaves2, 10);
+				addLeafMapping(Blocks.LOG, 0, blockLeaves2, 11);
+				// Hellbark addLeafMapping(blockLog2, 7, blockLeaves3, 8);
+				addLeafMapping(Blocks.LOG, 0, blockLeaves3, 9);
+				addLeafMapping(blockLog3, 4, blockLeaves3, 10);
+				// Sacred Oak addLeafMapping(blockLog0, 4, blockLeaves3, 11);
 
-				addLeafMapping(log1, 6, leaves4, 8);
-				// Palm addLeafMapping(log1, 7, leaves4, 9);
-				// Redwood addLeafMapping(log2, 4, leaves4, 10);
-				addLeafMapping(log2, 5, leaves4, 11);
-				addLeafMapping(log2, 6, leaves5, 8);
-				addLeafMapping(log3, 5, leaves5, 9);
-				addLeafMapping(log3, 6, leaves5, 10);
-				addLeafMapping(log3, 7, leaves5, 11);
+				addLeafMapping(blockLog1, 6, blockLeaves4, 8);
+				// Palm addLeafMapping(blockLog1, 7, blockLeaves4, 9);
+				// Redwood addLeafMapping(blockLog2, 4, blockLeaves4, 10);
+				addLeafMapping(blockLog2, 5, blockLeaves4, 11);
+				addLeafMapping(blockLog2, 6, blockLeaves5, 8);
+				addLeafMapping(blockLog3, 5, blockLeaves5, 9);
+				addLeafMapping(blockLog3, 6, blockLeaves5, 10);
+				addLeafMapping(blockLog3, 7, blockLeaves5, 11);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
@@ -235,7 +235,7 @@ public class PluginBiomesOPlenty extends ModPlugin {
 
 		for (Boolean check_decay : BlockLeaves.CHECK_DECAY.getAllowedValues()) {
 			IBlockState leafState = leafBlock.getStateFromMeta(leafMetadata).withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE).withProperty(BlockLeaves.CHECK_DECAY, check_decay);
-			TapperManager.addLeafMappingDirect(logState, leafState);
+			TapperManager.addLeafMapping(logState, leafState);
 		}
 	}
 

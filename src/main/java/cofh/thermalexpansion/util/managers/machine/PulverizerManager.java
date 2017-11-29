@@ -278,6 +278,22 @@ public class PulverizerManager {
 			}
 		}
 
+		/* TERRAQUEOUS */
+		{
+			if (ItemHelper.oreNameExists("oreEndimium") && ItemHelper.oreNameExists("dustEndimium") && ItemHelper.oreNameExists("dustTinyEndimium")) {
+				if (ItemHelper.oreNameExists("gemEndimium")) {
+					addIngotToDustRecipe(DEFAULT_ENERGY, "gemEndimium", OreDictionary.getOres("dustEndimium", false).get(0));
+				}
+				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreEndimium", false).get(0), ItemHelper.cloneStack(OreDictionary.getOres("dustEndimium", false).get(0), 4), ItemHelper.cloneStack(OreDictionary.getOres("dustTinyEndimium", false).get(0), 3), 40);
+			}
+			if (ItemHelper.oreNameExists("oreBurnium") && ItemHelper.oreNameExists("dustBurnium") && ItemHelper.oreNameExists("dustTinyBurnium")) {
+				if (ItemHelper.oreNameExists("gemBurnium")) {
+					addIngotToDustRecipe(DEFAULT_ENERGY, "gemBurnium", OreDictionary.getOres("dustBurnium", false).get(0));
+				}
+				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreBurnium", false).get(0), ItemHelper.cloneStack(OreDictionary.getOres("dustBurnium", false).get(0), 4), ItemHelper.cloneStack(OreDictionary.getOres("dustTinyBurnium", false).get(0), 3), 40);
+			}
+		}
+
 		/* SPECIFIC INTERACTIONS */
 		{
 			if (ItemHelper.oreNameExists("oreNiter")) {

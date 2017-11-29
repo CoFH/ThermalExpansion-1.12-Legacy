@@ -86,10 +86,10 @@ public class PluginRustic extends ModPlugin {
 			ItemStack saplingIronwood = getItemStack("sapling", 1, 1);
 			ItemStack saplingApple = getItemStack("sapling_apple", 1, 0);
 
-			Block log = getBlock("log");
+			Block blockLog = getBlock("log");
 
-			Block leaves = getBlock("leaves");
-			Block leavesApple = getBlock("leaves_apple");
+			Block blockLeaves = getBlock("leaves");
+			Block blockLeavesApple = getBlock("leaves_apple");
 
 			Fluid honey = FluidRegistry.getFluid("honey");
 			Fluid juiceGrape = FluidRegistry.getFluid("grapejuice");
@@ -159,12 +159,12 @@ public class PluginRustic extends ModPlugin {
 
 			/* TAPPER */
 			{
-				TapperManager.addMapping(logOlive, new FluidStack(TFFluids.fluidResin, 50));
-				TapperManager.addMapping(logIronwood, new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addStandardMapping(logOlive, new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addStandardMapping(logIronwood, new FluidStack(TFFluids.fluidResin, 50));
 
-				addLeafMapping(log, leaves, 0);
-				addLeafMapping(log, leaves, 1);
-				addLeafMapping(Blocks.LOG, leavesApple, 0);
+				addLeafMapping(blockLog, 0, blockLeaves, 0);
+				addLeafMapping(blockLog, 1, blockLeaves, 1);
+				addLeafMapping(Blocks.LOG, 0, blockLeavesApple, 0);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
@@ -177,13 +177,13 @@ public class PluginRustic extends ModPlugin {
 	}
 
 	/* HELPERS */
-	private void addLeafMapping(Block logBlock, Block leafBlock, int metadata) {
+	private void addLeafMapping(Block logBlock, int logMetadata, Block leafBlock, int leafMetadata) {
 
-		IBlockState logState = logBlock.getStateFromMeta(metadata);
+		IBlockState logState = logBlock.getStateFromMeta(logMetadata);
 
 		for (Boolean check_decay : BlockLeaves.CHECK_DECAY.getAllowedValues()) {
-			IBlockState leafState = leafBlock.getStateFromMeta(metadata).withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE).withProperty(BlockLeaves.CHECK_DECAY, check_decay);
-			TapperManager.addLeafMappingDirect(logState, leafState);
+			IBlockState leafState = leafBlock.getStateFromMeta(leafMetadata).withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE).withProperty(BlockLeaves.CHECK_DECAY, check_decay);
+			TapperManager.addLeafMapping(logState, leafState);
 		}
 	}
 

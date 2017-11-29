@@ -56,11 +56,11 @@ public class PluginTraverse extends ModPlugin {
 			ItemStack logFir = getItemStack("fir_log");
 			ItemStack planksFir = getItemStack("fir_planks");
 
-			Block leavesRed = getBlock("red_autumnal_leaves");
-			Block leavesBrown = getBlock("brown_autumnal_leaves");
-			Block leavesOrange = getBlock("orange_autumnal_leaves");
-			Block leavesYellow = getBlock("yellow_autumnal_leaves");
-			Block leavesFir = getBlock("fir_leaves");
+			Block blockLeavesRed = getBlock("red_autumnal_leaves");
+			Block blockLeavesBrown = getBlock("brown_autumnal_leaves");
+			Block blockLeavesOrange = getBlock("orange_autumnal_leaves");
+			Block blockLeavesYellow = getBlock("yellow_autumnal_leaves");
+			Block blockLeavesFir = getBlock("fir_leaves");
 
 			/* SAWMILL */
 			{
@@ -83,15 +83,15 @@ public class PluginTraverse extends ModPlugin {
 
 			/* TAPPER */
 			{
-				TapperManager.addMapping(logFir, new FluidStack(TFFluids.fluidResin, 100));
-				TapperManager.addMapping(getItemStack("fir_log", 1, 1), new FluidStack(TFFluids.fluidResin, 100));
+				TapperManager.addItemMapping(logFir, new FluidStack(TFFluids.fluidResin, 20));
+				TapperManager.addBlockStateMapping(getItemStack("fir_log", 1, 1), new FluidStack(TFFluids.fluidResin, 100));
 
-				addLeafMapping(Blocks.LOG, leavesRed, 0);
-				addLeafMapping(Blocks.LOG, leavesBrown, 0);
-				addLeafMapping(Blocks.LOG, leavesOrange, 0);
-				addLeafMapping(Blocks.LOG, leavesYellow, 0);
+				addLeafMapping(Blocks.LOG, 0, blockLeavesRed, 0);
+				addLeafMapping(Blocks.LOG, 0, blockLeavesBrown, 0);
+				addLeafMapping(Blocks.LOG, 0, blockLeavesOrange, 0);
+				addLeafMapping(Blocks.LOG, 0, blockLeavesYellow, 0);
 
-				addLeafMapping(getBlock("fir_log"), 1, leavesFir, 0);
+				addLeafMapping(getBlock("fir_log"), 1, blockLeavesFir, 0);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
@@ -104,23 +104,13 @@ public class PluginTraverse extends ModPlugin {
 	}
 
 	/* HELPERS */
-	private void addLeafMapping(Block logBlock, Block leafBlock, int metadata) {
-
-		IBlockState logState = logBlock.getStateFromMeta(metadata);
-
-		for (Boolean check_decay : BlockLeaves.CHECK_DECAY.getAllowedValues()) {
-			IBlockState leafState = leafBlock.getStateFromMeta(metadata).withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE).withProperty(BlockLeaves.CHECK_DECAY, check_decay);
-			TapperManager.addLeafMappingDirect(logState, leafState);
-		}
-	}
-
 	private void addLeafMapping(Block logBlock, int logMetadata, Block leafBlock, int leafMetadata) {
 
 		IBlockState logState = logBlock.getStateFromMeta(logMetadata);
 
 		for (Boolean check_decay : BlockLeaves.CHECK_DECAY.getAllowedValues()) {
 			IBlockState leafState = leafBlock.getStateFromMeta(leafMetadata).withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE).withProperty(BlockLeaves.CHECK_DECAY, check_decay);
-			TapperManager.addLeafMappingDirect(logState, leafState);
+			TapperManager.addLeafMapping(logState, leafState);
 		}
 	}
 

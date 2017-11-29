@@ -3,9 +3,16 @@ package cofh.thermalexpansion.plugins;
 import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.util.managers.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import cofh.thermalfoundation.init.TFFluids;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
 
 public class PluginPlants extends ModPlugin {
@@ -104,7 +111,7 @@ public class PluginPlants extends ModPlugin {
 
 			ItemStack saplingBlackKauri = getItemStack("sapling_0", 1, 0);
 			ItemStack saplingBrazilianPine = getItemStack("sapling_0", 1, 1);
-			ItemStack saplingIntenseCedar = getItemStack("sapling_0", 1, 2);
+			ItemStack saplingIncenseCedar = getItemStack("sapling_0", 1, 2);
 			ItemStack saplingMurrayPine = getItemStack("sapling_0", 1, 3);
 
 			ItemStack saplingAshen = getItemStack("nether_sapling", 1, 0);
@@ -115,7 +122,7 @@ public class PluginPlants extends ModPlugin {
 
 			ItemStack logBlackKauri = getItemStack("log_0", 1, 0);
 			ItemStack logBrazilianPine = getItemStack("log_0", 1, 1);
-			ItemStack logIntenseCedar = getItemStack("log_0", 1, 2);
+			ItemStack logIncenseCedar = getItemStack("log_0", 1, 2);
 			ItemStack logMurrayPine = getItemStack("log_0", 1, 3);
 
 			ItemStack logAshen = getItemStack("nether_log", 1, 0);
@@ -123,6 +130,12 @@ public class PluginPlants extends ModPlugin {
 
 			ItemStack logCrystal = getItemStack("crystal_log", 1, 0);
 			ItemStack logDarkCrystal = getItemStack("crystal_log", 1, 1);
+
+			Block blockLog = getBlock("log_0");
+			Block blockLogNether = getBlock("nether_log");
+
+			Block blockLeaves = getBlock("leaves_0");
+			Block blockLeavesNether = getBlock("nether_leaves");
 
 			/* INSOLATOR */
 			{
@@ -193,7 +206,7 @@ public class PluginPlants extends ModPlugin {
 
 				InsolatorManager.addDefaultTreeRecipe(saplingBlackKauri, ItemHelper.cloneStack(logBlackKauri, 4), saplingBlackKauri);
 				InsolatorManager.addDefaultTreeRecipe(saplingBrazilianPine, ItemHelper.cloneStack(logBrazilianPine, 4), saplingBrazilianPine);
-				InsolatorManager.addDefaultTreeRecipe(saplingIntenseCedar, ItemHelper.cloneStack(logIntenseCedar, 4), saplingIntenseCedar);
+				InsolatorManager.addDefaultTreeRecipe(saplingIncenseCedar, ItemHelper.cloneStack(logIncenseCedar, 4), saplingIncenseCedar);
 				InsolatorManager.addDefaultTreeRecipe(saplingMurrayPine, ItemHelper.cloneStack(logMurrayPine, 4), saplingMurrayPine);
 
 				InsolatorManager.addDefaultTreeRecipe(saplingAshen, ItemHelper.cloneStack(logAshen, 4), saplingAshen);
@@ -205,7 +218,29 @@ public class PluginPlants extends ModPlugin {
 
 			/* TAPPER */
 			{
+				TapperManager.addItemMapping(logBlackKauri, new FluidStack(TFFluids.fluidResin, 10));
+				TapperManager.addItemMapping(logBrazilianPine, new FluidStack(TFFluids.fluidResin, 20));
+				TapperManager.addItemMapping(logIncenseCedar, new FluidStack(TFFluids.fluidResin, 10));
+				TapperManager.addItemMapping(logMurrayPine, new FluidStack(TFFluids.fluidResin, 20));
 
+				TapperManager.addItemMapping(logAshen, new FluidStack(FluidRegistry.LAVA, 5));
+				TapperManager.addItemMapping(logBlazing, new FluidStack(FluidRegistry.LAVA, 10));
+
+				TapperManager.addBlockStateMapping(new ItemStack(blockLog, 1, 5), new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addBlockStateMapping(new ItemStack(blockLog, 1, 6), new FluidStack(TFFluids.fluidResin, 100));
+				TapperManager.addBlockStateMapping(new ItemStack(blockLog, 1, 7), new FluidStack(TFFluids.fluidResin, 50));
+				TapperManager.addBlockStateMapping(new ItemStack(blockLog, 1, 8), new FluidStack(TFFluids.fluidResin, 100));
+
+				TapperManager.addBlockStateMapping(new ItemStack(blockLogNether, 1, 5), new FluidStack(FluidRegistry.LAVA, 25));
+				TapperManager.addBlockStateMapping(new ItemStack(blockLogNether, 1, 6), new FluidStack(FluidRegistry.LAVA, 50));
+
+				addLeafMapping(blockLog, 5, blockLeaves, 0);
+				addLeafMapping(blockLog, 6, blockLeaves, 4);
+				addLeafMapping(blockLog, 7, blockLeaves, 8);
+				addLeafMapping(blockLog, 8, blockLeaves, 12);
+
+				addLeafMapping(blockLogNether, 5, blockLeavesNether, 0);
+				addLeafMapping(blockLogNether, 6, blockLeavesNether, 4);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
@@ -215,6 +250,17 @@ public class PluginPlants extends ModPlugin {
 			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 		}
 		return !error;
+	}
+
+	/* HELPERS */
+	private void addLeafMapping(Block logBlock, int logMetadata, Block leafBlock, int leafMetadata) {
+
+		IBlockState logState = logBlock.getStateFromMeta(logMetadata);
+
+		for (Boolean check_decay : BlockLeaves.CHECK_DECAY.getAllowedValues()) {
+			IBlockState leafState = leafBlock.getStateFromMeta(leafMetadata).withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE).withProperty(BlockLeaves.CHECK_DECAY, check_decay);
+			TapperManager.addLeafMapping(logState, leafState);
+		}
 	}
 
 }

@@ -32,6 +32,7 @@ public class TapperManager {
 	private static TObjectIntHashMap<ComparableItemStack> fertilizerMap = new TObjectIntHashMap<>();
 
 	public static FluidStack DEFAULT_FLUID = new FluidStack(TFFluids.fluidResin, 0);
+	public static final int ITEM_FLUID_FACTOR = 5;
 
 	public static FluidStack getFluid(IBlockState state) {
 
@@ -83,15 +84,15 @@ public class TapperManager {
 
 		/* FLUIDS */
 		{
-			addMapping(new ItemStack(Blocks.LOG, 1, 0), new FluidStack(sap, 50));
-			addMapping(new ItemStack(Blocks.LOG, 1, 1), new FluidStack(resin, 100));
-			addMapping(new ItemStack(Blocks.LOG, 1, 2), new FluidStack(resin, 50));
-			addMapping(new ItemStack(Blocks.LOG, 1, 3), new FluidStack(resin, 50));     // rubber
-			addMapping(new ItemStack(Blocks.LOG2, 1, 0), new FluidStack(resin, 50));    // rubber
-			addMapping(new ItemStack(Blocks.LOG2, 1, 1), new FluidStack(sap, 50));
+			addStandardMapping(new ItemStack(Blocks.LOG, 1, 0), new FluidStack(sap, 50));
+			addStandardMapping(new ItemStack(Blocks.LOG, 1, 1), new FluidStack(resin, 100));
+			addStandardMapping(new ItemStack(Blocks.LOG, 1, 2), new FluidStack(resin, 50));
+			addStandardMapping(new ItemStack(Blocks.LOG, 1, 3), new FluidStack(resin, 50));     // rubber
+			addStandardMapping(new ItemStack(Blocks.LOG2, 1, 0), new FluidStack(resin, 50));    // rubber
+			addStandardMapping(new ItemStack(Blocks.LOG2, 1, 1), new FluidStack(sap, 50));
 
-			addMapping(new ItemStack(Blocks.BROWN_MUSHROOM_BLOCK, 1, 10), new FluidStack(mushroom_stew, 50));
-			addMapping(new ItemStack(Blocks.RED_MUSHROOM_BLOCK, 1, 10), new FluidStack(mushroom_stew, 50));
+			addBlockStateMapping(new ItemStack(Blocks.BROWN_MUSHROOM_BLOCK, 1, 10), new FluidStack(mushroom_stew, 50));
+			addBlockStateMapping(new ItemStack(Blocks.RED_MUSHROOM_BLOCK, 1, 10), new FluidStack(mushroom_stew, 50));
 		}
 
 		/* LEAVES */
@@ -99,17 +100,17 @@ public class TapperManager {
 			addVanillaLeafMappings(Blocks.LOG, BlockOldLog.VARIANT, Blocks.LEAVES, BlockOldLeaf.VARIANT);
 			addVanillaLeafMappings(Blocks.LOG2, BlockNewLog.VARIANT, Blocks.LEAVES2, BlockNewLeaf.VARIANT);
 
-			addLeafMappingDirect(Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.CENTER));
+			addLeafMapping(Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.CENTER));
 
-			addLeafMappingDirect(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.NORTH_WEST));
-			addLeafMappingDirect(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.NORTH));
-			addLeafMappingDirect(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.NORTH_EAST));
-			addLeafMappingDirect(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.WEST));
-			addLeafMappingDirect(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.CENTER));
-			addLeafMappingDirect(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.EAST));
-			addLeafMappingDirect(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.SOUTH_WEST));
-			addLeafMappingDirect(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.SOUTH));
-			addLeafMappingDirect(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.SOUTH_EAST));
+			addLeafMapping(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.NORTH_WEST));
+			addLeafMapping(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.NORTH));
+			addLeafMapping(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.NORTH_EAST));
+			addLeafMapping(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.WEST));
+			addLeafMapping(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.CENTER));
+			addLeafMapping(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.EAST));
+			addLeafMapping(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.SOUTH_WEST));
+			addLeafMapping(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.SOUTH));
+			addLeafMapping(Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.STEM), Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, EnumType.SOUTH_EAST));
 		}
 
 		/* LOAD MAPPINGS */
@@ -121,24 +122,49 @@ public class TapperManager {
 	}
 
 	/* ADD MAPPING */
-	public static boolean addMapping(ItemStack item, FluidStack fluid) {
+	public static boolean addStandardMapping(ItemStack item, FluidStack fluid) {
 
 		if (item.isEmpty() || fluid == null) {
 			return false;
 		}
-		if (item.getItem() instanceof ItemBlock) {
-			blockMap.put(new BlockWrapper(((ItemBlock) item.getItem()).getBlock(), ItemHelper.getItemDamage(item)), fluid.copy());
+		addBlockStateMapping(item, fluid);
+		addItemMapping(item, new FluidStack(fluid, fluid.amount / ITEM_FLUID_FACTOR));
+		return true;
+	}
+
+	public static boolean addBlockStateMapping(ItemStack item, FluidStack fluid) {
+
+		if (item.isEmpty() || fluid == null) {
+			return false;
+		}
+		blockMap.put(new BlockWrapper(((ItemBlock) item.getItem()).getBlock(), ItemHelper.getItemDamage(item)), fluid.copy());
+		return true;
+	}
+
+	public static boolean addBlockStateMapping(IBlockState state, FluidStack fluid) {
+
+		if (fluid == null) {
+			return false;
+		}
+		blockMap.put(new BlockWrapper(state.getBlock(), state.getBlock().getMetaFromState(state)), fluid.copy());
+		return true;
+	}
+
+	public static boolean addItemMapping(ItemStack item, FluidStack fluid) {
+
+		if (item.isEmpty() || fluid == null) {
+			return false;
 		}
 		itemMap.put(new ItemWrapper(item.getItem(), ItemHelper.getItemDamage(item)), fluid.copy());
 		return true;
 	}
 
-	public static boolean addLeafMapping(ItemStack log, ItemStack leaf) {
+	public static boolean addLeafMapping(IBlockState logState, IBlockState leafState) {
 
-		if (log.isEmpty() || leaf.isEmpty()) {
+		if (logState == null || leafState == null) {
 			return false;
 		}
-		leafMap.put(new BlockWrapper(((ItemBlock) log.getItem()).getBlock(), ItemHelper.getItemDamage(log)), new BlockWrapper(((ItemBlock) leaf.getItem()).getBlock(), ItemHelper.getItemDamage(leaf)));
+		leafMap.put(new BlockWrapper(logState), new BlockWrapper(leafState));
 		return true;
 	}
 
@@ -192,11 +218,6 @@ public class TapperManager {
 	private static void addFertilizer(ItemStack fertilizer, int multiplier) {
 
 		fertilizerMap.put(new ComparableItemStack(fertilizer), multiplier);
-	}
-
-	public static void addLeafMappingDirect(IBlockState logState, IBlockState leafState) {
-
-		leafMap.put(new BlockWrapper(logState), new BlockWrapper(leafState));
 	}
 
 }

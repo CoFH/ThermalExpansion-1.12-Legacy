@@ -61,7 +61,6 @@ public class PluginExU2 extends ModPlugin {
 			for (int i = 0; i < netherrack.length; i++) {
 				netherrack[i] = getItemStack("compressednetherrack", 1, i);
 			}
-
 			ItemStack enderLily = getItemStack("enderlilly", 1);
 			ItemStack redOrchid = getItemStack("redorchid", 1);
 

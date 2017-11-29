@@ -70,6 +70,8 @@ public class PluginTwilightForest extends ModPlugin {
 
 			/* INSOLATOR */
 			{
+				int energy = InsolatorManager.DEFAULT_ENERGY;
+
 				InsolatorManager.addDefaultRecipe(plantMossPatch, ItemHelper.cloneStack(plantMossPatch, 3), ItemStack.EMPTY, 0);
 				InsolatorManager.addDefaultRecipe(plantMayapple, ItemHelper.cloneStack(plantMayapple, 3), ItemStack.EMPTY, 0);
 				InsolatorManager.addDefaultRecipe(plantCloverPatch, ItemHelper.cloneStack(plantCloverPatch, 3), ItemStack.EMPTY, 0);
@@ -82,10 +84,10 @@ public class PluginTwilightForest extends ModPlugin {
 				InsolatorManager.addDefaultTreeRecipe(saplingMangrove, ItemHelper.cloneStack(logMangrove, 4), saplingMangrove);
 				InsolatorManager.addDefaultTreeRecipe(saplingDarkwood, ItemHelper.cloneStack(logDarkwood, 4), saplingDarkwood);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingTimewood, ItemHelper.cloneStack(logTimewood, 6), saplingTimewood, 30);
-				InsolatorManager.addDefaultTreeRecipe(saplingTranswood, ItemHelper.cloneStack(logTranswood, 6), saplingTranswood, 30);
-				InsolatorManager.addDefaultTreeRecipe(saplingMinewood, ItemHelper.cloneStack(logMinewood, 6), saplingMinewood, 30);
-				InsolatorManager.addDefaultTreeRecipe(saplingSortingwood, ItemHelper.cloneStack(logSortingwood, 6), saplingSortingwood, 30);
+				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingTimewood, ItemHelper.cloneStack(logTimewood, 6), saplingTimewood, 30);
+				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingTranswood, ItemHelper.cloneStack(logTranswood, 6), saplingTranswood, 30);
+				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingMinewood, ItemHelper.cloneStack(logMinewood, 6), saplingMinewood, 30);
+				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingSortingwood, ItemHelper.cloneStack(logSortingwood, 6), saplingSortingwood, 30);
 
 				InsolatorManager.addDefaultTreeRecipe(saplingRainbow, ItemHelper.cloneStack(logTwilightOak, 4), saplingRainbow);
 			}

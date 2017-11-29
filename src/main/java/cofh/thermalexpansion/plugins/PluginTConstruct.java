@@ -108,8 +108,8 @@ public class PluginTConstruct extends ModPlugin {
 
 			/* TAPPER */
 			{
-				TapperManager.addMapping(slimeCongealed, new FluidStack(blueslime, 25));
-				TapperManager.addMapping(slimeCongealedMagma, new FluidStack(blueslime, 25));
+				TapperManager.addStandardMapping(slimeCongealed, new FluidStack(blueslime, 25));
+				TapperManager.addStandardMapping(slimeCongealedMagma, new FluidStack(blueslime, 25));
 
 				addLeafMapping(log, 0, leaves, 0);
 				addLeafMapping(log, 0, leaves, 1);
@@ -132,7 +132,7 @@ public class PluginTConstruct extends ModPlugin {
 
 		for (Boolean check_decay : BlockLeaves.CHECK_DECAY.getAllowedValues()) {
 			IBlockState leafState = leafBlock.getStateFromMeta(leafMeta).withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE).withProperty(BlockLeaves.CHECK_DECAY, check_decay);
-			TapperManager.addLeafMappingDirect(logState, leafState);
+			TapperManager.addLeafMapping(logState, leafState);
 		}
 	}
 

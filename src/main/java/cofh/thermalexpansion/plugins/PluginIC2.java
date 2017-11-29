@@ -97,9 +97,7 @@ public class PluginIC2 extends ModPlugin {
 				if (biomass != null) {
 					BrewerManager.addRecipe(energy, bioChaff, new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), new FluidStack(biomass, Fluid.BUCKET_VOLUME));
 				}
-
 			}
-
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
 			error = true;
