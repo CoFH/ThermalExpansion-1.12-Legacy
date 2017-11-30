@@ -10,7 +10,6 @@ import cofh.thermalexpansion.gui.client.machine.GuiSmelter;
 import cofh.thermalexpansion.gui.container.machine.ContainerSmelter;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TESounds;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager.SmelterRecipe;
 import cofh.thermalfoundation.init.TFFluids;
@@ -270,7 +269,7 @@ public class TileSmelter extends TileMachineBase {
 			int count1 = recipe.getPrimaryInput().getCount();
 			int count2 = recipe.getSecondaryInput().getCount();
 
-			if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
+			if (SmelterManager.isRecipeReversed(inventory[0], inventory[1])) {
 				inventory[1].shrink(count1);
 				inventory[0].shrink(count2);
 			} else {
