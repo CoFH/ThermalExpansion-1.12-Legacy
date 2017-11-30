@@ -21,14 +21,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
 	final List<List<ItemStack>> inputs;
-	final List<List<FluidStack>> inputFluids;
+	final List<FluidStack> inputFluids;
 	final List<ItemStack> outputs;
 
 	final Type type;
@@ -76,7 +75,7 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 		recipeOutputs.add(recipe.getOutput());
 
 		inputs = recipeInputs;
-		inputFluids = Collections.singletonList(recipeInputFluids);
+		inputFluids = recipeInputFluids;
 		outputs = recipeOutputs;
 
 		energy = recipe.getEnergy();
@@ -98,14 +97,14 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 	public void getIngredients(IIngredients ingredients) {
 
 		ingredients.setInputLists(ItemStack.class, inputs);
-		ingredients.setInputLists(FluidStack.class, inputFluids);
+		ingredients.setInputs(FluidStack.class, inputFluids);
 		ingredients.setOutputs(ItemStack.class, outputs);
 	}
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
-		JEIPluginTE.drawFluid(69, 23, inputFluids.get(0).get(0), 24, 16);
+		JEIPluginTE.drawFluid(69, 23, inputFluids.get(0), 24, 16);
 
 		fluid.draw(minecraft, 69, 23);
 		progress.draw(minecraft, 69, 23);

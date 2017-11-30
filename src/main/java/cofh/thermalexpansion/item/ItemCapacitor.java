@@ -154,7 +154,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 			case HELD_ITEMS:
 				equipment = entity.getHeldEquipment();
 				break;
-			case ARMOR:
+			case WORN_ITEMS:
 				equipment = Iterables.concat(entity.getArmorInventoryList(), getBaubles(entity));
 				break;
 			default:
@@ -522,7 +522,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	private static TIntObjectHashMap<TypeEntry> typeMap = new TIntObjectHashMap<>();
 
 	public static final int HELD_ITEMS = 0;
-	public static final int ARMOR = 1;
+	public static final int WORN_ITEMS = 1;
 
 	public static final int CAPACITY_BASE = 1000000;
 	public static final int XFER_BASE = 1000;

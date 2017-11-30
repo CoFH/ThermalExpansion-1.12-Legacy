@@ -699,9 +699,14 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	}
 
 	@Override
-	public boolean setFacing(int side) {
+	public boolean setFacing(int side, boolean alternate) {
 
-		return false;
+		if (alternate) {
+			facing = (byte) (side ^ 1);
+			markChunkDirty();
+			sendTilePacket(Side.CLIENT);
+		}
+		return true;
 	}
 
 	/* ISidedInventory */

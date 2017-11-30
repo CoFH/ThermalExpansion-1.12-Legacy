@@ -24,7 +24,7 @@ public class BrewerRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
 	final List<List<ItemStack>> inputItems;
-	final List<List<FluidStack>> inputFluids;
+	final List<FluidStack> inputFluids;
 	final List<FluidStack> outputFluids;
 
 	/* Animation */
@@ -51,7 +51,7 @@ public class BrewerRecipeWrapper extends BaseRecipeWrapper {
 		recipeOutputFluids.add(recipe.getOutputFluid());
 
 		inputItems = Collections.singletonList(recipeInputs);
-		inputFluids = Collections.singletonList(recipeInputFluids);
+		inputFluids = recipeInputFluids;
 		outputFluids = recipeOutputFluids;
 
 		energy = recipe.getEnergy();
@@ -71,7 +71,7 @@ public class BrewerRecipeWrapper extends BaseRecipeWrapper {
 	public void getIngredients(IIngredients ingredients) {
 
 		ingredients.setInputLists(ItemStack.class, inputItems);
-		ingredients.setInputLists(FluidStack.class, inputFluids);
+		ingredients.setInputs(FluidStack.class, inputFluids);
 		ingredients.setOutputs(FluidStack.class, outputFluids);
 	}
 

@@ -1,0 +1,30 @@
+{
+	"type": "thermalexpansion:upgrade_shaped",
+	"result": {
+		"item": "thermalexpansion:reservoir",
+		"data": 1
+	},
+	"pattern": [
+		" R ",
+		"IXI",
+		" Y "
+	],
+	"key": {
+		"I": {
+			"type": "forge:ore_dict",
+			"ore": "ingotInvar"
+		},
+		"R": {
+			"type": "forge:ore_dict",
+			"ore": "blockGlass"
+		},
+		"X": {
+			"item": "thermalexpansion:reservoir",
+			"data": 0
+		},
+		"Y": {
+			"type": "forge:ore_dict",
+			"ore": "gearCopper"
+		}
+	}
+}

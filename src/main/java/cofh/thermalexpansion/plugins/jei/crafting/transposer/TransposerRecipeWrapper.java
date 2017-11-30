@@ -26,7 +26,7 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
 	final List<List<ItemStack>> inputs;
-	final List<List<FluidStack>> inputFluids;
+	final List<FluidStack> inputFluids;
 	final List<ItemStack> outputs;
 	final List<FluidStack> outputFluids;
 
@@ -62,7 +62,7 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 		outputs = recipeOutputs;
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
-			inputFluids = Collections.singletonList(recipeFluids);
+			inputFluids = recipeFluids;
 			outputFluids = Collections.emptyList();
 		} else {
 			inputFluids = Collections.emptyList();
@@ -102,7 +102,7 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 		ingredients.setOutputs(ItemStack.class, outputs);
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
-			ingredients.setInputLists(FluidStack.class, inputFluids);
+			ingredients.setInputs(FluidStack.class, inputFluids);
 		} else {
 			ingredients.setOutputs(FluidStack.class, outputFluids);
 		}
@@ -114,7 +114,7 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 		progressBack.draw(minecraft, 63, 11);
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
-			JEIPluginTE.drawFluid(63, 11, inputFluids.get(0).get(0), 24, 16);
+			JEIPluginTE.drawFluid(63, 11, inputFluids.get(0), 24, 16);
 		} else {
 			JEIPluginTE.drawFluid(63, 11, outputFluids.get(0), 24, 16);
 		}

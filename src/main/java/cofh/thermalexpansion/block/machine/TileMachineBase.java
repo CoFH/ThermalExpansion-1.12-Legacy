@@ -496,7 +496,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 	/* IReconfigurableFacing */
 	@Override
-	public boolean setFacing(int side) {
+	public boolean setFacing(int side, boolean alternate) {
 
 		if (side < 2 || side > 5) {
 			return false;

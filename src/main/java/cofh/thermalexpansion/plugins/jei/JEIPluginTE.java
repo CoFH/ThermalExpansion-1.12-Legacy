@@ -7,8 +7,10 @@ import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.compactor.CompactorRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.crucible.CrucibleRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.enchanter.EnchanterRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.extruder.ExtruderRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.furnace.FurnaceRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.insolator.InsolatorRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.precipitator.PrecipitatorRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.pulverizer.PulverizerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.refinery.RefineryRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.sawmill.SawmillRecipeCategory;
@@ -52,6 +54,8 @@ public class JEIPluginTE implements IModPlugin {
 		CentrifugeRecipeCategory.register(registry);
 		BrewerRecipeCategory.register(registry);
 		EnchanterRecipeCategory.register(registry);
+		PrecipitatorRecipeCategory.register(registry);
+		ExtruderRecipeCategory.register(registry);
 
 		SteamFuelCategory.register(registry);
 		MagmaticFuelCategory.register(registry);
@@ -79,6 +83,8 @@ public class JEIPluginTE implements IModPlugin {
 		CentrifugeRecipeCategory.initialize(registry);
 		BrewerRecipeCategory.initialize(registry);
 		EnchanterRecipeCategory.initialize(registry);
+		PrecipitatorRecipeCategory.initialize(registry);
+		ExtruderRecipeCategory.initialize(registry);
 
 		SteamFuelCategory.initialize(registry);
 		MagmaticFuelCategory.initialize(registry);
@@ -98,10 +104,12 @@ public class JEIPluginTE implements IModPlugin {
 		if (fluid == null) {
 			return;
 		}
+		GL11.glPushMatrix();
 		RenderHelper.setBlockTextureSheet();
 		int color = fluid.getFluid().getColor(fluid);
 		RenderHelper.setGLColorFromInt(color);
 		drawTiledTexture(x, y, RenderHelper.getTexture(fluid.getFluid().getStill(fluid)), width, height);
+		GL11.glPopMatrix();
 	}
 
 	public static void drawTiledTexture(int x, int y, TextureAtlasSprite icon, int width, int height) {

@@ -28,7 +28,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
 	final List<List<ItemStack>> inputs;
-	final List<List<FluidStack>> inputFluids;
+	final List<FluidStack> inputFluids;
 	final List<ItemStack> outputs;
 
 	final int chance;
@@ -61,7 +61,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 		}
 		if (uId.equals(RecipeUidsTE.PULVERIZER_PETROTHEUM)) {
 			recipeInputFluids.add(new FluidStack(TFFluids.fluidPetrotheum, TilePulverizer.FLUID_AMOUNT));
-			inputFluids = Collections.singletonList(recipeInputFluids);
+			inputFluids = recipeInputFluids;
 			recipeOutputs.add(ItemHelper.cloneStack(recipe.getPrimaryOutput(), TilePulverizer.getPetrotheumOutputAmount(recipe.getPrimaryOutput())));
 			energy = recipe.getEnergy() * (100 + TilePulverizer.PETROTHEUM_ENERGY_MOD) / 100;
 		} else {
@@ -92,7 +92,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 	public void getIngredients(IIngredients ingredients) {
 
 		ingredients.setInputLists(ItemStack.class, inputs);
-		ingredients.setInputLists(FluidStack.class, inputFluids);
+		ingredients.setInputs(FluidStack.class, inputFluids);
 		ingredients.setOutputs(ItemStack.class, outputs);
 	}
 
@@ -100,7 +100,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
 		if (uId.equals(RecipeUidsTE.PULVERIZER_PETROTHEUM)) {
-			JEIPluginTE.drawFluid(69, 23, inputFluids.get(0).get(0), 24, 16);
+			JEIPluginTE.drawFluid(69, 23, inputFluids.get(0), 24, 16);
 			fluid.draw(minecraft, 69, 23);
 		}
 		progress.draw(minecraft, 69, 23);

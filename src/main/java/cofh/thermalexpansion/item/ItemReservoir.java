@@ -13,6 +13,7 @@ import cofh.core.util.capabilities.FluidContainerItemWrapper;
 import cofh.core.util.core.IInitializer;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalfoundation.item.ItemMaterial;
 import com.google.common.collect.Iterables;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -28,7 +29,10 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -36,6 +40,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -72,13 +77,14 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.reservoir.a." + getMode(stack)));
 		if (isActive(stack)) {
-			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.a." + getMode(stack)));
-			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
-			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.c.0"));
+			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.reservoir.a.2"));
+			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.reservoir.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
+			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.reservoir.c.0"));
 		} else {
-			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
-			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.c.1"));
+			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.reservoir.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
+			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.reservoir.c.1"));
 		}
 		FluidStack fluid = getFluid(stack);
 		if (fluid != null) {
@@ -112,11 +118,11 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		//		if (isInCreativeTab(tab)) {
-		//			for (int metadata : itemList) {
-		//				items.add(new ItemStack(this, 1, metadata));
-		//			}
-		//		}
+		if (isInCreativeTab(tab)) {
+			for (int metadata : itemList) {
+				items.add(new ItemStack(this, 1, metadata));
+			}
+		}
 	}
 
 	@Override
@@ -137,7 +143,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 			if (FluidHelper.isFluidHandler(equipmentStack)) {
 				IFluidHandlerItem handler = FluidUtil.getFluidHandler(equipmentStack);
 				if (handler != null && getFluid(stack) != null) {
-					drain(stack, handler.fill(new FluidStack(getFluid(stack), Fluid.BUCKET_VOLUME), true), true);
+					drain(stack, handler.fill(new FluidStack(getFluid(stack), Math.min(getFluidAmount(stack), Fluid.BUCKET_VOLUME)), true), true);
 				}
 			}
 		}
@@ -226,45 +232,55 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (getMode(stack) == BUCKET_EMPTY) {
 			return doBucketEmpty(stack, world, player, hand);
 		}
-		player.swingArm(hand);
-		return ActionResult.newResult(EnumActionResult.PASS, stack);
+		//player.swingArm(hand);
+		return ActionResult.newResult(EnumActionResult.FAIL, stack);
 	}
 
 	ActionResult<ItemStack> doBucketFill(ItemStack stack, @Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
 
-		FluidStack fluid = getFluid(stack);
-
-		if (fluid != null && getCapacity(stack) - fluid.amount < Fluid.BUCKET_VOLUME) {
+		if (getSpace(stack) < Fluid.BUCKET_VOLUME) {
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 		}
+		RayTraceResult traceResult = this.rayTrace(world, player, false);
+		if (traceResult == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
+			return ActionResult.newResult(EnumActionResult.PASS, stack);
+		}
+		BlockPos pos = traceResult.getBlockPos();
+		if (world.isBlockModifiable(player, pos)) {
+			BlockPos targetPos = pos.offset(traceResult.sideHit);
 
+			if (player.canPlayerEdit(targetPos, traceResult.sideHit, stack)) {
+				FluidActionResult result = FluidUtil.tryPickUpFluid(stack, player, world, targetPos, traceResult.sideHit.getOpposite());
+				if (result.isSuccess() && !player.capabilities.isCreativeMode) {
+					player.addStat(StatList.getObjectUseStats(this));
+					return ActionResult.newResult(EnumActionResult.SUCCESS, result.getResult());
+				}
+			}
+		}
 		return ActionResult.newResult(EnumActionResult.FAIL, stack);
 	}
 
 	ActionResult<ItemStack> doBucketEmpty(ItemStack stack, @Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
 
-		FluidStack fluid = getFluid(stack);
-
-		if (fluid == null || fluid.amount < Fluid.BUCKET_VOLUME) {
+		if (getFluidAmount(stack) < Fluid.BUCKET_VOLUME) {
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 		}
-		//		RayTraceResult traceResult = this.rayTrace(world, player, false);
-		//
-		//		if (traceResult == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
-		//			return ActionResult.newResult(EnumActionResult.PASS, stack);
-		//		}
-		//		BlockPos pos = traceResult.getBlockPos();
-		//		if (world.isBlockModifiable(player, pos)) {
-		//			BlockPos targetPos = pos.offset(traceResult.sideHit);
-		//			if (player.canPlayerEdit(targetPos, traceResult.sideHit, stack)) {
-		//				FluidActionResult result = FluidUtil.tryPlaceFluid(player, world, targetPos, stack, new FluidStack(fluid, Fluid.BUCKET_VOLUME));
-		//				if (result.isSuccess() && !player.capabilities.isCreativeMode) {
-		//					player.addStat(StatList.getObjectUseStats(this));
-		//					drain(stack, Fluid.BUCKET_VOLUME, true);
-		//					return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
-		//				}
-		//			}
-		//		}
+		RayTraceResult traceResult = this.rayTrace(world, player, false);
+		if (traceResult == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
+			return ActionResult.newResult(EnumActionResult.PASS, stack);
+		}
+		BlockPos pos = traceResult.getBlockPos();
+		if (world.isBlockModifiable(player, pos)) {
+			BlockPos targetPos = pos.offset(traceResult.sideHit);
+
+			if (player.canPlayerEdit(targetPos, traceResult.sideHit, stack)) {
+				FluidActionResult result = FluidUtil.tryPlaceFluid(player, world, targetPos, stack, new FluidStack(getFluid(stack), Fluid.BUCKET_VOLUME));
+				if (result.isSuccess() && !player.capabilities.isCreativeMode) {
+					player.addStat(StatList.getObjectUseStats(this));
+					return ActionResult.newResult(EnumActionResult.SUCCESS, result.getResult());
+				}
+			}
+		}
 		return ActionResult.newResult(EnumActionResult.FAIL, stack);
 	}
 
@@ -288,6 +304,11 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 
 		FluidStack fluid = getFluid(stack);
 		return fluid == null ? 0 : fluid.amount;
+	}
+
+	public int getSpace(ItemStack stack) {
+
+		return getCapacity(stack) - getFluidAmount(stack);
 	}
 
 	/* IMultiModeItem */
@@ -362,11 +383,13 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s,type=%s", this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.getFluidAmount(stack) > 0 && this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
 
 		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
-			for (int mode = 0; mode < 3; mode++) {
-				ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s,type=%s", mode, entry.getValue().name)));
+			for (int active = 0; active < 2; active++) {
+				for (int mode = 0; mode < 2; mode++) {
+					ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", active, mode, entry.getValue().name)));
+				}
 			}
 		}
 	}
@@ -402,11 +425,19 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (container.getTagCompound() == null) {
 			container.setTagCompound(new NBTTagCompound());
 		}
-		if (resource == null || ItemHelper.getItemDamage(container) == CREATIVE) {
+		if (resource == null) {
 			return 0;
 		}
 		int capacity = getCapacity(container);
 
+		if (ItemHelper.getItemDamage(container) == CREATIVE) {
+			if (doFill) {
+				NBTTagCompound fluidTag = resource.writeToNBT(new NBTTagCompound());
+				fluidTag.setInteger("Amount", capacity - Fluid.BUCKET_VOLUME);
+				container.getTagCompound().setTag("Fluid", fluidTag);
+			}
+			return resource.amount;
+		}
 		if (!doFill) {
 			if (!container.getTagCompound().hasKey("Fluid")) {
 				return Math.min(capacity, resource.amount);
@@ -541,11 +572,11 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		addShapedRecipe(reservoirBasic,
 				" R ",
 				"IXI",
-				"RYR",
+				" Y ",
 				'I', "ingotCopper",
-				'R', "dustRedstone",
+				'R', "ingotTin",
 				'X', Items.BUCKET,
-				'Y', "blockGlass"
+				'Y', ItemMaterial.redstoneServo
 		);
 
 		// @formatter:on
@@ -555,16 +586,16 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 
 	private static void config() {
 
-		//		String category = "Item.Reservoir";
-		//		enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
-		//
-		//		int capacity = CAPACITY_BASE;
-		//		String comment = "Adjust this value to change the amount of Fluid (in mB) stored by a Basic Reservoir. This base value will scale with item level.";
-		//		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
-		//
-		//		for (int i = 0; i < CAPACITY.length; i++) {
-		//			CAPACITY[i] *= capacity;
-		//		}
+		String category = "Item.Reservoir";
+		enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		int capacity = CAPACITY_BASE;
+		String comment = "Adjust this value to change the amount of Fluid (in mB) stored by a Basic Reservoir. This base value will scale with item level.";
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+
+		for (int i = 0; i < CAPACITY.length; i++) {
+			CAPACITY[i] *= capacity;
+		}
 	}
 
 	/* ENTRY */
@@ -604,7 +635,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	public static final int BUCKET_FILL = 0;
 	public static final int BUCKET_EMPTY = 1;
 
-	public static final int CAPACITY_BASE = 5000;
+	public static final int CAPACITY_BASE = 10000;
 	public static final int CREATIVE = 32000;
 
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };

@@ -43,7 +43,7 @@ public class TileChunkLoader extends TileDeviceBase implements ITickable {
 
 		LIGHT_VALUES[TYPE] = 5;
 
-		GameRegistry.registerTileEntity(TileDiffuser.class, "thermalexpansion:device_diffuser");
+		GameRegistry.registerTileEntity(TileChunkLoader.class, "thermalexpansion:device_chunk_loader");
 
 		config();
 	}

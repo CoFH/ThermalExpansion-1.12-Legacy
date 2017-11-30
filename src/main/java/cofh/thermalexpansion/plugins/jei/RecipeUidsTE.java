@@ -40,8 +40,10 @@ public class RecipeUidsTE {
 	public static final String BREWER = "thermalexpansion.brewer";
 
 	public static final String ENCHANTER = "thermalexpansion.enchanter";
-	public static final String ENCHANTER_TREASURE = "thermalexpansion.enchanter_treasure";
 	public static final String ENCHANTER_EMPOWERED = "thermalexpansion.enchanter_empowered";
+
+	public static final String PRECIPITATOR = "thermalexpansion.precipitator";
+	public static final String EXTRUDER = "thermalexpansion.extruder";
 
 	public static final String DYNAMO_STEAM = "thermalexpansion.steam";
 	public static final String DYNAMO_MAGMATIC = "thermalexpansion.magmatic";

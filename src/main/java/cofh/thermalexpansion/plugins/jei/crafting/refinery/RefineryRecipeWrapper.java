@@ -17,13 +17,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
-	final List<List<FluidStack>> inputFluids;
+	final List<FluidStack> inputFluids;
 	final List<FluidStack> outputFluids;
 	final List<ItemStack> outputItems;
 
@@ -56,7 +55,7 @@ public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 		}
 		recipeOutputItems.add(recipe.getOutputItem());
 
-		inputFluids = Collections.singletonList(recipeInputFluids);
+		inputFluids = recipeInputFluids;
 		outputFluids = recipeOutputFluids;
 		outputItems = recipeOutputItems;
 
@@ -77,7 +76,7 @@ public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 
-		ingredients.setInputLists(FluidStack.class, inputFluids);
+		ingredients.setInputs(FluidStack.class, inputFluids);
 		ingredients.setOutputs(ItemStack.class, outputItems);
 		ingredients.setOutputs(FluidStack.class, outputFluids);
 	}
@@ -85,7 +84,7 @@ public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
-		JEIPluginTE.drawFluid(46, 23, inputFluids.get(0).get(0), 24, 16);
+		JEIPluginTE.drawFluid(46, 23, inputFluids.get(0), 24, 16);
 
 		fluid.draw(minecraft, 46, 23);
 		progress.draw(minecraft, 46, 23);

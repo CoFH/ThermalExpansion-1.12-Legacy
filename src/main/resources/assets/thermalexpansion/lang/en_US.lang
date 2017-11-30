@@ -211,8 +211,8 @@ info.thermalexpansion.apparatus.breaker=Breaks blocks. Simple enough.
 info.thermalexpansion.apparatus.collector=Procures items from an area.
 
 info.thermalexpansion.capacitor.a.0=Charging Held Items
-info.thermalexpansion.capacitor.a.1=Charging Armor
-info.thermalexpansion.capacitor.a.2=Charging Armor and Held Items
+info.thermalexpansion.capacitor.a.1=Charging Worn Items
+info.thermalexpansion.capacitor.a.2=Charging Equipment
 info.thermalexpansion.capacitor.b.0=§ePress (%s) to change Charge mode.§r
 info.thermalexpansion.capacitor.c.0=§eUse while sneaking to deactivate.§r
 info.thermalexpansion.capacitor.c.1=§bUse while sneaking to activate.§r
@@ -268,6 +268,13 @@ info.thermalexpansion.machine.refinery=Refines fluids into other products.
 info.thermalexpansion.machine.sawmill=Provides additional lumber.
 info.thermalexpansion.machine.smelter=Smelts alloys and metals. Two inputs.
 info.thermalexpansion.machine.transposer=Manipulates fluids and fluid containers.
+
+info.thermalexpansion.reservoir.a.0=On Use: Fill
+info.thermalexpansion.reservoir.a.1=On Use: Empty
+info.thermalexpansion.reservoir.a.2=Refilling Equipment
+info.thermalexpansion.reservoir.b.0=§ePress (%s) to change on use action.§r
+info.thermalexpansion.reservoir.c.0=§eUse while sneaking to deactivate equipment auto-refill.§r
+info.thermalexpansion.reservoir.c.1=§bUse while sneaking to activate equipment auto-refill.§r
 
 info.thermalexpansion.storage.cache=Stores a large amount of an item.
 info.thermalexpansion.storage.cell=Stores a large amount of Redstone Flux.

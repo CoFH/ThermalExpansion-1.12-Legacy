@@ -256,7 +256,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	}
 
 	@Override
-	public boolean setFacing(int side) {
+	public boolean setFacing(int side, boolean alternate) {
 
 		if (side < 0 || side > 5) {
 			return false;

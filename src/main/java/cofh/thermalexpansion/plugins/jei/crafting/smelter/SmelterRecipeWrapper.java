@@ -28,7 +28,7 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
 	final List<List<ItemStack>> inputs;
-	final List<List<FluidStack>> inputFluids;
+	final List<FluidStack> inputFluids;
 	final List<ItemStack> outputs;
 
 	final int chance;
@@ -75,7 +75,7 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 
 		if (uId.equals(RecipeUidsTE.SMELTER_PYROTHEUM)) {
 			recipeInputFluids.add(new FluidStack(TFFluids.fluidPyrotheum, TileSmelter.FLUID_AMOUNT));
-			inputFluids = Collections.singletonList(recipeInputFluids);
+			inputFluids = recipeInputFluids;
 			recipeOutputs.add(ItemHelper.cloneStack(recipe.getPrimaryOutput(), TileSmelter.getPyrotheumOutputAmount(recipe.getPrimaryOutput())));
 			energy = recipe.getEnergy() * (100 + TileSmelter.PYROTHEUM_ENERGY_MOD) / 100;
 		} else {
@@ -106,7 +106,7 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 	public void getIngredients(IIngredients ingredients) {
 
 		ingredients.setInputLists(ItemStack.class, inputs);
-		ingredients.setInputLists(FluidStack.class, inputFluids);
+		ingredients.setInputs(FluidStack.class, inputFluids);
 		ingredients.setOutputs(ItemStack.class, outputs);
 	}
 
@@ -114,7 +114,7 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
 		if (uId.equals(RecipeUidsTE.SMELTER_PYROTHEUM)) {
-			JEIPluginTE.drawFluid(69, 23, inputFluids.get(0).get(0), 24, 16);
+			JEIPluginTE.drawFluid(69, 23, inputFluids.get(0), 24, 16);
 			fluid.draw(minecraft, 69, 23);
 		}
 		progress.draw(minecraft, 69, 23);

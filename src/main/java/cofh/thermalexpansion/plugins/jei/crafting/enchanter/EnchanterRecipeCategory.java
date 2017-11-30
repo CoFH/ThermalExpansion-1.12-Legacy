@@ -51,7 +51,7 @@ public class EnchanterRecipeCategory extends BaseRecipeCategory<EnchanterRecipeW
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.ENCHANTER);
-		registry.addRecipeClickArea(GuiEnchanter.class, 79, 34, 24, 16, RecipeUidsTE.ENCHANTER, RecipeUidsTE.ENCHANTER_TREASURE, RecipeUidsTE.ENCHANTER_EMPOWERED);
+		registry.addRecipeClickArea(GuiEnchanter.class, 79, 34, 24, 16, RecipeUidsTE.ENCHANTER, RecipeUidsTE.ENCHANTER_EMPOWERED);
 		registry.addRecipeCatalyst(BlockMachine.machineEnchanter, RecipeUidsTE.ENCHANTER);
 
 		// EnchanterRecipeCategoryEmpowered.initialize(registry);
