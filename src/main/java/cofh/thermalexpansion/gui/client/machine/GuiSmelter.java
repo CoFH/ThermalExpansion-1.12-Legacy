@@ -137,7 +137,7 @@ public class GuiSmelter extends GuiPoweredBase {
 	@Override
 	public void handleElementButtonClick(String buttonName, int mouseButton) {
 
-		if (buttonName.equals("Mode")) {
+		if (buttonName.equalsIgnoreCase("Mode")) {
 			if (myTile.lockPrimary) {
 				playClickSound(0.6F);
 			} else {

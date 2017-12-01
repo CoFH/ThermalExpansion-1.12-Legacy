@@ -84,11 +84,11 @@ public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
-		JEIPluginTE.drawFluid(46, 23, inputFluids.get(0), 24, 16);
+		JEIPluginTE.drawFluid(69, 23, inputFluids.get(0), 24, 16);
 
-		fluid.draw(minecraft, 46, 23);
-		progress.draw(minecraft, 46, 23);
-		speed.draw(minecraft, 22, 40);
+		fluid.draw(minecraft, 69, 23);
+		progress.draw(minecraft, 69, 23);
+		speed.draw(minecraft, 34, 40);
 		energyMeter.draw(minecraft, 2, 8);
 
 		if (chance > 0) {

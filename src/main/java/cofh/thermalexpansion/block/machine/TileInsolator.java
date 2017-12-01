@@ -226,7 +226,7 @@ public class TileInsolator extends TileMachineBase {
 					}
 				}
 			}
-			int countInput = recipe.getPrimaryInput().getCount();
+			int countInput = augmentMonoculture ? 0 : recipe.getPrimaryInput().getCount();
 			int countFertilizer = recipe.getSecondaryInput().getCount();
 
 			if (reuseChance > 0) {

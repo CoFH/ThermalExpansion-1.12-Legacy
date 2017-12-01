@@ -102,7 +102,7 @@ public class ChargerRecipeCategory extends BaseRecipeCategory<ChargerRecipeWrapp
 
 	public ChargerRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiCharger.TEXTURE, 62, 11, 88, 62, 0, 0, 16, 24);
+		background = guiHelper.createDrawable(GuiCharger.TEXTURE, 62, 11, 88, 62, 0, 0, 16, 60);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.charger.name");
 

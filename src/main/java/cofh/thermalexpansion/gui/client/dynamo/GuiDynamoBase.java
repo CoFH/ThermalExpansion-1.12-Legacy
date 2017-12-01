@@ -58,7 +58,7 @@ public abstract class GuiDynamoBase extends GuiContainerCore {
 		securityTab = addTab(new TabSecurity(this, baseTile, playerName));
 		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 
-		energyTab = addTab(new TabEnergy(this, baseTile, true).displayStored(baseTile.smallStorage()));
+		energyTab = addTab(new TabEnergy(this, baseTile, true).displayStored(!baseTile.smallStorage()));
 		energyTab.setVisible(baseTile.showEnergyTab());
 
 		if (!myInfo.isEmpty()) {

@@ -13,6 +13,7 @@ import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class ExtruderRecipeWrapper extends BaseRecipeWrapper {
 	/* Animation */
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
+	final IDrawableAnimated speed;
 
 	public ExtruderRecipeWrapper(IGuiHelper guiHelper, ExtruderRecipe recipe) {
 
@@ -50,12 +52,14 @@ public class ExtruderRecipeWrapper extends BaseRecipeWrapper {
 
 		energy = recipe.getEnergy();
 
-		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgressLeft(Drawables.PROGRESS_DROP);
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressLeftFill(Drawables.PROGRESS_DROP);
+		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_DROP);
+		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_COMPACT);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileExtruder.basePower, StartDirection.RIGHT, true);
-		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileExtruder.basePower, StartDirection.RIGHT, false);
+		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileExtruder.basePower, StartDirection.LEFT, true);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileExtruder.basePower, StartDirection.LEFT, false);
+		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}
 
@@ -69,11 +73,18 @@ public class ExtruderRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
-		JEIPluginTE.drawFluid(82, 23, inputFluids.get(0), 24, 8);
-		JEIPluginTE.drawFluid(82, 31, inputFluids.get(1), 24, 8);
+		JEIPluginTE.drawFluid(69, 23, inputFluids.get(0), 24, 8);
+		JEIPluginTE.drawFluid(69, 31, inputFluids.get(1), 24, 8);
 
-		fluid.draw(minecraft, 82, 23);
-		progress.draw(minecraft, 82, 23);
+		if (inputFluids.get(0).amount < Fluid.BUCKET_VOLUME) {
+			JEIPluginTE.drawFluid(22, 8 + 15, inputFluids.get(0), 16, 15);
+		}
+		if (inputFluids.get(1).amount < Fluid.BUCKET_VOLUME) {
+			JEIPluginTE.drawFluid(46, 8 + 15, inputFluids.get(1), 16, 15);
+		}
+		fluid.draw(minecraft, 69, 23);
+		progress.draw(minecraft, 69, 23);
+		speed.draw(minecraft, 34, 40);
 		energyMeter.draw(minecraft, 2, 8);
 	}
 

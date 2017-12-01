@@ -27,6 +27,7 @@ public class PrecipitatorRecipeWrapper extends BaseRecipeWrapper {
 	/* Animation */
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
+	final IDrawableAnimated speed;
 
 	public PrecipitatorRecipeWrapper(IGuiHelper guiHelper, PrecipitatorRecipe recipe) {
 
@@ -48,12 +49,14 @@ public class PrecipitatorRecipeWrapper extends BaseRecipeWrapper {
 
 		energy = recipe.getEnergy();
 
-		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgressLeft(Drawables.PROGRESS_DROP);
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressLeftFill(Drawables.PROGRESS_DROP);
+		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_DROP);
+		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_SNOWFLAKE);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TilePrecipitator.basePower, StartDirection.RIGHT, true);
-		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TilePrecipitator.basePower, StartDirection.RIGHT, false);
+		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TilePrecipitator.basePower, StartDirection.LEFT, true);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TilePrecipitator.basePower, StartDirection.LEFT, false);
+		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}
 
@@ -67,10 +70,11 @@ public class PrecipitatorRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
-		JEIPluginTE.drawFluid(82, 23, inputFluids.get(0), 24, 16);
+		JEIPluginTE.drawFluid(69, 23, inputFluids.get(0), 24, 16);
 
-		fluid.draw(minecraft, 82, 23);
-		progress.draw(minecraft, 82, 23);
+		fluid.draw(minecraft, 69, 23);
+		progress.draw(minecraft, 69, 23);
+		speed.draw(minecraft, 34, 40);
 		energyMeter.draw(minecraft, 2, 8);
 	}
 

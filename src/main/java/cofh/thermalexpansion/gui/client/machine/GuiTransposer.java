@@ -125,7 +125,7 @@ public class GuiTransposer extends GuiPoweredBase {
 	@Override
 	public void handleElementButtonClick(String buttonName, int mouseButton) {
 
-		if (buttonName.equals("Mode")) {
+		if (buttonName.equalsIgnoreCase("Mode")) {
 			if (myTile.extractFlag) {
 				playClickSound(0.8F);
 			} else {

@@ -105,6 +105,9 @@ public class JEIPluginTE implements IModPlugin {
 			return;
 		}
 		GL11.glPushMatrix();
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
 		RenderHelper.setBlockTextureSheet();
 		int color = fluid.getFluid().getColor(fluid);
 		RenderHelper.setGLColorFromInt(color);

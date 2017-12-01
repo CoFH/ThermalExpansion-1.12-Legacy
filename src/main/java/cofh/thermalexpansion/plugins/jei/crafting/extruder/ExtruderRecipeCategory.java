@@ -49,7 +49,7 @@ public class ExtruderRecipeCategory extends BaseRecipeCategory<ExtruderRecipeWra
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.EXTRUDER);
-		registry.addRecipeClickArea(GuiExtruder.class, 112, 49, 24, 16, RecipeUidsTE.EXTRUDER);
+		registry.addRecipeClickArea(GuiExtruder.class, 85, 26, 24, 16, RecipeUidsTE.EXTRUDER);
 		registry.addRecipeCatalyst(BlockMachine.machineExtruder, RecipeUidsTE.EXTRUDER);
 	}
 
@@ -64,24 +64,22 @@ public class ExtruderRecipeCategory extends BaseRecipeCategory<ExtruderRecipeWra
 	}
 
 	final IDrawableStatic progress;
+	final IDrawableStatic speed;
 	final IDrawableStatic slot;
-	final IDrawableStatic tankHot;
-	final IDrawableStatic tankCold;
 	final IDrawableStatic tankHotOverlay;
 	final IDrawableStatic tankColdOverlay;
 
 	public ExtruderRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiExtruder.TEXTURE, 38, 11, 24, 62, 0, 0, 16, 124);
+		background = guiHelper.createDrawable(GuiExtruder.TEXTURE, 26, 11, 52, 40, 0, 22, 16, 96);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.extruder.name");
 
-		progress = Drawables.getDrawables(guiHelper).getProgressLeft(Drawables.PROGRESS_DROP);
+		progress = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
+		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_COMPACT);
 		slot = Drawables.getDrawables(guiHelper).getSlot(Drawables.SLOT_OUTPUT);
-		tankHot = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK_THIN);
-		tankCold = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK_THIN);
-		tankHotOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK_THIN);
-		tankColdOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK_THIN);
+		tankHotOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK_SHORT);
+		tankColdOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK_SHORT);
 	}
 
 	@Nonnull
@@ -94,10 +92,9 @@ public class ExtruderRecipeCategory extends BaseRecipeCategory<ExtruderRecipeWra
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
-		progress.draw(minecraft, 82, 23);
-		slot.draw(minecraft, 46, 19);
-		tankHot.draw(minecraft, 116, 0);
-		tankCold.draw(minecraft, 125, 0);
+		progress.draw(minecraft, 69, 23);
+		speed.draw(minecraft, 34, 40);
+		slot.draw(minecraft, 101, 19);
 		energyMeter.draw(minecraft, 2, 8);
 	}
 
@@ -110,9 +107,9 @@ public class ExtruderRecipeCategory extends BaseRecipeCategory<ExtruderRecipeWra
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-		guiItemStacks.init(0, false, 50, 23);
-		guiFluidStacks.init(0, true, 117, 1, 7, 60, 1000, false, tankHotOverlay);
-		guiFluidStacks.init(1, true, 126, 1, 7, 60, 1000, false, tankColdOverlay);
+		guiItemStacks.init(0, false, 105, 23);
+		guiFluidStacks.init(0, true, 22, 8, 16, 30, 2000, false, tankHotOverlay);
+		guiFluidStacks.init(1, true, 46, 8, 16, 30, 2000, false, tankColdOverlay);
 
 		guiItemStacks.set(0, outputItems.get(0));
 		guiFluidStacks.set(0, inputFluids.get(0));

@@ -3,16 +3,17 @@ package cofh.thermalexpansion.block.machine;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.gui.container.ICustomInventory;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.helpers.AugmentHelper;
+import cofh.core.util.helpers.FluidHelper;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiPrecipitator;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.util.managers.machine.PrecipitatorManager;
+import cofh.thermalexpansion.util.managers.machine.PrecipitatorManager.PrecipitatorRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -35,19 +36,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	private static final int TYPE = Type.PRECIPITATOR.getMetadata();
 	public static int basePower = 20;
 
-	public static ItemStack SNOW_LAYER;
-	public static ItemStack PACKED_ICE;
-
 	public static void initialize() {
-
-		processItems = new ItemStack[3];
-
-		processItems[0] = new ItemStack(Items.SNOWBALL, 4, 0);
-		processItems[1] = new ItemStack(Blocks.SNOW);
-		processItems[2] = new ItemStack(Blocks.ICE);
-
-		SNOW_LAYER = new ItemStack(Blocks.SNOW_LAYER, 2, 0);
-		PACKED_ICE = new ItemStack(Blocks.PACKED_ICE);
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 5;
@@ -60,8 +49,6 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
-		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_PRECIPITATOR_SNOW_LAYER);
-		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_PRECIPITATOR_PACKED_ICE);
 
 		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion:machine_precipitator");
 
@@ -80,20 +67,12 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
-	private static int[] processWater = { 500, 500, 1000 };
-	private static int[] processEnergy = { 800, 800, 1600 };
-	private static ItemStack[] processItems;
-
+	private ItemStack[] outputItem = new ItemStack[2];
 	private int outputTracker;
-	private byte curSelection;
-	private byte prevSelection;
+	private int index = 0;
+	private byte direction = 0;
 
-	private ItemStack[] outputItems = new ItemStack[3];
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
-
-	/* AUGMENTS */
-	protected boolean augmentSnowLayer;
-	protected boolean augmentPackedIce;
 
 	public TilePrecipitator() {
 
@@ -102,9 +81,8 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 
-		for (int i = 0; i < 3; i++) {
-			outputItems[i] = processItems[i].copy();
-		}
+		outputItem[0] = PrecipitatorManager.getOutput(index);
+		outputItem[1] = outputItem[0].copy();
 		tank.setLock(FluidRegistry.WATER);
 	}
 
@@ -124,16 +102,25 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected boolean canStart() {
 
-		if (tank.getFluidAmount() < processWater[curSelection] || energyStorage.getEnergyStored() <= 0) {
+		PrecipitatorRecipe recipe = PrecipitatorManager.getRecipe(outputItem[1]);
+
+		if (recipe == null) {
+			return false;
+		}
+		if (!FluidHelper.isFluidEqual(tank.getFluid(), recipe.getInput())) {
+			return false;
+		}
+
+		if (tank.getFluidAmount() < recipe.getInput().amount || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		if (inventory[0].isEmpty()) {
 			return true;
 		}
-		if (!inventory[0].isItemEqual(outputItems[curSelection])) {
+		if (!inventory[0].isItemEqual(outputItem[1])) {
 			return false;
 		}
-		return inventory[0].getCount() + outputItems[curSelection].getCount() <= outputItems[prevSelection].getMaxStackSize();
+		return inventory[0].getCount() + outputItem[1].getCount() <= outputItem[1].getMaxStackSize();
 	}
 
 	@Override
@@ -145,21 +132,27 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected void processStart() {
 
-		processMax = processEnergy[curSelection] * energyMod / ENERGY_BASE;
+		processMax = PrecipitatorManager.getRecipe(outputItem[1]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
-		prevSelection = curSelection;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		if (inventory[0].isEmpty()) {
-			inventory[0] = outputItems[prevSelection].copy();
-		} else {
-			inventory[0].grow(outputItems[prevSelection].getCount());
+		PrecipitatorRecipe recipe = PrecipitatorManager.getRecipe(outputItem[1]);
+
+		if (recipe == null) {
+			processOff();
+			return;
 		}
-		tank.drain(processWater[prevSelection], true);
-		prevSelection = curSelection;
+		ItemStack output = recipe.getOutput();
+		if (inventory[0].isEmpty()) {
+			inventory[0] = ItemHelper.cloneStack(output);
+		} else {
+			inventory[0].grow(output.getCount());
+		}
+		tank.drain(recipe.getInput().amount, true);
+		outputItem[1] = outputItem[0].copy();
 	}
 
 	@Override
@@ -189,12 +182,6 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		if (!super.readPortableTagInternal(player, tag)) {
 			return false;
 		}
-		if (tag.hasKey("Sel")) {
-			curSelection = tag.getByte("Sel");
-			if (!isActive) {
-				prevSelection = curSelection;
-			}
-		}
 		return true;
 	}
 
@@ -204,7 +191,6 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		if (!super.writePortableTagInternal(player, tag)) {
 			return false;
 		}
-		tag.setByte("Sel", curSelection);
 		return true;
 	}
 
@@ -215,6 +201,20 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		hasAutoInput = false;
 		enableAutoInput = false;
+	}
+
+	private void setOutput() {
+
+		if (index >= PrecipitatorManager.getOutputListSize()) {
+			index = 0;
+		} else if (index < 0) {
+			index = PrecipitatorManager.getOutputListSize() - 1;
+		}
+		outputItem[0] = PrecipitatorManager.getOutput(index);
+
+		if (!isActive) {
+			outputItem[1] = outputItem[0].copy();
+		}
 	}
 
 	/* GUI METHODS */
@@ -230,16 +230,6 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		return new ContainerPrecipitator(inventory, this);
 	}
 
-	public int getCurSelection() {
-
-		return curSelection;
-	}
-
-	public int getPrevSelection() {
-
-		return prevSelection;
-	}
-
 	@Override
 	public FluidTankCore getTank() {
 
@@ -252,12 +242,11 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		return tank.getFluid();
 	}
 
-	public void setMode(int selection) {
+	public void setMode(byte direction) {
 
-		byte lastSelection = curSelection;
-		curSelection = (byte) selection;
+		this.direction = direction;
 		sendModePacket();
-		curSelection = lastSelection;
+		this.direction = 0;
 	}
 
 	/* NBT METHODS */
@@ -267,8 +256,12 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		super.readFromNBT(nbt);
 
 		outputTracker = nbt.getInteger("TrackOut");
-		prevSelection = nbt.getByte("Prev");
-		curSelection = nbt.getByte("Sel");
+
+		if (nbt.hasKey("OutputItem", 10)) {
+			index = PrecipitatorManager.getIndex(new ItemStack(nbt.getCompoundTag("OutputItem")));
+		}
+		outputItem[0] = PrecipitatorManager.getOutput(index);
+		outputItem[1] = outputItem[0].copy();
 
 		tank.readFromNBT(nbt);
 	}
@@ -279,9 +272,8 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("TrackOut", outputTracker);
-		nbt.setByte("Prev", prevSelection);
-		nbt.setByte("Sel", curSelection);
 
+		nbt.setTag("OutputItem", outputItem[0].writeToNBT(new NBTTagCompound()));
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
@@ -294,7 +286,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		PacketCoFHBase payload = super.getModePacket();
 
-		payload.addByte(curSelection);
+		payload.addByte(direction);
 
 		return payload;
 	}
@@ -304,10 +296,10 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		super.handleModePacket(payload);
 
-		curSelection = payload.getByte();
-		if (!isActive) {
-			prevSelection = curSelection;
-		}
+		direction = payload.getByte();
+		index += direction;
+		setOutput();
+		direction = 0;
 	}
 
 	/* SERVER -> CLIENT */
@@ -316,8 +308,6 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
-		payload.addByte(curSelection);
-		payload.addByte(prevSelection);
 		payload.addFluidStack(tank.getFluid());
 
 		return payload;
@@ -328,47 +318,14 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		super.handleGuiPacket(payload);
 
-		curSelection = payload.getByte();
-		prevSelection = payload.getByte();
 		tank.setFluid(payload.getFluidStack());
-	}
-
-	/* HELPERS */
-	@Override
-	protected void preAugmentInstall() {
-
-		super.preAugmentInstall();
-
-		outputItems[1] = processItems[1].copy();
-		outputItems[2] = processItems[2].copy();
-
-		augmentSnowLayer = false;
-		augmentPackedIce = false;
-	}
-
-	@Override
-	protected boolean installAugmentToSlot(int slot) {
-
-		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
-
-		if (!augmentSnowLayer && TEProps.MACHINE_PRECIPITATOR_SNOW_LAYER.equals(id)) {
-			outputItems[1] = SNOW_LAYER.copy();
-			hasModeAugment = true;
-			return true;
-		}
-		if (!augmentPackedIce && TEProps.MACHINE_PRECIPITATOR_PACKED_ICE.equals(id)) {
-			outputItems[2] = PACKED_ICE.copy();
-			hasModeAugment = true;
-			return true;
-		}
-		return super.installAugmentToSlot(slot);
 	}
 
 	/* ICustomInventory */
 	@Override
 	public ItemStack[] getInventorySlots(int inventoryIndex) {
 
-		return outputItems;
+		return outputItem;
 	}
 
 	@Override

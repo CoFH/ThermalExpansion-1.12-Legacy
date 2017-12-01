@@ -131,7 +131,7 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 		return TETextures.DEVICE_SIDE;
 	}
 
-	/* Rendering */
+	/* RENDERING */
 	public boolean hasFluidUnderlay() {
 
 		return false;

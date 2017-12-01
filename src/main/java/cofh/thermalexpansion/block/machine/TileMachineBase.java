@@ -531,7 +531,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		return TETextures.MACHINE_SIDE;
 	}
 
-	/* Rendering */
+	/* RENDERING */
 	public boolean hasFluidUnderlay() {
 
 		return false;

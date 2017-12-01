@@ -226,13 +226,7 @@ public class TEProps {
 
 	public static final String MACHINE_ENCHANTER_EMPOWERED = "machineEnchanterEmpowered";
 
-	public static final String MACHINE_PRECIPITATOR_SNOW_LAYER = "machinePrecipitatorSnowLayer";
-	public static final String MACHINE_PRECIPITATOR_PACKED_ICE = "machinePrecipitatorPackedIce";
-
 	public static final String MACHINE_EXTRUDER_NO_WATER = "machineExtruderNoWater";
-	public static final String MACHINE_EXTRUDER_GRANITE = "machineExtruderGranite";
-	public static final String MACHINE_EXTRUDER_DIORITE = "machineExtruderDiorite";
-	public static final String MACHINE_EXTRUDER_ANDESITE = "machineExtruderAndesite";
 
 	/* DYNAMOS */
 	public static final String DYNAMO_POWER = "dynamoPower";
@@ -250,6 +244,8 @@ public class TEProps {
 	public static final String DYNAMO_COMPRESSION_FUEL = "dynamoCompressionFuel";
 
 	public static final String DYNAMO_REACTANT_ELEMENTAL = "dynamoReactantElemental";
+
+	public static final String DYNAMO_ENERVATION_ENCHANT = "dynamoEnervationEnchant";
 
 	public static final String DYNAMO_NUMISMATIC_GEM = "dynamoNumismaticGem";
 

@@ -439,7 +439,7 @@ public class TileRefinery extends TileMachineBase {
 		return TETextures.MACHINE_SIDE;
 	}
 
-	/* Rendering */
+	/* RENDERING */
 	@Override
 	public boolean hasFluidUnderlay() {
 

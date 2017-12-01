@@ -78,7 +78,7 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 
 	public RefineryRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiRefinery.TEXTURE, 38, 11, 24, 62, 0, 0, 16, 124);
+		background = guiHelper.createDrawable(GuiRefinery.TEXTURE, 26, 11, 48, 62, 0, 0, 16, 100);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.refinery.name");
 
@@ -100,10 +100,10 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
-		progress.draw(minecraft, 46, 23);
-		speed.draw(minecraft, 22, 40);
-		slot.draw(minecraft, 77, 19);
-		tank.draw(minecraft, 116, 0);
+		progress.draw(minecraft, 69, 23);
+		speed.draw(minecraft, 34, 40);
+		slot.draw(minecraft, 101, 19);
+		tank.draw(minecraft, 140, 0);
 		energyMeter.draw(minecraft, 2, 8);
 	}
 
@@ -117,9 +117,9 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-		guiItemStacks.init(0, false, 81, 23);
-		guiFluidStacks.init(0, true, 22, 8, 16, 30, 1000, false, tankOverlayInput);
-		guiFluidStacks.init(1, false, 117, 1, 16, 60, 1000, false, tankOverlayOutput);
+		guiItemStacks.init(0, false, 105, 23);
+		guiFluidStacks.init(0, true, 34, 8, 16, 30, 1000, false, tankOverlayInput);
+		guiFluidStacks.init(1, false, 141, 1, 16, 60, 1000, false, tankOverlayOutput);
 
 		guiItemStacks.set(0, outputItems.get(0));
 		guiFluidStacks.set(0, inputFluids.get(0));

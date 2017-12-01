@@ -14,22 +14,26 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import java.io.IOException;
-
 public class GuiExtruder extends GuiPoweredBase {
 
-	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "extruder.png");
+	public static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "extruder.png";
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	private TileExtruder myTile;
 
-	private ElementBase slotInput;
+	private ElementBase slotInputHot;
+	private ElementBase slotInputCold;
 	private ElementBase slotOutput;
-	private ElementFluid progressLava;
-	private ElementFluid progressWater;
+	private ElementFluid progressHot;
+	private ElementFluid progressCold;
 	private ElementDualScaled progressOverlay;
+	private ElementDualScaled speed;
 
 	private ElementFluidTank hotTank;
 	private ElementFluidTank coldTank;
+
+	private ElementButton prevOutput;
+	private ElementButton nextOutput;
 
 	public GuiExtruder(InventoryPlayer inventory, TileEntity tile) {
 
@@ -45,18 +49,26 @@ public class GuiExtruder extends GuiPoweredBase {
 
 		super.initGui();
 
-		slotInput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.BLUE, SlotType.TANK, SlotRender.FULL));
-		slotOutput = addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
+		slotInputHot = addElement(new ElementSlotOverlay(this, 32, 19).setSlotInfo(SlotColor.BLUE, SlotType.TANK_SHORT, SlotRender.FULL));
+		slotInputCold = addElement(new ElementSlotOverlay(this, 56, 19).setSlotInfo(SlotColor.BLUE, SlotType.TANK_SHORT, SlotRender.FULL));
+		slotOutput = addElement(new ElementSlotOverlay(this, 130, 22).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
 
 		if (!myTile.smallStorage()) {
 			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		}
-		coldTank = (ElementFluidTank) addElement(new ElementFluidTank(this, 161, 9, myTile.getTank(1)).setAlwaysShow(true).setThin(true));
-		hotTank = (ElementFluidTank) addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(0)).setAlwaysShow(true).setThin(true));
+		hotTank = (ElementFluidTank) addElement(new ElementFluidTank(this, 32, 19, myTile.getTank(0)).setAlwaysShow(true).setSmall());
+		coldTank = (ElementFluidTank) addElement(new ElementFluidTank(this, 56, 19, myTile.getTank(1)).setAlwaysShow(true).setSmall());
 
-		progressLava = (ElementFluid) addElement(new ElementFluid(this, 112, 49).setFluid(FluidRegistry.LAVA).setSize(24, 8));
-		progressWater = (ElementFluid) addElement(new ElementFluid(this, 112, 57).setFluid(FluidRegistry.WATER).setSize(24, 8));
-		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_LEFT, 64, 16));
+		progressHot = (ElementFluid) addElement(new ElementFluid(this, 85, 26).setFluid(FluidRegistry.LAVA).setSize(24, 8));
+		progressCold = (ElementFluid) addElement(new ElementFluid(this, 85, 34).setFluid(FluidRegistry.WATER).setSize(24, 8));
+		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 85, 26).setMode(1).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 64, 16));
+		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 53).setSize(16, 16).setTexture(TEX_COMPACT, 32, 16));
+
+		prevOutput = new ElementButton(this, 72, 54, "PrevOutput", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
+		nextOutput = new ElementButton(this, 108, 54, "NextOutput", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
+
+		addElement(prevOutput);
+		addElement(nextOutput);
 	}
 
 	@Override
@@ -64,86 +76,31 @@ public class GuiExtruder extends GuiPoweredBase {
 
 		super.updateElementInformation();
 
-		slotInput.setVisible(myTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotInputHot.setVisible(myTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotInputCold.setVisible(myTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
 		slotOutput.setVisible(myTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
-		if (myTile.augmentNoWater()) {
-			hotTank.setThin(false).drawTank(!slotInput.isVisible());
-		} else {
-			hotTank.setThin(true).drawTank(false);
-		}
-		coldTank.setVisible(!myTile.augmentNoWater());
-
-		progressLava.setPosition(112 + PROGRESS - myTile.getScaledProgress(PROGRESS), 49);
-		progressLava.setSize(myTile.getScaledProgress(PROGRESS), myTile.augmentNoWater() ? 16 : 8);
-		progressWater.setPosition(112 + PROGRESS - myTile.getScaledProgress(PROGRESS), 57);
-		progressWater.setSize(myTile.getScaledProgress(PROGRESS), myTile.augmentNoWater() ? 0 : 8);
+		progressHot.setSize(myTile.getScaledProgress(PROGRESS), myTile.augmentNoWater() ? 16 : 8);
+		progressCold.setSize(myTile.getScaledProgress(PROGRESS), myTile.augmentNoWater() ? 0 : 8);
 		progressOverlay.setQuantity(myTile.getScaledProgress(PROGRESS));
+		speed.setQuantity(myTile.getScaledSpeed(SPEED));
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
+	public void handleElementButtonClick(String buttonName, int mouseButton) {
 
-		super.drawGuiContainerBackgroundLayer(f, x, y);
+		byte direction = 0;
+		float pitch = 0.7F;
 
-		mc.renderEngine.bindTexture(texture);
-		drawCurSelection();
-		drawPrevSelection();
-
-		// Correction for mini-tanks.
-		if (!myTile.augmentNoWater()) {
-			drawTexturedModalRect(guiLeft + 159, guiTop + 9, 159, 9, 2, 60);
+		if (buttonName.equalsIgnoreCase("PrevOutput")) {
+			direction -= 1;
+			pitch -= 0.1F;
+		} else if (buttonName.equalsIgnoreCase("NextOutput")) {
+			pitch += 0.1F;
+			direction += 1;
 		}
-	}
-
-	@Override
-	protected void mouseClicked(int mX, int mY, int mouseButton) throws IOException {
-
-		if (48 <= mouseX && mouseX < 128 && 18 <= mouseY && mouseY < 36) {
-			if (49 <= mouseX && mouseX < 67) {
-				myTile.setMode(0);
-			} else if (79 <= mouseX && mouseX < 97) {
-				myTile.setMode(1);
-			} else if (109 <= mouseX && mouseX < 127) {
-				myTile.setMode(2);
-			}
-		} else {
-			super.mouseClicked(mX, mY, mouseButton);
-		}
-	}
-
-	private void drawCurSelection() {
-
-		int offset = 32;
-		if (myTile.getPrevSelection() == myTile.getCurSelection() && myTile.isActive) {
-			offset = 64;
-		}
-		switch (myTile.getCurSelection()) {
-			case 0:
-				drawTexturedModalRect(guiLeft + 42, guiTop + 11, 192, offset, 32, 32);
-				break;
-			case 1:
-				drawTexturedModalRect(guiLeft + 72, guiTop + 11, 192, offset, 32, 32);
-				break;
-			case 2:
-				drawTexturedModalRect(guiLeft + 102, guiTop + 11, 192, offset, 32, 32);
-				break;
-		}
-	}
-
-	private void drawPrevSelection() {
-
-		switch (myTile.getPrevSelection()) {
-			case 0:
-				drawTexturedModalRect(guiLeft + 42, guiTop + 11, 224, 32, 32, 32);
-				break;
-			case 1:
-				drawTexturedModalRect(guiLeft + 72, guiTop + 11, 224, 32, 32, 32);
-				break;
-			case 2:
-				drawTexturedModalRect(guiLeft + 102, guiTop + 11, 224, 32, 32, 32);
-				break;
-		}
+		playClickSound(pitch);
+		myTile.setMode(direction);
 	}
 
 }

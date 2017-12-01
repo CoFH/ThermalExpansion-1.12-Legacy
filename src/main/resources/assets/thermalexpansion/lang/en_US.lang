@@ -55,6 +55,12 @@ info.thermalexpansion.augment.dynamoCompressionFuel.b.0=Only §e§oRefined Fuel�
 info.thermalexpansion.augment.dynamoEfficiency.0=Dynamos: Increased Efficiency
 info.thermalexpansion.augment.dynamoEfficiency.a.0=More energy (RF) is produced by fuels.
 
+info.thermalexpansion.augment.dynamoEnervationEnchant.0=Enervation Dynamo: Specialization
+info.thermalexpansion.augment.dynamoEnervationEnchant.a.0=Allows for enchanted items to be used as fuel.
+info.thermalexpansion.augment.dynamoEnervationEnchant.a.1=Greatly increases power generation and efficiency.
+info.thermalexpansion.augment.dynamoEnervationEnchant.b.0=Only enchanted items can be utilized.
+info.thermalexpansion.augment.dynamoEnervationEnchant.c.0=The items are destroyed in this process.
+
 info.thermalexpansion.augment.dynamoMagmaticCoolant.0=Magmatic Dynamo: Specialization
 info.thermalexpansion.augment.dynamoMagmaticCoolant.a.0=Greatly increases power generation and efficiency.
 info.thermalexpansion.augment.dynamoMagmaticCoolant.b.0=Coolant is required for operation.
@@ -109,19 +115,7 @@ info.thermalexpansion.augment.machineEnchanterEmpowered.0=Arcane Ensorcellator: 
 info.thermalexpansion.augment.machineEnchanterEmpowered.a.0=Focuses and aligns arcane energies to maximize enchantment strength.
 info.thermalexpansion.augment.machineEnchanterEmpowered.b.0=Additional resources are required.
 
-info.thermalexpansion.augment.machineExtruderAndesite.0=Igneous Extruder: Specialization
-info.thermalexpansion.augment.machineExtruderAndesite.a.0=Allows for the creation of Andesite.
-info.thermalexpansion.augment.machineExtruderAndesite.c.0=Replaces the Stone option.
-
-info.thermalexpansion.augment.machineExtruderDiorite.0=Igneous Extruder: Specialization
-info.thermalexpansion.augment.machineExtruderDiorite.a.0=Allows for the creation of Diorite.
-info.thermalexpansion.augment.machineExtruderDiorite.c.0=Replaces the Stone option.
-
-info.thermalexpansion.augment.machineExtruderGranite.0=Igneous Extruder: Specialization
-info.thermalexpansion.augment.machineExtruderGranite.a.0=Allows for the creation of Granite.
-info.thermalexpansion.augment.machineExtruderGranite.c.0=Replaces the Stone option.
-
-info.thermalexpansion.augment.machineExtruderNoWater.0=Igneous Extruder: Efficiency
+info.thermalexpansion.augment.machineExtruderNoWater.0=Igneous Extruder: Specialization
 info.thermalexpansion.augment.machineExtruderNoWater.a.0=Water is no longer consumed for operation.
 
 info.thermalexpansion.augment.machineFurnaceFood.0=Redstone Furnace: Specialization
@@ -153,14 +147,6 @@ info.thermalexpansion.augment.machineInsolatorTree.a.0=Allows for trees to be gr
 info.thermalexpansion.augment.machinePower.0=Machines: Processing Speed
 info.thermalexpansion.augment.machinePower.a.0=Increases maximum power usage.
 info.thermalexpansion.augment.machinePower.b.0=Additional energy is required per operation.
-
-info.thermalexpansion.augment.machinePrecipitatorPackedIce.0=Glacial Precipitator: Specialization
-info.thermalexpansion.augment.machinePrecipitatorPackedIce.a.0=Allows for the creation of Packed Ice.
-info.thermalexpansion.augment.machinePrecipitatorPackedIce.c.0=Replaces the Ice option.
-
-info.thermalexpansion.augment.machinePrecipitatorSnowLayer.0=Glacial Precipitator: Specialization
-info.thermalexpansion.augment.machinePrecipitatorSnowLayer.a.0=Allows for the creation of Snow Layers.
-info.thermalexpansion.augment.machinePrecipitatorSnowLayer.c.0=Replaces the Snow option.
 
 info.thermalexpansion.augment.machinePulverizerGeode.0=Pulverizer: Specialization
 info.thermalexpansion.augment.machinePulverizerGeode.a.0=Allows for Geodes to be extracted from certain ores.
@@ -290,6 +276,7 @@ item.thermalexpansion.augment.dynamoCoilDuct.name=Transmission Coil Ducting
 item.thermalexpansion.augment.dynamoCompressionCoolant.name=Closed-Loop Cooling
 item.thermalexpansion.augment.dynamoCompressionFuel.name=Ignition Plugs
 item.thermalexpansion.augment.dynamoEfficiency.name=Fuel Catalyzer
+item.thermalexpansion.augment.dynamoEnervationEnchant.name=Disjunctive Extraction
 item.thermalexpansion.augment.dynamoMagmaticCoolant.name=Isentropic Reservoir
 item.thermalexpansion.augment.dynamoNumismaticGem.name=Lapidary Calibration
 item.thermalexpansion.augment.dynamoPower.name=Auxiliary Transmission Coil
@@ -314,8 +301,6 @@ item.thermalexpansion.augment.machineInsolatorFertilizer.name=Nutrient Recovery
 item.thermalexpansion.augment.machineInsolatorMonoculture.name=Monoculture Cycle
 item.thermalexpansion.augment.machineInsolatorTree.name=Sapling Infuser
 item.thermalexpansion.augment.machinePower.name=Auxiliary Reception Coil
-item.thermalexpansion.augment.machinePrecipitatorPackedIce.name=Permafrost Compressor
-item.thermalexpansion.augment.machinePrecipitatorSnowLayer.name=Flurry Stratum
 item.thermalexpansion.augment.machinePulverizerGeode.name=Geode Tumbler
 item.thermalexpansion.augment.machinePulverizerPetrotheum.name=Tectonic Initiator
 item.thermalexpansion.augment.machineRefineryOil.name=Reflux Column
@@ -451,8 +436,8 @@ tab.thermalexpansion.machine.insolator.0=Infuses nutrients and light into plants
 tab.thermalexpansion.machine.insolator.1=Not exactly 'organic' farming.
 tab.thermalexpansion.machine.insolator.2=Left slot can be locked to only contain specific items.
 tab.thermalexpansion.machine.insolator.3=Gloriously incandescent!
-tab.thermalexpansion.machine.precipitator.0=Uses Redstone Flux to freeze water!
-tab.thermalexpansion.machine.precipitator.1=The selected item is what you'll get, if there is enough fluid in the tank.
+tab.thermalexpansion.machine.precipitator.0=Uses Redstone Flux to freeze fluids!
+tab.thermalexpansion.machine.precipitator.1=The selected item is what you'll get, if there is enough of the correct fluid in the tank.
 tab.thermalexpansion.machine.precipitator.2=Have a snowball fight.
 tab.thermalexpansion.machine.pulverizer.0=Smashes things into other things.
 tab.thermalexpansion.machine.pulverizer.1=Useful for processing ores or converting items.

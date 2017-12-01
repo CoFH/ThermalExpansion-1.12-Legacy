@@ -10,7 +10,6 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.TileExtruder;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -212,13 +211,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		// machineEnchanterEmpowered = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.MODE);
 
-		machinePrecipitatorSnowLayer = addAugmentItem(481, TEProps.MACHINE_PRECIPITATOR_SNOW_LAYER, AugmentType.MODE);
-		machinePrecipitatorPackedIce = addAugmentItem(482, TEProps.MACHINE_PRECIPITATOR_PACKED_ICE, AugmentType.MODE);
-
-		machineExtruderNoWater = addAugmentItem(496, TEProps.MACHINE_EXTRUDER_NO_WATER, AugmentType.ADVANCED);
-		machineExtruderGranite = addAugmentItem(497, TEProps.MACHINE_EXTRUDER_GRANITE, AugmentType.MODE);
-		machineExtruderDiorite = addAugmentItem(498, TEProps.MACHINE_EXTRUDER_DIORITE, AugmentType.MODE);
-		machineExtruderAndesite = addAugmentItem(499, TEProps.MACHINE_EXTRUDER_ANDESITE, AugmentType.MODE);
+		machineExtruderNoWater = addAugmentItem(496, TEProps.MACHINE_EXTRUDER_NO_WATER, AugmentType.MODE);
 
 		/* DYNAMOS */
 		dynamoPower = addAugmentItem(512, TEProps.DYNAMO_POWER);
@@ -236,6 +229,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		dynamoCompressionFuel = addAugmentItem(673, TEProps.DYNAMO_COMPRESSION_FUEL, AugmentType.MODE);
 
 		dynamoReactantElemental = addAugmentItem(688, TEProps.DYNAMO_REACTANT_ELEMENTAL, AugmentType.MODE);
+
+		dynamoEnervationEnchant = addAugmentItem(704, TEProps.DYNAMO_ENERVATION_ENCHANT, AugmentType.MODE);
 
 		dynamoNumismaticGem = addAugmentItem(720, TEProps.DYNAMO_NUMISMATIC_GEM, AugmentType.MODE);
 
@@ -501,58 +496,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', Blocks.PISTON,
 				'Y', "dustCryotheum"
 		);
-		addShapedRecipe(machineExtruderGranite,
-				" G ",
-				"ICI",
-				"YXY",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearCopper",
-				'I', "plateInvar",
-				'X', TileExtruder.GRANITE,
-				'Y', "dustRedstone"
-		);
-		addShapedRecipe(machineExtruderDiorite,
-				" G ",
-				"ICI",
-				"YXY",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearCopper",
-				'I', "plateInvar",
-				'X', TileExtruder.DIORITE,
-				'Y', "dustRedstone"
-		);
-		addShapedRecipe(machineExtruderAndesite,
-				" G ",
-				"ICI",
-				"YXY",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearCopper",
-				'I', "plateInvar",
-				'X', TileExtruder.ANDESITE,
-				'Y', "dustRedstone"
-		);
-
-		addShapedRecipe(machinePrecipitatorSnowLayer,
-				" G ",
-				"ICI",
-				"YXY",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearCopper",
-				'I', "plateInvar",
-				'X', Blocks.SNOW_LAYER,
-				'Y', "dustRedstone"
-		);
-
-		addShapedRecipe(machinePrecipitatorPackedIce,
-				" G ",
-				"ICI",
-				"YXY",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearCopper",
-				'I', "plateInvar",
-				'X', Blocks.PACKED_ICE,
-				'Y', "dustRedstone"
-		);
 
 		/* DYNAMO */
 		addShapedRecipe(dynamoPower,
@@ -652,6 +595,17 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "blockGlassHardened",
 				'Y', "dustAerotheum"
 		);
+
+//		addShapedRecipe(dynamoEnervationEnchant,
+//				" G ",
+//				"ICI",
+//				"YXY",
+//				'C', ItemMaterial.powerCoilElectrum,
+//				'G', "gearSignalum",
+//				'I', "plateLead",
+//				'X', "blockGlassHardened",
+//				'Y', "dustAerotheum"
+//		);
 
 		addShapedRecipe(dynamoNumismaticGem,
 				" G ",
@@ -782,13 +736,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineEnchanterEmpowered;
 
-	public static ItemStack machinePrecipitatorSnowLayer;
-	public static ItemStack machinePrecipitatorPackedIce;
-
 	public static ItemStack machineExtruderNoWater;
-	public static ItemStack machineExtruderGranite;
-	public static ItemStack machineExtruderDiorite;
-	public static ItemStack machineExtruderAndesite;
 
 	/* Dynamo */
 	public static ItemStack dynamoPower;
@@ -806,6 +754,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack dynamoCompressionFuel;
 
 	public static ItemStack dynamoReactantElemental;
+
+	public static ItemStack dynamoEnervationEnchant;
 
 	public static ItemStack dynamoNumismaticGem;
 
