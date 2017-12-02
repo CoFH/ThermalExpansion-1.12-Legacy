@@ -341,7 +341,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 	/* HELPERS */
 	private void addRecipes() {
 
-		String tinPart = "gearTin";
+		String ironPart = "gearIron";
 
 		// @formatter:off
 		if (enable[Type.WATER_GEN.getMetadata()]) {
@@ -350,7 +350,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameDevice,
-					'I', tinPart,
+					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', Items.BUCKET,
 					'Y', "blockGlass"
@@ -362,7 +362,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameDevice,
-					'I', tinPart,
+					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', Items.LAVA_BUCKET,
 					'Y', Blocks.BRICK_BLOCK
@@ -374,7 +374,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameDevice,
-					'I', tinPart,
+					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', "blockCopper",
 					'Y', "ingotInvar"
@@ -386,7 +386,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameDevice,
-					'I', tinPart,
+					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', Items.BUCKET,
 					'Y', "ingotCopper"
@@ -398,7 +398,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameDevice,
-					'I', tinPart,
+					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', Items.FISHING_ROD,
 					'Y', Blocks.IRON_BARS
@@ -410,7 +410,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameDevice,
-					'I', tinPart,
+					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', Blocks.HOPPER,
 					'Y', "dustRedstone"
@@ -422,7 +422,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameDevice,
-					'I', tinPart,
+					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', Items.CAULDRON,
 					'Y', "ingotCopper"
@@ -434,7 +434,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameDevice,
-					'I', tinPart,
+					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', ItemTomeLexicon.tomeLexicon,
 					'Y', "ingotLead"
@@ -446,7 +446,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameDevice,
-					'I', tinPart,
+					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', ItemTomeExperience.tomeExperience,
 					'Y', "ingotGold"
@@ -458,7 +458,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameDevice,
-					'I', tinPart,
+					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', Blocks.DISPENSER,
 					'Y', "ingotSilver"

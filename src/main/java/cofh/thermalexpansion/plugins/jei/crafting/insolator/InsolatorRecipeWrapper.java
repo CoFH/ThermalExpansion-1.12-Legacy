@@ -72,7 +72,7 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 		}
 		recipeInputs.add(recipeInputsPrimary);
 		recipeInputs.add(recipeInputsSecondary);
-		recipeInputFluids.add(new FluidStack(FluidRegistry.WATER, recipe.getEnergy() / TileInsolator.FLUID_FACTOR));
+		recipeInputFluids.add(new FluidStack(FluidRegistry.WATER, recipe.getWater()));
 
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 		recipeOutputs.add(recipe.getPrimaryOutput());

@@ -36,7 +36,6 @@ public class TileInsolator extends TileMachineBase {
 	private static final int TYPE = Type.INSOLATOR.getMetadata();
 	public static int basePower = 20;
 
-	public static final int FLUID_FACTOR = 4;
 	public static final int MONOCULTURE_ENERGY_MOD = 50;
 
 	public static void initialize() {
@@ -44,7 +43,7 @@ public class TileInsolator extends TileMachineBase {
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 9;
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 }, { 0, 1, 2, 3 }, { 0, 1, 2, 3 } };
-		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, OUTPUT_PRIMARY, OUTPUT_SECONDARY, OUTPUT_ALL, INPUT_PRIMARY, INPUT_SECONDARY, OPEN, OMNI };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
@@ -120,7 +119,7 @@ public class TileInsolator extends TileMachineBase {
 		}
 		InsolatorRecipe recipe = InsolatorManager.getRecipe(inventory[1], inventory[0]);
 
-		if (recipe == null || tank.getFluidAmount() < recipe.getEnergy() / FLUID_FACTOR) {
+		if (recipe == null || tank.getFluidAmount() < recipe.getWater()) {
 			return false;
 		}
 		if (recipe.getType() == InsolatorManager.Type.TREE && !augmentTree) {
@@ -187,7 +186,7 @@ public class TileInsolator extends TileMachineBase {
 			processOff();
 			return;
 		}
-		tank.drain(recipe.getEnergy() / FLUID_FACTOR, true);
+		tank.modifyFluidStored(-recipe.getWater());
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 		boolean hasFertilizer = recipe.hasFertilizer();
@@ -296,16 +295,6 @@ public class TileInsolator extends TileMachineBase {
 		if (inventory[1].getCount() <= 0) {
 			inventory[1] = ItemStack.EMPTY;
 		}
-	}
-
-	@Override
-	protected int processTick() {
-
-		int energy = calcEnergy();
-		energyStorage.modifyEnergyStored(-energy);
-		processRem -= energy;
-
-		return energy;
 	}
 
 	@Override

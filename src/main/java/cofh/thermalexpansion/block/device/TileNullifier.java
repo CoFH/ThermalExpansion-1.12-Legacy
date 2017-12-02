@@ -35,7 +35,7 @@ public class TileNullifier extends TileDeviceBase {
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 2;
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {} };
-		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4 };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();

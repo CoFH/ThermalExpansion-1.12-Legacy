@@ -80,11 +80,11 @@ public class SawmillManager {
 			addRecipe(energy, new ItemStack(Blocks.CHEST), new ItemStack(Blocks.PLANKS, 4), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 			addRecipe(energy, new ItemStack(Blocks.TRAPPED_CHEST), new ItemStack(Blocks.PLANKS, 4), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 			addRecipe(energy, new ItemStack(Blocks.CRAFTING_TABLE), new ItemStack(Blocks.PLANKS, 2), ItemMaterial.dustWood);
-			addRecipe(energy / 2, new ItemStack(Blocks.WOODEN_BUTTON, 2), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Blocks.WOODEN_PRESSURE_PLATE), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 50);
-			addRecipe(energy, new ItemStack(Blocks.TRAPDOOR, 2), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 75);
-			addRecipe(energy / 2, new ItemStack(Items.BOWL, 2), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Items.SIGN), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 50);
+			addRecipe(energy / 2, new ItemStack(Blocks.WOODEN_BUTTON, 2), new ItemStack(Blocks.PLANKS), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.WOODEN_PRESSURE_PLATE), new ItemStack(Blocks.PLANKS), ItemMaterial.dustWood, 50);
+			addRecipe(energy, new ItemStack(Blocks.TRAPDOOR, 2), new ItemStack(Blocks.PLANKS), ItemMaterial.dustWood, 75);
+			addRecipe(energy / 2, new ItemStack(Items.BOWL, 2), new ItemStack(Blocks.PLANKS), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Items.SIGN), new ItemStack(Blocks.PLANKS), ItemMaterial.dustWood, 50);
 		}
 
 		/* DOORS */
@@ -151,21 +151,21 @@ public class SawmillManager {
 		{
 			int energy = DEFAULT_ENERGY;
 
-			addRecipe(energy, new ItemStack(Items.WOODEN_SWORD), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 75);
-			addRecipe(energy, new ItemStack(Items.WOODEN_SHOVEL), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 75);
-			addRecipe(energy, new ItemStack(Items.WOODEN_PICKAXE), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 125);
-			addRecipe(energy, new ItemStack(Items.WOODEN_AXE), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 125);
-			addRecipe(energy, new ItemStack(Items.WOODEN_HOE), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood);
+			addRecipe(energy, new ItemStack(Items.WOODEN_SWORD), new ItemStack(Blocks.PLANKS), ItemMaterial.dustWood, 75);
+			addRecipe(energy, new ItemStack(Items.WOODEN_SHOVEL), new ItemStack(Blocks.PLANKS), ItemMaterial.dustWood, 75);
+			addRecipe(energy, new ItemStack(Items.WOODEN_PICKAXE), new ItemStack(Blocks.PLANKS), ItemMaterial.dustWood, 125);
+			addRecipe(energy, new ItemStack(Items.WOODEN_AXE), new ItemStack(Blocks.PLANKS), ItemMaterial.dustWood, 125);
+			addRecipe(energy, new ItemStack(Items.WOODEN_HOE), new ItemStack(Blocks.PLANKS), ItemMaterial.dustWood);
 		}
 
 		/* LEATHER EQUIPMENT */
 		{
 			int energy = DEFAULT_ENERGY;
 
-			addRecipe(energy, new ItemStack(Items.LEATHER_HELMET), new ItemStack(Items.LEATHER, 2), new ItemStack(Items.LEATHER, 1), 50);
-			addRecipe(energy, new ItemStack(Items.LEATHER_CHESTPLATE), new ItemStack(Items.LEATHER, 4), new ItemStack(Items.LEATHER, 1), 80);
-			addRecipe(energy, new ItemStack(Items.LEATHER_LEGGINGS), new ItemStack(Items.LEATHER, 3), new ItemStack(Items.LEATHER, 1), 70);
-			addRecipe(energy, new ItemStack(Items.LEATHER_BOOTS), new ItemStack(Items.LEATHER, 2), new ItemStack(Items.LEATHER, 1), 40);
+			addRecipe(energy, new ItemStack(Items.LEATHER_HELMET), new ItemStack(Items.LEATHER, 2), new ItemStack(Items.LEATHER), 50);
+			addRecipe(energy, new ItemStack(Items.LEATHER_CHESTPLATE), new ItemStack(Items.LEATHER, 4), new ItemStack(Items.LEATHER), 80);
+			addRecipe(energy, new ItemStack(Items.LEATHER_LEGGINGS), new ItemStack(Items.LEATHER, 3), new ItemStack(Items.LEATHER), 70);
+			addRecipe(energy, new ItemStack(Items.LEATHER_BOOTS), new ItemStack(Items.LEATHER, 2), new ItemStack(Items.LEATHER), 40);
 		}
 
 		/* MIXED OUTPUT - WOOD PRIMARY */
@@ -176,8 +176,8 @@ public class SawmillManager {
 				addRecipe(energy, new ItemStack(Items.BED, 1, i), new ItemStack(Blocks.PLANKS, 2), new ItemStack(Blocks.WOOL, 2, i));
 			}
 			addRecipe(energy, new ItemStack(Blocks.BOOKSHELF), new ItemStack(Blocks.PLANKS, 3), new ItemStack(Items.BOOK, 3), 25);
-			addRecipe(energy, new ItemStack(Blocks.JUKEBOX), new ItemStack(Blocks.PLANKS, 4), new ItemStack(Items.DIAMOND, 1), 25);
-			addRecipe(energy, new ItemStack(Blocks.NOTEBLOCK), new ItemStack(Blocks.PLANKS, 4), new ItemStack(Items.REDSTONE, 1), 25);
+			addRecipe(energy, new ItemStack(Blocks.JUKEBOX), new ItemStack(Blocks.PLANKS, 4), new ItemStack(Items.DIAMOND), 25);
+			addRecipe(energy, new ItemStack(Blocks.NOTEBLOCK), new ItemStack(Blocks.PLANKS, 4), new ItemStack(Items.REDSTONE), 25);
 		}
 
 		/* NON-WOOD PRIMARY */
@@ -185,10 +185,10 @@ public class SawmillManager {
 			int energy = DEFAULT_ENERGY * 3 / 4;
 
 			addRecipe(energy, new ItemStack(Blocks.MELON_BLOCK), new ItemStack(Items.MELON, 9));
-			addRecipe(energy, new ItemStack(Blocks.LEVER), new ItemStack(Blocks.COBBLESTONE, 1), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Blocks.REDSTONE_TORCH), new ItemStack(Items.REDSTONE, 1), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Items.PAINTING), new ItemStack(Blocks.WOOL, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-			addRecipe(energy, new ItemStack(Items.ITEM_FRAME), new ItemStack(Items.LEATHER, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+			addRecipe(energy, new ItemStack(Blocks.LEVER), new ItemStack(Blocks.COBBLESTONE), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.REDSTONE_TORCH), new ItemStack(Items.REDSTONE), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Items.PAINTING), new ItemStack(Blocks.WOOL), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+			addRecipe(energy, new ItemStack(Items.ITEM_FRAME), new ItemStack(Items.LEATHER), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 		}
 
 		/* LOAD RECIPES */

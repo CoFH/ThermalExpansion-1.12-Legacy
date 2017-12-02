@@ -76,14 +76,14 @@ public class PluginQuark extends ModPlugin {
 				PulverizerManager.addRecipe(energy, getItemStack("soul_sandstone_bricks_stairs", 1), new ItemStack(Blocks.SOUL_SAND, 2), ItemMaterial.dustSulfur, 20);
 
 				/* SLABS */
-				PulverizerManager.addRecipe(energy / 2, getItemStack("soul_sandstone_slab", 1), new ItemStack(Blocks.SOUL_SAND, 1), ItemMaterial.dustSulfur, 20);
+				PulverizerManager.addRecipe(energy / 2, getItemStack("soul_sandstone_slab", 1), new ItemStack(Blocks.SOUL_SAND), ItemMaterial.dustSulfur, 20);
 				PulverizerManager.addRecipe(energy / 2, getItemStack("biotite_slab", 1), getItemStack("biotite", 2, 0));
-				PulverizerManager.addRecipe(energy / 2, getItemStack("sandstone_smooth_slab", 1), new ItemStack(Blocks.SAND, 1), ItemMaterial.dustNiter, 20);
-				PulverizerManager.addRecipe(energy / 2, getItemStack("sandstone_bricks_slab", 1), new ItemStack(Blocks.SAND, 1), ItemMaterial.dustNiter, 20);
+				PulverizerManager.addRecipe(energy / 2, getItemStack("sandstone_smooth_slab", 1), new ItemStack(Blocks.SAND), ItemMaterial.dustNiter, 20);
+				PulverizerManager.addRecipe(energy / 2, getItemStack("sandstone_bricks_slab", 1), new ItemStack(Blocks.SAND), ItemMaterial.dustNiter, 20);
 				PulverizerManager.addRecipe(energy / 2, getItemStack("red_sandstone_smooth_slab", 1), new ItemStack(Blocks.SAND, 1, 1), ItemMaterial.dustNiter, 20);
 				PulverizerManager.addRecipe(energy / 2, getItemStack("red_sandstone_bricks_slab", 1), new ItemStack(Blocks.SAND, 1, 1), ItemMaterial.dustNiter, 20);
-				PulverizerManager.addRecipe(energy / 2, getItemStack("soul_sandstone_smooth_slab", 1), new ItemStack(Blocks.SOUL_SAND, 1), ItemMaterial.dustSulfur, 20);
-				PulverizerManager.addRecipe(energy / 2, getItemStack("soul_sandstone_bricks_slab", 1), new ItemStack(Blocks.SOUL_SAND, 1), ItemMaterial.dustSulfur, 20);
+				PulverizerManager.addRecipe(energy / 2, getItemStack("soul_sandstone_smooth_slab", 1), new ItemStack(Blocks.SOUL_SAND), ItemMaterial.dustSulfur, 20);
+				PulverizerManager.addRecipe(energy / 2, getItemStack("soul_sandstone_bricks_slab", 1), new ItemStack(Blocks.SOUL_SAND), ItemMaterial.dustSulfur, 20);
 
 				/* DYES */
 				int[] dyeChance = new int[ColorHelper.WOOL_COLOR_CONFIG.length];
@@ -158,7 +158,7 @@ public class PluginQuark extends ModPlugin {
 				energy = SawmillManager.DEFAULT_ENERGY * 3 / 4;
 
 				for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
-					SawmillManager.addRecipe(energy, getItemStack("colored_item_frame", 1, i), new ItemStack(Items.LEATHER, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+					SawmillManager.addRecipe(energy, getItemStack("colored_item_frame", 1, i), new ItemStack(Items.LEATHER), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 				}
 			}
 

@@ -221,19 +221,19 @@ public class PulverizerManager {
 			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 4), new ItemStack(Items.BRICK, 2));
 			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 6), new ItemStack(Items.NETHERBRICK, 2));
 			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 7), new ItemStack(Items.QUARTZ, 2));
-			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 1), new ItemStack(Blocks.SAND, 1), ItemMaterial.dustNiter, 20);
+			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 1), new ItemStack(Blocks.SAND), ItemMaterial.dustNiter, 20);
 			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB2, 1, 0), new ItemStack(Blocks.SAND, 1, 1), ItemMaterial.dustNiter, 20);
 
 			/* MISC */
 			addRecipe(energy / 2, new ItemStack(Items.FLOWER_POT), new ItemStack(Items.BRICK, 3));
-			addRecipe(energy / 2, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Blocks.SAND, 1));
+			addRecipe(energy / 2, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Blocks.SAND));
 
 			energy = DEFAULT_ENERGY * 3 / 2;
 
 			addRecipe(energy, new ItemStack(Items.DIAMOND_SWORD), new ItemStack(Items.DIAMOND, 2));
 			addRecipe(energy, new ItemStack(Items.DIAMOND_PICKAXE), new ItemStack(Items.DIAMOND, 3));
 			addRecipe(energy, new ItemStack(Items.DIAMOND_AXE), new ItemStack(Items.DIAMOND, 3));
-			addRecipe(energy, new ItemStack(Items.DIAMOND_SHOVEL), new ItemStack(Items.DIAMOND, 1));
+			addRecipe(energy, new ItemStack(Items.DIAMOND_SHOVEL), new ItemStack(Items.DIAMOND));
 			addRecipe(energy, new ItemStack(Items.DIAMOND_HOE), new ItemStack(Items.DIAMOND, 2));
 
 			addRecipe(energy, new ItemStack(Items.DIAMOND_HELMET), new ItemStack(Items.DIAMOND, 5));
@@ -259,15 +259,20 @@ public class PulverizerManager {
 
 		/* APPLIED ENERGISTICS 2 */
 		{
+			int energy = DEFAULT_ENERGY * 3 / 4;
+
 			if (ItemHelper.oreNameExists("oreCertusQuartz") && ItemHelper.oreNameExists("dustCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartz")) {
 				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreCertusQuartz", false).get(0), ItemHelper.cloneStack(OreDictionary.getOres("crystalCertusQuartz", false).get(0), 2), OreDictionary.getOres("dustCertusQuartz", false).get(0), 10);
-				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("crystalCertusQuartz", false).get(0), OreDictionary.getOres("dustCertusQuartz", false).get(0));
+				addRecipe(energy, OreDictionary.getOres("crystalCertusQuartz", false).get(0), OreDictionary.getOres("dustCertusQuartz", false).get(0));
+			}
+			if (ItemHelper.oreNameExists("dustEnderPearl")) {
+				addRecipe(energy, new ItemStack(Items.ENDER_PEARL), ItemHelper.cloneStack(OreDictionary.getOres("dustEnderPearl", false).get(0), 1));
 			}
 			if (ItemHelper.oreNameExists("dustFluix") && ItemHelper.oreNameExists("crystalFluix")) {
-				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("crystalFluix", false).get(0), OreDictionary.getOres("dustFluix", false).get(0));
+				addRecipe(energy, OreDictionary.getOres("crystalFluix", false).get(0), OreDictionary.getOres("dustFluix", false).get(0));
 			}
 			if (ItemHelper.oreNameExists("dustNetherQuartz")) {
-				addRecipe(DEFAULT_ENERGY, new ItemStack(Items.QUARTZ, 1), ItemHelper.cloneStack(OreDictionary.getOres("dustNetherQuartz", false).get(0), 1));
+				addRecipe(energy, new ItemStack(Items.QUARTZ), ItemHelper.cloneStack(OreDictionary.getOres("dustNetherQuartz", false).get(0), 1));
 			}
 		}
 

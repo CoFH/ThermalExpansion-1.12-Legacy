@@ -269,9 +269,9 @@ public class SmelterManager {
 			int energy = DEFAULT_ENERGY * 3 / 2;
 
 			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.COMPASS), new ItemStack(Items.IRON_INGOT, 4), ItemMaterial.crystalSlagRich, 10); // consumes redstone
-			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.FLINT_AND_STEEL), new ItemStack(Items.IRON_INGOT, 1), ItemMaterial.crystalSlag, 90); // make a use for flint: slag!
+			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.FLINT_AND_STEEL), new ItemStack(Items.IRON_INGOT), ItemMaterial.crystalSlag, 90); // make a use for flint: slag!
 
-			ItemStack ingot = new ItemStack(Items.IRON_INGOT, 1);
+			ItemStack ingot = new ItemStack(Items.IRON_INGOT);
 			// no minecart, rails. Railcraft causes resource duplication there
 			addRecycleRecipe(energy, new ItemStack(Items.BUCKET), ingot, 3);
 			addRecycleRecipe(energy, new ItemStack(Items.IRON_DOOR), ingot, 2);
@@ -608,7 +608,7 @@ public class SmelterManager {
 		final int energy;
 		final boolean hasFlux;
 
-		SmelterRecipe(ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy) {
+		SmelterRecipe(ItemStack secondaryInput, ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy) {
 
 			if (isItemFlux(primaryInput) && !isItemFlux(secondaryInput)) {
 				this.primaryInput = secondaryInput;

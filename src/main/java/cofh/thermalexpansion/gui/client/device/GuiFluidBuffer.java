@@ -223,27 +223,11 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int x, int y) {
 
-		String input = "" + myTile.amountInput;
-		String output = "" + myTile.amountOutput;
+		String input = StringHelper.formatNumber(myTile.amountInput) + " mB";
+		String output = StringHelper.formatNumber(myTile.amountOutput) + " mB";
 
-		int xInput = 26;
-		int xOutput = 134;
-
-		if (myTile.amountInput < 100) {
-			xInput += 6;
-		}
-		if (myTile.amountOutput < 100) {
-			xOutput += 6;
-		}
-		if (myTile.amountInput >= 1000) {
-			xInput -= 3;
-		}
-		if (myTile.amountOutput >= 1000) {
-			xOutput -= 3;
-		}
-
-		fontRenderer.drawString(input, xInput, 42, 0x404040);
-		fontRenderer.drawString(output, xOutput, 42, 0x404040);
+		fontRenderer.drawString(input, getCenteredOffset(input, 34), 42, 0x404040);
+		fontRenderer.drawString(output, getCenteredOffset(output, 142), 42, 0x404040);
 
 		super.drawGuiContainerForegroundLayer(x, y);
 	}

@@ -206,42 +206,8 @@ public class GuiCell extends GuiContainerCore {
 		String recv = StringHelper.formatNumber(baseTile.amountRecv) + " RF/t";
 		String send = StringHelper.formatNumber(baseTile.amountSend) + " RF/t";
 
-		int xRecv = 20;
-		int xSend = 110;
-
-		if (baseTile.amountRecv < 10) {
-			xRecv += 6;
-		}
-		if (baseTile.amountRecv < 100) {
-			xRecv += 6;
-		}
-		if (baseTile.amountRecv < 1000) {
-			xRecv += 6;
-		}
-		if (baseTile.amountRecv >= 10000) {
-			xRecv -= 6;
-		}
-		if (baseTile.amountRecv >= 100000) {
-			xRecv -= 3;
-		}
-
-		if (baseTile.amountSend < 10) {
-			xSend += 6;
-		}
-		if (baseTile.amountSend < 100) {
-			xSend += 6;
-		}
-		if (baseTile.amountSend < 1000) {
-			xSend += 6;
-		}
-		if (baseTile.amountSend >= 10000) {
-			xSend -= 6;
-		}
-		if (baseTile.amountSend >= 100000) {
-			xSend -= 3;
-		}
-		fontRenderer.drawString(recv, xRecv, 42, 0x404040);
-		fontRenderer.drawString(send, xSend, 42, 0x404040);
+		fontRenderer.drawString(recv, getCenteredOffset(recv, 43), 42, 0x404040);
+		fontRenderer.drawString(send, getCenteredOffset(send, 133), 42, 0x404040);
 
 		super.drawGuiContainerForegroundLayer(x, y);
 	}

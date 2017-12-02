@@ -41,7 +41,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 5;
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 }, { 0 } };
-		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, OUTPUT_ALL, OPEN, OMNI };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
@@ -102,7 +102,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected boolean canStart() {
 
-		PrecipitatorRecipe recipe = PrecipitatorManager.getRecipe(outputItem[1]);
+		PrecipitatorRecipe recipe = PrecipitatorManager.getRecipe(outputItem[0]);
 
 		if (recipe == null) {
 			return false;
@@ -117,10 +117,10 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		if (inventory[0].isEmpty()) {
 			return true;
 		}
-		if (!inventory[0].isItemEqual(outputItem[1])) {
+		if (!inventory[0].isItemEqual(outputItem[0])) {
 			return false;
 		}
-		return inventory[0].getCount() + outputItem[1].getCount() <= outputItem[1].getMaxStackSize();
+		return inventory[0].getCount() + outputItem[0].getCount() <= outputItem[0].getMaxStackSize();
 	}
 
 	@Override
@@ -132,8 +132,9 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected void processStart() {
 
-		processMax = PrecipitatorManager.getRecipe(outputItem[1]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = PrecipitatorManager.getRecipe(outputItem[0]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
+		outputItem[1] = outputItem[0].copy();
 	}
 
 	@Override
@@ -182,6 +183,13 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		if (!super.readPortableTagInternal(player, tag)) {
 			return false;
 		}
+		if (tag.hasKey("OutputItem", 10)) {
+			index = PrecipitatorManager.getIndex(new ItemStack(tag.getCompoundTag("OutputItem")));
+			outputItem[0] = PrecipitatorManager.getOutput(index);
+			if (!isActive) {
+				outputItem[1] = outputItem[0].copy();
+			}
+		}
 		return true;
 	}
 
@@ -191,6 +199,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		if (!super.writePortableTagInternal(player, tag)) {
 			return false;
 		}
+		tag.setTag("OutputItem", outputItem[0].writeToNBT(new NBTTagCompound()));
 		return true;
 	}
 
@@ -211,7 +220,6 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 			index = PrecipitatorManager.getOutputListSize() - 1;
 		}
 		outputItem[0] = PrecipitatorManager.getOutput(index);
-
 		if (!isActive) {
 			outputItem[1] = outputItem[0].copy();
 		}

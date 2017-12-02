@@ -151,10 +151,10 @@ public class PluginForestry extends ModPlugin {
 				CentrifugeManager.addRecipe(energy, combSilky, Arrays.asList(dropHoney, propolisSilky), Arrays.asList(100, 80), null);
 				CentrifugeManager.addRecipe(energy, combParched, Arrays.asList(wax, dropHoney), Arrays.asList(100, 90), null);
 				CentrifugeManager.addRecipe(energy, combMysterious, Arrays.asList(propolisPulsating, dropHoney), Arrays.asList(100, 40), null);
-				CentrifugeManager.addRecipe(energy, combPowdery, Arrays.asList(new ItemStack(Items.GUNPOWDER, 1), wax, dropHoney), Arrays.asList(90, 20, 20), null);
-				CentrifugeManager.addRecipe(energy, combWheat, Arrays.asList(new ItemStack(Items.WHEAT, 1), wax, dropHoney), Arrays.asList(80, 20, 20), null);
+				CentrifugeManager.addRecipe(energy, combPowdery, Arrays.asList(new ItemStack(Items.GUNPOWDER), wax, dropHoney), Arrays.asList(90, 20, 20), null);
+				CentrifugeManager.addRecipe(energy, combWheat, Arrays.asList(new ItemStack(Items.WHEAT), wax, dropHoney), Arrays.asList(80, 20, 20), null);
 				CentrifugeManager.addRecipe(energy, combMossy, Arrays.asList(wax, dropHoney), Arrays.asList(100, 90), null);
-				CentrifugeManager.addRecipe(energy, combMellow, Arrays.asList(honeydew, new ItemStack(Items.QUARTZ, 1), wax), Arrays.asList(60, 30, 20), null);
+				CentrifugeManager.addRecipe(energy, combMellow, Arrays.asList(honeydew, new ItemStack(Items.QUARTZ), wax), Arrays.asList(60, 30, 20), null);
 
 				CentrifugeManager.addRecipe(energy, propolisSilky, Arrays.asList(silkWisp, propolis), Arrays.asList(60, 10), null);
 			}

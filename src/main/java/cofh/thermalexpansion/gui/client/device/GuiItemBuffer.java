@@ -157,20 +157,11 @@ public class GuiItemBuffer extends GuiDeviceBase {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int x, int y) {
 
-		String input = "" + myTile.amountInput;
-		String output = "" + myTile.amountOutput;
+		String input = StringHelper.formatNumber(myTile.amountInput);
+		String output = StringHelper.formatNumber(myTile.amountOutput);
 
-		int xInput = 29;
-		int xOutput = 137;
-
-		if (myTile.amountInput < 10) {
-			xInput += 3;
-		}
-		if (myTile.amountOutput < 10) {
-			xOutput += 3;
-		}
-		fontRenderer.drawString(input, xInput, 42, 0x404040);
-		fontRenderer.drawString(output, xOutput, 42, 0x404040);
+		fontRenderer.drawString(input, getCenteredOffset(input, 34), 42, 0x404040);
+		fontRenderer.drawString(output, getCenteredOffset(output, 142), 42, 0x404040);
 
 		super.drawGuiContainerForegroundLayer(x, y);
 	}

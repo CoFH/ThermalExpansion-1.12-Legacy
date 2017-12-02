@@ -112,7 +112,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 				"IGI",
 				'C', "gearCopper",
 				'G', "blockGlass",
-				'I', "ingotIron"
+				'I', "ingotTin"
 		);
 		addShapedRecipe(frameCell0,
 				"IGI",
