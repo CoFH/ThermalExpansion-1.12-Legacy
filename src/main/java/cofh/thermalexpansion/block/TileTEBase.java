@@ -316,7 +316,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	public static final int OMNI = 8;
 
 	public static boolean[] SIDE_INSERTION = { false, true, false, false, false, true, true, true, true };
-	public static boolean[] SIDE_EXTRACTION = { false, false, true, true, true, false, false, true, true };
+	public static boolean[] SIDE_EXTRACTION = { false, true, true, true, true, true, true, true, true };
 
 	public static boolean[] SIDE_INPUT_PRIMARY = { false, true, false, false, false, true, false, false, true };
 	public static boolean[] SIDE_INPUT_SECONDARY = { false, true, false, false, false, false, true, false, true };

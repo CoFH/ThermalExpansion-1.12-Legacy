@@ -197,6 +197,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		machineInsolatorMonoculture = addAugmentItem(324, TEProps.MACHINE_INSOLATOR_MONOCULTURE, AugmentType.MODE);
 
 		machineCompactorMint = addAugmentItem(336, TEProps.MACHINE_COMPACTOR_MINT, AugmentType.MODE);
+		machineCompactorGear = addAugmentItem(337, TEProps.MACHINE_COMPACTOR_GEAR, AugmentType.MODE);
 
 		machineCrucibleLava = addAugmentItem(352, TEProps.MACHINE_CRUCIBLE_LAVA, AugmentType.MODE);
 		// machineCrucibleAlloy = addAugmentItem(353, TEProps.MACHINE_CRUCIBLE_ALLOY, AugmentType.MODE);
@@ -398,6 +399,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateElectrum",
 				'X', "gemEmerald",
 				'Y', "dustGlowstone"
+		);
+		addShapedRecipe(machineCompactorGear,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearIron",
+				'I', "plateNickel",
+				'X', Blocks.PISTON,
+				'Y', "dustObsidian"
 		);
 
 		addShapedRecipe(machineCrucibleLava,
@@ -720,6 +731,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineInsolatorMonoculture;
 
 	public static ItemStack machineCompactorMint;
+	public static ItemStack machineCompactorGear;
 
 	public static ItemStack machineCrucibleLava;
 	public static ItemStack machineCrucibleAlloy;

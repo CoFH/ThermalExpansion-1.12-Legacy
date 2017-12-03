@@ -15,16 +15,9 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.FluidTankProperties;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -36,7 +29,7 @@ public class TileCrafter extends TileMachineBase {
 	public static final int DEFAULT_ENERGY = 400;
 
 	public static final int SLOT_OUTPUT = 18;
-	public static final int SLOT_CRAFTING_START = 20;
+	public static final int SLOT_CRAFTING_START = 19;
 
 	public static void initialize() {
 
@@ -47,8 +40,8 @@ public class TileCrafter extends TileMachineBase {
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
-		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false, false };
-		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false };
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 
@@ -74,14 +67,15 @@ public class TileCrafter extends TileMachineBase {
 
 	private InventoryCraftingFalse craftMatrix = new InventoryCraftingFalse(3, 3);
 	private InventoryCraftResult craftResult = new InventoryCraftResult();
+
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 
 	public TileCrafter() {
 
 		super();
-		inventory = new ItemStack[18 + 1 + 1 + 9];
+		inventory = new ItemStack[18 + 1 + 1 + 9 + 1];
 		Arrays.fill(inventory, ItemStack.EMPTY);
-		createAllSlots(inventory.length - 9);
+		createAllSlots(inventory.length - 9 - 1);
 	}
 
 	@Override
@@ -93,7 +87,7 @@ public class TileCrafter extends TileMachineBase {
 	@Override
 	public int getChargeSlot() {
 
-		return inventory.length - 10;
+		return inventory.length - 1 - 9 - 1;
 	}
 
 	@Override
@@ -255,53 +249,53 @@ public class TileCrafter extends TileMachineBase {
 	}
 
 	/* CAPABILITIES */
-	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
-
-		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-	}
-
-	@Override
-	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
-
-		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
-
-				@Override
-				public IFluidTankProperties[] getTankProperties() {
-
-					FluidTankInfo info = tank.getInfo();
-					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, true) };
-				}
-
-				@Override
-				public int fill(FluidStack resource, boolean doFill) {
-
-					return tank.fill(resource, doFill);
-				}
-
-				@Nullable
-				@Override
-				public FluidStack drain(FluidStack resource, boolean doDrain) {
-
-					if (isActive) {
-						return null;
-					}
-					return tank.drain(resource, doDrain);
-				}
-
-				@Nullable
-				@Override
-				public FluidStack drain(int maxDrain, boolean doDrain) {
-
-					if (isActive) {
-						return null;
-					}
-					return tank.drain(maxDrain, doDrain);
-				}
-			});
-		}
-		return super.getCapability(capability, from);
-	}
+	//	@Override
+	//	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
+	//
+	//		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	//	}
+	//
+	//	@Override
+	//	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+	//
+	//		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+	//			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+	//
+	//				@Override
+	//				public IFluidTankProperties[] getTankProperties() {
+	//
+	//					FluidTankInfo info = tank.getInfo();
+	//					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, true) };
+	//				}
+	//
+	//				@Override
+	//				public int fill(FluidStack resource, boolean doFill) {
+	//
+	//					return tank.fill(resource, doFill);
+	//				}
+	//
+	//				@Nullable
+	//				@Override
+	//				public FluidStack drain(FluidStack resource, boolean doDrain) {
+	//
+	//					if (isActive) {
+	//						return null;
+	//					}
+	//					return tank.drain(resource, doDrain);
+	//				}
+	//
+	//				@Nullable
+	//				@Override
+	//				public FluidStack drain(int maxDrain, boolean doDrain) {
+	//
+	//					if (isActive) {
+	//						return null;
+	//					}
+	//					return tank.drain(maxDrain, doDrain);
+	//				}
+	//			});
+	//		}
+	//		return super.getCapability(capability, from);
+	//	}
 
 }

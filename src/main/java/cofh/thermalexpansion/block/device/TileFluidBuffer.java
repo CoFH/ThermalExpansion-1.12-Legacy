@@ -337,7 +337,7 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 					if (resource == null) {
 						return 0;
 					}
-					for (int j = 0; j < tanks.length && tanks[j].getSpace() > 0; j--) {
+					for (int j = 0; j < tanks.length && tanks[j].getSpace() > 0; j++) {
 						int toFill = tanks[j].fill(resource, doFill);
 						if (toFill > 0) {
 							return toFill;

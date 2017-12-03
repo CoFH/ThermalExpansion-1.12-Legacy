@@ -350,7 +350,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		TileTransposer.initialize();
 		TileCharger.initialize();
 		TileCentrifuge.initialize();
-		// TileCrafter.initialize();
+		TileCrafter.initialize();
 		TileBrewer.initialize();
 		TileEnchanter.initialize();
 		TilePrecipitator.initialize();
@@ -375,7 +375,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		machineTransposer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));
 		machineCharger = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
 		machineCentrifuge = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CENTRIFUGE.getMetadata()));
-		// machineCrafter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
+		machineCrafter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
 		machineBrewer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.BREWER.getMetadata()));
 		machineEnchanter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ENCHANTER.getMetadata()));
 		machinePrecipitator = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.PRECIPITATOR.getMetadata()));

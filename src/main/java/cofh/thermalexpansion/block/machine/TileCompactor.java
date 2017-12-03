@@ -23,7 +23,7 @@ import java.util.HashSet;
 public class TileCompactor extends TileMachineBase {
 
 	private static final int TYPE = Type.COMPACTOR.getMetadata();
-	private static final Mode[] VALUES = new Mode[3];
+	private static final Mode[] VALUES = new Mode[4];
 	public static int basePower = 20;
 
 	public static void initialize() {
@@ -40,10 +40,12 @@ public class TileCompactor extends TileMachineBase {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_COMPACTOR_MINT);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_COMPACTOR_GEAR);
 
 		VALUES[0] = Mode.PRESS;
 		VALUES[1] = Mode.STORAGE;
 		VALUES[2] = Mode.MINT;
+		VALUES[3] = Mode.GEAR;
 
 		GameRegistry.registerTileEntity(TileCompactor.class, "thermalexpansion:machine_compactor");
 
@@ -70,7 +72,7 @@ public class TileCompactor extends TileMachineBase {
 
 	/* AUGMENTS */
 	protected boolean augmentMint;
-	protected boolean flagMint;
+	protected boolean augmentGear;
 
 	public TileCompactor() {
 
@@ -200,10 +202,11 @@ public class TileCompactor extends TileMachineBase {
 				setMode(1);
 				break;
 			case MINT:
+			case GEAR:
 				setMode(0);
 				break;
 			case STORAGE:
-				setMode(augmentMint ? 2 : 0);
+				setMode(augmentMint ? 2 : augmentGear ? 3 : 0);
 				break;
 		}
 	}
@@ -248,6 +251,7 @@ public class TileCompactor extends TileMachineBase {
 		PacketCoFHBase payload = super.getGuiPacket();
 
 		payload.addBool(augmentMint);
+		payload.addBool(augmentGear);
 		payload.addByte(mode);
 		payload.addByte(modeFlag);
 
@@ -260,8 +264,7 @@ public class TileCompactor extends TileMachineBase {
 		super.handleGuiPacket(payload);
 
 		augmentMint = payload.getBool();
-		flagMint = augmentMint;
-
+		augmentGear = payload.getBool();
 		mode = payload.getByte();
 		modeFlag = payload.getByte();
 	}
@@ -297,6 +300,7 @@ public class TileCompactor extends TileMachineBase {
 		super.preAugmentInstall();
 
 		augmentMint = false;
+		augmentGear = false;
 	}
 
 	@Override
@@ -305,6 +309,11 @@ public class TileCompactor extends TileMachineBase {
 		super.postAugmentInstall();
 
 		if (!augmentMint && VALUES[mode] == Mode.MINT) {
+			mode = 0;
+			modeFlag = 0;
+			processOff();
+		}
+		if (!augmentGear && VALUES[mode] == Mode.GEAR) {
 			mode = 0;
 			modeFlag = 0;
 			processOff();
@@ -318,6 +327,11 @@ public class TileCompactor extends TileMachineBase {
 
 		if (!augmentMint && TEProps.MACHINE_COMPACTOR_MINT.equals(id)) {
 			augmentMint = true;
+			hasModeAugment = true;
+			return true;
+		}
+		if (!augmentGear && TEProps.MACHINE_COMPACTOR_GEAR.equals(id)) {
+			augmentGear = true;
 			hasModeAugment = true;
 			return true;
 		}

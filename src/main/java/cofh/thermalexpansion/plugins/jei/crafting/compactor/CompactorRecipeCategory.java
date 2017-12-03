@@ -35,6 +35,7 @@ public abstract class CompactorRecipeCategory extends BaseRecipeCategory<Compact
 		registry.addRecipeCategories(new CompactorRecipeCategoryPress(guiHelper));
 		registry.addRecipeCategories(new CompactorRecipeCategoryStorage(guiHelper));
 		registry.addRecipeCategories(new CompactorRecipeCategoryMint(guiHelper));
+		registry.addRecipeCategories(new CompactorRecipeCategoryGear(guiHelper));
 	}
 
 	public static void initialize(IModRegistry registry) {
@@ -45,7 +46,8 @@ public abstract class CompactorRecipeCategory extends BaseRecipeCategory<Compact
 		CompactorRecipeCategoryPress.initialize(registry);
 		CompactorRecipeCategoryStorage.initialize(registry);
 		CompactorRecipeCategoryMint.initialize(registry);
-		registry.addRecipeClickArea(GuiCompactor.class, 79, 34, 24, 16, RecipeUidsTE.COMPACTOR_PRESS, RecipeUidsTE.COMPACTOR_STORAGE, RecipeUidsTE.COMPACTOR_MINT);
+		CompactorRecipeCategoryGear.initialize(registry);
+		registry.addRecipeClickArea(GuiCompactor.class, 79, 34, 24, 16, RecipeUidsTE.COMPACTOR_PRESS, RecipeUidsTE.COMPACTOR_STORAGE, RecipeUidsTE.COMPACTOR_MINT, RecipeUidsTE.COMPACTOR_GEAR);
 	}
 
 	final IDrawableStatic progress;

@@ -291,7 +291,7 @@ public class SmelterManager {
 			addRecycleRecipe(energy, new ItemStack(Items.IRON_LEGGINGS), ingot, 7);
 			addRecycleRecipe(energy, new ItemStack(Items.IRON_BOOTS), ingot, 4);
 
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_HORSE_ARMOR), ingot, 8);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_HORSE_ARMOR), ingot, 4);
 
 			for (int i = 0; i < 3; ++i) {
 				addRecycleRecipe(4800 + 1200 * (3 - i), new ItemStack(Blocks.ANVIL, 1, i), ingot, 4 + 9 * (3 - i));
@@ -312,7 +312,7 @@ public class SmelterManager {
 			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_LEGGINGS), ingot, 7);
 			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_BOOTS), ingot, 4);
 
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HORSE_ARMOR), ingot, 8);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HORSE_ARMOR), ingot, 4);
 
 			for (ToolSetVanilla tool : new ToolSetVanilla[] { ToolSetVanilla.IRON, ToolSetVanilla.GOLD }) {
 				ingot = OreDictionary.getOres(tool.ingot, false).get(0);

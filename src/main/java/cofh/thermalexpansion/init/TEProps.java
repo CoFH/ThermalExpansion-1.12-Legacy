@@ -212,6 +212,7 @@ public class TEProps {
 	public static final String MACHINE_INSOLATOR_TREE = "machineInsolatorTree";
 
 	public static final String MACHINE_COMPACTOR_MINT = "machineCompactorMint";
+	public static final String MACHINE_COMPACTOR_GEAR = "machineCompactorGear";
 
 	public static final String MACHINE_CRUCIBLE_LAVA = "machineCrucibleLava";
 	public static final String MACHINE_CRUCIBLE_ALLOY = "machineCrucibleAlloy";

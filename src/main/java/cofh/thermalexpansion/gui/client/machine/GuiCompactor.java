@@ -25,7 +25,8 @@ public class GuiCompactor extends GuiPoweredBase {
 	public static final String[] TOOLTIPS = new String[] {
 			"gui.thermalexpansion.machine.compactor.modePress",
 			"gui.thermalexpansion.machine.compactor.modeStorage",
-			"gui.thermalexpansion.machine.compactor.modeMint" };
+			"gui.thermalexpansion.machine.compactor.modeMint",
+			"gui.thermalexpansion.machine.compactor.modeGear"};
 	// @formatter:on
 
 	private TileCompactor myTile;

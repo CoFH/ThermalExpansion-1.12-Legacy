@@ -118,11 +118,11 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		if (isInCreativeTab(tab)) {
-			for (int metadata : itemList) {
-				items.add(new ItemStack(this, 1, metadata));
-			}
-		}
+		//		if (isInCreativeTab(tab)) {
+		//			for (int metadata : itemList) {
+		//				items.add(new ItemStack(this, 1, metadata));
+		//			}
+		//		}
 	}
 
 	@Override

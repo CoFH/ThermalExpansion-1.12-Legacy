@@ -27,6 +27,7 @@ public class CompactorManager {
 	private static Map<ComparableItemStackCompactor, CompactorRecipe> recipeMapPress = new THashMap<>();
 	private static Map<ComparableItemStackCompactor, CompactorRecipe> recipeMapStorage = new THashMap<>();
 	private static Map<ComparableItemStackCompactor, CompactorRecipe> recipeMapMint = new THashMap<>();
+	private static Map<ComparableItemStackCompactor, CompactorRecipe> recipeMapGear = new THashMap<>();
 	private static Set<ComparableItemStackCompactor> validationSet = new THashSet<>();
 
 	public static final int DEFAULT_ENERGY = 4000;
@@ -43,7 +44,6 @@ public class CompactorManager {
 		switch (mode) {
 			case PRESS:
 				recipe = recipeMapPress.get(query);
-
 				if (recipe == null) {
 					query.metadata = OreDictionary.WILDCARD_VALUE;
 					recipe = recipeMapPress.get(query);
@@ -51,7 +51,6 @@ public class CompactorManager {
 				break;
 			case STORAGE:
 				recipe = recipeMapStorage.get(query);
-
 				if (recipe == null) {
 					query.metadata = OreDictionary.WILDCARD_VALUE;
 					recipe = recipeMapStorage.get(query);
@@ -59,10 +58,16 @@ public class CompactorManager {
 				break;
 			case MINT:
 				recipe = recipeMapMint.get(query);
-
 				if (recipe == null) {
 					query.metadata = OreDictionary.WILDCARD_VALUE;
 					recipe = recipeMapMint.get(query);
+				}
+				break;
+			case GEAR:
+				recipe = recipeMapGear.get(query);
+				if (recipe == null) {
+					query.metadata = OreDictionary.WILDCARD_VALUE;
+					recipe = recipeMapGear.get(query);
 				}
 				break;
 		}
@@ -81,8 +86,11 @@ public class CompactorManager {
 				return recipeMapPress.values().toArray(new CompactorRecipe[recipeMapPress.size()]);
 			case STORAGE:
 				return recipeMapStorage.values().toArray(new CompactorRecipe[recipeMapStorage.size()]);
+			case MINT:
+				return recipeMapMint.values().toArray(new CompactorRecipe[recipeMapMint.size()]);
+			default:
+				return recipeMapGear.values().toArray(new CompactorRecipe[recipeMapGear.size()]);
 		}
-		return recipeMapMint.values().toArray(new CompactorRecipe[recipeMapMint.size()]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {
@@ -199,7 +207,7 @@ public class CompactorManager {
 
 	public static void loadRecipes() {
 
-		/* PRESS */
+		/* PLATES / GEARS */
 		String[] oreNames = OreDictionary.getOreNames();
 		String oreType;
 
@@ -207,6 +215,9 @@ public class CompactorManager {
 			if (oreName.startsWith("plate")) {
 				oreType = oreName.substring(5, oreName.length());
 				addDefaultPlateRecipe(oreType);
+			} else if (oreName.startsWith("gear")) {
+				oreType = oreName.substring(4, oreName.length());
+				addDefaultGearRecipe(oreType);
 			}
 		}
 
@@ -234,6 +245,7 @@ public class CompactorManager {
 		Map<ComparableItemStackCompactor, CompactorRecipe> tempPress = new THashMap<>(recipeMapPress.size());
 		Map<ComparableItemStackCompactor, CompactorRecipe> tempStorage = new THashMap<>(recipeMapStorage.size());
 		Map<ComparableItemStackCompactor, CompactorRecipe> tempMint = new THashMap<>(recipeMapMint.size());
+		Map<ComparableItemStackCompactor, CompactorRecipe> tempGear = new THashMap<>(recipeMapGear.size());
 		Set<ComparableItemStackCompactor> tempSet = new THashSet<>();
 		CompactorRecipe tempRecipe;
 
@@ -255,13 +267,21 @@ public class CompactorManager {
 			tempMint.put(input, tempRecipe);
 			tempSet.add(input);
 		}
+		for (Map.Entry<ComparableItemStackCompactor, CompactorRecipe> entry : recipeMapGear.entrySet()) {
+			tempRecipe = entry.getValue();
+			ComparableItemStackCompactor input = new ComparableItemStackCompactor(tempRecipe.input);
+			tempGear.put(input, tempRecipe);
+			tempSet.add(input);
+		}
 		recipeMapPress.clear();
 		recipeMapStorage.clear();
 		recipeMapMint.clear();
+		recipeMapGear.clear();
 
 		recipeMapPress = tempPress;
 		recipeMapStorage = tempStorage;
 		recipeMapMint = tempMint;
+		recipeMapGear = tempGear;
 
 		validationSet.clear();
 		validationSet = tempSet;
@@ -285,6 +305,9 @@ public class CompactorManager {
 			case MINT:
 				recipeMapMint.put(new ComparableItemStackCompactor(input), recipe);
 				break;
+			case GEAR:
+				recipeMapGear.put(new ComparableItemStackCompactor(input), recipe);
+				break;
 		}
 		validationSet.add(new ComparableItemStackCompactor(input));
 		return recipe;
@@ -298,8 +321,12 @@ public class CompactorManager {
 				return recipeMapPress.remove(new ComparableItemStackCompactor(input));
 			case STORAGE:
 				return recipeMapStorage.remove(new ComparableItemStackCompactor(input));
+			case MINT:
+				return recipeMapMint.remove(new ComparableItemStackCompactor(input));
+			default:
+				return recipeMapGear.remove(new ComparableItemStackCompactor(input));
 		}
-		return recipeMapMint.remove(new ComparableItemStackCompactor(input));
+
 	}
 
 	/* HELPERS */
@@ -324,13 +351,44 @@ public class CompactorManager {
 		ItemStack plate = registeredPlate.get(0);
 
 		if (!registeredIngot.isEmpty()) {
-			addDefaultPressRecipe(ItemHelper.cloneStack(registeredIngot.get(0), 1), ItemHelper.cloneStack(plate, 1));
+			addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(registeredIngot.get(0), 1), ItemHelper.cloneStack(plate, 1), Mode.PRESS);
 		}
 		if (!registeredGem.isEmpty()) {
-			addDefaultPressRecipe(ItemHelper.cloneStack(registeredGem.get(0), 1), ItemHelper.cloneStack(plate, 1));
+			addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(registeredGem.get(0), 1), ItemHelper.cloneStack(plate, 1), Mode.PRESS);
 		}
 		if (!registeredBlock.isEmpty()) {
 			addRecipe(DEFAULT_ENERGY * 8, ItemHelper.cloneStack(registeredBlock.get(0), 1), ItemHelper.cloneStack(plate, 9), Mode.PRESS);
+		}
+	}
+
+	private static void addDefaultGearRecipe(String oreType) {
+
+		if (oreType == null || oreType.isEmpty()) {
+			return;
+		}
+		String gearName = "gear" + StringHelper.titleCase(oreType);
+		String ingotName = "ingot" + StringHelper.titleCase(oreType);
+		String gemName = "gem" + StringHelper.titleCase(oreType);
+		String blockName = "block" + StringHelper.titleCase(oreType);
+
+		List<ItemStack> registeredGear = OreDictionary.getOres(gearName, false);
+		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName, false);
+		List<ItemStack> registeredGem = OreDictionary.getOres(gemName, false);
+		List<ItemStack> registeredBlock = OreDictionary.getOres(blockName, false);
+
+		if (registeredGear.isEmpty()) {
+			return;
+		}
+		ItemStack gear = registeredGear.get(0);
+
+		if (!registeredIngot.isEmpty()) {
+			addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(registeredIngot.get(0), 4), ItemHelper.cloneStack(gear, 1), Mode.GEAR);
+		}
+		if (!registeredGem.isEmpty()) {
+			addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(registeredGem.get(0), 4), ItemHelper.cloneStack(gear, 1), Mode.GEAR);
+		}
+		if (!registeredBlock.isEmpty()) {
+			addRecipe(DEFAULT_ENERGY * 8, ItemHelper.cloneStack(registeredBlock.get(0), 4), ItemHelper.cloneStack(gear, 9), Mode.GEAR);
 		}
 	}
 
@@ -392,7 +450,7 @@ public class CompactorManager {
 
 	/* MODE ENUM */
 	public enum Mode {
-		PRESS, STORAGE, MINT
+		PRESS, STORAGE, MINT, GEAR
 	}
 
 	/* ITEMSTACK CLASS */
