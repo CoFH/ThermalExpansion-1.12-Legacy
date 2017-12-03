@@ -48,7 +48,6 @@ public class PluginIntegratedDynamics extends ModPlugin {
 			return false;
 		}
 		try {
-
 			ItemStack blockMenril = getItemStack("crystalized_menril_block", 1, 0);
 			ItemStack blockChorus = getItemStack("crystalized_chorus_block", 1, 0);
 
@@ -97,13 +96,15 @@ public class PluginIntegratedDynamics extends ModPlugin {
 			/* TAPPER */
 			{
 				if (fluidMenril != null) {
-					TapperManager.addItemMapping(logMenril, new FluidStack(fluidMenril, 100));
+					FluidStack menrilStack = new FluidStack(fluidMenril, 100);
 
-					TapperManager.addBlockStateMapping(new ItemStack(blockLogMenril, 1, 1), new FluidStack(fluidMenril, 100));
-					TapperManager.addBlockStateMapping(new ItemStack(blockLogMenrilFilled, 1, 4), new FluidStack(fluidMenril, 100));
-					TapperManager.addBlockStateMapping(new ItemStack(blockLogMenrilFilled, 1, 5), new FluidStack(fluidMenril, 100));
-					TapperManager.addBlockStateMapping(new ItemStack(blockLogMenrilFilled, 1, 6), new FluidStack(fluidMenril, 100));
-					TapperManager.addBlockStateMapping(new ItemStack(blockLogMenrilFilled, 1, 7), new FluidStack(fluidMenril, 100));
+					TapperManager.addItemMapping(logMenril, menrilStack);
+
+					TapperManager.addBlockStateMapping(new ItemStack(blockLogMenril, 1, 1), menrilStack);
+					TapperManager.addBlockStateMapping(new ItemStack(blockLogMenrilFilled, 1, 4), menrilStack);
+					TapperManager.addBlockStateMapping(new ItemStack(blockLogMenrilFilled, 1, 5), menrilStack);
+					TapperManager.addBlockStateMapping(new ItemStack(blockLogMenrilFilled, 1, 6), menrilStack);
+					TapperManager.addBlockStateMapping(new ItemStack(blockLogMenrilFilled, 1, 7), menrilStack);
 
 					addLeafMapping(blockLogMenril, 1, blockLeavesMenril, 0);
 					addLeafMapping(blockLogMenrilFilled, 4, blockLeavesMenril, 0);

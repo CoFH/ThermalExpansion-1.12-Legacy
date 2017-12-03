@@ -26,9 +26,10 @@ public class TEPlugins {
 		pluginActuallyAdditions = new PluginActuallyAdditions();
 		pluginAppliedEnergistics2 = new PluginAppliedEnergistics2();
 		pluginBiomesOPlenty = new PluginBiomesOPlenty();
+		pluginEvilCraft = new PluginEvilCraft();
 		pluginExtraAlchemy = new PluginExtraAlchemy();
 		pluginExU2 = new PluginExU2();
-		pluginHarvestcraft = new PluginHarvestcraft();
+		pluginHarvestCraft = new PluginHarvestCraft();
 		pluginIC2 = new PluginIC2();
 		pluginIntegratedDynamics = new PluginIntegratedDynamics();
 		pluginMysticalAgriculture = new PluginMysticalAgriculture();
@@ -53,9 +54,10 @@ public class TEPlugins {
 		initList.add(pluginActuallyAdditions);
 		initList.add(pluginAppliedEnergistics2);
 		initList.add(pluginBiomesOPlenty);
+		initList.add(pluginEvilCraft);
 		initList.add(pluginExtraAlchemy);
 		initList.add(pluginExU2);
-		initList.add(pluginHarvestcraft);
+		initList.add(pluginHarvestCraft);
 		initList.add(pluginIC2);
 		initList.add(pluginIntegratedDynamics);
 		initList.add(pluginMysticalAgriculture);
@@ -95,9 +97,10 @@ public class TEPlugins {
 	public static PluginActuallyAdditions pluginActuallyAdditions;
 	public static PluginAppliedEnergistics2 pluginAppliedEnergistics2;
 	public static PluginBiomesOPlenty pluginBiomesOPlenty;
+	public static PluginEvilCraft pluginEvilCraft;
 	public static PluginExtraAlchemy pluginExtraAlchemy;
 	public static PluginExU2 pluginExU2;
-	public static PluginHarvestcraft pluginHarvestcraft;
+	public static PluginHarvestCraft pluginHarvestCraft;
 	public static PluginIC2 pluginIC2;
 	public static PluginIntegratedDynamics pluginIntegratedDynamics;
 	public static PluginMysticalAgriculture pluginMysticalAgriculture;

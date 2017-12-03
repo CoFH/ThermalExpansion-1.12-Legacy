@@ -204,16 +204,16 @@ public class PluginPlants extends ModPlugin {
 
 				InsolatorManager.addDefaultRecipe(plantDysentery, ItemHelper.cloneStack(harvestDysentery, 2), plantDysentery, 100);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingBlackKauri, ItemHelper.cloneStack(logBlackKauri, 4), saplingBlackKauri);
-				InsolatorManager.addDefaultTreeRecipe(saplingBrazilianPine, ItemHelper.cloneStack(logBrazilianPine, 4), saplingBrazilianPine);
-				InsolatorManager.addDefaultTreeRecipe(saplingIncenseCedar, ItemHelper.cloneStack(logIncenseCedar, 4), saplingIncenseCedar);
-				InsolatorManager.addDefaultTreeRecipe(saplingMurrayPine, ItemHelper.cloneStack(logMurrayPine, 4), saplingMurrayPine);
+				InsolatorManager.addDefaultTreeRecipe(saplingBlackKauri, ItemHelper.cloneStack(logBlackKauri, 6), saplingBlackKauri);
+				InsolatorManager.addDefaultTreeRecipe(saplingBrazilianPine, ItemHelper.cloneStack(logBrazilianPine, 6), saplingBrazilianPine);
+				InsolatorManager.addDefaultTreeRecipe(saplingIncenseCedar, ItemHelper.cloneStack(logIncenseCedar, 6), saplingIncenseCedar);
+				InsolatorManager.addDefaultTreeRecipe(saplingMurrayPine, ItemHelper.cloneStack(logMurrayPine, 6), saplingMurrayPine);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingAshen, ItemHelper.cloneStack(logAshen, 4), saplingAshen);
-				InsolatorManager.addDefaultTreeRecipe(saplingBlazing, ItemHelper.cloneStack(logBlazing, 4), saplingBlazing);
+				InsolatorManager.addDefaultTreeRecipe(saplingAshen, ItemHelper.cloneStack(logAshen, 6), saplingAshen);
+				InsolatorManager.addDefaultTreeRecipe(saplingBlazing, ItemHelper.cloneStack(logBlazing, 6), saplingBlazing);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingCrystal, ItemHelper.cloneStack(logCrystal, 4), saplingCrystal);
-				InsolatorManager.addDefaultTreeRecipe(saplingDarkCrystal, ItemHelper.cloneStack(logDarkCrystal, 4), saplingDarkCrystal);
+				InsolatorManager.addDefaultTreeRecipe(saplingCrystal, ItemHelper.cloneStack(logCrystal, 6), saplingCrystal);
+				InsolatorManager.addDefaultTreeRecipe(saplingDarkCrystal, ItemHelper.cloneStack(logDarkCrystal, 6), saplingDarkCrystal);
 			}
 
 			/* TAPPER */

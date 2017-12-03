@@ -79,17 +79,17 @@ public class PluginTwilightForest extends ModPlugin {
 
 				InsolatorManager.addDefaultRecipe(plantMushgloom, ItemHelper.cloneStack(plantMushgloom, 2), ItemStack.EMPTY, 0);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingTwilightOak, ItemHelper.cloneStack(logTwilightOak, 4), saplingTwilightOak);
-				InsolatorManager.addDefaultTreeRecipe(saplingCanopy, ItemHelper.cloneStack(logCanopy, 4), saplingCanopy);
-				InsolatorManager.addDefaultTreeRecipe(saplingMangrove, ItemHelper.cloneStack(logMangrove, 4), saplingMangrove);
-				InsolatorManager.addDefaultTreeRecipe(saplingDarkwood, ItemHelper.cloneStack(logDarkwood, 4), saplingDarkwood);
+				InsolatorManager.addDefaultTreeRecipe(saplingTwilightOak, ItemHelper.cloneStack(logTwilightOak, 6), saplingTwilightOak);
+				InsolatorManager.addDefaultTreeRecipe(saplingCanopy, ItemHelper.cloneStack(logCanopy, 6), saplingCanopy);
+				InsolatorManager.addDefaultTreeRecipe(saplingMangrove, ItemHelper.cloneStack(logMangrove, 6), saplingMangrove);
+				InsolatorManager.addDefaultTreeRecipe(saplingDarkwood, ItemHelper.cloneStack(logDarkwood, 6), saplingDarkwood);
 
 				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingTimewood, ItemHelper.cloneStack(logTimewood, 6), saplingTimewood, 30);
 				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingTranswood, ItemHelper.cloneStack(logTranswood, 6), saplingTranswood, 30);
 				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingMinewood, ItemHelper.cloneStack(logMinewood, 6), saplingMinewood, 30);
 				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingSortingwood, ItemHelper.cloneStack(logSortingwood, 6), saplingSortingwood, 30);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingRainbow, ItemHelper.cloneStack(logTwilightOak, 4), saplingRainbow);
+				InsolatorManager.addDefaultTreeRecipe(saplingRainbow, ItemHelper.cloneStack(logTwilightOak, 6), saplingRainbow);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);

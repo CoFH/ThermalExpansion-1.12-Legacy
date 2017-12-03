@@ -50,7 +50,7 @@ public class PluginTechReborn extends ModPlugin {
 				ItemStack logRubber = getItemStack("rubber_log", 1, 0);
 				ItemStack saplingRubber = getItemStack("rubber_sapling", 1, 0);
 
-				InsolatorManager.addDefaultTreeRecipe(saplingRubber, ItemHelper.cloneStack(logRubber, 4), saplingRubber);
+				InsolatorManager.addDefaultTreeRecipe(saplingRubber, ItemHelper.cloneStack(logRubber, 6), saplingRubber);
 			}
 
 			/* TRANSPOSER */

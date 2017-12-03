@@ -1,14 +1,15 @@
 package cofh.thermalexpansion.util;
 
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.util.managers.dynamo.CompressionManager;
-import cofh.thermalexpansion.util.managers.dynamo.MagmaticManager;
+import cofh.thermalexpansion.util.managers.CoolantManager;
+import cofh.thermalexpansion.util.managers.dynamo.*;
 import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager.Type;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 
@@ -176,11 +177,49 @@ public class IMCHandler {
 						continue;
 
 					/* FUELS */
+					case ADD_STEAM_FUEL:
+						SteamManager.addFuel(new ItemStack(nbt.getCompoundTag(INPUT)), nbt.getInteger(ENERGY));
+						continue;
 					case ADD_MAGMATIC_FUEL:
 						MagmaticManager.addFuel(nbt.getString(FLUID_NAME).toLowerCase(Locale.ENGLISH), nbt.getInteger(ENERGY));
 						continue;
 					case ADD_COMPRESSION_FUEL:
 						CompressionManager.addFuel(nbt.getString(FLUID_NAME).toLowerCase(Locale.ENGLISH), nbt.getInteger(ENERGY));
+						continue;
+					case ADD_REACTANT_FUEL:
+						ReactantManager.addReaction(new ItemStack(nbt.getCompoundTag(INPUT)), FluidRegistry.getFluid(nbt.getString(FLUID_NAME).toLowerCase(Locale.ENGLISH)), nbt.getInteger(ENERGY));
+					case ADD_ENERVATION_FUEL:
+						EnervationManager.addFuel(new ItemStack(nbt.getCompoundTag(INPUT)), nbt.getInteger(ENERGY));
+						continue;
+					case ADD_NUMISMATIC_FUEL:
+						NumismaticManager.addFuel(new ItemStack(nbt.getCompoundTag(INPUT)), nbt.getInteger(ENERGY));
+						continue;
+
+					case REMOVE_STEAM_FUEL:
+						SteamManager.removeFuel(new ItemStack(nbt.getCompoundTag(INPUT)));
+						continue;
+					case REMOVE_MAGMATIC_FUEL:
+						MagmaticManager.removeFuel(nbt.getString(FLUID_NAME).toLowerCase(Locale.ENGLISH));
+						continue;
+					case REMOVE_COMPRESSION_FUEL:
+						CompressionManager.removeFuel(nbt.getString(FLUID_NAME).toLowerCase(Locale.ENGLISH));
+						continue;
+					case REMOVE_REACTANT_FUEL:
+						ReactantManager.removeReaction(new ItemStack(nbt.getCompoundTag(INPUT)), FluidRegistry.getFluid(nbt.getString(FLUID_NAME).toLowerCase(Locale.ENGLISH)));
+						continue;
+					case REMOVE_ENERVATION_FUEL:
+						EnervationManager.removeFuel(new ItemStack(nbt.getCompoundTag(INPUT)));
+						continue;
+					case REMOVE_NUMISMATIC_FUEL:
+						NumismaticManager.removeFuel(new ItemStack(nbt.getCompoundTag(INPUT)));
+						continue;
+
+					/* COOLANT */
+					case ADD_COOLANT:
+						CoolantManager.addCoolant(nbt.getString(FLUID_NAME).toLowerCase(Locale.ENGLISH), nbt.getInteger(ENERGY), nbt.getInteger(FACTOR));
+						continue;
+					case REMOVE_COOLANT:
+						CoolantManager.removeCoolant(nbt.getString(FLUID_NAME).toLowerCase(Locale.ENGLISH));
 						continue;
 				}
 				ThermalExpansion.LOG.warn("Thermal Expansion received an invalid IMC from " + message.getSender() + "! Key was " + message.key);
@@ -198,6 +237,7 @@ public class IMCHandler {
 	static final String FLUID_NAME = "fluidName";
 	static final String REVERSIBLE = "reversible";
 	static final String CHANCE = "chance";
+	static final String FACTOR = "factor";
 
 	static final String INPUT = "input";
 	static final String OUTPUT = "output";
@@ -240,7 +280,21 @@ public class IMCHandler {
 	public static final String REMOVE_BREWER_RECIPE = "removebrewerrecipe";
 	public static final String REMOVE_ENCHANTER_RECIPE = "removeenchanterrecipe";
 
+	public static final String ADD_STEAM_FUEL = "addsteamfuel";
 	public static final String ADD_MAGMATIC_FUEL = "addmagmaticfuel";
 	public static final String ADD_COMPRESSION_FUEL = "addcompressionfuel";
+	public static final String ADD_REACTANT_FUEL = "addreactantfuel";
+	public static final String ADD_ENERVATION_FUEL = "addenervationfuel";
+	public static final String ADD_NUMISMATIC_FUEL = "addnumismaticfuel";
+
+	public static final String REMOVE_STEAM_FUEL = "removesteamfuel";
+	public static final String REMOVE_MAGMATIC_FUEL = "removemagmaticfuel";
+	public static final String REMOVE_COMPRESSION_FUEL = "removecompressionfuel";
+	public static final String REMOVE_REACTANT_FUEL = "removereactantfuel";
+	public static final String REMOVE_ENERVATION_FUEL = "removeenervationfuel";
+	public static final String REMOVE_NUMISMATIC_FUEL = "removenumismaticfuel";
+
+	public static final String ADD_COOLANT = "addcoolant";
+	public static final String REMOVE_COOLANT = "removecoolant";
 
 }

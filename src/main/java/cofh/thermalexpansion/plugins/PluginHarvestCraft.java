@@ -12,12 +12,12 @@ import net.minecraftforge.fml.common.Loader;
 
 import java.util.Arrays;
 
-public class PluginHarvestcraft extends ModPlugin {
+public class PluginHarvestCraft extends ModPlugin {
 
 	public static final String MOD_ID = "harvestcraft";
 	public static final String MOD_NAME = "HarvestCraft";
 
-	public PluginHarvestcraft() {
+	public PluginHarvestCraft() {
 
 		super(MOD_ID, MOD_NAME);
 	}

@@ -111,7 +111,7 @@ public class PluginTerraqueous extends ModPlugin {
 			/* INSOLATOR */
 			{
 				for (int i = 0; i < sapling.length; i++) {
-					InsolatorManager.addDefaultTreeRecipe(sapling[i], ItemHelper.cloneStack(log[i], 4), sapling[i]);
+					InsolatorManager.addDefaultTreeRecipe(sapling[i], ItemHelper.cloneStack(log[i], 6), sapling[i]);
 				}
 				for (int i = 0; i < flowersCluster.length; i++) {
 					InsolatorManager.addDefaultRecipe(flowersCluster[i], ItemHelper.cloneStack(flowersSingle[i], 6), ItemStack.EMPTY, 0);
