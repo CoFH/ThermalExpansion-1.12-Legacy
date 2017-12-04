@@ -14,6 +14,7 @@ import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager.ContainerOverride;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager.TransposerRecipe;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -146,7 +147,12 @@ public class TileTransposer extends TileMachineBase {
 			return false;
 		}
 		if (!inventory[2].isEmpty()) {
-			return false;
+			ContainerOverride override = TransposerManager.getContainerOverride(inventory[1]);
+			if (override != null && inventory[2].isItemEqual(override.getOutput())) {
+				// This is okay.
+			} else {
+				return false;
+			}
 		}
 		IFluidHandlerItem handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 
@@ -220,6 +226,7 @@ public class TileTransposer extends TileMachineBase {
 	private boolean emptyHandler() {
 
 		IFluidHandlerItem handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+		ItemStack testStack = ItemHelper.cloneStack(inventory[1]);
 		FluidStack drainStack = handler.drain(Fluid.BUCKET_VOLUME, true);
 		int drained = drainStack == null ? 0 : drainStack.amount;
 
@@ -230,13 +237,24 @@ public class TileTransposer extends TileMachineBase {
 		}
 		if (drained > 0) {
 			tank.fill(drainStack, true);
-			inventory[1] = handler.getContainer();
 			if (tankProperties[0].getContents() == null) {
+				ContainerOverride override = TransposerManager.getContainerOverride(testStack);
+				if (override != null) {
+					int chance = override.getChance();
+					if (chance >= 100 || world.rand.nextInt(secondaryChance) < chance) {
+						inventory[1] = ItemHelper.cloneStack(override.getOutput());
+					} else {
+						inventory[1] = handler.getContainer();
+					}
+				} else {
+					inventory[1] = handler.getContainer();
+				}
 				if (inventory[1].getCount() <= 0) {
 					inventory[1] = ItemStack.EMPTY;
 				}
 				return true;
 			}
+			inventory[1] = handler.getContainer();
 			return false;
 		}
 		return true;

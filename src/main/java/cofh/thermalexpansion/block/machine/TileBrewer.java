@@ -358,7 +358,7 @@ public class TileBrewer extends TileMachineBase {
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
 		if (TEProps.MACHINE_BREWER_REAGENT.equals(id)) {
-			reuseChance += 10;
+			reuseChance += 15;
 			energyMod += 10;
 		}
 		return super.installAugmentToSlot(slot);

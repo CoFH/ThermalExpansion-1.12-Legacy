@@ -10,7 +10,7 @@ import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiXpCollector;
 import cofh.thermalexpansion.gui.container.device.ContainerXpCollector;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.util.managers.XpCollectorManager;
+import cofh.thermalexpansion.util.managers.device.XpCollectorManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.InventoryPlayer;

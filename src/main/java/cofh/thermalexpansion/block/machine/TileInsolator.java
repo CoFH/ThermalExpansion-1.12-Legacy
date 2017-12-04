@@ -509,12 +509,13 @@ public class TileInsolator extends TileMachineBase {
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
 		if (TEProps.MACHINE_INSOLATOR_FERTILIZER.equals(id)) {
-			reuseChance += 15;
+			reuseChance += 20;
 			energyMod += 5;
 		}
 		if (!augmentMonoculture && TEProps.MACHINE_INSOLATOR_MONOCULTURE.equals(id)) {
 			augmentMonoculture = true;
 			hasModeAugment = true;
+			reuseChance += 10;
 			energyMod += MONOCULTURE_ENERGY_MOD;
 			return true;
 		}

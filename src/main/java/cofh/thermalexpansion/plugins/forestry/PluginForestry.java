@@ -81,6 +81,9 @@ public class PluginForestry extends ModPlugin {
 			ItemStack propolisPulsating = getItemStack("propolis", 1, 2);
 			ItemStack propolisSilky = getItemStack("propolis", 1, 3);
 
+			ItemStack capsule = getItemStack("capsule", 1, 1);
+			ItemStack capsuleRefactory = getItemStack("refractory", 1, 1);
+
 			ItemStack wax = getItemStack("beeswax");
 			ItemStack waxRefractory = getItemStack("refractory_wax");
 
@@ -136,6 +139,8 @@ public class PluginForestry extends ModPlugin {
 
 					addSeedOilRecipes();
 				}
+				TransposerManager.addContainerOverride(capsule, wax, 10);
+				TransposerManager.addContainerOverride(capsuleRefactory, waxRefractory, 10);
 			}
 
 			/* CENTRIFUGE */

@@ -11,7 +11,7 @@ import cofh.thermalexpansion.gui.client.machine.GuiSawmill;
 import cofh.thermalexpansion.gui.container.machine.ContainerSawmill;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TESounds;
-import cofh.thermalexpansion.util.managers.TapperManager;
+import cofh.thermalexpansion.util.managers.device.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager.SawmillRecipe;
 import cofh.thermalfoundation.init.TFFluids;

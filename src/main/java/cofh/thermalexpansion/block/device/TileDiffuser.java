@@ -10,7 +10,7 @@ import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiDiffuser;
 import cofh.thermalexpansion.gui.container.device.ContainerDiffuser;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.util.managers.DiffuserManager;
+import cofh.thermalexpansion.util.managers.device.DiffuserManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.InventoryPlayer;

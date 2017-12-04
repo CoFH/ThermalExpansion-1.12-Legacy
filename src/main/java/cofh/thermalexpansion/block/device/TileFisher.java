@@ -10,7 +10,7 @@ import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiFisher;
 import cofh.thermalexpansion.gui.container.device.ContainerFisher;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.util.managers.FisherManager;
+import cofh.thermalexpansion.util.managers.device.FisherManager;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

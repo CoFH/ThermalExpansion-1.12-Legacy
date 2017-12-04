@@ -3,7 +3,7 @@ package cofh.thermalexpansion.plugins;
 import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.util.managers.TapperManager;
+import cofh.thermalexpansion.util.managers.device.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
@@ -86,7 +86,7 @@ public class PluginIntegratedDynamics extends ModPlugin {
 				int energy = 2400;
 
 				if (fluidMenril != null) {
-					TransposerManager.addExtractRecipe(energy, logMenril, ItemStack.EMPTY, new FluidStack(fluidMenril, 1000), 0, false);
+					TransposerManager.addExtractRecipe(energy, logMenril, ItemStack.EMPTY, new FluidStack(fluidMenril, Fluid.BUCKET_VOLUME), 0, false);
 				}
 				if (fluidChorus != null) {
 					TransposerManager.addExtractRecipe(energy, new ItemStack(Items.CHORUS_FRUIT_POPPED), ItemStack.EMPTY, new FluidStack(fluidChorus, 125), 0, false);

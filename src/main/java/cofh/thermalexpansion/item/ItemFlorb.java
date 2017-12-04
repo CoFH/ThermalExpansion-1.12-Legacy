@@ -202,9 +202,9 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 				}
 				if (CONFIG_FLORBS.get("Whitelist", fluid.getName(), true)) {
 					if (fluid.getTemperature() < CoreProps.MAGMATIC_TEMPERATURE) {
-						TransposerManager.addFillRecipe(1600, ItemFlorb.florb, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
+						TransposerManager.addFillRecipe(1600, ItemFlorb.florb, florbList.get(florbList.size() - 1), new FluidStack(fluid, Fluid.BUCKET_VOLUME), false);
 					} else {
-						TransposerManager.addFillRecipe(1600, ItemFlorb.florbMagmatic, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
+						TransposerManager.addFillRecipe(1600, ItemFlorb.florbMagmatic, florbList.get(florbList.size() - 1), new FluidStack(fluid, Fluid.BUCKET_VOLUME), false);
 					}
 				}
 			}

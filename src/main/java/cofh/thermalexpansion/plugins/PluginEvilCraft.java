@@ -3,8 +3,9 @@ package cofh.thermalexpansion.plugins;
 import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.util.managers.TapperManager;
+import cofh.thermalexpansion.util.managers.device.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
@@ -58,17 +59,24 @@ public class PluginEvilCraft extends ModPlugin {
 			{
 				int energy = InsolatorManager.DEFAULT_ENERGY;
 
-				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingUndead, ItemHelper.cloneStack(logUndead, 6), saplingUndead, 100);
+				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingUndead, ItemHelper.cloneStack(logUndead, 6), ItemStack.EMPTY, 0);
+			}
+
+			/* TRANSPOSER */
+			{
+				int energy = 2400;
+
+				if (fluidBlood != null) {
+					TransposerManager.addExtractRecipe(energy, logUndead, getItemStack("hardened_blood_shard"), new FluidStack(fluidBlood, 100), 25, false);
+				}
 			}
 
 			/* TAPPER */
 			{
 				if (fluidBlood != null) {
-					FluidStack bloodStack = new FluidStack(fluidBlood, 50);
+					TapperManager.addItemMapping(logUndead, new FluidStack(fluidBlood, 10));
 
-					TapperManager.addItemMapping(logUndead, bloodStack);
-
-					TapperManager.addBlockStateMapping(new ItemStack(blockLogUndead, 1, 1), bloodStack);
+					TapperManager.addBlockStateMapping(new ItemStack(blockLogUndead, 1, 1), new FluidStack(fluidBlood, 50));
 
 					addLeafMapping(blockLogUndead, 1, blockLeavesUndead, 0);
 				}

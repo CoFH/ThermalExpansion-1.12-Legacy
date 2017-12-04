@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.util;
 
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.util.managers.CoolantManager;
+import cofh.thermalexpansion.util.managers.device.CoolantManager;
 import cofh.thermalexpansion.util.managers.dynamo.*;
 import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;

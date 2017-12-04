@@ -2,6 +2,7 @@ package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.init.CoreProps;
 import cofh.core.inventory.ComparableItemStackNBT;
+import cofh.core.util.ItemWrapper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
@@ -20,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -31,6 +33,7 @@ public class TransposerManager {
 
 	private static Map<List<Integer>, TransposerRecipe> recipeMapFill = new THashMap<>();
 	private static Map<ComparableItemStackTransposer, TransposerRecipe> recipeMapExtract = new THashMap<>();
+	private static Map<ItemWrapper, ContainerOverride> containerOverrides = new THashMap<>();
 	private static Set<ComparableItemStackTransposer> validationSet = new THashSet<>();
 
 	public static final int DEFAULT_ENERGY = 400;
@@ -45,6 +48,11 @@ public class TransposerManager {
 		return input.isEmpty() ? null : recipeMapExtract.get(new ComparableItemStackTransposer(input));
 	}
 
+	public static ContainerOverride getContainerOverride(ItemStack input) {
+
+		return input.isEmpty() ? null : containerOverrides.get(new ItemWrapper(input));
+	}
+
 	public static boolean fillRecipeExists(ItemStack input, FluidStack fluid) {
 
 		return getFillRecipe(input, fluid) != null;
@@ -53,6 +61,11 @@ public class TransposerManager {
 	public static boolean extractRecipeExists(ItemStack input) {
 
 		return getExtractRecipe(input) != null;
+	}
+
+	public static boolean containerOverrideExists(ItemStack input) {
+
+		return getContainerOverride(input) != null;
 	}
 
 	public static TransposerRecipe[] getFillRecipeList() {
@@ -124,7 +137,7 @@ public class TransposerManager {
 
 		/* CELLS */
 		{
-			FluidStack redstoneFluid = new FluidStack(TFFluids.fluidRedstone, 4000);
+			FluidStack redstoneFluid = new FluidStack(TFFluids.fluidRedstone, Fluid.BUCKET_VOLUME * 4);
 
 			if (BlockCell.enableClassicRecipes) {
 				addFillRecipe(16000, ItemFrame.frameCell2, ItemFrame.frameCell2Filled, redstoneFluid, false);
@@ -133,10 +146,15 @@ public class TransposerManager {
 			}
 		}
 
-		addFillRecipe(4000, new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Blocks.SPONGE, 1, 1), new FluidStack(FluidRegistry.WATER, 1000), true);
+		addFillRecipe(4000, new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Blocks.SPONGE, 1, 1), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), true);
 		addFillRecipe(2000, ItemHelper.cloneStack(ItemFertilizer.fertilizerBasic), ItemHelper.cloneStack(ItemFertilizer.fertilizerRich), new FluidStack(TFFluids.fluidSap, 200), false);
 		addFillRecipe(400, new ItemStack(Items.BOWL), new ItemStack(Items.MUSHROOM_STEW), new FluidStack(TFFluids.fluidMushroomStew, 250), true);
 		addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(TFFluids.fluidExperience, 250), false);
+
+		addContainerOverride(new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.BUCKET), 100);
+		addContainerOverride(new ItemStack(Items.LAVA_BUCKET), new ItemStack(Items.BUCKET), 100);
+		addContainerOverride(new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BUCKET), 100);
+		addContainerOverride(new ItemStack(ForgeModContainer.getInstance().universalBucket), new ItemStack(Items.BUCKET), 100);
 
 		/* LOAD POTIONS */
 		loadPotions();
@@ -239,8 +257,10 @@ public class TransposerManager {
 
 		Map<List<Integer>, TransposerRecipe> tempFill = new THashMap<>(recipeMapFill.size());
 		Map<ComparableItemStackTransposer, TransposerRecipe> tempExtract = new THashMap<>(recipeMapExtract.size());
+		Map<ItemWrapper, ContainerOverride> tempOverrides = new THashMap<>(containerOverrides.size());
 		Set<ComparableItemStackTransposer> tempSet = new THashSet<>();
 		TransposerRecipe tempRecipe;
+		ContainerOverride tempOverride;
 
 		for (Entry<List<Integer>, TransposerRecipe> entry : recipeMapFill.entrySet()) {
 			tempRecipe = entry.getValue();
@@ -254,6 +274,11 @@ public class TransposerManager {
 			tempExtract.put(input, tempRecipe);
 			tempSet.add(input);
 		}
+		for (Entry<ItemWrapper, ContainerOverride> entry : containerOverrides.entrySet()) {
+			tempOverride = entry.getValue();
+			ItemWrapper input = new ItemWrapper(tempOverride.input);
+			tempOverrides.put(input, tempOverride);
+		}
 		recipeMapFill.clear();
 		recipeMapExtract.clear();
 
@@ -262,6 +287,9 @@ public class TransposerManager {
 
 		validationSet.clear();
 		validationSet = tempSet;
+
+		containerOverrides.clear();
+		containerOverrides = tempOverrides;
 	}
 
 	/* ADD RECIPES */
@@ -316,6 +344,20 @@ public class TransposerManager {
 	}
 
 	/* HELPERS */
+	public static ContainerOverride addContainerOverride(ItemStack input, ItemStack output, int chance) {
+
+		if (input.isEmpty() || output.isEmpty() || chance <= 0) {
+			return null;
+		}
+		if (containerOverrideExists(input)) {
+			return null;
+		}
+		ContainerOverride override = new ContainerOverride(input, output, chance);
+		containerOverrides.put(new ItemWrapper(input), override);
+
+		return override;
+	}
+
 	public static void addDefaultPotionRecipes(PotionType type) {
 
 		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(ItemHelper.cloneStack(Items.POTIONITEM, 1), type), getPotion(CoreProps.BOTTLE_VOLUME, type), true);
@@ -397,6 +439,37 @@ public class TransposerManager {
 		public int getEnergy() {
 
 			return energy;
+		}
+
+		public int getChance() {
+
+			return chance;
+		}
+
+	}
+
+	/* CONTAINER OVERRIDE CLASS */
+	public static class ContainerOverride {
+
+		final ItemStack input;
+		final ItemStack output;
+		final int chance;
+
+		public ContainerOverride(ItemStack input, ItemStack output, int chance) {
+
+			this.input = input;
+			this.output = output;
+			this.chance = chance;
+		}
+
+		public ItemStack getInput() {
+
+			return input;
+		}
+
+		public ItemStack getOutput() {
+
+			return output;
 		}
 
 		public int getChance() {
