@@ -57,7 +57,7 @@ import java.util.stream.IntStream;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
-public class ItemReservoir extends ItemMulti implements IInitializer, IMultiModeItem, IFluidContainerItem, IEnchantableItem, INBTCopyIngredient {
+public class ItemReservoir extends ItemMulti implements IInitializer, IFluidContainerItem, IMultiModeItem, IEnchantableItem, INBTCopyIngredient {
 
 	public ItemReservoir() {
 

@@ -52,7 +52,7 @@ import java.util.stream.IntStream;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
-public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem, INBTCopyIngredient {
+public class ItemCapacitor extends ItemMulti implements IInitializer, IEnergyContainerItem, IMultiModeItem, IEnchantableItem, INBTCopyIngredient {
 
 	public ItemCapacitor() {
 

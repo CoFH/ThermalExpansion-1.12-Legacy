@@ -650,7 +650,7 @@ public class TileCharger extends TileMachineBase {
 			energyStorage.setMaxTransfer(getEnergyTransfer(level) * 4);
 		}
 		if (!augmentRepair) {
-			tank.modifyFluidStored(-tank.getCapacity());
+			tank.drain(tank.getCapacity(), true);
 		}
 	}
 
@@ -667,6 +667,7 @@ public class TileCharger extends TileMachineBase {
 		if (!augmentRepair && TEProps.MACHINE_CHARGER_REPAIR.equals(id)) {
 			augmentRepair = true;
 			hasModeAugment = true;
+			tank.setLock(TFFluids.fluidExperience);
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

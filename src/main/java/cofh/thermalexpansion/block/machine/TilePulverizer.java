@@ -184,6 +184,7 @@ public class TilePulverizer extends TileMachineBase {
 			} else {
 				inventory[1].grow(getPetrotheumOutputAmount(primaryItem));
 			}
+			tank.modifyFluidStored(-FLUID_AMOUNT);
 		} else {
 			if (inventory[1].isEmpty()) {
 				inventory[1] = ItemHelper.cloneStack(primaryItem);
@@ -367,7 +368,7 @@ public class TilePulverizer extends TileMachineBase {
 		super.postAugmentInstall();
 
 		if (!augmentPetrotheum) {
-			tank.modifyFluidStored(-tank.getCapacity());
+			tank.drain(tank.getCapacity(), true);
 		}
 	}
 
@@ -386,6 +387,7 @@ public class TilePulverizer extends TileMachineBase {
 			augmentPetrotheum = true;
 			hasModeAugment = true;
 			energyMod += PETROTHEUM_ENERGY_MOD;
+			tank.setLock(TFFluids.fluidPetrotheum);
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

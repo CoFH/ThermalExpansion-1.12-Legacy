@@ -365,6 +365,7 @@ public class TileFurnace extends TileMachineBase {
 		super.postAugmentInstall();
 
 		if (!augmentPyrolysis) {
+			tank.clearLocked();
 			tank.setFluid(null);
 		}
 	}

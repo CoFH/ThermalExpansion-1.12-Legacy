@@ -210,6 +210,7 @@ public class TileSmelter extends TileMachineBase {
 			} else {
 				inventory[2].grow(getPyrotheumOutputAmount(primaryItem));
 			}
+			tank.modifyFluidStored(-FLUID_AMOUNT);
 		} else {
 			if (inventory[2].isEmpty()) {
 				inventory[2] = ItemHelper.cloneStack(primaryItem);
@@ -497,7 +498,7 @@ public class TileSmelter extends TileMachineBase {
 		super.postAugmentInstall();
 
 		if (!augmentPyrotheum) {
-			tank.modifyFluidStored(-tank.getCapacity());
+			tank.drain(tank.getCapacity(), true);
 		}
 	}
 
@@ -514,6 +515,7 @@ public class TileSmelter extends TileMachineBase {
 			augmentPyrotheum = true;
 			hasModeAugment = true;
 			energyMod += PYROTHEUM_ENERGY_MOD;
+			tank.setLock(TFFluids.fluidPyrotheum);
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

@@ -414,6 +414,7 @@ public class TileSawmill extends TileMachineBase {
 		super.postAugmentInstall();
 
 		if (!augmentTapper) {
+			tank.clearLocked();
 			tank.setFluid(null);
 		}
 	}

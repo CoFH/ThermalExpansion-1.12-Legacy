@@ -9,7 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
-public abstract class ItemBlockTEBase extends ItemBlockCore implements INBTCopyIngredient, ICreativeItem {
+public abstract class ItemBlockTEBase extends ItemBlockCore implements ICreativeItem, INBTCopyIngredient {
 
 	public ItemBlockTEBase(Block block) {
 
