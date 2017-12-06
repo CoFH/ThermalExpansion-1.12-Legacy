@@ -207,6 +207,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
 		machineChargerRepair = addAugmentItem(401, TEProps.MACHINE_CHARGER_REPAIR, AugmentType.MODE);
+		machineChargerWireless = addAugmentItem(402, TEProps.MACHINE_CHARGER_WIRELESS, AugmentType.MODE);
 
 		machineBrewerReagent = addAugmentItem(448, TEProps.MACHINE_BREWER_REAGENT);
 
@@ -741,6 +742,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineChargerThroughput;
 	public static ItemStack machineChargerRepair;
+	public static ItemStack machineChargerWireless;
 
 	public static ItemStack machineCentrifugeMobs;              // Enstabulation Chamber
 

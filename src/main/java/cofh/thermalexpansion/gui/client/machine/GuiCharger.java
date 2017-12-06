@@ -27,6 +27,8 @@ public class GuiCharger extends GuiPoweredBase {
 	private ElementSimple tankBackground;
 	private ElementFluidTank tank;
 
+	private ElementSimple modeOverlay;
+
 	public GuiCharger(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerCharger(inventory, tile), tile, inventory.player, TEXTURE);
@@ -53,8 +55,12 @@ public class GuiCharger extends GuiPoweredBase {
 
 		tank = (ElementFluidTank) addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(0).setAlwaysShow(true));
 
+		modeOverlay = (ElementSimple) addElement(new ElementSimple(this, 44, 35).setTextureOffsets(176, 80).setSize(16, 16).setTexture(TEX_PATH, 256, 256));
+
 		tankBackground.setVisible(myTile.augmentRepair());
 		tank.setVisible(myTile.augmentRepair());
+
+		modeOverlay.setVisible(myTile.augmentWireless());
 	}
 
 	@Override
@@ -69,6 +75,8 @@ public class GuiCharger extends GuiPoweredBase {
 
 		tankBackground.setVisible(myTile.augmentRepair());
 		tank.setVisible(myTile.augmentRepair());
+
+		modeOverlay.setVisible(myTile.augmentWireless());
 	}
 
 }
