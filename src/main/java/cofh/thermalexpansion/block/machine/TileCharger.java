@@ -1,8 +1,10 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.CoFHCore;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.CoreUtils;
 import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -18,8 +20,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -66,6 +70,10 @@ public class TileCharger extends TileMachineBase {
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_CHARGER_WIRELESS);
 
 		LIGHT_VALUES[TYPE] = 7;
+
+		for(int i = 0; i < WIRELESS_RANGE.length; i++) {
+			WIRELESS_RANGE[i] *= WIRELESS_RANGE[i];
+		}
 
 		GameRegistry.registerTileEntity(TileCharger.class, "thermalexpansion:machine_charger");
 
@@ -310,8 +318,7 @@ public class TileCharger extends TileMachineBase {
 
 		boolean curActive = isActive;
 
-		int range = WIRELESS_RANGE[getLevel()];
-		players = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos.add(-range, -range, -range), pos.add(range, range, range)));
+		findPlayersInRange();
 
 		if (isActive) {
 			processTickWireless();
@@ -328,6 +335,18 @@ public class TileCharger extends TileMachineBase {
 		}
 		updateIfChanged(curActive);
 		chargeEnergy();
+	}
+
+	private void findPlayersInRange() {
+
+		players.clear();
+		Vec3d pos = new Vec3d(getPos());
+		int range = WIRELESS_RANGE[level];
+		for(EntityPlayer player : world.playerEntities) {
+			if(player.getPositionVector().squareDistanceTo(pos) < range) {
+				players.add(player);
+			}
+		}
 	}
 
 	private int calcWirelessCost() {
