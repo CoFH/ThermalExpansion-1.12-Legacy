@@ -46,7 +46,7 @@ public class TileCharger extends TileMachineBase {
 	public static final int REPAIR_ENERGY = 500;
 	public static final int FLUID_AMOUNT = CoreProps.MB_PER_XP / 4;
 
-	public static final int WIRELESS_RANGE[] = new int[] { 5, 10, 15, 20, 25 };
+	public static final int WIRELESS_RANGE[] = new int[] { 3, 5, 7, 9, 11 };
 
 	public static void initialize() {
 
@@ -124,7 +124,10 @@ public class TileCharger extends TileMachineBase {
 
 		boolean curActive = isActive;
 
-		if (augmentRepair) {
+		if(augmentWireless) {
+			transferContainerItem();
+			processOff();
+		} else if (augmentRepair) {
 			transferContainerItem();
 			processOff();
 		} else if (isActive) {
@@ -183,6 +186,9 @@ public class TileCharger extends TileMachineBase {
 		boolean curActive = isActive;
 
 		if (augmentRepair) {
+			transferHandler();
+			processOff();
+		} else if(augmentWireless) {
 			transferHandler();
 			processOff();
 		}

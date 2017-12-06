@@ -474,6 +474,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "blockIron",
 				'Y', "dustRedstone"
 		);
+		addShapedRecipe(machineChargerWireless,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearElectrum",
+				'I', "plateEnderium",
+				'X', "ingotLead",
+				'Y', "dustCryotheum"
+		);
 
 		addShapedRecipe(machineBrewerReagent,
 				" G ",
