@@ -222,6 +222,7 @@ public class TEProps {
 
 	public static final String MACHINE_CHARGER_THROUGHPUT = "machineChargerThroughput";
 	public static final String MACHINE_CHARGER_REPAIR = "machineChargerRepair";
+	public static final String MACHINE_CHARGER_WIRELESS = "machineChargerWireless";
 
 	public static final String MACHINE_BREWER_REAGENT = "machineBrewerReagent";
 

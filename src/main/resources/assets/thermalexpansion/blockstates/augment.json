@@ -119,6 +119,11 @@
 					"layer0": "thermalexpansion:items/augment/machine_charger_repair"
 				}
 			},
+			"machinechargerwireless": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_charger_wireless"
+				}
+			},
 			"machinebrewerreagent": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/machine_brewer_reagent"
