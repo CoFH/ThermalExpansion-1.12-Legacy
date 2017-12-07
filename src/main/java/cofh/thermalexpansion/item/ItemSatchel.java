@@ -4,6 +4,7 @@ import cofh.api.core.ISecurable.AccessMode;
 import cofh.api.item.IInventoryContainerItem;
 import cofh.api.item.IMultiModeItem;
 import cofh.api.item.INBTCopyIngredient;
+import cofh.core.gui.container.InventoryContainerItemWrapper;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
@@ -27,6 +28,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -34,6 +36,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -134,7 +139,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 				ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.cofh.secure.item.success"));
 				return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 			}
-			if (canPlayerAccess(stack, player)) {
+			if (canPlayerAccess(stack, player) && !player.isSneaking()) {
 				player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_ID, world, 0, 0, 0);
 			} else if (SecurityHelper.isSecure(stack)) {
 				ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.cofh.secure.warning", SecurityHelper.getOwnerName(stack)));
@@ -145,9 +150,34 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
+		if(ServerHelper.isServerWorld(world)) {
+			ItemStack stack = player.getHeldItem(hand);
+			if (player.isSneaking() && canPlayerAccess(stack, player)) {
+				TileEntity tile = world.getTileEntity(pos);
+				if(tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
+					IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
+					dumpInventory(stack, cap);
+					return EnumActionResult.SUCCESS;
+				}
+			}
+		}
 
 		return EnumActionResult.FAIL;
+	}
+
+	private void dumpInventory(ItemStack stack, IItemHandler target) {
+
+		InventoryContainerItemWrapper wrapper = new InventoryContainerItemWrapper(stack);
+		for(int i = 0; i < getSizeInventory(stack); i++) {
+			ItemStack slot = wrapper.getStackInSlot(i);
+			if(!slot.isEmpty()) {
+				ItemStack remainder = ItemHandlerHelper.insertItem(target, slot, false);
+				wrapper.setInventorySlotContents(i, remainder);
+			}
+		}
+		wrapper.markDirty();
 	}
 
 	/* HELPERS */
