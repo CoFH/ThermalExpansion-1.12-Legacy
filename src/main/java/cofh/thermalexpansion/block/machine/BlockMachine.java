@@ -311,14 +311,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 			builder.append("}");
 			if (tile.hasFluidUnderlay() && tile.isActive) {
 				FluidStack stack = tile.getRenderFluid();
-				int code = 1;
-				if (stack != null) {//Create a hash not including the fluid amount.
-					code = 31 * code + stack.getFluid().hashCode();
-					if (stack.tag != null) {
-						code = 31 * code + stack.tag.hashCode();
-					}
-				}
-				builder.append(",fluid=").append(stack != null ? code : tile.getTexture(tile.getFacing(), 0).getIconName());
+				builder.append(",fluid=").append(stack != null ? FluidHelper.getFluidHash(stack) : tile.getTexture(tile.getFacing(), 0).getIconName());
 			}
 			return builder.toString();
 		});

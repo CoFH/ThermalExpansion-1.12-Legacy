@@ -33,7 +33,7 @@ public class BakeryMachine extends CubeBakeryBase {
 
 	/**
 	 * Used to get the overlay texture for the given side.
-	 * This should specifically relate to the level of the machine and not it's state.
+	 * This should specifically relate to the level of the machine and not its state.
 	 *
 	 * @param face  The face.
 	 * @param level The level.

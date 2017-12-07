@@ -58,9 +58,6 @@ public class TransposerRecipeWrapperContainer extends TransposerRecipeWrapper {
 				}
 			}
 		}
-		System.out.println("Hey there");
-		System.out.println(recipeInputs.size());
-
 		inputs = recipeInputs;
 		outputs = recipeOutputs;
 
