@@ -9,6 +9,8 @@ import cofh.core.gui.container.IAugmentableContainer;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.gui.container.storage.ContainerSatchelFilter;
+import com.jcraft.jogg.Packet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -22,7 +24,7 @@ public class PacketTEBase extends PacketCoFHBase {
 	}
 
 	public enum PacketTypes {
-		RS_POWER_UPDATE, RS_CONFIG_UPDATE, TRANSFER_UPDATE, SECURITY_UPDATE, TAB_AUGMENT, CONFIG_SYNC
+		RS_POWER_UPDATE, RS_CONFIG_UPDATE, TRANSFER_UPDATE, SECURITY_UPDATE, TAB_AUGMENT, CONFIG_SYNC, FILTER_UPDATE
 	}
 
 	@Override
@@ -70,6 +72,13 @@ public class PacketTEBase extends PacketCoFHBase {
 				case TAB_AUGMENT:
 					if (player.openContainer instanceof IAugmentableContainer) {
 						((IAugmentableContainer) player.openContainer).setAugmentLock(getBool());
+					}
+					return;
+				case FILTER_UPDATE:
+					if(player.openContainer instanceof ContainerSatchelFilter) {
+						if(isServer) {
+							((ContainerSatchelFilter) player.openContainer).setFlag(getInt(), getBool());
+						}
 					}
 					return;
 				//				case CONFIG_SYNC:
@@ -126,6 +135,12 @@ public class PacketTEBase extends PacketCoFHBase {
 	public static void sendTabAugmentPacketToServer(boolean lock) {
 
 		PacketHandler.sendToServer(getPacket(PacketTypes.TAB_AUGMENT).addBool(lock));
+	}
+
+	/* FILTER */
+	public static void sendFilterPacketToServer(int flag, boolean value) {
+
+		PacketHandler.sendToServer(getPacket(PacketTypes.FILTER_UPDATE).addInt(flag).addBool(value));
 	}
 
 	//	public static void sendConfigSyncPacketToClient(EntityPlayer player) {
