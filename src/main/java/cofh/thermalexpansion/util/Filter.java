@@ -4,6 +4,7 @@ import cofh.core.util.helpers.InventoryHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalexpansion.ThermalExpansion;
+import gnu.trove.set.hash.TIntHashSet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -26,7 +27,7 @@ public class Filter implements INBTSerializable<NBTTagCompound> {
     public static final int FLAG_ORE_DICT = 3;
 
     private ItemStack[] items;
-    private List<Integer> oreIDs;
+    private TIntHashSet oreIDs;
     private boolean[] flags;
 
     public Filter(int size) {
@@ -34,7 +35,7 @@ public class Filter implements INBTSerializable<NBTTagCompound> {
         flags = new boolean[] { false, false, false, false };
         items = new ItemStack[size];
         Arrays.fill(items, ItemStack.EMPTY);
-        oreIDs = new ArrayList<>();
+        oreIDs = new TIntHashSet();
     }
 
     public void setFlag(int flag, boolean value) {
@@ -50,6 +51,7 @@ public class Filter implements INBTSerializable<NBTTagCompound> {
     public void setSlot(int index, ItemStack stack) {
 
         items[index] = stack;
+        updateOreIDs();
     }
 
     public ItemStack getSlot(int index) {
@@ -98,6 +100,16 @@ public class Filter implements INBTSerializable<NBTTagCompound> {
         return !ret;
     }
 
+    private void updateOreIDs() {
+
+        oreIDs.clear();
+        for(ItemStack item : items) {
+            if(!item.isEmpty()) {
+                oreIDs.addAll(OreDictionaryArbiter.getAllOreIDs(item));
+            }
+        }
+    }
+
     /* INBTSerializable */
     @Override
     public NBTTagCompound serializeNBT() {
@@ -130,6 +142,7 @@ public class Filter implements INBTSerializable<NBTTagCompound> {
             }
         }
         setFlagByte((int)nbt.getByte("Flags"));
+        updateOreIDs();
     }
 
     private void setFlagByte(int value) {
