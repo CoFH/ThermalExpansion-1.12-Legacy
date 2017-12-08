@@ -1,9 +1,8 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackSafe;
 import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
@@ -199,33 +198,17 @@ public class CentrifugeManager {
 	}
 
 	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackCentrifuge extends ComparableItemStack {
+	public static class ComparableItemStackCentrifuge extends ComparableItemStackSafe {
 
-		public static final String DUST = "dust";
-
-		public static boolean safeOreType(String oreName) {
+		@Override
+		public boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(DUST);
-		}
-
-		public static int getOreID(ItemStack stack) {
-
-			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
-
-			if (ids != null) {
-				for (Integer id : ids) {
-					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
-						return id;
-					}
-				}
-			}
-			return -1;
 		}
 
 		public ComparableItemStackCentrifuge(ItemStack stack) {
 
 			super(stack);
-			oreID = getOreID(stack);
 		}
 	}
 

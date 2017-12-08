@@ -12,11 +12,10 @@ import cofh.core.item.ItemMulti;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.RegistrySocial;
 import cofh.core.util.core.IInitializer;
+import cofh.core.util.filter.ItemFilterWrapper;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
-import cofh.thermalexpansion.gui.container.storage.ContainerSatchel;
-import cofh.thermalexpansion.util.FilterItemWrapper;
 import com.mojang.authlib.GameProfile;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -144,7 +143,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 				return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 			}
 			if (canPlayerAccess(stack, player)) {
-				if(player.isSneaking()) {
+				if (player.isSneaking() && ItemHelper.getItemDamage(stack) != CREATIVE) {
 					player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_FILTER_ID, world, 0, 0, 0);
 				} else {
 					player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_ID, world, 0, 0, 0);
@@ -158,29 +157,35 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	}
 
 	@Override
+	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+
+		System.out.println("called");
+		return EnumActionResult.PASS;
+	}
+
+	@Override
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
-		if(ServerHelper.isServerWorld(world)) {
+		if (ServerHelper.isServerWorld(world)) {
 			ItemStack stack = player.getHeldItem(hand);
 			if (player.isSneaking() && canPlayerAccess(stack, player)) {
 				TileEntity tile = world.getTileEntity(pos);
-				if(tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
+				if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
 					IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
 					dumpInventory(stack, cap);
 					return EnumActionResult.SUCCESS;
 				}
 			}
 		}
-
 		return EnumActionResult.FAIL;
 	}
 
 	private void dumpInventory(ItemStack stack, IItemHandler target) {
 
 		InventoryContainerItemWrapper wrapper = new InventoryContainerItemWrapper(stack);
-		for(int i = 0; i < getSizeInventory(stack); i++) {
+		for (int i = 0; i < getSizeInventory(stack); i++) {
 			ItemStack slot = wrapper.getStackInSlot(i);
-			if(!slot.isEmpty()) {
+			if (!slot.isEmpty()) {
 				ItemStack remainder = ItemHandlerHelper.insertItem(target, slot, false);
 				wrapper.setInventorySlotContents(i, remainder);
 			}
@@ -242,59 +247,50 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 		return (getLevel(stack) + 1) * 7;
 	}
 
-	public static void onItemPickup(EntityItemPickupEvent event, ItemStack stack) {
+	public static boolean onItemPickup(EntityItemPickupEvent event, ItemStack stack) {
 
-		if(!canPlayerAccess(stack, event.getEntityPlayer())) {
-			return;
+		if (!canPlayerAccess(stack, event.getEntityPlayer()) || ((ItemSatchel) stack.getItem()).getMode(stack) <= 0 || isCreative(stack)) {
+			return false;
 		}
-
-		if(event.getEntityPlayer().openContainer instanceof ContainerSatchel) {
-			return;
-		}
-
-		FilterItemWrapper wrapper = new FilterItemWrapper(stack, getFilterSize(stack));
+		ItemFilterWrapper wrapper = new ItemFilterWrapper(stack, getFilterSize(stack));
 		ItemStack eventItem = event.getItem().getItem();
 		int count = eventItem.getCount();
 
-		if(wrapper.getFilter().matches(eventItem)) {
+		if (wrapper.getFilter().matches(eventItem)) {
 			InventoryContainerItemWrapper inv = new InventoryContainerItemWrapper(stack);
-
 			for (int i = 0; i < inv.getSizeInventory(); i++) {
 				ItemStack slot = inv.getStackInSlot(i);
 				if (ItemHandlerHelper.canItemStacksStackRelaxed(eventItem, slot)) {
 					int fill = slot.getMaxStackSize() - slot.getCount();
-					if (fill > eventItem.getCount())
+					if (fill > eventItem.getCount()) {
 						slot.setCount(slot.getCount() + eventItem.getCount());
-					else
+					} else {
 						slot.setCount(slot.getMaxStackSize());
+					}
 					eventItem.splitStack(fill);
 				} else if (slot.isEmpty()) {
 					inv.setInventorySlotContents(i, eventItem.copy());
 					eventItem.setCount(0);
 				}
-
-				if(eventItem.isEmpty()) {
+				if (eventItem.isEmpty()) {
 					break;
 				}
 			}
-
-			if(eventItem.getCount() != count) {
+			if (eventItem.getCount() != count) {
 				EntityPlayer player = event.getEntityPlayer();
 				World world = player.world;
-
-				world.playSound(null, player.posX, player.posY, player.posZ,
-						SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-
+				world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 				inv.markDirty();
 			}
 		}
+		return eventItem.isEmpty();
 	}
 
 	/* IMultiModeItem */
 	@Override
 	public int getMode(ItemStack stack) {
 
-		return !stack.hasTagCompound() ? 0 : stack.getTagCompound().getInteger("Mode");
+		return !stack.hasTagCompound() || isCreative(stack) ? 0 : stack.getTagCompound().getInteger("Mode");
 	}
 
 	@Override
@@ -340,8 +336,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@Override
 	public int getNumModes(ItemStack stack) {
 
-		// return 3;
-		return 1;
+		return isCreative(stack) ? 1 : 2;
 	}
 
 	@Override

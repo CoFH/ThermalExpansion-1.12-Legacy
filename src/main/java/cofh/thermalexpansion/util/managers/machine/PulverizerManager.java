@@ -1,10 +1,9 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackSafe;
 import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
-import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalfoundation.block.BlockOreFluid;
 import cofh.thermalfoundation.init.TFEquipment;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -543,38 +542,21 @@ public class PulverizerManager {
 	}
 
 	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackPulverizer extends ComparableItemStack {
+	public static class ComparableItemStackPulverizer extends ComparableItemStackSafe {
 
-		public static final String ORE = "ore";
-		public static final String INGOT = "ingot";
-		public static final String NUGGET = "nugget";
-		public static final String PLANK = "plank";
-		public static final String LOG = "log";
-		public static final String SAND = "sand";
+		protected static final String PLANK = "plank";
+		protected static final String LOG = "log";
+		protected static final String SAND = "sand";
 
-		public static boolean safeOreType(String oreName) {
+		@Override
+		public boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.startsWith(PLANK) || oreName.startsWith(LOG) || oreName.equals(SAND);
-		}
-
-		public static int getOreID(ItemStack stack) {
-
-			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
-
-			if (ids != null) {
-				for (Integer id : ids) {
-					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
-						return id;
-					}
-				}
-			}
-			return -1;
 		}
 
 		public ComparableItemStackPulverizer(ItemStack stack) {
 
 			super(stack);
-			oreID = getOreID(stack);
 		}
 	}
 

@@ -1,9 +1,7 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.init.CoreProps;
-import cofh.core.inventory.ComparableItemStackNBT;
-import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.oredict.OreDictionaryArbiter;
+import cofh.core.inventory.ComparableItemStackSafeNBT;
 import cofh.thermalfoundation.block.BlockOreFluid;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -16,7 +14,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -190,38 +187,19 @@ public class CrucibleManager {
 	}
 
 	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackCrucible extends ComparableItemStackNBT {
+	public static class ComparableItemStackCrucible extends ComparableItemStackSafeNBT {
 
-		public static final String NUGGET = "nugget";
-		public static final String INGOT = "ingot";
-		public static final String ORE = "ore";
-		public static final String BLOCK = "block";
-		public static final String DUST = "dust";
 		public static final String PLATE = "plate";
 
-		public static boolean safeOreType(String oreName) {
+		@Override
+		public boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(INGOT) || oreName.startsWith(ORE) || oreName.startsWith(NUGGET) || oreName.startsWith(BLOCK) || oreName.startsWith(DUST) || oreName.equals(PLATE);
-		}
-
-		public static int getOreID(ItemStack stack) {
-
-			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
-
-			if (ids != null) {
-				for (Integer id : ids) {
-					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
-						return id;
-					}
-				}
-			}
-			return -1;
 		}
 
 		public ComparableItemStackCrucible(ItemStack stack) {
 
 			super(stack);
-			oreID = getOreID(stack);
 		}
 	}
 

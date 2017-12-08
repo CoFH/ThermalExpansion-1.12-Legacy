@@ -2,10 +2,9 @@ package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.init.CorePotions;
 import cofh.core.init.CoreProps;
-import cofh.core.inventory.ComparableItemStackNBT;
+import cofh.core.inventory.ComparableItemStackSafeNBT;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
@@ -16,8 +15,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class BrewerManager {
 
@@ -249,34 +251,17 @@ public class BrewerManager {
 	}
 
 	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackBrewer extends ComparableItemStackNBT {
+	public static class ComparableItemStackBrewer extends ComparableItemStackSafeNBT {
 
-		public static final String DUST = "dust";
-		public static final String NUGGET = "nugget";
-
-		public static boolean safeOreType(String oreName) {
+		@Override
+		public boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(DUST) || oreName.startsWith(NUGGET);
-		}
-
-		public static int getOreID(ItemStack stack) {
-
-			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
-
-			if (ids != null) {
-				for (Integer id : ids) {
-					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
-						return id;
-					}
-				}
-			}
-			return -1;
 		}
 
 		public ComparableItemStackBrewer(ItemStack stack) {
 
 			super(stack);
-			oreID = getOreID(stack);
 		}
 	}
 

@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.gui.client.storage;
 
+import cofh.api.core.IFilterable;
 import cofh.api.core.ISecurable;
 import cofh.core.gui.GuiContainerCore;
 import cofh.core.gui.element.ElementButton;
@@ -9,8 +10,6 @@ import cofh.core.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.gui.container.storage.ContainerSatchelFilter;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.ItemSatchel;
-import cofh.thermalexpansion.network.PacketTEBase;
-import cofh.thermalexpansion.util.Filter;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -19,128 +18,128 @@ import java.util.UUID;
 
 public class GuiSatchelFilter extends GuiContainerCore {
 
-    static final String TEXTURE_PATH = TEProps.PATH_GUI_STORAGE + "satchel_filter.png";
-    static final ResourceLocation TEXTURE = new ResourceLocation(TEXTURE_PATH);
+	static final String TEXTURE_PATH = TEProps.PATH_GUI_STORAGE + "satchel_filter.png";
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEXTURE_PATH);
 
-    ElementButton buttonList;
-    ElementButton buttonMeta;
-    ElementButton buttonNbt;
-    ElementButton buttonOre;
+	ElementButton buttonList;
+	ElementButton buttonMeta;
+	ElementButton buttonNbt;
+	ElementButton buttonOre;
 
-    int level;
-    boolean secure;
+	int level;
+	boolean secure;
 
-    UUID playerName;
+	UUID playerName;
 
-    public GuiSatchelFilter(InventoryPlayer inventory, ContainerSatchelFilter container) {
-        super(container);
+	public GuiSatchelFilter(InventoryPlayer inventory, ContainerSatchelFilter container) {
 
-        level = ItemSatchel.getLevel(container.getFilterStack());
-        secure = SecurityHelper.isSecure(container.getFilterStack());
+		super(container);
 
-        playerName = SecurityHelper.getID(inventory.player);
-        name = container.getFilterStack().getDisplayName();
-        texture = TEXTURE;
+		level = ItemSatchel.getLevel(container.getFilterStack());
+		secure = SecurityHelper.isSecure(container.getFilterStack());
 
-        allowUserInput = false;
+		playerName = SecurityHelper.getID(inventory.player);
+		texture = TEXTURE;
+		name = container.getInventoryName();
 
-        xSize = 176;
-        ySize = 214;
+		allowUserInput = false;
 
-        generateInfo("tab.thermalexpansion.storage.satchel_filter");
-    }
+		xSize = 176;
+		ySize = 214;
 
-    @Override
-    public void initGui() {
+		generateInfo("tab.thermalexpansion.storage.satchel_filter");
+	}
 
-        super.initGui();
+	@Override
+	public void initGui() {
 
-        if (!myInfo.isEmpty()) {
-            addTab(new TabInfo(this, myInfo));
-        }
-        if (ItemSatchel.enableSecurity && secure) {
-            addTab(new TabSecurity(this, (ISecurable) inventorySlots, playerName));
-        }
+		super.initGui();
 
-        buttonList = new ElementButton(this, 144, 20, "FilterList",  176, 0, 176, 20,20, 20, TEXTURE_PATH);
-        buttonMeta = new ElementButton(this, 144, 43, "FilterMeta",  176, 60, 176, 80, 20, 20, TEXTURE_PATH);
-        buttonNbt = new ElementButton(this, 144, 67, "FilterNbt",  216, 0, 216, 20, 20, 20, TEXTURE_PATH);
-        buttonOre = new ElementButton(this, 144, 90, "FilterOre", 216, 60, 216, 80, 20, 20, TEXTURE_PATH);
+		if (!myInfo.isEmpty()) {
+			addTab(new TabInfo(this, myInfo));
+		}
+		if (ItemSatchel.enableSecurity && secure) {
+			addTab(new TabSecurity(this, (ISecurable) inventorySlots, playerName));
+		}
+		buttonList = new ElementButton(this, 144, 20, "FilterList", 176, 0, 176, 20, 20, 20, TEXTURE_PATH);
+		buttonMeta = new ElementButton(this, 144, 43, "FilterMeta", 176, 60, 176, 80, 20, 20, TEXTURE_PATH);
+		buttonNbt = new ElementButton(this, 144, 67, "FilterNbt", 216, 0, 216, 20, 20, 20, TEXTURE_PATH);
+		buttonOre = new ElementButton(this, 144, 90, "FilterOre", 216, 60, 216, 80, 20, 20, TEXTURE_PATH);
 
-        addElement(buttonList);
-        addElement(buttonMeta);
-        addElement(buttonNbt);
-        addElement(buttonOre);
+		addElement(buttonList);
+		addElement(buttonMeta);
+		addElement(buttonNbt);
+		addElement(buttonOre);
 
-        updateButtons();
-    }
+		updateButtons();
+	}
 
-    @Override
-    public void handleElementButtonClick(String buttonName, int mouseButton) {
+	@Override
+	public void handleElementButtonClick(String buttonName, int mouseButton) {
 
-        ContainerSatchelFilter container = (ContainerSatchelFilter)inventorySlots;
-        int flag = 0;
-        switch(buttonName) {
-            case "FilterList":
-                flag = Filter.FLAG_BLACKLIST;
-                break;
-            case "FilterMeta":
-                flag = Filter.FLAG_META;
-                break;
-            case "FilterNbt":
-                flag = Filter.FLAG_NBT;
-                break;
-            case "FilterOre":
-                flag = Filter.FLAG_ORE_DICT;
-                break;
-        }
+		ContainerSatchelFilter container = (ContainerSatchelFilter) inventorySlots;
+		int flag = 0;
+		switch (buttonName) {
+			case "FilterList":
+				flag = IFilterable.FLAG_BLACKLIST;
+				break;
+			case "FilterMeta":
+				flag = IFilterable.FLAG_META;
+				break;
+			case "FilterNbt":
+				flag = IFilterable.FLAG_NBT;
+				break;
+			case "FilterOre":
+				flag = IFilterable.FLAG_ORE_DICT;
+				break;
+		}
+		playClickSound(container.getFlag(flag) ? 0.5F : 0.8F);
+		container.setFlag(flag, !container.getFlag(flag));
+		updateButtons();
+	}
 
-        playClickSound(container.getFlag(flag) ? 0.5f : 0.8f);
-        container.setFlag(flag, !container.getFlag(flag));
-        updateButtons();
-    }
+	private void updateButtons() {
 
-    private void updateButtons() {
+		ContainerSatchelFilter container = (ContainerSatchelFilter) inventorySlots;
 
-        ContainerSatchelFilter container = (ContainerSatchelFilter)inventorySlots;
+		int x = container.getFlag(IFilterable.FLAG_BLACKLIST) ? 196 : 176;
+		buttonList.setSheetX(x);
+		buttonList.setHoverX(x);
 
-        int x = container.getFlag(Filter.FLAG_BLACKLIST) ? 196 : 176;
-        buttonList.setSheetX(x);
-        buttonList.setHoverX(x);
+		x = container.getFlag(IFilterable.FLAG_META) ? 176 : 196;
+		buttonMeta.setSheetX(x);
+		buttonMeta.setHoverX(x);
 
-        x = container.getFlag(Filter.FLAG_META) ? 176 : 196;
-        buttonMeta.setSheetX(x);
-        buttonMeta.setHoverX(x);
+		x = container.getFlag(IFilterable.FLAG_NBT) ? 216 : 236;
+		buttonNbt.setSheetX(x);
+		buttonNbt.setHoverX(x);
 
-        x = container.getFlag(Filter.FLAG_NBT) ? 216 : 236;
-        buttonNbt.setSheetX(x);
-        buttonNbt.setHoverX(x);
+		x = container.getFlag(IFilterable.FLAG_ORE_DICT) ? 216 : 236;
+		buttonOre.setSheetX(x);
+		buttonOre.setHoverX(x);
+	}
 
-        x = container.getFlag(Filter.FLAG_ORE_DICT) ? 216 : 236;
-        buttonOre.setSheetX(x);
-        buttonOre.setHoverX(x);
-    }
+	@Override
+	protected void drawGuiContainerBackgroundLayer(float partialTick, int x, int y) {
 
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTick, int x, int y) {
+		super.drawGuiContainerBackgroundLayer(partialTick, x, y);
 
-        super.drawGuiContainerBackgroundLayer(partialTick, x, y);
+		GlStateManager.color(1, 1, 1, 1);
+		bindTexture(texture);
 
-        GlStateManager.color(1, 1, 1, 1);
-        bindTexture(texture);
+		drawSlots();
+	}
 
-        drawSlots();
-    }
+	private void drawSlots() {
 
-    private void drawSlots() {
-        int x0 = guiLeft + 6;
-        int y0 = guiTop + 20;
+		int x0 = guiLeft + 6;
+		int y0 = guiTop + 20;
 
-        for(int i = 0; i <= level; i++) {
-            for(int j = 0; j < 7; j++) {
-                drawTexturedModalRect(x0 + (18 * j), y0 + (18 * i), 7, 132, 18, 18);
-            }
-        }
-    }
+		for (int i = 0; i <= level; i++) {
+			for (int j = 0; j < 7; j++) {
+				drawTexturedModalRect(x0 + (18 * j), y0 + (18 * i), 7, 132, 18, 18);
+			}
+		}
+	}
 
 }

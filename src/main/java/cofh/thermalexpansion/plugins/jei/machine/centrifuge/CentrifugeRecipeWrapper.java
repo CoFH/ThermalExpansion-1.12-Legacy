@@ -12,6 +12,7 @@ import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -36,8 +37,10 @@ public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 
-		if (ComparableItemStackCentrifuge.getOreID(recipe.getInput()) != -1) {
-			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()), false)) {
+		ComparableItemStackCentrifuge instance = new ComparableItemStackCentrifuge(new ItemStack(Items.DIAMOND));
+		int oreID = instance.getOreID(recipe.getInput());
+		if (oreID != -1) {
+			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));
 			}
 		} else {

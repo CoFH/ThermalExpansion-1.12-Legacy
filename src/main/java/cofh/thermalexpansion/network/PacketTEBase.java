@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.network;
 
+import cofh.api.core.IFilterable;
 import cofh.api.core.ISecurable;
 import cofh.api.core.ISecurable.AccessMode;
 import cofh.api.tileentity.IRedstoneControl;
@@ -9,8 +10,6 @@ import cofh.core.gui.container.IAugmentableContainer;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.gui.container.storage.ContainerSatchelFilter;
-import com.jcraft.jogg.Packet;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -69,18 +68,19 @@ public class PacketTEBase extends PacketCoFHBase {
 						((ISecurable) player.openContainer).setAccess(AccessMode.values()[getByte()]);
 					}
 					return;
+				case FILTER_UPDATE:
+					if (player.openContainer instanceof IFilterable) {
+						if (isServer) {
+							((IFilterable) player.openContainer).setFlag(getInt(), getBool());
+						}
+					}
+					return;
 				case TAB_AUGMENT:
 					if (player.openContainer instanceof IAugmentableContainer) {
 						((IAugmentableContainer) player.openContainer).setAugmentLock(getBool());
 					}
 					return;
-				case FILTER_UPDATE:
-					if(player.openContainer instanceof ContainerSatchelFilter) {
-						if(isServer) {
-							((ContainerSatchelFilter) player.openContainer).setFlag(getInt(), getBool());
-						}
-					}
-					return;
+
 				//				case CONFIG_SYNC:
 				//					ThermalExpansion.instance.handleConfigSync(this);
 				//					return;
@@ -132,11 +132,6 @@ public class PacketTEBase extends PacketCoFHBase {
 		PacketHandler.sendToServer(getPacket(PacketTypes.SECURITY_UPDATE).addByte(securable.getAccess().ordinal()));
 	}
 
-	public static void sendTabAugmentPacketToServer(boolean lock) {
-
-		PacketHandler.sendToServer(getPacket(PacketTypes.TAB_AUGMENT).addBool(lock));
-	}
-
 	/* FILTER */
 	public static void sendFilterPacketToServer(int flag, boolean value) {
 
@@ -147,6 +142,12 @@ public class PacketTEBase extends PacketCoFHBase {
 	//
 	//		PacketHandler.sendTo(ThermalExpansion.instance.getConfigSync(), player);
 	//	}
+
+	/* AUGMENT TAB */
+	public static void sendTabAugmentPacketToServer(boolean lock) {
+
+		PacketHandler.sendToServer(getPacket(PacketTypes.TAB_AUGMENT).addBool(lock));
+	}
 
 	public static PacketCoFHBase getPacket(PacketTypes theType) {
 

@@ -1,8 +1,7 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackSafe;
 import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
@@ -14,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -246,6 +244,8 @@ public class FurnaceManager {
 		reservedMap.put("dustLumium", ItemMaterial.ingotLumium);
 		reservedMap.put("dustEnderium", ItemMaterial.ingotEnderium);
 
+		ComparableItemStackFurnace instance = new ComparableItemStackFurnace(new ItemStack(Items.DIAMOND));
+
 		for (ItemStack key : smeltingList.keySet()) {
 			if (key.isEmpty() || recipeExists(key)) {
 				continue;
@@ -274,7 +274,7 @@ public class FurnaceManager {
 					ItemStack testKey = ItemHelper.cloneStack(key);
 					testKey.setItemDamage(0);
 
-					if (ItemHelper.hasOreName(testKey) && ComparableItemStackFurnace.safeOreType(ItemHelper.getOreName(testKey))) {
+					if (ItemHelper.hasOreName(testKey) && instance.safeOreType(ItemHelper.getOreName(testKey))) {
 						addRecipe(energy, testKey, output);
 						continue;
 					}
@@ -397,36 +397,19 @@ public class FurnaceManager {
 	}
 
 	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackFurnace extends ComparableItemStack {
+	public static class ComparableItemStackFurnace extends ComparableItemStackSafe {
 
-		public static final String ORE = "ore";
-		public static final String DUST = "dust";
 		public static final String LOG = "log";
 
-		public static boolean safeOreType(String oreName) {
+		@Override
+		public boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(LOG);
-		}
-
-		public static int getOreID(ItemStack stack) {
-
-			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
-
-			if (ids != null) {
-				for (int i = 0, e = ids.size(); i < e; ) {
-					int id = ids.get(i++);
-					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
-						return id;
-					}
-				}
-			}
-			return -1;
 		}
 
 		public ComparableItemStackFurnace(ItemStack stack) {
 
 			super(stack);
-			oreID = getOreID(stack);
 		}
 	}
 

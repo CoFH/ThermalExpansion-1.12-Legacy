@@ -179,21 +179,25 @@ public class GuiCell extends GuiContainerCore {
 		int curReceive = baseTile.amountRecv;
 		int curSend = baseTile.amountSend;
 
-		if (buttonName.equalsIgnoreCase("DecRecv")) {
-			baseTile.amountRecv -= change;
-			pitch -= 0.1F;
-		} else if (buttonName.equalsIgnoreCase("IncRecv")) {
-			baseTile.amountRecv += change;
-			pitch += 0.1F;
-		} else if (buttonName.equalsIgnoreCase("DecSend")) {
-			baseTile.amountSend -= change;
-			pitch -= 0.1F;
-		} else if (buttonName.equalsIgnoreCase("IncSend")) {
-			baseTile.amountSend += change;
-			pitch += 0.1F;
+		switch (buttonName) {
+			case "DecRecv":
+				baseTile.amountRecv -= change;
+				pitch -= 0.1F;
+				break;
+			case "IncRecv":
+				baseTile.amountRecv += change;
+				pitch += 0.1F;
+				break;
+			case "DecSend":
+				baseTile.amountSend -= change;
+				pitch -= 0.1F;
+				break;
+			case "IncSend":
+				baseTile.amountSend += change;
+				pitch += 0.1F;
+				break;
 		}
 		playClickSound(pitch);
-
 		baseTile.sendModePacket();
 
 		baseTile.amountRecv = curReceive;

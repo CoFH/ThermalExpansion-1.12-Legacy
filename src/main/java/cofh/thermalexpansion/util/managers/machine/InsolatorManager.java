@@ -1,9 +1,8 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackSafe;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
-import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
@@ -424,35 +423,21 @@ public class InsolatorManager {
 	}
 
 	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackInsolator extends ComparableItemStack {
+	public static class ComparableItemStackInsolator extends ComparableItemStackSafe {
 
 		public static final String SEED = "seed";
 		public static final String CROP = "crop";
 		public static final String SEEDS_TIER = "seedsTier";
 
-		public static boolean safeOreType(String oreName) {
+		@Override
+		public boolean safeOreType(String oreName) {
 
 			return !oreName.startsWith(SEEDS_TIER) && (oreName.startsWith(SEED) || oreName.startsWith(CROP));
-		}
-
-		public static int getOreID(ItemStack stack) {
-
-			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
-
-			if (ids != null) {
-				for (Integer id : ids) {
-					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
-						return id;
-					}
-				}
-			}
-			return -1;
 		}
 
 		public ComparableItemStackInsolator(ItemStack stack) {
 
 			super(stack);
-			oreID = getOreID(stack);
 		}
 	}
 

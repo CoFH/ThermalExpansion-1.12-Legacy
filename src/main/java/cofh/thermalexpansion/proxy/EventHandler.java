@@ -1,13 +1,13 @@
 package cofh.thermalexpansion.proxy;
 
-import cofh.core.util.helpers.InventoryHelper;
+import cofh.thermalexpansion.gui.container.storage.ContainerSatchel;
+import cofh.thermalexpansion.gui.container.storage.ContainerSatchelFilter;
 import cofh.thermalexpansion.item.ItemSatchel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 public class EventHandler {
@@ -21,18 +21,20 @@ public class EventHandler {
 	}
 
 	@SubscribeEvent
-	public void handleItemPickup(EntityItemPickupEvent event) {
+	public void handleEntityItemPickup(EntityItemPickupEvent event) {
 
-		if(event.isCanceled()) {
+		if (event.isCanceled()) {
 			return;
 		}
-
-		InventoryPlayer inventory = event.getEntityPlayer().inventory;
-		for(int i = 0; i < inventory.getSizeInventory(); i++) {
-
+		EntityPlayer player = event.getEntityPlayer();
+		if (player.openContainer instanceof ContainerSatchel || player.openContainer instanceof ContainerSatchelFilter) {
+			return;
+		}
+		InventoryPlayer inventory = player.inventory;
+		for (int i = 0; i < inventory.getSizeInventory(); i++) {
 			ItemStack stack = inventory.getStackInSlot(i);
-			if(stack.getItem() instanceof ItemSatchel) {
-				ItemSatchel.onItemPickup(event, stack);
+			if (stack.getItem() instanceof ItemSatchel && ItemSatchel.onItemPickup(event, stack)) {
+				event.setCanceled(true);
 				return;
 			}
 		}

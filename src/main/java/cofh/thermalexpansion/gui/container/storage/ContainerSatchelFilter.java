@@ -1,156 +1,186 @@
 package cofh.thermalexpansion.gui.container.storage;
 
+import cofh.api.core.IFilterable;
 import cofh.api.core.ISecurable;
 import cofh.core.gui.container.ContainerCore;
+import cofh.core.gui.slot.SlotLocked;
 import cofh.core.util.CoreUtils;
+import cofh.core.util.filter.ItemFilterWrapper;
 import cofh.core.util.helpers.SecurityHelper;
-import cofh.thermalexpansion.gui.slot.SlotFilter;
+import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.gui.slot.SlotSatchelFilter;
 import cofh.thermalexpansion.item.ItemSatchel;
 import cofh.thermalexpansion.network.PacketTEBase;
-import cofh.thermalexpansion.util.FilterItemWrapper;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class ContainerSatchelFilter extends ContainerCore implements ISecurable {
+public class ContainerSatchelFilter extends ContainerCore implements IFilterable, ISecurable {
 
-    private FilterItemWrapper filterWrapper;
-    private EntityPlayer player;
-    private int filterIndex;
-    private boolean valid = true;
+	protected final ItemFilterWrapper filterWrapper;
+	protected final EntityPlayer player;
+	protected final int filterIndex;
+	protected boolean valid = true;
 
-    public ContainerSatchelFilter(ItemStack stack, InventoryPlayer inventory) {
+	public ContainerSatchelFilter(ItemStack stack, InventoryPlayer inventory) {
 
-        filterWrapper = new FilterItemWrapper(stack, ItemSatchel.getFilterSize(stack) + 7);
-        filterIndex = inventory.currentItem;
-        player = inventory.player;
+		player = inventory.player;
+		filterIndex = inventory.currentItem;
+		filterWrapper = new ItemFilterWrapper(stack, ItemSatchel.getFilterSize(stack));
 
-        bindPlayerInventory(inventory);
-        addFilterSlots();
-    }
+		addFilterSlots();
+		bindPlayerInventory(inventory);
+	}
 
-    private void addFilterSlots() {
+	private void addFilterSlots() {
 
-        int x0 = 7;
-        int y0 = 21;
+		int x0 = 7;
+		int y0 = 21;
 
-        for(int i = 0; i <= ItemSatchel.getLevel(filterWrapper.getFilterStack()); i++) {
-            for(int j = 0; j < 7; j++) {
-                addSlotToContainer(new SlotFilter(filterWrapper, 7 * i + j, x0 + (18 * j), y0 + (18 * i)));
-            }
-        }
-    }
+		for (int i = 0; i <= ItemSatchel.getLevel(filterWrapper.getFilterStack()); i++) {
+			for (int j = 0; j < 7; j++) {
+				addSlotToContainer(new SlotSatchelFilter(filterWrapper, 7 * i + j, x0 + (18 * j), y0 + (18 * i)));
+			}
+		}
+	}
 
-    public ItemStack getFilterStack() {
+	@Override
+	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
 
-        return filterWrapper.getFilterStack();
-    }
+		int xOffset = getPlayerInventoryHorizontalOffset();
+		int yOffset = getPlayerInventoryVerticalOffset();
 
-    public void setFlag(int flag, boolean value) {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
+				addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, xOffset + j * 18, yOffset + i * 18));
+			}
+		}
+		for (int i = 0; i < 9; i++) {
+			if (i == inventoryPlayer.currentItem) {
+				addSlotToContainer(new SlotLocked(inventoryPlayer, i, xOffset + i * 18, yOffset + 58));
+			} else {
+				addSlotToContainer(new Slot(inventoryPlayer, i, xOffset + i * 18, yOffset + 58));
+			}
+		}
+	}
 
-        filterWrapper.getFilter().setFlag(flag, value);
-        if(CoreUtils.isClient()) {
-            PacketTEBase.sendFilterPacketToServer(flag, value);
-        }
+	@Override
+	protected int getPlayerInventoryVerticalOffset() {
 
-        filterWrapper.markDirty();
-    }
+		return 133;
+	}
 
-    public boolean getFlag(int flag) {
+	@Override
+	protected int getSizeInventory() {
 
-        return filterWrapper.getFilter().getFlag(flag);
-    }
+		return 0;
+	}
 
-    @Override
-    public void detectAndSendChanges() {
+	@Override
+	public void detectAndSendChanges() {
 
-        ItemStack item = player.inventory.mainInventory.get(filterIndex);
-        if (item.isEmpty() || item.getItem() != filterWrapper.getFilterItem()) {
-            valid = false;
-            return;
-        }
-        super.detectAndSendChanges();
-    }
+		ItemStack item = player.inventory.mainInventory.get(filterIndex);
+		if (item.isEmpty() || item.getItem() != filterWrapper.getFilterItem()) {
+			valid = false;
+			return;
+		}
+		super.detectAndSendChanges();
+	}
 
-    public void onSlotChanged() {
+	@Override
+	public boolean canInteractWith(EntityPlayer player) {
 
-        ItemStack item = player.inventory.mainInventory.get(filterIndex);
-        if (valid && !item.isEmpty() && item.getItem() == filterWrapper.getFilterItem()) {
-            player.inventory.mainInventory.set(filterIndex, filterWrapper.getFilterStack());
-        }
-    }
+		onSlotChanged();
+		if (filterWrapper.getDirty() && !valid) {
+			player.inventory.setItemStack(ItemStack.EMPTY);
+		}
+		return valid;
+	}
 
-    @Override
-    public boolean canInteractWith(EntityPlayer player) {
+	/* HELPERS */
+	public void onSlotChanged() {
 
-        onSlotChanged();
-        if (filterWrapper.getDirty() && !valid) {
-            player.inventory.setItemStack(ItemStack.EMPTY);
-        }
-        return valid;
-    }
+		ItemStack item = player.inventory.mainInventory.get(filterIndex);
+		if (valid && !item.isEmpty() && item.getItem() == filterWrapper.getFilterItem()) {
+			player.inventory.mainInventory.set(filterIndex, filterWrapper.getFilterStack());
+		}
+	}
 
-    @Override
-    protected int getPlayerInventoryVerticalOffset() {
+	public boolean getFlag(int flag) {
 
-        return 133;
-    }
+		return filterWrapper.getFilter().getFlag(flag);
+	}
 
-    @Override
-    protected int getSizeInventory() {
-        return 0;
-    }
+	public String getInventoryName() {
 
-    /* ISecurable */
-    @Override
-    public boolean setAccess(ISecurable.AccessMode access) {
+		return filterWrapper.hasCustomName() ? filterWrapper.getName() : StringHelper.localize(ContainerSatchel.NAME);
+	}
 
-        if (SecurityHelper.setAccess(getFilterStack(), access)) {
-            onSlotChanged();
+	public ItemStack getFilterStack() {
 
-            if (CoreUtils.isClient()) {
-                PacketTEBase.sendSecurityPacketToServer(this);
-            }
-            return true;
-        }
-        return false;
-    }
+		return filterWrapper.getFilterStack();
+	}
 
-    @Override
-    public ISecurable.AccessMode getAccess() {
+	/* IFilterable */
+	public void setFlag(int flag, boolean value) {
 
-        return SecurityHelper.getAccess(getFilterStack());
-    }
+		filterWrapper.getFilter().setFlag(flag, value);
+		if (CoreUtils.isClient()) {
+			PacketTEBase.sendFilterPacketToServer(flag, value);
+		}
+		filterWrapper.markDirty();
+	}
 
-    @Override
-    public String getOwnerName() {
+	/* ISecurable */
+	@Override
+	public boolean setAccess(AccessMode access) {
 
-        return SecurityHelper.getOwnerName(getFilterStack());
-    }
+		if (SecurityHelper.setAccess(getFilterStack(), access)) {
+			onSlotChanged();
+			if (CoreUtils.isClient()) {
+				PacketTEBase.sendSecurityPacketToServer(this);
+			}
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public GameProfile getOwner() {
+	@Override
+	public AccessMode getAccess() {
 
-        return SecurityHelper.getOwner(getFilterStack());
-    }
+		return SecurityHelper.getAccess(getFilterStack());
+	}
 
-    @Override
-    public boolean canPlayerAccess(EntityPlayer player) {
+	@Override
+	public String getOwnerName() {
 
-        throw new UnsupportedOperationException();
-    }
+		return SecurityHelper.getOwnerName(getFilterStack());
+	}
 
-    @Override
-    public boolean setOwnerName(String name) {
+	@Override
+	public GameProfile getOwner() {
 
-        throw new UnsupportedOperationException();
-    }
+		return SecurityHelper.getOwner(getFilterStack());
+	}
 
-    @Override
-    public boolean setOwner(GameProfile name) {
+	@Override
+	public boolean canPlayerAccess(EntityPlayer player) {
 
-        throw new UnsupportedOperationException();
-    }
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean setOwnerName(String name) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean setOwner(GameProfile name) {
+
+		throw new UnsupportedOperationException();
+	}
+
 }

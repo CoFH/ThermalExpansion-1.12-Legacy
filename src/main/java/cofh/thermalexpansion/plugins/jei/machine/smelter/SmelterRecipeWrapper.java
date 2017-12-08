@@ -16,6 +16,7 @@ import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -54,7 +55,8 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeInputsPrimary = new ArrayList<>();
 		List<ItemStack> recipeInputsSecondary = new ArrayList<>();
 
-		int oreID = ComparableItemStackSmelter.getOreID(recipe.getPrimaryInput());
+		ComparableItemStackSmelter instance = new ComparableItemStackSmelter(new ItemStack(Items.DIAMOND));
+		int oreID = instance.getOreID(recipe.getPrimaryInput());
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputsPrimary.add(ItemHelper.cloneStack(ore, recipe.getPrimaryInput().getCount()));
@@ -62,7 +64,7 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 		} else {
 			recipeInputsPrimary.add(recipe.getPrimaryInput());
 		}
-		oreID = ComparableItemStackSmelter.getOreID(recipe.getSecondaryInput());
+		oreID = instance.getOreID(recipe.getSecondaryInput());
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputsSecondary.add(ItemHelper.cloneStack(ore, recipe.getSecondaryInput().getCount()));

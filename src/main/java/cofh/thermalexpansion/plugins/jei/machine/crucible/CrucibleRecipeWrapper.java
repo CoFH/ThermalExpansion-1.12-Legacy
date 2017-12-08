@@ -43,7 +43,7 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 
-		int oreID = ComparableItemStackCrucible.getOreID(recipe.getInput());
+		int oreID = new ComparableItemStackCrucible(recipe.getInput()).getOreID(recipe.getInput());
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));

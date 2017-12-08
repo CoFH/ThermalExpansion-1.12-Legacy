@@ -133,21 +133,25 @@ public class GuiItemBuffer extends GuiDeviceBase {
 		int curInput = myTile.amountInput;
 		int curOutput = myTile.amountOutput;
 
-		if (buttonName.equalsIgnoreCase("DecInput")) {
-			myTile.amountInput -= change;
-			pitch -= 0.1F;
-		} else if (buttonName.equalsIgnoreCase("IncInput")) {
-			myTile.amountInput += change;
-			pitch += 0.1F;
-		} else if (buttonName.equalsIgnoreCase("DecOutput")) {
-			myTile.amountOutput -= change;
-			pitch -= 0.1F;
-		} else if (buttonName.equalsIgnoreCase("IncOutput")) {
-			myTile.amountOutput += change;
-			pitch += 0.1F;
+		switch (buttonName) {
+			case "DecInput":
+				myTile.amountInput -= change;
+				pitch -= 0.1F;
+				break;
+			case "IncInput":
+				myTile.amountInput += change;
+				pitch += 0.1F;
+				break;
+			case "DecOutput":
+				myTile.amountOutput -= change;
+				pitch -= 0.1F;
+				break;
+			case "IncOutput":
+				myTile.amountOutput += change;
+				pitch += 0.1F;
+				break;
 		}
 		playClickSound(pitch);
-
 		myTile.sendModePacket();
 
 		myTile.amountInput = curInput;

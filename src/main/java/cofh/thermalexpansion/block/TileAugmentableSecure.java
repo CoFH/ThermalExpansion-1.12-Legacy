@@ -415,7 +415,6 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	public boolean setAccess(AccessMode access) {
 
 		this.access = access;
-
 		if (ServerHelper.isClientWorld(world)) {
 			sendAccessPacket();
 		}

@@ -16,6 +16,7 @@ import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -51,7 +52,8 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 		List<FluidStack> recipeOutputFluids = new ArrayList<>();
 
-		int oreID = ComparableItemStackSawmill.getOreID(recipe.getInput());
+		ComparableItemStackSawmill instance = new ComparableItemStackSawmill(new ItemStack(Items.DIAMOND));
+		int oreID = instance.getOreID(recipe.getInput());
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));

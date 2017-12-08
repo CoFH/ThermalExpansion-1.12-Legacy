@@ -1,8 +1,6 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStack;
-import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.oredict.OreDictionaryArbiter;
+import cofh.core.inventory.ComparableItemStackSafe;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.enchantment.Enchantment;
@@ -12,8 +10,11 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class EnchanterManager {
 
@@ -285,34 +286,20 @@ public class EnchanterManager {
 	}
 
 	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackEnchanter extends ComparableItemStack {
+	public static class ComparableItemStackEnchanter extends ComparableItemStackSafe {
 
 		public static final String INGOT = "ingot";
 		public static final String NUGGET = "nugget";
 
-		public static boolean safeOreType(String oreName) {
+		@Override
+		public boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(INGOT) || oreName.startsWith(NUGGET);
-		}
-
-		public static int getOreID(ItemStack stack) {
-
-			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
-
-			if (ids != null) {
-				for (Integer id : ids) {
-					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
-						return id;
-					}
-				}
-			}
-			return -1;
 		}
 
 		public ComparableItemStackEnchanter(ItemStack stack) {
 
 			super(stack);
-			oreID = getOreID(stack);
 		}
 	}
 

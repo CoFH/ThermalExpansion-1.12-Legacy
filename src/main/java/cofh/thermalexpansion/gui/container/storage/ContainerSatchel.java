@@ -46,7 +46,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 		int slots = rowSize * rows;
 		int yOffset = 17;
 
-		addPlayerSlotsToContainer(inventory, 8 + 9 * (rowSize - 9), rows);
+		bindPlayerInventory(inventory);
 
 		if (storageIndex == 0) {
 			addSlotToContainer(new SlotSatchelCreative(this, containerWrapper, 0, 80, 26));
@@ -63,6 +63,25 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 		}
 	}
 
+	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
+
+		int xOffset = getPlayerInventoryHorizontalOffset();
+		int yOffset = getPlayerInventoryVerticalOffset();
+
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
+				addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, xOffset + j * 18, yOffset + i * 18));
+			}
+		}
+		for (int i = 0; i < 9; i++) {
+			if (i == inventoryPlayer.currentItem) {
+				addSlotToContainer(new SlotLocked(inventoryPlayer, i, xOffset + i * 18, yOffset + 58));
+			} else {
+				addSlotToContainer(new Slot(inventoryPlayer, i, xOffset + i * 18, yOffset + 58));
+			}
+		}
+	}
+
 	@Override
 	public String getInventoryName() {
 
@@ -72,45 +91,13 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	@Override
 	protected int getPlayerInventoryVerticalOffset() {
 
-		return 84;
+		return 30 + 18 * MathHelper.clamp(storageIndex, 2, 9);
 	}
 
-	private void addPlayerSlotsToContainer(InventoryPlayer inventory, int invOffset, int rows) {
+	@Override
+	protected int getPlayerInventoryHorizontalOffset() {
 
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, invOffset + j * 18, 30 + 18 * rows + i * 18));
-			}
-		}
-		for (int i = 0; i < 9; i++) {
-			if (i == inventory.currentItem) {
-				addSlotToContainer(new SlotLocked(inventory, i, invOffset + i * 18, 88 + 18 * rows));
-			} else {
-				addSlotToContainer(new Slot(inventory, i, invOffset + i * 18, 88 + 18 * rows));
-			}
-		}
-	}
-
-	/* Inventory Tweaks */
-	@Optional.Method (modid = "inventorytweaks")
-	@RowSizeCallback
-	public int getRowSize() {
-
-		return rowSize;
-	}
-
-	@ContainerSectionCallback
-	@Optional.Method (modid = "inventorytweaks")
-	public Map<ContainerSection, List<Slot>> getContainerSections() {
-
-		Map<ContainerSection, List<Slot>> slotRefs = new THashMap<ContainerSection, List<Slot>>();
-
-		slotRefs.put(ContainerSection.INVENTORY, inventorySlots.subList(0, 36));
-		slotRefs.put(ContainerSection.INVENTORY_NOT_HOTBAR, inventorySlots.subList(0, 27));
-		slotRefs.put(ContainerSection.INVENTORY_HOTBAR, inventorySlots.subList(27, 36));
-		slotRefs.put(ContainerSection.CHEST, inventorySlots.subList(36, inventorySlots.size()));
-
-		return slotRefs;
+		return 8 + 9 * (rowSize - 9);
 	}
 
 	/* ISecurable */
@@ -119,7 +106,6 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 
 		if (SecurityHelper.setAccess(getContainerStack(), access)) {
 			onSlotChanged();
-
 			if (CoreUtils.isClient()) {
 				PacketTEBase.sendSecurityPacketToServer(this);
 			}
@@ -169,6 +155,28 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	public boolean isItemValid(ItemStack stack) {
 
 		return containerWrapper.isItemValidForSlot(0, stack);
+	}
+
+	/* Inventory Tweaks */
+	@Optional.Method (modid = "inventorytweaks")
+	@RowSizeCallback
+	public int getRowSize() {
+
+		return rowSize;
+	}
+
+	@ContainerSectionCallback
+	@Optional.Method (modid = "inventorytweaks")
+	public Map<ContainerSection, List<Slot>> getContainerSections() {
+
+		Map<ContainerSection, List<Slot>> slotRefs = new THashMap<ContainerSection, List<Slot>>();
+
+		slotRefs.put(ContainerSection.INVENTORY, inventorySlots.subList(0, 36));
+		slotRefs.put(ContainerSection.INVENTORY_NOT_HOTBAR, inventorySlots.subList(0, 27));
+		slotRefs.put(ContainerSection.INVENTORY_HOTBAR, inventorySlots.subList(27, 36));
+		slotRefs.put(ContainerSection.CHEST, inventorySlots.subList(36, inventorySlots.size()));
+
+		return slotRefs;
 	}
 
 }

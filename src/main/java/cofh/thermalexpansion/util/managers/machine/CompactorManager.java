@@ -1,9 +1,8 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackSafe;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
-import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalfoundation.block.BlockStorage;
 import cofh.thermalfoundation.block.BlockStorageAlloy;
 import cofh.thermalfoundation.item.ItemCoin;
@@ -17,7 +16,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -454,36 +452,17 @@ public class CompactorManager {
 	}
 
 	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackCompactor extends ComparableItemStack {
+	public static class ComparableItemStackCompactor extends ComparableItemStackSafe {
 
-		public static final String NUGGET = "nugget";
-		public static final String INGOT = "ingot";
-		public static final String BLOCK = "block";
-		public static final String DUST = "dust";
-
-		public static boolean safeOreType(String oreName) {
+		@Override
+		public boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(NUGGET) || oreName.startsWith(INGOT) || oreName.startsWith(BLOCK) || oreName.startsWith(DUST);
-		}
-
-		public static int getOreID(ItemStack stack) {
-
-			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
-
-			if (ids != null) {
-				for (Integer id : ids) {
-					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
-						return id;
-					}
-				}
-			}
-			return -1;
 		}
 
 		public ComparableItemStackCompactor(ItemStack stack) {
 
 			super(stack);
-			oreID = getOreID(stack);
 		}
 	}
 

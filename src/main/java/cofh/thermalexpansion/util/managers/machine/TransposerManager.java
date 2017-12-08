@@ -1,11 +1,10 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.init.CoreProps;
-import cofh.core.inventory.ComparableItemStackNBT;
+import cofh.core.inventory.ComparableItemStackSafeNBT;
 import cofh.core.util.ItemWrapper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
-import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalexpansion.block.storage.BlockCell;
 import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalfoundation.init.TFFluids;
@@ -26,8 +25,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class TransposerManager {
 
@@ -481,40 +483,21 @@ public class TransposerManager {
 	}
 
 	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackTransposer extends ComparableItemStackNBT {
+	public static class ComparableItemStackTransposer extends ComparableItemStackSafeNBT {
 
 		public static final String CROP = "crop";
 		public static final String SEED = "seed";
-
 		public static final String GEM = "gem";
-		public static final String ORE = "ore";
-		public static final String DUST = "dust";
-		public static final String INGOT = "ingot";
-		public static final String NUGGET = "nugget";
 
-		public static boolean safeOreType(String oreName) {
+		@Override
+		public boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(CROP) || oreName.startsWith(SEED) || oreName.startsWith(GEM) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET);
-		}
-
-		public static int getOreID(ItemStack stack) {
-
-			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
-
-			if (ids != null) {
-				for (Integer id : ids) {
-					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
-						return id;
-					}
-				}
-			}
-			return -1;
 		}
 
 		public ComparableItemStackTransposer(ItemStack stack) {
 
 			super(stack);
-			oreID = getOreID(stack);
 		}
 	}
 

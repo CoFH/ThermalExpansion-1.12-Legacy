@@ -12,6 +12,7 @@ import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -34,7 +35,8 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 
-		int oreID = ComparableItemStackCompactor.getOreID(recipe.getInput());
+		ComparableItemStackCompactor instance = new ComparableItemStackCompactor(new ItemStack(Items.DIAMOND));
+		int oreID = instance.getOreID(recipe.getInput());
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));

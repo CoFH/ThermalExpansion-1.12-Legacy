@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackSafe;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
@@ -661,12 +661,7 @@ public class SmelterManager {
 	}
 
 	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackSmelter extends ComparableItemStack {
-
-		public static final String ORE = "ore";
-		public static final String DUST = "dust";
-		public static final String INGOT = "ingot";
-		public static final String NUGGET = "nugget";
+	public static class ComparableItemStackSmelter extends ComparableItemStackSafe {
 
 		public static final Set<String> EQUALS = new THashSet<>();
 
@@ -683,29 +678,15 @@ public class SmelterManager {
 			EQUALS.add("fuelCoke");
 		}
 
-		public static boolean safeOreType(String oreName) {
+		@Override
+		public boolean safeOreType(String oreName) {
 
 			return EQUALS.contains(oreName) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET);
-		}
-
-		public static int getOreID(ItemStack stack) {
-
-			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
-
-			if (ids != null) {
-				for (Integer id : ids) {
-					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
-						return id;
-					}
-				}
-			}
-			return -1;
 		}
 
 		public ComparableItemStackSmelter(ItemStack stack) {
 
 			super(stack);
-			oreID = getOreID(stack);
 		}
 	}
 

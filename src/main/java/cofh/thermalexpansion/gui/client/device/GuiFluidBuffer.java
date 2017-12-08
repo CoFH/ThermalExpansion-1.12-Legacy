@@ -174,45 +174,37 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		int curOutput = myTile.amountOutput;
 		boolean[] curLocks = myTile.locks.clone();
 
-		if (buttonName.equalsIgnoreCase("DecInput")) {
-			myTile.amountInput -= change;
-			pitch -= 0.1F;
-		} else if (buttonName.equalsIgnoreCase("IncInput")) {
-			myTile.amountInput += change;
-			pitch += 0.1F;
-		} else if (buttonName.equalsIgnoreCase("DecOutput")) {
-			myTile.amountOutput -= change;
-			pitch -= 0.1F;
-		} else if (buttonName.equalsIgnoreCase("IncOutput")) {
-			myTile.amountOutput += change;
-			pitch += 0.1F;
-		} else if (buttonName.equalsIgnoreCase("Lock0")) {
-			if (myTile.locks[0]) {
-				myTile.locks[0] = false;
-				pitch = 0.4F;
-			} else {
-				myTile.locks[0] = true;
-				pitch = 0.8F;
-			}
-		} else if (buttonName.equalsIgnoreCase("Lock1")) {
-			if (myTile.locks[1]) {
-				myTile.locks[1] = false;
-				pitch = 0.4F;
-			} else {
-				myTile.locks[1] = true;
-				pitch = 0.8F;
-			}
-		} else if (buttonName.equalsIgnoreCase("Lock2")) {
-			if (myTile.locks[2]) {
-				myTile.locks[2] = false;
-				pitch = 0.4F;
-			} else {
-				myTile.locks[2] = true;
-				pitch = 0.8F;
-			}
+		switch (buttonName) {
+			case "DecInput":
+				myTile.amountInput -= change;
+				pitch -= 0.1F;
+				break;
+			case "IncInput":
+				myTile.amountInput += change;
+				pitch += 0.1F;
+				break;
+			case "DecOutput":
+				myTile.amountOutput -= change;
+				pitch -= 0.1F;
+				break;
+			case "IncOutput":
+				myTile.amountOutput += change;
+				pitch += 0.1F;
+				break;
+			case "Lock0":
+				myTile.locks[2] = !myTile.locks[2];
+				pitch = myTile.locks[2] ? 0.8F : 0.4F;
+				break;
+			case "Lock1":
+				myTile.locks[2] = !myTile.locks[2];
+				pitch = myTile.locks[2] ? 0.8F : 0.4F;
+				break;
+			case "Lock2":
+				myTile.locks[2] = !myTile.locks[2];
+				pitch = myTile.locks[2] ? 0.8F : 0.4F;
+				break;
 		}
 		playClickSound(pitch);
-
 		myTile.sendModePacket();
 
 		myTile.amountInput = curInput;
