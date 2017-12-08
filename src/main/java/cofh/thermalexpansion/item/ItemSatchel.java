@@ -15,6 +15,8 @@ import cofh.core.util.core.IInitializer;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
+import cofh.thermalexpansion.gui.container.storage.ContainerSatchel;
+import cofh.thermalexpansion.util.FilterItemWrapper;
 import com.mojang.authlib.GameProfile;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -25,6 +27,7 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -34,6 +37,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -139,8 +143,12 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 				ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.cofh.secure.item.success"));
 				return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 			}
-			if (canPlayerAccess(stack, player) && !player.isSneaking()) {
-				player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_ID, world, 0, 0, 0);
+			if (canPlayerAccess(stack, player)) {
+				if(player.isSneaking()) {
+					player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_FILTER_ID, world, 0, 0, 0);
+				} else {
+					player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_ID, world, 0, 0, 0);
+				}
 			} else if (SecurityHelper.isSecure(stack)) {
 				ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.cofh.secure.warning", SecurityHelper.getOwnerName(stack)));
 				return new ActionResult<>(EnumActionResult.FAIL, stack);
@@ -156,7 +164,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 			ItemStack stack = player.getHeldItem(hand);
 			if (player.isSneaking() && canPlayerAccess(stack, player)) {
 				TileEntity tile = world.getTileEntity(pos);
-				if(tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
+				if(tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
 					IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
 					dumpInventory(stack, cap);
 					return EnumActionResult.SUCCESS;
@@ -227,6 +235,59 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 		int enchant = EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
 
 		return Math.min(1 + level + enchant, CoreProps.STORAGE_SIZE.length - 1);
+	}
+
+	public static int getFilterSize(ItemStack stack) {
+
+		return (getLevel(stack) + 1) * 7;
+	}
+
+	public static void onItemPickup(EntityItemPickupEvent event, ItemStack stack) {
+
+		if(!canPlayerAccess(stack, event.getEntityPlayer())) {
+			return;
+		}
+
+		if(event.getEntityPlayer().openContainer instanceof ContainerSatchel) {
+			return;
+		}
+
+		FilterItemWrapper wrapper = new FilterItemWrapper(stack, getFilterSize(stack));
+		ItemStack eventItem = event.getItem().getItem();
+		int count = eventItem.getCount();
+
+		if(wrapper.getFilter().matches(eventItem)) {
+			InventoryContainerItemWrapper inv = new InventoryContainerItemWrapper(stack);
+
+			for (int i = 0; i < inv.getSizeInventory(); i++) {
+				ItemStack slot = inv.getStackInSlot(i);
+				if (ItemHandlerHelper.canItemStacksStackRelaxed(eventItem, slot)) {
+					int fill = slot.getMaxStackSize() - slot.getCount();
+					if (fill > eventItem.getCount())
+						slot.setCount(slot.getCount() + eventItem.getCount());
+					else
+						slot.setCount(slot.getMaxStackSize());
+					eventItem.splitStack(fill);
+				} else if (slot.isEmpty()) {
+					inv.setInventorySlotContents(i, eventItem.copy());
+					eventItem.setCount(0);
+				}
+
+				if(eventItem.isEmpty()) {
+					break;
+				}
+			}
+
+			if(eventItem.getCount() != count) {
+				EntityPlayer player = event.getEntityPlayer();
+				World world = player.world;
+
+				world.playSound(null, player.posX, player.posY, player.posZ,
+						SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+
+				inv.markDirty();
+			}
+		}
 	}
 
 	/* IMultiModeItem */
