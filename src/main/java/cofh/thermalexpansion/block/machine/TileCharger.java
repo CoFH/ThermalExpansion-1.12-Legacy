@@ -1,10 +1,8 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.CoFHCore;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.CoreUtils;
 import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -20,9 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -44,13 +40,14 @@ import java.util.List;
 public class TileCharger extends TileMachineBase {
 
 	private static final int TYPE = Type.CHARGER.getMetadata();
-	private static final int ENERGY_TRANSFER[] = new int[] { 1000, 4000, 9000, 16000, 25000 };
+	private static final int ENERGY_TRANSFER[] = new int[] { 1, 4, 9, 16, 25 };
 	public static int basePower = 50;
 
 	public static final int REPAIR_ENERGY = 500;
 	public static final int FLUID_AMOUNT = CoreProps.MB_PER_XP / 4;
+	public static final int WIRELESS_RANGE = 32 * 32;
 
-	public static final int WIRELESS_RANGE[] = new int[] { 3, 5, 7, 9, 11 };
+	//public static final int WIRELESS_RANGE[] = new int[] { 3, 5, 7, 9, 11 };
 
 	public static void initialize() {
 
@@ -71,10 +68,9 @@ public class TileCharger extends TileMachineBase {
 
 		LIGHT_VALUES[TYPE] = 7;
 
-		for(int i = 0; i < WIRELESS_RANGE.length; i++) {
-			WIRELESS_RANGE[i] *= WIRELESS_RANGE[i];
+		for (int i = 0; i < ENERGY_TRANSFER.length; i++) {
+			ENERGY_TRANSFER[i] *= 2000;
 		}
-
 		GameRegistry.registerTileEntity(TileCharger.class, "thermalexpansion:machine_charger");
 
 		config();
@@ -111,6 +107,7 @@ public class TileCharger extends TileMachineBase {
 	protected boolean augmentRepair;
 	protected boolean augmentWireless;
 	protected boolean flagRepair;
+	protected boolean flagWireless;
 
 	public TileCharger() {
 
@@ -132,7 +129,7 @@ public class TileCharger extends TileMachineBase {
 
 		boolean curActive = isActive;
 
-		if(augmentWireless) {
+		if (augmentWireless) {
 			transferContainerItem();
 			processOff();
 		} else if (augmentRepair) {
@@ -168,7 +165,7 @@ public class TileCharger extends TileMachineBase {
 
 	private boolean canStartContainerItem() {
 
-		if (!EnergyHelper.isEnergyContainerItem(inventory[1]) || augmentRepair) {
+		if (!EnergyHelper.isEnergyContainerItem(inventory[1]) || augmentRepair || augmentWireless) {
 			containerItem = null;
 			hasContainerItem = false;
 			return false;
@@ -178,7 +175,7 @@ public class TileCharger extends TileMachineBase {
 
 	private boolean canFinishContainerItem() {
 
-		return containerItem.getEnergyStored(inventory[1]) >= containerItem.getMaxEnergyStored(inventory[1]) || augmentRepair;
+		return containerItem.getEnergyStored(inventory[1]) >= containerItem.getMaxEnergyStored(inventory[1]) || augmentRepair || augmentWireless;
 	}
 
 	private int processTickContainerItem() {
@@ -196,7 +193,7 @@ public class TileCharger extends TileMachineBase {
 		if (augmentRepair) {
 			transferHandler();
 			processOff();
-		} else if(augmentWireless) {
+		} else if (augmentWireless) {
 			transferHandler();
 			processOff();
 		}
@@ -230,7 +227,7 @@ public class TileCharger extends TileMachineBase {
 
 	private boolean canStartHandler() {
 
-		if (!EnergyHelper.isEnergyHandler(inventory[1]) || augmentRepair) {
+		if (!EnergyHelper.isEnergyHandler(inventory[1]) || augmentRepair || augmentWireless) {
 			handler = null;
 			hasEnergyHandler = false;
 			return false;
@@ -312,23 +309,22 @@ public class TileCharger extends TileMachineBase {
 		return energy;
 	}
 
-	/* WIRELESS */
-
+	/* WIRELESS CHARGING */
 	public void updateWireless() {
 
 		boolean curActive = isActive;
 
-		findPlayersInRange();
-
+		if (timeCheckEighth()) {
+			findPlayersInRange();
+		}
 		if (isActive) {
 			processTickWireless();
 
-			if(!redstoneControlOrDisable() || calcWirelessCost() == 0) {
+			if (!redstoneControlOrDisable() || calcEnergyWireless() <= 0) {
 				processOff();
 			}
-		}
-		else if(redstoneControlOrDisable()) {
-			if(timeCheckEighth() && calcWirelessCost() > 0) {
+		} else if (redstoneControlOrDisable()) {
+			if (timeCheckEighth() && calcEnergyWireless() > 0) {
 				processTickWireless();
 				isActive = true;
 			}
@@ -340,28 +336,18 @@ public class TileCharger extends TileMachineBase {
 	private void findPlayersInRange() {
 
 		players.clear();
-		Vec3d pos = new Vec3d(getPos());
-		int range = WIRELESS_RANGE[level];
-		for(EntityPlayer player : world.playerEntities) {
-			if(player.getPositionVector().squareDistanceTo(pos) < range) {
+		Vec3d posCenter = new Vec3d(pos).addVector(0.5D, 0.5D, 0.5D);
+		for (EntityPlayer player : world.playerEntities) {
+			if (player.getPositionVector().squareDistanceTo(posCenter) < WIRELESS_RANGE) {
 				players.add(player);
 			}
 		}
 	}
 
-	private int calcWirelessCost() {
-
-		int energy = 0;
-		for(EntityPlayer player : players) {
-			energy += chargeInventoryItem(player.inventory, true);
-		}
-		return energy;
-	}
-
 	private int processTickWireless() {
 
 		int energy = 0;
-		for(EntityPlayer player : players) {
+		for (EntityPlayer player : players) {
 			energy += chargeInventoryItem(player.inventory, false);
 		}
 		return energy;
@@ -369,25 +355,20 @@ public class TileCharger extends TileMachineBase {
 
 	private int chargeInventoryItem(InventoryPlayer inventory, boolean simulate) {
 
-		for(ItemStack stack : inventory.mainInventory) {
-
-			if(energyStorage.getEnergyStored() <= 0)
+		for (ItemStack stack : inventory.mainInventory) {
+			if (energyStorage.getEnergyStored() <= 0) {
 				return 0;
-
-			if(!stack.isEmpty() && stack.getItem() instanceof ItemCapacitor) {
-				IEnergyContainerItem containerItem = (IEnergyContainerItem)stack.getItem();
-				int extract = Math.min(energyStorage.getEnergyStored(), getEnergyTransfer(level));
-				int energy = containerItem.receiveEnergy(stack, extract, simulate);
-
-				if(energy > 0) {
-					if(!simulate) {
+			}
+			if (!stack.isEmpty() && stack.getItem() instanceof ItemCapacitor) {
+				int energy = ((IEnergyContainerItem) stack.getItem()).receiveEnergy(stack, Math.min(energyStorage.getEnergyStored(), getEnergyTransfer(level) / 2), simulate);
+				if (energy > 0) {
+					if (!simulate) {
 						energyStorage.modifyEnergyStored(-energy);
 					}
 					return energy;
 				}
 			}
 		}
-
 		return 0;
 	}
 
@@ -444,7 +425,7 @@ public class TileCharger extends TileMachineBase {
 				hasEnergyHandler = true;
 				return false;
 			}
-		} else if(!augmentWireless) {
+		} else if (!augmentWireless) {
 			if (!hasRepairItem && inventory[0].isItemStackDamageable()) {
 				inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
 				inventory[0].shrink(1);
@@ -475,6 +456,9 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
+		if (augmentWireless) {
+			return true;
+		}
 		if (hasContainerItem || hasEnergyHandler || augmentRepair && hasRepairItem) {
 			return true;
 		}
@@ -670,7 +654,7 @@ public class TileCharger extends TileMachineBase {
 
 	public boolean augmentWireless() {
 
-		return augmentWireless;
+		return augmentWireless && flagWireless;
 	}
 
 	/* NBT METHODS */
@@ -738,6 +722,7 @@ public class TileCharger extends TileMachineBase {
 		augmentRepair = payload.getBool();
 		augmentWireless = payload.getBool();
 		flagRepair = augmentRepair;
+		flagWireless = augmentWireless;
 
 		hasContainerItem = payload.getBool();
 		hasEnergyHandler = payload.getBool();
@@ -764,11 +749,14 @@ public class TileCharger extends TileMachineBase {
 		if (augmentThroughput) {
 			energyStorage.setMaxTransfer(getEnergyTransfer(level) * 4);
 		}
-		if (augmentWireless) {
-			energyStorage.setMaxTransfer(getEnergyTransfer(level));
-		}
 		if (!augmentRepair) {
 			tank.drain(tank.getCapacity(), true);
+		}
+		if (augmentWireless) {
+			if (processRem > 0) {
+				processOff();
+			}
+			energyStorage.setMaxTransfer(getEnergyTransfer(level) * 2);
 		}
 	}
 
@@ -812,6 +800,18 @@ public class TileCharger extends TileMachineBase {
 		return Math.max(calcEnergy(), REPAIR_ENERGY);
 	}
 
+	private int calcEnergyWireless() {
+
+		if (energyStorage.getEnergyStored() <= 0) {
+			return 0;
+		}
+		int energy = 0;
+		for (EntityPlayer player : players) {
+			energy += chargeInventoryItem(player.inventory, true);
+		}
+		return energy;
+	}
+
 	private int getEnergyTransfer(int level) {
 
 		return ENERGY_TRANSFER[MathHelper.clamp(level, 0, 4)];
@@ -824,11 +824,10 @@ public class TileCharger extends TileMachineBase {
 		if (!isActive) {
 			return 0;
 		}
-
-		if((EnergyHelper.isEnergyContainerItem(inventory[1]) || EnergyHelper.isEnergyHandler(inventory[1])) && augmentThroughput) {
+		if (augmentWireless) {
+			return getEnergyTransfer(level) / 2;
+		} else if ((EnergyHelper.isEnergyContainerItem(inventory[1]) || EnergyHelper.isEnergyHandler(inventory[1])) && augmentThroughput) {
 			return getEnergyTransfer(level);
-		} else if(augmentWireless) {
-			return getEnergyTransfer(level) / 4;
 		} else {
 			return calcEnergy();
 		}
@@ -837,10 +836,10 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	public int getInfoMaxEnergyPerTick() {
 
-		if((EnergyHelper.isEnergyContainerItem(inventory[1]) || EnergyHelper.isEnergyHandler(inventory[1])) && augmentThroughput) {
+		if (augmentWireless) {
+			return getEnergyTransfer(level) / 2;
+		} else if ((EnergyHelper.isEnergyContainerItem(inventory[1]) || EnergyHelper.isEnergyHandler(inventory[1])) && augmentThroughput) {
 			return getEnergyTransfer(level);
-		} else if(augmentWireless) {
-			return getEnergyTransfer(level) / 4;
 		} else {
 			return energyConfig.maxPower;
 		}
@@ -929,7 +928,7 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		if(augmentWireless) {
+		if (augmentWireless) {
 			return false;
 		}
 		if (augmentRepair) {

@@ -69,7 +69,7 @@ public class ItemBlockStrongbox extends ItemBlockTEBase implements IInventoryCon
 	}
 
 	@Override
-	public int getItemEnchantability() {
+	public int getItemEnchantability(ItemStack stack) {
 
 		return 10;
 	}

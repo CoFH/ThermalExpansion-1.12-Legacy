@@ -20,6 +20,7 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.render.BakeryCache;
+import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
@@ -79,7 +80,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 
 		if (enable) {
 			if (TEProps.creativeTabShowAllLevels) {
-				for (int j = 0; j < 5; j++) {
+				for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
 					items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, 0), j));
 				}
 			} else {

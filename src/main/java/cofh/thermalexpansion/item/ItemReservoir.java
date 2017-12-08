@@ -57,15 +57,18 @@ import java.util.stream.IntStream;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
-public class ItemReservoir extends ItemMulti implements IInitializer, IFluidContainerItem, IMultiModeItem, IEnchantableItem, INBTCopyIngredient {
+public class ItemReservoir extends ItemMulti implements IInitializer, IMultiModeItem, IFluidContainerItem, IEnchantableItem, INBTCopyIngredient {
 
 	public ItemReservoir() {
 
 		super("thermalexpansion");
 
-		setMaxStackSize(1);
 		setUnlocalizedName("reservoir");
 		setCreativeTab(ThermalExpansion.tabItems);
+
+		setHasSubtypes(true);
+		setMaxStackSize(1);
+		setNoRepair();
 	}
 
 	@Override
@@ -180,7 +183,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IFluidCont
 	}
 
 	@Override
-	public int getItemEnchantability() {
+	public int getItemEnchantability(ItemStack stack) {
 
 		return 10;
 	}
@@ -311,6 +314,22 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IFluidCont
 		return getCapacity(stack) - getFluidAmount(stack);
 	}
 
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.getFluidAmount(stack) > 0 && this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+
+		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
+			for (int active = 0; active < 2; active++) {
+				for (int mode = 0; mode < 2; mode++) {
+					ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", active, mode, entry.getValue().name)));
+				}
+			}
+		}
+	}
+
 	/* IMultiModeItem */
 	@Override
 	public int getMode(ItemStack stack) {
@@ -376,22 +395,6 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IFluidCont
 				break;
 		}
 		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.reservoir.a." + getMode(stack)));
-	}
-
-	/* IModelRegister */
-	@Override
-	@SideOnly (Side.CLIENT)
-	public void registerModels() {
-
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.getFluidAmount(stack) > 0 && this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
-
-		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
-			for (int active = 0; active < 2; active++) {
-				for (int mode = 0; mode < 2; mode++) {
-					ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", active, mode, entry.getValue().name)));
-				}
-			}
-		}
 	}
 
 	/* IFluidContainerItem */
@@ -496,9 +499,10 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IFluidCont
 		if (stack == null) {
 			return null;
 		}
-		int drained = Math.min(stack.amount, maxDrain);
+		boolean creative = ItemHelper.getItemDamage(container) == CREATIVE;
+		int drained = creative ? maxDrain : Math.min(stack.amount, maxDrain);
 
-		if (doDrain && ItemHelper.getItemDamage(container) != CREATIVE) {
+		if (doDrain && !creative) {
 			if (maxDrain >= stack.amount) {
 				container.getTagCompound().removeTag("Fluid");
 				return stack;
@@ -554,7 +558,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IFluidCont
 		reservoirSignalum = addEntryItem(3, "standard3", CAPACITY[3], EnumRarity.UNCOMMON);
 		reservoirResonant = addEntryItem(4, "standard4", CAPACITY[4], EnumRarity.RARE);
 
-		reservoirCreative = addEntryItem(CREATIVE, "creative", CAPACITY[4], EnumRarity.EPIC, false);
+		reservoirCreative = addEntryItem(CREATIVE, "creative", Fluid.BUCKET_VOLUME, EnumRarity.EPIC, false);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -587,10 +591,11 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IFluidCont
 	private static void config() {
 
 		String category = "Item.Reservoir";
+		String comment;
 		enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		int capacity = CAPACITY_BASE;
-		String comment = "Adjust this value to change the amount of Fluid (in mB) stored by a Basic Reservoir. This base value will scale with item level.";
+		comment = "Adjust this value to change the amount of Fluid (in mB) stored by a Basic Reservoir. This base value will scale with item level.";
 		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
 
 		for (int i = 0; i < CAPACITY.length; i++) {

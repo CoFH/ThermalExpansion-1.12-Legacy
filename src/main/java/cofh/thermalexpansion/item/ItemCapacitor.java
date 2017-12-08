@@ -52,50 +52,18 @@ import java.util.stream.IntStream;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
-public class ItemCapacitor extends ItemMulti implements IInitializer, IEnergyContainerItem, IMultiModeItem, IEnchantableItem, INBTCopyIngredient {
+public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem, INBTCopyIngredient {
 
 	public ItemCapacitor() {
 
 		super("thermalexpansion");
 
-		setMaxStackSize(1);
 		setUnlocalizedName("capacitor");
 		setCreativeTab(ThermalExpansion.tabItems);
-	}
 
-	public int getSend(ItemStack stack) {
-
-		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
-			return 0;
-		}
-		return typeMap.get(ItemHelper.getItemDamage(stack)).send;
-	}
-
-	public int getRecv(ItemStack stack) {
-
-		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
-			return 0;
-		}
-		return typeMap.get(ItemHelper.getItemDamage(stack)).recv;
-	}
-
-	public int getCapacity(ItemStack stack) {
-
-		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
-			return 0;
-		}
-		int capacity = typeMap.get(ItemHelper.getItemDamage(stack)).capacity;
-		int enchant = EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
-
-		return capacity + capacity * enchant / 2;
-	}
-
-	public int getBaseCapacity(int metadata) {
-
-		if (!typeMap.containsKey(metadata)) {
-			return 0;
-		}
-		return typeMap.get(metadata).capacity;
+		setHasSubtypes(true);
+		setMaxStackSize(1);
+		setNoRepair();
 	}
 
 	@Override
@@ -200,7 +168,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IEnergyCon
 	}
 
 	@Override
-	public int getItemEnchantability() {
+	public int getItemEnchantability(ItemStack stack) {
 
 		return 10;
 	}
@@ -260,6 +228,57 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IEnergyCon
 		}
 		stack.getTagCompound().setBoolean("Active", false);
 		return false;
+	}
+
+	public int getSend(ItemStack stack) {
+
+		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
+			return 0;
+		}
+		return typeMap.get(ItemHelper.getItemDamage(stack)).send;
+	}
+
+	public int getRecv(ItemStack stack) {
+
+		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
+			return 0;
+		}
+		return typeMap.get(ItemHelper.getItemDamage(stack)).recv;
+	}
+
+	public int getCapacity(ItemStack stack) {
+
+		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
+			return 0;
+		}
+		int capacity = typeMap.get(ItemHelper.getItemDamage(stack)).capacity;
+		int enchant = EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
+
+		return capacity + capacity * enchant / 2;
+	}
+
+	public int getBaseCapacity(int metadata) {
+
+		if (!typeMap.containsKey(metadata)) {
+			return 0;
+		}
+		return typeMap.get(metadata).capacity;
+	}
+
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.getEnergyStored(stack) > 0 && this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+
+		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
+			for (int active = 0; active < 2; active++) {
+				for (int mode = 0; mode < 3; mode++) {
+					ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", active, mode, entry.getValue().name)));
+				}
+			}
+		}
 	}
 
 	/* IMultiModeItem */
@@ -322,22 +341,6 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IEnergyCon
 		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.capacitor.a." + getMode(stack)));
 	}
 
-	/* IModelRegister */
-	@Override
-	@SideOnly (Side.CLIENT)
-	public void registerModels() {
-
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.getEnergyStored(stack) > 0 && this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
-
-		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
-			for (int active = 0; active < 2; active++) {
-				for (int mode = 0; mode < 3; mode++) {
-					ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", active, mode, entry.getValue().name)));
-				}
-			}
-		}
-	}
-
 	/* IEnergyContainerItem */
 	@Override
 	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
@@ -361,10 +364,13 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IEnergyCon
 		if (container.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
+		if (ItemHelper.getItemDamage(container) == CREATIVE) {
+			return maxExtract;
+		}
 		int stored = container.getTagCompound().getInteger("Energy");
 		int extract = Math.min(maxExtract, Math.min(stored, getSend(container)));
 
-		if (!simulate && ItemHelper.getItemDamage(container) != CREATIVE) {
+		if (!simulate) {
 			stored -= extract;
 			container.getTagCompound().setInteger("Energy", stored);
 		}
@@ -429,7 +435,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IEnergyCon
 		capacitorSignalum = addEntryItem(3, "standard3", SEND[3], RECV[3], CAPACITY[3], EnumRarity.UNCOMMON);
 		capacitorResonant = addEntryItem(4, "standard4", SEND[4], RECV[4], CAPACITY[4], EnumRarity.RARE);
 
-		capacitorCreative = addEntryItem(CREATIVE, "creative", SEND[4], 0, CAPACITY[4], EnumRarity.EPIC, false);
+		capacitorCreative = addEntryItem(CREATIVE, "creative", SEND_CREATIVE, 0, 0, EnumRarity.EPIC, false);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -462,10 +468,11 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IEnergyCon
 	private static void config() {
 
 		String category = "Item.Capacitor";
+		String comment;
 		enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		int capacity = CAPACITY_BASE;
-		String comment = "Adjust this value to change the amount of Energy (in RF) stored by a Basic Flux Capacitor. This base value will scale with item level.";
+		comment = "Adjust this value to change the amount of Energy (in RF) stored by a Basic Flux Capacitor. This base value will scale with item level.";
 		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
 
 		int recv = XFER_BASE * 2;
@@ -531,6 +538,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IEnergyCon
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int[] RECV = { 1, 4, 9, 16, 25 };
 	public static final int[] SEND = { 1, 4, 9, 16, 25 };
+	public static final int SEND_CREATIVE = 25 * 10000;
 
 	public static boolean enable = true;
 

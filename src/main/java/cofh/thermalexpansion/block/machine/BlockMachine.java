@@ -29,6 +29,7 @@ import cofh.thermalexpansion.plugins.jei.machine.smelter.SmelterRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.transposer.TransposerRecipeCategory;
 import cofh.thermalexpansion.render.BakeryMachine;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
+import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
@@ -95,7 +96,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
 				if (TEProps.creativeTabShowAllLevels) {
-					for (int j = 0; j < 5; j++) {
+					for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
 						items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i), j));
 					}
 				} else {

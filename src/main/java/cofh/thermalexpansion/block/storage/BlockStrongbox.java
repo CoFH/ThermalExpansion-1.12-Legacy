@@ -7,6 +7,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.RenderStrongbox;
+import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -54,7 +55,7 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 
 		if (enable) {
 			if (TEProps.creativeTabShowAllLevels) {
-				for (int j = 0; j < 5; j++) {
+				for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
 					items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, 0), j));
 				}
 			} else {

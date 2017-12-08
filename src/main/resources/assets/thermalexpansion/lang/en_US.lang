@@ -98,12 +98,12 @@ info.thermalexpansion.augment.machineChargerRepair.c.0=Essence of Knowledge must
 
 info.thermalexpansion.augment.machineChargerThroughput.0=Energetic Infuser: Specialization
 info.thermalexpansion.augment.machineChargerThroughput.a.0=Allows for rechargeable items to be charged very rapidly.
-info.thermalexpansion.augment.machineChargerThroughput.c.0=Will not exceed charge rate of the item itself.
+info.thermalexpansion.augment.machineChargerThroughput.c.0=Cannot exceed charge rate of the item itself.
 
 info.thermalexpansion.augment.machineChargerWireless.0=Energetic Infuser: Specialization
-info.thermalexpansion.augment.machineChargerWireless.a.0=Allows for wireless recharging of capacitors.
-info.thermalexpansion.augment.machineChargerWireless.b.0=Will no longer recharge items in machine.
-info.thermalexpansion.augment.machineChargerWireless.c.0=Will not exceed charge rate of the item itself.
+info.thermalexpansion.augment.machineChargerWireless.a.0=Allows for rapid wireless recharging of Flux Capacitors.
+info.thermalexpansion.augment.machineChargerWireless.b.0=Will no longer accept, process, or recharge items.
+info.thermalexpansion.augment.machineChargerWireless.c.0=Cannot exceed charge rate of the Flux Capacitor itself.
 
 info.thermalexpansion.augment.machineCompactorGear.0=Compactor: Specialization
 info.thermalexpansion.augment.machineCompactorGear.a.0=Allows for the efficient creation of Gears.
@@ -300,7 +300,7 @@ item.thermalexpansion.augment.dynamoThrottle.name=Excitation Field Limiter
 item.thermalexpansion.augment.machineBrewerReagent.name=Reagent Recovery
 item.thermalexpansion.augment.machineChargerRepair.name=Flux Reconstruction
 item.thermalexpansion.augment.machineChargerThroughput.name=Flux Linkage Concentrator
-item.thermalexpansion.augment.machineChargerWireless.name=Flux Field Exciter
+item.thermalexpansion.augment.machineChargerWireless.name=Parabolic Flux Coupling
 item.thermalexpansion.augment.machineCompactorGear.name=Gearworking Die
 item.thermalexpansion.augment.machineCompactorMint.name=Numismatic Press
 item.thermalexpansion.augment.machineCrucibleLava.name=Pyroconvective Loop

@@ -480,8 +480,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				"YXY",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearElectrum",
-				'I', "plateEnderium",
-				'X', "ingotLead",
+				'I', "plateSignalum",
+				'X', "blockGlassHardened",
 				'Y', "dustCryotheum"
 		);
 

@@ -404,6 +404,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		PacketCoFHBase payload = super.getGuiPacket();
 
 		payload.addBool(lock);
+		payload.addInt(tank.getCapacity());
 		payload.addFluidStack(tank.getFluid());
 
 		return payload;
@@ -427,6 +428,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		super.handleGuiPacket(payload);
 
 		lock = payload.getBool();
+		tank.setCapacity(payload.getInt());
 		tank.setFluid(payload.getFluidStack());
 	}
 
