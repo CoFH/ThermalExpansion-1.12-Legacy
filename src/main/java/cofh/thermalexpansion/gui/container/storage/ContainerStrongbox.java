@@ -39,30 +39,46 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 
 		int rows = MathHelper.clamp(storageIndex, 2, 9);
 		int slots = rowSize * rows;
+		int yOffset = 17;
 
-		addPlayerSlotsToContainer(inventory, 8 + 9 * (rowSize - 9), rows);
+		bindPlayerInventory(inventory);
 
 		if (storageIndex == 0) {
 			addSlotToContainer(new SlotValidated(this, myTile, 0, 80, 26));
 			rowSize = 1;
 		} else {
-			int yOffset = 17;
 			for (int i = 0; i < slots; i++) {
 				addSlotToContainer(new SlotValidated(this, myTile, i, 8 + i % rowSize * 18, yOffset + i / rowSize * 18));
 			}
 		}
 	}
 
-	private void addPlayerSlotsToContainer(InventoryPlayer inventory, int invOffset, int rows) {
+	@Override
+	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
+
+		int xOffset = getPlayerInventoryHorizontalOffset();
+		int yOffset = getPlayerInventoryVerticalOffset();
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, invOffset + j * 18, 30 + 18 * rows + i * 18));
+				addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, xOffset + j * 18, yOffset + i * 18));
 			}
 		}
 		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventory, i, invOffset + i * 18, 88 + 18 * rows));
+			addSlotToContainer(new Slot(inventoryPlayer, i, xOffset + i * 18, yOffset + 58));
 		}
+	}
+
+	@Override
+	protected int getPlayerInventoryVerticalOffset() {
+
+		return 30 + 18 * MathHelper.clamp(storageIndex, 2, 9);
+	}
+
+	@Override
+	protected int getPlayerInventoryHorizontalOffset() {
+
+		return 8 + 9 * (rowSize - 9);
 	}
 
 	@Override

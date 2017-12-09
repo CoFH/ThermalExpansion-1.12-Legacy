@@ -6,6 +6,7 @@ import cofh.core.gui.container.ContainerCore;
 import cofh.core.gui.slot.SlotLocked;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.filter.ItemFilterWrapper;
+import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.slot.SlotSatchelFilter;
@@ -21,28 +22,28 @@ public class ContainerSatchelFilter extends ContainerCore implements IFilterable
 
 	protected final ItemFilterWrapper filterWrapper;
 	protected final EntityPlayer player;
+	protected final int containerIndex;
 	protected final int filterIndex;
 	protected boolean valid = true;
 
 	public ContainerSatchelFilter(ItemStack stack, InventoryPlayer inventory) {
 
 		player = inventory.player;
-		filterIndex = inventory.currentItem;
+		containerIndex = inventory.currentItem;
 		filterWrapper = new ItemFilterWrapper(stack, ItemSatchel.getFilterSize(stack));
 
-		addFilterSlots();
+		filterIndex = ItemSatchel.getLevel(stack);
+		int rows = MathHelper.clamp(filterIndex + 1, 1, 3);
+		int slots = ItemSatchel.getFilterSize(stack);
+		int rowSize = slots / rows;
+
+		int xOffset = 89 - 9 * rowSize;
+		int yOffset = filterIndex == 0 ? 26 : 17;
+
 		bindPlayerInventory(inventory);
-	}
 
-	private void addFilterSlots() {
-
-		int x0 = 7;
-		int y0 = 21;
-
-		for (int i = 0; i <= ItemSatchel.getLevel(filterWrapper.getFilterStack()); i++) {
-			for (int j = 0; j < 7; j++) {
-				addSlotToContainer(new SlotSatchelFilter(filterWrapper, 7 * i + j, x0 + (18 * j), y0 + (18 * i)));
-			}
+		for (int i = 0; i < slots; i++) {
+			addSlotToContainer(new SlotSatchelFilter(filterWrapper, i, xOffset + i % rowSize * 18, yOffset + i / rowSize * 18));
 		}
 	}
 
@@ -69,7 +70,7 @@ public class ContainerSatchelFilter extends ContainerCore implements IFilterable
 	@Override
 	protected int getPlayerInventoryVerticalOffset() {
 
-		return 133;
+		return filterIndex > 1 ? 120 : 102;
 	}
 
 	@Override
@@ -81,7 +82,7 @@ public class ContainerSatchelFilter extends ContainerCore implements IFilterable
 	@Override
 	public void detectAndSendChanges() {
 
-		ItemStack item = player.inventory.mainInventory.get(filterIndex);
+		ItemStack item = player.inventory.mainInventory.get(containerIndex);
 		if (item.isEmpty() || item.getItem() != filterWrapper.getFilterItem()) {
 			valid = false;
 			return;
@@ -102,9 +103,9 @@ public class ContainerSatchelFilter extends ContainerCore implements IFilterable
 	/* HELPERS */
 	public void onSlotChanged() {
 
-		ItemStack item = player.inventory.mainInventory.get(filterIndex);
+		ItemStack item = player.inventory.mainInventory.get(containerIndex);
 		if (valid && !item.isEmpty() && item.getItem() == filterWrapper.getFilterItem()) {
-			player.inventory.mainInventory.set(filterIndex, filterWrapper.getFilterStack());
+			player.inventory.mainInventory.set(containerIndex, filterWrapper.getFilterStack());
 		}
 	}
 

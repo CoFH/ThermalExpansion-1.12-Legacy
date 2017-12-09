@@ -196,14 +196,6 @@ info.thermalexpansion.apparatus.activator=信息提示里无法容纳这玩意�
 info.thermalexpansion.apparatus.breaker=破坏方块。就是这样。
 info.thermalexpansion.apparatus.collector=收集周围的掉落物。
 
-info.thermalexpansion.capacitor.a.0=为手持物品充能
-info.thermalexpansion.capacitor.a.1=为护甲充能
-info.thermalexpansion.capacitor.a.2=为护甲和手持物品充能
-info.thermalexpansion.capacitor.b.0=§e按下 (%s)以改变充能模式。§r
-info.thermalexpansion.capacitor.c.0=§e潜行以关闭。§r
-info.thermalexpansion.capacitor.c.1=§b潜行以激活。§r
-info.thermalexpansion.capacitor.d.0=必须放在快捷栏中.
-
 info.thermalexpansion.coolant=冷却剂
 
 info.thermalexpansion.device.extender=对一个给定方块有更多的连接。
@@ -254,13 +246,6 @@ info.thermalexpansion.machine.refinery=精炼流体并获得其他产物。
 info.thermalexpansion.machine.sawmill=增产木材。
 info.thermalexpansion.machine.smelter=熔炼合金和金属。两个输入槽。
 info.thermalexpansion.machine.transposer=处理流体与流体容器。
-
-info.thermalexpansion.reservoir.a.0=使用：填满
-info.thermalexpansion.reservoir.a.1=使用：空置
-info.thermalexpansion.reservoir.a.2=重新填满设备
-info.thermalexpansion.reservoir.b.0=§e按下 (%s) 改变使用操作。§r
-info.thermalexpansion.reservoir.c.0=§e潜行使用关闭设备自动重填。§r
-info.thermalexpansion.reservoir.c.1=§b潜行使用开启设备自动重填。§r
 
 info.thermalexpansion.storage.cache=存储大量单种物品。
 info.thermalexpansion.storage.cell=存储大量红石通量 (RF)。

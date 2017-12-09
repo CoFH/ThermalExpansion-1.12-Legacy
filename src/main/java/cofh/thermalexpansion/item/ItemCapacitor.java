@@ -75,14 +75,16 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.a.0"));
+
 		if (isActive(stack)) {
-			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.a." + getMode(stack)));
-			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
-			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.c.0"));
+			tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.capacitor.d." + getMode(stack)));
+			tooltip.add(StringHelper.getDeactivationText("info.thermalexpansion.capacitor.c.1"));
 		} else {
-			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
-			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.c.1"));
+			tooltip.add(StringHelper.getActivationText("info.thermalexpansion.capacitor.c.0"));
 		}
+		tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
+
 		if (ItemHelper.getItemDamage(stack) == CREATIVE) {
 			tooltip.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
 			tooltip.add(StringHelper.localize("info.cofh.send") + ": " + StringHelper.formatNumber(getSend(stack)) + " RF/t");
@@ -338,7 +340,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	public void onModeChange(EntityPlayer player, ItemStack stack) {
 
 		player.world.playSound(null, player.getPosition(), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, 0.4F, (isActive(stack) ? 0.7F : 0.5F) + 0.1F * getMode(stack));
-		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.capacitor.a." + getMode(stack)));
+		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.capacitor.d." + getMode(stack)));
 	}
 
 	/* IEnergyContainerItem */

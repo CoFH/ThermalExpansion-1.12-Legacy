@@ -48,21 +48,26 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 
 		bindPlayerInventory(inventory);
 
-		if (storageIndex == 0) {
-			addSlotToContainer(new SlotSatchelCreative(this, containerWrapper, 0, 80, 26));
-			rowSize = 1;
-		} else if (storageIndex == 1) {
-			yOffset += 9;
-			for (int i = 0; i < 9; i++) {
-				addSlotToContainer(new SlotValidated(this, containerWrapper, i, 8 + i % rowSize * 18, yOffset + i / rowSize * 18));
-			}
-		} else {
-			for (int i = 0; i < slots; i++) {
-				addSlotToContainer(new SlotValidated(this, containerWrapper, i, 8 + i % rowSize * 18, yOffset + i / rowSize * 18));
-			}
+		switch (storageIndex) {
+			case 0:
+				addSlotToContainer(new SlotSatchelCreative(this, containerWrapper, 0, 80, 26));
+				rowSize = 1;
+				break;
+			case 1:
+				yOffset += 9;
+				for (int i = 0; i < 9; i++) {
+					addSlotToContainer(new SlotValidated(this, containerWrapper, i, 8 + i % rowSize * 18, yOffset + i / rowSize * 18));
+				}
+				break;
+			default:
+				for (int i = 0; i < slots; i++) {
+					addSlotToContainer(new SlotValidated(this, containerWrapper, i, 8 + i % rowSize * 18, yOffset + i / rowSize * 18));
+				}
+				break;
 		}
 	}
 
+	@Override
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
 
 		int xOffset = getPlayerInventoryHorizontalOffset();

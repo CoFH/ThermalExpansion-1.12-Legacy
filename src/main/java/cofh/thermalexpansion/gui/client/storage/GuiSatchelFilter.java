@@ -6,30 +6,28 @@ import cofh.core.gui.GuiContainerCore;
 import cofh.core.gui.element.ElementButton;
 import cofh.core.gui.element.tab.TabInfo;
 import cofh.core.gui.element.tab.TabSecurity;
+import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.gui.container.storage.ContainerSatchelFilter;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.ItemSatchel;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
 
 import java.util.UUID;
 
 public class GuiSatchelFilter extends GuiContainerCore {
 
-	static final String TEXTURE_PATH = TEProps.PATH_GUI_STORAGE + "satchel_filter.png";
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEXTURE_PATH);
-
-	ElementButton buttonList;
-	ElementButton buttonMeta;
-	ElementButton buttonNbt;
-	ElementButton buttonOre;
+	String texturePath;
 
 	int level;
 	boolean secure;
 
 	UUID playerName;
+	int filterIndex;
+
+	private ElementButton buttonList;
+	private ElementButton buttonOre;
+	private ElementButton buttonMeta;
+	private ElementButton buttonNbt;
 
 	public GuiSatchelFilter(InventoryPlayer inventory, ContainerSatchelFilter container) {
 
@@ -39,13 +37,15 @@ public class GuiSatchelFilter extends GuiContainerCore {
 		secure = SecurityHelper.isSecure(container.getFilterStack());
 
 		playerName = SecurityHelper.getID(inventory.player);
-		texture = TEXTURE;
+		filterIndex = ItemSatchel.getLevel(container.getFilterStack());
+		texture = CoreProps.TEXTURE_FILTER[filterIndex];
+		texturePath = texture.toString();
 		name = container.getInventoryName();
 
 		allowUserInput = false;
 
 		xSize = 176;
-		ySize = 214;
+		ySize = filterIndex > 1 ? 202 : 184;
 
 		generateInfo("tab.thermalexpansion.storage.satchel_filter");
 	}
@@ -61,15 +61,15 @@ public class GuiSatchelFilter extends GuiContainerCore {
 		if (ItemSatchel.enableSecurity && secure) {
 			addTab(new TabSecurity(this, (ISecurable) inventorySlots, playerName));
 		}
-		buttonList = new ElementButton(this, 144, 20, "FilterList", 176, 0, 176, 20, 20, 20, TEXTURE_PATH);
-		buttonMeta = new ElementButton(this, 144, 43, "FilterMeta", 176, 60, 176, 80, 20, 20, TEXTURE_PATH);
-		buttonNbt = new ElementButton(this, 144, 67, "FilterNbt", 216, 0, 216, 20, 20, 20, TEXTURE_PATH);
-		buttonOre = new ElementButton(this, 144, 90, "FilterOre", 216, 60, 216, 80, 20, 20, TEXTURE_PATH);
+		buttonList = new ElementButton(this, 24, ySize - 118, "FilterList", 176, 0, 176, 20, 20, 20, texturePath);
+		buttonOre = new ElementButton(this, 60, ySize - 118, "FilterOre", 216, 0, 216, 20, 20, 20, texturePath);
+		buttonMeta = new ElementButton(this, 96, ySize - 118, "FilterMeta", 176, 60, 176, 80, 20, 20, texturePath);
+		buttonNbt = new ElementButton(this, 132, ySize - 118, "FilterNbt", 216, 60, 216, 80, 20, 20, texturePath);
 
 		addElement(buttonList);
+		addElement(buttonOre);
 		addElement(buttonMeta);
 		addElement(buttonNbt);
-		addElement(buttonOre);
 
 		updateButtons();
 	}
@@ -83,14 +83,14 @@ public class GuiSatchelFilter extends GuiContainerCore {
 			case "FilterList":
 				flag = IFilterable.FLAG_BLACKLIST;
 				break;
+			case "FilterOre":
+				flag = IFilterable.FLAG_ORE_DICT;
+				break;
 			case "FilterMeta":
-				flag = IFilterable.FLAG_META;
+				flag = IFilterable.FLAG_METADATA;
 				break;
 			case "FilterNbt":
 				flag = IFilterable.FLAG_NBT;
-				break;
-			case "FilterOre":
-				flag = IFilterable.FLAG_ORE_DICT;
 				break;
 		}
 		playClickSound(container.getFlag(flag) ? 0.5F : 0.8F);
@@ -102,44 +102,25 @@ public class GuiSatchelFilter extends GuiContainerCore {
 
 		ContainerSatchelFilter container = (ContainerSatchelFilter) inventorySlots;
 
-		int x = container.getFlag(IFilterable.FLAG_BLACKLIST) ? 196 : 176;
+		int x = container.getFlag(IFilterable.FLAG_BLACKLIST) ? 176 : 196;
 		buttonList.setSheetX(x);
 		buttonList.setHoverX(x);
-
-		x = container.getFlag(IFilterable.FLAG_META) ? 176 : 196;
-		buttonMeta.setSheetX(x);
-		buttonMeta.setHoverX(x);
-
-		x = container.getFlag(IFilterable.FLAG_NBT) ? 216 : 236;
-		buttonNbt.setSheetX(x);
-		buttonNbt.setHoverX(x);
+		buttonList.setToolTip("info.cofh.filter.list." + (container.getFlag(IFilterable.FLAG_BLACKLIST) ? "on" : "off"));
 
 		x = container.getFlag(IFilterable.FLAG_ORE_DICT) ? 216 : 236;
 		buttonOre.setSheetX(x);
 		buttonOre.setHoverX(x);
-	}
+		buttonOre.setToolTip("info.cofh.filter.oreDict." + (container.getFlag(IFilterable.FLAG_ORE_DICT) ? "on" : "off"));
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTick, int x, int y) {
+		x = container.getFlag(IFilterable.FLAG_METADATA) ? 176 : 196;
+		buttonMeta.setSheetX(x);
+		buttonMeta.setHoverX(x);
+		buttonMeta.setToolTip("info.cofh.filter.metadata." + (container.getFlag(IFilterable.FLAG_METADATA) ? "on" : "off"));
 
-		super.drawGuiContainerBackgroundLayer(partialTick, x, y);
-
-		GlStateManager.color(1, 1, 1, 1);
-		bindTexture(texture);
-
-		drawSlots();
-	}
-
-	private void drawSlots() {
-
-		int x0 = guiLeft + 6;
-		int y0 = guiTop + 20;
-
-		for (int i = 0; i <= level; i++) {
-			for (int j = 0; j < 7; j++) {
-				drawTexturedModalRect(x0 + (18 * j), y0 + (18 * i), 7, 132, 18, 18);
-			}
-		}
+		x = container.getFlag(IFilterable.FLAG_NBT) ? 216 : 236;
+		buttonNbt.setSheetX(x);
+		buttonNbt.setHoverX(x);
+		buttonNbt.setToolTip("info.cofh.filter.nbt." + (container.getFlag(IFilterable.FLAG_NBT) ? "on" : "off"));
 	}
 
 }

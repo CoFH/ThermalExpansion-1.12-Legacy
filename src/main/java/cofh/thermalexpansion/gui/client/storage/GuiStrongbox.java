@@ -11,7 +11,6 @@ import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.storage.TileStrongbox;
 import cofh.thermalexpansion.gui.container.storage.ContainerStrongbox;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.Optional;
@@ -60,27 +59,6 @@ public class GuiStrongbox extends GuiContainerCore implements IChestButtonCallba
 		if (!myInfo.isEmpty()) {
 			addTab(new TabInfo(this, myInfo));
 		}
-	}
-
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTick, int x, int y) {
-
-		GlStateManager.color(1, 1, 1, 1);
-		bindTexture(texture);
-
-		if (xSize > 256 || ySize > 256) {
-			drawSizedTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize, 512, 512);
-		} else {
-			drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
-		}
-		mouseX = x - guiLeft;
-		mouseY = y - guiTop;
-
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(guiLeft, guiTop, 0.0F);
-		drawElements(partialTick, false);
-		drawTabs(partialTick, false);
-		GlStateManager.popMatrix();
 	}
 
 	@Override

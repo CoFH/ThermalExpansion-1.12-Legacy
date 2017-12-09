@@ -80,15 +80,17 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.reservoir.a." + getMode(stack)));
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.reservoir.a.0"));
+		tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.reservoir.a." + (getMode(stack) + 1), StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
+
 		if (isActive(stack)) {
-			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.reservoir.a.2"));
-			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.reservoir.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
-			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.reservoir.c.0"));
+			tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.reservoir.d.2"));
+			tooltip.add(StringHelper.getDeactivationText("info.thermalexpansion.reservoir.c.1"));
 		} else {
-			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.reservoir.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
-			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.reservoir.c.1"));
+			tooltip.add(StringHelper.getActivationText("info.thermalexpansion.reservoir.c.0"));
 		}
+		tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.reservoir.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
+
 		FluidStack fluid = getFluid(stack);
 		if (fluid != null) {
 			String color = StringHelper.LIGHT_GRAY;
@@ -121,11 +123,11 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		//		if (isInCreativeTab(tab)) {
-		//			for (int metadata : itemList) {
-		//				items.add(new ItemStack(this, 1, metadata));
-		//			}
-		//		}
+		if (isInCreativeTab(tab)) {
+			for (int metadata : itemList) {
+				items.add(new ItemStack(this, 1, metadata));
+			}
+		}
 	}
 
 	@Override
@@ -201,13 +203,6 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 			EnergyHelper.setDefaultEnergyTag(stack, 0);
 		}
 		return 1.0D - (getFluidAmount(stack) / (double) getCapacity(stack));
-	}
-
-	@Override
-	public ItemStack getContainerItem(ItemStack stack) {
-
-		drain(stack, Fluid.BUCKET_VOLUME, true);
-		return stack;
 	}
 
 	@Override
@@ -319,7 +314,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.getFluidAmount(stack) > 0 && this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
 
 		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
 			for (int active = 0; active < 2; active++) {
@@ -394,7 +389,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 				player.world.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 0.6F, 1.0F);
 				break;
 		}
-		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.reservoir.a." + getMode(stack)));
+		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.reservoir.d." + getMode(stack)));
 	}
 
 	/* IFluidContainerItem */

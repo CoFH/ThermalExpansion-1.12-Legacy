@@ -408,7 +408,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot != 0 || (augmentFood ? FurnaceManager.isFood(stack) : augmentOre ? ItemHelper.isOre(stack) : augmentPyrolysis ? FurnaceManager.recipeExistsPyrolysis(stack) : FurnaceManager.recipeExists(stack));
+		return slot != 0 || (augmentFood ? FurnaceManager.isFood(stack) : augmentOre ? ItemHelper.isOre(stack) && FurnaceManager.recipeExists(stack) : augmentPyrolysis ? FurnaceManager.recipeExistsPyrolysis(stack) : FurnaceManager.recipeExists(stack));
 	}
 
 	/* ISoundSource */

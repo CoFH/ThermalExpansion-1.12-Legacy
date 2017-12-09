@@ -9,6 +9,7 @@ import cofh.core.init.CoreEnchantments;
 import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
 import cofh.core.item.ItemMulti;
+import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.RegistrySocial;
 import cofh.core.util.core.IInitializer;
@@ -33,10 +34,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -88,13 +93,11 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 			return;
 		}
 		SecurityHelper.addAccessInformation(stack, tooltip);
-		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.storage.satchel"));
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.satchel.a.0"));
+		tooltip.add(StringHelper.localize("info.thermalexpansion.satchel.a.1"));
+		tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.satchel.a.2"));
+		tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.satchel.b." + getMode(stack), StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
 
-		//		if (isCreative(stack)) {
-		//
-		//		} else {
-		//
-		//		}
 		ItemHelper.addInventoryInformation(stack, tooltip);
 	}
 
@@ -159,7 +162,25 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@Override
 	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 
-		System.out.println("called");
+		if (world.isAirBlock(pos)) {
+			return EnumActionResult.PASS;
+		}
+		PlayerInteractEvent event = new PlayerInteractEvent.RightClickBlock(player, hand, pos, side, new Vec3d(hitX, hitY, hitZ));
+		if (MinecraftForge.EVENT_BUS.post(event) || event.getResult() == Result.DENY) {
+			return EnumActionResult.PASS;
+		}
+		if (ServerHelper.isClientWorld(world)) {
+			return EnumActionResult.SUCCESS;
+		}
+		ItemStack stack = player.getHeldItem(hand);
+		if (canPlayerAccess(stack, player)) {
+			TileEntity tile = world.getTileEntity(pos);
+			if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)) {
+				IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side);
+				emptyInventoryIntoTarget(stack, cap);
+				return EnumActionResult.SUCCESS;
+			}
+		}
 		return EnumActionResult.PASS;
 	}
 
@@ -172,7 +193,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 				TileEntity tile = world.getTileEntity(pos);
 				if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
 					IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
-					dumpInventory(stack, cap);
+					emptyInventoryIntoTarget(stack, cap);
 					return EnumActionResult.SUCCESS;
 				}
 			}
@@ -180,7 +201,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 		return EnumActionResult.FAIL;
 	}
 
-	private void dumpInventory(ItemStack stack, IItemHandler target) {
+	private void emptyInventoryIntoTarget(ItemStack stack, IItemHandler target) {
 
 		InventoryContainerItemWrapper wrapper = new InventoryContainerItemWrapper(stack);
 		for (int i = 0; i < getSizeInventory(stack); i++) {
@@ -244,7 +265,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 
 	public static int getFilterSize(ItemStack stack) {
 
-		return (getLevel(stack) + 1) * 7;
+		return CoreProps.FILTER_SIZE[getLevel(stack)];
 	}
 
 	public static boolean onItemPickup(EntityItemPickupEvent event, ItemStack stack) {
@@ -277,9 +298,10 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 				}
 			}
 			if (eventItem.getCount() != count) {
+				stack.setAnimationsToGo(5);
 				EntityPlayer player = event.getEntityPlayer();
-				World world = player.world;
-				world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+				player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, ((MathHelper.RANDOM.nextFloat() - MathHelper.RANDOM.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+
 				inv.markDirty();
 			}
 		}
@@ -342,7 +364,8 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@Override
 	public void onModeChange(EntityPlayer player, ItemStack stack) {
 
-		// ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.satchel.a." + getMode(stack)));
+		player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.4F, 0.8F + 0.4F * getMode(stack));
+		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.satchel.c." + getMode(stack)));
 	}
 
 	/* IModelRegister */
