@@ -169,15 +169,23 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 		if (MinecraftForge.EVENT_BUS.post(event) || event.getResult() == Result.DENY) {
 			return EnumActionResult.PASS;
 		}
-		if (ServerHelper.isClientWorld(world)) {
-			return EnumActionResult.SUCCESS;
-		}
+		//		if (ServerHelper.isClientWorld(world)) {
+		//			ItemStack stack = player.getHeldItem(hand);
+		//			if (canPlayerAccess(stack, player)) {
+		//				TileEntity tile = world.getTileEntity(pos);
+		//				if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)) {
+		//					return EnumActionResult.SUCCESS;
+		//				}
+		//			}
+		//		}
 		ItemStack stack = player.getHeldItem(hand);
 		if (canPlayerAccess(stack, player)) {
 			TileEntity tile = world.getTileEntity(pos);
 			if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)) {
 				IItemHandler cap = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side);
-				emptyInventoryIntoTarget(stack, cap);
+				if (ServerHelper.isServerWorld(world)) {
+					emptyInventoryIntoTarget(stack, cap);
+				}
 				return EnumActionResult.SUCCESS;
 			}
 		}
@@ -309,52 +317,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	}
 
 	/* IMultiModeItem */
-	@Override
-	public int getMode(ItemStack stack) {
-
-		return !stack.hasTagCompound() || isCreative(stack) ? 0 : stack.getTagCompound().getInteger("Mode");
-	}
-
-	@Override
-	public boolean setMode(ItemStack stack, int mode) {
-
-		if (!stack.hasTagCompound()) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		stack.getTagCompound().setInteger("Mode", mode);
-		return false;
-	}
-
-	@Override
-	public boolean incrMode(ItemStack stack) {
-
-		if (!stack.hasTagCompound()) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		int curMode = getMode(stack);
-		curMode++;
-		if (curMode >= getNumModes(stack)) {
-			curMode = 0;
-		}
-		stack.getTagCompound().setInteger("Mode", curMode);
-		return true;
-	}
-
-	@Override
-	public boolean decrMode(ItemStack stack) {
-
-		if (!stack.hasTagCompound()) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		int curMode = getMode(stack);
-		curMode--;
-		if (curMode <= 0) {
-			curMode = getNumModes(stack) - 1;
-		}
-		stack.getTagCompound().setInteger("Mode", curMode);
-		return true;
-	}
-
 	@Override
 	public int getNumModes(ItemStack stack) {
 

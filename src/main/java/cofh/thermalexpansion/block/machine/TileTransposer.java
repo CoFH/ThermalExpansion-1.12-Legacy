@@ -148,25 +148,19 @@ public class TileTransposer extends TileMachineBase {
 		}
 		if (!inventory[2].isEmpty()) {
 			ContainerOverride override = TransposerManager.getContainerOverride(inventory[1]);
-			if (override != null && inventory[2].isItemEqual(override.getOutput())) {
-				// This is okay.
-			} else {
+			if (override == null || !inventory[2].isItemEqual(override.getOutput())) {
 				return false;
 			}
 		}
 		IFluidHandlerItem handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 
+		if (handler == null) {
+			return false;
+		}
 		if (!extractMode) {
-			if (tank.getFluid() == null || tank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
-				return false;
-			}
-			return handler.fill(new FluidStack(tank.getFluid(), Fluid.BUCKET_VOLUME), false) > 0;
+			return tank.getFluid() != null && tank.getFluidAmount() > 0 && handler.fill(new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), Fluid.BUCKET_VOLUME)), false) > 0;
 		} else {
-			if (tank.getSpace() < Fluid.BUCKET_VOLUME) {
-				return false;
-			}
-			FluidStack drain = handler.drain(Fluid.BUCKET_VOLUME, false);
-			return tank.fill(drain, false) > 0;
+			return tank.fill(handler.drain(Math.min(tank.getSpace(), Fluid.BUCKET_VOLUME), false), false) > 0;
 		}
 	}
 
@@ -208,7 +202,7 @@ public class TileTransposer extends TileMachineBase {
 	private boolean fillHandler() {
 
 		IFluidHandlerItem handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-		int filled = tank.getFluid() == null ? 0 : handler.fill(new FluidStack(tank.getFluid(), Fluid.BUCKET_VOLUME), true);
+		int filled = tank.getFluid() == null ? 0 : handler.fill(new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), Fluid.BUCKET_VOLUME)), true);
 
 		IFluidTankProperties[] tankProperties = handler.getTankProperties();
 
@@ -227,7 +221,7 @@ public class TileTransposer extends TileMachineBase {
 
 		IFluidHandlerItem handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 		ItemStack testStack = ItemHelper.cloneStack(inventory[1]);
-		FluidStack drainStack = handler.drain(Fluid.BUCKET_VOLUME, true);
+		FluidStack drainStack = handler.drain(Math.min(tank.getSpace(), Fluid.BUCKET_VOLUME), true);
 		int drained = drainStack == null ? 0 : drainStack.amount;
 
 		IFluidTankProperties[] tankProperties = handler.getTankProperties();

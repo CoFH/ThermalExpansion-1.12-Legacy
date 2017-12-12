@@ -407,7 +407,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				"YXY",
 				'C', ItemMaterial.redstoneServo,
 				'G', "gearIron",
-				'I', "plateNickel",
+				'I', "plateLead",
 				'X', Blocks.PISTON,
 				'Y', "dustObsidian"
 		);
@@ -618,16 +618,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Y', "dustAerotheum"
 		);
 
-//		addShapedRecipe(dynamoEnervationEnchant,
-//				" G ",
-//				"ICI",
-//				"YXY",
-//				'C', ItemMaterial.powerCoilElectrum,
-//				'G', "gearSignalum",
-//				'I', "plateLead",
-//				'X', "blockGlassHardened",
-//				'Y', "dustAerotheum"
-//		);
+		addShapedRecipe(dynamoEnervationEnchant,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearSignalum",
+				'I', "plateGold",
+				'X', "gemLapis",
+				'Y', "dustGlowstone"
+		);
 
 		addShapedRecipe(dynamoNumismaticGem,
 				" G ",
