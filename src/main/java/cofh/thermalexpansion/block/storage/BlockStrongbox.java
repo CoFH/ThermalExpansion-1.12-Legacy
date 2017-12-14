@@ -294,7 +294,7 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 	public static boolean enableSecurity = true;
 
 	public static boolean enableClassicRecipes = false;
-	public static boolean enableUpgradeKitCrafting = true;
+	public static boolean enableUpgradeKitCrafting = false;
 
 	/* REFERENCES */
 	public static ItemStack strongbox[];

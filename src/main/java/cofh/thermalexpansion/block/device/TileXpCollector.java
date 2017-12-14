@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -296,9 +296,9 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 	/* NETWORK METHODS */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addInt(boostXp);
 		payload.addInt(boostFactor);
@@ -308,7 +308,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 

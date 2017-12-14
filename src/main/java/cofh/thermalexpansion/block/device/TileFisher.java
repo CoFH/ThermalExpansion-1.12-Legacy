@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.block.device;
 
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.RenderHelper;
@@ -351,9 +351,9 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addInt(boostTime);
 		payload.addInt(boostMult);
@@ -362,7 +362,7 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 

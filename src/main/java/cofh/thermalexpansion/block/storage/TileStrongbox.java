@@ -5,7 +5,7 @@ import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.init.CoreProps;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
@@ -56,6 +56,10 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockStrongbox.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockStrongbox.enableClassicRecipes, comment);
 
+		// TODO: Remove in 5.3.9.
+		if (ThermalExpansion.CONFIG.isOldConfig()) {
+			ThermalExpansion.CONFIG.removeProperty(category, "UpgradeKitCrafting");
+		}
 		comment = "If TRUE, Strongboxes can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockStrongbox.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockStrongbox.enableUpgradeKitCrafting, comment);
 	}
@@ -280,9 +284,9 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 	/* NETWORK METHODS */
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addByte(facing);
 		payload.addByte(enchantHolding);
@@ -291,14 +295,14 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	}
 
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
 		return null;
 	}
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 

@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -333,9 +333,9 @@ public class TilePulverizer extends TileMachineBase {
 
 	/* NETWORK METHODS */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addBool(augmentPetrotheum);
 		payload.addFluidStack(tank.getFluid());
@@ -343,7 +343,7 @@ public class TilePulverizer extends TileMachineBase {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 

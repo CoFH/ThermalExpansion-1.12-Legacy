@@ -3,7 +3,7 @@ package cofh.thermalexpansion.block.storage;
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.core.init.CoreProps;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.EnergyHelper;
 import cofh.core.util.helpers.MathHelper;
@@ -63,6 +63,10 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockCell.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockCell.enableClassicRecipes, comment);
 
+		// TODO: Remove in 5.3.9.
+		if (ThermalExpansion.CONFIG.isOldConfig()) {
+			ThermalExpansion.CONFIG.removeProperty(category, "UpgradeKitCrafting");
+		}
 		comment = "If TRUE, Energy Cells can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockCell.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockCell.enableUpgradeKitCrafting, comment);
 
@@ -331,9 +335,9 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 	/* CLIENT -> SERVER */
 	@Override
-	public PacketCoFHBase getModePacket() {
+	public PacketBase getModePacket() {
 
-		PacketCoFHBase payload = super.getModePacket();
+		PacketBase payload = super.getModePacket();
 
 		payload.addInt(MathHelper.clamp(amountRecv, 0, RECV[level]));
 		payload.addInt(MathHelper.clamp(amountSend, 0, SEND[level]));
@@ -342,7 +346,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	}
 
 	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
+	protected void handleModePacket(PacketBase payload) {
 
 		super.handleModePacket(payload);
 
@@ -352,9 +356,9 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addInt(amountRecv);
 		payload.addInt(amountSend);
@@ -363,9 +367,9 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	}
 
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addByte(enchantHolding);
 		payload.addInt(amountRecv);
@@ -375,7 +379,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -385,7 +389,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 

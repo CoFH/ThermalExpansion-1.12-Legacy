@@ -23,6 +23,7 @@ public class GuiCrafter extends GuiPoweredBase {
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	private TileCrafter myTile;
+	private ContainerCrafter myContainer;
 
 	ElementSlotOverlayCrafter slotInput;
 	ElementBase slotOutput;
@@ -40,6 +41,7 @@ public class GuiCrafter extends GuiPoweredBase {
 		generateInfo("tab.thermalexpansion.machine.crafter");
 
 		myTile = (TileCrafter) tile;
+		myContainer = (ContainerCrafter) inventorySlots;
 		ySize = 208;
 	}
 
@@ -78,6 +80,14 @@ public class GuiCrafter extends GuiPoweredBase {
 			setRecipe.setActive();
 		} else {
 			setRecipe.setDisabled();
+		}
+	}
+
+	@Override
+	public void handleElementButtonClick(String buttonName, int mouseButton) {
+
+		if (buttonName.equalsIgnoreCase("SetRecipe")) {
+			myContainer.setRecipe();
 		}
 	}
 

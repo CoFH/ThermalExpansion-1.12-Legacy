@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
@@ -329,9 +329,9 @@ public class TileFurnace extends TileMachineBase {
 
 	/* NETWORK METHODS */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addBool(augmentPyrolysis);
 		payload.addFluidStack(tank.getFluid());
@@ -339,7 +339,7 @@ public class TileFurnace extends TileMachineBase {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 

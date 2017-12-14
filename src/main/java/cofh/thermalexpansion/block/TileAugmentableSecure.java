@@ -9,12 +9,12 @@ import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.ITransferControl;
 import cofh.api.tileentity.IUpgradeable;
 import cofh.core.init.CoreProps;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
+import cofh.core.network.PacketCore;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalfoundation.init.TFProps;
 import com.google.common.base.Strings;
 import com.mojang.authlib.GameProfile;
@@ -278,9 +278,9 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 	/* CLIENT -> SERVER */
 	@Override
-	public PacketCoFHBase getAccessPacket() {
+	public PacketBase getAccessPacket() {
 
-		PacketCoFHBase payload = super.getAccessPacket();
+		PacketBase payload = super.getAccessPacket();
 
 		payload.addByte((byte) access.ordinal());
 
@@ -288,7 +288,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	}
 
 	@Override
-	protected void handleAccessPacket(PacketCoFHBase payload) {
+	protected void handleAccessPacket(PacketBase payload) {
 
 		super.handleAccessPacket(payload);
 
@@ -299,9 +299,9 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addByte((byte) access.ordinal());
 		payload.addUUID(owner.getId());
@@ -322,7 +322,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 
@@ -525,7 +525,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		}
 		enableAutoInput = input;
 		if (ServerHelper.isClientWorld(world)) {
-			PacketTEBase.sendTransferUpdatePacketToServer(this, pos);
+			PacketCore.sendTransferUpdatePacketToServer(this, pos);
 		} else {
 			sendTilePacket(Side.CLIENT);
 		}
@@ -540,7 +540,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		}
 		enableAutoOutput = output;
 		if (ServerHelper.isClientWorld(world)) {
-			PacketTEBase.sendTransferUpdatePacketToServer(this, pos);
+			PacketCore.sendTransferUpdatePacketToServer(this, pos);
 		} else {
 			sendTilePacket(Side.CLIENT);
 		}

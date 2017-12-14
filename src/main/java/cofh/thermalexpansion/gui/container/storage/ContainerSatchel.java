@@ -5,13 +5,13 @@ import cofh.core.gui.container.ContainerInventoryItem;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotLocked;
 import cofh.core.gui.slot.SlotValidated;
+import cofh.core.network.PacketCore;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.slot.SlotSatchelCreative;
 import cofh.thermalexpansion.item.ItemSatchel;
-import cofh.thermalexpansion.network.PacketTEBase;
 import com.mojang.authlib.GameProfile;
 import gnu.trove.map.hash.THashMap;
 import invtweaks.api.container.ChestContainer;
@@ -112,7 +112,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 		if (SecurityHelper.setAccess(getContainerStack(), access)) {
 			onSlotChanged();
 			if (CoreUtils.isClient()) {
-				PacketTEBase.sendSecurityPacketToServer(this);
+				PacketCore.sendSecurityPacketToServer(this);
 			}
 			return true;
 		}

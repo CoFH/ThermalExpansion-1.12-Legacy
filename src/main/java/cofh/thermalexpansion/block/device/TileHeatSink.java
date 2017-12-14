@@ -3,7 +3,7 @@ package cofh.thermalexpansion.block.device;
 import cofh.api.core.IAccelerable;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.gui.GuiContainerCore;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -233,9 +233,9 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getFluidPacket() {
+	public PacketBase getFluidPacket() {
 
-		PacketCoFHBase payload = super.getFluidPacket();
+		PacketBase payload = super.getFluidPacket();
 
 		payload.addFluidStack(renderFluid);
 
@@ -243,9 +243,9 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addInt(coolantRF);
 		payload.addInt(coolantFactor);
@@ -259,9 +259,9 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		if (tank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
@@ -272,7 +272,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	protected void handleFluidPacket(PacketCoFHBase payload) {
+	protected void handleFluidPacket(PacketBase payload) {
 
 		super.handleFluidPacket(payload);
 
@@ -282,7 +282,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -293,7 +293,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 

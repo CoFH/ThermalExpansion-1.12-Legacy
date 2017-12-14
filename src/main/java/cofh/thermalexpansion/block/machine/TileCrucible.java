@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.RenderHelper;
@@ -292,9 +292,9 @@ public class TileCrucible extends TileMachineBase {
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getFluidPacket() {
+	public PacketBase getFluidPacket() {
 
-		PacketCoFHBase payload = super.getFluidPacket();
+		PacketBase payload = super.getFluidPacket();
 
 		payload.addFluidStack(renderFluid);
 
@@ -302,9 +302,9 @@ public class TileCrucible extends TileMachineBase {
 	}
 
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		if (tank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
@@ -315,9 +315,9 @@ public class TileCrucible extends TileMachineBase {
 	}
 
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addFluidStack(renderFluid);
 
@@ -325,7 +325,7 @@ public class TileCrucible extends TileMachineBase {
 	}
 
 	@Override
-	protected void handleFluidPacket(PacketCoFHBase payload) {
+	protected void handleFluidPacket(PacketBase payload) {
 
 		super.handleFluidPacket(payload);
 
@@ -335,7 +335,7 @@ public class TileCrucible extends TileMachineBase {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -344,7 +344,7 @@ public class TileCrucible extends TileMachineBase {
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 

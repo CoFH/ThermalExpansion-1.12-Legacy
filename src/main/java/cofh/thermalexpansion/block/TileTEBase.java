@@ -5,7 +5,7 @@ import cofh.core.block.TileCore;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.ITileInfoPacketHandler;
 import cofh.core.network.ITilePacketHandler;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.network.PacketHandler;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
@@ -82,7 +82,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	public void sendGuiNetworkData(Container container, IContainerListener listener) {
 
 		if (listener instanceof EntityPlayer) {
-			PacketCoFHBase guiPacket = getGuiPacket();
+			PacketBase guiPacket = getGuiPacket();
 			if (guiPacket != null) {
 				PacketHandler.sendTo(guiPacket, (EntityPlayer) listener);
 			}
@@ -126,9 +126,9 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addString(tileName);
 
@@ -137,7 +137,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		tileName = payload.getString();
 		world.checkLight(pos);
@@ -145,7 +145,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(PacketCoFHBase payload, boolean isServer, EntityPlayer thePlayer) {
+	public void handleTileInfoPacket(PacketBase payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (TilePacketID.values()[payload.getByte()]) {
 			case S_GUI:

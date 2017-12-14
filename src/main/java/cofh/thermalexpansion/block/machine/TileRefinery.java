@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
@@ -48,7 +48,7 @@ public class TileRefinery extends TileMachineBase {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 7;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, {}, { 0 }, { 0 }, { 0 } };
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, {}, { 0 }, { 0 }, { 0 }, { 0 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, OUTPUT_PRIMARY, OUTPUT_SECONDARY, OUTPUT_ALL, OPEN, OMNI };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 2, 3, 3, 3, 3 };
 
@@ -340,17 +340,17 @@ public class TileRefinery extends TileMachineBase {
 
 	/* NETWORK METHODS */
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 		payload.addFluidStack(renderFluid);
 		return payload;
 	}
 
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 		if (inputTank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
 		} else {
@@ -361,15 +361,15 @@ public class TileRefinery extends TileMachineBase {
 	}
 
 	@Override
-	public PacketCoFHBase getFluidPacket() {
+	public PacketBase getFluidPacket() {
 
-		PacketCoFHBase payload = super.getFluidPacket();
+		PacketBase payload = super.getFluidPacket();
 		payload.addFluidStack(renderFluid);
 		return payload;
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 		inputTank.setFluid(payload.getFluidStack());
@@ -377,7 +377,7 @@ public class TileRefinery extends TileMachineBase {
 	}
 
 	@Override
-	protected void handleFluidPacket(PacketCoFHBase payload) {
+	protected void handleFluidPacket(PacketBase payload) {
 
 		super.handleFluidPacket(payload);
 		renderFluid = payload.getFluidStack();
@@ -386,7 +386,7 @@ public class TileRefinery extends TileMachineBase {
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 

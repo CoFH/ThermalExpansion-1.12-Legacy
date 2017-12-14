@@ -3,7 +3,7 @@ package cofh.thermalexpansion.block.machine;
 import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.gui.container.ICustomInventory;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.RenderHelper;
@@ -325,9 +325,9 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 	/* CLIENT -> SERVER */
 	@Override
-	public PacketCoFHBase getModePacket() {
+	public PacketBase getModePacket() {
 
-		PacketCoFHBase payload = super.getModePacket();
+		PacketBase payload = super.getModePacket();
 
 		payload.addByte(direction);
 
@@ -335,7 +335,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	}
 
 	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
+	protected void handleModePacket(PacketBase payload) {
 
 		super.handleModePacket(payload);
 
@@ -347,18 +347,18 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addBool(augmentNoWater);
 		return payload;
 	}
 
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addFluidStack(hotTank.getFluid());
 		payload.addFluidStack(coldTank.getFluid());
@@ -370,7 +370,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 
@@ -379,7 +379,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 

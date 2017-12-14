@@ -131,7 +131,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isCurrentItem) {
+	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
 
 		if (ServerHelper.isClientWorld(world) || CoreUtils.isFakePlayer(entity) || !isActive(stack)) {
 			return;
@@ -152,12 +152,6 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	@Override
-	public boolean hasContainerItem(ItemStack stack) {
-
-		return true;
-	}
-
-	@Override
 	public boolean isFull3D() {
 
 		return true;
@@ -166,7 +160,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
 
-		return typeMap.get(ItemHelper.getItemDamage(stack)).enchantable;
+		return ItemHelper.getItemDamage(stack) != CREATIVE;
 	}
 
 	@Override
@@ -186,12 +180,6 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 
 		return 10;
 	}
-
-	//	@Override
-	//	public int getRGBDurabilityForDisplay(ItemStack stack) {
-	//
-	//		return CoreProps.RGB_DURABILITY_FLUX;
-	//	}
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
@@ -218,7 +206,6 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 					player.world.playSound(null, player.getPosition(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.2F, 0.5F);
 				}
 			}
-			player.swingArm(hand);
 			return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 		}
 		if (getMode(stack) == BUCKET_FILL) {
@@ -227,7 +214,6 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (getMode(stack) == BUCKET_EMPTY) {
 			return doBucketEmpty(stack, world, player, hand);
 		}
-		//player.swingArm(hand);
 		return ActionResult.newResult(EnumActionResult.FAIL, stack);
 	}
 
@@ -459,7 +445,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
 
-		return typeMap.containsKey(ItemHelper.getItemDamage(stack)) && typeMap.get(ItemHelper.getItemDamage(stack)).enchantable && enchantment == CoreEnchantments.holding;
+		return enchantment == CoreEnchantments.holding;
 	}
 
 	/* CAPABILITIES */
@@ -498,7 +484,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		reservoirSignalum = addEntryItem(3, "standard3", CAPACITY[3], EnumRarity.UNCOMMON);
 		reservoirResonant = addEntryItem(4, "standard4", CAPACITY[4], EnumRarity.RARE);
 
-		reservoirCreative = addEntryItem(CREATIVE, "creative", Fluid.BUCKET_VOLUME, EnumRarity.EPIC, false);
+		reservoirCreative = addEntryItem(CREATIVE, "creative", Fluid.BUCKET_VOLUME, EnumRarity.EPIC);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -548,30 +534,22 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 
 		public final String name;
 		public final int capacity;
-		public final boolean enchantable;
 
-		TypeEntry(String name, int capacity, boolean enchantable) {
+		TypeEntry(String name, int capacity) {
 
 			this.name = name;
 			this.capacity = capacity;
-			this.enchantable = enchantable;
 		}
 	}
 
-	private void addEntry(int metadata, String name, int capacity, boolean enchantable) {
+	private void addEntry(int metadata, String name, int capacity) {
 
-		typeMap.put(metadata, new TypeEntry(name, capacity, enchantable));
-	}
-
-	private ItemStack addEntryItem(int metadata, String name, int capacity, EnumRarity rarity, boolean enchantable) {
-
-		addEntry(metadata, name, capacity, enchantable);
-		return addItem(metadata, name, rarity);
+		typeMap.put(metadata, new TypeEntry(name, capacity));
 	}
 
 	private ItemStack addEntryItem(int metadata, String name, int capacity, EnumRarity rarity) {
 
-		addEntry(metadata, name, capacity, true);
+		addEntry(metadata, name, capacity);
 		return addItem(metadata, name, rarity);
 	}
 

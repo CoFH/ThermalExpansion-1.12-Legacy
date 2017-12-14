@@ -4,12 +4,12 @@ import codechicken.lib.vec.Vector3;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.core.audio.ISoundSource;
 import cofh.core.audio.SoundTile;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
+import cofh.core.network.PacketCore;
 import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.helpers.SoundHelper;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.network.PacketTEBase;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -57,7 +57,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 		isPowered = powerLevel > 0;
 
 		if (wasPowered != isPowered && sendRedstoneUpdates()) {
-			PacketTEBase.sendRSPowerUpdatePacketToClients(this, world, pos);
+			PacketCore.sendRSPowerUpdatePacketToClients(this, world, pos);
 			onRedstoneUpdate();
 		}
 	}
@@ -109,9 +109,9 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addBool(isPowered);
 		payload.addByte(rsMode.ordinal());
@@ -122,7 +122,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 
@@ -161,7 +161,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 
 		rsMode = control;
 		if (ServerHelper.isClientWorld(world)) {
-			PacketTEBase.sendRSConfigUpdatePacketToServer(this, pos);
+			PacketCore.sendRSConfigUpdatePacketToServer(this, pos);
 		}
 		return true;
 	}

@@ -5,9 +5,9 @@ import cofh.core.block.TileCore;
 import cofh.core.gui.container.ContainerCore;
 import cofh.core.gui.container.IAugmentableContainer;
 import cofh.core.gui.slot.SlotAugment;
+import cofh.core.network.PacketCore;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ServerHelper;
-import cofh.thermalexpansion.network.PacketTEBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IContainerListener;
@@ -142,7 +142,7 @@ public class ContainerTEBase extends ContainerCore implements IAugmentableContai
 		augmentLock = lock;
 
 		if (ServerHelper.isClientWorld(baseTile.getWorld())) {
-			PacketTEBase.sendTabAugmentPacketToServer(lock);
+			PacketCore.sendTabAugmentPacketToServer(lock);
 		}
 	}
 

@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block;
 
 import cofh.api.tileentity.IEnergyInfo;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.EnergyHelper;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.api.IEnergyReceiver;
@@ -99,9 +99,9 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addBool(isActive);
 		payload.addInt(energyStorage.getMaxEnergyStored());
@@ -111,9 +111,9 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 	}
 
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addInt(energyStorage.getEnergyStored());
 
@@ -121,7 +121,7 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -132,7 +132,7 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 

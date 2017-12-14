@@ -6,7 +6,7 @@ import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.gui.container.ICustomInventory;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.render.ISidedTexture;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -69,6 +69,10 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockCache.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockCache.enableClassicRecipes, comment);
 
+		// TODO: Remove in 5.3.9.
+		if (ThermalExpansion.CONFIG.isOldConfig()) {
+			ThermalExpansion.CONFIG.removeProperty(category, "UpgradeKitCrafting");
+		}
 		comment = "If TRUE, Caches can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockCache.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockCache.enableUpgradeKitCrafting, comment);
 
@@ -375,9 +379,9 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 	/* CLIENT -> SERVER */
 	@Override
-	public PacketCoFHBase getModePacket() {
+	public PacketBase getModePacket() {
 
-		PacketCoFHBase payload = super.getModePacket();
+		PacketBase payload = super.getModePacket();
 
 		payload.addBool(lock);
 
@@ -385,7 +389,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	}
 
 	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
+	protected void handleModePacket(PacketBase payload) {
 
 		super.handleModePacket(payload);
 
@@ -394,9 +398,9 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addBool(lock);
 
@@ -404,9 +408,9 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	}
 
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addByte(facing);
 		payload.addByte(enchantHolding);
@@ -420,7 +424,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -429,7 +433,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 

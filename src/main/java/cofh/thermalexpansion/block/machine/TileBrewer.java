@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.core.fluid.FluidTankCore;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -295,9 +295,9 @@ public class TileBrewer extends TileMachineBase {
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getFluidPacket() {
+	public PacketBase getFluidPacket() {
 
-		PacketCoFHBase payload = super.getFluidPacket();
+		PacketBase payload = super.getFluidPacket();
 
 		payload.addFluidStack(renderFluid);
 
@@ -305,9 +305,9 @@ public class TileBrewer extends TileMachineBase {
 	}
 
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addFluidStack(inputTank.getFluid());
 
@@ -320,7 +320,7 @@ public class TileBrewer extends TileMachineBase {
 	}
 
 	@Override
-	protected void handleFluidPacket(PacketCoFHBase payload) {
+	protected void handleFluidPacket(PacketBase payload) {
 
 		super.handleFluidPacket(payload);
 
@@ -330,7 +330,7 @@ public class TileBrewer extends TileMachineBase {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 

@@ -4,9 +4,8 @@ import baubles.api.cap.IBaublesItemHandler;
 import cofh.api.item.IMultiModeItem;
 import cofh.api.item.INBTCopyIngredient;
 import cofh.core.init.CoreEnchantments;
-import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
-import cofh.core.item.ItemMulti;
+import cofh.core.item.ItemMultiRF;
 import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.core.IInitializer;
@@ -20,7 +19,6 @@ import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,7 +47,7 @@ import java.util.stream.IntStream;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
-public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem, INBTCopyIngredient {
+public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem, INBTCopyIngredient {
 
 	public ItemCapacitor() {
 
@@ -87,7 +85,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 			tooltip.add(StringHelper.localize("info.cofh.send") + ": " + StringHelper.formatNumber(getSend(stack)) + " RF/t");
 		} else {
 			tooltip.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(getEnergyStored(stack)) + " / " + StringHelper.getScaledNumber(getMaxEnergyStored(stack)) + " RF");
-			tooltip.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + StringHelper.formatNumber(getSend(stack)) + "/" + StringHelper.formatNumber(getRecv(stack)) + " RF/t");
+			tooltip.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + StringHelper.formatNumber(getSend(stack)) + "/" + StringHelper.formatNumber(getReceive(stack)) + " RF/t");
 		}
 	}
 
@@ -107,7 +105,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isCurrentItem) {
+	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
 
 		if (ServerHelper.isClientWorld(world) || CoreUtils.isFakePlayer(entity) || !isActive(stack)) {
 			return;
@@ -140,48 +138,15 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	@Override
-	public boolean isFull3D() {
-
-		return true;
-	}
-
-	@Override
-	public boolean isEnchantable(ItemStack stack) {
-
-		return typeMap.get(ItemHelper.getItemDamage(stack)).enchantable;
-	}
-
-	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 
-		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
-	}
-
-	@Override
-	public boolean showDurabilityBar(ItemStack stack) {
-
-		return ItemHelper.getItemDamage(stack) != CREATIVE;
+		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || getEnergyStored(oldStack) > 0 != getEnergyStored(newStack) > 0);
 	}
 
 	@Override
 	public int getItemEnchantability(ItemStack stack) {
 
 		return 10;
-	}
-
-	@Override
-	public int getRGBDurabilityForDisplay(ItemStack stack) {
-
-		return CoreProps.RGB_DURABILITY_FLUX;
-	}
-
-	@Override
-	public double getDurabilityForDisplay(ItemStack stack) {
-
-		if (stack.getTagCompound() == null) {
-			EnergyHelper.setDefaultEnergyTag(stack, 0);
-		}
-		return 1.0D - ((double) stack.getTagCompound().getInteger("Energy") / (double) getMaxEnergyStored(stack));
 	}
 
 	@Override
@@ -200,7 +165,6 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 				}
 			}
 		}
-		player.swingArm(hand);
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
@@ -226,23 +190,8 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		return false;
 	}
 
-	public int getSend(ItemStack stack) {
-
-		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
-			return 0;
-		}
-		return typeMap.get(ItemHelper.getItemDamage(stack)).send;
-	}
-
-	public int getRecv(ItemStack stack) {
-
-		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
-			return 0;
-		}
-		return typeMap.get(ItemHelper.getItemDamage(stack)).recv;
-	}
-
-	public int getCapacity(ItemStack stack) {
+	@Override
+	protected int getCapacity(ItemStack stack) {
 
 		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
 			return 0;
@@ -251,6 +200,23 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		int enchant = EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
 
 		return capacity + capacity * enchant / 2;
+	}
+
+	@Override
+	protected int getReceive(ItemStack stack) {
+
+		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
+			return 0;
+		}
+		return typeMap.get(ItemHelper.getItemDamage(stack)).recv;
+	}
+
+	public int getSend(ItemStack stack) {
+
+		if (!typeMap.containsKey(ItemHelper.getItemDamage(stack))) {
+			return 0;
+		}
+		return typeMap.get(ItemHelper.getItemDamage(stack)).send;
 	}
 
 	public int getBaseCapacity(int metadata) {
@@ -293,22 +259,6 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 	/* IEnergyContainerItem */
 	@Override
-	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-
-		if (container.getTagCompound() == null) {
-			EnergyHelper.setDefaultEnergyTag(container, 0);
-		}
-		int stored = container.getTagCompound().getInteger("Energy");
-		int receive = Math.min(maxReceive, Math.min(getMaxEnergyStored(container) - stored, getRecv(container)));
-
-		if (!simulate && ItemHelper.getItemDamage(container) != CREATIVE) {
-			stored += receive;
-			container.getTagCompound().setInteger("Energy", stored);
-		}
-		return receive;
-	}
-
-	@Override
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
 		if (container.getTagCompound() == null) {
@@ -325,28 +275,6 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 			container.getTagCompound().setInteger("Energy", stored);
 		}
 		return extract;
-	}
-
-	@Override
-	public int getEnergyStored(ItemStack container) {
-
-		if (container.getTagCompound() == null) {
-			EnergyHelper.setDefaultEnergyTag(container, 0);
-		}
-		return container.getTagCompound().getInteger("Energy");
-	}
-
-	@Override
-	public int getMaxEnergyStored(ItemStack container) {
-
-		return getCapacity(container);
-	}
-
-	/* IEnchantableItem */
-	@Override
-	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
-
-		return typeMap.containsKey(ItemHelper.getItemDamage(stack)) && typeMap.get(ItemHelper.getItemDamage(stack)).enchantable && enchantment == CoreEnchantments.holding;
 	}
 
 	/* CAPABILITIES */
@@ -379,13 +307,13 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 		config();
 
-		capacitorBasic = addEntryItem(0, "standard0", SEND[0], RECV[0], CAPACITY[0], EnumRarity.COMMON);
-		capacitorHardened = addEntryItem(1, "standard1", SEND[1], RECV[1], CAPACITY[1], EnumRarity.COMMON);
-		capacitorReinforced = addEntryItem(2, "standard2", SEND[2], RECV[2], CAPACITY[2], EnumRarity.UNCOMMON);
-		capacitorSignalum = addEntryItem(3, "standard3", SEND[3], RECV[3], CAPACITY[3], EnumRarity.UNCOMMON);
-		capacitorResonant = addEntryItem(4, "standard4", SEND[4], RECV[4], CAPACITY[4], EnumRarity.RARE);
+		capacitorBasic = addEntryItem(0, "standard0", EnumRarity.COMMON);
+		capacitorHardened = addEntryItem(1, "standard1", EnumRarity.COMMON);
+		capacitorReinforced = addEntryItem(2, "standard2", EnumRarity.UNCOMMON);
+		capacitorSignalum = addEntryItem(3, "standard3", EnumRarity.UNCOMMON);
+		capacitorResonant = addEntryItem(4, "standard4", EnumRarity.RARE);
 
-		capacitorCreative = addEntryItem(CREATIVE, "creative", SEND_CREATIVE, 0, 0, EnumRarity.EPIC, false);
+		capacitorCreative = addEntryItem(CREATIVE, "creative", SEND_CREATIVE, 0, CAPACITY[4], EnumRarity.EPIC);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -447,32 +375,30 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		public final int send;
 		public final int recv;
 		public final int capacity;
-		public final boolean enchantable;
 
-		TypeEntry(String name, int send, int recv, int capacity, boolean enchantable) {
+		TypeEntry(String name, int send, int recv, int capacity) {
 
 			this.name = name;
 			this.send = send;
 			this.recv = recv;
 			this.capacity = capacity;
-			this.enchantable = enchantable;
 		}
 	}
 
-	private void addEntry(int metadata, String name, int send, int recv, int capacity, boolean enchantable) {
+	private void addEntry(int metadata, String name, int send, int recv, int capacity) {
 
-		typeMap.put(metadata, new TypeEntry(name, send, recv, capacity, enchantable));
+		typeMap.put(metadata, new TypeEntry(name, send, recv, capacity));
 	}
 
-	private ItemStack addEntryItem(int metadata, String name, int send, int recv, int capacity, EnumRarity rarity, boolean enchantable) {
+	private ItemStack addEntryItem(int metadata, String name, EnumRarity rarity) {
 
-		addEntry(metadata, name, send, recv, capacity, enchantable);
+		addEntry(metadata, name, SEND[metadata], RECV[metadata], CAPACITY[metadata]);
 		return addItem(metadata, name, rarity);
 	}
 
 	private ItemStack addEntryItem(int metadata, String name, int send, int recv, int capacity, EnumRarity rarity) {
 
-		addEntry(metadata, name, send, recv, capacity, true);
+		addEntry(metadata, name, send, recv, capacity);
 		return addItem(metadata, name, rarity);
 	}
 

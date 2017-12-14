@@ -542,8 +542,8 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 	}
 
 	public static boolean[] enable = new boolean[Type.values().length];
-	public static boolean enableClassicRecipes;
-	public static boolean enableUpgradeKitCrafting;
+	public static boolean enableClassicRecipes = false;
+	public static boolean enableUpgradeKitCrafting = false;
 
 	/* REFERENCES */
 	public static ItemStack dynamoSteam;

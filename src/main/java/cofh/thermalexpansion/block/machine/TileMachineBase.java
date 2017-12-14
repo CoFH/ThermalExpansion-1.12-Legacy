@@ -5,7 +5,7 @@ import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.core.init.CoreProps;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.TimeTracker;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.MathHelper;
@@ -359,9 +359,9 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addInt(processMax);
 		payload.addInt(processRem);
@@ -370,7 +370,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 

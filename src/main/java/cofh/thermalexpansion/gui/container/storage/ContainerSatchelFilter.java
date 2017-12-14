@@ -4,6 +4,7 @@ import cofh.api.core.IFilterable;
 import cofh.api.core.ISecurable;
 import cofh.core.gui.container.ContainerCore;
 import cofh.core.gui.slot.SlotLocked;
+import cofh.core.network.PacketCore;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.filter.ItemFilterWrapper;
 import cofh.core.util.helpers.MathHelper;
@@ -11,7 +12,6 @@ import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.slot.SlotSatchelFilter;
 import cofh.thermalexpansion.item.ItemSatchel;
-import cofh.thermalexpansion.network.PacketTEBase;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -129,7 +129,7 @@ public class ContainerSatchelFilter extends ContainerCore implements IFilterable
 
 		filterWrapper.getFilter().setFlag(flag, value);
 		if (CoreUtils.isClient()) {
-			PacketTEBase.sendFilterPacketToServer(flag, value);
+			PacketCore.sendFilterPacketToServer(flag, value);
 		}
 		filterWrapper.markDirty();
 	}
@@ -141,7 +141,7 @@ public class ContainerSatchelFilter extends ContainerCore implements IFilterable
 		if (SecurityHelper.setAccess(getFilterStack(), access)) {
 			onSlotChanged();
 			if (CoreUtils.isClient()) {
-				PacketTEBase.sendSecurityPacketToServer(this);
+				PacketCore.sendSecurityPacketToServer(this);
 			}
 			return true;
 		}

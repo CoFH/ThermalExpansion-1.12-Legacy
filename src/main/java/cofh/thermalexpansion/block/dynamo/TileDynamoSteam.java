@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.dynamo;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.render.TextureHelper;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
@@ -223,9 +223,9 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addBool(augmentTurbine);
 		payload.addInt(maxFuelRF);
@@ -235,9 +235,9 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addBool(augmentTurbine);
 
@@ -245,7 +245,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -256,7 +256,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 

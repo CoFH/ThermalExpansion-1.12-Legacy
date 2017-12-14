@@ -9,7 +9,7 @@ import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ISteamInfo;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.render.TextureHelper;
 import cofh.core.util.TimeTracker;
 import cofh.core.util.helpers.*;
@@ -463,9 +463,9 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addInt(energyStorage.getMaxEnergyStored());
 		payload.addInt(energyStorage.getEnergyStored());
@@ -478,9 +478,9 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	}
 
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addByte(facing);
 		payload.addBool(hasRedstoneControl);
@@ -491,7 +491,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -505,7 +505,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 
@@ -570,9 +570,6 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (TEProps.DYNAMO_POWER.equals(id)) {
 			// Power Boost
 			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level), smallStorage);
-
-			// Efficiency Loss
-			energyMod -= 10;
 			return true;
 		}
 		if (TEProps.DYNAMO_EFFICIENCY.equals(id)) {

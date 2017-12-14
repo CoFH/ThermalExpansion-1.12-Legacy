@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.ServerHelper;
@@ -330,9 +330,9 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getFluidPacket() {
+	public PacketBase getFluidPacket() {
 
-		PacketCoFHBase payload = super.getFluidPacket();
+		PacketBase payload = super.getFluidPacket();
 
 		payload.addFluidStack(renderFluid);
 
@@ -340,9 +340,9 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addInt(boostAmp);
 		payload.addInt(boostDur);
@@ -353,9 +353,9 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addInt(offset);
 
@@ -368,7 +368,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	protected void handleFluidPacket(PacketCoFHBase payload) {
+	protected void handleFluidPacket(PacketBase payload) {
 
 		super.handleFluidPacket(payload);
 
@@ -378,7 +378,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -390,7 +390,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 

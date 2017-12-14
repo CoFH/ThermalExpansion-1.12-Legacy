@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block;
 
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.IReconfigurableSides;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.render.ISidedTexture;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
@@ -131,9 +131,9 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 
 	/* CLIENT -> SERVER */
 	@Override
-	public PacketCoFHBase getConfigPacket() {
+	public PacketBase getConfigPacket() {
 
-		PacketCoFHBase payload = super.getConfigPacket();
+		PacketBase payload = super.getConfigPacket();
 
 		payload.addByteArray(sideCache);
 
@@ -141,7 +141,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 	}
 
 	@Override
-	protected void handleConfigPacket(PacketCoFHBase payload) {
+	protected void handleConfigPacket(PacketBase payload) {
 
 		super.handleConfigPacket(payload);
 
@@ -159,9 +159,9 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addByteArray(sideCache);
 		payload.addByte(facing);
@@ -171,7 +171,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 

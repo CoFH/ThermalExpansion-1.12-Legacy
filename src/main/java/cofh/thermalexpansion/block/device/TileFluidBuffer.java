@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -216,9 +216,9 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 	/* CLIENT -> SERVER */
 	@Override
-	public PacketCoFHBase getModePacket() {
+	public PacketBase getModePacket() {
 
-		PacketCoFHBase payload = super.getModePacket();
+		PacketBase payload = super.getModePacket();
 
 		payload.addInt(MathHelper.clamp(amountInput, 0, 8000));
 		payload.addInt(MathHelper.clamp(amountOutput, 0, 8000));
@@ -230,7 +230,7 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
+	protected void handleModePacket(PacketBase payload) {
 
 		super.handleModePacket(payload);
 
@@ -250,9 +250,9 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addInt(amountInput);
 		payload.addInt(amountOutput);
@@ -267,9 +267,9 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addInt(amountInput);
 		payload.addInt(amountOutput);
@@ -278,7 +278,7 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -295,7 +295,7 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 

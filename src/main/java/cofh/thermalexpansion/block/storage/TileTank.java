@@ -4,7 +4,7 @@ import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.fluid.FluidTankCore;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentableSecure;
@@ -61,6 +61,10 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockTank.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockTank.enableClassicRecipes, comment);
 
+		// TODO: Remove in 5.3.9.
+		if (ThermalExpansion.CONFIG.isOldConfig()) {
+			ThermalExpansion.CONFIG.removeProperty(category, "UpgradeKitCrafting");
+		}
 		comment = "If TRUE, Tanks can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockTank.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockTank.enableUpgradeKitCrafting, comment);
 
@@ -380,9 +384,9 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 	/* CLIENT -> SERVER */
 	@Override
-	public PacketCoFHBase getModePacket() {
+	public PacketBase getModePacket() {
 
-		PacketCoFHBase payload = super.getModePacket();
+		PacketBase payload = super.getModePacket();
 
 		payload.addBool(lock);
 
@@ -390,7 +394,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	}
 
 	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
+	protected void handleModePacket(PacketBase payload) {
 
 		super.handleModePacket(payload);
 
@@ -399,9 +403,9 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addBool(lock);
 		payload.addInt(tank.getCapacity());
@@ -411,9 +415,9 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	}
 
 	@Override
-	public PacketCoFHBase getTilePacket() {
+	public PacketBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getTilePacket();
 
 		payload.addByte(enchantHolding);
 		payload.addBool(lock);
@@ -423,7 +427,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -434,7 +438,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 

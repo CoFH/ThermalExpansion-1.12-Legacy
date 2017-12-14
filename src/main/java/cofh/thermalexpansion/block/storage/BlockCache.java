@@ -472,7 +472,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 	public static boolean enableSecurity = true;
 
 	public static boolean enableClassicRecipes = false;
-	public static boolean enableUpgradeKitCrafting = true;
+	public static boolean enableUpgradeKitCrafting = false;
 
 	/* REFERENCES */
 	public static ItemStack cache[];

@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import cofh.core.init.CoreProps;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.render.TextureHelper;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.EnergyHelper;
@@ -159,9 +159,9 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addInt(maxFuelRF);
 
@@ -169,7 +169,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 

@@ -72,8 +72,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 		return container.getTagCompound() == null || !container.getTagCompound().hasKey("Accessible");
 	}
 
-	public static boolean enableSecurity = true;
-
 	public ItemSatchel() {
 
 		super("thermalexpansion");
@@ -120,7 +118,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
 
-		return typeMap.get(ItemHelper.getItemDamage(stack)).enchantable;
+		return ItemHelper.getItemDamage(stack) != CREATIVE;
 	}
 
 	@Override
@@ -169,15 +167,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 		if (MinecraftForge.EVENT_BUS.post(event) || event.getResult() == Result.DENY) {
 			return EnumActionResult.PASS;
 		}
-		//		if (ServerHelper.isClientWorld(world)) {
-		//			ItemStack stack = player.getHeldItem(hand);
-		//			if (canPlayerAccess(stack, player)) {
-		//				TileEntity tile = world.getTileEntity(pos);
-		//				if (tile != null && tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side)) {
-		//					return EnumActionResult.SUCCESS;
-		//				}
-		//			}
-		//		}
 		ItemStack stack = player.getHeldItem(hand);
 		if (canPlayerAccess(stack, player)) {
 			TileEntity tile = world.getTileEntity(pos);
@@ -355,7 +344,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@Override
 	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
 
-		return typeMap.containsKey(ItemHelper.getItemDamage(stack)) && typeMap.get(ItemHelper.getItemDamage(stack)).enchantable && enchantment == CoreEnchantments.holding;
+		return enchantment == CoreEnchantments.holding;
 	}
 
 	/* IInitializer */
@@ -370,7 +359,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 		satchelSignalum = addEntryItem(3, "standard3", 3, EnumRarity.UNCOMMON);
 		satchelResonant = addEntryItem(4, "standard4", 4, EnumRarity.RARE);
 
-		satchelCreative = addEntryItem(CREATIVE, "creative", 0, EnumRarity.EPIC, false);
+		satchelCreative = addEntryItem(CREATIVE, "creative", 0, EnumRarity.EPIC);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -418,30 +407,22 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 
 		public final String name;
 		public final int level;
-		public final boolean enchantable;
 
-		TypeEntry(String name, int level, boolean enchantable) {
+		TypeEntry(String name, int level) {
 
 			this.name = name;
 			this.level = level;
-			this.enchantable = enchantable;
 		}
 	}
 
-	private void addTypeEntry(int metadata, String name, int level, boolean enchantable) {
+	private void addTypeEntry(int metadata, String name, int level) {
 
-		typeMap.put(metadata, new TypeEntry(name, level, enchantable));
-	}
-
-	private ItemStack addEntryItem(int metadata, String name, int level, EnumRarity rarity, boolean enchantable) {
-
-		addTypeEntry(metadata, name, level, enchantable);
-		return addItem(metadata, name, rarity);
+		typeMap.put(metadata, new TypeEntry(name, level));
 	}
 
 	private ItemStack addEntryItem(int metadata, String name, int level, EnumRarity rarity) {
 
-		addTypeEntry(metadata, name, level, true);
+		addTypeEntry(metadata, name, level);
 		return addItem(metadata, name, rarity);
 	}
 
@@ -450,6 +431,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	public static final int CREATIVE = 32000;
 
 	public static boolean enable = true;
+	public static boolean enableSecurity = true;
 
 	/* REFERENCES */
 	public static ItemStack satchelBasic;

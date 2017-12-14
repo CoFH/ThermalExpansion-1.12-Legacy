@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.inventory.InventoryCraftingFalse;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
@@ -13,6 +13,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
@@ -29,7 +31,7 @@ public class TileCrafter extends TileMachineBase {
 	public static final int DEFAULT_ENERGY = 400;
 
 	public static final int SLOT_OUTPUT = 18;
-	public static final int SLOT_CRAFTING_START = 19;
+	public static final int SLOT_CRAFTING_START = 20;
 
 	public static void initialize() {
 
@@ -215,6 +217,8 @@ public class TileCrafter extends TileMachineBase {
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
 		tank.readFromNBT(nbt);
+
+		setRecipe();
 	}
 
 	@Override
@@ -228,20 +232,61 @@ public class TileCrafter extends TileMachineBase {
 		return nbt;
 	}
 
+	private void setRecipe() {
+
+		for (int i = 0; i < 9; i++) {
+			craftMatrix.setInventorySlotContents(i, inventory[i + SLOT_CRAFTING_START]);
+		}
+		ItemStack stack = ItemStack.EMPTY;
+		IRecipe recipe = CraftingManager.findMatchingRecipe(craftMatrix, world);
+
+		if (recipe != null) {
+			craftResult.setRecipeUsed(recipe);
+			stack = recipe.getCraftingResult(craftMatrix);
+			System.out.println("woohoo!");
+		}
+		craftResult.setInventorySlotContents(0, stack);
+		inventory[SLOT_CRAFTING_START + 9] = craftResult.getStackInSlot(0);
+	}
+
 	/* NETWORK METHODS */
+
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketBase getModePacket() {
+
+		PacketBase payload = super.getModePacket();
+
+		for (int i = SLOT_CRAFTING_START; i < SLOT_CRAFTING_START + 9; i++) {
+			payload.addItemStack(inventory[i]);
+		}
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketBase payload) {
+
+		super.handleModePacket(payload);
+
+		for (int i = SLOT_CRAFTING_START; i < SLOT_CRAFTING_START + 9; i++) {
+			inventory[i] = payload.getItemStack();
+		}
+		setRecipe();
+		markChunkDirty();
+	}
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addFluidStack(getTankFluid());
 		return payload;
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 

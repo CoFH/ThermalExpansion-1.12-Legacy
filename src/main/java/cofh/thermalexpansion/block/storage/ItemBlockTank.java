@@ -100,12 +100,6 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	}
 
 	@Override
-	public boolean hasContainerItem(ItemStack stack) {
-
-		return true;
-	}
-
-	@Override
 	public boolean isEnchantable(ItemStack stack) {
 
 		return true;

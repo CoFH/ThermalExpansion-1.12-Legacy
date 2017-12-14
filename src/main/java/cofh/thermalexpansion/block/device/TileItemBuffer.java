@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.init.CoreProps;
-import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
@@ -173,9 +173,9 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 	/* CLIENT -> SERVER */
 	@Override
-	public PacketCoFHBase getModePacket() {
+	public PacketBase getModePacket() {
 
-		PacketCoFHBase payload = super.getModePacket();
+		PacketBase payload = super.getModePacket();
 
 		payload.addInt(MathHelper.clamp(amountInput, 0, 64));
 		payload.addInt(MathHelper.clamp(amountOutput, 0, 64));
@@ -184,7 +184,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
+	protected void handleModePacket(PacketBase payload) {
 
 		super.handleModePacket(payload);
 
@@ -194,20 +194,9 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 	/* SERVER -> CLIENT */
 	@Override
-	public PacketCoFHBase getGuiPacket() {
+	public PacketBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
-
-		payload.addInt(amountInput);
-		payload.addInt(amountOutput);
-
-		return payload;
-	}
-
-	@Override
-	public PacketCoFHBase getTilePacket() {
-
-		PacketCoFHBase payload = super.getTilePacket();
+		PacketBase payload = super.getGuiPacket();
 
 		payload.addInt(amountInput);
 		payload.addInt(amountOutput);
@@ -216,7 +205,18 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
+	public PacketBase getTilePacket() {
+
+		PacketBase payload = super.getTilePacket();
+
+		payload.addInt(amountInput);
+		payload.addInt(amountOutput);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -226,7 +226,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 	@Override
 	@SideOnly (Side.CLIENT)
-	public void handleTilePacket(PacketCoFHBase payload) {
+	public void handleTilePacket(PacketBase payload) {
 
 		super.handleTilePacket(payload);
 
