@@ -42,6 +42,7 @@ public abstract class ItemBlockTEBase extends ItemBlockCore implements ICreative
 	public abstract ItemStack setDefaultTag(ItemStack stack, int level);
 
 	/* ICreativeItem */
+	@Override
 	public boolean isCreative(ItemStack stack) {
 
 		if (stack.getTagCompound() == null) {
@@ -50,6 +51,7 @@ public abstract class ItemBlockTEBase extends ItemBlockCore implements ICreative
 		return stack.getTagCompound().getBoolean("Creative");
 	}
 
+	@Override
 	public ItemStack setCreativeTag(ItemStack stack) {
 
 		if (stack.getTagCompound() == null) {

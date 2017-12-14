@@ -9,6 +9,7 @@ import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
+import cofh.thermalfoundation.init.TFProps;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;

@@ -24,7 +24,7 @@
 		},
 		"Y": {
 			"type": "forge:ore_dict",
-			"ore": "gearSignalum"
+			"ore": "ingotSignalum"
 		}
 	}
 }

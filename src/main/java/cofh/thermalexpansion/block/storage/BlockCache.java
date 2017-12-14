@@ -81,13 +81,13 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 		if (enable) {
 			if (TEProps.creativeTabShowAllLevels) {
 				for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
-					items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, 0), j));
+					items.add(itemBlock.setDefaultTag(new ItemStack(this), j));
 				}
 			} else {
-				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, 0), TEProps.creativeTabLevel));
+				items.add(itemBlock.setDefaultTag(new ItemStack(this), TEProps.creativeTabLevel));
 			}
 			if (TEProps.creativeTabShowCreative) {
-				items.add(itemBlock.setCreativeTag(new ItemStack(this, 1, 0)));
+				items.add(itemBlock.setCreativeTag(new ItemStack(this)));
 			}
 		}
 	}

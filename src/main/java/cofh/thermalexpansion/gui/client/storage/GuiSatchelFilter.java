@@ -81,7 +81,7 @@ public class GuiSatchelFilter extends GuiContainerCore {
 		int flag = 0;
 		switch (buttonName) {
 			case "FilterList":
-				flag = IFilterable.FLAG_BLACKLIST;
+				flag = IFilterable.FLAG_WHITELIST;
 				break;
 			case "FilterOre":
 				flag = IFilterable.FLAG_ORE_DICT;
@@ -102,10 +102,10 @@ public class GuiSatchelFilter extends GuiContainerCore {
 
 		ContainerSatchelFilter container = (ContainerSatchelFilter) inventorySlots;
 
-		int x = container.getFlag(IFilterable.FLAG_BLACKLIST) ? 176 : 196;
+		int x = container.getFlag(IFilterable.FLAG_WHITELIST) ? 176 : 196;
 		buttonList.setSheetX(x);
 		buttonList.setHoverX(x);
-		buttonList.setToolTip("info.cofh.filter.list." + (container.getFlag(IFilterable.FLAG_BLACKLIST) ? "on" : "off"));
+		buttonList.setToolTip("info.cofh.filter.list." + (container.getFlag(IFilterable.FLAG_WHITELIST) ? "on" : "off"));
 
 		x = container.getFlag(IFilterable.FLAG_ORE_DICT) ? 216 : 236;
 		buttonOre.setSheetX(x);

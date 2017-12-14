@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.entity.projectile;
 
 import cofh.core.init.CoreProps;
+import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.ItemFlorb;
@@ -66,17 +67,10 @@ public class EntityFlorb extends EntityThrowable {
 		setSyncFluid();
 	}
 
-	public EntityFlorb setFluid(Fluid fluid) {
-
-		this.fluid = fluid;
-
-		return this;
-	}
-
 	private void setGravity() {
 
 		if (fluid.getDensity() < 0) {
-			this.gravity = cofh.core.util.helpers.MathHelper.minF(0.01F, 0.03F + 0.03F * fluid.getDensity() / 1000F);
+			this.gravity = MathHelper.minF(0.01F, 0.03F + 0.03F * fluid.getDensity() / 1000F);
 		}
 	}
 
