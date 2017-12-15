@@ -12,6 +12,8 @@ import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.entity.projectile.EntityMorb;
 import cofh.thermalexpansion.init.TEItems;
+import cofh.thermalexpansion.util.BehaviorMorbDispense;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.creativetab.CreativeTabs;
@@ -190,6 +192,7 @@ public class ItemMorb extends ItemCore implements IInitializer, IModelRegister, 
 
         config();
 
+        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, new BehaviorMorbDispense());
         ThermalExpansion.proxy.addIModelRegister(this);
 
         return true;
