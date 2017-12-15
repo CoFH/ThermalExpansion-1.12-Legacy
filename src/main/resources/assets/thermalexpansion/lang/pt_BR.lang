@@ -1,9 +1,9 @@
 #pt_BR
 
-gui.thermalexpansion.device.item_buffer.decInput=Diminui a Entrada em
-gui.thermalexpansion.device.item_buffer.decOutput=Diminui a Saída em
-gui.thermalexpansion.device.item_buffer.incInput=Aumenta a Entrada em
-gui.thermalexpansion.device.item_buffer.incOutput=Aumenta a Saída em
+gui.thermalexpansion.device.item_buffer.decInput=Diminuir a Entrada em
+gui.thermalexpansion.device.item_buffer.decOutput=Diminuir a Saída em
+gui.thermalexpansion.device.item_buffer.incInput=Aumentar a Entrada em
+gui.thermalexpansion.device.item_buffer.incOutput=Aumentar a Saída em
 
 gui.thermalexpansion.jei.compactor.modeMint=Moeda
 gui.thermalexpansion.jei.compactor.modePress=Prensa
