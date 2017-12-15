@@ -347,6 +347,8 @@ item.thermalexpansion.capacitor.standard4.name=Flux Capacitor (Resonant)
 item.thermalexpansion.florb.florb.name=Florb
 item.thermalexpansion.florb.florbMagmatic.name=Magmatic Florb
 
+item.thermalexpansion.morb.name=Morb
+
 item.thermalexpansion.frame.frameApparatus.name=Apparatus Frame
 item.thermalexpansion.frame.frameCell.name=Energy Cell Frame
 item.thermalexpansion.frame.frameCell1.name=Hardened Cell Frame
@@ -377,6 +379,7 @@ item.thermalexpansion.satchel.standard4.name=Satchel (Resonant)
 
 itemGroup.thermalexpansion.creativeTab=Thermal Expansion
 itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florbs
+itemGroup.thermalexpansion.creativeTabMorbs=Thermal Expansion: Morbs
 itemGroup.thermalexpansion.creativeTabItems=Thermal Expansion: Items
 
 tab.thermalexpansion.apparatus.activator.0=It slices! It dices! It pours things, it throws things!
