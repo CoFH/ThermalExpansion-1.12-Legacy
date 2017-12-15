@@ -7,6 +7,7 @@ import cofh.core.util.ConfigHandler;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.init.*;
 import cofh.thermalexpansion.item.ItemFlorb;
+import cofh.thermalexpansion.item.ItemMorb;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
@@ -56,6 +57,7 @@ public class ThermalExpansion {
 	public static CreativeTabs tabCommon;
 	public static CreativeTabs tabItems;
 	public static CreativeTabs tabFlorbs;
+	public static CreativeTabs tabMorbs;
 
 	public ThermalExpansion() {
 
@@ -161,6 +163,7 @@ public class ThermalExpansion {
 		NumismaticManager.initialize();
 
 		ItemFlorb.parseFlorbs();
+		ItemMorb.parseMorbs();
 	}
 
 	private synchronized void managerRefresh() {

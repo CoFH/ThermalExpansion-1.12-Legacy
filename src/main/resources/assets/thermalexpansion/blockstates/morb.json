@@ -1,0 +1,15 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "builtin/generated",
+        "textures": {
+            "layer0": "thermalexpansion:items/morb/morb",
+            "layer1": "thermalexpansion:items/morb/morb_latch"
+        },
+        "transform": "forge:default-item"
+    },
+    "variants": {
+        "inventory": [{
+        }]
+    }
+}

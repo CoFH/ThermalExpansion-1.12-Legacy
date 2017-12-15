@@ -16,6 +16,7 @@ import cofh.thermalexpansion.block.storage.TileCache;
 import cofh.thermalexpansion.block.storage.TileCell;
 import cofh.thermalexpansion.block.storage.TileTank;
 import cofh.thermalexpansion.item.ItemFlorb;
+import cofh.thermalexpansion.item.ItemMorb;
 import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.item.ItemStack;
@@ -63,12 +64,16 @@ public class TEProps {
 		category = "Interface";
 		boolean itemTabCommon = false;
 		boolean florbTabCommon = false;
+		boolean morbTabCommon = false;
 
 		comment = "If TRUE, Thermal Expansion Items and Tools appear under the general \"Thermal Expansion\" Creative Tab.";
 		itemTabCommon = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ItemsInCommonTab", category, itemTabCommon, comment);
 
 		comment = "If TRUE, Thermal Expansion Florbs appear under the general \"Thermal Expansion\" Creative Tab. Not really recommended.";
 		florbTabCommon = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("FlorbsInCommonTab", category, florbTabCommon, comment);
+
+		comment = "If TRUE, Thermal Expansion Morbs appear under the general \"Thermal Expansion\" Creative Tab. Not really recommended.";
+		morbTabCommon = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("MorbsInCommonTab", category, morbTabCommon, comment);
 
 		category = "Interface.CreativeTabs";
 
@@ -133,6 +138,30 @@ public class TEProps {
 
 				updateIcon();
 				return ItemFlorb.florbList.get(iconIndex);
+			}
+
+		};
+		ThermalExpansion.tabMorbs = morbTabCommon ? ThermalExpansion.tabCommon : new CreativeTabCore("thermalexpansion", "Morbs") {
+
+			int iconIndex = 0;
+			TimeTracker iconTracker = new TimeTracker();
+
+			void updateIcon() {
+
+				World world = CoFHCore.proxy.getClientWorld();
+				if (CoreUtils.isClient() && iconTracker.hasDelayPassed(world, 80)) {
+					int next = MathHelper.RANDOM.nextInt(ItemMorb.morbList.size() - 1);
+					iconIndex = next >= iconIndex ? next + 1 : next;
+					iconTracker.markTime(world);
+				}
+			}
+
+			@Override
+			@SideOnly (Side.CLIENT)
+			public ItemStack getIconItemStack() {
+
+				updateIcon();
+				return ItemMorb.morbList.get(iconIndex);
 			}
 
 		};
