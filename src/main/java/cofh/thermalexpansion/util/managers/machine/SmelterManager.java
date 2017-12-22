@@ -293,7 +293,7 @@ public class SmelterManager {
 
 			addRecycleRecipe(energy, new ItemStack(Items.IRON_HORSE_ARMOR), ingot, 4);
 
-			for (int i = 0; i < 3; ++i) {
+			for (int i = 0; i < 3; i++) {
 				addRecycleRecipe(4800 + 1200 * (3 - i), new ItemStack(Blocks.ANVIL, 1, i), ingot, 4 + 9 * (3 - i));
 			}
 			ingot = new ItemStack(Items.GOLD_INGOT);

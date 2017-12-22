@@ -399,7 +399,23 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0].isEmpty() || !inventory[1].isEmpty() || energyStorage.getEnergyStored() <= 0) {
+		if (!inventory[1].isEmpty()) {
+			if (energyStorage.getEnergyStored() <= 0 || hasContainerItem || hasEnergyHandler) {
+				return false;
+			}
+			if (!augmentWireless) {
+				ChargerRecipe recipe = ChargerManager.getRecipe(inventory[1]);
+				if (recipe == null) {
+					return false;
+				}
+				if (inventory[1].getCount() < recipe.getInput().getCount()) {
+					return false;
+				}
+				ItemStack output = recipe.getOutput();
+				return inventory[2].isEmpty() || inventory[2].isItemEqual(output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
+			}
+		}
+		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		if (!augmentWireless && !augmentRepair) {
@@ -441,7 +457,6 @@ public class TileCharger extends TileMachineBase {
 			return true;
 		}
 		ChargerRecipe recipe = ChargerManager.getRecipe(inventory[0]);
-
 		if (recipe == null) {
 			return false;
 		}
@@ -449,7 +464,6 @@ public class TileCharger extends TileMachineBase {
 			return false;
 		}
 		ItemStack output = recipe.getOutput();
-
 		return inventory[2].isEmpty() || inventory[2].isItemEqual(output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
 	}
 
@@ -469,15 +483,21 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	protected void processStart() {
 
-		ChargerRecipe recipe = ChargerManager.getRecipe(inventory[0]);
-		processMax = recipe.getEnergy() * energyMod / ENERGY_BASE;
-		processRem = processMax;
+		if (!inventory[1].isEmpty()) {
+			ChargerRecipe recipe = ChargerManager.getRecipe(inventory[1]);
+			processMax = recipe.getEnergy() * energyMod / ENERGY_BASE;
+			processRem = processMax;
+		} else {
+			ChargerRecipe recipe = ChargerManager.getRecipe(inventory[0]);
+			processMax = recipe.getEnergy() * energyMod / ENERGY_BASE;
+			processRem = processMax;
 
-		inventory[1] = ItemHelper.cloneStack(inventory[0], recipe.getInput().getCount());
-		inventory[0].shrink(recipe.getInput().getCount());
+			inventory[1] = ItemHelper.cloneStack(inventory[0], recipe.getInput().getCount());
+			inventory[0].shrink(recipe.getInput().getCount());
 
-		if (inventory[0].getCount() <= 0) {
-			inventory[0] = ItemStack.EMPTY;
+			if (inventory[0].getCount() <= 0) {
+				inventory[0] = ItemStack.EMPTY;
+			}
 		}
 	}
 

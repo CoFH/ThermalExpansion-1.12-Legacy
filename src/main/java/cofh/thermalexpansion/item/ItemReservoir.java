@@ -484,7 +484,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		reservoirSignalum = addEntryItem(3, "standard3", CAPACITY[3], EnumRarity.UNCOMMON);
 		reservoirResonant = addEntryItem(4, "standard4", CAPACITY[4], EnumRarity.RARE);
 
-		reservoirCreative = addEntryItem(CREATIVE, "creative", Fluid.BUCKET_VOLUME, EnumRarity.EPIC);
+		reservoirCreative = addEntryItem(CREATIVE, "creative", CAPACITY[4], EnumRarity.EPIC);
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 

@@ -308,7 +308,6 @@ public class TileTransposer extends TileMachineBase {
 				return false;
 			}
 			TransposerRecipe recipe = TransposerManager.getFillRecipe(inventory[0], tank.getFluid());
-
 			if (recipe == null || tank.getFluidAmount() < recipe.getFluid().amount || energyStorage.getEnergyStored() < recipe.getEnergy()) {
 				return false;
 			}
@@ -319,15 +318,9 @@ public class TileTransposer extends TileMachineBase {
 				return true;
 			}
 			ItemStack output = recipe.getOutput();
-
-			if (!inventory[2].isItemEqual(output)) {
-				return false;
-			}
-			int result = inventory[2].getCount() + output.getCount();
-			return result <= output.getMaxStackSize();
+			return inventory[2].isItemEqual(output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
 		} else {
 			TransposerRecipe recipe = TransposerManager.getExtractRecipe(inventory[0]);
-
 			if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy()) {
 				return false;
 			}
@@ -341,14 +334,7 @@ public class TileTransposer extends TileMachineBase {
 				return true;
 			}
 			ItemStack output = recipe.getOutput();
-
-			if (output.isEmpty()) {
-				return true;
-			}
-			if (!inventory[2].isItemEqual(output)) {
-				return false;
-			}
-			return inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
+			return output.isEmpty() || inventory[2].isItemEqual(output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
 		}
 	}
 
@@ -358,17 +344,8 @@ public class TileTransposer extends TileMachineBase {
 		if (hasFluidHandler) {
 			return true;
 		}
-		TransposerRecipe recipe;
-
-		if (!extractMode) {
-			recipe = TransposerManager.getFillRecipe(inventory[1], tank.getFluid());
-		} else {
-			recipe = TransposerManager.getExtractRecipe(inventory[1]);
-		}
-		if (recipe == null) {
-			return false;
-		}
-		return recipe.getInput().getCount() <= inventory[1].getCount();
+		TransposerRecipe recipe = extractMode ? TransposerManager.getExtractRecipe(inventory[1]) : TransposerManager.getFillRecipe(inventory[1], tank.getFluid());
+		return recipe != null && recipe.getInput().getCount() <= inventory[1].getCount();
 	}
 
 	@Override
