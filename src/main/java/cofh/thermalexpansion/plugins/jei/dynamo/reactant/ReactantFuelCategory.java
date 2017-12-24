@@ -18,6 +18,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -102,7 +103,7 @@ public class ReactantFuelCategory extends BaseFuelCategory<ReactantFuelWrapper> 
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 		guiItemStacks.init(0, true, 33, 23);
-		guiFluidStacks.init(0, true, 10, 10, 16, 30, 1000, false, tankOverlayInput);
+		guiFluidStacks.init(0, true, 10, 10, 16, 30, Fluid.BUCKET_VOLUME, false, tankOverlayInput);
 
 		guiItemStacks.set(0, inputs.get(0));
 		guiFluidStacks.set(0, inputFluids.get(0));

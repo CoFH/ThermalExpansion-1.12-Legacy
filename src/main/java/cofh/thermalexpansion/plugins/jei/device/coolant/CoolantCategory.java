@@ -101,7 +101,7 @@ public class CoolantCategory extends BaseFuelCategory<CoolantWrapper> {
 
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-		guiFluidStacks.init(0, true, 34, 8, 16, 30, 1000, false, null);
+		guiFluidStacks.init(0, true, 34, 8, 16, 30, Fluid.BUCKET_VOLUME, false, null);
 
 		guiFluidStacks.set(0, inputs.get(0));
 	}

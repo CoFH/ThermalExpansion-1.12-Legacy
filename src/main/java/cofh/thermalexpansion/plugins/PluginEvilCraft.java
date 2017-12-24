@@ -9,6 +9,7 @@ import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -59,7 +60,7 @@ public class PluginEvilCraft extends ModPlugin {
 			{
 				int energy = InsolatorManager.DEFAULT_ENERGY;
 
-				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingUndead, ItemHelper.cloneStack(logUndead, 6), ItemStack.EMPTY, 0);
+				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingUndead, ItemHelper.cloneStack(logUndead, 6), new ItemStack(Blocks.DEADBUSH), 100);
 			}
 
 			/* TRANSPOSER */

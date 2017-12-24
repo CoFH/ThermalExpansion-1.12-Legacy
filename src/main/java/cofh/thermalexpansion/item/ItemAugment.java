@@ -480,9 +480,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				"YXY",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearElectrum",
-				'I', "plateSignalum",
+				'I', "plateSilver",
 				'X', "blockGlassHardened",
-				'Y', "dustCryotheum"
+				'Y', "dustRedstone"
 		);
 
 		addShapedRecipe(machineBrewerReagent,

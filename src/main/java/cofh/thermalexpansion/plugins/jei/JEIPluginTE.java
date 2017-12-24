@@ -1,6 +1,10 @@
 package cofh.thermalexpansion.plugins.jei;
 
 import cofh.core.util.helpers.RenderHelper;
+import cofh.thermalexpansion.block.storage.BlockCache;
+import cofh.thermalexpansion.block.storage.BlockCell;
+import cofh.thermalexpansion.block.storage.BlockStrongbox;
+import cofh.thermalexpansion.block.storage.BlockTank;
 import cofh.thermalexpansion.plugins.jei.device.coolant.CoolantCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.compression.CompressionFuelCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.enervation.EnervationFuelCategory;
@@ -25,6 +29,7 @@ import cofh.thermalexpansion.plugins.jei.machine.smelter.SmelterRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.transposer.TransposerRecipeCategory;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
+import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -37,6 +42,15 @@ import org.lwjgl.opengl.GL11;
 
 @JEIPlugin
 public class JEIPluginTE implements IModPlugin {
+
+	@Override
+	public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+
+		subtypeRegistry.useNbtForSubtypes(BlockCell.itemBlock);
+		subtypeRegistry.useNbtForSubtypes(BlockTank.itemBlock);
+		subtypeRegistry.useNbtForSubtypes(BlockCache.itemBlock);
+		subtypeRegistry.useNbtForSubtypes(BlockStrongbox.itemBlock);
+	}
 
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registry) {

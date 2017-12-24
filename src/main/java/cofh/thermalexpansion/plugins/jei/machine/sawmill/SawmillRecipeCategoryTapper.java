@@ -2,6 +2,7 @@ package cofh.thermalexpansion.plugins.jei.machine.sawmill;
 
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
@@ -16,6 +17,7 @@ import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -82,7 +84,7 @@ public class SawmillRecipeCategoryTapper extends SawmillRecipeCategory {
 		List<List<FluidStack>> outputFluids = ingredients.getOutputs(FluidStack.class);
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-		guiFluidStacks.init(0, true, 141, 1, 16, 60, 100, false, tankOverlay);
+		guiFluidStacks.init(0, true, 141, 1, 16, 60, Fluid.BUCKET_VOLUME, false, null);
 		guiFluidStacks.set(0, outputFluids.get(0));
 	}
 

@@ -298,6 +298,9 @@ public class TileCharger extends TileMachineBase {
 
 	private int processTickRepairItem() {
 
+		if (inventory[1].getItemDamage() <= 0) {
+			return 0;
+		}
 		int energy = calcEnergyRepair();
 		processRem += energy;
 		if (processRem >= REPAIR_ENERGY) {

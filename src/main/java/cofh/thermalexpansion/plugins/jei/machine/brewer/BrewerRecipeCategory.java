@@ -21,6 +21,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -112,8 +113,8 @@ public class BrewerRecipeCategory extends BaseRecipeCategory<BrewerRecipeWrapper
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 		guiItemStacks.init(0, true, 69, 22);
-		guiFluidStacks.init(0, true, 22, 16, 16, 30, TEProps.MAX_FLUID_SMALL, false, tankOverlayInput);
-		guiFluidStacks.init(1, false, 126, 1, 16, 60, TEProps.MAX_FLUID_LARGE, false, tankOverlayOutput);
+		guiFluidStacks.init(0, true, 22, 16, 16, 30, Fluid.BUCKET_VOLUME, false, null);
+		guiFluidStacks.init(1, false, 126, 1, 16, 60, Fluid.BUCKET_VOLUME, false, null);
 
 		guiItemStacks.set(0, inputItems.get(0));
 		guiFluidStacks.set(0, inputFluids.get(0));

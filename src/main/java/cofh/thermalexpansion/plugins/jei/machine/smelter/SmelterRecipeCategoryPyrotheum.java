@@ -17,6 +17,7 @@ import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -83,7 +84,7 @@ public class SmelterRecipeCategoryPyrotheum extends SmelterRecipeCategory {
 		List<List<FluidStack>> inputFluids = ingredients.getInputs(FluidStack.class);
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-		guiFluidStacks.init(0, true, 141, 1, 16, 60, TEProps.MAX_FLUID_SMALL, false, tankOverlay);
+		guiFluidStacks.init(0, true, 141, 1, 16, 60, Fluid.BUCKET_VOLUME, false, null);
 		guiFluidStacks.set(0, inputFluids.get(0));
 	}
 

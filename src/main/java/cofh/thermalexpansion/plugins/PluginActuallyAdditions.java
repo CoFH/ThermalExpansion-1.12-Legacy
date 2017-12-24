@@ -4,8 +4,10 @@ import cofh.core.init.CoreProps;
 import cofh.core.util.ModPlugin;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
+import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import cofh.thermalexpansion.util.managers.machine.RefineryManager;
 import cofh.thermalfoundation.init.TFFluids;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -45,6 +47,13 @@ public class PluginActuallyAdditions extends ModPlugin {
 		try {
 			Fluid canola_oil = FluidRegistry.getFluid("canolaoil");
 			Fluid refined_canola_oil = FluidRegistry.getFluid("refinedcanolaoil");
+
+			/* PULVERIZER */
+			{
+				int energy = PulverizerManager.DEFAULT_ENERGY / 2;
+
+				PulverizerManager.addRecipe(energy, getItemStack("block_black_lotus"), getItemStack("item_misc", 4, 17));
+			}
 
 			/* CRUCIBLE */
 			{

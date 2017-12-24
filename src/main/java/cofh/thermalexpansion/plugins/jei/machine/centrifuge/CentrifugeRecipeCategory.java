@@ -114,7 +114,7 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 		guiItemStacks.init(3, false, 96, 32);
 		guiItemStacks.init(4, false, 114, 32);
 
-		guiFluidStacks.init(0, false, 141, 1, 16, 60, TEProps.MAX_FLUID_LARGE, false, tankOverlay);
+		guiFluidStacks.init(0, false, 141, 1, 16, 60, TEProps.MAX_FLUID_SMALL, false, tankOverlay);
 
 		guiItemStacks.set(0, inputs.get(0));
 

@@ -103,7 +103,7 @@ public class TransposerManager {
 			FluidStack water = new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
 
 			for (int i = 0; i < 16; i++) {
-				addFillRecipe(400, new ItemStack(Blocks.CONCRETE_POWDER, 1, i), new ItemStack(Blocks.CONCRETE, 1, i), water, false);
+				addFillRecipe(DEFAULT_ENERGY, new ItemStack(Blocks.CONCRETE_POWDER, 1, i), new ItemStack(Blocks.CONCRETE, 1, i), water, false);
 			}
 		}
 
