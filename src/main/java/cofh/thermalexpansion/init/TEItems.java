@@ -27,6 +27,7 @@ public class TEItems {
 		itemAugment = new ItemAugment();
 
 		itemFlorb = new ItemFlorb();
+		itemMorb = new ItemMorb();
 
 		initList.add(itemCapacitor);
 		initList.add(itemReservoir);
@@ -36,6 +37,7 @@ public class TEItems {
 		initList.add(itemAugment);
 
 		initList.add(itemFlorb);
+		initList.add(itemMorb);
 
 		for (IInitializer init : initList) {
 			init.initialize();
@@ -63,5 +65,6 @@ public class TEItems {
 	public static ItemAugment itemAugment;
 
 	public static ItemFlorb itemFlorb;
+	public static ItemMorb itemMorb;
 
 }
