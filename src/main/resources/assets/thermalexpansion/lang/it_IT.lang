@@ -35,8 +35,8 @@ item.thermalexpansion.augment.dynamoThrottle.name=Limitatore di campo eccitazion
 
 item.thermalexpansion.augment.machineFurnaceFood.name=Camera a pentola
 
-item.thermalexpansion.florb.florb.name=Florb
-item.thermalexpansion.florb.florbMagmatic.name=Florb magmatico
+item.thermalexpansion.florb.standard.name=Florb
+item.thermalexpansion.florb.magmatic.name=Florb magmatico
 
 itemGroup.thermalexpansion.creativeTab=Thermal Expansion
 itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: florbs

@@ -2,7 +2,6 @@ package cofh.thermalexpansion.plugins.jei.machine.sawmill;
 
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;

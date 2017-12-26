@@ -69,10 +69,6 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockCache.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockCache.enableClassicRecipes, comment);
 
-		// TODO: Remove in 5.3.9.
-		if (ThermalExpansion.CONFIG.isOldConfig()) {
-			ThermalExpansion.CONFIG.removeProperty(category, "UpgradeKitCrafting");
-		}
 		comment = "If TRUE, Caches can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockCache.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockCache.enableUpgradeKitCrafting, comment);
 

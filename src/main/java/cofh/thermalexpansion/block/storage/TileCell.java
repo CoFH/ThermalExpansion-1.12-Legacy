@@ -63,10 +63,6 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockCell.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockCell.enableClassicRecipes, comment);
 
-		// TODO: Remove in 5.3.9.
-		if (ThermalExpansion.CONFIG.isOldConfig()) {
-			ThermalExpansion.CONFIG.removeProperty(category, "UpgradeKitCrafting");
-		}
 		comment = "If TRUE, Energy Cells can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockCell.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockCell.enableUpgradeKitCrafting, comment);
 

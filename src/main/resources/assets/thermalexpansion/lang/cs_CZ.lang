@@ -35,8 +35,8 @@ item.thermalexpansion.augment.dynamoThrottle.name=Omezovač pole buzení
 
 item.thermalexpansion.augment.machineFurnaceFood.name=Trivekční komora
 
-item.thermalexpansion.florb.florb.name=Florb
-item.thermalexpansion.florb.florbMagmatic.name=Magmatický Florb
+item.thermalexpansion.florb.standard.name=Florb
+item.thermalexpansion.florb.magmatic.name=Magmatický Florb
 
 itemGroup.thermalexpansion.creativeTab=Thermal Expansion
 itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florby

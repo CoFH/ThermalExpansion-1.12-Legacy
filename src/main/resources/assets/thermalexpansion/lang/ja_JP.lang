@@ -344,8 +344,8 @@ item.thermalexpansion.capacitor.standard2.name=フラックスキャパシタ (�
 item.thermalexpansion.capacitor.standard3.name=フラックスキャパシタ (シグナルム)
 item.thermalexpansion.capacitor.standard4.name=フラックスキャパシタ (レゾナント)
 
-item.thermalexpansion.florb.florb.name=フローブ
-item.thermalexpansion.florb.florbMagmatic.name=耐熱フローブ
+item.thermalexpansion.florb.standard.name=フローブ
+item.thermalexpansion.florb.magmatic.name=耐熱フローブ
 
 item.thermalexpansion.frame.frameApparatus.name=器具フレーム
 item.thermalexpansion.frame.frameCell.name=エネルギーセルフレーム

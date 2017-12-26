@@ -45,6 +45,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -105,10 +106,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 		if (isInCreativeTab(tab)) {
 			items.add(new ItemStack(this, 1, 0));
 			items.add(new ItemStack(this, 1, 1));
-
-			for (int i = 0; i < florbList.size(); i++) {
-				items.add(florbList.get(i));
-			}
+			items.addAll(florbList);
 		}
 	}
 
@@ -141,22 +139,22 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 
 		ItemStack stack = player.getHeldItem(hand);
-		if (stack.getTagCompound() == null) {
+		if (!stack.hasTagCompound()) {
 			return new ActionResult<>(EnumActionResult.PASS, stack);
 		}
-		if (!player.capabilities.isCreativeMode) {
-			stack.shrink(1);
-		}
 		Fluid fluid = FluidRegistry.getFluid(stack.getTagCompound().getString("Fluid"));
+		if (fluid == null) {
+			return new ActionResult<>(EnumActionResult.PASS, stack);
+		}
+		//if (!player.capabilities.isCreativeMode) {
+			stack.shrink(1);
+		//}
+		world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
-		if (fluid != null) {
-			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
-
-			if (ServerHelper.isServerWorld(world)) {
-				EntityFlorb florb = new EntityFlorb(world, player, fluid);
-				florb.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
-				world.spawnEntity(florb);
-			}
+		if (ServerHelper.isServerWorld(world)) {
+			EntityFlorb florb = new EntityFlorb(world, player, fluid);
+			florb.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 1.5F, 1.0F);
+			world.spawnEntity(florb);
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
@@ -171,9 +169,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 
 	public static void dropFlorb(Fluid fluid, World world, BlockPos pos) {
 
-		if (fluid != null) {
-			CoreUtils.dropItemStackIntoWorldWithVelocity(getFlorb(fluid), world, pos);
-		}
+		CoreUtils.dropItemStackIntoWorldWithVelocity(getFlorb(fluid), world, pos);
 	}
 
 	/**
@@ -185,28 +181,29 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 	@Nonnull
 	public static ItemStack getFlorb(Fluid fluid) {
 
+		if (!florbMap.containsKey(fluid.getName())) {
+			return florbStandard.copy();
+		}
 		return florbMap.get(fluid.getName());
 	}
 
 	public static void parseFlorbs() {
 
+		List<String> list = Arrays.asList(blacklist);
+
 		for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
-			if (fluid.canBePlacedInWorld()) {
-				if (fluid.getTemperature() < CoreProps.MAGMATIC_TEMPERATURE) {
-					addFlorb(ItemHelper.cloneStack(florb), fluid);
-				} else {
-					addFlorb(ItemHelper.cloneStack(florbMagmatic), fluid);
-				}
-				if (!ItemFlorb.enable) {
-					continue;
-				}
-				if (CONFIG_FLORBS.get("Whitelist", fluid.getName(), true)) {
-					if (fluid.getTemperature() < CoreProps.MAGMATIC_TEMPERATURE) {
-						TransposerManager.addFillRecipe(1600, ItemFlorb.florb, florbList.get(florbList.size() - 1), new FluidStack(fluid, Fluid.BUCKET_VOLUME), false);
-					} else {
-						TransposerManager.addFillRecipe(1600, ItemFlorb.florbMagmatic, florbList.get(florbList.size() - 1), new FluidStack(fluid, Fluid.BUCKET_VOLUME), false);
-					}
-				}
+			if (!fluid.canBePlacedInWorld()) {
+				continue;
+			}
+			if (list.contains(fluid.getName())) {
+				continue;
+			}
+			if (fluid.getTemperature() < CoreProps.MAGMATIC_TEMPERATURE) {
+				addFlorb(ItemHelper.cloneStack(florbStandard), fluid);
+				TransposerManager.addFillRecipe(1600, ItemFlorb.florbStandard, florbList.get(florbList.size() - 1), new FluidStack(fluid, Fluid.BUCKET_VOLUME), false);
+			} else {
+				addFlorb(ItemHelper.cloneStack(florbMagmatic), fluid);
+				TransposerManager.addFillRecipe(1600, ItemFlorb.florbMagmatic, florbList.get(florbList.size() - 1), new FluidStack(fluid, Fluid.BUCKET_VOLUME), false);
 			}
 		}
 		CONFIG_FLORBS.cleanUp(false, true);
@@ -245,8 +242,8 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 
 		config();
 
-		florb = addItem(0, "florb");
-		florbMagmatic = addItem(1, "florbMagmatic");
+		florbStandard = addItem(0, "standard");
+		florbMagmatic = addItem(1, "magmatic");
 
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, new BehaviorFlorbDispense());
 
@@ -261,7 +258,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 		if (!enable) {
 			return false;
 		}
-		ItemStack florbStack = ItemHelper.cloneStack(florb, 4);
+		ItemStack florbStack = ItemHelper.cloneStack(florbStandard, 4);
 		ItemStack florbMagmaticStack = ItemHelper.cloneStack(florbMagmatic, 4);
 
 		addShapelessRecipe(florbStack, "dustWood", "crystalSlag", "slimeball");
@@ -279,8 +276,15 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 		CONFIG_FLORBS.setConfiguration(new Configuration(new File(CoreProps.configDir, "cofh/" + ThermalExpansion.MOD_ID + "/florbs.cfg"), true));
 
 		String category = "General";
-		String comment = "If TRUE, the recipe for Florbs is enabled. Setting this to FALSE means that you actively dislike fun things.";
+		String comment = "If TRUE, the recipes for Florbs are enabled. Setting this to FALSE means that you actively dislike fun things.";
 		enable = CONFIG_FLORBS.getConfiguration().getBoolean("EnableRecipe", category, enable, comment);
+
+		category = "Blacklist";
+		comment = "List of fluids that are not allowed to be placed in Florbs.";
+		blacklist = CONFIG_FLORBS.getConfiguration().getStringList("Blacklist", category, blacklist, comment);
+
+		// TODO: Remove in 5.3.10.
+		CONFIG_FLORBS.removeCategory("Whitelist");
 	}
 
 	public static final ConfigHandler CONFIG_FLORBS = new ConfigHandler(ThermalExpansion.VERSION);
@@ -288,10 +292,11 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 	public static ArrayList<ItemStack> florbList = new ArrayList<>();
 	public static Map<String, ItemStack> florbMap = new DefaultedHashMap<String, ItemStack>(ItemStack.EMPTY);
 
+	public static String[] blacklist = new String[] {};
 	public static boolean enable = true;
 
 	/* REFERENCES */
-	public static ItemStack florb;
+	public static ItemStack florbStandard;
 	public static ItemStack florbMagmatic;
 
 }

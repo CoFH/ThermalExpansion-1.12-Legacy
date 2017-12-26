@@ -32,8 +32,8 @@ item.thermalexpansion.augment.dynamoThrottle.name=여기장 제한장치
 
 item.thermalexpansion.augment.machineFurnaceFood.name=트리베션 챔버
 
-item.thermalexpansion.florb.florb.name=플로브
-item.thermalexpansion.florb.florbMagmatic.name=마그마틱 플로브
+item.thermalexpansion.florb.standard.name=플로브
+item.thermalexpansion.florb.magmatic.name=마그마틱 플로브
 
 itemGroup.thermalexpansion.creativeTab=써멀 익스팬션
 itemGroup.thermalexpansion.creativeTabFlorbs=써멀 익스팬션: 플로브

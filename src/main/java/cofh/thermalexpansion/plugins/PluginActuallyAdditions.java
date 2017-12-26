@@ -7,7 +7,6 @@ import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import cofh.thermalexpansion.util.managers.machine.RefineryManager;
 import cofh.thermalfoundation.init.TFFluids;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;

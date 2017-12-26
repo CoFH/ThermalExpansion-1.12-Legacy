@@ -4,20 +4,24 @@ import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.ItemMorb;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -25,164 +29,179 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public class EntityMorb extends EntityThrowable {
 
-    private static DataParameter<NBTTagCompound> ENTITY_DATA = EntityDataManager.createKey(EntityMorb.class, DataSerializers.COMPOUND_TAG);
+	private static DataParameter<NBTTagCompound> ENTITY_DATA = EntityDataManager.createKey(EntityMorb.class, DataSerializers.COMPOUND_TAG);
 
-    protected static ItemStack blockCheck = new ItemStack(Blocks.STONE);
+	protected static ItemStack blockCheck = new ItemStack(Blocks.STONE);
 
-    protected NBTTagCompound entityData;
+	protected boolean drop = true;
+	protected byte type;
+	protected NBTTagCompound entityData;
 
-    public static void initialize(int id) {
+	public static void initialize(int id) {
 
-        EntityRegistry.registerModEntity(new ResourceLocation("thermalexpansion:morb"), EntityMorb.class, "morb", id, ThermalExpansion.instance, CoreProps.ENTITY_TRACKING_DISTANCE, 10, true);
-    }
+		EntityRegistry.registerModEntity(new ResourceLocation("thermalexpansion:morb"), EntityMorb.class, "morb", id, ThermalExpansion.instance, CoreProps.ENTITY_TRACKING_DISTANCE, 10, true);
+	}
 
-    /* Required Constructor */
-    public EntityMorb(World world) {
+	/* Required Constructor */
+	public EntityMorb(World world) {
 
-        super(world);
-    }
+		super(world);
+	}
 
-    /* Fluid Constructors */
-    public EntityMorb(World world, EntityLivingBase thrower, NBTTagCompound entityData) {
+	public EntityMorb(World world, EntityLivingBase thrower, byte type, NBTTagCompound entityData) {
 
-        super(world, thrower);
-        this.entityData = entityData;
+		super(world, thrower);
+		this.type = type;
+		this.entityData = entityData;
 
-        setSyncEntity();
-    }
+		if (thrower instanceof EntityPlayer && ((EntityPlayer) thrower).capabilities.isCreativeMode) {
+			drop = false;
+		}
+		setManager();
+	}
 
-    public EntityMorb(World world, double x, double y, double z, NBTTagCompound entityData) {
+	public EntityMorb(World world, double x, double y, double z, byte type, NBTTagCompound entityData) {
 
-        super(world, x, y, z);
-        this.entityData = entityData;
+		super(world, x, y, z);
+		this.type = type;
+		this.entityData = entityData;
 
-        setSyncEntity();
-    }
+		if (thrower instanceof EntityPlayer && ((EntityPlayer) thrower).capabilities.isCreativeMode) {
+			drop = false;
+		}
+		setManager();
+	}
 
-    private void setSyncEntity() {
+	private void setManager() {
 
-        this.dataManager.set(ENTITY_DATA, entityData);
-    }
+		this.dataManager.set(ENTITY_DATA, entityData);
+	}
 
-    private NBTTagCompound getSyncEntity() {
+	@Override
+	public NBTTagCompound getEntityData() {
 
-        return dataManager.get(ENTITY_DATA);
-    }
+		return entityData;
+	}
 
-    @Override
-    public NBTTagCompound getEntityData() {
+	@Override
+	public void onEntityUpdate() {
 
-        return entityData;
-    }
+		if ((entityData == null || !entityData.hasKey("id")) && ServerHelper.isClientWorld(world)) {
+			entityData = dataManager.get(ENTITY_DATA);
+		}
+		super.onEntityUpdate();
+	}
 
-    @Override
-    public void onEntityUpdate() {
+	@Override
+	protected void onImpact(RayTraceResult traceResult) {
 
-        if ((entityData == null || !entityData.hasKey("id")) && ServerHelper.isClientWorld(world)) {
-            entityData = getSyncEntity();
-        }
-        super.onEntityUpdate();
-    }
+		if (entityData == null || !entityData.hasKey("id")) {
+			attemptCapture(traceResult);
+		} else {
+			attemptRelease(traceResult);
+		}
+	}
 
-    @Override
-    protected void onImpact(RayTraceResult traceResult) {
+	private void attemptCapture(RayTraceResult traceResult) {
 
-        if(entityData == null || !entityData.hasKey("id")) {
-            attemptCapture(traceResult);
-        }
-        else {
-            attemptRelease(traceResult);
-        }
-    }
+		BlockPos pos = new BlockPos(traceResult.hitVec);
 
-    private void attemptCapture(RayTraceResult traceResult) {
+		if (ServerHelper.isServerWorld(world)) {
+			boolean noAccess = traceResult.sideHit != null && getThrower() instanceof EntityPlayer && !((EntityPlayer) getThrower()).canPlayerEdit(pos, traceResult.sideHit, blockCheck);
 
-        BlockPos pos = new BlockPos(traceResult.hitVec);
+			if (traceResult.entityHit == null || EntityList.getKey(traceResult.entityHit) == null || !ItemMorb.validMobs.contains(EntityList.getKey(traceResult.entityHit).toString()) || noAccess) {
+				ItemMorb.dropMorb(type, null, world, pos);
+				this.setDead();
+				return;
+			}
+			NBTTagCompound tag = traceResult.entityHit.serializeNBT();
+			((WorldServer) world).spawnParticle(EnumParticleTypes.CLOUD, pos.getX() + 0.5, pos.getY() + 0.2, pos.getZ() + 0.5, 2, 0, 0, 0, 0.0, 0);
+			ItemMorb.dropMorb(type, tag, world, pos);
+			traceResult.entityHit.setDead();
+			this.setDead();
+		}
+	}
 
-        if (ServerHelper.isServerWorld(world)) {
-            boolean noAccess = traceResult.sideHit != null && getThrower() instanceof EntityPlayer && !((EntityPlayer) getThrower()).canPlayerEdit(pos, traceResult.sideHit, blockCheck);
+	private void attemptRelease(RayTraceResult traceResult) {
 
-            if (traceResult.entityHit == null || EntityList.getKey(traceResult.entityHit) == null || !ItemMorb.morbMap.containsKey(EntityList.getKey(traceResult.entityHit).toString()) || noAccess) {
-                ItemMorb.dropMorb(null, world, pos);
-                this.setDead();
-                return;
-            }
+		BlockPos pos = new BlockPos(traceResult.hitVec);
 
-            NBTTagCompound tag = traceResult.entityHit.serializeNBT();
-            ((WorldServer)world).spawnParticle(EnumParticleTypes.CLOUD, pos.getX() + 0.5, pos.getY() + 0.2, pos.getZ() + 0.5, 2,0, 0, 0, 0.0, 0);
-            ItemMorb.dropMorb(tag, world, pos);
-            traceResult.entityHit.setDead();
-            this.setDead();
-        }
-    }
+		if (traceResult.entityHit != null) {
+			pos = traceResult.entityHit.getPosition().add(0, 1, 0);
+			traceResult.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0F);
+		}
+		if (ServerHelper.isServerWorld(world)) {
+			if (traceResult.sideHit != null && getThrower() instanceof EntityPlayer && !((EntityPlayer) getThrower()).canPlayerEdit(pos, traceResult.sideHit, blockCheck)) {
+				ItemMorb.dropMorb(type, entityData, world, pos);
+				this.setDead();
+				return;
+			}
+			double x = traceResult.hitVec.x;
+			double y = traceResult.hitVec.y;
+			double z = traceResult.hitVec.z;
 
-    private void attemptRelease(RayTraceResult traceResult) {
+			if (traceResult.sideHit != null) {
+				x += traceResult.sideHit.getFrontOffsetX();
+				z += traceResult.sideHit.getFrontOffsetZ();
+			}
+			spawnCreature(world, entityData, x, y, z);
 
-        BlockPos pos = new BlockPos(traceResult.hitVec);
+			if (drop && (world.rand.nextInt(100) < ItemMorb.REUSE_CHANCE || type > 0)) {
+				ItemMorb.dropMorb(type, null, world, pos);
+			}
+			this.setDead();
+		}
+	}
 
-        if (traceResult.entityHit != null) {
-            pos = traceResult.entityHit.getPosition().add(0, 1, 0);
-            traceResult.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0F);
-        }
+	@Override
+	protected void entityInit() {
 
-        if (ServerHelper.isServerWorld(world)) {
-            if (traceResult.sideHit != null && getThrower() instanceof EntityPlayer && !((EntityPlayer) getThrower()).canPlayerEdit(pos, traceResult.sideHit, blockCheck)) {
-                ItemMorb.dropMorb(entityData, world, pos);
-                this.setDead();
-                return;
-            }
+		dataManager.register(ENTITY_DATA, new NBTTagCompound());
+	}
 
-            Entity entity = EntityList.createEntityFromNBT(entityData, world);
-            if(entity == null) {
-                this.setDead();
-                return;
-            }
+	public NBTTagCompound getEntity() {
 
-            double x = traceResult.hitVec.x;
-            double y = traceResult.hitVec.y;
-            double z = traceResult.hitVec.z;
+		return entityData;
+	}
 
-            if(traceResult.sideHit != null) {
-                x += traceResult.sideHit.getFrontOffsetX();
-                z += traceResult.sideHit.getFrontOffsetZ();
-            }
+	/* NBT METHODS */
+	@Override
+	public void readEntityFromNBT(NBTTagCompound nbt) {
 
-            entity.setLocationAndAngles(x, y, z, world.rand.nextFloat() * 360.0f, 0.0f);
-            world.spawnEntity(entity);
+		super.readEntityFromNBT(nbt);
 
-            if(entity instanceof EntityLiving) {
-                ((EntityLiving) entity).playLivingSound();
-            }
+		drop = nbt.getBoolean("Drop");
+		type = nbt.getByte("Type");
+		entityData = nbt.getCompoundTag("EntityData");
+	}
 
-            this.setDead();
-        }
-    }
+	@Override
+	public void writeEntityToNBT(NBTTagCompound nbt) {
 
-    @Override
-    protected void entityInit() {
+		super.writeEntityToNBT(nbt);
 
-        dataManager.register(ENTITY_DATA, new NBTTagCompound());
-    }
+		nbt.setBoolean("Drop", drop);
+		nbt.setByte("Type", type);
+		nbt.setTag("EntityData", entityData);
+	}
 
-    public NBTTagCompound getEntity() {
+	/* HELPERS */
+	public static Entity spawnCreature(World world, NBTTagCompound entityData, double x, double y, double z) {
 
-        return entityData;
-    }
+		if (entityData.getBoolean(ItemMorb.GENERIC)) {
+			ItemMonsterPlacer.spawnCreature(world, new ResourceLocation(entityData.getString("id")), x, y, z);
+		} else {
+			Entity entity = EntityList.createEntityFromNBT(entityData, world);
+			if (entity == null) {
+				return null;
+			}
+			entity.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
+			world.spawnEntity(entity);
+			if (entity instanceof EntityLiving) {
+				((EntityLiving) entity).playLivingSound();
+			}
+		}
+		return null;
+	}
 
-    /* NBT METHODS */
-    @Override
-    public void readEntityFromNBT(NBTTagCompound nbt) {
-
-        super.readEntityFromNBT(nbt);
-
-        entityData = nbt.getCompoundTag("Data");
-    }
-
-    @Override
-    public void writeEntityToNBT(NBTTagCompound nbt) {
-
-        super.writeEntityToNBT(nbt);
-
-        nbt.setTag("Data", entityData);
-    }
 }

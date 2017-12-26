@@ -120,8 +120,8 @@ item.thermalexpansion.augment.machineSmelterPyrotheum.name=Pyrokonzentrator
 item.thermalexpansion.augment.machineSecondary.name=Sekundärsieb
 item.thermalexpansion.augment.machineSecondaryNull.name=Nullifikationskammer
 
-item.thermalexpansion.florb.florb.name=Florb
-item.thermalexpansion.florb.florbMagmatic.name=Magmatischer Florb
+item.thermalexpansion.florb.standard.name=Florb
+item.thermalexpansion.florb.magmatic.name=Magmatischer Florb
 
 item.thermalexpansion.frame.frameApparatus.name=Apparatusrahmen
 item.thermalexpansion.frame.frameCell.name=Energiezellenrahmen

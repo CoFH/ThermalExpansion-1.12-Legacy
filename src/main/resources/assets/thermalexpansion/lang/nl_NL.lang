@@ -29,8 +29,8 @@ info.thermalexpansion.machine.transposer=Manipuleert vloeistoffen en vloeistof h
 item.thermalexpansion.augment.dynamoCoilDuct.name=Transmissie Spoel Kanalisering
 item.thermalexpansion.augment.dynamoThrottle.name=Opwekveld begrenzer
 
-item.thermalexpansion.florb.florb.name=Florb
-item.thermalexpansion.florb.florbMagmatic.name=Magmatische Florb
+item.thermalexpansion.florb.standard.name=Florb
+item.thermalexpansion.florb.magmatic.name=Magmatische Florb
 
 tab.thermalexpansion.device.nullifier.0=Stuurt alles naar /dev/null!
 tab.thermalexpansion.device.nullifier.1=Het is een vreselijke plek, zelfs vloeistoffen kunnen er niet uit ontsnapppen.
