@@ -253,6 +253,8 @@ public class TEProps {
 	public static final String MACHINE_CHARGER_REPAIR = "machineChargerRepair";
 	public static final String MACHINE_CHARGER_WIRELESS = "machineChargerWireless";
 
+	public static final String MACHINE_CENTRIFUGE_MOBS = "machineCentrifugeMobs";
+
 	public static final String MACHINE_BREWER_REAGENT = "machineBrewerReagent";
 
 	public static final String MACHINE_ENCHANTER_EMPOWERED = "machineEnchanterEmpowered";

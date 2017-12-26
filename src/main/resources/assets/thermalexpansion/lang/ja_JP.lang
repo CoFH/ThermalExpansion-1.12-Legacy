@@ -30,8 +30,8 @@ item.thermalexpansion.augment.dynamoThrottle.name=励起場リミッタ
 
 item.thermalexpansion.augment.machineFurnaceFood.name=トリベクション室
 
-item.thermalexpansion.florb.florb.name=フローブ
-item.thermalexpansion.florb.florbMagmatic.name=耐熱フローブ
+item.thermalexpansion.florb.standard.name=フローブ
+item.thermalexpansion.florb.magmatic.name=耐熱フローブ
 
 tab.thermalexpansion.device.nullifier.0=なんでも "/dev/null" 送り
 tab.thermalexpansion.device.nullifier.1=流体すら逃さんとても怖い場所だ。

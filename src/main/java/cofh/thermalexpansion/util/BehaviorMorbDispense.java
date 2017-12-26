@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.util;
 
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.entity.projectile.EntityMorb;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
@@ -12,31 +13,31 @@ import net.minecraft.world.World;
 
 public class BehaviorMorbDispense extends BehaviorDefaultDispenseItem {
 
-    protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+	protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
 
-        World world = source.getWorld();
-        IPosition pos = BlockDispenser.getDispensePosition(source);
-        EnumFacing facing = source.getBlockState().getValue(BlockDispenser.FACING);
+		World world = source.getWorld();
+		IPosition pos = BlockDispenser.getDispensePosition(source);
+		EnumFacing facing = source.getBlockState().getValue(BlockDispenser.FACING);
 
-        EntityMorb morb = new EntityMorb(world, pos.getX(), pos.getY(), pos.getZ(), stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound());
-        morb.shoot((double) facing.getFrontOffsetX(), (double) ((float) facing.getFrontOffsetY() + 0.1F), (double) facing.getFrontOffsetZ(), getProjectileVelocity(), getProjectileInaccuracy());
-        world.spawnEntity(morb);
-        stack.shrink(1);
-        return stack;
-    }
+		EntityMorb morb = new EntityMorb(world, pos.getX(), pos.getY(), pos.getZ(), (byte) ItemHelper.getItemDamage(stack), stack.hasTagCompound() ? stack.getTagCompound() : new NBTTagCompound());
+		morb.shoot((double) facing.getFrontOffsetX(), (double) ((float) facing.getFrontOffsetY() + 0.1F), (double) facing.getFrontOffsetZ(), getProjectileVelocity(), getProjectileInaccuracy());
+		world.spawnEntity(morb);
+		stack.shrink(1);
+		return stack;
+	}
 
-    protected void playDispenseSound(IBlockSource source) {
+	protected void playDispenseSound(IBlockSource source) {
 
-        source.getWorld().playEvent(1002, source.getBlockPos(), 0);
-    }
+		source.getWorld().playEvent(1002, source.getBlockPos(), 0);
+	}
 
-    protected float getProjectileInaccuracy() {
+	protected float getProjectileInaccuracy() {
 
-        return 6.0F;
-    }
+		return 6.0F;
+	}
 
-    protected float getProjectileVelocity() {
+	protected float getProjectileVelocity() {
 
-        return 1.1F;
-    }
+		return 1.1F;
+	}
 }

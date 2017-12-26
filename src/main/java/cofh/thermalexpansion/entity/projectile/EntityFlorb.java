@@ -48,14 +48,13 @@ public class EntityFlorb extends EntityThrowable {
 		super(world);
 	}
 
-	/* Fluid Constructors */
 	public EntityFlorb(World world, EntityLivingBase thrower, Fluid fluid) {
 
 		super(world, thrower);
 		this.fluid = fluid;
 
 		setGravity();
-		setSyncFluid();
+		setManager();
 	}
 
 	public EntityFlorb(World world, double x, double y, double z, Fluid fluid) {
@@ -64,7 +63,7 @@ public class EntityFlorb extends EntityThrowable {
 		this.fluid = fluid;
 
 		setGravity();
-		setSyncFluid();
+		setManager();
 	}
 
 	private void setGravity() {
@@ -74,21 +73,16 @@ public class EntityFlorb extends EntityThrowable {
 		}
 	}
 
-	private void setSyncFluid() {
+	private void setManager() {
 
 		this.dataManager.set(FLUID, fluid.getName());
-	}
-
-	private Fluid getSyncFluid() {
-
-		return FluidRegistry.getFluid(dataManager.get(FLUID));
 	}
 
 	@Override
 	public void onEntityUpdate() {
 
 		if (fluid == null && ServerHelper.isClientWorld(world)) {
-			fluid = getSyncFluid();
+			fluid = FluidRegistry.getFluid(dataManager.get(FLUID));
 		}
 		super.onEntityUpdate();
 	}

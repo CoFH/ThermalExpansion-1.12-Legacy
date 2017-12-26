@@ -66,6 +66,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		AugmentType type = getAugmentType(stack);
 		String id = getAugmentIdentifier(stack);
 
+		if (id.isEmpty()) {
+			return;
+		}
 		int i = 0;
 		String line = "info.thermalexpansion.augment." + id + "." + i;
 		while (StringHelper.canLocalize(line)) {
@@ -162,12 +165,18 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	@Override
 	public AugmentType getAugmentType(ItemStack stack) {
 
+		if (!this.augmentMap.containsKey(ItemHelper.getItemDamage(stack))) {
+			return AugmentType.CREATIVE;
+		}
 		return augmentMap.get(ItemHelper.getItemDamage(stack)).type;
 	}
 
 	@Override
 	public String getAugmentIdentifier(ItemStack stack) {
 
+		if (!this.augmentMap.containsKey(ItemHelper.getItemDamage(stack))) {
+			return "";
+		}
 		return augmentMap.get(ItemHelper.getItemDamage(stack)).identifier;
 	}
 
@@ -754,7 +763,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineChargerRepair;
 	public static ItemStack machineChargerWireless;
 
-	public static ItemStack machineCentrifugeMobs;              // Enstabulation Chamber
+	public static ItemStack machineCentrifugeMobs;
 
 	public static ItemStack machineBrewerReagent;
 
