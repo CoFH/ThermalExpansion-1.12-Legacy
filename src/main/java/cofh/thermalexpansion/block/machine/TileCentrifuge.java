@@ -47,6 +47,7 @@ public class TileCentrifuge extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, true, true, true, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_CENTRIFUGE_MOBS);
 
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);

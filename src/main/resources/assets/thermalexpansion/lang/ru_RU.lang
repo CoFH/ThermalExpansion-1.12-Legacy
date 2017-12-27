@@ -56,8 +56,8 @@ item.thermalexpansion.augment.dynamoThrottle.name=Ограничитель по�
 
 item.thermalexpansion.augment.machineFurnaceFood.name=Тривекционная камера
 
-item.thermalexpansion.florb.florb.name=Шарик
-item.thermalexpansion.florb.florbMagmatic.name=Магматический шарик
+item.thermalexpansion.florb.standard.name=Шарик
+item.thermalexpansion.florb.magmatic.name=Магматический шарик
 
 itemGroup.thermalexpansion.creativeTab=Thermal Expansion
 itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Шарики

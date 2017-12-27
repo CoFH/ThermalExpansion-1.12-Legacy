@@ -326,8 +326,8 @@ item.thermalexpansion.capacitor.standard2.name=Capacitor de Flux (Reforçado)
 item.thermalexpansion.capacitor.standard3.name=Capacitor de Flux (Signalo)
 item.thermalexpansion.capacitor.standard4.name=Capacitor de Flux (Resonante)
 
-item.thermalexpansion.florb.florb.name=Florb
-item.thermalexpansion.florb.florbMagmatic.name=Florb Magmático
+item.thermalexpansion.florb.standard.name=Florb
+item.thermalexpansion.florb.magmatic.name=Florb Magmático
 
 item.thermalexpansion.frame.frameApparatus.name=Moldura de Aparato
 item.thermalexpansion.frame.frameCell.name=Estrutura de Célula de Energia

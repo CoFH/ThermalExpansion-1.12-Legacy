@@ -40,7 +40,7 @@ public final class ModelFlorb implements IItemBakery {
 			if (stack.getTagCompound() != null) {
 				fluid = FluidRegistry.getFluid(stack.getTagCompound().getString("Fluid"));
 			}
-			quads.addAll(ItemQuadBakery.bakeItem(ImmutableList.of(magmatic ? TETextures.FLORB_MAGMATIC : TETextures.FLORB)));
+			quads.addAll(ItemQuadBakery.bakeItem(ImmutableList.of(magmatic ? TETextures.FLORB_MAGMATIC : TETextures.FLORB_STANDARD)));
 
 			if (fluid != null) {
 				TextureAtlasSprite fluidSprite = TextureHelper.getTexture(fluid.getStill(new FluidStack(fluid, 1)));

@@ -184,9 +184,6 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 
-		if (stack.getTagCompound() == null) {
-			EnergyHelper.setDefaultEnergyTag(stack, 0);
-		}
 		return 1.0D - (getFluidAmount(stack) / (double) getCapacity(stack));
 	}
 

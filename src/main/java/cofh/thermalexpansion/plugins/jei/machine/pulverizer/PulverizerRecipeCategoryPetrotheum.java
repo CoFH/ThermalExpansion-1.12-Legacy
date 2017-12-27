@@ -3,7 +3,6 @@ package cofh.thermalexpansion.plugins.jei.machine.pulverizer;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;

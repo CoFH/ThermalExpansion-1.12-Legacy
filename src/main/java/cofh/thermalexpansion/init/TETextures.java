@@ -257,7 +257,7 @@ public class TETextures {
 
 		ILLUMINATOR_FRAME =                 register(BLOCKS_ + "light/illuminator_frame");
 
-		FLORB =                             register(ITEMS_ + "florb/florb");
+		FLORB_STANDARD =                    register(ITEMS_ + "florb/florb_standard");
 		FLORB_MAGMATIC =                    register(ITEMS_ + "florb/florb_magmatic");
 		FLORB_MASK =                        register(ITEMS_ + "florb/florb_mask");
 
@@ -815,7 +815,7 @@ public class TETextures {
 
 	public static TextureAtlasSprite ILLUMINATOR_FRAME;
 
-	public static TextureAtlasSprite FLORB;
+	public static TextureAtlasSprite FLORB_STANDARD;
 	public static TextureAtlasSprite FLORB_MAGMATIC;
 	public static TextureAtlasSprite FLORB_MASK;
 

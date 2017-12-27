@@ -4,9 +4,13 @@ import cofh.core.render.IModelRegister;
 import cofh.thermalexpansion.block.storage.TileCache;
 import cofh.thermalexpansion.block.storage.TileStrongbox;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
+import cofh.thermalexpansion.entity.projectile.EntityMorb;
+import cofh.thermalexpansion.init.TEItems;
 import cofh.thermalexpansion.render.RenderCache;
 import cofh.thermalexpansion.render.RenderStrongbox;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
+import cofh.thermalexpansion.render.entity.RenderEntityMorb;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -39,6 +43,8 @@ public class ProxyClient extends Proxy {
 
 		RenderCache.initialize();
 		RenderStrongbox.initialize();
+
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(TEItems.itemMorb, TEItems.itemMorb);
 	}
 
 	@Override
@@ -51,6 +57,7 @@ public class ProxyClient extends Proxy {
 	public void registerRenderInformation() {
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityFlorb.class, RenderEntityFlorb::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityMorb.class, RenderEntityMorb::new);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCache.class, RenderCache.INSTANCE);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileStrongbox.class, RenderStrongbox.INSTANCE);
 	}
