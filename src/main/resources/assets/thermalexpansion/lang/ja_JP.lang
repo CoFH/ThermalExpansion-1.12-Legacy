@@ -252,6 +252,13 @@ info.thermalexpansion.level.3=シグナルム
 info.thermalexpansion.level.4=レゾナント
 info.thermalexpansion.level.creative=クリエイティブ
 
+info.thermalexpansion.morb.a.0=モブの種類のエッセンスを保持します
+info.thermalexpansion.morb.a.1=特定のモブを鎮静状態に保ちます
+info.thermalexpansion.morb.a.2=モブに投げつけると捕まえることが出来ます
+info.thermalexpansion.morb.b.0=投げると保持しているモブの種類の中で基本的な状態のモブを召喚します
+info.thermalexpansion.morb.b.1=投げると捕獲されたモブを放ちます
+info.thermalexpansion.morb.c.0=再利用可能です
+
 info.thermalexpansion.machine.brewer=ポーションを醸造します
 info.thermalexpansion.machine.centrifuge=アイテムを素材へと分離します
 info.thermalexpansion.machine.charger=RFをアイテムに充電します
@@ -347,6 +354,10 @@ item.thermalexpansion.capacitor.standard4.name=フラックスキャパシタ (�
 item.thermalexpansion.florb.standard.name=フローブ
 item.thermalexpansion.florb.magmatic.name=耐熱フローブ
 
+item.thermalexpansion.morb.reusable.name=再利用可能モーブ
+item.thermalexpansion.morb.standard.name=モーブ
+item.thermalexpansion.morb.stasis.name=鎮静モーブ
+
 item.thermalexpansion.frame.frameApparatus.name=器具フレーム
 item.thermalexpansion.frame.frameCell.name=エネルギーセルフレーム
 item.thermalexpansion.frame.frameCell1.name=ハーデンド セルフレーム
@@ -377,6 +388,7 @@ item.thermalexpansion.satchel.standard4.name=サッチェル (レゾナント)
 
 itemGroup.thermalexpansion.creativeTab=Thermal Expansion
 itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: フローブ
+itemGroup.thermalexpansion.creativeTabMorbs=Thermal Expansion: モーブ
 itemGroup.thermalexpansion.creativeTabItems=Thermal Expansion: アイテム
 
 tab.thermalexpansion.apparatus.activator.0=切る！刻む！注ぐ！投げる！
