@@ -1,9 +1,9 @@
 #pt_BR
 
-gui.thermalexpansion.device.item_buffer.decInput=Diminui a Entrada em
-gui.thermalexpansion.device.item_buffer.decOutput=Diminui a Saída em
-gui.thermalexpansion.device.item_buffer.incInput=Aumenta a Entrada em
-gui.thermalexpansion.device.item_buffer.incOutput=Aumenta a Saída em
+gui.thermalexpansion.device.item_buffer.decInput=Diminuir a Entrada em
+gui.thermalexpansion.device.item_buffer.decOutput=Diminuir a Saída em
+gui.thermalexpansion.device.item_buffer.incInput=Aumentar a Entrada em
+gui.thermalexpansion.device.item_buffer.incOutput=Aumentar a Saída em
 
 gui.thermalexpansion.jei.compactor.modeGear=Engrenagens
 gui.thermalexpansion.jei.compactor.modeMint=Moeda
@@ -279,7 +279,7 @@ info.thermalexpansion.reservoir.d.0=Ao Usar: Encher
 info.thermalexpansion.reservoir.d.1=Ao Usar: Esvaziar
 info.thermalexpansion.reservoir.d.2=Reenchendo Equipamentos
 
-info.thermalexpansion.satchel.a.0=Armazena e coleta itens. Pode ser assegurado.
+info.thermalexpansion.satchel.a.0=Armazena e coleta itens. Pode ser protegido.
 info.thermalexpansion.satchel.a.1=Use em um inventário para transferir a ele.
 info.thermalexpansion.satchel.a.2=Agache-se e use para configurar.
 info.thermalexpansion.satchel.b.0=§bPressione (%s) para habilitar o auto-coletar.§r
