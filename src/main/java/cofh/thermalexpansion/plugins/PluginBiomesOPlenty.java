@@ -134,6 +134,8 @@ public class PluginBiomesOPlenty extends ModPlugin {
 				/* PLANTS */
 				energy = PulverizerManager.DEFAULT_ENERGY / 2;
 
+				PulverizerManager.addRecipe(energy, getItemStack("flower_0", 1, 11), new ItemStack(Items.DYE, 4, 1));
+				PulverizerManager.addRecipe(energy, getItemStack("flower_1", 1, 5), new ItemStack(Items.DYE, 4, 1));
 				PulverizerManager.addRecipe(energy, getItemStack("flower_0", 1, 8), new ItemStack(Items.DYE, 4, 5));
 				PulverizerManager.addRecipe(energy, getItemStack("flower_1", 1, 0), new ItemStack(Items.DYE, 4, 5));
 				PulverizerManager.addRecipe(energy, getItemStack("flower_0", 1, 1), new ItemStack(Items.DYE, 4, 6));
@@ -144,6 +146,7 @@ public class PluginBiomesOPlenty extends ModPlugin {
 				PulverizerManager.addRecipe(energy, getItemStack("flower_0", 1, 13), new ItemStack(Items.DYE, 4, 9));
 				PulverizerManager.addRecipe(energy, getItemStack("flower_1", 1, 3), new ItemStack(Items.DYE, 4, 9));
 				PulverizerManager.addRecipe(energy, getItemStack("mushroom", 1, 3), new ItemStack(Items.DYE, 4, 10));
+				PulverizerManager.addRecipe(energy, getItemStack("flower_1", 1, 1), new ItemStack(Items.DYE, 4, 11));
 				PulverizerManager.addRecipe(energy, getItemStack("flower_0", 1, 4), new ItemStack(Items.DYE, 4, 12));
 				PulverizerManager.addRecipe(energy, getItemStack("flower_1", 1, 4), new ItemStack(Items.DYE, 4, 12));
 				PulverizerManager.addRecipe(energy, getItemStack("double_plant", 1, 0), new ItemStack(Items.DYE, 4, 12));

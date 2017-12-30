@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TileTEBase extends TileCore implements ITileInfoPacketHandler, ITilePacketHandler, IPortableData {
+public abstract class TileTEBase extends TileCore implements ITilePacketHandler, IPortableData {
 
 	protected String tileName = "";
 
@@ -44,12 +44,6 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	}
 
 	/* GUI METHODS */
-	@Override
-	public int getInvSlotCount() {
-
-		return 0;
-	}
-
 	public int getScaledProgress(int scale) {
 
 		return 0;
@@ -143,30 +137,6 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 		world.checkLight(pos);
 	}
 
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(PacketBase payload, boolean isServer, EntityPlayer thePlayer) {
-
-		switch (TilePacketID.values()[payload.getByte()]) {
-			case S_GUI:
-				handleGuiPacket(payload);
-				return;
-			case S_FLUID:
-				handleFluidPacket(payload);
-				return;
-			case C_ACCESS:
-				handleAccessPacket(payload);
-				return;
-			case C_CONFIG:
-				handleConfigPacket(payload);
-				return;
-			case C_MODE:
-				handleModePacket(payload);
-				return;
-			default:
-		}
-	}
-
 	/* IPortableData */
 	@Override
 	public String getDataType() {
@@ -248,7 +218,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 			}
 			maxPower = basePower;
 			minPower = basePower;
-			maxEnergy = basePower * (smallStorage ? 10 : 1000);
+			maxEnergy = basePower * 10;
 			maxPowerLevel = maxPower;
 			minPowerLevel = maxPower - 1;
 			energyRamp = 1;
