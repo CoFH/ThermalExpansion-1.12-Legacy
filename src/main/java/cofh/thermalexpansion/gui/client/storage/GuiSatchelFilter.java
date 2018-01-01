@@ -18,9 +18,7 @@ public class GuiSatchelFilter extends GuiContainerCore {
 
 	String texturePath;
 
-	int level;
 	boolean secure;
-
 	UUID playerName;
 	int filterIndex;
 
@@ -33,9 +31,7 @@ public class GuiSatchelFilter extends GuiContainerCore {
 
 		super(container);
 
-		level = ItemSatchel.getLevel(container.getFilterStack());
 		secure = SecurityHelper.isSecure(container.getFilterStack());
-
 		playerName = SecurityHelper.getID(inventory.player);
 		filterIndex = ItemSatchel.getLevel(container.getFilterStack());
 		texture = CoreProps.TEXTURE_FILTER[filterIndex];

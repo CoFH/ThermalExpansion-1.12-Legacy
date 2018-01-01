@@ -32,12 +32,18 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 
 	static final String NAME = "item.thermalexpansion.satchel.name";
 
+	boolean isCreative;
+	boolean isVoid;
+
 	int storageIndex;
 	int rowSize;
 
 	public ContainerSatchel(ItemStack stack, InventoryPlayer inventory) {
 
 		super(stack, inventory);
+
+		isCreative = ItemSatchel.isCreative(stack);
+		isVoid = ItemSatchel.isVoid(stack);
 
 		storageIndex = ItemSatchel.getStorageIndex(stack);
 		rowSize = MathHelper.clamp(storageIndex, 9, 14);
@@ -50,7 +56,12 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 
 		switch (storageIndex) {
 			case 0:
-				addSlotToContainer(new SlotSatchelCreative(this, containerWrapper, 0, 80, 26));
+				addSlotToContainer(isVoid ? new Slot(containerWrapper, 0, 80, 26) {
+					@Override
+					public void putStack(ItemStack stack) {
+
+					}
+				} : new SlotSatchelCreative(this, containerWrapper, 0, 80, 26));
 				rowSize = 1;
 				break;
 			case 1:

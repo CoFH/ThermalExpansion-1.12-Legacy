@@ -6,6 +6,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
+import cofh.thermalexpansion.util.managers.machine.EnchanterManager;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager.ComparableItemStackEnchanter;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager.EnchanterRecipe;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager.Type;
@@ -31,6 +32,7 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 	protected List<FluidStack> inputFluids;
 	protected List<ItemStack> outputs;
 
+	protected String enchantName;
 	protected Type type;
 
 	/* Animation */
@@ -82,6 +84,7 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 
 		energy = recipe.getEnergy();
 
+		enchantName = recipe.getEnchantName();
 		type = recipe.getType();
 
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);
@@ -112,6 +115,17 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 		progress.draw(minecraft, 69, 23);
 		speed.draw(minecraft, 34, 33);
 		energyMeter.draw(minecraft, 2, 8);
+	}
+
+	public void refresh() {
+
+		EnchanterRecipe recipe = EnchanterManager.getRecipe(inputs.get(0).get(0), inputs.get(1).get(0));
+
+		if (recipe == null) {
+			return;
+		}
+		outputs.clear();
+		outputs.add(recipe.getOutput());
 	}
 
 }

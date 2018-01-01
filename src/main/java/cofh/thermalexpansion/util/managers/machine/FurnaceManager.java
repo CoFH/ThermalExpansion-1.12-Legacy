@@ -52,7 +52,7 @@ public class FurnaceManager {
 
 		if (recipe == null) {
 			query.metadata = OreDictionary.WILDCARD_VALUE;
-			recipe = recipeMap.get(query);
+			recipe = recipeMapPyrolysis.get(query);
 		}
 		return recipe;
 	}
@@ -133,11 +133,11 @@ public class FurnaceManager {
 			addOreDictRecipe(energy, "oreTin", ItemMaterial.ingotTin);
 			addOreDictRecipe(energy, "oreSilver", ItemMaterial.ingotSilver);
 			addOreDictRecipe(energy, "oreLead", ItemMaterial.ingotLead);
-			// addOreDictRecipe(energy, "oreAluminum", ItemMaterial.ingotAluminum);
+			addOreDictRecipe(energy, "oreAluminum", ItemMaterial.ingotAluminum);
 			addOreDictRecipe(energy, "oreNickel", ItemMaterial.ingotNickel);
 			addOreDictRecipe(energy, "orePlatinum", ItemMaterial.ingotPlatinum);
-			// addOreDictRecipe(energy, "oreIridium", ItemMaterial.ingotIridium);
-			// addOreDictRecipe(energy, "oreMithril", ItemMaterial.ingotMithril);
+			addOreDictRecipe(energy, "oreIridium", ItemMaterial.ingotIridium);
+			addOreDictRecipe(energy, "oreMithril", ItemMaterial.ingotMithril);
 
 			addOreDictRecipe(energy, "oreCoal", new ItemStack(Items.COAL, 1, 0));
 			addOreDictRecipe(energy, "oreDiamond", new ItemStack(Items.DIAMOND, 1, 0));
@@ -158,7 +158,7 @@ public class FurnaceManager {
 			addOreDictRecipe(energy, "dustTin", ItemMaterial.ingotTin);
 			addOreDictRecipe(energy, "dustSilver", ItemMaterial.ingotSilver);
 			addOreDictRecipe(energy, "dustLead", ItemMaterial.ingotLead);
-			// addOreDictRecipe(energy, "dustAluminum", ItemMaterial.ingotAluminum);
+			addOreDictRecipe(energy, "dustAluminum", ItemMaterial.ingotAluminum);
 			addOreDictRecipe(energy, "dustNickel", ItemMaterial.ingotNickel);
 			addOreDictRecipe(energy, "dustPlatinum", ItemMaterial.ingotPlatinum);
 			addOreDictRecipe(energy, "dustIridium", ItemMaterial.ingotIridium);
@@ -230,14 +230,6 @@ public class FurnaceManager {
 		handledBlocks.add(Blocks.LAPIS_ORE);
 		handledBlocks.add(Blocks.REDSTONE_ORE);
 		handledBlocks.add(Blocks.QUARTZ_ORE);
-
-		reservedMap.put("oreAluminum", ItemMaterial.ingotAluminum);
-		reservedMap.put("oreIridium", ItemMaterial.ingotIridium);
-		reservedMap.put("oreMithril", ItemMaterial.ingotMithril);
-
-		reservedMap.put("dustAluminum", ItemMaterial.ingotAluminum);
-		reservedMap.put("dustIridium", ItemMaterial.ingotIridium);
-		reservedMap.put("dustMithril", ItemMaterial.ingotMithril);
 
 		reservedMap.put("dustSteel", ItemMaterial.ingotSteel);
 		reservedMap.put("dustSignalum", ItemMaterial.ingotSignalum);

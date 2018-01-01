@@ -67,6 +67,10 @@ public abstract class BlockTEBase extends BlockCoreTile {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		RayTraceResult traceResult = RayTracer.retrace(player);
+
+		if (traceResult == null) {
+			return false;
+		}
 		PlayerInteractEvent event = new PlayerInteractEvent.RightClickBlock(player, hand, pos, side, traceResult.hitVec);
 		if (MinecraftForge.EVENT_BUS.post(event) || event.getResult() == Result.DENY) {
 			return false;
@@ -216,7 +220,11 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		TileEntity tile = world.getTileEntity(pos);
 		IBlockState state = world.getBlockState(pos);
 		int meta = state.getBlock().getMetaFromState(state);
+		ArrayList<ItemStack> ret = new ArrayList<>();
 
+		if (state.getBlock() != this) {
+			return ret;
+		}
 		ItemStack dropBlock = new ItemStack(this, 1, meta);
 
 		if (nbt != null) {
@@ -246,7 +254,6 @@ public abstract class BlockTEBase extends BlockCoreTile {
 				}
 			}
 		}
-		ArrayList<ItemStack> ret = new ArrayList<>();
 		ret.add(dropBlock);
 		return ret;
 	}

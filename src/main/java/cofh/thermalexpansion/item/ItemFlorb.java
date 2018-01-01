@@ -147,7 +147,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 			return new ActionResult<>(EnumActionResult.PASS, stack);
 		}
 		//if (!player.capabilities.isCreativeMode) {
-			stack.shrink(1);
+		stack.shrink(1);
 		//}
 		world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
 

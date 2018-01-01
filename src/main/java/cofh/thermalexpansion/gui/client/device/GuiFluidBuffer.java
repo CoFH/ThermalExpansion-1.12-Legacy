@@ -192,12 +192,12 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 				pitch += 0.1F;
 				break;
 			case "Lock0":
-				myTile.locks[2] = !myTile.locks[2];
-				pitch = myTile.locks[2] ? 0.8F : 0.4F;
+				myTile.locks[0] = !myTile.locks[0];
+				pitch = myTile.locks[0] ? 0.8F : 0.4F;
 				break;
 			case "Lock1":
-				myTile.locks[2] = !myTile.locks[2];
-				pitch = myTile.locks[2] ? 0.8F : 0.4F;
+				myTile.locks[1] = !myTile.locks[1];
+				pitch = myTile.locks[1] ? 0.8F : 0.4F;
 				break;
 			case "Lock2":
 				myTile.locks[2] = !myTile.locks[2];

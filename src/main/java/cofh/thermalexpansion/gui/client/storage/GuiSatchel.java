@@ -16,9 +16,10 @@ import java.util.UUID;
 
 public class GuiSatchel extends GuiContainerCore {
 
-	int level;
-	boolean secure;
+	boolean isCreative;
+	boolean isVoid;
 
+	boolean secure;
 	UUID playerName;
 	int storageIndex;
 
@@ -26,9 +27,10 @@ public class GuiSatchel extends GuiContainerCore {
 
 		super(container);
 
-		level = ItemSatchel.getLevel(container.getContainerStack());
-		secure = SecurityHelper.isSecure(container.getContainerStack());
+		isCreative = ItemSatchel.isCreative(container.getContainerStack());
+		isVoid = ItemSatchel.isVoid(container.getContainerStack());
 
+		secure = SecurityHelper.isSecure(container.getContainerStack());
 		playerName = SecurityHelper.getID(inventory.player);
 		storageIndex = ItemSatchel.getStorageIndex(container.getContainerStack());
 		texture = CoreProps.TEXTURE_STORAGE[storageIndex];
@@ -39,8 +41,13 @@ public class GuiSatchel extends GuiContainerCore {
 		xSize = 14 + 18 * MathHelper.clamp(storageIndex, 9, 14);
 		ySize = 112 + 18 * MathHelper.clamp(storageIndex, 2, 9);
 
-		generateInfo("tab.thermalexpansion.storage.satchel");
-
+		if (isCreative) {
+			generateInfo("tab.thermalexpansion.storage.satchel_c");
+		} else if (isVoid) {
+			generateInfo("tab.thermalexpansion.storage.satchel_v");
+		} else {
+			generateInfo("tab.thermalexpansion.storage.satchel");
+		}
 		if (container.getContainerStack().isItemEnchantable() && !ItemSatchel.hasHoldingEnchant(container.getContainerStack())) {
 			myInfo += "\n\n" + StringHelper.localize("tab.thermalexpansion.storage.enchant");
 		}

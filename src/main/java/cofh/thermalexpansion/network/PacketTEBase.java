@@ -13,7 +13,7 @@ public class PacketTEBase extends PacketBase {
 	}
 
 	public enum PacketTypes {
-		ONFIG_SYNC
+		CONFIG_SYNC
 	}
 
 	@Override

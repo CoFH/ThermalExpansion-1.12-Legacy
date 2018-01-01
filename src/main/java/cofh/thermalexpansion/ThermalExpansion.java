@@ -9,6 +9,7 @@ import cofh.thermalexpansion.init.*;
 import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalexpansion.item.ItemMorb;
 import cofh.thermalexpansion.network.PacketTEBase;
+import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.managers.device.*;
@@ -17,6 +18,7 @@ import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalfoundation.ThermalFoundation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -35,7 +37,7 @@ public class ThermalExpansion {
 	public static final String MOD_ID = "thermalexpansion";
 	public static final String MOD_NAME = "Thermal Expansion";
 
-	public static final String VERSION = "5.3.8";
+	public static final String VERSION = "5.3.9";
 	public static final String VERSION_MAX = "5.4.0";
 	public static final String VERSION_GROUP = "required-after:" + MOD_ID + "@[" + VERSION + "," + VERSION_MAX + ");";
 	public static final String UPDATE_URL = "https://raw.github.com/cofh/version/master/" + MOD_ID + "_update.json";
@@ -195,6 +197,10 @@ public class ThermalExpansion {
 		ReactantManager.refresh();
 		EnervationManager.refresh();
 		NumismaticManager.refresh();
+
+		if (Loader.isModLoaded("jei")) {
+			JEIPluginTE.refresh();
+		}
 	}
 
 }

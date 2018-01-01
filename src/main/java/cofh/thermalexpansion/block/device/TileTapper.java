@@ -242,7 +242,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 					}
 				}
 				if (leafCount >= NUM_LEAVES) {
-					Iterable<BlockPos.MutableBlockPos> trunk = BlockPos.getAllInBoxMutable(trunkPos, trunkPos.add(0, leafPos[0].getY(), 0));
+					Iterable<BlockPos.MutableBlockPos> trunk = BlockPos.getAllInBoxMutable(trunkPos, trunkPos.add(0, leafPos[0].getY() - trunkPos.getY(), 0));
 
 					for (BlockPos scan : trunk) {
 						IBlockState state = world.getBlockState(scan);
@@ -293,7 +293,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			}
 		}
 		if (leafCount >= NUM_LEAVES) {
-			Iterable<BlockPos.MutableBlockPos> trunk = BlockPos.getAllInBoxMutable(trunkPos, trunkPos.add(0, leafPos[0].getY(), 0));
+			Iterable<BlockPos.MutableBlockPos> trunk = BlockPos.getAllInBoxMutable(trunkPos, trunkPos.add(0, leafPos[0].getY() - trunkPos.getY(), 0));
 
 			for (BlockPos scan : trunk) {
 				IBlockState state = world.getBlockState(scan);

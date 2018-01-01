@@ -57,6 +57,11 @@
 					"layer0": "thermalexpansion:items/satchel/satchel_4"
 				}
 			},
+			"void": {
+				"textures": {
+					"layer0": "thermalexpansion:items/satchel/satchel_v"
+				}
+			},
 			"creative": {
 				"textures": {
 					"layer0": "thermalexpansion:items/satchel/satchel_c"

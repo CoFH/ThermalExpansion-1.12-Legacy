@@ -27,10 +27,7 @@ import cofh.thermalexpansion.plugins.jei.machine.refinery.RefineryRecipeCategory
 import cofh.thermalexpansion.plugins.jei.machine.sawmill.SawmillRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.smelter.SmelterRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.transposer.TransposerRecipeCategory;
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.ISubtypeRegistry;
-import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.*;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -43,6 +40,10 @@ import org.lwjgl.opengl.GL11;
 @JEIPlugin
 public class JEIPluginTE implements IModPlugin {
 
+	public static IJeiHelpers jeiHelpers;
+	public static IGuiHelper guiHelper;
+	public static IJeiRuntime jeiRuntime;
+
 	@Override
 	public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
 
@@ -54,6 +55,9 @@ public class JEIPluginTE implements IModPlugin {
 
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registry) {
+
+		jeiHelpers = registry.getJeiHelpers();
+		guiHelper = jeiHelpers.getGuiHelper();
 
 		FurnaceRecipeCategory.register(registry);
 		PulverizerRecipeCategory.register(registry);
@@ -84,6 +88,9 @@ public class JEIPluginTE implements IModPlugin {
 	@Override
 	public void register(IModRegistry registry) {
 
+		jeiHelpers = registry.getJeiHelpers();
+		guiHelper = jeiHelpers.getGuiHelper();
+
 		FurnaceRecipeCategory.initialize(registry);
 		PulverizerRecipeCategory.initialize(registry);
 		SawmillRecipeCategory.initialize(registry);
@@ -110,6 +117,17 @@ public class JEIPluginTE implements IModPlugin {
 		CoolantCategory.initialize(registry);
 
 		Descriptions.register(registry);
+	}
+
+	@Override
+	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+
+		JEIPluginTE.jeiRuntime = jeiRuntime;
+	}
+
+	public static void refresh() {
+
+		EnchanterRecipeCategory.refresh();
 	}
 
 	/* HELPERS */

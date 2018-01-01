@@ -32,8 +32,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
@@ -189,7 +187,7 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister,
 			if (clazz == null || !EntityLiving.class.isAssignableFrom(clazz)) {
 				continue;
 			}
-			if (list.contains(name.toString())) {
+			if (list.contains(name.toString()) || !EntityList.ENTITY_EGGS.containsKey(name)) {
 				continue;
 			}
 			addMorb(ItemHelper.cloneStack(morbStandard), name.toString());
@@ -258,6 +256,8 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister,
 		ItemStack morbStack = ItemHelper.cloneStack(morbStandard, 8);
 
 		addShapelessRecipe(morbStack, "dustWood", "crystalSlag", "slimeball", "enderpearl");
+		addShapelessRecipe(morbReusable, morbStandard, "nuggetSignalum", "nuggetSignalum", "nuggetSignalum");
+		addShapelessRecipe(morbStasis, morbReusable, "nuggetEnderium", "nuggetEnderium", "nuggetEnderium");
 
 		return true;
 	}
@@ -271,7 +271,7 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister,
 		enable = CONFIG_MORBS.getConfiguration().getBoolean("EnableRecipe", category, enable, comment);
 
 		category = "Blacklist";
-		comment = "List of entities that are not allowed to be placed in Morbs.";
+		comment = "List of entities that are not allowed to be placed in Morbs. Mobs without spawn eggs are automatically disallowed.";
 		blacklist = CONFIG_MORBS.getConfiguration().getStringList("Blacklist", category, blacklist, comment);
 	}
 
@@ -280,7 +280,7 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister,
 	public static ArrayList<ItemStack> morbList = new ArrayList<>();
 	public static Set<String> validMobs = new THashSet<>();
 
-	public static String[] blacklist = new String[] { "minecraft:wither", "minecraft:ender_dragon" };
+	public static String[] blacklist = new String[] {};
 	public static boolean enable = true;
 
 	public static final String GENERIC = "Generic";

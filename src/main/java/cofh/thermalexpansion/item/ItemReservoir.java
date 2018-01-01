@@ -9,6 +9,7 @@ import cofh.core.item.IEnchantableItem;
 import cofh.core.item.ItemMulti;
 import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
+import cofh.core.util.RayTracer;
 import cofh.core.util.capabilities.FluidContainerItemWrapper;
 import cofh.core.util.core.IInitializer;
 import cofh.core.util.helpers.*;
@@ -219,16 +220,14 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (getSpace(stack) < Fluid.BUCKET_VOLUME) {
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 		}
-		RayTraceResult traceResult = this.rayTrace(world, player, false);
+		RayTraceResult traceResult = RayTracer.retrace(player, true);
 		if (traceResult == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 		}
 		BlockPos pos = traceResult.getBlockPos();
 		if (world.isBlockModifiable(player, pos)) {
-			BlockPos targetPos = pos.offset(traceResult.sideHit);
-
-			if (player.canPlayerEdit(targetPos, traceResult.sideHit, stack)) {
-				FluidActionResult result = FluidUtil.tryPickUpFluid(stack, player, world, targetPos, traceResult.sideHit.getOpposite());
+			if (player.canPlayerEdit(pos, traceResult.sideHit, stack)) {
+				FluidActionResult result = FluidUtil.tryPickUpFluid(stack, player, world, pos, traceResult.sideHit);
 				if (result.isSuccess() && !player.capabilities.isCreativeMode) {
 					player.addStat(StatList.getObjectUseStats(this));
 					return ActionResult.newResult(EnumActionResult.SUCCESS, result.getResult());
@@ -250,8 +249,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		BlockPos pos = traceResult.getBlockPos();
 		if (world.isBlockModifiable(player, pos)) {
 			BlockPos targetPos = pos.offset(traceResult.sideHit);
-
-			if (player.canPlayerEdit(targetPos, traceResult.sideHit, stack)) {
+			if (player.canPlayerEdit(targetPos, traceResult.sideHit.getOpposite(), stack)) {
 				FluidActionResult result = FluidUtil.tryPlaceFluid(player, world, targetPos, stack, new FluidStack(getFluid(stack), Fluid.BUCKET_VOLUME));
 				if (result.isSuccess() && !player.capabilities.isCreativeMode) {
 					player.addStat(StatList.getObjectUseStats(this));

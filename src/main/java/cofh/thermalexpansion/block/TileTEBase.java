@@ -3,7 +3,6 @@ package cofh.thermalexpansion.block;
 import cofh.api.core.IPortableData;
 import cofh.core.block.TileCore;
 import cofh.core.fluid.FluidTankCore;
-import cofh.core.network.ITileInfoPacketHandler;
 import cofh.core.network.ITilePacketHandler;
 import cofh.core.network.PacketBase;
 import cofh.core.network.PacketHandler;

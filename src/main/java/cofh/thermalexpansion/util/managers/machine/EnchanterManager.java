@@ -5,6 +5,7 @@ import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemEnchantedBook;
@@ -87,6 +88,92 @@ public class EnchanterManager {
 			addArcana(book);
 		}
 
+		addEnchantmentBooks();
+
+		/* LOAD RECIPES */
+		loadRecipes();
+	}
+
+	public static void loadRecipes() {
+
+	}
+
+	public static void refresh() {
+
+		Map<List<ComparableItemStackEnchanter>, EnchanterRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Set<ComparableItemStackEnchanter> tempSet = new THashSet<>();
+		EnchanterRecipe tempRecipe;
+
+		for (Entry<List<ComparableItemStackEnchanter>, EnchanterRecipe> entry : recipeMap.entrySet()) {
+			tempRecipe = entry.getValue();
+			ComparableItemStackEnchanter primary = new ComparableItemStackEnchanter(tempRecipe.primaryInput);
+			ComparableItemStackEnchanter secondary = new ComparableItemStackEnchanter(tempRecipe.secondaryInput);
+
+			if (!tempRecipe.enchantName.isEmpty() && tempRecipe.output.getItem() == Items.ENCHANTED_BOOK) {
+				Enchantment enchant = Enchantment.getEnchantmentByLocation(tempRecipe.enchantName);
+				tempRecipe = new EnchanterRecipe(tempRecipe.primaryInput, tempRecipe.secondaryInput, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, 1)), tempRecipe.experience, tempRecipe.energy, tempRecipe.type);
+			}
+			tempMap.put(Arrays.asList(primary, secondary), tempRecipe);
+			tempSet.add(primary);
+			tempSet.add(secondary);
+		}
+		recipeMap.clear();
+		recipeMap = tempMap;
+		validationSet.clear();
+		validationSet = tempSet;
+
+		Set<ComparableItemStackEnchanter> tempSet2 = new THashSet<>();
+		for (ComparableItemStackEnchanter entry : lockSet) {
+			ComparableItemStackEnchanter lock = new ComparableItemStackEnchanter(new ItemStack(entry.item, entry.stackSize, entry.metadata));
+			tempSet2.add(lock);
+		}
+		lockSet.clear();
+		lockSet = tempSet2;
+	}
+
+	/* ADD RECIPES */
+	public static EnchanterRecipe addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack output, int experience, Type type) {
+
+		if (primaryInput.isEmpty() || secondaryInput.isEmpty() || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
+			return null;
+		}
+		EnchanterRecipe recipe = new EnchanterRecipe(primaryInput, secondaryInput, output, experience, energy, type);
+		recipeMap.put(Arrays.asList(new ComparableItemStackEnchanter(primaryInput), new ComparableItemStackEnchanter(secondaryInput)), recipe);
+		validationSet.add(new ComparableItemStackEnchanter(primaryInput));
+		validationSet.add(new ComparableItemStackEnchanter(secondaryInput));
+		return recipe;
+	}
+
+	public static void addDefaultEnchantmentRecipe(ItemStack input, String enchantName, int tier) {
+
+		if (tier < 0 || tier > 4) {
+			return;
+		}
+		Enchantment enchant = Enchantment.getEnchantmentByLocation(enchantName);
+
+		if (enchant == null) {
+			return;
+		}
+		addRecipe(DEFAULT_ENERGY[tier], ITEM_BOOK, input, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, 1)), DEFAULT_EXPERIENCE[tier], Type.STANDARD);
+		//		if (enchant.getMaxLevel() > 1) {
+		//			addRecipe(DEFAULT_ENERGY[Math.min(tier + 1, 4)] * 3, ITEM_BOOK2, input, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, enchant.getMaxLevel())), DEFAULT_EXPERIENCE[Math.min(tier + 1, 4)], Type.EMPOWERED);
+		//		}
+	}
+
+	/* REMOVE RECIPES */
+	public static EnchanterRecipe removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
+
+		return recipeMap.remove(Arrays.asList(new ComparableItemStackEnchanter(primaryInput), new ComparableItemStackEnchanter(secondaryInput)));
+	}
+
+	/* HELPERS */
+	private static void addArcana(ItemStack arcana) {
+
+		lockSet.add(new ComparableItemStackEnchanter(arcana));
+	}
+
+	private static void addEnchantmentBooks() {
+
 		/* GENERAL */
 		{
 			addDefaultEnchantmentRecipe(new ItemStack(Blocks.OBSIDIAN), "unbreaking", 1);
@@ -150,83 +237,6 @@ public class EnchanterManager {
 			addDefaultEnchantmentRecipe(new ItemStack(Blocks.FURNACE), "cofhcore:smelting", 1);
 			addDefaultEnchantmentRecipe(new ItemStack(Items.SKULL, 1, 1), "cofhcore:vorpal", 3);
 		}
-
-		/* LOAD RECIPES */
-		loadRecipes();
-	}
-
-	public static void loadRecipes() {
-
-	}
-
-	public static void refresh() {
-
-		Map<List<ComparableItemStackEnchanter>, EnchanterRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Set<ComparableItemStackEnchanter> tempSet = new THashSet<>();
-		EnchanterRecipe tempRecipe;
-
-		for (Entry<List<ComparableItemStackEnchanter>, EnchanterRecipe> entry : recipeMap.entrySet()) {
-			tempRecipe = entry.getValue();
-			ComparableItemStackEnchanter primary = new ComparableItemStackEnchanter(tempRecipe.primaryInput);
-			ComparableItemStackEnchanter secondary = new ComparableItemStackEnchanter(tempRecipe.secondaryInput);
-
-			tempMap.put(Arrays.asList(primary, secondary), tempRecipe);
-			tempSet.add(primary);
-			tempSet.add(secondary);
-		}
-		recipeMap.clear();
-		recipeMap = tempMap;
-		validationSet.clear();
-		validationSet = tempSet;
-
-		Set<ComparableItemStackEnchanter> tempSet2 = new THashSet<>();
-		for (ComparableItemStackEnchanter entry : lockSet) {
-			ComparableItemStackEnchanter lock = new ComparableItemStackEnchanter(new ItemStack(entry.item, entry.stackSize, entry.metadata));
-			tempSet2.add(lock);
-		}
-		lockSet.clear();
-		lockSet = tempSet2;
-	}
-
-	/* ADD RECIPES */
-	public static EnchanterRecipe addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack output, int experience, Type type) {
-
-		if (primaryInput.isEmpty() || secondaryInput.isEmpty() || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
-			return null;
-		}
-		EnchanterRecipe recipe = new EnchanterRecipe(primaryInput, secondaryInput, output, experience, energy, type);
-		recipeMap.put(Arrays.asList(new ComparableItemStackEnchanter(primaryInput), new ComparableItemStackEnchanter(secondaryInput)), recipe);
-		validationSet.add(new ComparableItemStackEnchanter(primaryInput));
-		validationSet.add(new ComparableItemStackEnchanter(secondaryInput));
-		return recipe;
-	}
-
-	public static void addDefaultEnchantmentRecipe(ItemStack input, String enchantName, int tier) {
-
-		if (tier < 0 || tier > 4) {
-			return;
-		}
-		Enchantment enchant = Enchantment.getEnchantmentByLocation(enchantName);
-
-		if (enchant == null) {
-			return;
-		}
-		addRecipe(DEFAULT_ENERGY[tier], ITEM_BOOK, input, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, 1)), DEFAULT_EXPERIENCE[tier], Type.STANDARD);
-		//		if (enchant.getMaxLevel() > 1) {
-		//			addRecipe(DEFAULT_ENERGY[Math.min(tier + 1, 4)] * 3, ITEM_BOOK2, input, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, enchant.getMaxLevel())), DEFAULT_EXPERIENCE[Math.min(tier + 1, 4)], Type.EMPOWERED);
-		//		}
-	}
-
-	/* REMOVE RECIPES */
-	public static EnchanterRecipe removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
-
-		return recipeMap.remove(Arrays.asList(new ComparableItemStackEnchanter(primaryInput), new ComparableItemStackEnchanter(secondaryInput)));
-	}
-
-	/* HELPERS */
-	private static void addArcana(ItemStack arcana) {
-
-		lockSet.add(new ComparableItemStackEnchanter(arcana));
 	}
 
 	/* RECIPE CLASS */
@@ -237,6 +247,7 @@ public class EnchanterManager {
 		final ItemStack output;
 		final int experience;
 		final int energy;
+		final String enchantName;
 		final Type type;
 
 		EnchanterRecipe(ItemStack primaryInput, ItemStack secondaryInput, ItemStack output, int experience, int energy, Type type) {
@@ -247,6 +258,14 @@ public class EnchanterManager {
 			this.experience = experience;
 			this.energy = energy;
 			this.type = type;
+
+			Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(output);
+
+			if (enchants.isEmpty() || enchants.size() > 1) {
+				this.enchantName = "";
+			} else {
+				this.enchantName = enchants.keySet().stream().findFirst().get().getRegistryName().toString();
+			}
 		}
 
 		public ItemStack getPrimaryInput() {
@@ -272,6 +291,11 @@ public class EnchanterManager {
 		public int getExperience() {
 
 			return experience;
+		}
+
+		public String getEnchantName() {
+
+			return enchantName;
 		}
 
 		public Type getType() {
