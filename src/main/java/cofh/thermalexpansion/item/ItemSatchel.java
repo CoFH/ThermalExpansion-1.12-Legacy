@@ -307,6 +307,8 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 			if (isVoid(stack)) {
 				eventItem.setCount(0);
 				stack.setAnimationsToGo(5);
+				EntityPlayer player = event.getEntityPlayer();
+				player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F, (MathHelper.RANDOM.nextFloat() - MathHelper.RANDOM.nextFloat()) * 0.7F + 1.0F);
 				stack.getTagCompound().setInteger("Random", MathHelper.RANDOM.nextInt());
 				return true;
 			} else if (!(eventItem.getItem() instanceof IInventoryContainerItem) || ((IInventoryContainerItem) eventItem.getItem()).getSizeInventory(stack) <= 0) {

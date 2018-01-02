@@ -75,20 +75,18 @@ public class EnchanterRecipeCategory extends BaseRecipeCategory<EnchanterRecipeW
 
 		List<EnchanterRecipeWrapper> enchanterRecipeWrappers = recipeRegistry.getRecipeWrappers(categoryStandard);
 		for (EnchanterRecipeWrapper wrapper : enchanterRecipeWrappers) {
-			//recipeRegistry.removeRecipe(wrapper, RecipeUidsTE.ENCHANTER);
-			wrapper.refresh();
+			recipeRegistry.removeRecipe(wrapper, RecipeUidsTE.ENCHANTER);
 		}
-		// TODO: This is a temporary half-solution til Mezz gets back to me.
-		//		enchanterRecipeWrappers.clear();
-		//
-		//		for (EnchanterRecipe recipe : EnchanterManager.getRecipeList()) {
-		//			if (recipe.getType() == Type.STANDARD) {
-		//				enchanterRecipeWrappers.add(new EnchanterRecipeWrapper(JEIPluginTE.guiHelper, recipe));
-		//			}
-		//		}
-		//		for (EnchanterRecipeWrapper wrapper : enchanterRecipeWrappers) {
-		//			recipeRegistry.addRecipe(wrapper, RecipeUidsTE.ENCHANTER);
-		//		}
+		enchanterRecipeWrappers.clear();
+
+		for (EnchanterRecipe recipe : EnchanterManager.getRecipeList()) {
+			if (recipe.getType() == Type.STANDARD) {
+				enchanterRecipeWrappers.add(new EnchanterRecipeWrapper(JEIPluginTE.guiHelper, recipe));
+			}
+		}
+		for (EnchanterRecipeWrapper wrapper : enchanterRecipeWrappers) {
+			recipeRegistry.addRecipe(wrapper, RecipeUidsTE.ENCHANTER);
+		}
 		// EnchanterRecipeCategoryEmpowered.refresh(registry);
 	}
 

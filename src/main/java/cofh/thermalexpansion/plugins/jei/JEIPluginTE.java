@@ -29,6 +29,7 @@ import cofh.thermalexpansion.plugins.jei.machine.smelter.SmelterRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.transposer.TransposerRecipeCategory;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -127,7 +128,8 @@ public class JEIPluginTE implements IModPlugin {
 
 	public static void refresh() {
 
-		EnchanterRecipeCategory.refresh();
+		// This is done because JEI whines otherwise.
+		Minecraft.getMinecraft().addScheduledTask(EnchanterRecipeCategory::refresh);
 	}
 
 	/* HELPERS */

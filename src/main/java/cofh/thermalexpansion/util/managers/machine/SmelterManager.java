@@ -23,6 +23,7 @@ import java.util.Map.Entry;
 public class SmelterManager {
 
 	private static Map<List<ComparableItemStackSmelter>, SmelterRecipe> recipeMap = new THashMap<>();
+	private static Map<List<ComparableItemStackSmelter>, SmelterRecipe> recipeMapRecycle = new THashMap<>();
 	private static Set<ComparableItemStackSmelter> validationSet = new THashSet<>();
 	private static Set<ComparableItemStackSmelter> lockSet = new THashSet<>();
 
@@ -268,8 +269,8 @@ public class SmelterManager {
 		{
 			int energy = DEFAULT_ENERGY * 3 / 2;
 
-			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.COMPASS), new ItemStack(Items.IRON_INGOT, 4), ItemMaterial.crystalSlagRich, 10); // consumes redstone
-			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.FLINT_AND_STEEL), new ItemStack(Items.IRON_INGOT), ItemMaterial.crystalSlag, 90); // make a use for flint: slag!
+			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.COMPASS), new ItemStack(Items.IRON_INGOT, 4), ItemMaterial.crystalSlagRich, 10);
+			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.FLINT_AND_STEEL), new ItemStack(Items.IRON_INGOT), ItemMaterial.crystalSlag, 90);
 
 			ItemStack ingot = new ItemStack(Items.IRON_INGOT);
 			// no minecart, rails. Railcraft causes resource duplication there
@@ -298,7 +299,7 @@ public class SmelterManager {
 			}
 			ingot = new ItemStack(Items.GOLD_INGOT);
 
-			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.CLOCK), new ItemStack(Items.GOLD_INGOT, 4), ItemMaterial.crystalSlagRich, 10); // consumes redstone
+			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.CLOCK), new ItemStack(Items.GOLD_INGOT, 4), ItemMaterial.crystalSlagRich, 10);
 			addRecycleRecipe(energy, new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE), ingot, 2);
 
 			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_SWORD), ingot, 2);
@@ -485,7 +486,7 @@ public class SmelterManager {
 			addOreToIngotRecipe(DEFAULT_ENERGY, oreName, ItemHelper.cloneStack(ingot, ORE_MULTIPLIER), ItemHelper.cloneStack(ingot, ORE_MULTIPLIER_SPECIAL), ItemHelper.cloneStack(ingotRelated, 1), richSlagChance, slagOreChance);
 		}
 		if (dustName != null) {
-			addDustToIngotRecipe(DEFAULT_ENERGY / 5, dustName, ItemHelper.cloneStack(ingot, 2), slagDustChance);
+			addDustToIngotRecipe(DEFAULT_ENERGY / 8, dustName, ItemHelper.cloneStack(ingot, 1), slagDustChance);
 		}
 	}
 
@@ -563,12 +564,12 @@ public class SmelterManager {
 		}
 	}
 
-	private static void addDustToIngotRecipe(int energy, String dustName, ItemStack ingot2, int slagDustChance) {
+	private static void addDustToIngotRecipe(int energy, String dustName, ItemStack ingot, int slagDustChance) {
 
 		List<ItemStack> registeredOres = OreDictionary.getOres(dustName, false);
 
 		if (registeredOres.size() > 0) {
-			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 2), BLOCK_SAND, ingot2, ItemMaterial.crystalSlag, slagDustChance);
+			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), BLOCK_SAND, ingot, ItemMaterial.crystalSlag, slagDustChance);
 		}
 	}
 

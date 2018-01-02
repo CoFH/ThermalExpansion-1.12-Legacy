@@ -55,7 +55,7 @@ dependencies {
 	compile "mezz.jei:jei_${config.jei_mc_version}:${config.jei_version}"
 }
 
-version = "${project.config.mod_version}." + (System.getenv("BUILD_NUMBER") ?: "36")
+version = "${project.config.mod_version}." + (System.getenv("BUILD_NUMBER") ?: "1")
 
 println config.mc_version + "-" + config.forge_version
 // Setup the Forge/Minecraft plugin data. Specify the preferred Forge/Minecraft version here.
