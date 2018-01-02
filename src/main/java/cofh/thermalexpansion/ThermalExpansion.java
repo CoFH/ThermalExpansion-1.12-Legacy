@@ -9,7 +9,6 @@ import cofh.thermalexpansion.init.*;
 import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalexpansion.item.ItemMorb;
 import cofh.thermalexpansion.network.PacketTEBase;
-import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.managers.device.*;
@@ -18,7 +17,6 @@ import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalfoundation.ThermalFoundation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -115,6 +113,8 @@ public class ThermalExpansion {
 	public void handleIdMappingEvent(FMLModIdMappingEvent event) {
 
 		managerRefresh();
+
+		proxy.onIdRemap();
 	}
 
 	@EventHandler
@@ -197,10 +197,6 @@ public class ThermalExpansion {
 		ReactantManager.refresh();
 		EnervationManager.refresh();
 		NumismaticManager.refresh();
-
-		if (Loader.isModLoaded("jei")) {
-			JEIPluginTE.refresh();
-		}
 	}
 
 }

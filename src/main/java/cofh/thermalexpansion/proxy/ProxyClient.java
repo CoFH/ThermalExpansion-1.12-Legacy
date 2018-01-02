@@ -6,6 +6,7 @@ import cofh.thermalexpansion.block.storage.TileStrongbox;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
 import cofh.thermalexpansion.entity.projectile.EntityMorb;
 import cofh.thermalexpansion.init.TEItems;
+import cofh.thermalexpansion.plugins.jei.machine.enchanter.EnchanterRecipeCategory;
 import cofh.thermalexpansion.render.RenderCache;
 import cofh.thermalexpansion.render.RenderStrongbox;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
@@ -14,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -51,6 +53,14 @@ public class ProxyClient extends Proxy {
 	public void postInit(FMLPostInitializationEvent event) {
 
 		super.postInit(event);
+	}
+
+	@Override
+	public void onIdRemap() {
+
+		if (Loader.isModLoaded("jei")) {
+			Minecraft.getMinecraft().addScheduledTask(EnchanterRecipeCategory::refresh);
+		}
 	}
 
 	/* REGISTRATION */

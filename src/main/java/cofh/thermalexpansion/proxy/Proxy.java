@@ -26,6 +26,10 @@ public class Proxy {
 
 	}
 
+	public void onIdRemap() {
+
+	}
+
 	/* REGISTRATION */
 	public void registerEntities() {
 

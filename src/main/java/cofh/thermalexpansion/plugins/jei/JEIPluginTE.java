@@ -29,14 +29,12 @@ import cofh.thermalexpansion.plugins.jei.machine.smelter.SmelterRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.transposer.TransposerRecipeCategory;
 import mezz.jei.api.*;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.lwjgl.opengl.GL11;
 
 @JEIPlugin
@@ -125,12 +123,6 @@ public class JEIPluginTE implements IModPlugin {
 	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
 
 		JEIPluginTE.jeiRuntime = jeiRuntime;
-	}
-
-	public static void refresh() {
-
-		// This is done because JEI whines otherwise.
-		FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(EnchanterRecipeCategory::refresh);
 	}
 
 	/* HELPERS */
