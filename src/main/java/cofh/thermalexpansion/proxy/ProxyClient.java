@@ -44,7 +44,7 @@ public class ProxyClient extends Proxy {
 		RenderCache.initialize();
 		RenderStrongbox.initialize();
 
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(TEItems.itemMorb, TEItems.itemMorb);
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(TEItems.itemMorb::colorMultiplier, TEItems.itemMorb);
 	}
 
 	@Override

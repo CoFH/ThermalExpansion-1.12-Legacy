@@ -43,7 +43,7 @@ import java.util.*;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapelessRecipe;
 
-public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister, IItemColor {
+public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister {
 
 	public static ItemStack setTag(ItemStack container, String entityId) {
 
@@ -210,7 +210,6 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister,
 	}
 
 	/* IItemColor */
-	@Override
 	public int colorMultiplier(ItemStack stack, int tintIndex) {
 
 		EntityList.EntityEggInfo info = null;

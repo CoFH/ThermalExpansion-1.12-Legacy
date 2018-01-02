@@ -36,6 +36,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.lwjgl.opengl.GL11;
 
 @JEIPlugin
@@ -129,7 +130,7 @@ public class JEIPluginTE implements IModPlugin {
 	public static void refresh() {
 
 		// This is done because JEI whines otherwise.
-		Minecraft.getMinecraft().addScheduledTask(EnchanterRecipeCategory::refresh);
+		FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(EnchanterRecipeCategory::refresh);
 	}
 
 	/* HELPERS */

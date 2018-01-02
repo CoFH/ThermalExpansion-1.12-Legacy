@@ -11,6 +11,7 @@ import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.slot.SlotSatchelCreative;
+import cofh.thermalexpansion.gui.slot.SlotSatchelVoid;
 import cofh.thermalexpansion.item.ItemSatchel;
 import com.mojang.authlib.GameProfile;
 import gnu.trove.map.hash.THashMap;
@@ -56,12 +57,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 
 		switch (storageIndex) {
 			case 0:
-				addSlotToContainer(isVoid ? new Slot(containerWrapper, 0, 80, 26) {
-					@Override
-					public void putStack(ItemStack stack) {
-
-					}
-				} : new SlotSatchelCreative(this, containerWrapper, 0, 80, 26));
+				addSlotToContainer(isVoid ? new SlotSatchelVoid(containerWrapper, 0, 80, 26) : new SlotSatchelCreative(this, containerWrapper, 0, 80, 26));
 				rowSize = 1;
 				break;
 			case 1:
