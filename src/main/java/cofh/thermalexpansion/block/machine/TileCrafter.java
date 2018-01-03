@@ -10,7 +10,6 @@ import cofh.thermalexpansion.gui.client.machine.GuiCrafter;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrafter;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -98,21 +97,19 @@ public class TileCrafter extends TileMachineBase {
 		if (energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		//		if (inventory[SLOT_SCHEMATIC].isEmpty() || energyStorage.getEnergyStored() <= 0) {
-		//			return false;
-		//		}
-		//		IRecipe recipe = ItemHelper.getCraftingRecipe(craftMatrix, world);
-		//
-		//		if (recipe == null) {
-		//			return false;
-		//		}
+		if (craftResult.getRecipeUsed() == null) {
+			return false;
+		}
+		// TODO: Check resources.
+		ItemStack output = craftResult.getStackInSlot(0);
 
-		return true;
+		return inventory[SLOT_OUTPUT].isEmpty() || inventory[SLOT_OUTPUT].isItemEqual(output) && inventory[SLOT_OUTPUT].getCount() + output.getCount() <= output.getMaxStackSize();
 	}
 
 	@Override
 	protected boolean hasValidInput() {
 
+		// TODO: Check resources.
 		//		PulverizerRecipe recipe = PulverizerManager.getRecipe(inventory[0]);
 		//		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 		return true;
@@ -128,14 +125,15 @@ public class TileCrafter extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		//		IRecipe recipe = ItemHelper.getCraftingRecipe(craftMatrix, world);
-		//
-		//		if (recipe == null) {
-		//			processOff();
-		//			return;
-		//		}
-		//		ItemStack output = recipe.getCraftingResult(craftMatrix);
-		ItemStack output = new ItemStack(Blocks.MAGMA);
+		IRecipe recipe = craftResult.getRecipeUsed();
+
+		if (recipe == null) {
+			processOff();
+			return;
+		}
+		// TODO: Set crafting matrix and consume resources.
+
+		ItemStack output = recipe.getCraftingResult(craftMatrix);
 
 		if (inventory[SLOT_OUTPUT].isEmpty()) {
 			inventory[SLOT_OUTPUT] = ItemHelper.cloneStack(output);
@@ -150,6 +148,7 @@ public class TileCrafter extends TileMachineBase {
 		if (!enableAutoInput) {
 			return;
 		}
+		// TODO: Allow based on smart filtering - augment?
 		//		int side;
 		//		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 		//			side = i % 6;
@@ -184,6 +183,12 @@ public class TileCrafter extends TileMachineBase {
 	}
 
 	/* GUI METHODS */
+	@Override
+	public int getInvSlotCount() {
+
+		return inventory.length - 9 - 1;
+	}
+
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
@@ -243,10 +248,11 @@ public class TileCrafter extends TileMachineBase {
 		if (recipe != null) {
 			craftResult.setRecipeUsed(recipe);
 			stack = recipe.getCraftingResult(craftMatrix);
-			System.out.println("woohoo!");
 		}
 		craftResult.setInventorySlotContents(0, stack);
 		inventory[SLOT_CRAFTING_START + 9] = craftResult.getStackInSlot(0);
+
+		// TODO: Profile recipe and inventory
 	}
 
 	/* NETWORK METHODS */
@@ -291,6 +297,13 @@ public class TileCrafter extends TileMachineBase {
 		super.handleGuiPacket(payload);
 
 		tank.setFluid(payload.getFluidStack());
+	}
+
+	/* IInventory */
+	@Override
+	public int getSizeInventory() {
+
+		return inventory.length - 9 - 1;
 	}
 
 	/* CAPABILITIES */

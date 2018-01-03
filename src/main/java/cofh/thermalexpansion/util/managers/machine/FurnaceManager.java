@@ -2,6 +2,7 @@ package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.inventory.ComparableItemStackSafe;
 import cofh.core.util.helpers.ItemHelper;
+import cofh.thermalfoundation.block.BlockStorageResource;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
@@ -208,6 +209,7 @@ public class FurnaceManager {
 			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Blocks.HAY_BLOCK), charcoal, 100);
 			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Blocks.CACTUS, 4), charcoal, 50);
 			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Items.COAL), ItemMaterial.fuelCoke, 250);
+			addRecipePyrolysis(DEFAULT_ENERGY * 8, new ItemStack(Blocks.COAL_BLOCK), BlockStorageResource.blockCoke, 2500);
 		}
 
 		/* LOAD RECIPES */

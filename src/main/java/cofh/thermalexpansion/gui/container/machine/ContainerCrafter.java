@@ -2,7 +2,6 @@ package cofh.thermalexpansion.gui.container.machine;
 
 import cofh.core.gui.slot.SlotEnergy;
 import cofh.core.gui.slot.SlotFalseCopy;
-import cofh.core.gui.slot.SlotHidden;
 import cofh.core.gui.slot.SlotRemoveOnly;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.machine.TileCrafter;
@@ -17,10 +16,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class ContainerCrafter extends ContainerTEBase {
 
@@ -28,6 +23,8 @@ public class ContainerCrafter extends ContainerTEBase {
 	InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
 	InventoryCraftResult craftResult = new InventoryCraftResult();
 	EntityPlayer player;
+
+	boolean initialized = false;
 
 	public ContainerCrafter(InventoryPlayer inventory, TileEntity tile) {
 
@@ -48,7 +45,6 @@ public class ContainerCrafter extends ContainerTEBase {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				addSlotToContainer(new SlotFalseCopy(craftMatrix, j + i * 3, 35 + j * 18, 17 + i * 18));
-				addSlotToContainer(new SlotHidden(myTile, TileCrafter.SLOT_CRAFTING_START + j + i * 3, 35 + j * 18, 17 + i * 18));
 			}
 		}
 		addSlotToContainer(new SlotCrafting(player, craftMatrix, craftResult, 0, 98, 53) {
@@ -59,6 +55,21 @@ public class ContainerCrafter extends ContainerTEBase {
 				return false;
 			}
 		});
+
+		if (ServerHelper.isServerWorld(myTile.getWorld())) {
+			for (int i = 0; i < 9; i++) {
+				craftMatrix.setInventorySlotContents(i, myTile.inventory[TileCrafter.SLOT_CRAFTING_START + i]);
+			}
+			ItemStack stack = ItemStack.EMPTY;
+			IRecipe recipe = CraftingManager.findMatchingRecipe(craftMatrix, myTile.getWorld());
+
+			if (recipe != null) {
+				craftResult.setRecipeUsed(recipe);
+				stack = recipe.getCraftingResult(craftMatrix);
+			}
+			craftResult.setInventorySlotContents(0, stack);
+		}
+		initialized = true;
 	}
 
 	@Override
@@ -74,28 +85,11 @@ public class ContainerCrafter extends ContainerTEBase {
 		slotChangedCraftingGrid();
 	}
 
-	@SideOnly (Side.CLIENT)
-	@Override
-	public void setAll(List<ItemStack> stacks) {
-
-		for (int i = 0; i < stacks.size(); ++i) {
-			putStackInSlot(i, stacks.get(i));
-		}
-		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
-			craftMatrix.setInventorySlotContents(i, myTile.inventory[TileCrafter.SLOT_CRAFTING_START + i]);
-		}
-		ItemStack stack = ItemStack.EMPTY;
-		IRecipe recipe = CraftingManager.findMatchingRecipe(craftMatrix, myTile.getWorld());
-
-		if (recipe != null) {
-			craftResult.setRecipeUsed(recipe);
-			stack = recipe.getCraftingResult(craftMatrix);
-		}
-		craftResult.setInventorySlotContents(0, stack);
-	}
-
 	public void slotChangedCraftingGrid() {
 
+		if (!initialized) {
+			return;
+		}
 		World world = myTile.getWorld();
 
 		if (ServerHelper.isServerWorld(world)) {

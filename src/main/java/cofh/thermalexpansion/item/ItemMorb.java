@@ -12,6 +12,7 @@ import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.entity.projectile.EntityMorb;
 import cofh.thermalexpansion.util.BehaviorMorbDispense;
+import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -22,6 +23,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -71,22 +73,18 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-		if (stack.getTagCompound() == null) {
-			if (ItemHelper.getItemDamage(stack) < 2) {
-				tooltip.add(StringHelper.localize("info.thermalexpansion.morb.a.0"));
-			} else {
-				tooltip.add(StringHelper.localize("info.thermalexpansion.morb.a.1"));
-			}
-			tooltip.add(StringHelper.localize("info.thermalexpansion.morb.a.2"));
-		} else {
-			if (ItemHelper.getItemDamage(stack) < 2) {
-				tooltip.add(StringHelper.localize("info.thermalexpansion.morb.b.0"));
-			} else {
-				tooltip.add(StringHelper.localize("info.thermalexpansion.morb.b.1"));
-			}
-		}
+		tooltip.add(StringHelper.localize("info.thermalexpansion.morb.a.0"));
+
 		if (ItemHelper.getItemDamage(stack) > 0) {
-			tooltip.add(StringHelper.localize("info.thermalexpansion.morb.c.0"));
+			tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.morb.a.1"));
+		}
+		if (stack.getTagCompound() == null) {
+			tooltip.add(StringHelper.localize("info.thermalexpansion.morb.b.0"));
+		} else {
+			if (stack.getTagCompound().hasKey(GENERIC)) {
+				tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.morb.b.2"));
+			}
+			tooltip.add(StringHelper.localize("info.thermalexpansion.morb.b.1"));
 		}
 	}
 
@@ -96,8 +94,16 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 		if (isInCreativeTab(tab)) {
 			items.add(new ItemStack(this, 1, 0));
 			items.add(new ItemStack(this, 1, 1));
-			items.add(new ItemStack(this, 1, 2));
 			items.addAll(morbList);
+		}
+	}
+
+	// TODO: Remove eventually.
+	@Override
+	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
+
+		if (stack.getItemDamage() > 1) {
+			stack.setItemDamage(1);
 		}
 	}
 
@@ -122,6 +128,11 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 
 		ItemStack stack = player.getHeldItem(hand);
+
+		// TODO: Remove eventually.
+		if (stack.getItemDamage() > 1) {
+			stack.setItemDamage(1);
+		}
 		NBTTagCompound nbt = new NBTTagCompound();
 		if (stack.hasTagCompound()) {
 			nbt = stack.getTagCompound();
@@ -149,10 +160,12 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 
 	public static void dropMorb(int type, NBTTagCompound nbt, World world, BlockPos pos) {
 
-		ItemStack stack = type == 0 ? morbStandard.copy() : type == 1 ? morbReusable.copy() : morbStasis.copy();
+		ItemStack stack = type == 0 ? morbStandard.copy() : morbReusable.copy();
 
 		if (nbt != null && validMobs.contains(nbt.getString("id"))) {
-			if (type == 2) {
+			if (nbt.hasKey(GENERIC)) {
+				stack = setTag(stack, nbt.getString("id"));
+			} else {
 				nbt.removeTag("Pos");
 				nbt.removeTag("Motion");
 				nbt.removeTag("Rotation");
@@ -170,8 +183,6 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 				nbt.removeTag("Leash");
 
 				stack.setTagCompound(nbt);
-			} else {
-				stack = setTag(stack, nbt.getString("id"));
 			}
 		}
 		CoreUtils.dropItemStackIntoWorldWithVelocity(stack, world, pos);
@@ -236,7 +247,6 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 
 		morbStandard = addItem(0, "standard");
 		morbReusable = addItem(1, "reusable", EnumRarity.UNCOMMON);
-		morbStasis = addItem(2, "stasis", EnumRarity.RARE);
 
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, new BehaviorMorbDispense());
 
@@ -253,9 +263,10 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 		}
 		ItemStack morbStack = ItemHelper.cloneStack(morbStandard, 8);
 
-		addShapelessRecipe(morbStack, "dustWood", "crystalSlag", "slimeball", "enderpearl");
+		addShapelessRecipe(morbStack, Blocks.SOUL_SAND, "crystalSlag", "slimeball", "enderpearl");
 		addShapelessRecipe(morbReusable, morbStandard, "nuggetSignalum", "nuggetSignalum", "nuggetSignalum");
-		addShapelessRecipe(morbStasis, morbReusable, "nuggetEnderium", "nuggetEnderium", "nuggetEnderium");
+
+		addShapelessRecipe(morbStack, Blocks.SOUL_SAND, "crystalSlag", ItemMaterial.globRosin, "enderpearl");
 
 		return true;
 	}
@@ -287,6 +298,5 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 	/* REFERENCES */
 	public static ItemStack morbStandard;
 	public static ItemStack morbReusable;
-	public static ItemStack morbStasis;
 
 }

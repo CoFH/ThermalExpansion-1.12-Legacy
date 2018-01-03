@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.render.entity;
 
+import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.entity.projectile.EntityMorb;
 import cofh.thermalexpansion.init.TEItems;
 import net.minecraft.client.Minecraft;
@@ -35,7 +36,9 @@ public class RenderEntityMorb extends Render<EntityMorb> {
 		GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GlStateManager.rotate(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 
-		ItemStack stack = new ItemStack(TEItems.itemMorb);
+		int type = MathHelper.clamp(morb.getType(), 0, 1);
+
+		ItemStack stack = new ItemStack(TEItems.itemMorb, 1, type);
 		stack.setTagCompound(morb.getEntity());
 		Minecraft.getMinecraft().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
 

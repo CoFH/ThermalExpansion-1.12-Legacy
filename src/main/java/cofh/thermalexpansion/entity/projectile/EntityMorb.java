@@ -29,12 +29,13 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public class EntityMorb extends EntityThrowable {
 
+	private static DataParameter<Byte> TYPE = EntityDataManager.createKey(EntityMorb.class, DataSerializers.BYTE);
 	private static DataParameter<NBTTagCompound> ENTITY_DATA = EntityDataManager.createKey(EntityMorb.class, DataSerializers.COMPOUND_TAG);
 
 	protected static ItemStack blockCheck = new ItemStack(Blocks.STONE);
 
 	protected boolean drop = true;
-	protected byte type;
+	protected byte type = -1;
 	protected NBTTagCompound entityData;
 
 	public static void initialize(int id) {
@@ -54,7 +55,7 @@ public class EntityMorb extends EntityThrowable {
 		this.type = type;
 		this.entityData = entityData;
 
-		if (thrower instanceof EntityPlayer && ((EntityPlayer) thrower).capabilities.isCreativeMode) {
+		if (thrower instanceof EntityPlayer && ((EntityPlayer) thrower).capabilities.isCreativeMode || entityData != null && entityData.getBoolean(ItemMorb.GENERIC)) {
 			drop = false;
 		}
 		setManager();
@@ -66,7 +67,7 @@ public class EntityMorb extends EntityThrowable {
 		this.type = type;
 		this.entityData = entityData;
 
-		if (thrower instanceof EntityPlayer && ((EntityPlayer) thrower).capabilities.isCreativeMode) {
+		if (thrower instanceof EntityPlayer && ((EntityPlayer) thrower).capabilities.isCreativeMode || entityData != null && entityData.getBoolean(ItemMorb.GENERIC)) {
 			drop = false;
 		}
 		setManager();
@@ -74,7 +75,13 @@ public class EntityMorb extends EntityThrowable {
 
 	private void setManager() {
 
+		this.dataManager.set(TYPE, type);
 		this.dataManager.set(ENTITY_DATA, entityData);
+	}
+
+	public int getType() {
+
+		return type;
 	}
 
 	@Override
@@ -86,6 +93,9 @@ public class EntityMorb extends EntityThrowable {
 	@Override
 	public void onEntityUpdate() {
 
+		if (type < 0 && ServerHelper.isClientWorld(world)) {
+			type = dataManager.get(TYPE);
+		}
 		if ((entityData == null || !entityData.hasKey("id")) && ServerHelper.isClientWorld(world)) {
 			entityData = dataManager.get(ENTITY_DATA);
 		}
@@ -156,6 +166,7 @@ public class EntityMorb extends EntityThrowable {
 	@Override
 	protected void entityInit() {
 
+		dataManager.register(TYPE, type);
 		dataManager.register(ENTITY_DATA, new NBTTagCompound());
 	}
 

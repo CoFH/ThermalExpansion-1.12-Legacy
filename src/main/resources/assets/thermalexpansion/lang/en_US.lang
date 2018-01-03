@@ -252,12 +252,11 @@ info.thermalexpansion.level.3=Signalum
 info.thermalexpansion.level.4=Resonant
 info.thermalexpansion.level.creative=Creative
 
-info.thermalexpansion.morb.a.0=Holds the essence of a type of mob.
-info.thermalexpansion.morb.a.1=Holds a specific mob in stasis.
-info.thermalexpansion.morb.a.2=Throw at a mob to capture it.
-info.thermalexpansion.morb.b.0=Throw to spawn a generic mob of the contained type.
+info.thermalexpansion.morb.a.0=Holds a mob in stasis.
+info.thermalexpansion.morb.a.1=This Morb is reusable.
+info.thermalexpansion.morb.b.0=Throw at a mob to capture it.
 info.thermalexpansion.morb.b.1=Throw to release the captured mob.
-info.thermalexpansion.morb.c.0=This Morb is reusable.
+info.thermalexpansion.morb.b.2=This Morb holds a generic mob.
 
 info.thermalexpansion.machine.brewer=Brews potions.
 info.thermalexpansion.machine.centrifuge=Separates items into component parts.
@@ -358,7 +357,6 @@ item.thermalexpansion.florb.magmatic.name=Magmatic Florb
 
 item.thermalexpansion.morb.reusable.name=Reusable Morb
 item.thermalexpansion.morb.standard.name=Morb
-item.thermalexpansion.morb.stasis.name=Stasis Morb
 
 item.thermalexpansion.frame.frameApparatus.name=Apparatus Frame
 item.thermalexpansion.frame.frameCell.name=Energy Cell Frame
