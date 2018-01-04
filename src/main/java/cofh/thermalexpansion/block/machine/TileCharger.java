@@ -928,9 +928,10 @@ public class TileCharger extends TileMachineBase {
 		}
 		inventory[slot] = stack;
 
-		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
-			stack.setCount(getInventoryStackLimit());
-		}
+		//		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
+		//			stack.setCount(getInventoryStackLimit());
+		//		}
+		markChunkDirty();
 	}
 
 	@Override

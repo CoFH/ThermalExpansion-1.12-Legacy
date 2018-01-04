@@ -92,14 +92,6 @@ public class TileCentrifuge extends TileMachineBase {
 	}
 
 	@Override
-	public void update() {
-
-		transferOutputFluid();
-
-		super.update();
-	}
-
-	@Override
 	protected boolean canStart() {
 
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
@@ -199,6 +191,8 @@ public class TileCentrifuge extends TileMachineBase {
 		if (!enableAutoOutput) {
 			return;
 		}
+		transferOutputFluid();
+
 		int side;
 		boolean foundOutput = false;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
@@ -219,7 +213,7 @@ public class TileCentrifuge extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
+		if (tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;

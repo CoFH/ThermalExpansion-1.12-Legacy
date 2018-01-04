@@ -258,9 +258,6 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	public void update() {
 
-		if (extractMode) {
-			transferOutputFluid();
-		}
 		if (hasFluidHandler) {
 			updateHandler();
 		} else {
@@ -440,6 +437,9 @@ public class TileTransposer extends TileMachineBase {
 		if (!enableAutoOutput) {
 			return;
 		}
+		if (extractMode) {
+			transferOutputFluid();
+		}
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
@@ -454,9 +454,6 @@ public class TileTransposer extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
-			return;
-		}
 		if (tank.getFluidAmount() <= 0) {
 			return;
 		}
@@ -688,9 +685,10 @@ public class TileTransposer extends TileMachineBase {
 		}
 		inventory[slot] = stack;
 
-		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
-			stack.setCount(getInventoryStackLimit());
-		}
+		//		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
+		//			stack.setCount(getInventoryStackLimit());
+		//		}
+		markChunkDirty();
 	}
 
 	@Override

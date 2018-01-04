@@ -106,14 +106,6 @@ public class TileRefinery extends TileMachineBase {
 	}
 
 	@Override
-	public void update() {
-
-		transferOutputFluid();
-
-		super.update();
-	}
-
-	@Override
 	public int getLightValue() {
 
 		return isActive ? renderFluid.getFluid().getLuminosity(renderFluid) : 0;
@@ -232,6 +224,8 @@ public class TileRefinery extends TileMachineBase {
 		if (!enableAutoOutput) {
 			return;
 		}
+		transferOutputFluid();
+
 		if (inventory[0].isEmpty()) {
 			return;
 		}
@@ -249,9 +243,6 @@ public class TileRefinery extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
-			return;
-		}
 		if (outputTank.getFluidAmount() <= 0) {
 			return;
 		}

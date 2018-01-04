@@ -76,7 +76,7 @@ public class GuiCrafter extends GuiPoweredBase {
 
 		progress.setQuantity(baseTile.getScaledProgress(PROGRESS));
 
-		if (this.inventorySlots.getSlot(inventorySlots.inventorySlots.size() - 1).getHasStack()) {
+		if (myContainer.validRecipe()) {
 			setRecipe.setActive();
 		} else {
 			setRecipe.setDisabled();
@@ -88,6 +88,8 @@ public class GuiCrafter extends GuiPoweredBase {
 
 		if (buttonName.equalsIgnoreCase("SetRecipe")) {
 			myContainer.setRecipe();
+		} else if (buttonName.equalsIgnoreCase("ClearRecipe")) {
+			myContainer.clearRecipe();
 		}
 	}
 

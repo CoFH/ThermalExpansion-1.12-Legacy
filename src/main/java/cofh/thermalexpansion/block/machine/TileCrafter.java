@@ -14,8 +14,11 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -46,6 +49,8 @@ public class TileCrafter extends TileMachineBase {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 
+		LIGHT_VALUES[TYPE] = 7;
+
 		GameRegistry.registerTileEntity(TileCrafter.class, "thermalexpansion:machine_crafter");
 
 		config();
@@ -68,6 +73,8 @@ public class TileCrafter extends TileMachineBase {
 
 	private InventoryCraftingFalse craftMatrix = new InventoryCraftingFalse(3, 3);
 	private InventoryCraftResult craftResult = new InventoryCraftResult();
+	private Ingredient[] craftIngredients = new Ingredient[9];
+	private int[] craftSlots = new int[9];
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 
@@ -92,6 +99,13 @@ public class TileCrafter extends TileMachineBase {
 	}
 
 	@Override
+	protected int getMaxInputSlot() {
+
+		// This is a hack to prevent super() logic from working.
+		return -1;
+	}
+
+	@Override
 	protected boolean canStart() {
 
 		if (energyStorage.getEnergyStored() <= 0) {
@@ -100,19 +114,12 @@ public class TileCrafter extends TileMachineBase {
 		if (craftResult.getRecipeUsed() == null) {
 			return false;
 		}
-		// TODO: Check resources.
+		if (!checkIngredients()) {
+			return false;
+		}
 		ItemStack output = craftResult.getStackInSlot(0);
 
 		return inventory[SLOT_OUTPUT].isEmpty() || inventory[SLOT_OUTPUT].isItemEqual(output) && inventory[SLOT_OUTPUT].getCount() + output.getCount() <= output.getMaxStackSize();
-	}
-
-	@Override
-	protected boolean hasValidInput() {
-
-		// TODO: Check resources.
-		//		PulverizerRecipe recipe = PulverizerManager.getRecipe(inventory[0]);
-		//		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
-		return true;
 	}
 
 	@Override
@@ -127,38 +134,44 @@ public class TileCrafter extends TileMachineBase {
 
 		IRecipe recipe = craftResult.getRecipeUsed();
 
-		if (recipe == null) {
+		if (recipe == null || !checkIngredients()) {
 			processOff();
 			return;
 		}
-		// TODO: Set crafting matrix and consume resources.
+		craftMatrix = new InventoryCraftingFalse(3, 3);
 
+		for (int i = 0; i < 9; i++) {
+			if (craftSlots[i] > 0) {
+				craftMatrix.setInventorySlotContents(i, ItemHelper.cloneStack(inventory[craftSlots[i] - 1], 1));
+				inventory[craftSlots[i] - 1].shrink(1);
+				if (inventory[craftSlots[i] - 1].getCount() <= 0) {
+					inventory[craftSlots[i] - 1] = ItemStack.EMPTY;
+				}
+				System.out.println(i);
+			} else {
+				craftMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
+			}
+		}
 		ItemStack output = recipe.getCraftingResult(craftMatrix);
+		NonNullList<ItemStack> remainingItems = recipe.getRemainingItems(craftMatrix);
 
+		for (ItemStack remaining : remainingItems) {
+			if (!remaining.isEmpty()) {
+				for (int i = 0; i < SLOT_OUTPUT; i++) {
+					if (inventory[i].isEmpty()) {
+						inventory[i] = remaining;
+						break;
+					} else if (remaining.getMaxStackSize() > 1 && ItemHelper.itemsIdentical(inventory[i], remaining) && inventory[i].getCount() < inventory[i].getMaxStackSize()) {
+						inventory[i].grow(1);
+					}
+				}
+			}
+		}
 		if (inventory[SLOT_OUTPUT].isEmpty()) {
 			inventory[SLOT_OUTPUT] = ItemHelper.cloneStack(output);
 		} else {
 			inventory[SLOT_OUTPUT].grow(output.getCount());
 		}
-	}
-
-	@Override
-	protected void transferInput() {
-
-		if (!enableAutoInput) {
-			return;
-		}
-		// TODO: Allow based on smart filtering - augment?
-		//		int side;
-		//		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
-		//			side = i % 6;
-		//			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
-		//				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
-		//					inputTracker = side;
-		//					break;
-		//				}
-		//			}
-		//		}
 	}
 
 	@Override
@@ -180,6 +193,36 @@ public class TileCrafter extends TileMachineBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void setLevelFlags() {
+
+		super.setLevelFlags();
+
+		hasAutoInput = false;
+		enableAutoInput = false;
+	}
+
+	private boolean checkIngredients() {
+
+		craftSlots = new int[9];
+		int[] craftCount = new int[18];
+		scan:
+		for (int i = 0; i < 9; i++) {
+			if (craftIngredients[i].equals(Ingredient.EMPTY)) {
+				continue;
+			}
+			for (int j = 0; j < SLOT_OUTPUT; j++) {
+				if (craftIngredients[i].apply(inventory[j]) && inventory[j].getCount() - craftCount[j] >= 0) {
+					craftCount[j]++;
+					craftSlots[i] = j + 1;
+					continue scan;
+				}
+			}
+			return false;
+		}
+		return true;
 	}
 
 	/* GUI METHODS */
@@ -246,13 +289,61 @@ public class TileCrafter extends TileMachineBase {
 		IRecipe recipe = CraftingManager.findMatchingRecipe(craftMatrix, world);
 
 		if (recipe != null) {
+			IRecipe curRecipe = craftResult.getRecipeUsed();
 			craftResult.setRecipeUsed(recipe);
 			stack = recipe.getCraftingResult(craftMatrix);
+
+			NonNullList<Ingredient> ingredients = recipe.getIngredients();
+			craftIngredients = new Ingredient[9];
+
+			if (recipe instanceof IShapedRecipe) {
+				int j = 0;
+				for (int i = 0; i < 9; i++) {
+					if (inventory[SLOT_CRAFTING_START + i].isEmpty()) {
+						craftIngredients[i] = Ingredient.EMPTY;
+						if (ingredients.get(j).equals(Ingredient.EMPTY)) {
+							j++;
+						}
+					} else {
+						craftIngredients[i] = ingredients.get(j);
+						j++;
+					}
+				}
+			} else if (ingredients.size() > 0) {
+				ItemStack[] sortedRecipe = new ItemStack[9];
+				for (int i = 0; i < ingredients.size(); i++) {
+					for (int j = SLOT_CRAFTING_START; j < SLOT_CRAFTING_START + 9; j++) {
+						if (ingredients.get(i).apply(inventory[j])) {
+							craftIngredients[i] = ingredients.get(i);
+							sortedRecipe[i] = inventory[j].copy();
+						}
+					}
+				}
+				for (int i = ingredients.size(); i < 9; i++) {
+					craftIngredients[i] = Ingredient.EMPTY;
+					sortedRecipe[i] = ItemStack.EMPTY;
+				}
+				System.arraycopy(sortedRecipe, 0, inventory, 20, 9);
+			} else {
+				for (int i = 0; i < 9; i++) {
+					inventory[i + SLOT_CRAFTING_START] = ItemStack.EMPTY;
+					craftMatrix.setInventorySlotContents(i, inventory[i + SLOT_CRAFTING_START]);
+				}
+				recipe = null;
+				stack = ItemStack.EMPTY;
+			}
+			if (recipe == null || !recipe.equals(curRecipe)) {
+				processOff();
+			}
+		} else {
+			if (isActive) {
+				processOff();
+			}
+			craftIngredients = new Ingredient[9];
 		}
+		craftResult.setRecipeUsed(recipe);
 		craftResult.setInventorySlotContents(0, stack);
 		inventory[SLOT_CRAFTING_START + 9] = craftResult.getStackInSlot(0);
-
-		// TODO: Profile recipe and inventory
 	}
 
 	/* NETWORK METHODS */

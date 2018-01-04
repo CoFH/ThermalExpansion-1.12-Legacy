@@ -103,14 +103,6 @@ public class TileCrucible extends TileMachineBase {
 	}
 
 	@Override
-	public void update() {
-
-		transferOutputFluid();
-
-		super.update();
-	}
-
-	@Override
 	public int getLightValue() {
 
 		return isActive ? renderFluid.getFluid().getLuminosity(renderFluid) : 0;
@@ -207,11 +199,17 @@ public class TileCrucible extends TileMachineBase {
 		}
 	}
 
-	private void transferOutputFluid() {
+	@Override
+	protected void transferOutput() {
 
 		if (!enableAutoOutput) {
 			return;
 		}
+		transferOutputFluid();
+	}
+
+	private void transferOutputFluid() {
+
 		if (tank.getFluidAmount() <= 0) {
 			return;
 		}

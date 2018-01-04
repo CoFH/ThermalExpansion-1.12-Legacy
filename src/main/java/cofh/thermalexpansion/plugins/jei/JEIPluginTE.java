@@ -16,6 +16,7 @@ import cofh.thermalexpansion.plugins.jei.machine.brewer.BrewerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.centrifuge.CentrifugeRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.compactor.CompactorRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.machine.crafter.CrafterRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.crucible.CrucibleRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.enchanter.EnchanterRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.extruder.ExtruderRecipeCategory;
@@ -70,6 +71,7 @@ public class JEIPluginTE implements IModPlugin {
 		TransposerRecipeCategory.register(registry);
 		ChargerRecipeCategory.register(registry);
 		CentrifugeRecipeCategory.register(registry);
+		CrafterRecipeCategory.register(registry);
 		BrewerRecipeCategory.register(registry);
 		EnchanterRecipeCategory.register(registry);
 		PrecipitatorRecipeCategory.register(registry);
@@ -102,6 +104,7 @@ public class JEIPluginTE implements IModPlugin {
 		TransposerRecipeCategory.initialize(registry);
 		ChargerRecipeCategory.initialize(registry);
 		CentrifugeRecipeCategory.initialize(registry);
+		CrafterRecipeCategory.initialize(registry);
 		BrewerRecipeCategory.initialize(registry);
 		EnchanterRecipeCategory.initialize(registry);
 		PrecipitatorRecipeCategory.initialize(registry);

@@ -105,15 +105,6 @@ public class TileFurnace extends TileMachineBase {
 	}
 
 	@Override
-	public void update() {
-
-		if (augmentPyrolysis) {
-			transferOutputFluid();
-		}
-		super.update();
-	}
-
-	@Override
 	protected int calcEnergy() {
 
 		if (augmentPyrolysis) {
@@ -220,6 +211,9 @@ public class TileFurnace extends TileMachineBase {
 		if (!enableAutoOutput) {
 			return;
 		}
+		if (augmentPyrolysis) {
+			transferOutputFluid();
+		}
 		if (inventory[1].isEmpty()) {
 			return;
 		}
@@ -237,9 +231,6 @@ public class TileFurnace extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
-			return;
-		}
 		if (tank.getFluidAmount() <= 0) {
 			return;
 		}

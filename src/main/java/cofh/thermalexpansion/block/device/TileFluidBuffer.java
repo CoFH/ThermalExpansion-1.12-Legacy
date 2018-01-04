@@ -44,6 +44,8 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
 
+		LIGHT_VALUES[TYPE] = 5;
+
 		GameRegistry.registerTileEntity(TileFluidBuffer.class, "thermalexpansion:device_fluid_buffer");
 
 		config();

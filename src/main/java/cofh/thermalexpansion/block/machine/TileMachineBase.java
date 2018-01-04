@@ -472,9 +472,9 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	@Override
 	public void markDirty() {
 
-		if (isActive && !hasValidInput()) {
-			processOff();
-		}
+		//		if (isActive && !hasValidInput()) {
+		//			processOff();
+		//		}
 		super.markDirty();
 	}
 

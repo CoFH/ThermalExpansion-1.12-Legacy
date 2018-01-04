@@ -92,14 +92,6 @@ public class TileBrewer extends TileMachineBase {
 	}
 
 	@Override
-	public void update() {
-
-		transferOutputFluid();
-
-		super.update();
-	}
-
-	@Override
 	protected boolean canStart() {
 
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
@@ -186,6 +178,15 @@ public class TileBrewer extends TileMachineBase {
 		}
 	}
 
+	@Override
+	protected void transferOutput() {
+
+		if (!enableAutoOutput) {
+			return;
+		}
+		transferOutputFluid();
+	}
+
 	private void transferInputFluid() {
 
 		if (!enableAutoInput) {
@@ -213,9 +214,6 @@ public class TileBrewer extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
-			return;
-		}
 		if (outputTank.getFluidAmount() <= 0) {
 			return;
 		}

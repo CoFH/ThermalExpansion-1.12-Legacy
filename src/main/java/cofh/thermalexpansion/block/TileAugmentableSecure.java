@@ -59,8 +59,8 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	public boolean enableAutoInput = false;
 	public boolean enableAutoOutput = false;
 
-	protected static final int FLUID_TRANSFER[] = new int[] { 100, 300, 600, 1000, 1500 };
-	protected static final int ITEM_TRANSFER[] = new int[] { 8, 16, 28, 44, 64 };
+	protected static final int FLUID_TRANSFER[] = new int[] { 1000, 1000, 3000, 6000, 10000 };
+	protected static final int ITEM_TRANSFER[] = new int[] { 16, 16, 28, 44, 64 };
 
 	public boolean isAugmentable() {
 

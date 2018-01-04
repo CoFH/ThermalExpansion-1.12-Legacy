@@ -104,15 +104,6 @@ public class TileSawmill extends TileMachineBase {
 	}
 
 	@Override
-	public void update() {
-
-		if (augmentTapper) {
-			transferOutputFluid();
-		}
-		super.update();
-	}
-
-	@Override
 	protected boolean canStart() {
 
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
@@ -235,6 +226,9 @@ public class TileSawmill extends TileMachineBase {
 		if (!enableAutoOutput) {
 			return;
 		}
+		if (augmentTapper) {
+			transferOutputFluid();
+		}
 		int side;
 		if (!inventory[1].isEmpty()) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
@@ -263,9 +257,6 @@ public class TileSawmill extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
-			return;
-		}
 		if (tank.getFluidAmount() <= 0) {
 			return;
 		}

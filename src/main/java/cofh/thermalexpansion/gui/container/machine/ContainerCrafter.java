@@ -16,12 +16,16 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class ContainerCrafter extends ContainerTEBase {
 
 	TileCrafter myTile;
-	InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
-	InventoryCraftResult craftResult = new InventoryCraftResult();
+	public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
+	public InventoryCraftResult craftResult = new InventoryCraftResult();
 	EntityPlayer player;
 
 	boolean initialized = false;
@@ -85,6 +89,16 @@ public class ContainerCrafter extends ContainerTEBase {
 		slotChangedCraftingGrid();
 	}
 
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void setAll(List<ItemStack> stacks) {
+
+		for (int i = 0; i < stacks.size(); ++i) {
+			putStackInSlot(i, stacks.get(i));
+		}
+		calcCraftingGridClient();
+	}
+
 	public void slotChangedCraftingGrid() {
 
 		if (!initialized) {
@@ -109,10 +123,36 @@ public class ContainerCrafter extends ContainerTEBase {
 	public void setRecipe() {
 
 		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
-			myTile.inventory[TileCrafter.SLOT_CRAFTING_START + i] = craftMatrix.getStackInSlot(i).copy();
 			myTile.setInventorySlotContents(TileCrafter.SLOT_CRAFTING_START + i, craftMatrix.getStackInSlot(i));
 		}
 		myTile.sendModePacket();
+	}
+
+	public void clearRecipe() {
+
+		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
+			craftMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
+			myTile.setInventorySlotContents(TileCrafter.SLOT_CRAFTING_START + i, ItemStack.EMPTY);
+		}
+		myTile.sendModePacket();
+	}
+
+	public boolean validRecipe() {
+
+		return !craftResult.getStackInSlot(0).isEmpty() && craftResult.getRecipeUsed() != null && craftResult.getRecipeUsed().getIngredients().size() > 0;
+	}
+
+	public void calcCraftingGridClient() {
+
+		ItemStack stack = ItemStack.EMPTY;
+		IRecipe recipe = CraftingManager.findMatchingRecipe(craftMatrix, myTile.getWorld());
+
+		if (recipe != null) {
+			craftResult.setRecipeUsed(recipe);
+			stack = recipe.getCraftingResult(craftMatrix);
+		}
+		craftResult.setInventorySlotContents(0, stack);
+
 	}
 
 }
