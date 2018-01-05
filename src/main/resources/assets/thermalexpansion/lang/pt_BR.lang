@@ -211,8 +211,8 @@ info.thermalexpansion.apparatus.collector=Procura itens em uma área.
 
 info.thermalexpansion.capacitor.a.0=Armazena Redstone Flux. Carregando Itens Segurados
 info.thermalexpansion.capacitor.b.0=§ePressione (%s) para alterar o modo.§r
-info.thermalexpansion.capacitor.c.0=§eShift+clique para desativar.§r
-info.thermalexpansion.capacitor.c.1=§bShift+clique para ativar.§r
+info.thermalexpansion.capacitor.c.0=§bShift+clique para ativar.§r
+info.thermalexpansion.capacitor.c.1=§eShift+clique para desativar.§r
 info.thermalexpansion.capacitor.d.0=Carregando itens segurados
 info.thermalexpansion.capacitor.d.1=Carregando itens equipados
 info.thermalexpansion.capacitor.d.2=Carregando Equipamentos
