@@ -18,12 +18,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
-	protected List<ItemStack> inputs;
+	protected List<List<ItemStack>> inputs;
 	protected List<ItemStack> outputs;
 	protected List<FluidStack> outputFluids;
 
@@ -53,7 +54,7 @@ public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 		List<FluidStack> recipeFluids = new ArrayList<>();
 		recipeFluids.add(recipe.getFluid());
 
-		inputs = recipeInputs;
+		inputs = Collections.singletonList(recipeInputs);
 		outputs = recipeOutputs;
 		outputFluids = recipeFluids;
 
@@ -72,7 +73,7 @@ public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 
-		ingredients.setInputs(ItemStack.class, inputs);
+		ingredients.setInputLists(ItemStack.class, inputs);
 		ingredients.setOutputs(ItemStack.class, outputs);
 		ingredients.setOutputs(FluidStack.class, outputFluids);
 	}

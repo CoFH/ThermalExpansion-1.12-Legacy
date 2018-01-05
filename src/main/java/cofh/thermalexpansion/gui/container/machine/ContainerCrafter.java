@@ -5,6 +5,7 @@ import cofh.core.gui.slot.SlotFalseCopy;
 import cofh.core.gui.slot.SlotRemoveOnly;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.machine.TileCrafter;
+import cofh.thermalexpansion.block.machine.TileCrafter.CrafterRecipe;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -29,6 +30,7 @@ public class ContainerCrafter extends ContainerTEBase {
 	EntityPlayer player;
 
 	boolean initialized = false;
+	boolean changedRecipe = false;
 
 	public ContainerCrafter(InventoryPlayer inventory, TileEntity tile) {
 
@@ -51,7 +53,7 @@ public class ContainerCrafter extends ContainerTEBase {
 				addSlotToContainer(new SlotFalseCopy(craftMatrix, j + i * 3, 35 + j * 18, 17 + i * 18));
 			}
 		}
-		addSlotToContainer(new SlotCrafting(player, craftMatrix, craftResult, 0, 98, 53) {
+		addSlotToContainer(new SlotCrafting(player, craftMatrix, craftResult, 0, 125, 48) {
 
 			@Override
 			public boolean canTakeStack(EntityPlayer player) {
@@ -97,6 +99,7 @@ public class ContainerCrafter extends ContainerTEBase {
 			putStackInSlot(i, stacks.get(i));
 		}
 		calcCraftingGridClient();
+		changedRecipe = false;
 	}
 
 	public void slotChangedCraftingGrid() {
@@ -111,13 +114,16 @@ public class ContainerCrafter extends ContainerTEBase {
 			ItemStack stack = ItemStack.EMPTY;
 			IRecipe recipe = CraftingManager.findMatchingRecipe(craftMatrix, world);
 
-			if (recipe != null) {
+			if (recipe != null && CrafterRecipe.validRecipe(recipe)) {
 				craftResult.setRecipeUsed(recipe);
 				stack = recipe.getCraftingResult(craftMatrix);
 			}
 			craftResult.setInventorySlotContents(0, stack);
 			playerMP.connection.sendPacket(new SPacketSetSlot(this.windowId, inventorySlots.size() - 1, stack));
+		} else {
+			calcCraftingGridClient();
 		}
+		changedRecipe = true;
 	}
 
 	public void setRecipe() {
@@ -126,20 +132,7 @@ public class ContainerCrafter extends ContainerTEBase {
 			myTile.setInventorySlotContents(TileCrafter.SLOT_CRAFTING_START + i, craftMatrix.getStackInSlot(i));
 		}
 		myTile.sendModePacket();
-	}
-
-	public void clearRecipe() {
-
-		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
-			craftMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
-			myTile.setInventorySlotContents(TileCrafter.SLOT_CRAFTING_START + i, ItemStack.EMPTY);
-		}
-		myTile.sendModePacket();
-	}
-
-	public boolean validRecipe() {
-
-		return !craftResult.getStackInSlot(0).isEmpty() && craftResult.getRecipeUsed() != null && craftResult.getRecipeUsed().getIngredients().size() > 0;
+		changedRecipe = false;
 	}
 
 	public void calcCraftingGridClient() {
@@ -147,12 +140,11 @@ public class ContainerCrafter extends ContainerTEBase {
 		ItemStack stack = ItemStack.EMPTY;
 		IRecipe recipe = CraftingManager.findMatchingRecipe(craftMatrix, myTile.getWorld());
 
-		if (recipe != null) {
+		if (recipe != null && CrafterRecipe.validRecipe(recipe)) {
 			craftResult.setRecipeUsed(recipe);
 			stack = recipe.getCraftingResult(craftMatrix);
 		}
 		craftResult.setInventorySlotContents(0, stack);
-
 	}
 
 }

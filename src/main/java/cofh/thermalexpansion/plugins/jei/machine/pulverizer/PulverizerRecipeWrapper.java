@@ -28,7 +28,7 @@ import java.util.List;
 public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
-	protected List<ItemStack> inputs;
+	protected List<List<ItemStack>> inputs;
 	protected List<FluidStack> inputFluids;
 	protected List<ItemStack> outputs;
 
@@ -74,7 +74,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 		if (recipe.getSecondaryOutput() != null) {
 			recipeOutputs.add(recipe.getSecondaryOutput());
 		}
-		inputs = recipeInputs;
+		inputs = Collections.singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		chance = recipe.getSecondaryOutputChance();
@@ -93,7 +93,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 
-		ingredients.setInputs(ItemStack.class, inputs);
+		ingredients.setInputLists(ItemStack.class, inputs);
 		ingredients.setInputs(FluidStack.class, inputFluids);
 		ingredients.setOutputs(ItemStack.class, outputs);
 	}

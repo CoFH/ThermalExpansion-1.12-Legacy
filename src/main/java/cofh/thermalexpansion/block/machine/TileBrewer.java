@@ -94,7 +94,7 @@ public class TileBrewer extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
+		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0 || outputTank.getSpace() <= 0) {
 			return false;
 		}
 		BrewerRecipe recipe = BrewerManager.getRecipe(inventory[0], inputTank.getFluid());
@@ -393,43 +393,35 @@ public class TileBrewer extends TileMachineBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return 0;
+					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						if (!BrewerManager.isFluidValid(resource)) {
+							return 0;
+						}
+						return inputTank.fill(resource, doFill);
 					}
-					if (!BrewerManager.isFluidValid(resource)) {
-						return 0;
-					}
-					return inputTank.fill(resource, doFill);
+					return 0;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (!isActive) {
-						if (from != null && allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-							return inputTank.drain(resource, doDrain);
-						}
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						FluidStack ret = outputTank.drain(resource, doDrain);
+						return ret != null ? ret : isActive ? null : inputTank.drain(resource, doDrain);
 					}
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
-					return outputTank.drain(resource, doDrain);
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (!isActive) {
-						if (from != null && allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-							return inputTank.drain(maxDrain, doDrain);
-						}
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						FluidStack ret = outputTank.drain(maxDrain, doDrain);
+						return ret != null ? ret : isActive ? null : inputTank.drain(maxDrain, doDrain);
 					}
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
-					return outputTank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}

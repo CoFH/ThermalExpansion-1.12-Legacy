@@ -65,6 +65,8 @@ public class TEProps {
 		boolean itemTabCommon = false;
 		boolean florbTabCommon = false;
 		boolean morbTabCommon = false;
+		boolean slotOverlayAlt = false;
+		boolean slotOverlayCB = false;
 
 		comment = "If TRUE, Thermal Expansion Items and Tools appear under the general \"Thermal Expansion\" Creative Tab.";
 		itemTabCommon = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ItemsInCommonTab", category, itemTabCommon, comment);
@@ -86,10 +88,35 @@ public class TEProps {
 		comment = "If TRUE, Creative version of Blocks will show in the Creative Tab.";
 		creativeTabShowCreative = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ShowCreativeBlocks", category, creativeTabShowCreative, comment);
 
+		category = "Interface.GUI";
+
+		comment = "If TRUE, alternate slot overlay textures will be used in GUIs which use them. Can be combined with Color Blind textures.";
+		slotOverlayAlt = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("AlternateSlotOverlayTextures", category, morbTabCommon, comment);
+
+		comment = "If TRUE, color blind slot overlay textures will be used in GUIs which use them. Can be combined with Alternate textures.";
+		slotOverlayCB = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ColorBlindSlotOverlayTextures", category, morbTabCommon, comment);
+
 		category = "Sounds";
 
 		comment = "If TRUE, various Thermal Expansion Blocks will play ambient sounds when active.";
 		enableSounds = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("EnableSounds", category, enableSounds, comment);
+
+		/* SLOT OVERLAYS */
+		if (slotOverlayAlt) {
+			if (slotOverlayCB) {
+				textureGuiCommon = PATH_SLOTS_ALT_CB;
+				textureGuiSlots4 = PATH_SLOTS_4_ALT_CB;
+				textureGuiSlotsCrafter = PATH_SLOTS_ALT_CB;
+			} else {
+				textureGuiCommon = PATH_SLOTS_ALT;
+				textureGuiSlots4 = PATH_SLOTS_4_ALT;
+				textureGuiSlotsCrafter = PATH_SLOTS_ALT;
+			}
+		} else if (slotOverlayCB) {
+			textureGuiCommon = PATH_SLOTS_CB;
+			textureGuiSlots4 = PATH_SLOTS_4_CB;
+			textureGuiSlotsCrafter = PATH_SLOTS_CB;
+		}
 
 		/* CREATIVE TABS */
 		ThermalExpansion.tabCommon = new CreativeTabCore("thermalexpansion") {
@@ -200,12 +227,18 @@ public class TEProps {
 	public static final ResourceLocation PATH_SLOTS = new ResourceLocation(PATH_ELEMENTS + "slots.png");
 	public static final ResourceLocation PATH_SLOTS_4 = new ResourceLocation(PATH_ELEMENTS + "slots_4.png");
 
-	public static final String TEXTURE_DEFAULT = "config_";
+	public static final ResourceLocation PATH_SLOTS_CB = new ResourceLocation(PATH_ELEMENTS + "slots_cb.png");
+	public static final ResourceLocation PATH_SLOTS_4_CB = new ResourceLocation(PATH_ELEMENTS + "slots_4_cb.png");
+
+	public static final ResourceLocation PATH_SLOTS_ALT = new ResourceLocation(PATH_ELEMENTS + "slots_alt.png");
+	public static final ResourceLocation PATH_SLOTS_4_ALT = new ResourceLocation(PATH_ELEMENTS + "slots_4_alt.png");
+
+	public static final ResourceLocation PATH_SLOTS_ALT_CB = new ResourceLocation(PATH_ELEMENTS + "slots_alt_cb.png");
+	public static final ResourceLocation PATH_SLOTS_4_ALT_CB = new ResourceLocation(PATH_ELEMENTS + "slots_4_alt_cb.png");
 
 	public static ResourceLocation textureGuiCommon = PATH_SLOTS;
 	public static ResourceLocation textureGuiSlots4 = PATH_SLOTS_4;
 	public static ResourceLocation textureGuiSlotsCrafter = PATH_SLOTS;
-	public static String textureSelection = TEXTURE_DEFAULT;
 
 	/* BLOCKSTATE PROPERTIES */
 	public static final UnlistedGenericTile<TileApparatusBase> TILE_APPARATUS = new UnlistedGenericTile<>("tile_apparatus", TileApparatusBase.class);

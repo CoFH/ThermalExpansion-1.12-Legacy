@@ -26,7 +26,7 @@ import java.util.List;
 public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
-	protected List<ItemStack> inputs;
+	protected List<List<ItemStack>> inputs;
 	protected List<FluidStack> inputFluids;
 	protected List<ItemStack> outputs;
 	protected List<FluidStack> outputFluids;
@@ -64,7 +64,7 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 		List<FluidStack> recipeFluids = new ArrayList<>();
 		recipeFluids.add(recipe.getFluid());
 
-		inputs = recipeInputs;
+		inputs = Collections.singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
@@ -104,7 +104,7 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 
-		ingredients.setInputs(ItemStack.class, inputs);
+		ingredients.setInputLists(ItemStack.class, inputs);
 		ingredients.setOutputs(ItemStack.class, outputs);
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {

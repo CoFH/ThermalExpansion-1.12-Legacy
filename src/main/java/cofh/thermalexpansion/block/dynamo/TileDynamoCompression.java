@@ -311,16 +311,15 @@ public class TileDynamoCompression extends TileDynamoBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
-						return 0;
-					}
-					if (CompressionManager.isValidFuel(resource)) {
-						return fuelTank.fill(resource, doFill);
-					}
-					if (augmentBoiler && resource.getFluid() == FluidRegistry.WATER) {
-						return coolantTank.fill(resource, doFill);
-					} else if (CoolantManager.isValidCoolant(resource)) {
-						return coolantTank.fill(resource, doFill);
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						if (CompressionManager.isValidFuel(resource)) {
+							return fuelTank.fill(resource, doFill);
+						}
+						if (augmentBoiler && resource.getFluid() == FluidRegistry.WATER) {
+							return coolantTank.fill(resource, doFill);
+						} else if (CoolantManager.isValidCoolant(resource)) {
+							return coolantTank.fill(resource, doFill);
+						}
 					}
 					return 0;
 				}
@@ -329,14 +328,13 @@ public class TileDynamoCompression extends TileDynamoBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
-						return null;
-					}
-					if (resource.equals(fuelTank.getFluid())) {
-						return fuelTank.drain(resource.amount, doDrain);
-					}
-					if (resource.equals(coolantTank.getFluid())) {
-						return coolantTank.drain(resource.amount, doDrain);
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						if (resource.equals(fuelTank.getFluid())) {
+							return fuelTank.drain(resource.amount, doDrain);
+						}
+						if (resource.equals(coolantTank.getFluid())) {
+							return coolantTank.drain(resource.amount, doDrain);
+						}
 					}
 					return null;
 				}
@@ -345,13 +343,11 @@ public class TileDynamoCompression extends TileDynamoBase {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (!augmentCoilDuct && from.ordinal() == facing) {
-						return null;
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						FluidStack ret = fuelTank.drain(maxDrain, doDrain);
+						return ret != null ? ret : coolantTank.drain(maxDrain, doDrain);
 					}
-					if (fuelTank.getFluidAmount() <= 0) {
-						return coolantTank.drain(maxDrain, doDrain);
-					}
-					return fuelTank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}

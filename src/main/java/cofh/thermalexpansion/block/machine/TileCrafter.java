@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.RecipeTippedArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -61,7 +62,7 @@ public class TileCrafter extends TileMachineBase {
 		String category = "Machine.Crafter";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		String comment = "Adjust this value to change the Energy consumption (in RF/t) for a Cyclic Assembler. This base value will scale with block level and Augments.";
+		String comment = "Adjust this value to change the Energy consumption (in RF/t) for a Sequential Fabricator. This base value will scale with block level and Augments.";
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
 
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
@@ -73,10 +74,11 @@ public class TileCrafter extends TileMachineBase {
 
 	private InventoryCraftingFalse craftMatrix = new InventoryCraftingFalse(3, 3);
 	private InventoryCraftResult craftResult = new InventoryCraftResult();
-	private Ingredient[] craftIngredients = new Ingredient[9];
-	private int[] craftSlots = new int[9];
+	private CrafterRecipe craftRecipe;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
+
+	protected boolean validRecipe;
 
 	public TileCrafter() {
 
@@ -138,20 +140,8 @@ public class TileCrafter extends TileMachineBase {
 			processOff();
 			return;
 		}
-		craftMatrix = new InventoryCraftingFalse(3, 3);
+		craftRecipe.evaluate();
 
-		for (int i = 0; i < 9; i++) {
-			if (craftSlots[i] > 0) {
-				craftMatrix.setInventorySlotContents(i, ItemHelper.cloneStack(inventory[craftSlots[i] - 1], 1));
-				inventory[craftSlots[i] - 1].shrink(1);
-				if (inventory[craftSlots[i] - 1].getCount() <= 0) {
-					inventory[craftSlots[i] - 1] = ItemStack.EMPTY;
-				}
-				System.out.println(i);
-			} else {
-				craftMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
-			}
-		}
 		ItemStack output = recipe.getCraftingResult(craftMatrix);
 		NonNullList<ItemStack> remainingItems = recipe.getRemainingItems(craftMatrix);
 
@@ -206,23 +196,7 @@ public class TileCrafter extends TileMachineBase {
 
 	private boolean checkIngredients() {
 
-		craftSlots = new int[9];
-		int[] craftCount = new int[18];
-		scan:
-		for (int i = 0; i < 9; i++) {
-			if (craftIngredients[i].equals(Ingredient.EMPTY)) {
-				continue;
-			}
-			for (int j = 0; j < SLOT_OUTPUT; j++) {
-				if (craftIngredients[i].apply(inventory[j]) && inventory[j].getCount() - craftCount[j] >= 0) {
-					craftCount[j]++;
-					craftSlots[i] = j + 1;
-					continue scan;
-				}
-			}
-			return false;
-		}
-		return true;
+		return craftRecipe != null && craftRecipe.checkIngredients();
 	}
 
 	/* GUI METHODS */
@@ -256,6 +230,11 @@ public class TileCrafter extends TileMachineBase {
 		return tank.getFluid();
 	}
 
+	public boolean hasRecipe() {
+
+		return validRecipe;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -280,70 +259,38 @@ public class TileCrafter extends TileMachineBase {
 		return nbt;
 	}
 
-	private void setRecipe() {
+	public void setRecipe() {
 
 		for (int i = 0; i < 9; i++) {
 			craftMatrix.setInventorySlotContents(i, inventory[i + SLOT_CRAFTING_START]);
 		}
+		IRecipe curRecipe = craftResult.getRecipeUsed();
+		IRecipe newRecipe = CraftingManager.findMatchingRecipe(craftMatrix, world);
+
+		if (curRecipe != null && curRecipe.equals(newRecipe)) {
+			return;
+		}
 		ItemStack stack = ItemStack.EMPTY;
-		IRecipe recipe = CraftingManager.findMatchingRecipe(craftMatrix, world);
 
-		if (recipe != null) {
-			IRecipe curRecipe = craftResult.getRecipeUsed();
-			craftResult.setRecipeUsed(recipe);
-			stack = recipe.getCraftingResult(craftMatrix);
+		if (newRecipe != null) {
+			stack = newRecipe.getCraftingResult(craftMatrix);
+			craftRecipe = CrafterRecipe.getRecipe(newRecipe, this);
 
-			NonNullList<Ingredient> ingredients = recipe.getIngredients();
-			craftIngredients = new Ingredient[9];
-
-			if (recipe instanceof IShapedRecipe) {
-				int j = 0;
-				for (int i = 0; i < 9; i++) {
-					if (inventory[SLOT_CRAFTING_START + i].isEmpty()) {
-						craftIngredients[i] = Ingredient.EMPTY;
-						if (ingredients.get(j).equals(Ingredient.EMPTY)) {
-							j++;
-						}
-					} else {
-						craftIngredients[i] = ingredients.get(j);
-						j++;
-					}
-				}
-			} else if (ingredients.size() > 0) {
-				ItemStack[] sortedRecipe = new ItemStack[9];
-				for (int i = 0; i < ingredients.size(); i++) {
-					for (int j = SLOT_CRAFTING_START; j < SLOT_CRAFTING_START + 9; j++) {
-						if (ingredients.get(i).apply(inventory[j])) {
-							craftIngredients[i] = ingredients.get(i);
-							sortedRecipe[i] = inventory[j].copy();
-						}
-					}
-				}
-				for (int i = ingredients.size(); i < 9; i++) {
-					craftIngredients[i] = Ingredient.EMPTY;
-					sortedRecipe[i] = ItemStack.EMPTY;
-				}
-				System.arraycopy(sortedRecipe, 0, inventory, 20, 9);
-			} else {
-				for (int i = 0; i < 9; i++) {
-					inventory[i + SLOT_CRAFTING_START] = ItemStack.EMPTY;
-					craftMatrix.setInventorySlotContents(i, inventory[i + SLOT_CRAFTING_START]);
-				}
-				recipe = null;
+			if (craftRecipe == null) {
+				newRecipe = null;
 				stack = ItemStack.EMPTY;
 			}
-			if (recipe == null || !recipe.equals(curRecipe)) {
-				processOff();
-			}
 		} else {
+			craftRecipe = null;
+		}
+		if (craftRecipe == null) {
 			if (isActive) {
 				processOff();
 			}
-			craftIngredients = new Ingredient[9];
 		}
-		craftResult.setRecipeUsed(recipe);
-		craftResult.setInventorySlotContents(0, stack);
-		inventory[SLOT_CRAFTING_START + 9] = craftResult.getStackInSlot(0);
+		inventory[SLOT_CRAFTING_START + 9] = stack;
+		craftResult.setRecipeUsed(newRecipe);
+		craftResult.setInventorySlotContents(0, inventory[SLOT_CRAFTING_START + 9]);
 	}
 
 	/* NETWORK METHODS */
@@ -369,7 +316,6 @@ public class TileCrafter extends TileMachineBase {
 			inventory[i] = payload.getItemStack();
 		}
 		setRecipe();
-		markChunkDirty();
 	}
 
 	/* SERVER -> CLIENT */
@@ -378,6 +324,7 @@ public class TileCrafter extends TileMachineBase {
 
 		PacketBase payload = super.getGuiPacket();
 
+		payload.addBool(craftRecipe != null);
 		payload.addFluidStack(getTankFluid());
 		return payload;
 	}
@@ -387,6 +334,7 @@ public class TileCrafter extends TileMachineBase {
 
 		super.handleGuiPacket(payload);
 
+		validRecipe = payload.getBool();
 		tank.setFluid(payload.getFluidStack());
 	}
 
@@ -446,5 +394,136 @@ public class TileCrafter extends TileMachineBase {
 	//		}
 	//		return super.getCapability(capability, from);
 	//	}
+
+	/* RECIPE CLASS */
+	public static class CrafterRecipe {
+
+		private TileCrafter myTile;
+		private boolean valid = true;
+
+		private int[] craftSlots = new int[9];
+		private Ingredient[] craftIngredients = new Ingredient[9];
+
+		private boolean isItemStackRecipe = false;
+		private ItemStack[] craftStacks = new ItemStack[9];
+
+		public static CrafterRecipe getRecipe(IRecipe recipe, TileCrafter tile) {
+
+			CrafterRecipe wrapper = new CrafterRecipe(recipe, tile);
+			return wrapper.valid ? wrapper : null;
+		}
+
+		public static boolean validRecipe(IRecipe recipe) {
+
+			return recipe.getIngredients().size() > 0 || recipe instanceof RecipeTippedArrow;
+		}
+
+		private CrafterRecipe(IRecipe recipe, TileCrafter tile) {
+
+			myTile = tile;
+			NonNullList<Ingredient> ingredients = recipe.getIngredients();
+			craftIngredients = new Ingredient[9];
+
+			if (recipe instanceof IShapedRecipe) {
+				int j = 0;
+				for (int i = 0; i < 9; i++) {
+					if (myTile.inventory[SLOT_CRAFTING_START + i].isEmpty()) {
+						craftIngredients[i] = Ingredient.EMPTY;
+						if (ingredients.size() > j && ingredients.get(j).equals(Ingredient.EMPTY)) {
+							j++;
+						}
+					} else {
+						craftIngredients[i] = ingredients.get(j);
+						j++;
+					}
+				}
+			} else if (ingredients.size() > 0) {
+				ItemStack[] sortedRecipe = new ItemStack[9];
+				for (int i = 0; i < ingredients.size(); i++) {
+					for (int j = SLOT_CRAFTING_START; j < SLOT_CRAFTING_START + 9; j++) {
+						if (ingredients.get(i).apply(myTile.inventory[j])) {
+							craftIngredients[i] = ingredients.get(i);
+							sortedRecipe[i] = myTile.inventory[j].copy();
+						}
+					}
+				}
+				for (int i = ingredients.size(); i < 9; i++) {
+					craftIngredients[i] = Ingredient.EMPTY;
+					sortedRecipe[i] = ItemStack.EMPTY;
+				}
+				System.arraycopy(sortedRecipe, 0, myTile.inventory, 20, 9);
+			} else if (recipe instanceof RecipeTippedArrow) {
+				isItemStackRecipe = true;
+				for (int i = 0; i < 9; i++) {
+					if (myTile.inventory[SLOT_CRAFTING_START + i].isEmpty()) {
+						craftStacks[i] = ItemStack.EMPTY;
+					} else {
+						craftStacks[i] = ItemHelper.cloneStack(myTile.inventory[SLOT_CRAFTING_START + i], 1);
+					}
+				}
+			} else {
+				craftIngredients = null;
+				craftStacks = null;
+				valid = false;
+			}
+		}
+
+		private boolean checkIngredients() {
+
+			craftSlots = new int[9];
+			int[] craftCount = new int[18];
+
+			if (isItemStackRecipe) {
+				scan:
+				for (int i = 0; i < 9; i++) {
+					if (craftStacks[i].equals(ItemStack.EMPTY)) {
+						continue;
+					}
+					for (int j = 0; j < SLOT_OUTPUT; j++) {
+						if (ItemHelper.itemsIdentical(craftStacks[i], myTile.inventory[j]) && myTile.inventory[j].getCount() - craftCount[j] > 0) {
+							craftCount[j]++;
+							craftSlots[i] = j + 1;
+							continue scan;
+						}
+					}
+					return false;
+				}
+			} else {
+				scan:
+				for (int i = 0; i < 9; i++) {
+					if (craftIngredients[i].equals(Ingredient.EMPTY)) {
+						continue;
+					}
+					for (int j = 0; j < SLOT_OUTPUT; j++) {
+						if (craftIngredients[i].apply(myTile.inventory[j]) && myTile.inventory[j].getCount() - craftCount[j] > 0) {
+							craftCount[j]++;
+							craftSlots[i] = j + 1;
+							continue scan;
+						}
+					}
+					return false;
+				}
+			}
+			return true;
+		}
+
+		private void evaluate() {
+
+			myTile.craftMatrix = new InventoryCraftingFalse(3, 3);
+
+			for (int i = 0; i < 9; i++) {
+				if (craftSlots[i] > 0) {
+					myTile.craftMatrix.setInventorySlotContents(i, ItemHelper.cloneStack(myTile.inventory[craftSlots[i] - 1], 1));
+					myTile.inventory[craftSlots[i] - 1].shrink(1);
+					if (myTile.inventory[craftSlots[i] - 1].getCount() <= 0) {
+						myTile.inventory[craftSlots[i] - 1] = ItemStack.EMPTY;
+					}
+				} else {
+					myTile.craftMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
+				}
+			}
+		}
+
+	}
 
 }

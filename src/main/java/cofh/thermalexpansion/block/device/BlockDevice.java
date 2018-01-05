@@ -190,12 +190,12 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 
 		TileEntity tile = world.getTileEntity(pos);
 
-		if (tile instanceof TileHeatSink) {
+		if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 			ItemStack heldItem = player.getHeldItem(hand);
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 
 			if (FluidHelper.isFluidHandler(heldItem)) {
-				FluidHelper.drainItemToHandler(heldItem, handler, player, hand);
+				FluidHelper.interactWithHandler(heldItem, handler, player, hand);
 				return true;
 			}
 		}

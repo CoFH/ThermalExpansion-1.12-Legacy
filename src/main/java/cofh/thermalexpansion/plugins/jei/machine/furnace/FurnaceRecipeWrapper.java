@@ -27,7 +27,7 @@ import java.util.List;
 public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
-	protected List<ItemStack> inputs;
+	protected List<List<ItemStack>> inputs;
 	protected List<ItemStack> outputs;
 	protected List<FluidStack> outputFluids;
 
@@ -77,7 +77,7 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 				energy = recipe.getEnergy();
 				break;
 		}
-		inputs = recipeInputs;
+		inputs = Collections.singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);
@@ -94,7 +94,7 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 
-		ingredients.setInputs(ItemStack.class, inputs);
+		ingredients.setInputLists(ItemStack.class, inputs);
 		ingredients.setOutputs(ItemStack.class, outputs);
 		ingredients.setOutputs(FluidStack.class, outputFluids);
 	}

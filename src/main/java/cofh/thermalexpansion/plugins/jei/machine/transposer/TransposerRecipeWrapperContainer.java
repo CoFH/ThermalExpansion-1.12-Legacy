@@ -58,7 +58,7 @@ public class TransposerRecipeWrapperContainer extends TransposerRecipeWrapper {
 				}
 			}
 		}
-		inputs = recipeInputs;
+		inputs = Collections.singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {

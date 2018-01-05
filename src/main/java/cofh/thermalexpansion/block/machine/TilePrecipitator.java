@@ -371,19 +371,22 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return 0;
+					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.fill(resource, doFill);
 					}
-					if (resource.getFluid() != FluidRegistry.WATER) {
-						return 0;
-					}
-					return tank.fill(resource, doFill);
+					return 0;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
+					if (isActive) {
+						return null;
+					}
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(resource, doDrain);
+					}
 					return null;
 				}
 
@@ -391,6 +394,12 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
+					if (isActive) {
+						return null;
+					}
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(maxDrain, doDrain);
+					}
 					return null;
 				}
 			});

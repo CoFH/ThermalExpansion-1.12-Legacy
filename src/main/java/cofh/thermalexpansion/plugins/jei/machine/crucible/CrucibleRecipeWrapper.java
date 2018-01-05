@@ -19,12 +19,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
-	protected List<ItemStack> inputs;
+	protected List<List<ItemStack>> inputs;
 	protected List<FluidStack> outputFluids;
 
 	/* Animation */
@@ -54,7 +55,7 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 		List<FluidStack> recipeOutputFluids = new ArrayList<>();
 		recipeOutputFluids.add(recipe.getOutput());
 
-		inputs = recipeInputs;
+		inputs = Collections.singletonList(recipeInputs);
 		outputFluids = recipeOutputFluids;
 
 		energy = recipe.getEnergy();
@@ -81,7 +82,7 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 
-		ingredients.setInputs(ItemStack.class, inputs);
+		ingredients.setInputLists(ItemStack.class, inputs);
 		ingredients.setOutputs(FluidStack.class, outputFluids);
 	}
 

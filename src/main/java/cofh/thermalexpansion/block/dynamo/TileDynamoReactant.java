@@ -282,17 +282,15 @@ public class TileDynamoReactant extends TileDynamoBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
-						return 0;
-					}
-					if (augmentElemental) {
-						if (ReactantManager.validFluidElemental(resource)) {
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						if (augmentElemental) {
+							if (ReactantManager.validFluidElemental(resource)) {
+								return tank.fill(resource, doFill);
+							}
+							return 0;
+						} else if (ReactantManager.validFluid(resource)) {
 							return tank.fill(resource, doFill);
 						}
-						return 0;
-					}
-					if (ReactantManager.validFluid(resource)) {
-						return tank.fill(resource, doFill);
 					}
 					return 0;
 				}
@@ -301,20 +299,20 @@ public class TileDynamoReactant extends TileDynamoBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
-						return null;
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						return tank.drain(resource, doDrain);
 					}
-					return tank.drain(resource, doDrain);
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (!augmentCoilDuct && from.ordinal() == facing) {
-						return null;
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						return tank.drain(maxDrain, doDrain);
 					}
-					return tank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}

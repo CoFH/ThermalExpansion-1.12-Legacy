@@ -222,12 +222,12 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 
 		TileEntity tile = world.getTileEntity(pos);
 
-		if (!(tile instanceof TileTransposer) && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+		if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 			ItemStack heldItem = player.getHeldItem(hand);
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 
 			if (FluidHelper.isFluidHandler(heldItem)) {
-				FluidHelper.drainItemToHandler(heldItem, handler, player, hand);
+				FluidHelper.interactWithHandler(heldItem, handler, player, hand);
 				return true;
 			}
 		}

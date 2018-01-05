@@ -324,16 +324,15 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
-						return 0;
-					}
-					if (MagmaticManager.isValidFuel(resource)) {
-						return fuelTank.fill(resource, doFill);
-					}
-					if (augmentBoiler && resource.getFluid() == FluidRegistry.WATER) {
-						return coolantTank.fill(resource, doFill);
-					} else if (augmentCoolant && CoolantManager.isValidCoolant(resource)) {
-						return coolantTank.fill(resource, doFill);
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						if (MagmaticManager.isValidFuel(resource)) {
+							return fuelTank.fill(resource, doFill);
+						}
+						if (augmentBoiler && resource.getFluid() == FluidRegistry.WATER) {
+							return coolantTank.fill(resource, doFill);
+						} else if (augmentCoolant && CoolantManager.isValidCoolant(resource)) {
+							return coolantTank.fill(resource, doFill);
+						}
 					}
 					return 0;
 				}
@@ -342,14 +341,13 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
-						return null;
-					}
-					if (resource.equals(fuelTank.getFluid())) {
-						return fuelTank.drain(resource.amount, doDrain);
-					}
-					if (augmentCoolant && resource.equals(coolantTank.getFluid())) {
-						return coolantTank.drain(resource.amount, doDrain);
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						if (resource.equals(fuelTank.getFluid())) {
+							return fuelTank.drain(resource.amount, doDrain);
+						}
+						if ((augmentBoiler || augmentCoolant) && resource.equals(coolantTank.getFluid())) {
+							return coolantTank.drain(resource.amount, doDrain);
+						}
 					}
 					return null;
 				}
@@ -358,10 +356,11 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (!augmentCoilDuct && from.ordinal() == facing) {
-						return null;
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						FluidStack ret = fuelTank.drain(maxDrain, doDrain);
+						return ret != null ? ret : (augmentBoiler || augmentCoolant) ? coolantTank.drain(maxDrain, doDrain) : null;
 					}
-					return fuelTank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}

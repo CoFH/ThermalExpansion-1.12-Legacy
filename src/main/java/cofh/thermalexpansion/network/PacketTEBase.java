@@ -22,7 +22,8 @@ public class PacketTEBase extends PacketBase {
 		try {
 			int type = getByte();
 			switch (PacketTypes.values()[type]) {
-
+				case CONFIG_SYNC:
+					return;
 				default:
 					ThermalExpansion.LOG.error("Unknown Packet! Internal: TEPH, ID: " + type);
 			}

@@ -17,6 +17,9 @@ gui.thermalexpansion.machine.compactor.modeMint=Mode: Mint
 gui.thermalexpansion.machine.compactor.modePress=Mode: Press
 gui.thermalexpansion.machine.compactor.modeStorage=Mode: Storage
 
+gui.thermalexpansion.machine.crafter.clearRecipe=Clear Recipe
+gui.thermalexpansion.machine.crafter.setRecipe=Set Recipe
+
 gui.thermalexpansion.machine.enchanter.modeLocked=Arcana Slot Locked
 gui.thermalexpansion.machine.enchanter.modeUnlocked=Arcana Slot Unlocked
 
@@ -456,8 +459,8 @@ tab.thermalexpansion.machine.compactor.0=Applies pressure to items, changing the
 tab.thermalexpansion.machine.compactor.1=Useful for crafting advanced components.
 tab.thermalexpansion.machine.compactor.2=Click the button to change modes.
 tab.thermalexpansion.machine.crafter.0=Insert items into the grid to set a crafting recipe.
-tab.thermalexpansion.machine.crafter.1=Provide the ingredients and walk away!
-tab.thermalexpansion.machine.crafter.2=Fairly crafty, don't you think?
+tab.thermalexpansion.machine.crafter.1=Simply press the confirm button and walk away!
+tab.thermalexpansion.machine.crafter.2=Not all recipes are valid.
 tab.thermalexpansion.machine.crucible.0=Turns solid materials into fluids!
 tab.thermalexpansion.machine.crucible.1=Very useful for building advanced blocks.
 tab.thermalexpansion.machine.crucible.2=Keep away from small children and pets.
@@ -548,7 +551,7 @@ tile.thermalexpansion.machine.brewer.name=Alchemical Imbuer
 tile.thermalexpansion.machine.centrifuge.name=Centrifugal Separator
 tile.thermalexpansion.machine.charger.name=Energetic Infuser
 tile.thermalexpansion.machine.compactor.name=Compactor
-tile.thermalexpansion.machine.crafter.name=Cyclic Assembler
+tile.thermalexpansion.machine.crafter.name=Sequential Fabricator
 tile.thermalexpansion.machine.crucible.name=Magma Crucible
 tile.thermalexpansion.machine.enchanter.name=Arcane Ensorcellator
 tile.thermalexpansion.machine.extruder.name=Igneous Extruder

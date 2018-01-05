@@ -333,16 +333,15 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return 0;
-					}
-					if (resource == null) {
-						return 0;
-					}
-					for (int j = 0; j < tanks.length && tanks[j].getSpace() > 0; j++) {
-						int toFill = tanks[j].fill(resource, doFill);
-						if (toFill > 0) {
-							return toFill;
+					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						if (resource == null) {
+							return 0;
+						}
+						for (int j = 0; j < tanks.length && tanks[j].getSpace() > 0; j++) {
+							int toFill = tanks[j].fill(resource, doFill);
+							if (toFill > 0) {
+								return toFill;
+							}
 						}
 					}
 					return 0;
@@ -352,16 +351,15 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
-					if (resource == null) {
-						return null;
-					}
-					for (int j = tanks.length - 1; j >= 0 && tanks[j].getFluidAmount() > 0; j--) {
-						FluidStack toDrain = tanks[j].drain(resource, doDrain);
-						if (toDrain != null) {
-							return toDrain;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						if (resource == null) {
+							return null;
+						}
+						for (int j = tanks.length - 1; j >= 0 && tanks[j].getFluidAmount() > 0; j--) {
+							FluidStack toDrain = tanks[j].drain(resource, doDrain);
+							if (toDrain != null) {
+								return toDrain;
+							}
 						}
 					}
 					return null;
@@ -371,13 +369,15 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
-					for (int j = tanks.length - 1; j >= 0 && tanks[j].getFluidAmount() > 0; j--) {
-						FluidStack toDrain = tanks[j].drain(maxDrain, doDrain);
-						if (toDrain != null) {
-							return toDrain;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						if (maxDrain <= 0) {
+							return null;
+						}
+						for (int j = tanks.length - 1; j >= 0 && tanks[j].getFluidAmount() > 0; j--) {
+							FluidStack toDrain = tanks[j].drain(maxDrain, doDrain);
+							if (toDrain != null) {
+								return toDrain;
+							}
 						}
 					}
 					return null;

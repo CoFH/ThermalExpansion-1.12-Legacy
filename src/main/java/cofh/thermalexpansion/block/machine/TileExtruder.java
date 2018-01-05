@@ -509,13 +509,9 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return 0;
-					}
-					if (resource.getFluid() == FluidRegistry.LAVA) {
-						return hotTank.fill(resource, doFill);
-					} else if (resource.getFluid() == FluidRegistry.WATER) {
-						return coldTank.fill(resource, doFill);
+					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						int ret = hotTank.fill(resource, doFill);
+						return ret > 0 ? ret : coldTank.fill(resource, doFill);
 					}
 					return 0;
 				}
@@ -524,6 +520,13 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
+					if (isActive) {
+						return null;
+					}
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						FluidStack ret = hotTank.drain(resource, doDrain);
+						return ret != null ? ret : coldTank.drain(resource, doDrain);
+					}
 					return null;
 				}
 
@@ -531,6 +534,13 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
+					if (isActive) {
+						return null;
+					}
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						FluidStack ret = hotTank.drain(maxDrain, doDrain);
+						return ret != null ? ret : coldTank.drain(maxDrain, doDrain);
+					}
 					return null;
 				}
 			});

@@ -34,6 +34,9 @@ public class GuiCrafter extends GuiPoweredBase {
 
 	private ElementButton setRecipe;
 
+	static final int BUTTON_X = 96;
+	static final int BUTTON_Y = 48;
+
 	public GuiCrafter(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerCrafter(inventory, tile), tile, inventory.player, TEXTURE);
@@ -61,7 +64,7 @@ public class GuiCrafter extends GuiPoweredBase {
 		// addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setGauge(1).setAlwaysShow(true));
 		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 92, 21).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
 
-		setRecipe = (ElementButton) addElement(new ElementButton(this, 125, 53, "SetRecipe", 176, 0, 176, 16, 176, 32, 16, 16, TEX_PATH));
+		setRecipe = (ElementButton) addElement(new ElementButton(this, BUTTON_X, BUTTON_Y, "SetRecipe", 176, 0, 176, 16, 176, 32, 16, 16, TEX_PATH).setToolTip("gui.thermalexpansion.machine.crafter.setRecipe"));
 	}
 
 	@Override
@@ -76,11 +79,6 @@ public class GuiCrafter extends GuiPoweredBase {
 
 		progress.setQuantity(baseTile.getScaledProgress(PROGRESS));
 
-		if (myContainer.validRecipe()) {
-			setRecipe.setActive();
-		} else {
-			setRecipe.setDisabled();
-		}
 	}
 
 	@Override
@@ -88,8 +86,7 @@ public class GuiCrafter extends GuiPoweredBase {
 
 		if (buttonName.equalsIgnoreCase("SetRecipe")) {
 			myContainer.setRecipe();
-		} else if (buttonName.equalsIgnoreCase("ClearRecipe")) {
-			myContainer.clearRecipe();
+			playClickSound(0.8F);
 		}
 	}
 

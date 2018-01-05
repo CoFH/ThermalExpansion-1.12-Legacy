@@ -342,26 +342,20 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return infiniteSource ? resource : tank.drain(resource, doDrain);
 					}
-					if (infiniteSource) {
-						return resource;
-					}
-					return tank.drain(resource, doDrain);
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return infiniteSource ? new FluidStack(tank.getFluid(), maxDrain) : tank.drain(maxDrain, doDrain);
 					}
-					if (infiniteSource) {
-						return new FluidStack(tank.getFluid(), maxDrain);
-					}
-					return tank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}
