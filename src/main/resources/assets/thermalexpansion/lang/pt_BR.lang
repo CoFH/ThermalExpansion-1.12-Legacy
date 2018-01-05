@@ -503,8 +503,8 @@ tab.thermalexpansion.storage.cell.1=Segure Shift e/ou Ctrl para ajustar o contro
 
 tab.thermalexpansion.storage.enchant=Pode ser encantado para aumentar a capacidade de armazenamento.
 
-tab.thermalexpansion.storage.satchel_c.0=É um saquitel. Só que esse não é furado. E te deixa carregar mais coisas.
-tab.thermalexpansion.storage.satchel_c.1=Porém, alguns objetos não podem ser armazenados.
+tab.thermalexpansion.storage.satchel.0=É um saquitel. Só que esse não é furado. E te deixa carregar mais coisas.
+tab.thermalexpansion.storage.satchel.1=Porém, alguns objetos não podem ser armazenados.
 
 tab.thermalexpansion.storage.satchel_c.0=É um saquitel. Ou será mais que isso? Ele cria cópias do que você coloca dentro.
 tab.thermalexpansion.storage.satchel_c.1=Porém, não armazena certas coisas.
