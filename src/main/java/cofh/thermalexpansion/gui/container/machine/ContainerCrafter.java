@@ -30,7 +30,6 @@ public class ContainerCrafter extends ContainerTEBase {
 	EntityPlayer player;
 
 	boolean initialized = false;
-	boolean changedRecipe = false;
 
 	public ContainerCrafter(InventoryPlayer inventory, TileEntity tile) {
 
@@ -85,6 +84,13 @@ public class ContainerCrafter extends ContainerTEBase {
 	}
 
 	@Override
+	public void onContainerClosed(EntityPlayer playerIn) {
+
+		super.onContainerClosed(playerIn);
+		myTile.clearRecipeChanges();
+	}
+
+	@Override
 	public void onCraftMatrixChanged(IInventory inventoryIn) {
 
 		super.onCraftMatrixChanged(inventoryIn);
@@ -99,7 +105,6 @@ public class ContainerCrafter extends ContainerTEBase {
 			putStackInSlot(i, stacks.get(i));
 		}
 		calcCraftingGridClient();
-		changedRecipe = false;
 	}
 
 	public void slotChangedCraftingGrid() {
@@ -118,12 +123,12 @@ public class ContainerCrafter extends ContainerTEBase {
 				craftResult.setRecipeUsed(recipe);
 				stack = recipe.getCraftingResult(craftMatrix);
 			}
+			myTile.markRecipeChanges();
 			craftResult.setInventorySlotContents(0, stack);
 			playerMP.connection.sendPacket(new SPacketSetSlot(this.windowId, inventorySlots.size() - 1, stack));
 		} else {
 			calcCraftingGridClient();
 		}
-		changedRecipe = true;
 	}
 
 	public void setRecipe() {
@@ -132,7 +137,6 @@ public class ContainerCrafter extends ContainerTEBase {
 			myTile.setInventorySlotContents(TileCrafter.SLOT_CRAFTING_START + i, craftMatrix.getStackInSlot(i));
 		}
 		myTile.sendModePacket();
-		changedRecipe = false;
 	}
 
 	public void calcCraftingGridClient() {

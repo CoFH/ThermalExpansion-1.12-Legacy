@@ -124,6 +124,16 @@
 					"layer0": "thermalexpansion:items/augment/machine_charger_wireless"
 				}
 			},
+			"machinecentrifugemobs": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_centrifuge_mobs"
+				}
+			},
+			"machinecraftertank": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_crafter_tank"
+				}
+			},
 			"machinebrewerreagent": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/machine_brewer_reagent"

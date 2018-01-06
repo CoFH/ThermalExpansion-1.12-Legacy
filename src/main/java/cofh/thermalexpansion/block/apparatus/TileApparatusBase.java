@@ -3,7 +3,7 @@ package cofh.thermalexpansion.block.apparatus;
 import cofh.api.core.IAccelerable;
 import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.api.tileentity.IInventoryConnection;
-import cofh.core.entity.CoFHFakePlayer;
+import cofh.core.entity.FakePlayerCore;
 import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.BlockHelper;
@@ -54,7 +54,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	int processRem;
 	boolean hasModeAugment;
 
-	CoFHFakePlayer fakePlayer;
+	FakePlayerCore fakePlayer;
 	LinkedList<ItemStack> stuffedItems = new LinkedList<>();
 
 	EnergyConfig energyConfig;
@@ -68,7 +68,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	public void onLoad() {
 
 		if (ServerHelper.isServerWorld(world)) {
-			fakePlayer = new CoFHFakePlayer((WorldServer) world);
+			fakePlayer = new FakePlayerCore((WorldServer) world);
 		}
 	}
 

@@ -3,6 +3,7 @@ package cofh.thermalexpansion.plugins.jei.machine.centrifuge;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.machine.TileCentrifuge;
 import cofh.thermalexpansion.plugins.jei.Drawables;
+import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.machine.CentrifugeManager.CentrifugeRecipe;
 import cofh.thermalexpansion.util.managers.machine.CentrifugeManager.ComparableItemStackCentrifuge;
@@ -35,6 +36,11 @@ public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 	protected IDrawableAnimated speed;
 
 	public CentrifugeRecipeWrapper(IGuiHelper guiHelper, CentrifugeRecipe recipe) {
+
+		this(guiHelper, recipe, RecipeUidsTE.CENTRIFUGE);
+	}
+
+	public CentrifugeRecipeWrapper(IGuiHelper guiHelper, CentrifugeRecipe recipe, String uIdIn) {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 

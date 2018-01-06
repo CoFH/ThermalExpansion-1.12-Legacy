@@ -283,7 +283,6 @@ public class FurnaceManager {
 		Map<ComparableItemStackFurnace, FurnaceRecipe> tempMap = new THashMap<>(recipeMap.size());
 		Map<ComparableItemStackFurnace, FurnaceRecipe> tempMapPyrolysis = new THashMap<>(recipeMapPyrolysis.size());
 		Set<ComparableItemStackFurnace> tempFood = new THashSet<>();
-		Set<ComparableItemStackFurnace> tempOre = new THashSet<>();
 		FurnaceRecipe tempRecipe;
 
 		for (Entry<ComparableItemStackFurnace, FurnaceRecipe> entry : recipeMap.entrySet()) {

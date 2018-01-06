@@ -65,8 +65,9 @@ public class TEProps {
 		boolean itemTabCommon = false;
 		boolean florbTabCommon = false;
 		boolean morbTabCommon = false;
-		boolean slotOverlayAlt = false;
-		boolean slotOverlayCB = false;
+
+		boolean slotOverlayAlt;
+		boolean slotOverlayCB;
 
 		comment = "If TRUE, Thermal Expansion Items and Tools appear under the general \"Thermal Expansion\" Creative Tab.";
 		itemTabCommon = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ItemsInCommonTab", category, itemTabCommon, comment);
@@ -87,6 +88,12 @@ public class TEProps {
 
 		comment = "If TRUE, Creative version of Blocks will show in the Creative Tab.";
 		creativeTabShowCreative = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ShowCreativeBlocks", category, creativeTabShowCreative, comment);
+
+		comment = "If TRUE, Florbs will be completely hidden from Creative Mode and JEI.";
+		creativeTabHideFlorbs = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("HideFlorbs", category, creativeTabHideFlorbs, comment);
+
+		comment = "If TRUE, Morbs will be completely hidden from Creative Mode and JEI.";
+		creativeTabHideMorbs = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("HideMorbs", category, creativeTabHideFlorbs, comment);
 
 		category = "Interface.GUI";
 
@@ -144,7 +151,7 @@ public class TEProps {
 
 			};
 		}
-		ThermalExpansion.tabFlorbs = florbTabCommon ? ThermalExpansion.tabCommon : new CreativeTabCore("thermalexpansion", "Florbs") {
+		ThermalExpansion.tabFlorbs = florbTabCommon || creativeTabHideFlorbs ? ThermalExpansion.tabCommon : new CreativeTabCore("thermalexpansion", "Florbs") {
 
 			int iconIndex = 0;
 			TimeTracker iconTracker = new TimeTracker();
@@ -168,7 +175,7 @@ public class TEProps {
 			}
 
 		};
-		ThermalExpansion.tabMorbs = morbTabCommon ? ThermalExpansion.tabCommon : new CreativeTabCore("thermalexpansion", "Morbs") {
+		ThermalExpansion.tabMorbs = morbTabCommon || creativeTabHideMorbs ? ThermalExpansion.tabCommon : new CreativeTabCore("thermalexpansion", "Morbs") {
 
 			int iconIndex = 0;
 			TimeTracker iconTracker = new TimeTracker();
@@ -202,6 +209,9 @@ public class TEProps {
 	public static boolean creativeTabShowAllLevels = false;
 	public static boolean creativeTabShowCreative = false;
 	public static int creativeTabLevel = 0;
+
+	public static boolean creativeTabHideFlorbs = false;
+	public static boolean creativeTabHideMorbs = false;
 
 	public static boolean enableSounds = true;
 
@@ -287,6 +297,8 @@ public class TEProps {
 	public static final String MACHINE_CHARGER_WIRELESS = "machineChargerWireless";
 
 	public static final String MACHINE_CENTRIFUGE_MOBS = "machineCentrifugeMobs";
+
+	public static final String MACHINE_CRAFTER_TANK = "machineCrafterTank";
 
 	public static final String MACHINE_BREWER_REAGENT = "machineBrewerReagent";
 

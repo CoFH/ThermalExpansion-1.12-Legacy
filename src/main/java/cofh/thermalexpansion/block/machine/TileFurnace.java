@@ -154,7 +154,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	protected void processStart() {
 
-		processMax = augmentPyrolysis ? FurnaceManager.getRecipePyrolysis(inventory[0]).getEnergy() * energyMod / ENERGY_BASE : FurnaceManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = (augmentPyrolysis ? FurnaceManager.getRecipePyrolysis(inventory[0]).getEnergy() : FurnaceManager.getRecipe(inventory[0]).getEnergy()) * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
@@ -324,6 +324,8 @@ public class TileFurnace extends TileMachineBase {
 
 		PacketBase payload = super.getGuiPacket();
 
+		payload.addBool(augmentFood);
+		payload.addBool(augmentOre);
 		payload.addBool(augmentPyrolysis);
 		payload.addFluidStack(tank.getFluid());
 		return payload;
@@ -334,6 +336,8 @@ public class TileFurnace extends TileMachineBase {
 
 		super.handleGuiPacket(payload);
 
+		augmentFood = payload.getBool();
+		augmentOre = payload.getBool();
 		augmentPyrolysis = payload.getBool();
 		flagPyrolysis = augmentPyrolysis;
 		tank.setFluid(payload.getFluidStack());

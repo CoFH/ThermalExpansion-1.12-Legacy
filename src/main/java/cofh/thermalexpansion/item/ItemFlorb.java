@@ -16,6 +16,7 @@ import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.item.ModelFlorb;
 import cofh.thermalexpansion.util.BehaviorFlorbDispense;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
@@ -103,6 +104,9 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
+		if (TEProps.creativeTabHideFlorbs) {
+			return;
+		}
 		if (isInCreativeTab(tab)) {
 			items.add(new ItemStack(this, 1, 0));
 			items.add(new ItemStack(this, 1, 1));

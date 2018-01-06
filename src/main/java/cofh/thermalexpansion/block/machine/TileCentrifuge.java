@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketBase;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -77,6 +78,9 @@ public class TileCentrifuge extends TileMachineBase {
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
+	/* AUGMENTS */
+	protected boolean augmentMobs;
+
 	public TileCentrifuge() {
 
 		super();
@@ -97,7 +101,7 @@ public class TileCentrifuge extends TileMachineBase {
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		CentrifugeRecipe recipe = CentrifugeManager.getRecipe(inventory[0]);
+		CentrifugeRecipe recipe = augmentMobs ? CentrifugeManager.getRecipeMob(inventory[0]) : CentrifugeManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
 			return false;
@@ -125,21 +129,21 @@ public class TileCentrifuge extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		CentrifugeRecipe recipe = CentrifugeManager.getRecipe(inventory[0]);
+		CentrifugeRecipe recipe = augmentMobs ? CentrifugeManager.getRecipeMob(inventory[0]) : CentrifugeManager.getRecipe(inventory[0]);
 		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = CentrifugeManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = (augmentMobs ? CentrifugeManager.getRecipeMob(inventory[0]).getEnergy() : CentrifugeManager.getRecipe(inventory[0]).getEnergy()) * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		CentrifugeRecipe recipe = CentrifugeManager.getRecipe(inventory[0]);
+		CentrifugeRecipe recipe = augmentMobs ? CentrifugeManager.getRecipeMob(inventory[0]) : CentrifugeManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
 			processOff();
@@ -256,6 +260,11 @@ public class TileCentrifuge extends TileMachineBase {
 		return tank.getFluid();
 	}
 
+	public boolean augmentMobs() {
+
+		return augmentMobs;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -286,6 +295,7 @@ public class TileCentrifuge extends TileMachineBase {
 
 		PacketBase payload = super.getGuiPacket();
 
+		payload.addBool(augmentMobs);
 		payload.addFluidStack(tank.getFluid());
 		return payload;
 	}
@@ -295,14 +305,37 @@ public class TileCentrifuge extends TileMachineBase {
 
 		super.handleGuiPacket(payload);
 
+		augmentMobs = payload.getBool();
 		tank.setFluid(payload.getFluidStack());
+	}
+
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		augmentMobs = false;
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentMobs && TEProps.MACHINE_CENTRIFUGE_MOBS.equals(id)) {
+			augmentMobs = true;
+			hasModeAugment = true;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* IInventory */
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot != 0 || CentrifugeManager.recipeExists(stack);
+		return slot != 0 || (augmentMobs ? CentrifugeManager.recipeExistsMob(stack) : CentrifugeManager.recipeExists(stack));
 	}
 
 	/* CAPABILITIES */

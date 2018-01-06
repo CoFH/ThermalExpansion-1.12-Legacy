@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.apparatus;
 
 import cofh.api.tileentity.IInventoryConnection;
-import cofh.core.entity.CoFHFakePlayer;
+import cofh.core.entity.FakePlayerCore;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -110,7 +110,7 @@ public class TileBreaker extends TileApparatusBase implements IInventoryConnecti
 					continue;
 				}
 			}
-			if (CoFHFakePlayer.isBlockBreakable(fakePlayer, world, target)) {
+			if (FakePlayerCore.isBlockBreakable(fakePlayer, world, target)) {
 				IBlockState state = world.getBlockState(target);
 				stuffedItems.addAll(BlockHelper.breakBlock(world, fakePlayer, target, state, 0, true, false));
 			}

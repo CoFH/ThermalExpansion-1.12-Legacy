@@ -135,6 +135,9 @@ public class ThermalExpansion {
 
 	private void managerInitialize() {
 
+		ItemFlorb.parseFlorbs();
+		ItemMorb.parseMorbs();
+
 		FurnaceManager.initialize();
 		PulverizerManager.initialize();
 		SawmillManager.initialize();
@@ -163,9 +166,6 @@ public class ThermalExpansion {
 		ReactantManager.initialize();
 		EnervationManager.initialize();
 		NumismaticManager.initialize();
-
-		ItemFlorb.parseFlorbs();
-		ItemMorb.parseMorbs();
 	}
 
 	private synchronized void managerRefresh() {

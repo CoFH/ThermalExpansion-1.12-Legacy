@@ -31,6 +31,9 @@ public class ContainerCentrifuge extends ContainerTEBase implements ISlotValidat
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
+		if (myTile.augmentMobs()) {
+			return CentrifugeManager.recipeExistsMob(stack);
+		}
 		return CentrifugeManager.recipeExists(stack);
 	}
 

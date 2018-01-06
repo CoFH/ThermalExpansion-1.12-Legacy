@@ -218,6 +218,10 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		machineChargerRepair = addAugmentItem(401, TEProps.MACHINE_CHARGER_REPAIR, AugmentType.MODE);
 		machineChargerWireless = addAugmentItem(402, TEProps.MACHINE_CHARGER_WIRELESS, AugmentType.MODE);
 
+		machineCentrifugeMobs = addAugmentItem(416, TEProps.MACHINE_CENTRIFUGE_MOBS, AugmentType.MODE);
+
+		machineCrafterTank = addAugmentItem(432, TEProps.MACHINE_CRAFTER_TANK, AugmentType.ADVANCED);
+
 		machineBrewerReagent = addAugmentItem(448, TEProps.MACHINE_BREWER_REAGENT);
 
 		// machineEnchanterEmpowered = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.MODE);
@@ -263,245 +267,241 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		addShapedRecipe(machinePower,
 				" I ",
 				"ICI",
-				"YIY",
+				" I ",
 				'C', ItemMaterial.powerCoilGold,
-				'I', "ingotGold",
-				'Y', "dustRedstone"
+				'I', "ingotGold"
 		);
 		addShapedRecipe(machineSecondary,
 				" I ",
 				"ICI",
-				"YIY",
+				" I ",
 				'C', ItemMaterial.redstoneServo,
-				'I', "ingotBronze",
-				'Y', "blockRockwool"
+				'I', "ingotBronze"
 		);
 		addShapedRecipe(machineSecondaryNull,
 				" I ",
 				"ICI",
-				"YIY",
+				" I ",
 				'C', Items.LAVA_BUCKET,
-				'I', "nuggetInvar",
-				'Y', "blockGlass"
+				'I', "nuggetInvar"
 		);
 
 		addShapedRecipe(machineFurnaceFood,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearCopper",
 				'I', "plateSilver",
-				'X', Blocks.BRICK_BLOCK,
-				'Y', "dustRedstone"
+				'X', Blocks.BRICK_BLOCK
 		);
 		addShapedRecipe(machineFurnaceOre,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearBronze",
 				'I', "plateInvar",
-				'X', Blocks.PISTON,
-				'Y', "dustPyrotheum"
+				'X', "dustPyrotheum"
 		);
 		addShapedRecipe(machineFurnacePyrolysis,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.redstoneServo,
 				'G', "gearInvar",
 				'I', "plateCopper",
-				'X', Blocks.NETHER_BRICK,
-				'Y', "dustCharcoal"
+				'X', Blocks.NETHER_BRICK
 		);
 
 //		addShapedRecipe(machinePulverizerGeode,
 //				" G ",
 //				"ICI",
-//				"YXY",
+//				" X ",
 //				'C', ItemMaterial.redstoneServo,
 //				'G', "gearLead",
 //				'I', "plateBronze",
 //				'X', "gemDiamond",
-//				'Y', "dustPetrotheum"
 //		);
 		addShapedRecipe(machinePulverizerPetrotheum,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.redstoneServo,
 				'G', "gearSignalum",
 				'I', "plateBronze",
-				'X', "blockGlassHardened",
-				'Y', "dustPetrotheum"
+				'X', "dustPetrotheum"
 		);
 
 		addShapedRecipe(machineSawmillTapper,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.redstoneServo,
 				'G', "gearTin",
 				'I', "plateCopper",
-				'X', Items.BUCKET,
-				'Y', "dustRedstone"
+				'X', Items.BUCKET
 		);
 
 		addShapedRecipe(machineSmelterFlux,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.redstoneServo,
 				'G', "gearSilver",
-				'I', "ingotTin",
-				'X', "blockGlassHardened",
-				'Y', ItemMaterial.crystalSlagRich
+				'I', ItemMaterial.crystalSlagRich,
+				'X', "blockGlassHardened"
 		);
 		addShapedRecipe(machineSmelterPyrotheum,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearSignalum",
 				'I', "plateNickel",
-				'X', "blockGlassHardened",
-				'Y', "dustPyrotheum"
+				'X', "dustPyrotheum"
 		);
 
 		addShapedRecipe(machineInsolatorFertilizer,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.redstoneServo,
 				'G', "gearSilver",
-				'I', "ingotTin",
-				'X', "blockGlassHardened",
-				'Y', ItemFertilizer.fertilizerRich
+				'I', ItemFertilizer.fertilizerRich,
+				'X', "blockGlassHardened"
 		);
 		addShapedRecipe(machineInsolatorTree,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.redstoneServo,
 				'G', "gearInvar",
 				'I', "plateLumium",
-				'X', Blocks.PISTON,
-				'Y', "dustAerotheum"
+				'X', Blocks.PISTON
 		);
 		addShapedRecipe(machineInsolatorMonoculture,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearSignalum",
 				'I', "plateNickel",
-				'X', Blocks.HOPPER,
-				'Y', ItemFertilizer.fertilizerFlux
+				'X', ItemFertilizer.fertilizerFlux
 		);
 
 		addShapedRecipe(machineCompactorMint,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.redstoneServo,
 				'G', "gearInvar",
 				'I', "plateElectrum",
-				'X', "gemEmerald",
-				'Y', "dustGlowstone"
+				'X', "gemEmerald"
 		);
 		addShapedRecipe(machineCompactorGear,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.redstoneServo,
 				'G', "gearIron",
 				'I', "plateLead",
-				'X', Blocks.PISTON,
-				'Y', "dustObsidian"
+				'X', Blocks.PISTON
 		);
 
 		addShapedRecipe(machineCrucibleLava,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearInvar",
 				'I', Blocks.PISTON,
-				'X', Blocks.NETHER_BRICK,
-				'Y', "dustPyrotheum"
+				'X', Blocks.NETHER_BRICK
 		);
 		//		addShapedRecipe(machineCrucibleAlloy,
 //				" G ",
 //				"ICI",
-//				"YXY",
+//				" X ",
 //				'C', ItemMaterial.redstoneServo,
 //				'G', "gearSignalum",
 //				'I', "plateInvar",
-//				'X', Blocks.BRICK_BLOCK,
-//				'Y', "dustCryotheum"
+//				'X', "dustCryotheum"
 //		);
 
 		addShapedRecipe(machineRefineryOil,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearNickel",
 				'I', "blockGlassHardened",
-				'X', Items.BLAZE_ROD,
-				'Y', "dustRedstone"
+				'X', Items.BLAZE_ROD
 		);
 		addShapedRecipe(machineRefineryPotion,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearSignalum",
 				'I', "plateLead",
-				'X', Items.CAULDRON,
-				'Y', "dustRedstone"
+				'X', Items.CAULDRON
 		);
 
 		addShapedRecipe(machineChargerThroughput,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearElectrum",
 				'I', "plateSilver",
-				'X', "ingotLead",
-				'Y', "dustRedstone"
+				'X', "ingotLead"
 		);
 		addShapedRecipe(machineChargerRepair,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearIron",
 				'I', "blockGlassHardened",
-				'X', "blockIron",
-				'Y', "dustRedstone"
+				'X', "blockIron"
 		);
 		addShapedRecipe(machineChargerWireless,
 				" G ",
 				"ICI",
-				"YXY",
-				'C', ItemMaterial.powerCoilElectrum,
+				" X ",
+				'C', ItemMaterial.redstoneServo,
 				'G', "gearElectrum",
 				'I', "plateSilver",
-				'X', "blockGlassHardened",
-				'Y', "dustRedstone"
+				'X', "blockGlassHardened"
+		);
+
+		addShapedRecipe(machineCentrifugeMobs,
+				" G ",
+				"ICI",
+				" X ",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearInvar",
+				'I', Items.DIAMOND_SWORD,
+				'X', Blocks.PISTON
+		);
+
+		addShapedRecipe(machineCrafterTank,
+				" G ",
+				"ICI",
+				" X ",
+				'C', ItemMaterial.redstoneServo,
+				'G', Items.BUCKET,
+				'I', "ingotCopper",
+				'X', "blockGlass"
 		);
 
 		addShapedRecipe(machineBrewerReagent,
 				" G ",
-				"ICI",
-				"YXZ",
+				"YCZ",
+				" X ",
 				'C', ItemMaterial.redstoneServo,
 				'G', "gearSilver",
-				'I', "ingotTin",
-				'X', "blockGlassHardened",
+				'X', "blockGlass",
 				'Y', "dustGlowstone",
 				'Z', "dustRedstone"
 		);
@@ -509,144 +509,130 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 //		addShapedRecipe(machineEnchanterEmpowered,
 //				" G ",
 //				"ICI",
-//				"YXY",
+//				" X ",
 //				'C', ItemMaterial.powerCoilElectrum,
 //				'G', "gearGold",
 //				'I', "gemDiamond",
-//				'X', "blockLapis",
-//				'Y', "dustGlowstone"
+//				'X', "blockLapis"
 //		);
 
 		addShapedRecipe(machineExtruderNoWater,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.redstoneServo,
 				'G', "gearCopper",
 				'I', "plateInvar",
-				'X', Blocks.PISTON,
-				'Y', "dustCryotheum"
+				'X', "dustCryotheum"
 		);
 
 		/* DYNAMO */
 		addShapedRecipe(dynamoPower,
 				" I ",
 				"ICI",
-				"YIY",
+				" I ",
 				'C', ItemMaterial.powerCoilSilver,
-				'I', "ingotSilver",
-				'Y', "dustRedstone"
+				'I', "ingotSilver"
 		);
 		addShapedRecipe(dynamoEfficiency,
 				" I ",
 				"ICI",
-				"YIY",
+				" I ",
 				'C', ItemMaterial.powerCoilElectrum,
-				'I', "ingotLead",
-				'Y', "dustGlowstone"
+				'I', "ingotLead"
 		);
 		addShapedRecipe(dynamoCoilDuct,
 				" I ",
 				"ICI",
-				"YIY",
+				" I ",
 				'C', "ingotCopper",
-				'I', "nuggetLead",
-				'Y', "blockGlass"
+				'I', "nuggetLead"
 		);
 		addShapedRecipe(dynamoThrottle,
 				" I ",
 				"ICI",
-				"YIY",
+				" I ",
 				'C', "ingotElectrum",
-				'I', "nuggetLead",
-				'Y', "blockGlass"
+				'I', "nuggetLead"
 		);
 
 		addShapedRecipe(dynamoBoiler,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', Items.BUCKET,
 				'G', "gearIron",
 				'I', "plateCopper",
-				'X', "blockGlassHardened",
-				'Y', "dustRedstone"
+				'X', "blockGlassHardened"
 		);
 
 		addShapedRecipe(dynamoSteamTurbine,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearIron",
 				'I', "plateCopper",
-				'X', "ingotIron",
-				'Y', "dustRedstone"
+				'X', "ingotIron"
 		);
 
 		addShapedRecipe(dynamoMagmaticCoolant,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearSignalum",
 				'I', "plateInvar",
-				'X', "blockGlassHardened",
-				'Y', "dustCryotheum"
+				'X', "dustCryotheum"
 		);
 
 		addShapedRecipe(dynamoCompressionCoolant,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearInvar",
 				'I', "plateTin",
-				'X', "blockGlassHardened",
-				'Y', "dustCryotheum"
+				'X', "dustCryotheum"
 		);
 		addShapedRecipe(dynamoCompressionFuel,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearSignalum",
 				'I', "plateCopper",
-				'X', "blockGlassHardened",
-				'Y', "dustPyrotheum"
+				'X', "dustPyrotheum"
 		);
 
 		addShapedRecipe(dynamoReactantElemental,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearSignalum",
 				'I', "plateLead",
-				'X', "blockGlassHardened",
-				'Y', "dustAerotheum"
+				'X', "dustAerotheum"
 		);
 
 		addShapedRecipe(dynamoEnervationEnchant,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearSignalum",
 				'I', "plateGold",
-				'X', "gemLapis",
-				'Y', "dustGlowstone"
+				'X', "gemLapis"
 		);
 
 		addShapedRecipe(dynamoNumismaticGem,
 				" G ",
 				"ICI",
-				"YXY",
+				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearSignalum",
 				'I', "plateElectrum",
-				'X', "gemEmerald",
-				'Y', "dustAerotheum"
+				'X', "gemEmerald"
 		);
 
 		/* APPARATUS */
@@ -764,6 +750,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineChargerWireless;
 
 	public static ItemStack machineCentrifugeMobs;
+
+	public static ItemStack machineCrafterTank;
 
 	public static ItemStack machineBrewerReagent;
 

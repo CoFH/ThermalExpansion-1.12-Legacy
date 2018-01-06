@@ -4,10 +4,7 @@ import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
-import cofh.thermalexpansion.util.managers.machine.SawmillManager;
-import cofh.thermalexpansion.util.managers.machine.SmelterManager;
+import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -15,6 +12,8 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Locale;
 
 public class PluginQuark extends ModPlugin {
@@ -174,6 +173,17 @@ public class PluginQuark extends ModPlugin {
 				ItemStack glowshroom = getItemStack("glowshroom", 1, 0);
 
 				InsolatorManager.addDefaultRecipe(glowshroom, ItemHelper.cloneStack(glowshroom, 2), ItemStack.EMPTY, 0);
+			}
+
+			/* CENTRIFUGE */
+			{
+				ItemStack pirateHat = getItemStack("pirate_hat", 1, 0);
+				ItemStack soulBead = getItemStack("soul_bead", 1, 0);
+
+				CentrifugeManager.addDefaultMobRecipe("quark:ashen", Arrays.asList(new ItemStack(Items.ARROW, 2), new ItemStack(Items.BONE, 2)), Arrays.asList(50, 50), 5);
+				CentrifugeManager.addDefaultMobRecipe("quark:dweller", Arrays.asList(new ItemStack(Items.ROTTEN_FLESH, 2), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.POTATO)), Arrays.asList(50, 2, 2), 5);
+				CentrifugeManager.addDefaultMobRecipe("quark:pirate", Arrays.asList(new ItemStack(Items.ARROW, 2), new ItemStack(Items.BONE, 2), pirateHat), Arrays.asList(50, 50, 2), 5);
+				CentrifugeManager.addDefaultMobRecipe("quark:wraith", Collections.singletonList(soulBead), Collections.singletonList(100), 5);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);

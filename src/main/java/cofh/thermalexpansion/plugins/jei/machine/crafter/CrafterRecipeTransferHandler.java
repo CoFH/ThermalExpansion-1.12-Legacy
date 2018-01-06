@@ -40,6 +40,7 @@ public class CrafterRecipeTransferHandler implements IRecipeTransferHandler<Cont
 					}
 				}
 				container.calcCraftingGridClient();
+				container.setRecipe();
 			}
 		}
 		return null;

@@ -37,6 +37,7 @@ public class RecipeUidsTE {
 	public static final String CHARGER = "thermalexpansion.charger";
 
 	public static final String CENTRIFUGE = "thermalexpansion.centrifuge";
+	public static final String CENTRIFUGE_MOBS = "thermalexpansion.centrifuge_mobs";
 
 	public static final String BREWER = "thermalexpansion.brewer";
 

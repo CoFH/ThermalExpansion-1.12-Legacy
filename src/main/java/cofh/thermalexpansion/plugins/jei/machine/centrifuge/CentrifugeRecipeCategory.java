@@ -39,6 +39,7 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipeCategories(new CentrifugeRecipeCategory(guiHelper));
+		registry.addRecipeCategories(new CentrifugeRecipeCategoryMobs(guiHelper));
 	}
 
 	public static void initialize(IModRegistry registry) {
@@ -50,8 +51,10 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.CENTRIFUGE);
-		registry.addRecipeClickArea(GuiCentrifuge.class, 72, 34, 24, 16, RecipeUidsTE.CENTRIFUGE);
+		registry.addRecipeClickArea(GuiCentrifuge.class, 72, 34, 24, 16, RecipeUidsTE.CENTRIFUGE, RecipeUidsTE.CENTRIFUGE_MOBS);
 		registry.addRecipeCatalyst(BlockMachine.machineCentrifuge, RecipeUidsTE.CENTRIFUGE);
+
+		CentrifugeRecipeCategoryMobs.initialize(registry);
 	}
 
 	public static List<CentrifugeRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

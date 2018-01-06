@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.machine;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.inventory.InventoryCraftingFalse;
 import cofh.core.network.PacketBase;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
@@ -19,10 +20,19 @@ import net.minecraft.item.crafting.RecipeTippedArrow;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.crafting.IShapedRecipe;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -49,6 +59,7 @@ public class TileCrafter extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_CRAFTER_TANK);
 
 		LIGHT_VALUES[TYPE] = 7;
 
@@ -75,10 +86,14 @@ public class TileCrafter extends TileMachineBase {
 	private InventoryCraftingFalse craftMatrix = new InventoryCraftingFalse(3, 3);
 	private InventoryCraftResult craftResult = new InventoryCraftResult();
 	private CrafterRecipe craftRecipe;
+	private boolean hasRecipeChanges;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 
-	protected boolean validRecipe;
+	/* AUGMENTS */
+	protected boolean augmentTank;
+	protected boolean flagTank;
+	protected boolean usingTank;
 
 	public TileCrafter() {
 
@@ -113,7 +128,7 @@ public class TileCrafter extends TileMachineBase {
 		if (energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		if (craftResult.getRecipeUsed() == null) {
+		if (craftResult.getRecipeUsed() == null || hasRecipeChanges) {
 			return false;
 		}
 		if (!checkIngredients()) {
@@ -145,14 +160,15 @@ public class TileCrafter extends TileMachineBase {
 		ItemStack output = recipe.getCraftingResult(craftMatrix);
 		NonNullList<ItemStack> remainingItems = recipe.getRemainingItems(craftMatrix);
 
-		for (ItemStack remaining : remainingItems) {
-			if (!remaining.isEmpty()) {
-				for (int i = 0; i < SLOT_OUTPUT; i++) {
-					if (inventory[i].isEmpty()) {
-						inventory[i] = remaining;
+		for (int i = 0; i < remainingItems.size(); i++) {
+			ItemStack remaining = remainingItems.get(i);
+			if (!remaining.isEmpty() && !craftRecipe.isFalseBucket(i)) {
+				for (int j = 0; j < SLOT_OUTPUT; j++) {
+					if (inventory[j].isEmpty()) {
+						inventory[j] = remaining;
 						break;
-					} else if (remaining.getMaxStackSize() > 1 && ItemHelper.itemsIdentical(inventory[i], remaining) && inventory[i].getCount() < inventory[i].getMaxStackSize()) {
-						inventory[i].grow(1);
+					} else if (remaining.getMaxStackSize() > 1 && ItemHelper.itemsIdentical(inventory[j], remaining) && inventory[j].getCount() < inventory[j].getMaxStackSize()) {
+						inventory[j].grow(1);
 					}
 				}
 			}
@@ -194,9 +210,51 @@ public class TileCrafter extends TileMachineBase {
 		enableAutoInput = false;
 	}
 
+	public void setRecipe() {
+
+		for (int i = 0; i < 9; i++) {
+			craftMatrix.setInventorySlotContents(i, inventory[i + SLOT_CRAFTING_START]);
+		}
+		IRecipe newRecipe = CraftingManager.findMatchingRecipe(craftMatrix, world);
+
+		ItemStack stack = ItemStack.EMPTY;
+
+		if (newRecipe != null) {
+			stack = newRecipe.getCraftingResult(craftMatrix);
+			craftRecipe = CrafterRecipe.getRecipe(newRecipe, this);
+
+			if (craftRecipe == null) {
+				newRecipe = null;
+				stack = ItemStack.EMPTY;
+				usingTank = false;
+			}
+		} else {
+			craftRecipe = null;
+			usingTank = false;
+		}
+		if (craftRecipe == null) {
+			if (isActive) {
+				processOff();
+			}
+		}
+		inventory[SLOT_CRAFTING_START + 9] = stack;
+		craftResult.setRecipeUsed(newRecipe);
+		craftResult.setInventorySlotContents(0, inventory[SLOT_CRAFTING_START + 9]);
+		clearRecipeChanges();
+	}
+
 	private boolean checkIngredients() {
 
 		return craftRecipe != null && craftRecipe.checkIngredients();
+	}
+
+	private ItemStack getTankAsBucket() {
+
+		if (augmentTank && tank.getFluidAmount() >= Fluid.BUCKET_VOLUME) {
+			//noinspection ConstantConditions
+			return FluidUtil.getFilledBucket(tank.getFluid());
+		}
+		return ItemStack.EMPTY;
 	}
 
 	/* GUI METHODS */
@@ -230,9 +288,28 @@ public class TileCrafter extends TileMachineBase {
 		return tank.getFluid();
 	}
 
-	public boolean hasRecipe() {
+	public boolean augmentTank() {
 
-		return validRecipe;
+		return augmentTank && flagTank;
+	}
+
+	public boolean fluidArrow() {
+
+		return augmentTank() && usingTank;
+	}
+
+	public void markRecipeChanges() {
+
+		hasRecipeChanges = true;
+
+		if (isActive) {
+			processOff();
+		}
+	}
+
+	public void clearRecipeChanges() {
+
+		hasRecipeChanges = false;
 	}
 
 	/* NBT METHODS */
@@ -257,40 +334,6 @@ public class TileCrafter extends TileMachineBase {
 		nbt.setInteger("TrackOut", outputTracker);
 		tank.writeToNBT(nbt);
 		return nbt;
-	}
-
-	public void setRecipe() {
-
-		for (int i = 0; i < 9; i++) {
-			craftMatrix.setInventorySlotContents(i, inventory[i + SLOT_CRAFTING_START]);
-		}
-		IRecipe curRecipe = craftResult.getRecipeUsed();
-		IRecipe newRecipe = CraftingManager.findMatchingRecipe(craftMatrix, world);
-
-		if (curRecipe != null && curRecipe.equals(newRecipe)) {
-			return;
-		}
-		ItemStack stack = ItemStack.EMPTY;
-
-		if (newRecipe != null) {
-			stack = newRecipe.getCraftingResult(craftMatrix);
-			craftRecipe = CrafterRecipe.getRecipe(newRecipe, this);
-
-			if (craftRecipe == null) {
-				newRecipe = null;
-				stack = ItemStack.EMPTY;
-			}
-		} else {
-			craftRecipe = null;
-		}
-		if (craftRecipe == null) {
-			if (isActive) {
-				processOff();
-			}
-		}
-		inventory[SLOT_CRAFTING_START + 9] = stack;
-		craftResult.setRecipeUsed(newRecipe);
-		craftResult.setInventorySlotContents(0, inventory[SLOT_CRAFTING_START + 9]);
 	}
 
 	/* NETWORK METHODS */
@@ -324,7 +367,8 @@ public class TileCrafter extends TileMachineBase {
 
 		PacketBase payload = super.getGuiPacket();
 
-		payload.addBool(craftRecipe != null);
+		payload.addBool(augmentTank);
+		payload.addBool(usingTank);
 		payload.addFluidStack(getTankFluid());
 		return payload;
 	}
@@ -334,8 +378,47 @@ public class TileCrafter extends TileMachineBase {
 
 		super.handleGuiPacket(payload);
 
-		validRecipe = payload.getBool();
+		augmentTank = payload.getBool();
+		flagTank = augmentTank;
+		usingTank = payload.getBool();
 		tank.setFluid(payload.getFluidStack());
+	}
+
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		augmentTank = false;
+	}
+
+	@Override
+	protected void postAugmentInstall() {
+
+		super.postAugmentInstall();
+
+		if (!augmentTank) {
+			tank.drain(tank.getCapacity(), true);
+
+			if (usingTank) {
+				processOff();
+			}
+			usingTank = false;
+		}
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentTank && TEProps.MACHINE_CRAFTER_TANK.equals(id)) {
+			augmentTank = true;
+			hasModeAugment = true;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* IInventory */
@@ -346,54 +429,63 @@ public class TileCrafter extends TileMachineBase {
 	}
 
 	/* CAPABILITIES */
-	//	@Override
-	//	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
-	//
-	//		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-	//	}
-	//
-	//	@Override
-	//	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
-	//
-	//		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	//			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
-	//
-	//				@Override
-	//				public IFluidTankProperties[] getTankProperties() {
-	//
-	//					FluidTankInfo info = tank.getInfo();
-	//					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, true) };
-	//				}
-	//
-	//				@Override
-	//				public int fill(FluidStack resource, boolean doFill) {
-	//
-	//					return tank.fill(resource, doFill);
-	//				}
-	//
-	//				@Nullable
-	//				@Override
-	//				public FluidStack drain(FluidStack resource, boolean doDrain) {
-	//
-	//					if (isActive) {
-	//						return null;
-	//					}
-	//					return tank.drain(resource, doDrain);
-	//				}
-	//
-	//				@Nullable
-	//				@Override
-	//				public FluidStack drain(int maxDrain, boolean doDrain) {
-	//
-	//					if (isActive) {
-	//						return null;
-	//					}
-	//					return tank.drain(maxDrain, doDrain);
-	//				}
-	//			});
-	//		}
-	//		return super.getCapability(capability, from);
-	//	}
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
+
+		return super.hasCapability(capability, from) || augmentTank && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+
+		if (augmentTank && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
+
+					FluidTankInfo info = tank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, false) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.fill(resource, doFill);
+					}
+					return 0;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					if (isActive) {
+						return null;
+					}
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(resource, doDrain);
+					}
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					if (isActive) {
+						return null;
+					}
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(maxDrain, doDrain);
+					}
+					return null;
+				}
+			});
+		}
+		return super.getCapability(capability, from);
+	}
 
 	/* RECIPE CLASS */
 	public static class CrafterRecipe {
@@ -468,10 +560,34 @@ public class TileCrafter extends TileMachineBase {
 			}
 		}
 
+		private void evaluate() {
+
+			myTile.craftMatrix = new InventoryCraftingFalse(3, 3);
+
+			for (int i = 0; i < 9; i++) {
+				if (craftSlots[i] > 0) {
+					myTile.craftMatrix.setInventorySlotContents(i, ItemHelper.cloneStack(myTile.inventory[craftSlots[i] - 1], 1));
+					myTile.inventory[craftSlots[i] - 1].shrink(1);
+					if (myTile.inventory[craftSlots[i] - 1].getCount() <= 0) {
+						myTile.inventory[craftSlots[i] - 1] = ItemStack.EMPTY;
+					}
+				} else if (craftSlots[i] < 0) {
+					myTile.craftMatrix.setInventorySlotContents(i, ItemHelper.cloneStack(myTile.getTankAsBucket(), 1));
+					myTile.tank.drain(Fluid.BUCKET_VOLUME, true);
+				} else {
+					myTile.craftMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
+				}
+			}
+		}
+
 		private boolean checkIngredients() {
 
 			craftSlots = new int[9];
 			int[] craftCount = new int[18];
+			myTile.usingTank = false;
+
+			ItemStack tankStack = myTile.getTankAsBucket();
+			int tankCount = 0;
 
 			if (isItemStackRecipe) {
 				scan:
@@ -494,6 +610,14 @@ public class TileCrafter extends TileMachineBase {
 					if (craftIngredients[i].equals(Ingredient.EMPTY)) {
 						continue;
 					}
+					if (!tankStack.isEmpty()) {
+						if (craftIngredients[i].apply(tankStack) && myTile.tank.getFluidAmount() - tankCount > 0) {
+							tankCount += Fluid.BUCKET_VOLUME;
+							craftSlots[i] = -1;
+							myTile.usingTank = true;
+							continue;
+						}
+					}
 					for (int j = 0; j < SLOT_OUTPUT; j++) {
 						if (craftIngredients[i].apply(myTile.inventory[j]) && myTile.inventory[j].getCount() - craftCount[j] > 0) {
 							craftCount[j]++;
@@ -507,21 +631,9 @@ public class TileCrafter extends TileMachineBase {
 			return true;
 		}
 
-		private void evaluate() {
+		private boolean isFalseBucket(int slot) {
 
-			myTile.craftMatrix = new InventoryCraftingFalse(3, 3);
-
-			for (int i = 0; i < 9; i++) {
-				if (craftSlots[i] > 0) {
-					myTile.craftMatrix.setInventorySlotContents(i, ItemHelper.cloneStack(myTile.inventory[craftSlots[i] - 1], 1));
-					myTile.inventory[craftSlots[i] - 1].shrink(1);
-					if (myTile.inventory[craftSlots[i] - 1].getCount() <= 0) {
-						myTile.inventory[craftSlots[i] - 1] = ItemStack.EMPTY;
-					}
-				} else {
-					myTile.craftMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
-				}
-			}
+			return craftSlots[slot] == -1;
 		}
 
 	}

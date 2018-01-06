@@ -1,9 +1,6 @@
 package cofh.thermalexpansion.gui.client.machine;
 
-import cofh.core.gui.element.ElementBase;
-import cofh.core.gui.element.ElementButton;
-import cofh.core.gui.element.ElementDualScaled;
-import cofh.core.gui.element.ElementEnergyStored;
+import cofh.core.gui.element.*;
 import cofh.thermalexpansion.block.machine.TileCrafter;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrafter;
@@ -30,12 +27,11 @@ public class GuiCrafter extends GuiPoweredBase {
 	ElementBase slotTank;
 
 	private ElementDualScaled progress;
-	private ElementDualScaled speed;
 
-	private ElementButton setRecipe;
-
-	static final int BUTTON_X = 96;
-	static final int BUTTON_Y = 48;
+	private ElementSimple tankBackground;
+	private ElementFluidTank tank;
+	private ElementFluid progressFluid;
+	private ElementDualScaled progressOverlay;
 
 	public GuiCrafter(InventoryPlayer inventory, TileEntity tile) {
 
@@ -53,6 +49,8 @@ public class GuiCrafter extends GuiPoweredBase {
 
 		super.initGui();
 
+		tankBackground = (ElementSimple) addElement(new ElementSimple(this, 151, 8).setTextureOffsets(176, 104).setSize(18, 62).setTexture(TEX_PATH, 256, 256));
+
 		slotInput = (ElementSlotOverlayCrafter) addElement(new ElementSlotOverlayCrafter(this, 8, 77));
 		slotOutput = addElement(new ElementSlotOverlay(this, 121, 17).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
 
@@ -61,10 +59,17 @@ public class GuiCrafter extends GuiPoweredBase {
 		if (!myTile.smallStorage()) {
 			addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		}
-		// addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setGauge(1).setAlwaysShow(true));
 		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 92, 21).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
+		addElement(new ElementButton(this, 96, 48, "SetRecipe", 176, 0, 176, 16, 176, 32, 16, 16, TEX_PATH).setToolTip("gui.thermalexpansion.machine.crafter.setRecipe"));
 
-		setRecipe = (ElementButton) addElement(new ElementButton(this, BUTTON_X, BUTTON_Y, "SetRecipe", 176, 0, 176, 16, 176, 32, 16, 16, TEX_PATH).setToolTip("gui.thermalexpansion.machine.crafter.setRecipe"));
+		tank = (ElementFluidTank) addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1).setAlwaysShow(true));
+		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 92, 21).setFluid(myTile.getTankFluid()).setSize(24, 16));
+		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 92, 21).setBackground(false).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_FLUID_RIGHT, 64, 16));
+
+		tankBackground.setVisible(myTile.augmentTank());
+		tank.setVisible(myTile.augmentTank());
+		progressFluid.setVisible(myTile.fluidArrow());
+		progressOverlay.setVisible(myTile.fluidArrow());
 	}
 
 	@Override
@@ -75,10 +80,19 @@ public class GuiCrafter extends GuiPoweredBase {
 		slotInput.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
 		slotOutput.setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
-		//slotTank.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
+		// slotTank.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
 
 		progress.setQuantity(baseTile.getScaledProgress(PROGRESS));
 
+		progressFluid.setSize(baseTile.getScaledProgress(PROGRESS), 16);
+		progressOverlay.setQuantity(baseTile.getScaledProgress(PROGRESS));
+
+		progress.setVisible(!myTile.fluidArrow());
+
+		tankBackground.setVisible(myTile.augmentTank());
+		tank.setVisible(myTile.augmentTank());
+		progressFluid.setVisible(myTile.fluidArrow());
+		progressOverlay.setVisible(myTile.fluidArrow());
 	}
 
 	@Override

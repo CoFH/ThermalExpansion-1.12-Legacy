@@ -221,7 +221,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 		}
 		RayTraceResult traceResult = RayTracer.retrace(player, true);
-		if (traceResult == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
+		if (traceResult == null || traceResult.sideHit == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 		}
 		BlockPos pos = traceResult.getBlockPos();

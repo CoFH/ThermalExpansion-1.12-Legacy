@@ -11,6 +11,7 @@ import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.entity.projectile.EntityMorb;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.BehaviorMorbDispense;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.set.hash.THashSet;
@@ -91,6 +92,9 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
+		if (TEProps.creativeTabHideMorbs) {
+			return;
+		}
 		if (isInCreativeTab(tab)) {
 			items.add(new ItemStack(this, 1, 0));
 			items.add(new ItemStack(this, 1, 1));
@@ -203,6 +207,16 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 			addMorb(ItemHelper.cloneStack(morbStandard), name.toString());
 		}
 		CONFIG_MORBS.cleanUp(false, true);
+	}
+
+	public static ItemStack getGenericMorb(ItemStack stack) {
+
+		NBTTagCompound nbt = stack.getTagCompound();
+
+		if (nbt != null && validMobs.contains(nbt.getString("id"))) {
+			return setTag(stack, nbt.getString("id"));
+		}
+		return ItemStack.EMPTY;
 	}
 
 	/* IModelRegister */
