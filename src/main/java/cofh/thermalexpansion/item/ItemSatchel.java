@@ -127,7 +127,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
 
-		if (isVoid(stack) && stack.getTagCompound().hasKey("Random")) {
+		if (isVoid(stack) && stack.getTagCompound() != null && stack.getTagCompound().hasKey("Random")) {
 			stack.getTagCompound().removeTag("Random");
 		}
 	}
