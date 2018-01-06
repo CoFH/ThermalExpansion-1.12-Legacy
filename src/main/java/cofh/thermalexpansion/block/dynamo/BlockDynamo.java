@@ -369,7 +369,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 			);
 		}
 		if (enable[Type.MAGMATIC.getMetadata()]) {
-			addShapedRecipe(dynamoSteam,
+			addShapedRecipe(dynamoMagmatic,
 					" C ",
 					"IGI",
 					"YXY",
@@ -381,7 +381,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 			);
 		}
 		if (enable[Type.COMPRESSION.getMetadata()]) {
-			addShapedRecipe(dynamoSteam,
+			addShapedRecipe(dynamoCompression,
 					" C ",
 					"IGI",
 					"YXY",
@@ -393,7 +393,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 			);
 		}
 		if (enable[Type.REACTANT.getMetadata()]) {
-			addShapedRecipe(dynamoSteam,
+			addShapedRecipe(dynamoReactant,
 					" C ",
 					"IGI",
 					"YXY",
@@ -405,7 +405,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 			);
 		}
 		if (enable[Type.ENERVATION.getMetadata()]) {
-			addShapedRecipe(dynamoSteam,
+			addShapedRecipe(dynamoEnervation,
 					" C ",
 					"IGI",
 					"YXY",
@@ -417,7 +417,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 			);
 		}
 		if (enable[Type.NUMISMATIC.getMetadata()]) {
-			addShapedRecipe(dynamoSteam,
+			addShapedRecipe(dynamoNumismatic,
 					" C ",
 					"IGI",
 					"YXY",

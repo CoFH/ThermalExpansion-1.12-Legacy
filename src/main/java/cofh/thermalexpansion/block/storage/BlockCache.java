@@ -141,10 +141,9 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 
 			if (stack.getTagCompound().hasKey("Item")) {
-				ItemStack stored = ItemHelper.readItemStackFromNBT(stack.getTagCompound().getCompoundTag("Item"));
-
-				tile.setStoredItemType(stored, stored.getCount());
-				tile.lock = stack.getTagCompound().getBoolean("Lock");
+				ItemStack item = ItemHelper.readItemStackFromNBT(stack.getTagCompound().getCompoundTag("Item"));
+				tile.getHandler().setItem(item);
+				tile.setLocked(stack.getTagCompound().getBoolean("Lock"));
 			}
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
@@ -203,7 +202,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 					player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
 					playSound = true;
 				}
-				if (!tile.getStoredItemType().isEmpty() && currentTime - time < 15) {
+				if (!tile.getStoredInstance().isEmpty() && currentTime - time < 15) {
 					playSound &= !insertAllItemsFromPlayer(tile, player);
 				}
 			}
@@ -263,8 +262,8 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 			if (tile.enchantHolding > 0) {
 				CoreEnchantments.addEnchantment(retTag, CoreEnchantments.holding, tile.enchantHolding);
 			}
-			if (!tile.storedStack.isEmpty()) {
-				retTag.setTag("Item", ItemHelper.writeItemStackToNBT(tile.storedStack, tile.getStoredCount(), new NBTTagCompound()));
+			if (!tile.getStoredInstance().isEmpty()) {
+				retTag.setTag("Item", ItemHelper.writeItemStackToNBT(tile.getStoredInstance(), tile.getStoredCount(), new NBTTagCompound()));
 				retTag.setBoolean("Lock", tile.lock);
 			}
 		}

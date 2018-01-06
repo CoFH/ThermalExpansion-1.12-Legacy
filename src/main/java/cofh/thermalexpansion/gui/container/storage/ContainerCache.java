@@ -17,7 +17,7 @@ public class ContainerCache extends ContainerTEBase {
 		myTile = (TileCache) tile;
 
 		/* Custom Inventory */
-		addSlotToContainer(new SlotCustomInventory(myTile, 0, null, 0, 44, 24, false));
+		// addSlotToContainer(new SlotCustomInventory(myTile, 0, null, 0, 44, 24, false));
 	}
 
 }
