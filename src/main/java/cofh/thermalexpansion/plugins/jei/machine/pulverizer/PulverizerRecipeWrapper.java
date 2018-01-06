@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
+
 public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
@@ -74,7 +76,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 		if (recipe.getSecondaryOutput() != null) {
 			recipeOutputs.add(recipe.getSecondaryOutput());
 		}
-		inputs = Collections.singletonList(recipeInputs);
+		inputs = singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		chance = recipe.getSecondaryOutputChance();

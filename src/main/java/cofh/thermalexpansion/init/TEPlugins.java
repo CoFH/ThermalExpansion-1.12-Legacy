@@ -31,6 +31,7 @@ public class TEPlugins {
 		pluginExU2 = new PluginExU2();
 		pluginHarvestCraft = new PluginHarvestCraft();
 		pluginIC2 = new PluginIC2();
+		pluginIceAndFire = new PluginIceAndFire();
 		pluginIntegratedDynamics = new PluginIntegratedDynamics();
 		pluginMysticalAgriculture = new PluginMysticalAgriculture();
 		pluginNatura = new PluginNatura();
@@ -59,6 +60,7 @@ public class TEPlugins {
 		initList.add(pluginExU2);
 		initList.add(pluginHarvestCraft);
 		initList.add(pluginIC2);
+		initList.add(pluginIceAndFire);
 		initList.add(pluginIntegratedDynamics);
 		initList.add(pluginMysticalAgriculture);
 		initList.add(pluginNatura);
@@ -102,6 +104,7 @@ public class TEPlugins {
 	public static PluginExU2 pluginExU2;
 	public static PluginHarvestCraft pluginHarvestCraft;
 	public static PluginIC2 pluginIC2;
+	public static PluginIceAndFire pluginIceAndFire;
 	public static PluginIntegratedDynamics pluginIntegratedDynamics;
 	public static PluginMysticalAgriculture pluginMysticalAgriculture;
 	public static PluginNatura pluginNatura;

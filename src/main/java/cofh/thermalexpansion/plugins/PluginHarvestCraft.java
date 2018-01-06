@@ -10,7 +10,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 
-import java.util.Arrays;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 public class PluginHarvestCraft extends ModPlugin {
 
@@ -198,8 +199,8 @@ public class PluginHarvestCraft extends ModPlugin {
 			{
 				int energy = 4000;
 
-				CentrifugeManager.addRecipe(energy, honeycomb, Arrays.asList(honey, beeswax), null);
-				CentrifugeManager.addRecipe(energy, waxcomb, Arrays.asList(ItemHelper.cloneStack(beeswax, 2)), null);
+				CentrifugeManager.addRecipe(energy, honeycomb, asList(honey, beeswax), null);
+				CentrifugeManager.addRecipe(energy, waxcomb, singletonList(ItemHelper.cloneStack(beeswax, 2)), null);
 			}
 
 			/* FISHER */

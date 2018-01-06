@@ -15,8 +15,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class PluginForestry extends ModPlugin {
 
@@ -147,21 +148,21 @@ public class PluginForestry extends ModPlugin {
 			{
 				int energy = CentrifugeManager.DEFAULT_ENERGY;
 
-				CentrifugeManager.addRecipe(energy, combHoney, Arrays.asList(wax, dropHoney), Arrays.asList(100, 40), null);
-				CentrifugeManager.addRecipe(energy, combCocoa, Arrays.asList(wax, new ItemStack(Items.DYE, 1, 3)), Arrays.asList(100, 50), null);
-				CentrifugeManager.addRecipe(energy, combSimmering, Arrays.asList(waxRefractory, ItemHelper.cloneStack(phosphor, 2)), Arrays.asList(100, 70), null);
-				CentrifugeManager.addRecipe(energy, combStringy, Arrays.asList(propolis, dropHoney), Arrays.asList(100, 40), null);
-				CentrifugeManager.addRecipe(energy, combFrozen, Arrays.asList(wax, dropHoney, new ItemStack(Items.SNOWBALL), pollenCrystalline), Arrays.asList(80, 70, 40, 20), null);
-				CentrifugeManager.addRecipe(energy, combDripping, Arrays.asList(honeydew, dropHoney), Arrays.asList(100, 40), null);
-				CentrifugeManager.addRecipe(energy, combSilky, Arrays.asList(dropHoney, propolisSilky), Arrays.asList(100, 80), null);
-				CentrifugeManager.addRecipe(energy, combParched, Arrays.asList(wax, dropHoney), Arrays.asList(100, 90), null);
-				CentrifugeManager.addRecipe(energy, combMysterious, Arrays.asList(propolisPulsating, dropHoney), Arrays.asList(100, 40), null);
-				CentrifugeManager.addRecipe(energy, combPowdery, Arrays.asList(new ItemStack(Items.GUNPOWDER), wax, dropHoney), Arrays.asList(90, 20, 20), null);
-				CentrifugeManager.addRecipe(energy, combWheat, Arrays.asList(new ItemStack(Items.WHEAT), wax, dropHoney), Arrays.asList(80, 20, 20), null);
-				CentrifugeManager.addRecipe(energy, combMossy, Arrays.asList(wax, dropHoney), Arrays.asList(100, 90), null);
-				CentrifugeManager.addRecipe(energy, combMellow, Arrays.asList(honeydew, new ItemStack(Items.QUARTZ), wax), Arrays.asList(60, 30, 20), null);
+				CentrifugeManager.addRecipe(energy, combHoney, asList(wax, dropHoney), asList(100, 40), null);
+				CentrifugeManager.addRecipe(energy, combCocoa, asList(wax, new ItemStack(Items.DYE, 1, 3)), asList(100, 50), null);
+				CentrifugeManager.addRecipe(energy, combSimmering, asList(waxRefractory, ItemHelper.cloneStack(phosphor, 2)), asList(100, 70), null);
+				CentrifugeManager.addRecipe(energy, combStringy, asList(propolis, dropHoney), asList(100, 40), null);
+				CentrifugeManager.addRecipe(energy, combFrozen, asList(wax, dropHoney, new ItemStack(Items.SNOWBALL), pollenCrystalline), asList(80, 70, 40, 20), null);
+				CentrifugeManager.addRecipe(energy, combDripping, asList(honeydew, dropHoney), asList(100, 40), null);
+				CentrifugeManager.addRecipe(energy, combSilky, asList(dropHoney, propolisSilky), asList(100, 80), null);
+				CentrifugeManager.addRecipe(energy, combParched, asList(wax, dropHoney), asList(100, 90), null);
+				CentrifugeManager.addRecipe(energy, combMysterious, asList(propolisPulsating, dropHoney), asList(100, 40), null);
+				CentrifugeManager.addRecipe(energy, combPowdery, asList(new ItemStack(Items.GUNPOWDER), wax, dropHoney), asList(90, 20, 20), null);
+				CentrifugeManager.addRecipe(energy, combWheat, asList(new ItemStack(Items.WHEAT), wax, dropHoney), asList(80, 20, 20), null);
+				CentrifugeManager.addRecipe(energy, combMossy, asList(wax, dropHoney), asList(100, 90), null);
+				CentrifugeManager.addRecipe(energy, combMellow, asList(honeydew, new ItemStack(Items.QUARTZ), wax), asList(60, 30, 20), null);
 
-				CentrifugeManager.addRecipe(energy, propolisSilky, Arrays.asList(silkWisp, propolis), Arrays.asList(60, 10), null);
+				CentrifugeManager.addRecipe(energy, propolisSilky, asList(silkWisp, propolis), asList(60, 10), null);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);

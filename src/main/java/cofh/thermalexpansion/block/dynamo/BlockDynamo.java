@@ -359,67 +359,73 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 		if (enable[Type.STEAM.getMetadata()]) {
 			addShapedRecipe(dynamoSteam,
 					" C ",
-					"GIG",
-					"IRI",
+					"IGI",
+					"YXY",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearCopper",
 					'I', "ingotIron",
-					'R', "dustRedstone"
+					'X', "dustRedstone",
+					'Y', "ingotCopper"
 			);
 		}
 		if (enable[Type.MAGMATIC.getMetadata()]) {
-			addShapedRecipe(dynamoMagmatic,
+			addShapedRecipe(dynamoSteam,
 					" C ",
-					"GIG",
-					"IRI",
+					"IGI",
+					"YXY",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearInvar",
 					'I', "ingotIron",
-					'R', "dustRedstone"
+					'X', "dustRedstone",
+					'Y', "ingotInvar"
 			);
 		}
 		if (enable[Type.COMPRESSION.getMetadata()]) {
-			addShapedRecipe(dynamoCompression,
+			addShapedRecipe(dynamoSteam,
 					" C ",
-					"GIG",
-					"IRI",
+					"IGI",
+					"YXY",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearTin",
 					'I', "ingotIron",
-					'R', "dustRedstone"
+					'X', "dustRedstone",
+					'Y', "ingotTin"
 			);
 		}
 		if (enable[Type.REACTANT.getMetadata()]) {
-			addShapedRecipe(dynamoReactant,
+			addShapedRecipe(dynamoSteam,
 					" C ",
-					"GIG",
-					"IRI",
+					"IGI",
+					"YXY",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearLead",
 					'I', "ingotIron",
-					'R', "dustRedstone"
+					'X', "dustRedstone",
+					'Y', "ingotLead"
 			);
 		}
 		if (enable[Type.ENERVATION.getMetadata()]) {
-			addShapedRecipe(dynamoEnervation,
+			addShapedRecipe(dynamoSteam,
 					" C ",
-					"GIG",
-					"IRI",
+					"IGI",
+					"YXY",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearElectrum",
 					'I', "ingotIron",
-					'R', "dustRedstone"
+					'X', "dustRedstone",
+					'Y', "ingotElectrum"
 			);
 		}
 		if (enable[Type.NUMISMATIC.getMetadata()]) {
-			addShapedRecipe(dynamoNumismatic,
+			addShapedRecipe(dynamoSteam,
 					" C ",
-					"GIG",
-					"IRI",
+					"IGI",
+					"YXY",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearConstantan",
 					'I', "ingotIron",
-					'R', "dustRedstone"
+					'X', "dustRedstone",
+					'Y', "ingotConstantan"
 			);
 		}
 		// @formatter:on

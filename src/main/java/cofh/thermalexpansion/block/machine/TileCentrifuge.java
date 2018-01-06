@@ -152,12 +152,26 @@ public class TileCentrifuge extends TileMachineBase {
 		List<ItemStack> outputs = recipe.getOutput();
 		List<Integer> chances = recipe.getChance();
 
-		for (int i = 0; i < outputs.size(); i++) {
-			if (world.rand.nextInt(secondaryChance) < chances.get(i)) {
-				if (inventory[i + 1].isEmpty()) {
-					inventory[i + 1] = ItemHelper.cloneStack(outputs.get(i));
-				} else {
-					inventory[i + 1].grow(outputs.get(i).getCount());
+		if (augmentMobs) {
+			for (int i = 0; i < outputs.size(); i++) {
+				for (int j = 0; j < outputs.get(i).getCount(); j++) {
+					if (world.rand.nextInt(secondaryChance + j * 10) < chances.get(i)) {
+						if (inventory[i + 1].isEmpty()) {
+							inventory[i + 1] = ItemHelper.cloneStack(outputs.get(i), 1);
+						} else {
+							inventory[i + 1].grow(1);
+						}
+					}
+				}
+			}
+		} else {
+			for (int i = 0; i < outputs.size(); i++) {
+				if (world.rand.nextInt(secondaryChance) < chances.get(i)) {
+					if (inventory[i + 1].isEmpty()) {
+						inventory[i + 1] = ItemHelper.cloneStack(outputs.get(i));
+					} else {
+						inventory[i + 1].grow(outputs.get(i).getCount());
+					}
 				}
 			}
 		}

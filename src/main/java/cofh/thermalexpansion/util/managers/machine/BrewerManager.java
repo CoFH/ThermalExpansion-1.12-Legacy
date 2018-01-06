@@ -15,11 +15,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import static java.util.Arrays.asList;
 
 public class BrewerManager {
 
@@ -32,7 +33,7 @@ public class BrewerManager {
 
 	public static BrewerRecipe getRecipe(ItemStack input, FluidStack fluid) {
 
-		return input.isEmpty() || fluid == null ? null : recipeMap.get(Arrays.asList(new ComparableItemStackBrewer(input).hashCode(), FluidHelper.getFluidHash(fluid)));
+		return input.isEmpty() || fluid == null ? null : recipeMap.get(asList(new ComparableItemStackBrewer(input).hashCode(), FluidHelper.getFluidHash(fluid)));
 	}
 
 	public static boolean recipeExists(ItemStack input, FluidStack fluid) {
@@ -170,7 +171,7 @@ public class BrewerManager {
 		for (Entry<List<Integer>, BrewerRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
 			ComparableItemStackBrewer input = new ComparableItemStackBrewer(tempRecipe.input);
-			tempMap.put(Arrays.asList(input.hashCode(), FluidHelper.getFluidHash(tempRecipe.inputFluid)), tempRecipe);
+			tempMap.put(asList(input.hashCode(), FluidHelper.getFluidHash(tempRecipe.inputFluid)), tempRecipe);
 			tempSet.add(input);
 		}
 		recipeMap.clear();
@@ -187,7 +188,7 @@ public class BrewerManager {
 			return null;
 		}
 		BrewerRecipe recipe = new BrewerRecipe(input, inputFluid, outputFluid, energy);
-		recipeMap.put(Arrays.asList(new ComparableItemStackBrewer(input).hashCode(), FluidHelper.getFluidHash(inputFluid)), recipe);
+		recipeMap.put(asList(new ComparableItemStackBrewer(input).hashCode(), FluidHelper.getFluidHash(inputFluid)), recipe);
 		validationSet.add(new ComparableItemStackBrewer(input));
 		validationFluids.add(inputFluid.getFluid().getName());
 		return recipe;
@@ -196,7 +197,7 @@ public class BrewerManager {
 	/* REMOVE RECIPES */
 	public static BrewerRecipe removeRecipe(ItemStack input, FluidStack fluid) {
 
-		return recipeMap.remove(Arrays.asList(new ComparableItemStackBrewer(input).hashCode(), FluidHelper.getFluidHash(fluid)));
+		return recipeMap.remove(asList(new ComparableItemStackBrewer(input).hashCode(), FluidHelper.getFluidHash(fluid)));
 	}
 
 	/* HELPERS */

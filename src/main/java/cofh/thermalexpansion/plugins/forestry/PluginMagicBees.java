@@ -7,7 +7,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 
-import java.util.Arrays;
+import static java.util.Arrays.asList;
 
 public class PluginMagicBees extends ModPlugin {
 
@@ -78,21 +78,21 @@ public class PluginMagicBees extends ModPlugin {
 			{
 				int energy = CentrifugeManager.DEFAULT_ENERGY;
 
-				CentrifugeManager.addRecipe(energy, combMundane, Arrays.asList(wax, dropHoney, waxMagic), Arrays.asList(90, 60, 10), null);
-				CentrifugeManager.addRecipe(energy, combMolten, Arrays.asList(waxRefractory, dropHoney), Arrays.asList(86, 8), null);
-				CentrifugeManager.addRecipe(energy, combOccult, Arrays.asList(waxMagic, dropHoney), Arrays.asList(100, 60), null);
-				CentrifugeManager.addRecipe(energy, combOtherworldy, Arrays.asList(wax, dropHoney, waxMagic), Arrays.asList(50, 100, 20), null);
-				CentrifugeManager.addRecipe(energy, combTransmuting, Arrays.asList(wax, propolisUnstable, waxMagic), Arrays.asList(80, 15, 80), null);
-				CentrifugeManager.addRecipe(energy, combPapery, Arrays.asList(wax, new ItemStack(Items.PAPER), waxMagic), Arrays.asList(80, 5, 20), null);
-				CentrifugeManager.addRecipe(energy, combSoul, Arrays.asList(waxSoul, honeydew), Arrays.asList(95, 26), null);
-				CentrifugeManager.addRecipe(energy, combFurtive, Arrays.asList(wax, honeydew, propolis), Arrays.asList(90, 35, 20), null);
-				CentrifugeManager.addRecipe(energy, combMemory, Arrays.asList(waxMagic, honeydew, dropIntellect), Arrays.asList(90, 40, 10), null);
-				CentrifugeManager.addRecipe(energy, combTemporal, Arrays.asList(waxMagic, honeydew, pollenPhased), Arrays.asList(100, 60, 5), null);
-				CentrifugeManager.addRecipe(energy, combForgotten, Arrays.asList(waxAmnesic, dropHoney, propolisPulsating), Arrays.asList(50, 40, 50), null);
-				CentrifugeManager.addRecipe(energy, combWindy, Arrays.asList(waxMagic, new ItemStack(Items.FEATHER)), Arrays.asList(100, 60), null);
-				CentrifugeManager.addRecipe(energy, combFirey, Arrays.asList(waxMagic, new ItemStack(Items.BLAZE_POWDER)), Arrays.asList(100, 60), null);
-				CentrifugeManager.addRecipe(energy, combWatery, Arrays.asList(waxMagic, new ItemStack(Items.DYE, 1, 0)), Arrays.asList(100, 60), null);
-				CentrifugeManager.addRecipe(energy, combEarthy, Arrays.asList(waxMagic, new ItemStack(Items.CLAY_BALL)), Arrays.asList(100, 60), null);
+				CentrifugeManager.addRecipe(energy, combMundane, asList(wax, dropHoney, waxMagic), asList(90, 60, 10), null);
+				CentrifugeManager.addRecipe(energy, combMolten, asList(waxRefractory, dropHoney), asList(86, 8), null);
+				CentrifugeManager.addRecipe(energy, combOccult, asList(waxMagic, dropHoney), asList(100, 60), null);
+				CentrifugeManager.addRecipe(energy, combOtherworldy, asList(wax, dropHoney, waxMagic), asList(50, 100, 20), null);
+				CentrifugeManager.addRecipe(energy, combTransmuting, asList(wax, propolisUnstable, waxMagic), asList(80, 15, 80), null);
+				CentrifugeManager.addRecipe(energy, combPapery, asList(wax, new ItemStack(Items.PAPER), waxMagic), asList(80, 5, 20), null);
+				CentrifugeManager.addRecipe(energy, combSoul, asList(waxSoul, honeydew), asList(95, 26), null);
+				CentrifugeManager.addRecipe(energy, combFurtive, asList(wax, honeydew, propolis), asList(90, 35, 20), null);
+				CentrifugeManager.addRecipe(energy, combMemory, asList(waxMagic, honeydew, dropIntellect), asList(90, 40, 10), null);
+				CentrifugeManager.addRecipe(energy, combTemporal, asList(waxMagic, honeydew, pollenPhased), asList(100, 60, 5), null);
+				CentrifugeManager.addRecipe(energy, combForgotten, asList(waxAmnesic, dropHoney, propolisPulsating), asList(50, 40, 50), null);
+				CentrifugeManager.addRecipe(energy, combWindy, asList(waxMagic, new ItemStack(Items.FEATHER)), asList(100, 60), null);
+				CentrifugeManager.addRecipe(energy, combFirey, asList(waxMagic, new ItemStack(Items.BLAZE_POWDER)), asList(100, 60), null);
+				CentrifugeManager.addRecipe(energy, combWatery, asList(waxMagic, new ItemStack(Items.DYE, 1, 0)), asList(100, 60), null);
+				CentrifugeManager.addRecipe(energy, combEarthy, asList(waxMagic, new ItemStack(Items.CLAY_BALL)), asList(100, 60), null);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);

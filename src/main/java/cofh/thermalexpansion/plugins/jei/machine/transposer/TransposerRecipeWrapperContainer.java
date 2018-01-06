@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
+
 public class TransposerRecipeWrapperContainer extends TransposerRecipeWrapper {
 
 	public TransposerRecipeWrapperContainer(IGuiHelper guiHelper, ItemStack container, String uIdIn) {
@@ -58,7 +60,7 @@ public class TransposerRecipeWrapperContainer extends TransposerRecipeWrapper {
 				}
 			}
 		}
-		inputs = Collections.singletonList(recipeInputs);
+		inputs = singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {

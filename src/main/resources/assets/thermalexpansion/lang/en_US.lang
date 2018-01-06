@@ -98,7 +98,7 @@ info.thermalexpansion.augment.machineCentrifugeMobs.0=Centrifugal Separator: Spe
 info.thermalexpansion.augment.machineCentrifugeMobs.a.0=Allows for the "processing" of Morbs.
 info.thermalexpansion.augment.machineCentrifugeMobs.a.1=Morbs will provide items from the contained mobs.
 info.thermalexpansion.augment.machineCentrifugeMobs.b.0=Only Morbs may be "processed."
-info.thermalexpansion.augment.machineCentrifugeMobs.c.0=Not all mobs will be compatible.
+info.thermalexpansion.augment.machineCentrifugeMobs.c.0=Not all mobs are compatible.
 
 info.thermalexpansion.augment.machineChargerRepair.0=Energetic Infuser: Specialization
 info.thermalexpansion.augment.machineChargerRepair.a.0=Allows for damaged items to be repaired.
@@ -127,7 +127,7 @@ info.thermalexpansion.augment.machineCompactorMint.c.0=Machine must be toggled i
 info.thermalexpansion.augment.machineCrafterTank.0=Sequential Assembler: Functionality
 info.thermalexpansion.augment.machineCrafterTank.a.0=Adds a fluid tank to the machine.
 info.thermalexpansion.augment.machineCrafterTank.a.1=Fluid in the tank can be used in recipes.
-info.thermalexpansion.augment.machineCrafterTank.c.0=Not all recipes will be compatible.
+info.thermalexpansion.augment.machineCrafterTank.c.0=Not all recipes are compatible.
 
 info.thermalexpansion.augment.machineCrucibleAlloy.0=Magma Crucible: Specialization
 info.thermalexpansion.augment.machineCrucibleAlloy.a.0=Magma Crucible: Specialization
@@ -170,7 +170,7 @@ info.thermalexpansion.augment.machineInsolatorMonoculture.b.1=Secondary output c
 
 info.thermalexpansion.augment.machineInsolatorTree.0=Phytogenic Insolator: Functionality
 info.thermalexpansion.augment.machineInsolatorTree.a.0=Allows for trees to be grown.
-info.thermalexpansion.augment.machineInsolatorTree.c.0=Not all saplings will be compatible.
+info.thermalexpansion.augment.machineInsolatorTree.c.0=Not all saplings are compatible.
 
 info.thermalexpansion.augment.machinePower.0=Machines: Processing Speed
 info.thermalexpansion.augment.machinePower.a.0=Increases maximum power usage.

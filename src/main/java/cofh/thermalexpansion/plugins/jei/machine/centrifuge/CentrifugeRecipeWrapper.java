@@ -19,8 +19,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import static java.util.Collections.singletonList;
 
 public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 
@@ -60,7 +61,7 @@ public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 		List<FluidStack> recipeFluids = new ArrayList<>();
 		recipeFluids.add(recipe.getFluid());
 
-		inputs = Collections.singletonList(recipeInputs);
+		inputs = singletonList(recipeInputs);
 		outputs = recipeOutputs;
 		outputFluids = recipeFluids;
 

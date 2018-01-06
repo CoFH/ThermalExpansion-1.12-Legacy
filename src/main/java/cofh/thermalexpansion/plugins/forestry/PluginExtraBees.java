@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
 
-import java.util.Arrays;
+import static java.util.Arrays.asList;
 
 public class PluginExtraBees extends ModPlugin {
 
@@ -139,43 +139,43 @@ public class PluginExtraBees extends ModPlugin {
 			{
 				int energy = CentrifugeManager.DEFAULT_ENERGY;
 
-				CentrifugeManager.addRecipe(energy, combIron, Arrays.asList(ItemMaterial.dustIron, dropHoney, wax), Arrays.asList(25, 25, 50), null);
-				CentrifugeManager.addRecipe(energy, combGold, Arrays.asList(ItemMaterial.dustGold, dropHoney, wax), Arrays.asList(25, 25, 50), null);
-				CentrifugeManager.addRecipe(energy, combCopper, Arrays.asList(ItemMaterial.dustCopper, dropHoney, wax), Arrays.asList(25, 25, 50), null);
-				CentrifugeManager.addRecipe(energy, combTin, Arrays.asList(ItemMaterial.dustTin, dropHoney, wax), Arrays.asList(25, 25, 50), null);
-				CentrifugeManager.addRecipe(energy, combSilver, Arrays.asList(ItemMaterial.dustSilver, dropHoney, wax), Arrays.asList(25, 25, 50), null);
-				CentrifugeManager.addRecipe(energy, combLead, Arrays.asList(ItemMaterial.dustLead, dropHoney, wax), Arrays.asList(25, 25, 50), null);
-				CentrifugeManager.addRecipe(energy, combNickel, Arrays.asList(ItemMaterial.dustNickel, dropHoney, wax), Arrays.asList(25, 25, 50), null);
-				CentrifugeManager.addRecipe(energy, combPlatinum, Arrays.asList(ItemMaterial.dustPlatinum, dropHoney, wax), Arrays.asList(25, 25, 50), null);
+				CentrifugeManager.addRecipe(energy, combIron, asList(ItemMaterial.dustIron, dropHoney, wax), asList(25, 25, 50), null);
+				CentrifugeManager.addRecipe(energy, combGold, asList(ItemMaterial.dustGold, dropHoney, wax), asList(25, 25, 50), null);
+				CentrifugeManager.addRecipe(energy, combCopper, asList(ItemMaterial.dustCopper, dropHoney, wax), asList(25, 25, 50), null);
+				CentrifugeManager.addRecipe(energy, combTin, asList(ItemMaterial.dustTin, dropHoney, wax), asList(25, 25, 50), null);
+				CentrifugeManager.addRecipe(energy, combSilver, asList(ItemMaterial.dustSilver, dropHoney, wax), asList(25, 25, 50), null);
+				CentrifugeManager.addRecipe(energy, combLead, asList(ItemMaterial.dustLead, dropHoney, wax), asList(25, 25, 50), null);
+				CentrifugeManager.addRecipe(energy, combNickel, asList(ItemMaterial.dustNickel, dropHoney, wax), asList(25, 25, 50), null);
+				CentrifugeManager.addRecipe(energy, combPlatinum, asList(ItemMaterial.dustPlatinum, dropHoney, wax), asList(25, 25, 50), null);
 
-				CentrifugeManager.addRecipe(energy, combLapis, Arrays.asList(new ItemStack(Items.DYE, 6, 4), dropHoney, wax), Arrays.asList(100, 25, 50), null);
-				CentrifugeManager.addRecipe(energy, combEmerald, Arrays.asList(ItemMaterial.nuggetEmerald, dropHoney, wax), Arrays.asList(100, 25, 50), null);
-				CentrifugeManager.addRecipe(energy, combDiamond, Arrays.asList(ItemMaterial.nuggetDiamond, dropHoney, wax), Arrays.asList(100, 25, 50), null);
+				CentrifugeManager.addRecipe(energy, combLapis, asList(new ItemStack(Items.DYE, 6, 4), dropHoney, wax), asList(100, 25, 50), null);
+				CentrifugeManager.addRecipe(energy, combEmerald, asList(ItemMaterial.nuggetEmerald, dropHoney, wax), asList(100, 25, 50), null);
+				CentrifugeManager.addRecipe(energy, combDiamond, asList(ItemMaterial.nuggetDiamond, dropHoney, wax), asList(100, 25, 50), null);
 
-				CentrifugeManager.addRecipe(energy, combClay, Arrays.asList(new ItemStack(Items.CLAY_BALL), dropHoney, wax), Arrays.asList(80, 80, 25), null);
-				CentrifugeManager.addRecipe(energy, combRedstone, Arrays.asList(new ItemStack(Items.REDSTONE), dropHoney, wax), Arrays.asList(100, 50, 80), null);
-				CentrifugeManager.addRecipe(energy, combGlowstone, Arrays.asList(new ItemStack(Items.GLOWSTONE_DUST), dropHoney), Arrays.asList(100, 25), null);
-				CentrifugeManager.addRecipe(energy, combCoal, Arrays.asList(ItemMaterial.dustCoal, dropHoney, wax), Arrays.asList(25, 75, 80), null);
-				CentrifugeManager.addRecipe(energy, combObsidian, Arrays.asList(ItemMaterial.dustObsidian, dropHoney), Arrays.asList(75, 50), null);
-				CentrifugeManager.addRecipe(energy, combSulfur, Arrays.asList(ItemMaterial.dustSulfur, dropAcid, wax), Arrays.asList(75, 50, 80), null);
-				CentrifugeManager.addRecipe(energy, combNiter, Arrays.asList(ItemMaterial.dustNiter, dropHoney), Arrays.asList(100, 25), null);
+				CentrifugeManager.addRecipe(energy, combClay, asList(new ItemStack(Items.CLAY_BALL), dropHoney, wax), asList(80, 80, 25), null);
+				CentrifugeManager.addRecipe(energy, combRedstone, asList(new ItemStack(Items.REDSTONE), dropHoney, wax), asList(100, 50, 80), null);
+				CentrifugeManager.addRecipe(energy, combGlowstone, asList(new ItemStack(Items.GLOWSTONE_DUST), dropHoney), asList(100, 25), null);
+				CentrifugeManager.addRecipe(energy, combCoal, asList(ItemMaterial.dustCoal, dropHoney, wax), asList(25, 75, 80), null);
+				CentrifugeManager.addRecipe(energy, combObsidian, asList(ItemMaterial.dustObsidian, dropHoney), asList(75, 50), null);
+				CentrifugeManager.addRecipe(energy, combSulfur, asList(ItemMaterial.dustSulfur, dropAcid, wax), asList(75, 50, 80), null);
+				CentrifugeManager.addRecipe(energy, combNiter, asList(ItemMaterial.dustNiter, dropHoney), asList(100, 25), null);
 
-				CentrifugeManager.addRecipe(energy, combMushroom, Arrays.asList(new ItemStack(Blocks.BROWN_MUSHROOM_BLOCK), new ItemStack(Blocks.RED_MUSHROOM_BLOCK), wax), Arrays.asList(100, 75, 90), null);
-				CentrifugeManager.addRecipe(energy, combSlime, Arrays.asList(new ItemStack(Items.SLIME_BALL), dropHoney, wax), Arrays.asList(75, 75, 100), null);
-				CentrifugeManager.addRecipe(energy, combBlaze, Arrays.asList(new ItemStack(Items.BLAZE_POWDER), wax), Arrays.asList(100, 75), null);
+				CentrifugeManager.addRecipe(energy, combMushroom, asList(new ItemStack(Blocks.BROWN_MUSHROOM_BLOCK), new ItemStack(Blocks.RED_MUSHROOM_BLOCK), wax), asList(100, 75, 90), null);
+				CentrifugeManager.addRecipe(energy, combSlime, asList(new ItemStack(Items.SLIME_BALL), dropHoney, wax), asList(75, 75, 100), null);
+				CentrifugeManager.addRecipe(energy, combBlaze, asList(new ItemStack(Items.BLAZE_POWDER), wax), asList(100, 75), null);
 
-				CentrifugeManager.addRecipe(energy, combBarren, Arrays.asList(dropHoney, wax), Arrays.asList(50, 100), null);
-				CentrifugeManager.addRecipe(energy, combRotten, Arrays.asList(new ItemStack(Items.ROTTEN_FLESH), dropHoney, wax), Arrays.asList(80, 20, 20), null);
-				CentrifugeManager.addRecipe(energy, combBone, Arrays.asList(new ItemStack(Items.DYE, 1, 15), dropHoney, wax), Arrays.asList(80, 20, 20), null);
-				CentrifugeManager.addRecipe(energy, combWater, Arrays.asList(propolisWater, dropHoney), Arrays.asList(100, 90), null);
-				CentrifugeManager.addRecipe(energy, combRocky, Arrays.asList(dropHoney, wax), Arrays.asList(25, 50), null);
-				CentrifugeManager.addRecipe(energy, combOld, Arrays.asList(dropHoney, wax), Arrays.asList(90, 100), null);
-				CentrifugeManager.addRecipe(energy, combTar, Arrays.asList(propolisCreosote, dropHoney), Arrays.asList(70, 50), null);
+				CentrifugeManager.addRecipe(energy, combBarren, asList(dropHoney, wax), asList(50, 100), null);
+				CentrifugeManager.addRecipe(energy, combRotten, asList(new ItemStack(Items.ROTTEN_FLESH), dropHoney, wax), asList(80, 20, 20), null);
+				CentrifugeManager.addRecipe(energy, combBone, asList(new ItemStack(Items.DYE, 1, 15), dropHoney, wax), asList(80, 20, 20), null);
+				CentrifugeManager.addRecipe(energy, combWater, asList(propolisWater, dropHoney), asList(100, 90), null);
+				CentrifugeManager.addRecipe(energy, combRocky, asList(dropHoney, wax), asList(25, 50), null);
+				CentrifugeManager.addRecipe(energy, combOld, asList(dropHoney, wax), asList(90, 100), null);
+				CentrifugeManager.addRecipe(energy, combTar, asList(propolisCreosote, dropHoney), asList(70, 50), null);
 
-				CentrifugeManager.addRecipe(energy, combCompost, Arrays.asList(compost, dropHoney), Arrays.asList(100, 25), null);
+				CentrifugeManager.addRecipe(energy, combCompost, asList(compost, dropHoney), asList(100, 25), null);
 
 				for (int i = 0; i < 16; i++) {
-					CentrifugeManager.addRecipe(energy, tintedCombs[i], Arrays.asList(tintedDrops[i], dropHoney, wax), Arrays.asList(100, 80, 80), null);
+					CentrifugeManager.addRecipe(energy, tintedCombs[i], asList(tintedDrops[i], dropHoney, wax), asList(100, 80, 80), null);
 				}
 			}
 		} catch (Throwable t) {

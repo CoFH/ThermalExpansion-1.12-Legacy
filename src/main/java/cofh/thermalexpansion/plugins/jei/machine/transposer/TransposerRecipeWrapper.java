@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
+
 public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
@@ -64,7 +66,7 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 		List<FluidStack> recipeFluids = new ArrayList<>();
 		recipeFluids.add(recipe.getFluid());
 
-		inputs = Collections.singletonList(recipeInputs);
+		inputs = singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {

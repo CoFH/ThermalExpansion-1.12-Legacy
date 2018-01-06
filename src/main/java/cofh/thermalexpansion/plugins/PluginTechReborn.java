@@ -11,7 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
 
-import java.util.Arrays;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 public class PluginTechReborn extends ModPlugin {
 
@@ -64,9 +65,9 @@ public class PluginTechReborn extends ModPlugin {
 			{
 				int energy = CentrifugeManager.DEFAULT_ENERGY;
 
-				CentrifugeManager.addRecipe(energy * 16, ItemHelper.getOre("dustRedGarnet", 16), Arrays.asList(ItemHelper.getOre("dustSpessartine", 8), ItemHelper.getOre("dustAlmandine", 5), ItemHelper.getOre("dustPyrope", 3)), null);
-				CentrifugeManager.addRecipe(energy * 16, ItemHelper.getOre("dustYellowGarnet", 16), Arrays.asList(ItemHelper.getOre("dustGrossular", 8), ItemHelper.getOre("dustAndradite", 5), ItemHelper.getOre("dustUvarovite", 3)), null);
-				CentrifugeManager.addRecipe(energy, ItemHelper.getOre("dustDarkAshes"), Arrays.asList(ItemHelper.getOre("dustAshes")), null);
+				CentrifugeManager.addRecipe(energy * 16, ItemHelper.getOre("dustRedGarnet", 16), asList(ItemHelper.getOre("dustSpessartine", 8), ItemHelper.getOre("dustAlmandine", 5), ItemHelper.getOre("dustPyrope", 3)), null);
+				CentrifugeManager.addRecipe(energy * 16, ItemHelper.getOre("dustYellowGarnet", 16), asList(ItemHelper.getOre("dustGrossular", 8), ItemHelper.getOre("dustAndradite", 5), ItemHelper.getOre("dustUvarovite", 3)), null);
+				CentrifugeManager.addRecipe(energy, ItemHelper.getOre("dustDarkAshes"), singletonList(ItemHelper.getOre("dustAshes")), null);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);

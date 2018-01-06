@@ -17,8 +17,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+
+import static java.util.Arrays.asList;
 
 public class SmelterManager {
 
@@ -43,8 +48,8 @@ public class SmelterManager {
 		ComparableItemStackSmelter query = new ComparableItemStackSmelter(primaryInput);
 		ComparableItemStackSmelter querySecondary = new ComparableItemStackSmelter(secondaryInput);
 
-		SmelterRecipe recipe = recipeMap.get(Arrays.asList(query, querySecondary));
-		return recipe == null && recipeMap.get(Arrays.asList(querySecondary, query)) != null;
+		SmelterRecipe recipe = recipeMap.get(asList(query, querySecondary));
+		return recipe == null && recipeMap.get(asList(querySecondary, query)) != null;
 	}
 
 	public static SmelterRecipe getRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
@@ -55,10 +60,10 @@ public class SmelterManager {
 		ComparableItemStackSmelter query = new ComparableItemStackSmelter(primaryInput);
 		ComparableItemStackSmelter querySecondary = new ComparableItemStackSmelter(secondaryInput);
 
-		SmelterRecipe recipe = recipeMap.get(Arrays.asList(query, querySecondary));
+		SmelterRecipe recipe = recipeMap.get(asList(query, querySecondary));
 
 		if (recipe == null) {
-			recipe = recipeMap.get(Arrays.asList(querySecondary, query));
+			recipe = recipeMap.get(asList(querySecondary, query));
 		}
 		if (recipe == null) {
 			return null;
@@ -423,7 +428,7 @@ public class SmelterManager {
 			ComparableItemStackSmelter primary = new ComparableItemStackSmelter(tempRecipe.primaryInput);
 			ComparableItemStackSmelter secondary = new ComparableItemStackSmelter(tempRecipe.secondaryInput);
 
-			tempMap.put(Arrays.asList(primary, secondary), tempRecipe);
+			tempMap.put(asList(primary, secondary), tempRecipe);
 			tempSet.add(primary);
 			tempSet.add(secondary);
 		}
@@ -449,7 +454,7 @@ public class SmelterManager {
 			return null;
 		}
 		SmelterRecipe recipe = new SmelterRecipe(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryOutput.isEmpty() ? 0 : secondaryChance, energy);
-		recipeMap.put(Arrays.asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput)), recipe);
+		recipeMap.put(asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput)), recipe);
 		validationSet.add(new ComparableItemStackSmelter(primaryInput));
 		validationSet.add(new ComparableItemStackSmelter(secondaryInput));
 		return recipe;
@@ -468,7 +473,7 @@ public class SmelterManager {
 	/* REMOVE RECIPES */
 	public static SmelterRecipe removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
-		return recipeMap.remove(Arrays.asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput)));
+		return recipeMap.remove(asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput)));
 	}
 
 	/* HELPERS */

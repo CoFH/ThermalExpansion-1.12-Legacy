@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
+
 public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
@@ -77,7 +79,7 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 				energy = recipe.getEnergy();
 				break;
 		}
-		inputs = Collections.singletonList(recipeInputs);
+		inputs = singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);

@@ -14,7 +14,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import static java.util.Collections.singletonList;
 
 public class PluginExtraTrees extends ModPlugin {
 
@@ -252,7 +253,7 @@ public class PluginExtraTrees extends ModPlugin {
 				}
 				if (juiceCarrot != null) {
 					CentrifugeManager.addRecipe(energy, new ItemStack(Items.CARROT), new ArrayList<>(), new FluidStack(juiceCarrot, 200));
-					CentrifugeManager.addRecipe(energy, new ItemStack(Items.CARROT_ON_A_STICK), Arrays.asList(new ItemStack(Items.FISHING_ROD)), new FluidStack(juiceCarrot, 200));
+					CentrifugeManager.addRecipe(energy, new ItemStack(Items.CARROT_ON_A_STICK), singletonList(new ItemStack(Items.FISHING_ROD)), new FluidStack(juiceCarrot, 200));
 				}
 				if (juiceGrapefruit != null) {
 					CentrifugeManager.addRecipe(energy, getItemStack("food", 1, 11), new ArrayList<>(), new FluidStack(juiceGrapefruit, 500));

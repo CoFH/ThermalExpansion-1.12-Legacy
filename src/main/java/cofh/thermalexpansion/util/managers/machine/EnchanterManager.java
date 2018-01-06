@@ -11,11 +11,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import static java.util.Arrays.asList;
 
 public class EnchanterManager {
 
@@ -36,8 +37,8 @@ public class EnchanterManager {
 		ComparableItemStackEnchanter query = new ComparableItemStackEnchanter(primaryInput);
 		ComparableItemStackEnchanter querySecondary = new ComparableItemStackEnchanter(secondaryInput);
 
-		EnchanterRecipe recipe = recipeMap.get(Arrays.asList(query, querySecondary));
-		return recipe == null && recipeMap.get(Arrays.asList(querySecondary, query)) != null;
+		EnchanterRecipe recipe = recipeMap.get(asList(query, querySecondary));
+		return recipe == null && recipeMap.get(asList(querySecondary, query)) != null;
 	}
 
 	public static EnchanterRecipe getRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
@@ -48,10 +49,10 @@ public class EnchanterManager {
 		ComparableItemStackEnchanter query = new ComparableItemStackEnchanter(primaryInput);
 		ComparableItemStackEnchanter querySecondary = new ComparableItemStackEnchanter(secondaryInput);
 
-		EnchanterRecipe recipe = recipeMap.get(Arrays.asList(query, querySecondary));
+		EnchanterRecipe recipe = recipeMap.get(asList(query, querySecondary));
 
 		if (recipe == null) {
-			recipe = recipeMap.get(Arrays.asList(querySecondary, query));
+			recipe = recipeMap.get(asList(querySecondary, query));
 		}
 		if (recipe == null) {
 			return null;
@@ -113,7 +114,7 @@ public class EnchanterManager {
 				Enchantment enchant = Enchantment.getEnchantmentByLocation(tempRecipe.enchantName);
 				tempRecipe = new EnchanterRecipe(tempRecipe.primaryInput, tempRecipe.secondaryInput, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, 1)), tempRecipe.experience, tempRecipe.energy, tempRecipe.type);
 			}
-			tempMap.put(Arrays.asList(primary, secondary), tempRecipe);
+			tempMap.put(asList(primary, secondary), tempRecipe);
 			tempSet.add(primary);
 			tempSet.add(secondary);
 		}
@@ -138,7 +139,7 @@ public class EnchanterManager {
 			return null;
 		}
 		EnchanterRecipe recipe = new EnchanterRecipe(primaryInput, secondaryInput, output, experience, energy, type);
-		recipeMap.put(Arrays.asList(new ComparableItemStackEnchanter(primaryInput), new ComparableItemStackEnchanter(secondaryInput)), recipe);
+		recipeMap.put(asList(new ComparableItemStackEnchanter(primaryInput), new ComparableItemStackEnchanter(secondaryInput)), recipe);
 		validationSet.add(new ComparableItemStackEnchanter(primaryInput));
 		validationSet.add(new ComparableItemStackEnchanter(secondaryInput));
 		return recipe;
@@ -163,7 +164,7 @@ public class EnchanterManager {
 	/* REMOVE RECIPES */
 	public static EnchanterRecipe removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
-		return recipeMap.remove(Arrays.asList(new ComparableItemStackEnchanter(primaryInput), new ComparableItemStackEnchanter(secondaryInput)));
+		return recipeMap.remove(asList(new ComparableItemStackEnchanter(primaryInput), new ComparableItemStackEnchanter(secondaryInput)));
 	}
 
 	/* HELPERS */

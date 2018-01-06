@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
+
 public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
@@ -75,7 +77,7 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 			outputFluids = Collections.emptyList();
 			energy = recipe.getEnergy();
 		}
-		inputs = Collections.singletonList(recipeInputs);
+		inputs = singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		chance = recipe.getSecondaryOutputChance();

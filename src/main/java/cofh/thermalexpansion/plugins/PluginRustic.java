@@ -19,7 +19,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import static java.util.Collections.singletonList;
 
 public class PluginRustic extends ModPlugin {
 
@@ -141,7 +142,7 @@ public class PluginRustic extends ModPlugin {
 				int energy = CentrifugeManager.DEFAULT_ENERGY;
 
 				if (honey != null) {
-					CentrifugeManager.addRecipe(energy, honeycomb, Arrays.asList(beeswax), new FluidStack(honey, 250));
+					CentrifugeManager.addRecipe(energy, honeycomb, singletonList(beeswax), new FluidStack(honey, 250));
 				}
 				if (juiceGrape != null) {
 					CentrifugeManager.addRecipe(energy, grapes, new ArrayList<>(), new FluidStack(juiceGrape, 250));

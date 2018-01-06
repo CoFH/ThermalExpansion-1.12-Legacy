@@ -41,9 +41,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapelessRecipe;
+import static java.util.Arrays.asList;
 
 public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister {
 
@@ -194,7 +198,7 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 
 	public static void parseMorbs() {
 
-		List<String> list = Arrays.asList(blacklist);
+		List<String> list = asList(blacklist);
 
 		for (ResourceLocation name : EntityList.getEntityNameList()) {
 			Class<? extends Entity> clazz = EntityList.getClass(name);

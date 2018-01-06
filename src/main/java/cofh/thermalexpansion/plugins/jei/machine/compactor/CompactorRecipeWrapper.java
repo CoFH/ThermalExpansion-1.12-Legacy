@@ -17,8 +17,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import static java.util.Collections.singletonList;
 
 public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 
@@ -48,7 +49,7 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 		recipeOutputs.add(recipe.getOutput());
 
-		inputs = Collections.singletonList(recipeInputs);
+		inputs = singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		energy = recipe.getEnergy();

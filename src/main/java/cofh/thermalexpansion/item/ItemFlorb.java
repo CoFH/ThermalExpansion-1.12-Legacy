@@ -46,11 +46,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapelessRecipe;
+import static java.util.Arrays.asList;
 
 public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitializer {
 
@@ -193,7 +193,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 
 	public static void parseFlorbs() {
 
-		List<String> list = Arrays.asList(blacklist);
+		List<String> list = asList(blacklist);
 
 		for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
 			if (!fluid.canBePlacedInWorld()) {

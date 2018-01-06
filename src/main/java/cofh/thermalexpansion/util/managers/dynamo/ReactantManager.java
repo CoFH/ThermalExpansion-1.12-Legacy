@@ -10,11 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import static java.util.Arrays.asList;
 
 public class ReactantManager {
 
@@ -35,12 +36,12 @@ public class ReactantManager {
 
 	public static Reaction getReaction(ItemStack reactant, FluidStack fluid) {
 
-		return reactant.isEmpty() || fluid == null ? null : reactionMap.get(Arrays.asList(new ComparableItemStack(reactant).hashCode(), fluid.getFluid().getName().hashCode()));
+		return reactant.isEmpty() || fluid == null ? null : reactionMap.get(asList(new ComparableItemStack(reactant).hashCode(), fluid.getFluid().getName().hashCode()));
 	}
 
 	public static Reaction getReaction(ItemStack reactant, Fluid fluid) {
 
-		return reactant.isEmpty() || fluid == null ? null : reactionMap.get(Arrays.asList(new ComparableItemStack(reactant).hashCode(), fluid.getName().hashCode()));
+		return reactant.isEmpty() || fluid == null ? null : reactionMap.get(asList(new ComparableItemStack(reactant).hashCode(), fluid.getName().hashCode()));
 	}
 
 	public static boolean reactionExists(ItemStack reactant, FluidStack fluid) {
@@ -119,7 +120,7 @@ public class ReactantManager {
 		for (Entry<List<Integer>, Reaction> entry : reactionMap.entrySet()) {
 			tempReaction = entry.getValue();
 			ComparableItemStack reactant = new ComparableItemStack(tempReaction.reactant);
-			tempReactionMap.put(Arrays.asList(reactant.hashCode(), tempReaction.getFluidName().hashCode()), tempReaction);
+			tempReactionMap.put(asList(reactant.hashCode(), tempReaction.getFluidName().hashCode()), tempReaction);
 			tempSet.add(reactant);
 
 			if (validFluidsElemental.contains(tempReaction.getFluidName())) {
@@ -146,7 +147,7 @@ public class ReactantManager {
 			return false;
 		}
 		Reaction reaction = new Reaction(reactant, fluid, energy);
-		reactionMap.put(Arrays.asList(new ComparableItemStack(reactant).hashCode(), fluid.getName().hashCode()), reaction);
+		reactionMap.put(asList(new ComparableItemStack(reactant).hashCode(), fluid.getName().hashCode()), reaction);
 		validReactants.add(new ComparableItemStack(reactant));
 		validFluids.add(fluid.getName());
 		return true;
@@ -165,7 +166,7 @@ public class ReactantManager {
 	/* REMOVE REACTIONS */
 	public static boolean removeReaction(ItemStack reactant, Fluid fluid) {
 
-		return reactionMap.remove(Arrays.asList(new ComparableItemStack(reactant).hashCode(), fluid.getName().hashCode())) != null;
+		return reactionMap.remove(asList(new ComparableItemStack(reactant).hashCode(), fluid.getName().hashCode())) != null;
 	}
 
 	/* REACTION CLASS */

@@ -18,15 +18,20 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 public class CentrifugeManager {
 
 	private static Map<ComparableItemStackCentrifuge, CentrifugeRecipe> recipeMap = new THashMap<>();
 	private static Map<ComparableItemStackCentrifuge, CentrifugeRecipe> recipeMapMobs = new THashMap<>();
 
-	public static final int DEFAULT_ENERGY = 4000;
+	public static final int DEFAULT_ENERGY = 2000;
 
 	public static CentrifugeRecipe getRecipe(ItemStack input) {
 
@@ -77,20 +82,20 @@ public class CentrifugeManager {
 
 		int energy = DEFAULT_ENERGY;
 
-		addRecipe(energy, new ItemStack(Items.MAGMA_CREAM), Arrays.asList(new ItemStack(Items.SLIME_BALL), new ItemStack(Items.BLAZE_POWDER)), null);
+		addRecipe(energy, new ItemStack(Items.MAGMA_CREAM), asList(new ItemStack(Items.SLIME_BALL), new ItemStack(Items.BLAZE_POWDER)), null);
 
-		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustElectrum, 2), Arrays.asList(ItemHelper.cloneStack(ItemMaterial.dustGold), ItemHelper.cloneStack(ItemMaterial.dustSilver)), null);
-		addRecipe(energy * 3, ItemHelper.cloneStack(ItemMaterial.dustInvar, 3), Arrays.asList(ItemHelper.cloneStack(ItemMaterial.dustIron, 2), ItemHelper.cloneStack(ItemMaterial.dustNickel)), null);
-		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustBronze, 4), Arrays.asList(ItemHelper.cloneStack(ItemMaterial.dustCopper, 3), ItemHelper.cloneStack(ItemMaterial.dustTin)), null);
-		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustConstantan, 2), Arrays.asList(ItemHelper.cloneStack(ItemMaterial.dustCopper), ItemHelper.cloneStack(ItemMaterial.dustNickel)), null);
-		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustSignalum, 4), Arrays.asList(ItemHelper.cloneStack(ItemMaterial.dustCopper, 3), ItemHelper.cloneStack(ItemMaterial.dustSilver)), new FluidStack(TFFluids.fluidRedstone, Fluid.BUCKET_VOLUME));
-		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustLumium, 4), Arrays.asList(ItemHelper.cloneStack(ItemMaterial.dustTin, 3), ItemHelper.cloneStack(ItemMaterial.dustSilver)), new FluidStack(TFFluids.fluidGlowstone, Fluid.BUCKET_VOLUME));
-		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustEnderium, 4), Arrays.asList(ItemHelper.cloneStack(ItemMaterial.dustLead, 3), ItemHelper.cloneStack(ItemMaterial.dustPlatinum)), new FluidStack(TFFluids.fluidEnder, Fluid.BUCKET_VOLUME));
+		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustElectrum, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustGold), ItemHelper.cloneStack(ItemMaterial.dustSilver)), null);
+		addRecipe(energy * 3, ItemHelper.cloneStack(ItemMaterial.dustInvar, 3), asList(ItemHelper.cloneStack(ItemMaterial.dustIron, 2), ItemHelper.cloneStack(ItemMaterial.dustNickel)), null);
+		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustBronze, 4), asList(ItemHelper.cloneStack(ItemMaterial.dustCopper, 3), ItemHelper.cloneStack(ItemMaterial.dustTin)), null);
+		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustConstantan, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustCopper), ItemHelper.cloneStack(ItemMaterial.dustNickel)), null);
+		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustSignalum, 4), asList(ItemHelper.cloneStack(ItemMaterial.dustCopper, 3), ItemHelper.cloneStack(ItemMaterial.dustSilver)), new FluidStack(TFFluids.fluidRedstone, Fluid.BUCKET_VOLUME));
+		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustLumium, 4), asList(ItemHelper.cloneStack(ItemMaterial.dustTin, 3), ItemHelper.cloneStack(ItemMaterial.dustSilver)), new FluidStack(TFFluids.fluidGlowstone, Fluid.BUCKET_VOLUME));
+		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustEnderium, 4), asList(ItemHelper.cloneStack(ItemMaterial.dustLead, 3), ItemHelper.cloneStack(ItemMaterial.dustPlatinum)), new FluidStack(TFFluids.fluidEnder, Fluid.BUCKET_VOLUME));
 
-		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustPyrotheum, 2), Arrays.asList(ItemHelper.cloneStack(ItemMaterial.dustCoal), ItemHelper.cloneStack(ItemMaterial.dustSulfur), new ItemStack(Items.BLAZE_POWDER), new ItemStack(Items.REDSTONE)), null);
-		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustCryotheum, 2), Arrays.asList(ItemHelper.cloneStack(ItemMaterial.dustNiter), ItemHelper.cloneStack(ItemMaterial.dustBlizz), new ItemStack(Items.SNOWBALL), new ItemStack(Items.REDSTONE)), null);
-		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustAerotheum, 2), Arrays.asList(ItemHelper.cloneStack(ItemMaterial.dustNiter), ItemHelper.cloneStack(ItemMaterial.dustBlitz), new ItemStack(Blocks.SAND), new ItemStack(Items.REDSTONE)), null);
-		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustPetrotheum, 2), Arrays.asList(ItemHelper.cloneStack(ItemMaterial.dustObsidian), ItemHelper.cloneStack(ItemMaterial.dustBasalz), new ItemStack(Items.CLAY_BALL), new ItemStack(Items.REDSTONE)), null);
+		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustPyrotheum, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustCoal), ItemHelper.cloneStack(ItemMaterial.dustSulfur), new ItemStack(Items.BLAZE_POWDER), new ItemStack(Items.REDSTONE)), null);
+		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustCryotheum, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustNiter), ItemHelper.cloneStack(ItemMaterial.dustBlizz), new ItemStack(Items.SNOWBALL), new ItemStack(Items.REDSTONE)), null);
+		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustAerotheum, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustNiter), ItemHelper.cloneStack(ItemMaterial.dustBlitz), new ItemStack(Blocks.SAND), new ItemStack(Items.REDSTONE)), null);
+		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustPetrotheum, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustObsidian), ItemHelper.cloneStack(ItemMaterial.dustBasalz), new ItemStack(Items.CLAY_BALL), new ItemStack(Items.REDSTONE)), null);
 
 		/* CONCRETE POWDER */
 		{
@@ -108,9 +113,9 @@ public class CentrifugeManager {
 
 			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
 				if (dyeChance[i] > 0) {
-					addRecipe(energy, new ItemStack(Blocks.CONCRETE_POWDER, 2, i), Arrays.asList(gravel, sand, new ItemStack(Items.DYE, 1, 15 - i)), Arrays.asList(100, 100, dyeChance[i]), null);
+					addRecipe(energy, new ItemStack(Blocks.CONCRETE_POWDER, 2, i), asList(gravel, sand, new ItemStack(Items.DYE, 1, 15 - i)), asList(100, 100, dyeChance[i]), null);
 				} else {
-					addRecipe(energy, new ItemStack(Blocks.CONCRETE_POWDER, 2, i), Arrays.asList(gravel, sand), null);
+					addRecipe(energy, new ItemStack(Blocks.CONCRETE_POWDER, 2, i), asList(gravel, sand), null);
 				}
 			}
 		}
@@ -129,55 +134,55 @@ public class CentrifugeManager {
 	public static void loadMobs() {
 
 		/* ANIMALS */
-		addDefaultMobRecipe("minecraft:bat", Collections.singletonList(new ItemStack(Items.LEATHER)), Collections.singletonList(5), 0);
-		addDefaultMobRecipe("minecraft:chicken", Arrays.asList(new ItemStack(Items.FEATHER, 2), new ItemStack(Items.CHICKEN)), Arrays.asList(50, 100), 2);
-		addDefaultMobRecipe("minecraft:cow", Arrays.asList(new ItemStack(Items.LEATHER, 2), new ItemStack(Items.BEEF), new ItemStack(Items.BEEF, 2)), Arrays.asList(50, 100, 50), 2);
-		addDefaultMobRecipe("minecraft:donkey", Collections.singletonList(new ItemStack(Items.LEATHER, 2)), Collections.singletonList(50), 2);
-		addDefaultMobRecipe("minecraft:horse", Collections.singletonList(new ItemStack(Items.LEATHER, 2)), Collections.singletonList(50), 2);
-		addDefaultMobRecipe("minecraft:llama", Collections.singletonList(new ItemStack(Items.LEATHER, 2)), Collections.singletonList(50), 2);
-		addDefaultMobRecipe("minecraft:mooshroom", Arrays.asList(new ItemStack(Items.LEATHER, 2), new ItemStack(Items.BEEF), new ItemStack(Items.BEEF, 2)), Arrays.asList(50, 100, 50), 2);
-		addDefaultMobRecipe("minecraft:ocelot", Collections.singletonList(ItemStack.EMPTY), Collections.singletonList(0), 2);
-		addDefaultMobRecipe("minecraft:parrot", Arrays.asList(new ItemStack(Items.FEATHER), new ItemStack(Items.FEATHER)), Arrays.asList(100, 50), 2);
-		addDefaultMobRecipe("minecraft:pig", Arrays.asList(new ItemStack(Items.PORKCHOP), new ItemStack(Items.PORKCHOP, 2)), Arrays.asList(100, 50), 2);
-		addDefaultMobRecipe("minecraft:polar_bear", Arrays.asList(new ItemStack(Items.FISH), new ItemStack(Items.FISH, 1, 1)), Arrays.asList(75, 25), 2);
-		addDefaultMobRecipe("minecraft:rabbit", Arrays.asList(new ItemStack(Items.RABBIT_HIDE), new ItemStack(Items.RABBIT), new ItemStack(Items.RABBIT_FOOT)), Arrays.asList(50, 50, 10), 2);
-		addDefaultMobRecipe("minecraft:sheep", Arrays.asList(new ItemStack(Items.MUTTON), new ItemStack(Items.MUTTON)), Arrays.asList(100, 50), 2);
-		addDefaultMobRecipe("minecraft:skeleton_horse", Collections.singletonList(new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage())), Collections.singletonList(50), 2);
-		addDefaultMobRecipe("minecraft:squid", Arrays.asList(new ItemStack(Items.DYE, 1, EnumDyeColor.BLACK.getDyeDamage()), new ItemStack(Items.DYE, 2, EnumDyeColor.BLACK.getDyeDamage())), Arrays.asList(100, 50), 2);
-		addDefaultMobRecipe("minecraft:wolf", Collections.singletonList(ItemStack.EMPTY), Collections.singletonList(0), 2);
-		addDefaultMobRecipe("minecraft:zombie_horse", Collections.singletonList(new ItemStack(Items.ROTTEN_FLESH, 2)), Collections.singletonList(50), 2);
+		addDefaultMobRecipe("minecraft:bat", singletonList(new ItemStack(Items.LEATHER)), singletonList(5), 0);
+		addDefaultMobRecipe("minecraft:chicken", asList(new ItemStack(Items.FEATHER, 2), new ItemStack(Items.CHICKEN)), asList(50, 100), 2);
+		addDefaultMobRecipe("minecraft:cow", asList(new ItemStack(Items.LEATHER, 2), new ItemStack(Items.BEEF, 3)), asList(50, 70), 2);
+		addDefaultMobRecipe("minecraft:donkey", singletonList(new ItemStack(Items.LEATHER, 2)), singletonList(50), 2);
+		addDefaultMobRecipe("minecraft:horse", singletonList(new ItemStack(Items.LEATHER, 2)), singletonList(50), 2);
+		addDefaultMobRecipe("minecraft:llama", singletonList(new ItemStack(Items.LEATHER, 2)), singletonList(50), 2);
+		addDefaultMobRecipe("minecraft:mooshroom", asList(new ItemStack(Items.LEATHER, 2), new ItemStack(Items.BEEF, 3)), asList(50, 70), 2);
+		addDefaultMobRecipe("minecraft:ocelot", singletonList(ItemStack.EMPTY), singletonList(0), 2);
+		addDefaultMobRecipe("minecraft:parrot", singletonList(new ItemStack(Items.FEATHER, 2)), singletonList(80), 2);
+		addDefaultMobRecipe("minecraft:pig", singletonList(new ItemStack(Items.PORKCHOP, 3)), singletonList(70), 2);
+		addDefaultMobRecipe("minecraft:polar_bear", asList(new ItemStack(Items.FISH, 2), new ItemStack(Items.FISH, 2, 1)), asList(80, 50), 2);
+		addDefaultMobRecipe("minecraft:rabbit", asList(new ItemStack(Items.RABBIT_HIDE), new ItemStack(Items.RABBIT), new ItemStack(Items.RABBIT_FOOT)), asList(50, 50, 10), 2);
+		addDefaultMobRecipe("minecraft:sheep", singletonList(new ItemStack(Items.MUTTON, 2)), singletonList(80), 2);
+		addDefaultMobRecipe("minecraft:skeleton_horse", singletonList(new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage())), singletonList(50), 2);
+		addDefaultMobRecipe("minecraft:squid", singletonList(new ItemStack(Items.DYE, 3, EnumDyeColor.BLACK.getDyeDamage())), singletonList(70), 2);
+		addDefaultMobRecipe("minecraft:wolf", singletonList(ItemStack.EMPTY), singletonList(0), 2);
+		addDefaultMobRecipe("minecraft:zombie_horse", singletonList(new ItemStack(Items.ROTTEN_FLESH, 2)), singletonList(50), 2);
 
 		/* MOBS */
-		addDefaultMobRecipe("minecraft:blaze", Arrays.asList(new ItemStack(Items.BLAZE_ROD), ItemHelper.cloneStack(ItemMaterial.dustSulfur)), Arrays.asList(50, 25), 10);
-		addDefaultMobRecipe("minecraft:cave_spider", Arrays.asList(new ItemStack(Items.STRING, 2), new ItemStack(Items.SPIDER_EYE)), Arrays.asList(50, 25), 5);
-		addDefaultMobRecipe("minecraft:creeper", Collections.singletonList(new ItemStack(Items.GUNPOWDER, 2)), Collections.singletonList(50), 5);
-		addDefaultMobRecipe("minecraft:elder_guardian", Arrays.asList(new ItemStack(Items.PRISMARINE_SHARD, 2), new ItemStack(Items.PRISMARINE_CRYSTALS)), Arrays.asList(50, 50), 10);
-		addDefaultMobRecipe("minecraft:enderman", Collections.singletonList(new ItemStack(Items.ENDER_PEARL)), Collections.singletonList(50), 5);
-		addDefaultMobRecipe("minecraft:endermite", Collections.singletonList(ItemStack.EMPTY), Collections.singletonList(0), 5);
-		addDefaultMobRecipe("minecraft:evocation_illager", Arrays.asList(new ItemStack(Items.TOTEM_OF_UNDYING), new ItemStack(Items.EMERALD)), Arrays.asList(100, 50), 10);
-		addDefaultMobRecipe("minecraft:ghast", Arrays.asList(new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.GUNPOWDER)), Arrays.asList(50, 50), 5);
-		addDefaultMobRecipe("minecraft:guardian", Arrays.asList(new ItemStack(Items.PRISMARINE_SHARD, 2), new ItemStack(Items.PRISMARINE_CRYSTALS)), Arrays.asList(50, 50), 10);
-		addDefaultMobRecipe("minecraft:husk", Arrays.asList(new ItemStack(Items.ROTTEN_FLESH, 2), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.POTATO)), Arrays.asList(50, 2, 2), 5);
-		addDefaultMobRecipe("minecraft:magma_cube", Arrays.asList(new ItemStack(Items.MAGMA_CREAM), ItemHelper.cloneStack(ItemMaterial.dustSulfur)), Arrays.asList(50, 25), 2);
-		addDefaultMobRecipe("minecraft:shulker", Collections.singletonList(new ItemStack(Items.SHULKER_SHELL)), Collections.singletonList(50), 5);
-		addDefaultMobRecipe("minecraft:silverfish", Collections.singletonList(ItemStack.EMPTY), Collections.singletonList(0), 5);
-		addDefaultMobRecipe("minecraft:skeleton", Arrays.asList(new ItemStack(Items.ARROW, 2), new ItemStack(Items.BONE, 2)), Arrays.asList(50, 50), 5);
-		addDefaultMobRecipe("minecraft:slime", Collections.singletonList(new ItemStack(Items.SLIME_BALL, 2)), Collections.singletonList(50), 2);
-		addDefaultMobRecipe("minecraft:spider", Arrays.asList(new ItemStack(Items.STRING, 2), new ItemStack(Items.SPIDER_EYE)), Arrays.asList(50, 15), 5);
-		addDefaultMobRecipe("minecraft:stray", Arrays.asList(new ItemStack(Items.ARROW, 2), new ItemStack(Items.BONE, 2)), Arrays.asList(50, 50), 5);
-		addDefaultMobRecipe("minecraft:vex", Collections.singletonList(ItemStack.EMPTY), Collections.singletonList(0), 3);
-		addDefaultMobRecipe("minecraft:villager", Collections.singletonList(new ItemStack(Items.EMERALD)), Collections.singletonList(2), 0);
-		addDefaultMobRecipe("minecraft:vindication_illager", Collections.singletonList(new ItemStack(Items.EMERALD)), Collections.singletonList(50), 5);
-		addDefaultMobRecipe("minecraft:witch", Arrays.asList(new ItemStack(Items.GLOWSTONE_DUST, 2), new ItemStack(Items.GUNPOWDER, 2), new ItemStack(Items.REDSTONE, 2)), Arrays.asList(25, 25, 25), 5);
-		addDefaultMobRecipe("minecraft:wither_skeleton", Arrays.asList(new ItemStack(Items.COAL, 1), new ItemStack(Items.BONE, 2)), Arrays.asList(25, 50), 5);
-		addDefaultMobRecipe("minecraft:zombie", Arrays.asList(new ItemStack(Items.ROTTEN_FLESH, 2), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.POTATO)), Arrays.asList(50, 2, 2), 5);
-		addDefaultMobRecipe("minecraft:zombie_pigman", Arrays.asList(new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.GOLD_NUGGET), new ItemStack(Items.GOLD_INGOT)), Arrays.asList(50, 50, 2), 5);
-		addDefaultMobRecipe("minecraft:zombie_villager", Arrays.asList(new ItemStack(Items.ROTTEN_FLESH, 2), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.POTATO)), Arrays.asList(50, 2, 2), 5);
+		addDefaultMobRecipe("minecraft:blaze", asList(new ItemStack(Items.BLAZE_ROD), ItemHelper.cloneStack(ItemMaterial.dustSulfur)), asList(50, 25), 10);
+		addDefaultMobRecipe("minecraft:cave_spider", asList(new ItemStack(Items.STRING, 2), new ItemStack(Items.SPIDER_EYE)), asList(50, 25), 5);
+		addDefaultMobRecipe("minecraft:creeper", singletonList(new ItemStack(Items.GUNPOWDER, 2)), singletonList(50), 5);
+		addDefaultMobRecipe("minecraft:elder_guardian", asList(new ItemStack(Items.PRISMARINE_SHARD, 2), new ItemStack(Items.PRISMARINE_CRYSTALS)), asList(50, 50), 10);
+		addDefaultMobRecipe("minecraft:enderman", singletonList(new ItemStack(Items.ENDER_PEARL)), singletonList(50), 5);
+		addDefaultMobRecipe("minecraft:endermite", singletonList(ItemStack.EMPTY), singletonList(0), 5);
+		addDefaultMobRecipe("minecraft:evocation_illager", asList(new ItemStack(Items.TOTEM_OF_UNDYING), new ItemStack(Items.EMERALD)), asList(100, 50), 10);
+		addDefaultMobRecipe("minecraft:ghast", asList(new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.GUNPOWDER)), asList(50, 50), 5);
+		addDefaultMobRecipe("minecraft:guardian", asList(new ItemStack(Items.PRISMARINE_SHARD, 2), new ItemStack(Items.PRISMARINE_CRYSTALS)), asList(50, 50), 10);
+		addDefaultMobRecipe("minecraft:husk", asList(new ItemStack(Items.ROTTEN_FLESH, 2), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.POTATO)), asList(50, 2, 2), 5);
+		addDefaultMobRecipe("minecraft:magma_cube", asList(new ItemStack(Items.MAGMA_CREAM), ItemHelper.cloneStack(ItemMaterial.dustSulfur)), asList(50, 25), 2);
+		addDefaultMobRecipe("minecraft:shulker", singletonList(new ItemStack(Items.SHULKER_SHELL)), singletonList(50), 5);
+		addDefaultMobRecipe("minecraft:silverfish", singletonList(ItemStack.EMPTY), singletonList(0), 5);
+		addDefaultMobRecipe("minecraft:skeleton", asList(new ItemStack(Items.ARROW, 2), new ItemStack(Items.BONE, 2)), asList(50, 50), 5);
+		addDefaultMobRecipe("minecraft:slime", singletonList(new ItemStack(Items.SLIME_BALL, 2)), singletonList(50), 2);
+		addDefaultMobRecipe("minecraft:spider", asList(new ItemStack(Items.STRING, 2), new ItemStack(Items.SPIDER_EYE)), asList(50, 25), 5);
+		addDefaultMobRecipe("minecraft:stray", asList(new ItemStack(Items.ARROW, 2), new ItemStack(Items.BONE, 2)), asList(50, 50), 5);
+		addDefaultMobRecipe("minecraft:vex", singletonList(ItemStack.EMPTY), singletonList(0), 3);
+		addDefaultMobRecipe("minecraft:villager", singletonList(new ItemStack(Items.EMERALD)), singletonList(2), 0);
+		addDefaultMobRecipe("minecraft:vindication_illager", singletonList(new ItemStack(Items.EMERALD)), singletonList(50), 5);
+		addDefaultMobRecipe("minecraft:witch", asList(new ItemStack(Items.GLOWSTONE_DUST, 2), new ItemStack(Items.GUNPOWDER, 2), new ItemStack(Items.REDSTONE, 2)), asList(40, 40, 40), 5);
+		addDefaultMobRecipe("minecraft:wither_skeleton", asList(new ItemStack(Items.COAL, 1), new ItemStack(Items.BONE, 2)), asList(25, 50), 5);
+		addDefaultMobRecipe("minecraft:zombie", asList(new ItemStack(Items.ROTTEN_FLESH, 2), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.POTATO)), asList(50, 2, 2), 5);
+		addDefaultMobRecipe("minecraft:zombie_pigman", asList(new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.GOLD_NUGGET), new ItemStack(Items.GOLD_INGOT)), asList(50, 50, 2), 5);
+		addDefaultMobRecipe("minecraft:zombie_villager", asList(new ItemStack(Items.ROTTEN_FLESH, 2), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.POTATO)), asList(50, 2, 2), 5);
 
 		/* THERMAL FOUNDATION */
-		addDefaultMobRecipe("thermalfoundation:blizz", Arrays.asList(ItemHelper.cloneStack(ItemMaterial.rodBlizz), new ItemStack(Items.SNOWBALL, 4)), Arrays.asList(50, 25), 10);
-		addDefaultMobRecipe("thermalfoundation:blitz", Arrays.asList(ItemHelper.cloneStack(ItemMaterial.rodBlitz), ItemHelper.cloneStack(ItemMaterial.dustNiter, 2)), Arrays.asList(50, 25), 10);
-		addDefaultMobRecipe("thermalfoundation:basalz", Arrays.asList(ItemHelper.cloneStack(ItemMaterial.rodBasalz), ItemHelper.cloneStack(ItemMaterial.dustObsidian, 2)), Arrays.asList(50, 25), 10);
+		addDefaultMobRecipe("thermalfoundation:blizz", asList(ItemHelper.cloneStack(ItemMaterial.rodBlizz), new ItemStack(Items.SNOWBALL, 4)), asList(50, 25), 10);
+		addDefaultMobRecipe("thermalfoundation:blitz", asList(ItemHelper.cloneStack(ItemMaterial.rodBlitz), ItemHelper.cloneStack(ItemMaterial.dustNiter, 2)), asList(50, 25), 10);
+		addDefaultMobRecipe("thermalfoundation:basalz", asList(ItemHelper.cloneStack(ItemMaterial.rodBasalz), ItemHelper.cloneStack(ItemMaterial.dustObsidian, 2)), asList(50, 25), 10);
 	}
 
 	public static void refresh() {

@@ -6,7 +6,7 @@ import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 
-import java.util.Arrays;
+import static java.util.Arrays.asList;
 
 public class PluginGendustry extends ModPlugin {
 
@@ -58,7 +58,7 @@ public class PluginGendustry extends ModPlugin {
 				int energy = CentrifugeManager.DEFAULT_ENERGY;
 
 				for (int i = 0; i < 16; i++) {
-					CentrifugeManager.addRecipe(energy, tintedCombs[i], Arrays.asList(tintedDrops[i], dropHoney, wax), Arrays.asList(100, 30, 50), null);
+					CentrifugeManager.addRecipe(energy, tintedCombs[i], asList(tintedDrops[i], dropHoney, wax), asList(100, 30, 50), null);
 				}
 			}
 		} catch (Throwable t) {

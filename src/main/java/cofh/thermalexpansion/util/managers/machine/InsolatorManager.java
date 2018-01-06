@@ -11,8 +11,13 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+
+import static java.util.Arrays.asList;
 
 public class InsolatorManager {
 
@@ -36,8 +41,8 @@ public class InsolatorManager {
 		ComparableItemStackInsolator query = new ComparableItemStackInsolator(primaryInput);
 		ComparableItemStackInsolator querySecondary = new ComparableItemStackInsolator(secondaryInput);
 
-		InsolatorRecipe recipe = recipeMap.get(Arrays.asList(query, querySecondary));
-		return recipe == null && recipeMap.get(Arrays.asList(querySecondary, query)) != null;
+		InsolatorRecipe recipe = recipeMap.get(asList(query, querySecondary));
+		return recipe == null && recipeMap.get(asList(querySecondary, query)) != null;
 	}
 
 	public static InsolatorRecipe getRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
@@ -48,10 +53,10 @@ public class InsolatorManager {
 		ComparableItemStackInsolator query = new ComparableItemStackInsolator(primaryInput);
 		ComparableItemStackInsolator querySecondary = new ComparableItemStackInsolator(secondaryInput);
 
-		InsolatorRecipe recipe = recipeMap.get(Arrays.asList(query, querySecondary));
+		InsolatorRecipe recipe = recipeMap.get(asList(query, querySecondary));
 
 		if (recipe == null) {
-			recipe = recipeMap.get(Arrays.asList(querySecondary, query));
+			recipe = recipeMap.get(asList(querySecondary, query));
 		}
 		if (recipe == null) {
 			return null;
@@ -189,7 +194,7 @@ public class InsolatorManager {
 			ComparableItemStackInsolator primary = new ComparableItemStackInsolator(tempRecipe.primaryInput);
 			ComparableItemStackInsolator secondary = new ComparableItemStackInsolator(tempRecipe.secondaryInput);
 
-			tempMap.put(Arrays.asList(primary, secondary), tempRecipe);
+			tempMap.put(asList(primary, secondary), tempRecipe);
 			tempSet.add(primary);
 			tempSet.add(secondary);
 		}
@@ -215,7 +220,7 @@ public class InsolatorManager {
 			return null;
 		}
 		InsolatorRecipe recipe = new InsolatorRecipe(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryOutput.isEmpty() ? 0 : secondaryChance, energy, water, type);
-		recipeMap.put(Arrays.asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)), recipe);
+		recipeMap.put(asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)), recipe);
 		validationSet.add(new ComparableItemStackInsolator(primaryInput));
 		validationSet.add(new ComparableItemStackInsolator(secondaryInput));
 		return recipe;
@@ -260,7 +265,7 @@ public class InsolatorManager {
 	/* REMOVE RECIPES */
 	public static InsolatorRecipe removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
-		return recipeMap.remove(Arrays.asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)));
+		return recipeMap.remove(asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)));
 	}
 
 	/* HELPERS */

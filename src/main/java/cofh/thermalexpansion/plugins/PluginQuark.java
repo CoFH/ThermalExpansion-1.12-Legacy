@@ -12,9 +12,10 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Locale;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 public class PluginQuark extends ModPlugin {
 
@@ -180,10 +181,10 @@ public class PluginQuark extends ModPlugin {
 				ItemStack pirateHat = getItemStack("pirate_hat", 1, 0);
 				ItemStack soulBead = getItemStack("soul_bead", 1, 0);
 
-				CentrifugeManager.addDefaultMobRecipe("quark:ashen", Arrays.asList(new ItemStack(Items.ARROW, 2), new ItemStack(Items.BONE, 2)), Arrays.asList(50, 50), 5);
-				CentrifugeManager.addDefaultMobRecipe("quark:dweller", Arrays.asList(new ItemStack(Items.ROTTEN_FLESH, 2), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.POTATO)), Arrays.asList(50, 2, 2), 5);
-				CentrifugeManager.addDefaultMobRecipe("quark:pirate", Arrays.asList(new ItemStack(Items.ARROW, 2), new ItemStack(Items.BONE, 2), pirateHat), Arrays.asList(50, 50, 2), 5);
-				CentrifugeManager.addDefaultMobRecipe("quark:wraith", Collections.singletonList(soulBead), Collections.singletonList(100), 5);
+				CentrifugeManager.addDefaultMobRecipe("quark:ashen", asList(new ItemStack(Items.ARROW, 2), new ItemStack(Items.BONE, 2)), asList(50, 50), 5);
+				CentrifugeManager.addDefaultMobRecipe("quark:dweller", asList(new ItemStack(Items.ROTTEN_FLESH, 2), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.POTATO)), asList(50, 2, 2), 5);
+				CentrifugeManager.addDefaultMobRecipe("quark:pirate", asList(new ItemStack(Items.ARROW, 2), new ItemStack(Items.BONE, 2), pirateHat), asList(50, 50, 2), 5);
+				CentrifugeManager.addDefaultMobRecipe("quark:wraith", singletonList(soulBead), singletonList(100), 5);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
