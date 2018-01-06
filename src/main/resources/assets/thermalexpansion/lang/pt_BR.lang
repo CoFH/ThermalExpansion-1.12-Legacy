@@ -211,8 +211,8 @@ info.thermalexpansion.apparatus.collector=Procura itens em uma área.
 
 info.thermalexpansion.capacitor.a.0=Armazena Redstone Flux. Carregando Itens Segurados
 info.thermalexpansion.capacitor.b.0=§ePressione (%s) para alterar o modo.§r
-info.thermalexpansion.capacitor.c.0=§eShift+clique para desativar.§r
-info.thermalexpansion.capacitor.c.1=§bShift+clique para ativar.§r
+info.thermalexpansion.capacitor.c.0=§bShift+clique para ativar.§r
+info.thermalexpansion.capacitor.c.1=§eShift+clique para desativar.§r
 info.thermalexpansion.capacitor.d.0=Carregando itens segurados
 info.thermalexpansion.capacitor.d.1=Carregando itens equipados
 info.thermalexpansion.capacitor.d.2=Carregando Equipamentos
@@ -252,6 +252,12 @@ info.thermalexpansion.level.3=Signalo
 info.thermalexpansion.level.4=Resonante
 info.thermalexpansion.level.creative=Criativo
 
+info.thermalexpansion.morb.a.0=Prende um Mob em estase.
+info.thermalexpansion.morb.a.1=Esse Morb é reutilizável.
+info.thermalexpansion.morb.b.0=Jogue em um Mob para capturá-lo.
+info.thermalexpansion.morb.b.1=Jogue para soltar o mob preso.
+info.thermalexpansion.morb.b.2=Esse Morb prende um mob genérico.
+
 info.thermalexpansion.machine.brewer=Faz poções.
 info.thermalexpansion.machine.centrifuge=Separa itens em suas partes que o compõem.
 info.thermalexpansion.machine.charger=Carrega itens com RF.
@@ -279,9 +285,11 @@ info.thermalexpansion.reservoir.d.0=Ao Usar: Encher
 info.thermalexpansion.reservoir.d.1=Ao Usar: Esvaziar
 info.thermalexpansion.reservoir.d.2=Reenchendo Equipamentos
 
-info.thermalexpansion.satchel.a.0=Armazena e coleta itens. Pode ser protegido.
+info.thermalexpansion.satchel.a.0=Armazena e coleta itens. Pode ser assegurado.
 info.thermalexpansion.satchel.a.1=Use em um inventário para transferir a ele.
 info.thermalexpansion.satchel.a.2=Agache-se e use para configurar.
+info.thermalexpansion.satchel.a.c=Armazena uma quantidade ilimitada de um item. Pode ser protegido.
+info.thermalexpansion.satchel.a.v=Remove itens da existência. Pode ser protegido.
 info.thermalexpansion.satchel.b.0=§bPressione (%s) para habilitar o auto-coletar.§r
 info.thermalexpansion.satchel.b.1=§ePressione (%s) para desabilitar o auto-coletar.§r
 info.thermalexpansion.satchel.c.0=Auto-coletar Desabilitado
@@ -327,8 +335,6 @@ item.thermalexpansion.augment.machineInsolatorFertilizer.name=Economia de Nutrie
 item.thermalexpansion.augment.machineInsolatorMonoculture.name=Ciclo de Monocultura
 item.thermalexpansion.augment.machineInsolatorTree.name=Infusão de Mudas
 item.thermalexpansion.augment.machinePower.name=Bobina Receptora Auxiliar
-item.thermalexpansion.augment.machinePrecipitatorPackedIce.name=Compactação de Gelo
-item.thermalexpansion.augment.machinePrecipitatorSnowLayer.name=Aglomeração de Camadas
 item.thermalexpansion.augment.machinePulverizerGeode.name=Formação Geóide
 item.thermalexpansion.augment.machinePulverizerPetrotheum.name=Iniciador Tectônico
 item.thermalexpansion.augment.machineRefineryOil.name=Destilaria
@@ -348,6 +354,9 @@ item.thermalexpansion.capacitor.standard4.name=Capacitor de Flux (Resonante)
 
 item.thermalexpansion.florb.standard.name=Florb
 item.thermalexpansion.florb.magmatic.name=Florb Magmático
+
+item.thermalexpansion.morb.reusable.name=Morb Reutilizável
+item.thermalexpansion.morb.standard.name=Morb
 
 item.thermalexpansion.frame.frameApparatus.name=Moldura de Aparato
 item.thermalexpansion.frame.frameCell.name=Estrutura de Célula de Energia
@@ -376,9 +385,11 @@ item.thermalexpansion.satchel.standard1.name=Saquitel (Endurecida)
 item.thermalexpansion.satchel.standard2.name=Saquitel (Reforçado)
 item.thermalexpansion.satchel.standard3.name=Saquitel (Signalo)
 item.thermalexpansion.satchel.standard4.name=Saquitel (Resonante)
+item.thermalexpansion.satchel.void.name=Saquitel (Void)
 
 itemGroup.thermalexpansion.creativeTab=Thermal Expansion
 itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florbs
+itemGroup.thermalexpansion.creativeTabMorbs=Thermal Expansion: Morbs
 itemGroup.thermalexpansion.creativeTabItems=Thermal Expansion: Itens
 
 tab.thermalexpansion.apparatus.activator.0=Ele fatiga! Ele corta! Ele derrama coisas e joga coisas!
@@ -495,8 +506,16 @@ tab.thermalexpansion.storage.enchant=Pode ser encantado para aumentar a capacida
 tab.thermalexpansion.storage.satchel.0=É um saquitel. Só que esse não é furado. E te deixa carregar mais coisas.
 tab.thermalexpansion.storage.satchel.1=Porém, alguns objetos não podem ser armazenados.
 
+tab.thermalexpansion.storage.satchel_c.0=É um saquitel. Ou será mais que isso? Ele cria cópias do que você coloca dentro.
+tab.thermalexpansion.storage.satchel_c.1=Porém, não armazena certas coisas.
+tab.thermalexpansion.storage.satchel_c.2=Ele é "Criativo" como no modo criativo. Não significa que ele seja tão excepcional assim.
+
 tab.thermalexpansion.storage.satchel_filter.0=Configure quais itens esse saquitel pode pegar automaticamente.
 tab.thermalexpansion.storage.satchel_filter.1=Reclame seu inventário!
+
+tab.thermalexpansion.storage.satchel_v.0=É um saquitel. E esse é furado. Ou tipo isso... Tudo que você colocar nele desaparece pra sempre.
+tab.thermalexpansion.storage.satchel_v.1=E isso inclui itens que são coletados automaticamente.
+tab.thermalexpansion.storage.satchel_v.2=Então, cuidado com o que você faz!
 
 tab.thermalexpansion.storage.strongbox.0=É uma caixa! Armazena tudo. Bem, quase tudo.
 
