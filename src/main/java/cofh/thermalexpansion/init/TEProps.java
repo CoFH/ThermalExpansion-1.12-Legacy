@@ -298,6 +298,7 @@ public class TEProps {
 
 	public static final String MACHINE_CENTRIFUGE_MOBS = "machineCentrifugeMobs";
 
+	public static final String MACHINE_CRAFTER_INPUT = "machineCrafterInput";
 	public static final String MACHINE_CRAFTER_TANK = "machineCrafterTank";
 
 	public static final String MACHINE_BREWER_REAGENT = "machineBrewerReagent";

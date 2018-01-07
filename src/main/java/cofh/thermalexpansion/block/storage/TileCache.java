@@ -34,7 +34,7 @@ import java.util.List;
 
 public class TileCache extends TileAugmentableSecure implements IReconfigurableFacing, ISidedTexture, ITileInfo, IInventoryRetainer {
 
-	public static final int CAPACITY_BASE = 2000;
+	public static final int CAPACITY_BASE = 20000;
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 
 	public static void initialize() {
@@ -177,12 +177,12 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 
 	protected void updateTrackers() {
 
-		int curScale = getScaledItemsStored(14) + (getStoredCount() > 0 ? 1 : 0);
+		int curScale = getStoredCount() > 0 ? 1 + getScaledItemsStored(14) : 0;
 		if (compareTracker != curScale) {
 			compareTracker = curScale;
 			callNeighborTileChange();
 		}
-		curScale = Math.min(8, getScaledItemsStored(9));
+		curScale = getStoredCount() > 0 ? 1 + getScaledItemsStored(8) : 0;
 		if (meterTracker != curScale) {
 			meterTracker = curScale;
 			sendTilePacket(Side.CLIENT);
@@ -216,7 +216,11 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 
 	public ItemStack insertItem(ItemStack stack, boolean simulate) {
 
-		return handler.insertItem(0, isCreative ? ItemHelper.cloneStack(stack, handler.getSlotLimit(0)) : stack, simulate);
+		if (isCreative) {
+			handler.setItem(ItemHelper.cloneStack(stack, handler.getSlotLimit(0)));
+			return stack;
+		}
+		return handler.insertItem(0, stack, simulate);
 	}
 
 	public ItemStack extractItem(int maxExtract, boolean simulate) {
@@ -395,7 +399,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 			}
 			return side != facing ? isCreative ? TETextures.CACHE_SIDE_C : TETextures.CACHE_SIDE[level] : isCreative ? TETextures.CACHE_FACE_C : TETextures.CACHE_FACE[level];
 		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG_NONE : isCreative ? TETextures.CACHE_METER_C : TETextures.CACHE_METER[MathHelper.clamp(getScaledItemsStored(9), 0, 8)];
+			return side != facing ? TETextures.CONFIG_NONE : isCreative ? TETextures.CACHE_METER_C : TETextures.CACHE_METER[MathHelper.clamp(getStoredCount() > 0 ? 1 + getScaledItemsStored(8) : 0, 0, 8)];
 		}
 		return isCreative ? TETextures.CACHE_SIDE_C : TETextures.CACHE_SIDE[level];
 	}
@@ -619,6 +623,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 				toExtract = storedStack.getCount();
 			}
 			ItemStack ret = ItemHelper.cloneStack(storedStack, toExtract);
+			simulate |= tile.isCreative;
 			if (!simulate) {
 				storedStack.shrink(toExtract);
 				if (storedStack.isEmpty()) {

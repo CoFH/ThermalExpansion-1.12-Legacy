@@ -131,7 +131,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 
 	protected boolean outputBuffer() {
 
-		if (enableAutoOutput) {
+		if (getTransferOut()) {
 			for (int i = 0; i < 6; i++) {
 				if (sideCache[i] == 1) {
 					EnumFacing side = EnumFacing.VALUES[i];

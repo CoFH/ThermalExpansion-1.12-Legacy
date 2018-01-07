@@ -183,7 +183,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		if (inventory[0].isEmpty()) {

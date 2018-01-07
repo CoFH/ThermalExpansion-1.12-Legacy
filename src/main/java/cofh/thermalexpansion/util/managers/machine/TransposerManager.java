@@ -254,6 +254,13 @@ public class TransposerManager {
 		FluidStack cryoStack = new FluidStack(TFFluids.fluidCryotheum, 200);
 
 		addFillRecipe(2000, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(ItemMaterial.crystalCinnabar, 2), cryoStack, false);
+
+		if (FluidRegistry.isFluidRegistered("essence")) {
+			addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(FluidRegistry.getFluid("essence"), 250), false);
+		}
+		if (FluidRegistry.isFluidRegistered("xpjuice")) {
+			addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(FluidRegistry.getFluid("xpjuice"), 250), false);
+		}
 	}
 
 	public static void refresh() {

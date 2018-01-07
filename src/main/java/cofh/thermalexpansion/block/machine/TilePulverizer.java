@@ -225,7 +225,7 @@ public class TilePulverizer extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -243,7 +243,7 @@ public class TilePulverizer extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		int side;

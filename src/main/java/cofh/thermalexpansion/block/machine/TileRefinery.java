@@ -221,7 +221,7 @@ public class TileRefinery extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		transferOutputFluid();

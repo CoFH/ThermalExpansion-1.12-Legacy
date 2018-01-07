@@ -161,7 +161,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 			transferFluid();
 		}
 		if (timeCheck()) {
-			int curScale = getScaledFluidStored(15);
+			int curScale = getTankFluidAmount() > 0 ? 1 + getScaledFluidStored(14) : 0;
 			if (curScale != compareTracker) {
 				compareTracker = curScale;
 				callNeighborTileChange();
@@ -244,7 +244,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 	protected void transferFluid() {
 
-		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
+		if (!getTransferOut() || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.DOWN, new FluidStack(tank.getFluid(), Math.min(getFluidTransfer(level), tank.getFluidAmount())), true);
@@ -485,7 +485,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 				public int fill(FluidStack resource, boolean doFill) {
 
 					if (isCreative) {
-						if (resource == null || from == EnumFacing.DOWN && !adjacentTanks[0] && enableAutoOutput) {
+						if (resource == null || from == EnumFacing.DOWN && !adjacentTanks[0] && getTransferOut()) {
 							return 0;
 						}
 						if (resource.isFluidEqual(tank.getFluid())) {
@@ -496,7 +496,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 						updateRender();
 						return 0;
 					}
-					if (resource == null || from == EnumFacing.DOWN && !adjacentTanks[0] && enableAutoOutput) {
+					if (resource == null || from == EnumFacing.DOWN && !adjacentTanks[0] && getTransferOut()) {
 						return 0;
 					}
 					renderFlag = true;

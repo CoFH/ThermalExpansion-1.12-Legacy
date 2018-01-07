@@ -525,7 +525,7 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -543,7 +543,7 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		if (inventory[2].isEmpty()) {

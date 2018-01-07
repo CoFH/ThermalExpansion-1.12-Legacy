@@ -340,7 +340,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 			builder.append(",level=").append(tile.getLevel());
 			builder.append(",holding=").append(tile.enchantHolding);
 			builder.append(",facing=").append(tile.getFacing());
-			builder.append(",scale=").append(MathHelper.clamp(tile.getScaledItemsStored(9), 0, 8));
+			builder.append(",scale=").append(MathHelper.clamp(tile.getStoredCount() > 0 ? 1 + tile.getScaledItemsStored(8) : 0, 0, 8));
 			return builder.toString();
 		});
 

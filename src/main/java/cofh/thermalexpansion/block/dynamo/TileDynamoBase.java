@@ -270,7 +270,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 			}
 		}
 		if (timeCheck()) {
-			int curScale = getScaledEnergyStored(15);
+			int curScale = energyStorage.getEnergyStored() > 0 ? 1 + getScaledEnergyStored(14) : 0;
 			if (curScale != compareTracker) {
 				compareTracker = curScale;
 				callNeighborTileChange();

@@ -249,7 +249,7 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 			builder.append(",creative=").append(tank.isCreative);
 			builder.append(",level=").append(tank.getLevel());
 			builder.append(",holding=").append(tank.enchantHolding);
-			builder.append(",output=").append(tank.enableAutoOutput);
+			builder.append(",output=").append(tank.getTransferOut());
 			builder.append(",lock=").append(tank.isLocked());
 			FluidStack stack = tank.getTankFluid();
 

@@ -96,7 +96,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 	protected void transferInput() {
 
-		if (!enableAutoInput || amountInput <= 0) {
+		if (!getTransferIn() || amountInput <= 0) {
 			return;
 		}
 		int side;
@@ -115,7 +115,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 	protected void transferOutput() {
 
-		if (!enableAutoOutput || amountOutput <= 0) {
+		if (!getTransferOut() || amountOutput <= 0) {
 			return;
 		}
 		int side;

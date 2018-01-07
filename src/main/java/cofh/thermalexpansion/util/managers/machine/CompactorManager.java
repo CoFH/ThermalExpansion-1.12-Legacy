@@ -10,6 +10,7 @@ import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -97,6 +98,11 @@ public class CompactorManager {
 	}
 
 	public static void initialize() {
+
+		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.BLAZE_POWDER, 5), new ItemStack(Items.BLAZE_ROD), Mode.PRESS);
+		addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(ItemMaterial.dustBlizz, 5), ItemMaterial.rodBlizz, Mode.PRESS);
+		addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(ItemMaterial.dustBlitz, 5), ItemMaterial.rodBlitz, Mode.PRESS);
+		addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(ItemMaterial.dustBasalz, 5), ItemMaterial.rodBasalz, Mode.PRESS);
 
 		/* PRESS */
 		{

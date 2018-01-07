@@ -220,7 +220,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineCentrifugeMobs = addAugmentItem(416, TEProps.MACHINE_CENTRIFUGE_MOBS, AugmentType.MODE);
 
-		machineCrafterTank = addAugmentItem(432, TEProps.MACHINE_CRAFTER_TANK, AugmentType.ADVANCED);
+		machineCrafterInput = addAugmentItem(432, TEProps.MACHINE_CRAFTER_INPUT, AugmentType.ADVANCED);
+		machineCrafterTank = addAugmentItem(433, TEProps.MACHINE_CRAFTER_TANK, AugmentType.ADVANCED);
 
 		machineBrewerReagent = addAugmentItem(448, TEProps.MACHINE_BREWER_REAGENT);
 
@@ -485,6 +486,15 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', Blocks.PISTON
 		);
 
+		addShapedRecipe(machineCrafterInput,
+				" G ",
+				"ICI",
+				" X ",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearTin",
+				'I', "ingotIron",
+				'X', "blockGlass"
+		);
 		addShapedRecipe(machineCrafterTank,
 				" G ",
 				"ICI",
@@ -751,6 +761,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineCentrifugeMobs;
 
+	public static ItemStack machineCrafterInput;
 	public static ItemStack machineCrafterTank;
 
 	public static ItemStack machineBrewerReagent;

@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.gui.container.storage;
 
-import cofh.core.gui.slot.SlotCustomInventory;
 import cofh.thermalexpansion.block.storage.TileCache;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.InventoryPlayer;

@@ -59,6 +59,7 @@ public class TileCrafter extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_CRAFTER_INPUT);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_CRAFTER_TANK);
 
 		LIGHT_VALUES[TYPE] = 7;
@@ -91,6 +92,7 @@ public class TileCrafter extends TileMachineBase {
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 
 	/* AUGMENTS */
+	protected boolean augmentInput;
 	protected boolean augmentTank;
 	protected boolean flagTank;
 	protected boolean usingTank;
@@ -181,9 +183,32 @@ public class TileCrafter extends TileMachineBase {
 	}
 
 	@Override
+	protected void transferInput() {
+
+		if (!getTransferIn()) {
+			return;
+		}
+		int side;
+		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
+			side = i % 6;
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
+				for (int j = 0; j < 9; j++) {
+					if (!inventory[j + SLOT_CRAFTING_START].isEmpty()) {
+						if (!extractItem(j, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+							extractItem(j + 9, ITEM_TRANSFER[level], EnumFacing.VALUES[side]);
+						}
+					}
+					inputTracker = side;
+				}
+				return;
+			}
+		}
+	}
+
+	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		if (inventory[SLOT_OUTPUT].isEmpty()) {
@@ -199,15 +224,6 @@ public class TileCrafter extends TileMachineBase {
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void setLevelFlags() {
-
-		super.setLevelFlags();
-
-		hasAutoInput = false;
-		enableAutoInput = false;
 	}
 
 	public void setRecipe() {
@@ -367,6 +383,7 @@ public class TileCrafter extends TileMachineBase {
 
 		PacketBase payload = super.getGuiPacket();
 
+		payload.addBool(augmentInput);
 		payload.addBool(augmentTank);
 		payload.addBool(usingTank);
 		payload.addFluidStack(getTankFluid());
@@ -378,6 +395,7 @@ public class TileCrafter extends TileMachineBase {
 
 		super.handleGuiPacket(payload);
 
+		augmentInput = payload.getBool();
 		augmentTank = payload.getBool();
 		flagTank = augmentTank;
 		usingTank = payload.getBool();
@@ -390,6 +408,7 @@ public class TileCrafter extends TileMachineBase {
 
 		super.preAugmentInstall();
 
+		augmentInput = false;
 		augmentTank = false;
 	}
 
@@ -413,9 +432,12 @@ public class TileCrafter extends TileMachineBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
+		if (!augmentInput && TEProps.MACHINE_CRAFTER_INPUT.equals(id)) {
+			augmentInput = true;
+			return true;
+		}
 		if (!augmentTank && TEProps.MACHINE_CRAFTER_TANK.equals(id)) {
 			augmentTank = true;
-			hasModeAugment = true;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);
@@ -426,6 +448,28 @@ public class TileCrafter extends TileMachineBase {
 	public int getSizeInventory() {
 
 		return inventory.length - 9 - 1;
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		if (!augmentInput) {
+			return true;
+		}
+		return slot >= SLOT_OUTPUT || craftRecipe.validStack(stack, slot % 9);
+	}
+
+	/* ITransferControl */
+	@Override
+	public boolean hasTransferIn() {
+
+		return augmentInput;
+	}
+
+	@Override
+	public boolean getTransferIn() {
+
+		return augmentInput && enableAutoInput && !hasRecipeChanges;
 	}
 
 	/* CAPABILITIES */
@@ -634,6 +678,14 @@ public class TileCrafter extends TileMachineBase {
 		private boolean isFalseBucket(int slot) {
 
 			return craftSlots[slot] == -1;
+		}
+
+		private boolean validStack(ItemStack stack, int slot) {
+
+			if (isItemStackRecipe) {
+				return ItemHelper.itemsIdentical(stack, craftStacks[slot]);
+			}
+			return craftIngredients[slot].apply(stack);
 		}
 
 	}

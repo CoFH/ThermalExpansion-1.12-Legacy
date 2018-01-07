@@ -166,7 +166,7 @@ public class BakeryTank implements ILayeredBlockBakery {
 			boolean creative = tank.isCreative;
 			int level = tank.getLevel();
 			int holding = tank.enchantHolding;
-			int mode = tank.enableAutoOutput ? 1 : 0;
+			int mode = tank.getTransferOut() ? 1 : 0;
 			boolean lock = tank.isLocked();
 			FluidStack fluidStack = tank.getTankFluid();
 

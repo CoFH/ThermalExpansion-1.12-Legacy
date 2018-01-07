@@ -171,7 +171,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 	protected void transferOutput() {
 
-		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
+		if (!getTransferOut() || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;

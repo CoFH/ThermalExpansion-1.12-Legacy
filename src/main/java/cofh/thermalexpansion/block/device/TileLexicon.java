@@ -123,7 +123,7 @@ public class TileLexicon extends TileDeviceBase implements ITickable {
 
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -140,7 +140,7 @@ public class TileLexicon extends TileDeviceBase implements ITickable {
 
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		int side;

@@ -86,7 +86,7 @@ public class GuiTank extends GuiContainerCore {
 
 		super.updateElementInformation();
 
-		if (baseTile.enableAutoOutput) {
+		if (baseTile.getTransferOut()) {
 			output.setToolTip(StringHelper.localize("gui.cofh.transferOutEnabled"));
 			output.setSheetX(176);
 			output.setHoverX(176);

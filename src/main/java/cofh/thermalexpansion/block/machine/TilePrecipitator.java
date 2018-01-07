@@ -159,7 +159,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		if (inventory[0].isEmpty()) {

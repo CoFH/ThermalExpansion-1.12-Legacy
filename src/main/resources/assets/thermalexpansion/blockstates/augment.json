@@ -129,6 +129,11 @@
 					"layer0": "thermalexpansion:items/augment/machine_centrifuge_mobs"
 				}
 			},
+			"machinecrafterinput": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_crafter_input"
+				}
+			},
 			"machinecraftertank": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/machine_crafter_tank"

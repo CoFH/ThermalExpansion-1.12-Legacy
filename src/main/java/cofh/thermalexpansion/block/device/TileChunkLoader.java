@@ -96,7 +96,7 @@ public class TileChunkLoader extends TileDeviceBase implements ITickable {
 
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;

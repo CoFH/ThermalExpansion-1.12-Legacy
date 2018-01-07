@@ -123,7 +123,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public int getLightValue() {
 
-		return MathHelper.clamp(getScaledEnergyStored(9), 0, 8);
+		return MathHelper.clamp(energyStorage.getEnergyStored() > 0 ? 1 + getScaledEnergyStored(8) : 0, 0, 8);
 	}
 
 	@Override
@@ -244,7 +244,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 	public int getScaledEnergyStored(int scale) {
 
-		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
+		return MathHelper.round((long) energyStorage.getEnergyStored() * scale / getCapacity(level, enchantHolding));
 	}
 
 	protected void transferEnergy() {
@@ -273,12 +273,12 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 	protected void updateTrackers() {
 
-		int curScale = getScaledEnergyStored(15);
+		int curScale = energyStorage.getEnergyStored() > 0 ? 1 + getScaledEnergyStored(14) : 0;
 		if (curScale != compareTracker) {
 			compareTracker = curScale;
 			callNeighborTileChange();
 		}
-		curScale = Math.min(8, getScaledEnergyStored(9));
+		curScale = energyStorage.getEnergyStored() > 0 ? 1 + getScaledEnergyStored(8) : 0;
 		if (meterTracker != curScale) {
 			meterTracker = curScale;
 			updateLighting();
@@ -512,7 +512,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		if (side != facing) {
 			return TETextures.CONFIG_NONE;
 		}
-		return isCreative ? TETextures.CELL_METER_C : TETextures.CELL_METER[MathHelper.clamp(getScaledEnergyStored(9), 0, 8)];
+		return isCreative ? TETextures.CELL_METER_C : TETextures.CELL_METER[MathHelper.clamp(energyStorage.getEnergyStored() > 0 ? 1 + getScaledEnergyStored(8) : 0, 0, 8)];
 	}
 
 	/* CAPABILITIES */

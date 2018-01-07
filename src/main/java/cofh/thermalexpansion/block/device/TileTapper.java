@@ -188,7 +188,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -205,7 +205,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 	protected void transferOutput() {
 
-		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
+		if (!getTransferOut() || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;

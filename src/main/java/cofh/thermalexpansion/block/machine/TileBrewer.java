@@ -163,7 +163,7 @@ public class TileBrewer extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -181,7 +181,7 @@ public class TileBrewer extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		transferOutputFluid();
@@ -189,9 +189,6 @@ public class TileBrewer extends TileMachineBase {
 
 	private void transferInputFluid() {
 
-		if (!enableAutoInput) {
-			return;
-		}
 		if (inputTank.getSpace() <= 0) {
 			return;
 		}

@@ -128,7 +128,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -145,7 +145,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 	protected void transferOutputFluid() {
 
-		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
+		if (!getTransferOut() || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;

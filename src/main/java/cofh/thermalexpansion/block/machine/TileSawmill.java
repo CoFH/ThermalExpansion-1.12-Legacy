@@ -205,7 +205,7 @@ public class TileSawmill extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -223,7 +223,7 @@ public class TileSawmill extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		if (augmentTapper) {
