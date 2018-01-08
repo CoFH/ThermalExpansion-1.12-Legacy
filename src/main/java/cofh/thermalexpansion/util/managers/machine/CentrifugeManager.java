@@ -264,11 +264,11 @@ public class CentrifugeManager {
 		outputStandard.add(ItemHelper.cloneStack(ItemMorb.morbStandard));
 		outputReusable.add(ItemHelper.cloneStack(ItemMorb.morbReusable));
 
-		chanceStandard.add(ItemMorb.REUSE_CHANCE - 10);
-		chanceReusable.add(75);
+		chanceStandard.add(ItemMorb.REUSE_CHANCE - 5);
+		chanceReusable.add(80);
 
-		addRecipeMob(DEFAULT_ENERGY * 2, ItemMorb.setTag(ItemHelper.cloneStack(ItemMorb.morbStandard), entityId), outputStandard, chanceStandard, new FluidStack(TFFluids.fluidExperience, xp * CoreProps.MB_PER_XP));
-		addRecipeMob(DEFAULT_ENERGY * 2, ItemMorb.setTag(ItemHelper.cloneStack(ItemMorb.morbReusable), entityId), outputReusable, chanceReusable, new FluidStack(TFFluids.fluidExperience, xp * CoreProps.MB_PER_XP));
+		addRecipeMob(DEFAULT_ENERGY * 2, ItemMorb.setTag(ItemHelper.cloneStack(ItemMorb.morbStandard), entityId, false), outputStandard, chanceStandard, new FluidStack(TFFluids.fluidExperience, xp * CoreProps.MB_PER_XP));
+		addRecipeMob(DEFAULT_ENERGY * 2, ItemMorb.setTag(ItemHelper.cloneStack(ItemMorb.morbReusable), entityId, false), outputReusable, chanceReusable, new FluidStack(TFFluids.fluidExperience, xp * CoreProps.MB_PER_XP));
 	}
 
 	/* RECIPE CLASS */

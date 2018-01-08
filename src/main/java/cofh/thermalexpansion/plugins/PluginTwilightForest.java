@@ -121,7 +121,7 @@ public class PluginTwilightForest extends ModPlugin {
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:hedge_spider", asList(new ItemStack(Items.STRING, 2), new ItemStack(Items.SPIDER_EYE)), asList(50, 25), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:helmet_crab", asList(getItemStack("armor_shard", 2, 0), new ItemStack(Items.FISH)), asList(50, 25), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:hostile_wolf", emptyList(), emptyList(), 2);
-				CentrifugeManager.addDefaultMobRecipe("twilightforest:ice_crystal", singletonList(new ItemStack(Items.SNOWBALL)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:ice_crystal", singletonList(new ItemStack(Items.SNOWBALL, 2)), singletonList(50), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:king_spider", asList(new ItemStack(Items.STRING, 2), new ItemStack(Items.SPIDER_EYE)), asList(50, 25), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:kobold", asList(new ItemStack(Items.WHEAT, 2), new ItemStack(Items.GOLD_NUGGET)), asList(50, 25), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:mini_ghast", asList(new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.GUNPOWDER)), asList(50, 50), 5);
@@ -133,15 +133,15 @@ public class PluginTwilightForest extends ModPlugin {
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:redcap_sapper", singletonList(new ItemStack(Items.COAL, 2)), singletonList(50), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:skeleton_druid", asList(new ItemStack(Items.BONE, 2), getItemStack("torchberries", 2, 0)), asList(50, 50), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:slime_beetle", singletonList(new ItemStack(Items.SLIME_BALL, 2)), singletonList(50), 5);
-				CentrifugeManager.addDefaultMobRecipe("twilightforest:snow_guardian", singletonList(new ItemStack(Items.SNOWBALL)), singletonList(50), 5);
-				CentrifugeManager.addDefaultMobRecipe("twilightforest:stable_ice_core", singletonList(new ItemStack(Items.SNOWBALL)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:snow_guardian", singletonList(new ItemStack(Items.SNOWBALL, 2)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:stable_ice_core", singletonList(new ItemStack(Items.SNOWBALL, 2)), singletonList(50), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:swarm_spider", asList(new ItemStack(Items.STRING, 2), new ItemStack(Items.SPIDER_EYE)), asList(50, 25), 2);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:tower_broodling", asList(new ItemStack(Items.STRING, 2), new ItemStack(Items.SPIDER_EYE)), asList(50, 25), 3);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:tower_ghast", asList(new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.GUNPOWDER)), asList(50, 50), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:tower_golem", asList(new ItemStack(Items.IRON_INGOT, 2), getItemStack("tower_wood", 2, 0)), asList(50, 50), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:tower_termite", singletonList(getItemStack("borer_essence", 2, 0)), singletonList(50), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:troll", singletonList(getItemStack("magic_beans", 2, 0)), singletonList(2), 5);
-				CentrifugeManager.addDefaultMobRecipe("twilightforest:unstable_ice_core", singletonList(new ItemStack(Items.SNOWBALL)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:unstable_ice_core", singletonList(new ItemStack(Items.SNOWBALL, 2)), singletonList(50), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:winter_wolf", singletonList(getItemStack("arctic_fur", 2, 0)), singletonList(50), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:wraith", singletonList(new ItemStack(Items.GLOWSTONE_DUST, 2)), singletonList(50), 5);
 				CentrifugeManager.addDefaultMobRecipe("twilightforest:yeti", singletonList(getItemStack("arctic_fur", 2, 0)), singletonList(50), 5);

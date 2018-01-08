@@ -51,12 +51,15 @@ import static java.util.Arrays.asList;
 
 public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister {
 
-	public static ItemStack setTag(ItemStack container, String entityId) {
+	public static ItemStack setTag(ItemStack container, String entityId, boolean genericTag) {
 
 		if (entityId != null && !entityId.isEmpty()) {
 			container.setTagCompound(new NBTTagCompound());
 			container.getTagCompound().setString("id", entityId);
-			container.getTagCompound().setBoolean(GENERIC, true);
+
+			if (genericTag) {
+				container.getTagCompound().setBoolean(GENERIC, true);
+			}
 		}
 		return container;
 	}
@@ -161,7 +164,7 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 	/* HELPERS */
 	public static void addMorb(ItemStack morb, String entityId) {
 
-		setTag(morb, entityId);
+		setTag(morb, entityId, true);
 		morbList.add(morb);
 		validMobs.add(entityId);
 	}
@@ -172,7 +175,7 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 
 		if (nbt != null && validMobs.contains(nbt.getString("id"))) {
 			if (nbt.hasKey(GENERIC)) {
-				stack = setTag(stack, nbt.getString("id"));
+				stack = setTag(stack, nbt.getString("id"), true);
 			} else {
 				nbt.removeTag("Pos");
 				nbt.removeTag("Motion");
@@ -218,7 +221,7 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 		NBTTagCompound nbt = stack.getTagCompound();
 
 		if (nbt != null && validMobs.contains(nbt.getString("id"))) {
-			return setTag(stack, nbt.getString("id"));
+			return setTag(stack, nbt.getString("id"), false);
 		}
 		return ItemStack.EMPTY;
 	}

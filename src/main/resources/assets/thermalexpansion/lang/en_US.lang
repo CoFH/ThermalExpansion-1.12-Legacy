@@ -5,6 +5,8 @@ gui.thermalexpansion.device.item_buffer.decOutput=Decrease Output by
 gui.thermalexpansion.device.item_buffer.incInput=Increase Input by
 gui.thermalexpansion.device.item_buffer.incOutput=Increase Output by
 
+gui.thermalexpansion.jei.centrifuge.mobChance=Base Chance
+gui.thermalexpansion.jei.centrifuge.mobNotice=Up to the listed amount may be produced.
 gui.thermalexpansion.jei.compactor.modeGear=Gear
 gui.thermalexpansion.jei.compactor.modeMint=Mint
 gui.thermalexpansion.jei.compactor.modePress=Press

@@ -236,7 +236,7 @@ public abstract class TileTEBase extends TileCore implements ITilePacketHandler,
 		/* Side Types - Determines Texture & Behavior */
 		public int[] sideTypes;
 
-		/* Slot Groups accessibble per Config */
+		/* Slot Groups accessible per Config */
 		public int[][] slotGroups;
 
 		/* Default Side configuration for freshly placed block */

@@ -5,6 +5,7 @@ import cofh.thermalexpansion.block.storage.BlockCache;
 import cofh.thermalexpansion.block.storage.BlockCell;
 import cofh.thermalexpansion.block.storage.BlockStrongbox;
 import cofh.thermalexpansion.block.storage.BlockTank;
+import cofh.thermalexpansion.init.TEItems;
 import cofh.thermalexpansion.plugins.jei.device.coolant.CoolantCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.compression.CompressionFuelCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.enervation.EnervationFuelCategory;
@@ -12,6 +13,8 @@ import cofh.thermalexpansion.plugins.jei.dynamo.magmatic.MagmaticFuelCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.numismatic.NumismaticFuelCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.reactant.ReactantFuelCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.steam.SteamFuelCategory;
+import cofh.thermalexpansion.plugins.jei.item.FlorbSubtypeInterpreter;
+import cofh.thermalexpansion.plugins.jei.item.MorbSubtypeInterpreter;
 import cofh.thermalexpansion.plugins.jei.machine.brewer.BrewerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.centrifuge.CentrifugeRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.charger.ChargerRecipeCategory;
@@ -52,6 +55,9 @@ public class JEIPluginTE implements IModPlugin {
 		subtypeRegistry.useNbtForSubtypes(BlockTank.itemBlock);
 		subtypeRegistry.useNbtForSubtypes(BlockCache.itemBlock);
 		subtypeRegistry.useNbtForSubtypes(BlockStrongbox.itemBlock);
+
+		subtypeRegistry.registerSubtypeInterpreter(TEItems.itemFlorb, FlorbSubtypeInterpreter.INSTANCE);
+		subtypeRegistry.registerSubtypeInterpreter(TEItems.itemMorb, MorbSubtypeInterpreter.INSTANCE);
 	}
 
 	@Override
