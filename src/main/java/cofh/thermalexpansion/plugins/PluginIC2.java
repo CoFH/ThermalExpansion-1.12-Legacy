@@ -80,7 +80,7 @@ public class PluginIC2 extends ModPlugin {
 				Fluid biomass = FluidRegistry.getFluid("ic2biomass");
 				Fluid biogas = FluidRegistry.getFluid("ic2biogas");
 
-				int energy = RefineryManager.DEFAULT_ENERGY;
+				int energy = RefineryManager.DEFAULT_ENERGY * 2;
 
 				if (biomass != null && biogas != null) {
 					RefineryManager.addRecipe(energy, new FluidStack(biomass, 25), new FluidStack(biogas, 500), getItemStack("crop_res", 1, 2), 5);

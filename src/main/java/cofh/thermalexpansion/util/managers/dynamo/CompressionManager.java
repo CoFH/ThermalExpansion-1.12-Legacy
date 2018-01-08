@@ -35,7 +35,7 @@ public class CompressionManager {
 
 	public static void initialize() {
 
-		addFuel("creosote", 100000);
+		addFuel("creosote", 20000);
 		addFuel("coal", 400000);
 		addFuel("crude_oil", 400000);
 		addFuel("tree_oil", 1000000);
@@ -74,7 +74,7 @@ public class CompressionManager {
 
 		/* INDUSTRIALCRAFT 2 */
 		{
-			addFuel("ic2biogas", 100000);
+			addFuel("ic2biogas", 50000);
 		}
 
 		/* MINEFACTORY RELOADED */
