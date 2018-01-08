@@ -376,7 +376,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'C', ItemFrame.frameDevice,
 					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', "blockCopper",
+					'X', "ingotCopper",
 					'Y', "ingotInvar"
 			);
 		}
@@ -388,8 +388,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'C', ItemFrame.frameDevice,
 					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', Items.BUCKET,
-					'Y', "ingotCopper"
+					'X', "ingotCopper",
+					'Y', "plankWood"
 			);
 		}
 		if (enable[Type.FISHER.getMetadata()]) {
@@ -412,8 +412,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'C', ItemFrame.frameDevice,
 					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', Blocks.HOPPER,
-					'Y', "dustRedstone"
+					'X', "chestWood",
+					'Y', "ingotTin"
 			);
 		}
 		if (enable[Type.FLUID_BUFFER.getMetadata()]) {
@@ -424,7 +424,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'C', ItemFrame.frameDevice,
 					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', Items.CAULDRON,
+					'X', "blockGlass",
 					'Y', "ingotCopper"
 			);
 		}
@@ -460,7 +460,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'C', ItemFrame.frameDevice,
 					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', Blocks.DISPENSER,
+					'X', "blockGlassHardened",
 					'Y', "ingotSilver"
 			);
 		}

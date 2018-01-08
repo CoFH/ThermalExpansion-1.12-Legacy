@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
 public class CentrifugeManager {
@@ -141,7 +142,7 @@ public class CentrifugeManager {
 		addDefaultMobRecipe("minecraft:horse", singletonList(new ItemStack(Items.LEATHER, 2)), singletonList(50), 2);
 		addDefaultMobRecipe("minecraft:llama", singletonList(new ItemStack(Items.LEATHER, 2)), singletonList(50), 2);
 		addDefaultMobRecipe("minecraft:mooshroom", asList(new ItemStack(Items.LEATHER, 2), new ItemStack(Items.BEEF, 3)), asList(50, 70), 2);
-		addDefaultMobRecipe("minecraft:ocelot", singletonList(ItemStack.EMPTY), singletonList(0), 2);
+		addDefaultMobRecipe("minecraft:ocelot", emptyList(), emptyList(), 2);
 		addDefaultMobRecipe("minecraft:parrot", singletonList(new ItemStack(Items.FEATHER, 2)), singletonList(80), 2);
 		addDefaultMobRecipe("minecraft:pig", singletonList(new ItemStack(Items.PORKCHOP, 3)), singletonList(70), 2);
 		addDefaultMobRecipe("minecraft:polar_bear", asList(new ItemStack(Items.FISH, 2), new ItemStack(Items.FISH, 2, 1)), asList(80, 50), 2);
@@ -149,7 +150,7 @@ public class CentrifugeManager {
 		addDefaultMobRecipe("minecraft:sheep", singletonList(new ItemStack(Items.MUTTON, 2)), singletonList(80), 2);
 		addDefaultMobRecipe("minecraft:skeleton_horse", singletonList(new ItemStack(Items.DYE, 1, EnumDyeColor.WHITE.getDyeDamage())), singletonList(50), 2);
 		addDefaultMobRecipe("minecraft:squid", singletonList(new ItemStack(Items.DYE, 3, EnumDyeColor.BLACK.getDyeDamage())), singletonList(70), 2);
-		addDefaultMobRecipe("minecraft:wolf", singletonList(ItemStack.EMPTY), singletonList(0), 2);
+		addDefaultMobRecipe("minecraft:wolf", emptyList(), emptyList(), 2);
 		addDefaultMobRecipe("minecraft:zombie_horse", singletonList(new ItemStack(Items.ROTTEN_FLESH, 2)), singletonList(50), 2);
 
 		/* MOBS */
@@ -158,19 +159,19 @@ public class CentrifugeManager {
 		addDefaultMobRecipe("minecraft:creeper", singletonList(new ItemStack(Items.GUNPOWDER, 2)), singletonList(50), 5);
 		addDefaultMobRecipe("minecraft:elder_guardian", asList(new ItemStack(Items.PRISMARINE_SHARD, 2), new ItemStack(Items.PRISMARINE_CRYSTALS)), asList(50, 50), 10);
 		addDefaultMobRecipe("minecraft:enderman", singletonList(new ItemStack(Items.ENDER_PEARL)), singletonList(50), 5);
-		addDefaultMobRecipe("minecraft:endermite", singletonList(ItemStack.EMPTY), singletonList(0), 5);
+		addDefaultMobRecipe("minecraft:endermite", emptyList(), emptyList(), 5);
 		addDefaultMobRecipe("minecraft:evocation_illager", asList(new ItemStack(Items.TOTEM_OF_UNDYING), new ItemStack(Items.EMERALD)), asList(100, 50), 10);
 		addDefaultMobRecipe("minecraft:ghast", asList(new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.GUNPOWDER)), asList(50, 50), 5);
 		addDefaultMobRecipe("minecraft:guardian", asList(new ItemStack(Items.PRISMARINE_SHARD, 2), new ItemStack(Items.PRISMARINE_CRYSTALS)), asList(50, 50), 10);
 		addDefaultMobRecipe("minecraft:husk", asList(new ItemStack(Items.ROTTEN_FLESH, 2), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.POTATO)), asList(50, 2, 2), 5);
 		addDefaultMobRecipe("minecraft:magma_cube", asList(new ItemStack(Items.MAGMA_CREAM), ItemHelper.cloneStack(ItemMaterial.dustSulfur)), asList(50, 25), 2);
 		addDefaultMobRecipe("minecraft:shulker", singletonList(new ItemStack(Items.SHULKER_SHELL)), singletonList(50), 5);
-		addDefaultMobRecipe("minecraft:silverfish", singletonList(ItemStack.EMPTY), singletonList(0), 5);
+		addDefaultMobRecipe("minecraft:silverfish", emptyList(), emptyList(), 5);
 		addDefaultMobRecipe("minecraft:skeleton", asList(new ItemStack(Items.ARROW, 2), new ItemStack(Items.BONE, 2)), asList(50, 50), 5);
 		addDefaultMobRecipe("minecraft:slime", singletonList(new ItemStack(Items.SLIME_BALL, 2)), singletonList(50), 2);
 		addDefaultMobRecipe("minecraft:spider", asList(new ItemStack(Items.STRING, 2), new ItemStack(Items.SPIDER_EYE)), asList(50, 25), 5);
 		addDefaultMobRecipe("minecraft:stray", asList(new ItemStack(Items.ARROW, 2), new ItemStack(Items.BONE, 2)), asList(50, 50), 5);
-		addDefaultMobRecipe("minecraft:vex", singletonList(ItemStack.EMPTY), singletonList(0), 3);
+		addDefaultMobRecipe("minecraft:vex", emptyList(), emptyList(), 3);
 		addDefaultMobRecipe("minecraft:villager", singletonList(new ItemStack(Items.EMERALD)), singletonList(2), 0);
 		addDefaultMobRecipe("minecraft:vindication_illager", singletonList(new ItemStack(Items.EMERALD)), singletonList(50), 5);
 		addDefaultMobRecipe("minecraft:witch", asList(new ItemStack(Items.GLOWSTONE_DUST, 2), new ItemStack(Items.GUNPOWDER, 2), new ItemStack(Items.REDSTONE, 2)), asList(40, 40, 40), 5);

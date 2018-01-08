@@ -438,7 +438,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameMachine,
-					'I', invarPart,
+					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', Items.BUCKET,
 					'Y', "ingotInvar"
@@ -480,7 +480,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameMachine,
-					'I', invarPart,
+					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', ItemMaterial.powerCoilElectrum,
 					'Y', Blocks.NETHER_BRICK
@@ -494,7 +494,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameMachine,
-					'I', copperPart,
+					'I', constantanPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', "gearNickel",
 					'Y', "blockGlass"
@@ -508,7 +508,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameMachine,
-					'I', invarPart,
+					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', Items.BUCKET,
 					'Y', "blockGlass"
@@ -598,10 +598,10 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameMachine,
-					'I', invarPart,
+					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', Blocks.PISTON,
-					'Y', "blockGlass"
+					'X', "blockGlass",
+					'Y', "ingotInvar"
 			);
 		}
 		// @formatter:on

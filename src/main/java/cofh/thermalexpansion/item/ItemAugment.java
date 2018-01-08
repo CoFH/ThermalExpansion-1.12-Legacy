@@ -434,7 +434,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				"ICI",
 				" X ",
 				'C', ItemMaterial.powerCoilElectrum,
-				'G', "gearNickel",
+				'G', "gearConstantan",
 				'I', "blockGlassHardened",
 				'X', Items.BLAZE_ROD
 		);

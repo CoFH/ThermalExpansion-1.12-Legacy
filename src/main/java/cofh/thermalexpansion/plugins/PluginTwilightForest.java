@@ -3,9 +3,15 @@ package cofh.thermalexpansion.plugins;
 import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 public class PluginTwilightForest extends ModPlugin {
 
@@ -90,6 +96,74 @@ public class PluginTwilightForest extends ModPlugin {
 				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingSortingwood, ItemHelper.cloneStack(logSortingwood, 6), saplingSortingwood, 30);
 
 				InsolatorManager.addDefaultTreeRecipe(saplingRainbow, ItemHelper.cloneStack(logTwilightOak, 6), saplingRainbow);
+			}
+
+			/* CENTRIFUGE */
+			{
+				/* ANIMALS */
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:wild_boar", singletonList(new ItemStack(Items.PORKCHOP, 3)), singletonList(70), 2);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:bighorn_sheep", singletonList(new ItemStack(Items.MUTTON, 2)), singletonList(80), 2);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:bunny", asList(new ItemStack(Items.RABBIT_HIDE), new ItemStack(Items.RABBIT), new ItemStack(Items.RABBIT_FOOT)), asList(50, 50, 10), 2);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:deer", asList(new ItemStack(Items.LEATHER, 2), getItemStack("raw_venison", 3, 0)), asList(50, 70), 2);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:firefly", singletonList(new ItemStack(Items.GLOWSTONE_DUST)), singletonList(5), 0);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:penguin", singletonList(new ItemStack(Items.FEATHER, 2)), singletonList(50), 2);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:raven", singletonList(getItemStack("raven_feather", 2, 0)), singletonList(50), 2);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:squirrel", emptyList(), emptyList(), 2);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:tiny_bird", singletonList(new ItemStack(Items.FEATHER, 2)), singletonList(50), 2);
+
+				/* MOBS*/
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:armored_giant", singletonList(getItemStack("giant_sword")), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:blockchain_goblin", singletonList(getItemStack("armor_shard", 2, 0)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:death_tome", asList(new ItemStack(Items.PAPER, 3), new ItemStack(Items.BOOK)), asList(90, 80), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:fire_beetle", singletonList(new ItemStack(Items.GUNPOWDER, 2)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:giant_miner", singletonList(getItemStack("giant_pickaxe")), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:goblin_knight_lower", singletonList(getItemStack("armor_shard", 2, 0)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:hedge_spider", asList(new ItemStack(Items.STRING, 2), new ItemStack(Items.SPIDER_EYE)), asList(50, 25), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:helmet_crab", asList(getItemStack("armor_shard", 2, 0), new ItemStack(Items.FISH)), asList(50, 25), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:hostile_wolf", emptyList(), emptyList(), 2);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:ice_crystal", singletonList(new ItemStack(Items.SNOWBALL)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:king_spider", asList(new ItemStack(Items.STRING, 2), new ItemStack(Items.SPIDER_EYE)), asList(50, 25), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:kobold", asList(new ItemStack(Items.WHEAT, 2), new ItemStack(Items.GOLD_NUGGET)), asList(50, 25), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:mini_ghast", asList(new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.GUNPOWDER)), asList(50, 50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:minotaur", singletonList(getItemStack("raw_meef", 1, 0)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:mist_wolf", emptyList(), emptyList(), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:mosquito_swarm", emptyList(), emptyList(), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:pinch_beetle", emptyList(), emptyList(), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:redcap", singletonList(new ItemStack(Items.COAL, 2)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:redcap_sapper", singletonList(new ItemStack(Items.COAL, 2)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:skeleton_druid", asList(new ItemStack(Items.BONE, 2), getItemStack("torchberries", 2, 0)), asList(50, 50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:slime_beetle", singletonList(new ItemStack(Items.SLIME_BALL, 2)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:snow_guardian", singletonList(new ItemStack(Items.SNOWBALL)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:stable_ice_core", singletonList(new ItemStack(Items.SNOWBALL)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:swarm_spider", asList(new ItemStack(Items.STRING, 2), new ItemStack(Items.SPIDER_EYE)), asList(50, 25), 2);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:tower_broodling", asList(new ItemStack(Items.STRING, 2), new ItemStack(Items.SPIDER_EYE)), asList(50, 25), 3);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:tower_ghast", asList(new ItemStack(Items.GHAST_TEAR), new ItemStack(Items.GUNPOWDER)), asList(50, 50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:tower_golem", asList(new ItemStack(Items.IRON_INGOT, 2), getItemStack("tower_wood", 2, 0)), asList(50, 50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:tower_termite", singletonList(getItemStack("borer_essence", 2, 0)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:troll", singletonList(getItemStack("magic_beans", 2, 0)), singletonList(2), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:unstable_ice_core", singletonList(new ItemStack(Items.SNOWBALL)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:winter_wolf", singletonList(getItemStack("arctic_fur", 2, 0)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:wraith", singletonList(new ItemStack(Items.GLOWSTONE_DUST, 2)), singletonList(50), 5);
+				CentrifugeManager.addDefaultMobRecipe("twilightforest:yeti", singletonList(getItemStack("arctic_fur", 2, 0)), singletonList(50), 5);
+
+				/* BOSSES */
+				// CentrifugeManager.addDefaultMobRecipe("twilightforest:naga", emptyList(), emptyList(), 5);
+				// CentrifugeManager.addDefaultMobRecipe("twilightforest:lich", emptyList(), emptyList(), 5);
+				// CentrifugeManager.addDefaultMobRecipe("twilightforest:quest_ram", emptyList(), emptyList(), 5);
+
+				// CentrifugeManager.addDefaultMobRecipe("twilightforest:minoshroom", singletonList(getItemStack("meef_stroganoff", 5, 0)), singletonList(60), 100);
+				// CentrifugeManager.addDefaultMobRecipe("twilightforest:hydra", emptyList(), emptyList(), 5);
+
+				// CentrifugeManager.addDefaultMobRecipe("twilightforest:knight_phantom", emptyList(), emptyList(), 5);
+				// CentrifugeManager.addDefaultMobRecipe("twilightforest:ur_ghast", emptyList(), emptyList(), 5);
+
+				// CentrifugeManager.addDefaultMobRecipe("twilightforest:yeti_alpha", emptyList(), emptyList(), 5);
+				// CentrifugeManager.addDefaultMobRecipe("twilightforest:snow_queen", emptyList(), emptyList(), 5);
+
+				/* NYI */
+				// CentrifugeManager.addDefaultMobRecipe("twilightforest:adherent", emptyList(), emptyList(), 5);
+				// CentrifugeManager.addDefaultMobRecipe("twilightforest:harbinger_cube", emptyList(), emptyList(), 5);
+				// CentrifugeManager.addDefaultMobRecipe("twilightforest:roving_cube", emptyList(), emptyList(), 5);
 			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
