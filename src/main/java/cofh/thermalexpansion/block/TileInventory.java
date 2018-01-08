@@ -133,7 +133,6 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);
 			int slot = tag.getInteger("Slot");
-
 			if (slot >= 0 && slot < inventory.length) {
 				inventory[slot] = new ItemStack(tag);
 			}
