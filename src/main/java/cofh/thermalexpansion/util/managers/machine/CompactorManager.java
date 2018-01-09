@@ -330,7 +330,6 @@ public class CompactorManager {
 			default:
 				return recipeMapGear.remove(new ComparableItemStackCompactor(input));
 		}
-
 	}
 
 	/* HELPERS */

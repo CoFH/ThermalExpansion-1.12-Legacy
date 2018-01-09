@@ -93,7 +93,7 @@ public class TEProps {
 		creativeTabHideFlorbs = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("HideFlorbs", category, creativeTabHideFlorbs, comment);
 
 		comment = "If TRUE, Morbs will be completely hidden from Creative Mode and JEI.";
-		creativeTabHideMorbs = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("HideMorbs", category, creativeTabHideFlorbs, comment);
+		creativeTabHideMorbs = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("HideMorbs", category, creativeTabHideMorbs, comment);
 
 		category = "Interface.GUI";
 

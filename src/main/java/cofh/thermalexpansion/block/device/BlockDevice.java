@@ -481,7 +481,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		LEXICON(7, "lexicon"),
 		XP_COLLECTOR(8, "xp_collector"),
 		DIFFUSER(9, "diffuser"),
-		CHUNK_LOADER(10, "chunk_loader");
+		FACTORIZER(10, "factorizer"),
+		CHUNK_LOADER(11, "chunk_loader");
 		// @formatter:on
 
 		private static final Type[] METADATA_LOOKUP = new Type[values().length];
