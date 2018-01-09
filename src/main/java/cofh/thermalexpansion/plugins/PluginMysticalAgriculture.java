@@ -29,14 +29,21 @@ public class PluginMysticalAgriculture extends ModPlugin {
 		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
 		enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment) && Loader.isModLoaded(MOD_ID);
 
+		// TODO: Remove at some point.
+		ThermalExpansion.CONFIG.renameProperty(category, "BaseSecondaryChance", "Plugins." + MOD_NAME, "BaseSecondaryChance", true);
+		ThermalExpansion.CONFIG.renameProperty(category, "RichSecondaryChance", "Plugins." + MOD_NAME, "RichSecondaryChance", true);
+		ThermalExpansion.CONFIG.renameProperty(category, "FluxedSecondaryChance", "Plugins." + MOD_NAME, "FluxedSecondaryChance", true);
+
+		category = "Plugins." + MOD_NAME;
+
 		comment = "Secondary chance for seeds when using Phyto-Gro.";
 		secondaryChanceBase = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseSecondaryChance", category, secondaryChanceBase, 0, 150, comment);
 
 		comment = "Secondary chance for seeds when using Rich Phyto-Gro.";
-		secondaryChanceRich = ThermalExpansion.CONFIG.getConfiguration().getInt("RichSecondaryChance", category, secondaryChanceBase, 0, 150, comment);
+		secondaryChanceRich = ThermalExpansion.CONFIG.getConfiguration().getInt("RichSecondaryChance", category, secondaryChanceRich, 0, 150, comment);
 
 		comment = "Secondary chance for seeds when using Fluxed Phyto-Gro.";
-		secondaryChanceFlux = ThermalExpansion.CONFIG.getConfiguration().getInt("FluxedSecondaryChance", category, secondaryChanceBase, 0, 150, comment);
+		secondaryChanceFlux = ThermalExpansion.CONFIG.getConfiguration().getInt("FluxedSecondaryChance", category, secondaryChanceFlux, 0, 150, comment);
 
 		if (!enable) {
 			return false;

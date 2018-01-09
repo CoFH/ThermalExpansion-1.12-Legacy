@@ -365,17 +365,16 @@ public class TileDynamoSteam extends TileDynamoBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
-						return 0;
-					}
-					if (augmentTurbine) {
-						if (resource.getFluid() == TFFluids.fluidSteam) {
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						if (augmentTurbine) {
+							if (resource.getFluid() == TFFluids.fluidSteam) {
+								return tank.fill(resource, doFill);
+							}
+							return 0;
+						}
+						if (resource.getFluid() == FluidRegistry.WATER) {
 							return tank.fill(resource, doFill);
 						}
-						return 0;
-					}
-					if (resource.getFluid() == FluidRegistry.WATER) {
-						return tank.fill(resource, doFill);
 					}
 					return 0;
 				}
@@ -384,20 +383,20 @@ public class TileDynamoSteam extends TileDynamoBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (resource == null || from == null || !augmentCoilDuct && from.ordinal() == facing) {
-						return null;
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						return tank.drain(resource, doDrain);
 					}
-					return tank.drain(resource, doDrain);
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (!augmentCoilDuct && from.ordinal() == facing) {
-						return null;
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						return tank.drain(maxDrain, doDrain);
 					}
-					return tank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}
