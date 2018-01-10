@@ -229,7 +229,7 @@ info.thermalexpansion.apparatus.activator=Faz mais do que uma dica de ferramenta
 info.thermalexpansion.apparatus.breaker=Quebra blocos. Bem simples, não?
 info.thermalexpansion.apparatus.collector=Procura itens em uma área.
 
-info.thermalexpansion.capacitor.a.0=Armazena Redstone Flux. Carregando Itens Segurados
+info.thermalexpansion.capacitor.a.0=Armazena e Transfere Redstone Flux.
 info.thermalexpansion.capacitor.b.0=§ePressione (%s) para alterar o modo.§r
 info.thermalexpansion.capacitor.c.0=§bShift+clique para ativar.§r
 info.thermalexpansion.capacitor.c.1=§eShift+clique para desativar.§r
@@ -276,7 +276,7 @@ info.thermalexpansion.morb.a.0=Prende um Mob em estase.
 info.thermalexpansion.morb.a.1=Esse Morb é reutilizável.
 info.thermalexpansion.morb.b.0=Jogue em um Mob para capturá-lo.
 info.thermalexpansion.morb.b.1=Jogue para soltar o mob preso.
-info.thermalexpansion.morb.b.2=Esse Morb prende um mob genérico.
+info.thermalexpansion.morb.b.2=Esse Morb contém um mob genérico.
 
 info.thermalexpansion.machine.brewer=Faz poções.
 info.thermalexpansion.machine.centrifuge=Separa itens em suas partes que o compõem.
