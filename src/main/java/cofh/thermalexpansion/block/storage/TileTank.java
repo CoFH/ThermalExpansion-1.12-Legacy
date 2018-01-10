@@ -18,7 +18,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -453,11 +453,11 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 			return;
 		}
 		if (tank.getFluid() != null) {
-			info.add(new TextComponentString(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.getFluidName(tank.getFluid())));
-			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + StringHelper.formatNumber(tank.getFluidAmount()) + "/" + StringHelper.formatNumber(tank.getCapacity()) + " mB"));
-			info.add(new TextComponentString(lock ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
+			info.add(new TextComponentTranslation("info.cofh.fluid").appendText(": " + StringHelper.getFluidName(tank.getFluid())));
+			info.add(new TextComponentTranslation("info.cofh.amount").appendText(": " + StringHelper.formatNumber(tank.getFluidAmount()) + "/" + StringHelper.formatNumber(tank.getCapacity()) + " mB"));
+			info.add(new TextComponentTranslation(lock ? "info.cofh.locked" : "info.cofh.unlocked"));
 		} else {
-			info.add(new TextComponentString(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty")));
+			info.add(new TextComponentTranslation("info.cofh.fluid").appendText(": ").appendSibling(new TextComponentTranslation("info.cofh.empty")));
 		}
 	}
 

@@ -227,6 +227,15 @@ public class TileCrucible extends TileMachineBase {
 			}
 		}
 	}
+	@Override
+	public void update() {
+
+		if (timeCheckEighth()) {
+			transferOutput();
+		}
+		super.update();
+	}
+
 
 	/* GUI METHODS */
 	@Override

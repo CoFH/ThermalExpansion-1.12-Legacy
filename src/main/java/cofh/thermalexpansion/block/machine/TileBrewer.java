@@ -229,6 +229,15 @@ public class TileBrewer extends TileMachineBase {
 		}
 	}
 
+	@Override
+	public void update() {
+
+		if (timeCheckEighth()) {
+			transferOutput();
+		}
+		super.update();
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {

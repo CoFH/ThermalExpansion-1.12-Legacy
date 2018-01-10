@@ -90,7 +90,7 @@ public class CoolantManager {
 
 		/* INDUSTRIALCRAFT 2 */
 		{
-			addCoolant("ic2distilled_water", 300000, 25);
+			addCoolant("ic2distilled_water", 300000, 30);
 			addCoolant("ic2coolant", 2000000, 50);
 		}
 	}

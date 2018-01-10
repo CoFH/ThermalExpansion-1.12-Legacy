@@ -26,6 +26,7 @@ public class TEPlugins {
 		pluginActuallyAdditions = new PluginActuallyAdditions();
 		pluginAppliedEnergistics2 = new PluginAppliedEnergistics2();
 		pluginBiomesOPlenty = new PluginBiomesOPlenty();
+		pluginElementalDimensions = new PluginElementalDimensions();
 		pluginEvilCraft = new PluginEvilCraft();
 		pluginExtraAlchemy = new PluginExtraAlchemy();
 		pluginExU2 = new PluginExU2();
@@ -55,6 +56,7 @@ public class TEPlugins {
 		initList.add(pluginActuallyAdditions);
 		initList.add(pluginAppliedEnergistics2);
 		initList.add(pluginBiomesOPlenty);
+		initList.add(pluginElementalDimensions);
 		initList.add(pluginEvilCraft);
 		initList.add(pluginExtraAlchemy);
 		initList.add(pluginExU2);
@@ -99,6 +101,7 @@ public class TEPlugins {
 	public static PluginActuallyAdditions pluginActuallyAdditions;
 	public static PluginAppliedEnergistics2 pluginAppliedEnergistics2;
 	public static PluginBiomesOPlenty pluginBiomesOPlenty;
+	public static PluginElementalDimensions pluginElementalDimensions;
 	public static PluginEvilCraft pluginEvilCraft;
 	public static PluginExtraAlchemy pluginExtraAlchemy;
 	public static PluginExU2 pluginExU2;

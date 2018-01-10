@@ -171,6 +171,7 @@ public class TileCrafter extends TileMachineBase {
 						break;
 					} else if (remaining.getMaxStackSize() > 1 && ItemHelper.itemsIdentical(inventory[j], remaining) && inventory[j].getCount() < inventory[j].getMaxStackSize()) {
 						inventory[j].grow(1);
+						break;
 					}
 				}
 			}

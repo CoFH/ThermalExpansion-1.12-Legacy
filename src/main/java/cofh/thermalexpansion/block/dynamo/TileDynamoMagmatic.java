@@ -65,6 +65,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
 
 	private int coolantRF;
+	private int coolantFactor;
 
 	/* AUGMENTS */
 	protected boolean augmentCoolant;
@@ -110,11 +111,12 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 			}
 			if (coolantRF <= 0) {
 				coolantRF += CoolantManager.getCoolantRF100mB(coolantTank.getFluid());
+				coolantFactor = augmentBoiler ? 0 : CoolantManager.getCoolantFactor(coolantTank.getFluid()) / 2;
 				coolantTank.drain(fluidAmount, true);
 			}
 			return;
 		}
-		fuelRF += MagmaticManager.getFuelEnergy100mB(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
+		fuelRF += MagmaticManager.getFuelEnergy100mB(fuelTank.getFluid()) * (energyMod + coolantFactor) / ENERGY_BASE;
 		fuelTank.drain(fluidAmount, true);
 	}
 
@@ -182,6 +184,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		super.readFromNBT(nbt);
 
 		coolantRF = nbt.getInteger("Coolant");
+		coolantFactor = nbt.getInteger("CoolantFactor");
 		fuelTank.readFromNBT(nbt.getCompoundTag("FuelTank"));
 		coolantTank.readFromNBT(nbt.getCompoundTag("CoolantTank"));
 
@@ -202,6 +205,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("Coolant", coolantRF);
+		nbt.setInteger("CoolantFactor", coolantFactor);
 		nbt.setTag("FuelTank", fuelTank.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("CoolantTank", coolantTank.writeToNBT(new NBTTagCompound()));
 		return nbt;
@@ -273,9 +277,11 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 		if (augmentBoiler) {
 			coolantTank.setLock(FluidRegistry.WATER);
+			coolantFactor = 0;
 		} else if (!augmentCoolant) {
 			coolantTank.drain(coolantTank.getCapacity(), true);
 			coolantRF = 0;
+			coolantFactor = 0;
 		}
 	}
 
@@ -296,7 +302,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 			augmentCoolant = true;
 			hasModeAugment = true;
 			energyConfig.setDefaultParams(energyConfig.maxPower + 3 * getBasePower(this.level), smallStorage);
-			energyMod += 25;
+			energyMod += 15;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

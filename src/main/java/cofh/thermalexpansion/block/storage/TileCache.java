@@ -22,6 +22,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -413,11 +414,11 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 			return;
 		}
 		if (!getStoredInstance().isEmpty()) {
-			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(getStoredInstance())));
-			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + StringHelper.formatNumber(getStoredCount()) + " / " + StringHelper.formatNumber(getCapacity(level, enchantHolding))));
-			info.add(new TextComponentString(lock ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
+			info.add(new TextComponentTranslation("info.cofh.item").appendText(": " + StringHelper.getItemName(getStoredInstance())));
+			info.add(new TextComponentTranslation("info.cofh.amount").appendText(": " + StringHelper.formatNumber(getStoredCount()) + "/" + StringHelper.formatNumber(getCapacity(level, enchantHolding))));
+			info.add(new TextComponentTranslation(lock ? "info.cofh.locked" : "info.cofh.unlocked"));
 		} else {
-			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty")));
+			info.add(new TextComponentTranslation("info.cofh.item").appendText(": ").appendSibling(new TextComponentTranslation("info.cofh.empty")));
 		}
 	}
 

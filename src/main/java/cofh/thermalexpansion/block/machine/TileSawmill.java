@@ -257,6 +257,9 @@ public class TileSawmill extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
+		if (!getTransferOut()) {
+			return;
+		}
 		if (tank.getFluidAmount() <= 0) {
 			return;
 		}
@@ -273,6 +276,15 @@ public class TileSawmill extends TileMachineBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void update() {
+
+		if (augmentTapper && timeCheckEighth()) {
+			transferOutput();
+		}
+		super.update();
 	}
 
 	/* GUI METHODS */

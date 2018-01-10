@@ -67,6 +67,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
 
 	private int coolantRF;
+	private int coolantFactor;
 
 	/* AUGMENTS */
 	protected boolean augmentCoolant;
@@ -94,11 +95,12 @@ public class TileDynamoCompression extends TileDynamoBase {
 	protected void processStart() {
 
 		if (fuelRF <= 0) {
-			fuelRF += CompressionManager.getFuelEnergy100mB(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
+			fuelRF += CompressionManager.getFuelEnergy100mB(fuelTank.getFluid()) * (energyMod + coolantFactor) / ENERGY_BASE;
 			fuelTank.drain(fluidAmount, true);
 		}
 		if (coolantRF <= 0) {
 			coolantRF += CoolantManager.getCoolantRF100mB(coolantTank.getFluid());
+			coolantFactor = augmentBoiler ? 0 : CoolantManager.getCoolantFactor(coolantTank.getFluid()) / 2;
 			coolantTank.drain(fluidAmount, true);
 		}
 	}
@@ -163,6 +165,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		super.readFromNBT(nbt);
 
 		coolantRF = nbt.getInteger("Coolant");
+		coolantFactor = nbt.getInteger("CoolantFactor");
 		fuelTank.readFromNBT(nbt.getCompoundTag("FuelTank"));
 		coolantTank.readFromNBT(nbt.getCompoundTag("CoolantTank"));
 
@@ -183,6 +186,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("Coolant", coolantRF);
+		nbt.setInteger("CoolantFactor", coolantFactor);
 		nbt.setTag("FuelTank", fuelTank.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("CoolantTank", coolantTank.writeToNBT(new NBTTagCompound()));
 		return nbt;
@@ -258,6 +262,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		}
 		if (augmentBoiler) {
 			coolantTank.setLock(FluidRegistry.WATER);
+			coolantFactor = 0;
 		}
 	}
 

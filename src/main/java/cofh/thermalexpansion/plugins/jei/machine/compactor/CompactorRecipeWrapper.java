@@ -1,11 +1,11 @@
 package cofh.thermalexpansion.plugins.jei.machine.compactor;
 
+import cofh.core.inventory.ComparableItemStackSafe;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.machine.TileCompactor;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.CompactorRecipe;
-import cofh.thermalexpansion.util.managers.machine.CompactorManager.ComparableItemStackCompactor;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -37,7 +37,7 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 
-		ComparableItemStackCompactor instance = new ComparableItemStackCompactor(new ItemStack(Items.DIAMOND));
+		ComparableItemStackSafe instance = new ComparableItemStackSafe(new ItemStack(Items.DIAMOND));
 		int oreID = instance.getOreID(recipe.getInput());
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {

@@ -231,6 +231,9 @@ public class TileFurnace extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
+		if (!getTransferOut()) {
+			return;
+		}
 		if (tank.getFluidAmount() <= 0) {
 			return;
 		}
@@ -247,6 +250,15 @@ public class TileFurnace extends TileMachineBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void update() {
+
+		if (augmentPyrolysis && timeCheckEighth()) {
+			transferOutputFluid();
+		}
+		super.update();
 	}
 
 	/* GUI METHODS */

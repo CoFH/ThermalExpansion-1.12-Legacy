@@ -243,6 +243,9 @@ public class TileRefinery extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
+		if (!getTransferOut()) {
+			return;
+		}
 		if (outputTank.getFluidAmount() <= 0) {
 			return;
 		}
@@ -259,6 +262,15 @@ public class TileRefinery extends TileMachineBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void update() {
+
+		if (timeCheckEighth()) {
+			transferOutputFluid();
+		}
+		super.update();
 	}
 
 	@Override

@@ -23,11 +23,11 @@ import java.util.Set;
 
 public class CompactorManager {
 
-	private static Map<ComparableItemStackCompactor, CompactorRecipe> recipeMapPress = new THashMap<>();
-	private static Map<ComparableItemStackCompactor, CompactorRecipe> recipeMapStorage = new THashMap<>();
-	private static Map<ComparableItemStackCompactor, CompactorRecipe> recipeMapMint = new THashMap<>();
-	private static Map<ComparableItemStackCompactor, CompactorRecipe> recipeMapGear = new THashMap<>();
-	private static Set<ComparableItemStackCompactor> validationSet = new THashSet<>();
+	private static Map<ComparableItemStackSafe, CompactorRecipe> recipeMapPress = new THashMap<>();
+	private static Map<ComparableItemStackSafe, CompactorRecipe> recipeMapStorage = new THashMap<>();
+	private static Map<ComparableItemStackSafe, CompactorRecipe> recipeMapMint = new THashMap<>();
+	private static Map<ComparableItemStackSafe, CompactorRecipe> recipeMapGear = new THashMap<>();
+	private static Set<ComparableItemStackSafe> validationSet = new THashSet<>();
 
 	public static final int DEFAULT_ENERGY = 4000;
 	public static final int DEFAULT_ENERGY_STORAGE = 400;
@@ -37,7 +37,7 @@ public class CompactorManager {
 		if (input.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackCompactor query = new ComparableItemStackCompactor(input);
+		ComparableItemStackSafe query = new ComparableItemStackSafe(input);
 		CompactorRecipe recipe = null;
 
 		switch (mode) {
@@ -94,7 +94,7 @@ public class CompactorManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return !input.isEmpty() && validationSet.contains(new ComparableItemStackCompactor(input));
+		return !input.isEmpty() && validationSet.contains(new ComparableItemStackSafe(input));
 	}
 
 	public static void initialize() {
@@ -104,29 +104,79 @@ public class CompactorManager {
 		addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(ItemMaterial.dustBlitz, 5), ItemMaterial.rodBlitz, Mode.PRESS);
 		addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(ItemMaterial.dustBasalz, 5), ItemMaterial.rodBasalz, Mode.PRESS);
 
-		/* PRESS */
+		/* PLATES */
 		{
-			//			addDefaultPressRecipe(ItemMaterial.ingotIron, ItemMaterial.plateIron);
-			//			addDefaultPressRecipe(ItemMaterial.ingotGold, ItemMaterial.plateGold);
-			//
-			//			addDefaultPressRecipe(ItemMaterial.ingotCopper, ItemMaterial.plateCopper);
-			//			addDefaultPressRecipe(ItemMaterial.ingotTin, ItemMaterial.plateTin);
-			//			addDefaultPressRecipe(ItemMaterial.ingotSilver, ItemMaterial.plateSilver);
-			//			addDefaultPressRecipe(ItemMaterial.ingotLead, ItemMaterial.plateLead);
-			//			addDefaultPressRecipe(ItemMaterial.ingotAluminum, ItemMaterial.plateAluminum);
-			//			addDefaultPressRecipe(ItemMaterial.ingotNickel, ItemMaterial.plateNickel);
-			//			addDefaultPressRecipe(ItemMaterial.ingotPlatinum, ItemMaterial.platePlatinum);
-			//			addDefaultPressRecipe(ItemMaterial.ingotIridium, ItemMaterial.plateIridium);
-			//			addDefaultPressRecipe(ItemMaterial.ingotMithril, ItemMaterial.plateMithril);
-			//
-			//			addDefaultPressRecipe(ItemMaterial.ingotSteel, ItemMaterial.plateSteel);
-			//			addDefaultPressRecipe(ItemMaterial.ingotElectrum, ItemMaterial.plateElectrum);
-			//			addDefaultPressRecipe(ItemMaterial.ingotInvar, ItemMaterial.plateInvar);
-			//			addDefaultPressRecipe(ItemMaterial.ingotBronze, ItemMaterial.plateBronze);
-			//			addDefaultPressRecipe(ItemMaterial.ingotConstantan, ItemMaterial.plateConstantan);
-			//			addDefaultPressRecipe(ItemMaterial.ingotSignalum, ItemMaterial.plateSignalum);
-			//			addDefaultPressRecipe(ItemMaterial.ingotLumium, ItemMaterial.plateLumium);
-			//			addDefaultPressRecipe(ItemMaterial.ingotEnderium, ItemMaterial.plateEnderium);
+			addDefaultPlateRecipe("Iron", ItemMaterial.plateIron);
+			addDefaultPlateRecipe("Gold", ItemMaterial.plateGold);
+
+			addDefaultPlateRecipe("Copper", ItemMaterial.plateCopper);
+			addDefaultPlateRecipe("Tin", ItemMaterial.plateTin);
+			addDefaultPlateRecipe("Silver", ItemMaterial.plateSilver);
+			addDefaultPlateRecipe("Lead", ItemMaterial.plateLead);
+			addDefaultPlateRecipe("Aluminum", ItemMaterial.plateAluminum);
+			addDefaultPlateRecipe("Nickel", ItemMaterial.plateNickel);
+			addDefaultPlateRecipe("Platinum", ItemMaterial.platePlatinum);
+			addDefaultPlateRecipe("Iridium", ItemMaterial.plateIridium);
+			addDefaultPlateRecipe("Mithril", ItemMaterial.plateMithril);
+
+			addDefaultPlateRecipe("Steel", ItemMaterial.plateSteel);
+			addDefaultPlateRecipe("Electrum", ItemMaterial.plateElectrum);
+			addDefaultPlateRecipe("Invar", ItemMaterial.plateInvar);
+			addDefaultPlateRecipe("Bronze", ItemMaterial.plateBronze);
+			addDefaultPlateRecipe("Constantan", ItemMaterial.plateConstantan);
+			addDefaultPlateRecipe("Signalum", ItemMaterial.plateSignalum);
+			addDefaultPlateRecipe("Lumium", ItemMaterial.plateLumium);
+			addDefaultPlateRecipe("Enderium", ItemMaterial.plateEnderium);
+		}
+
+		/* GEARS */
+		{
+			addDefaultGearRecipe("Iron", ItemMaterial.gearIron);
+			addDefaultGearRecipe("Gold", ItemMaterial.gearGold);
+
+			addDefaultGearRecipe("Copper", ItemMaterial.gearCopper);
+			addDefaultGearRecipe("Tin", ItemMaterial.gearTin);
+			addDefaultGearRecipe("Silver", ItemMaterial.gearSilver);
+			addDefaultGearRecipe("Lead", ItemMaterial.gearLead);
+			addDefaultGearRecipe("Aluminum", ItemMaterial.gearAluminum);
+			addDefaultGearRecipe("Nickel", ItemMaterial.gearNickel);
+			addDefaultGearRecipe("Platinum", ItemMaterial.gearPlatinum);
+			addDefaultGearRecipe("Iridium", ItemMaterial.gearIridium);
+			addDefaultGearRecipe("Mithril", ItemMaterial.gearMithril);
+
+			addDefaultGearRecipe("Steel", ItemMaterial.gearSteel);
+			addDefaultGearRecipe("Electrum", ItemMaterial.gearElectrum);
+			addDefaultGearRecipe("Invar", ItemMaterial.gearInvar);
+			addDefaultGearRecipe("Bronze", ItemMaterial.gearBronze);
+			addDefaultGearRecipe("Constantan", ItemMaterial.gearConstantan);
+			addDefaultGearRecipe("Signalum", ItemMaterial.gearSignalum);
+			addDefaultGearRecipe("Lumium", ItemMaterial.gearLumium);
+			addDefaultGearRecipe("Enderium", ItemMaterial.gearEnderium);
+		}
+
+		/* COINS */
+		{
+			addDefaultCoinRecipe("Iron", ItemCoin.coinIron);
+			addDefaultCoinRecipe("Gold", ItemCoin.coinGold);
+
+			addDefaultCoinRecipe("Copper", ItemCoin.coinCopper);
+			addDefaultCoinRecipe("Tin", ItemCoin.coinTin);
+			addDefaultCoinRecipe("Silver", ItemCoin.coinSilver);
+			addDefaultCoinRecipe("Lead", ItemCoin.coinLead);
+			addDefaultCoinRecipe("Aluminum", ItemCoin.coinAluminum);
+			addDefaultCoinRecipe("Nickel", ItemCoin.coinNickel);
+			addDefaultCoinRecipe("Platinum", ItemCoin.coinPlatinum);
+			addDefaultCoinRecipe("Iridium", ItemCoin.coinIridium);
+			addDefaultCoinRecipe("Mithril", ItemCoin.coinMithril);
+
+			addDefaultCoinRecipe("Steel", ItemCoin.coinSteel);
+			addDefaultCoinRecipe("Electrum", ItemCoin.coinElectrum);
+			addDefaultCoinRecipe("Invar", ItemCoin.coinInvar);
+			addDefaultCoinRecipe("Bronze", ItemCoin.coinBronze);
+			addDefaultCoinRecipe("Constantan", ItemCoin.coinConstantan);
+			addDefaultCoinRecipe("Signalum", ItemCoin.coinSignalum);
+			addDefaultCoinRecipe("Lumium", ItemCoin.coinLumium);
+			addDefaultCoinRecipe("Enderium", ItemCoin.coinEnderium);
 		}
 
 		/* STORAGE */
@@ -180,38 +230,13 @@ public class CompactorManager {
 			addDefaultStorageRecipe(ItemMaterial.nuggetEnderium, ItemMaterial.ingotEnderium);
 		}
 
-		/* MINT */
-		{
-			addDefaultMintRecipe(ItemMaterial.nuggetIron, ItemMaterial.ingotIron, new ItemStack(Blocks.IRON_BLOCK), ItemCoin.coinIron);
-			addDefaultMintRecipe(ItemMaterial.nuggetGold, ItemMaterial.ingotGold, new ItemStack(Blocks.GOLD_BLOCK), ItemCoin.coinGold);
-
-			addDefaultMintRecipe(ItemMaterial.nuggetCopper, ItemMaterial.ingotCopper, BlockStorage.blockCopper, ItemCoin.coinCopper);
-			addDefaultMintRecipe(ItemMaterial.nuggetTin, ItemMaterial.ingotTin, BlockStorage.blockTin, ItemCoin.coinTin);
-			addDefaultMintRecipe(ItemMaterial.nuggetSilver, ItemMaterial.ingotSilver, BlockStorage.blockSilver, ItemCoin.coinSilver);
-			addDefaultMintRecipe(ItemMaterial.nuggetLead, ItemMaterial.ingotLead, BlockStorage.blockLead, ItemCoin.coinLead);
-			addDefaultMintRecipe(ItemMaterial.nuggetAluminum, ItemMaterial.ingotAluminum, BlockStorage.blockAluminum, ItemCoin.coinAluminum);
-			addDefaultMintRecipe(ItemMaterial.nuggetNickel, ItemMaterial.ingotNickel, BlockStorage.blockNickel, ItemCoin.coinNickel);
-			addDefaultMintRecipe(ItemMaterial.nuggetPlatinum, ItemMaterial.ingotPlatinum, BlockStorage.blockPlatinum, ItemCoin.coinPlatinum);
-			addDefaultMintRecipe(ItemMaterial.nuggetIridium, ItemMaterial.ingotIridium, BlockStorage.blockIridium, ItemCoin.coinIridium);
-			addDefaultMintRecipe(ItemMaterial.nuggetMithril, ItemMaterial.ingotMithril, BlockStorage.blockMithril, ItemCoin.coinMithril);
-
-			addDefaultMintRecipe(ItemMaterial.nuggetSteel, ItemMaterial.ingotSteel, BlockStorageAlloy.blockSteel, ItemCoin.coinSteel);
-			addDefaultMintRecipe(ItemMaterial.nuggetElectrum, ItemMaterial.ingotElectrum, BlockStorageAlloy.blockElectrum, ItemCoin.coinElectrum);
-			addDefaultMintRecipe(ItemMaterial.nuggetInvar, ItemMaterial.ingotInvar, BlockStorageAlloy.blockInvar, ItemCoin.coinInvar);
-			addDefaultMintRecipe(ItemMaterial.nuggetBronze, ItemMaterial.ingotBronze, BlockStorageAlloy.blockBronze, ItemCoin.coinBronze);
-			addDefaultMintRecipe(ItemMaterial.nuggetConstantan, ItemMaterial.ingotConstantan, BlockStorageAlloy.blockConstantan, ItemCoin.coinConstantan);
-			addDefaultMintRecipe(ItemMaterial.nuggetSignalum, ItemMaterial.ingotSignalum, BlockStorageAlloy.blockSignalum, ItemCoin.coinSignalum);
-			addDefaultMintRecipe(ItemMaterial.nuggetLumium, ItemMaterial.ingotLumium, BlockStorageAlloy.blockLumium, ItemCoin.coinLumium);
-			addDefaultMintRecipe(ItemMaterial.nuggetEnderium, ItemMaterial.ingotEnderium, BlockStorageAlloy.blockEnderium, ItemCoin.coinEnderium);
-		}
-
 		/* LOAD RECIPES */
 		loadRecipes();
 	}
 
 	public static void loadRecipes() {
 
-		/* PLATES / GEARS */
+		/* PLATES / GEARS / COINS */
 		String[] oreNames = OreDictionary.getOreNames();
 		String oreType;
 
@@ -222,6 +247,9 @@ public class CompactorManager {
 			} else if (oreName.startsWith("gear")) {
 				oreType = oreName.substring(4, oreName.length());
 				addDefaultGearRecipe(oreType);
+			} else if (oreName.startsWith("coin")) {
+				oreType = oreName.substring(4, oreName.length());
+				addDefaultCoinRecipe(oreType);
 			}
 		}
 
@@ -246,34 +274,34 @@ public class CompactorManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackCompactor, CompactorRecipe> tempPress = new THashMap<>(recipeMapPress.size());
-		Map<ComparableItemStackCompactor, CompactorRecipe> tempStorage = new THashMap<>(recipeMapStorage.size());
-		Map<ComparableItemStackCompactor, CompactorRecipe> tempMint = new THashMap<>(recipeMapMint.size());
-		Map<ComparableItemStackCompactor, CompactorRecipe> tempGear = new THashMap<>(recipeMapGear.size());
-		Set<ComparableItemStackCompactor> tempSet = new THashSet<>();
+		Map<ComparableItemStackSafe, CompactorRecipe> tempPress = new THashMap<>(recipeMapPress.size());
+		Map<ComparableItemStackSafe, CompactorRecipe> tempStorage = new THashMap<>(recipeMapStorage.size());
+		Map<ComparableItemStackSafe, CompactorRecipe> tempMint = new THashMap<>(recipeMapMint.size());
+		Map<ComparableItemStackSafe, CompactorRecipe> tempGear = new THashMap<>(recipeMapGear.size());
+		Set<ComparableItemStackSafe> tempSet = new THashSet<>();
 		CompactorRecipe tempRecipe;
 
-		for (Map.Entry<ComparableItemStackCompactor, CompactorRecipe> entry : recipeMapPress.entrySet()) {
+		for (Map.Entry<ComparableItemStackSafe, CompactorRecipe> entry : recipeMapPress.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackCompactor input = new ComparableItemStackCompactor(tempRecipe.input);
+			ComparableItemStackSafe input = new ComparableItemStackSafe(tempRecipe.input);
 			tempPress.put(input, tempRecipe);
 			tempSet.add(input);
 		}
-		for (Map.Entry<ComparableItemStackCompactor, CompactorRecipe> entry : recipeMapStorage.entrySet()) {
+		for (Map.Entry<ComparableItemStackSafe, CompactorRecipe> entry : recipeMapStorage.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackCompactor input = new ComparableItemStackCompactor(tempRecipe.input);
+			ComparableItemStackSafe input = new ComparableItemStackSafe(tempRecipe.input);
 			tempStorage.put(input, tempRecipe);
 			tempSet.add(input);
 		}
-		for (Map.Entry<ComparableItemStackCompactor, CompactorRecipe> entry : recipeMapMint.entrySet()) {
+		for (Map.Entry<ComparableItemStackSafe, CompactorRecipe> entry : recipeMapMint.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackCompactor input = new ComparableItemStackCompactor(tempRecipe.input);
+			ComparableItemStackSafe input = new ComparableItemStackSafe(tempRecipe.input);
 			tempMint.put(input, tempRecipe);
 			tempSet.add(input);
 		}
-		for (Map.Entry<ComparableItemStackCompactor, CompactorRecipe> entry : recipeMapGear.entrySet()) {
+		for (Map.Entry<ComparableItemStackSafe, CompactorRecipe> entry : recipeMapGear.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackCompactor input = new ComparableItemStackCompactor(tempRecipe.input);
+			ComparableItemStackSafe input = new ComparableItemStackSafe(tempRecipe.input);
 			tempGear.put(input, tempRecipe);
 			tempSet.add(input);
 		}
@@ -301,19 +329,19 @@ public class CompactorManager {
 
 		switch (mode) {
 			case PRESS:
-				recipeMapPress.put(new ComparableItemStackCompactor(input), recipe);
+				recipeMapPress.put(new ComparableItemStackSafe(input), recipe);
 				break;
 			case STORAGE:
-				recipeMapStorage.put(new ComparableItemStackCompactor(input), recipe);
+				recipeMapStorage.put(new ComparableItemStackSafe(input), recipe);
 				break;
 			case MINT:
-				recipeMapMint.put(new ComparableItemStackCompactor(input), recipe);
+				recipeMapMint.put(new ComparableItemStackSafe(input), recipe);
 				break;
 			case GEAR:
-				recipeMapGear.put(new ComparableItemStackCompactor(input), recipe);
+				recipeMapGear.put(new ComparableItemStackSafe(input), recipe);
 				break;
 		}
-		validationSet.add(new ComparableItemStackCompactor(input));
+		validationSet.add(new ComparableItemStackSafe(input));
 		return recipe;
 	}
 
@@ -322,13 +350,13 @@ public class CompactorManager {
 
 		switch (mode) {
 			case PRESS:
-				return recipeMapPress.remove(new ComparableItemStackCompactor(input));
+				return recipeMapPress.remove(new ComparableItemStackSafe(input));
 			case STORAGE:
-				return recipeMapStorage.remove(new ComparableItemStackCompactor(input));
+				return recipeMapStorage.remove(new ComparableItemStackSafe(input));
 			case MINT:
-				return recipeMapMint.remove(new ComparableItemStackCompactor(input));
+				return recipeMapMint.remove(new ComparableItemStackSafe(input));
 			default:
-				return recipeMapGear.remove(new ComparableItemStackCompactor(input));
+				return recipeMapGear.remove(new ComparableItemStackSafe(input));
 		}
 	}
 
@@ -339,19 +367,25 @@ public class CompactorManager {
 			return;
 		}
 		String plateName = "plate" + StringHelper.titleCase(oreType);
+		List<ItemStack> registeredPlate = OreDictionary.getOres(plateName, false);
+		if (registeredPlate.isEmpty()) {
+			return;
+		}
+		addDefaultPlateRecipe(oreType, registeredPlate.get(0));
+	}
+
+	private static void addDefaultPlateRecipe(String oreType, ItemStack plate) {
+
+		if (oreType == null || oreType.isEmpty()) {
+			return;
+		}
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
 		String gemName = "gem" + StringHelper.titleCase(oreType);
 		String blockName = "block" + StringHelper.titleCase(oreType);
 
-		List<ItemStack> registeredPlate = OreDictionary.getOres(plateName, false);
 		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName, false);
 		List<ItemStack> registeredGem = OreDictionary.getOres(gemName, false);
 		List<ItemStack> registeredBlock = OreDictionary.getOres(blockName, false);
-
-		if (registeredPlate.isEmpty()) {
-			return;
-		}
-		ItemStack plate = registeredPlate.get(0);
 
 		if (!registeredIngot.isEmpty()) {
 			addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(registeredIngot.get(0), 1), ItemHelper.cloneStack(plate, 1), Mode.PRESS);
@@ -359,9 +393,9 @@ public class CompactorManager {
 		if (!registeredGem.isEmpty()) {
 			addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(registeredGem.get(0), 1), ItemHelper.cloneStack(plate, 1), Mode.PRESS);
 		}
-		if (!registeredBlock.isEmpty()) {
-			addRecipe(DEFAULT_ENERGY * 8, ItemHelper.cloneStack(registeredBlock.get(0), 1), ItemHelper.cloneStack(plate, 9), Mode.PRESS);
-		}
+		//		if (!registeredBlock.isEmpty()) {
+		//			addRecipe(DEFAULT_ENERGY * 8, ItemHelper.cloneStack(registeredBlock.get(0), 1), ItemHelper.cloneStack(plate, 9), Mode.PRESS);
+		//		}
 	}
 
 	private static void addDefaultGearRecipe(String oreType) {
@@ -369,20 +403,26 @@ public class CompactorManager {
 		if (oreType == null || oreType.isEmpty()) {
 			return;
 		}
-		String gearName = "gear" + StringHelper.titleCase(oreType);
+		String plateName = "gear" + StringHelper.titleCase(oreType);
+		List<ItemStack> registeredGear = OreDictionary.getOres(plateName, false);
+		if (registeredGear.isEmpty()) {
+			return;
+		}
+		addDefaultGearRecipe(oreType, registeredGear.get(0));
+	}
+
+	private static void addDefaultGearRecipe(String oreType, ItemStack gear) {
+
+		if (oreType == null || oreType.isEmpty()) {
+			return;
+		}
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
 		String gemName = "gem" + StringHelper.titleCase(oreType);
 		String blockName = "block" + StringHelper.titleCase(oreType);
 
-		List<ItemStack> registeredGear = OreDictionary.getOres(gearName, false);
 		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName, false);
 		List<ItemStack> registeredGem = OreDictionary.getOres(gemName, false);
 		List<ItemStack> registeredBlock = OreDictionary.getOres(blockName, false);
-
-		if (registeredGear.isEmpty()) {
-			return;
-		}
-		ItemStack gear = registeredGear.get(0);
 
 		if (!registeredIngot.isEmpty()) {
 			addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(registeredIngot.get(0), 4), ItemHelper.cloneStack(gear, 1), Mode.GEAR);
@@ -390,9 +430,46 @@ public class CompactorManager {
 		if (!registeredGem.isEmpty()) {
 			addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(registeredGem.get(0), 4), ItemHelper.cloneStack(gear, 1), Mode.GEAR);
 		}
-		if (!registeredBlock.isEmpty()) {
-			addRecipe(DEFAULT_ENERGY * 8, ItemHelper.cloneStack(registeredBlock.get(0), 4), ItemHelper.cloneStack(gear, 9), Mode.GEAR);
+		//		if (!registeredBlock.isEmpty()) {
+		//			addRecipe(DEFAULT_ENERGY * 8, ItemHelper.cloneStack(registeredBlock.get(0), 4), ItemHelper.cloneStack(gear, 9), Mode.GEAR);
+		//		}
+	}
+
+	private static void addDefaultCoinRecipe(String oreType) {
+
+		if (oreType == null || oreType.isEmpty()) {
+			return;
 		}
+		String plateName = "coin" + StringHelper.titleCase(oreType);
+		List<ItemStack> registeredCoin = OreDictionary.getOres(plateName, false);
+		if (registeredCoin.isEmpty()) {
+			return;
+		}
+		addDefaultCoinRecipe(oreType, registeredCoin.get(0));
+	}
+
+	private static void addDefaultCoinRecipe(String oreType, ItemStack coin) {
+
+		if (oreType == null || oreType.isEmpty()) {
+			return;
+		}
+		String nuggetName = "nugget" + StringHelper.titleCase(oreType);
+		String ingotName = "ingot" + StringHelper.titleCase(oreType);
+		String blockName = "block" + StringHelper.titleCase(oreType);
+
+		List<ItemStack> registeredNugget = OreDictionary.getOres(nuggetName, false);
+		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName, false);
+		List<ItemStack> registeredBlock = OreDictionary.getOres(blockName, false);
+
+		//		if (!registeredNugget.isEmpty()) {
+		//			addRecipe(DEFAULT_ENERGY / 2, ItemHelper.cloneStack(registeredNugget.get(0), 3), ItemHelper.cloneStack(coin, 1), Mode.MINT);
+		//		}
+		if (!registeredIngot.isEmpty()) {
+			addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(registeredIngot.get(0), 1), ItemHelper.cloneStack(coin, 3), Mode.MINT);
+		}
+		//		if (!registeredBlock.isEmpty()) {
+		//			addRecipe(DEFAULT_ENERGY * 6, ItemHelper.cloneStack(registeredBlock.get(0), 1), ItemHelper.cloneStack(coin, 27), Mode.MINT);
+		//		}
 	}
 
 	public static void addDefaultPressRecipe(ItemStack input, ItemStack output) {
@@ -412,13 +489,6 @@ public class CompactorManager {
 	public static void addDefaultStorageRecipe(ItemStack input, ItemStack output) {
 
 		addDefaultStorageRecipe(input, output, 9);
-	}
-
-	public static void addDefaultMintRecipe(ItemStack nugget, ItemStack ingot, ItemStack block, ItemStack output) {
-
-		addRecipe(DEFAULT_ENERGY / 2, ItemHelper.cloneStack(nugget, 3), ItemHelper.cloneStack(output, 1), Mode.MINT);
-		addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(ingot, 1), ItemHelper.cloneStack(output, 3), Mode.MINT);
-		addRecipe(DEFAULT_ENERGY * 6, ItemHelper.cloneStack(block, 1), ItemHelper.cloneStack(output, 27), Mode.MINT);
 	}
 
 	/* RECIPE CLASS */
@@ -454,21 +524,6 @@ public class CompactorManager {
 	/* MODE ENUM */
 	public enum Mode {
 		PRESS, STORAGE, MINT, GEAR
-	}
-
-	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackCompactor extends ComparableItemStackSafe {
-
-		@Override
-		public boolean safeOreType(String oreName) {
-
-			return oreName.startsWith(NUGGET) || oreName.startsWith(INGOT) || oreName.startsWith(BLOCK) || oreName.startsWith(DUST);
-		}
-
-		public ComparableItemStackCompactor(ItemStack stack) {
-
-			super(stack);
-		}
 	}
 
 }
