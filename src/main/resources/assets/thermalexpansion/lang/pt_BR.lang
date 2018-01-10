@@ -5,8 +5,8 @@ gui.thermalexpansion.device.item_buffer.decOutput=Diminuir a Saída em
 gui.thermalexpansion.device.item_buffer.incInput=Aumentar a Entrada em
 gui.thermalexpansion.device.item_buffer.incOutput=Aumentar a Saída em
 
-gui.thermalexpansion.jei.centrifuge.mobChance=Base Chance
-gui.thermalexpansion.jei.centrifuge.mobNotice=Up to the listed amount may be produced.
+gui.thermalexpansion.jei.centrifuge.mobChance=Chances Base
+gui.thermalexpansion.jei.centrifuge.mobNotice=Pode ser produzido até a quantidade listada.
 gui.thermalexpansion.jei.compactor.modeGear=Engrenagens
 gui.thermalexpansion.jei.compactor.modeMint=Moeda
 gui.thermalexpansion.jei.compactor.modePress=Prensa
