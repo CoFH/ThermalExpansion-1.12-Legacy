@@ -5,6 +5,8 @@ gui.thermalexpansion.device.item_buffer.decOutput=Diminuir a Saída em
 gui.thermalexpansion.device.item_buffer.incInput=Aumentar a Entrada em
 gui.thermalexpansion.device.item_buffer.incOutput=Aumentar a Saída em
 
+gui.thermalexpansion.jei.centrifuge.mobChance=Chances Base
+gui.thermalexpansion.jei.centrifuge.mobNotice=Pode ser produzido até a quantidade listada.
 gui.thermalexpansion.jei.compactor.modeGear=Engrenagens
 gui.thermalexpansion.jei.compactor.modeMint=Moeda
 gui.thermalexpansion.jei.compactor.modePress=Prensa
@@ -16,6 +18,9 @@ gui.thermalexpansion.machine.compactor.modeGear=Modo: Engrenagens
 gui.thermalexpansion.machine.compactor.modeMint=Modo: Moedas
 gui.thermalexpansion.machine.compactor.modePress=Modo: Prensa
 gui.thermalexpansion.machine.compactor.modeStorage=Modo: Armazanagem
+
+gui.thermalexpansion.machine.crafter.clearRecipe=Limpar Receita
+gui.thermalexpansion.machine.crafter.setRecipe=Estabelecer Receita
 
 gui.thermalexpansion.machine.enchanter.modeLocked=Slot Arcano Travado
 gui.thermalexpansion.machine.enchanter.modeUnlocked=Slot Arcano Destravado
@@ -91,6 +96,12 @@ info.thermalexpansion.augment.machineBrewerReagent.0=Misturador Alquímico: Efic
 info.thermalexpansion.augment.machineBrewerReagent.a.0=Dá uma chance de não consumir o reagente.
 info.thermalexpansion.augment.machineBrewerReagent.b.0=Energia adicional é necessária por operação.
 
+info.thermalexpansion.augment.machineCentrifugeMobs.0=Separador Centrífugo: Especialização
+info.thermalexpansion.augment.machineCentrifugeMobs.a.0=Permite o "processamento" de Morbs.
+info.thermalexpansion.augment.machineCentrifugeMobs.a.1=Morbs garantirão os itens dos mobs contidos em si.
+info.thermalexpansion.augment.machineCentrifugeMobs.b.0=Apenas Morbs poderão ser "processados".
+info.thermalexpansion.augment.machineCentrifugeMobs.c.0=Nem todos os mobs são compatíveis.
+
 info.thermalexpansion.augment.machineChargerRepair.0=Infusor Energético: Especialização
 info.thermalexpansion.augment.machineChargerRepair.a.0=Permite que itens danificados sejam reparados.
 info.thermalexpansion.augment.machineChargerRepair.b.0=Não recarrega mais os itens.
@@ -107,13 +118,22 @@ info.thermalexpansion.augment.machineChargerWireless.c.0=Não excede a taxa de c
 
 info.thermalexpansion.augment.machineCompactorGear.0=Compactador: Especialização
 info.thermalexpansion.augment.machineCompactorGear.a.0=Permite a criação de engrenagens de maneira eficiente.
-info.thermalexpansion.augment.machineCompactorGear.a.1=Engrenagens são usadas na construção e inumeras coisas.
+info.thermalexpansion.augment.machineCompactorGear.a.1=Engrenagens são usadas na construção de inumeras coisas.
 info.thermalexpansion.augment.machineCompactorGear.c.0=A máquina deve ser colocada no modo "Engrenagens".
 
 info.thermalexpansion.augment.machineCompactorMint.0=Compactador: Especialização
 info.thermalexpansion.augment.machineCompactorMint.a.0=Permite a criação de moedas.
 info.thermalexpansion.augment.machineCompactorMint.a.1=Moedas podem ser trocadas por bens e serviços.
 info.thermalexpansion.augment.machineCompactorMint.c.0=A máquina deve estar no modo "moedas".
+
+info.thermalexpansion.augment.machineCrafterInput.0=Fabricador Sequencial: Funcionalidade
+info.thermalexpansion.augment.machineCrafterInput.a.0=Adiciona a capacidade de auto-injetar itens.
+info.thermalexpansion.augment.machineCrafterInput.c.0=Dois slots são designados para cada slot de fabricação.
+
+info.thermalexpansion.augment.machineCrafterTank.0=Fabricador Sequencial: Funcionalidade
+info.thermalexpansion.augment.machineCrafterTank.a.0=Adiciona um tanque de fluidos à máquina.
+info.thermalexpansion.augment.machineCrafterTank.a.1=Fluidos no tanque podem ser usados nas receitas.
+info.thermalexpansion.augment.machineCrafterTank.c.0=Nem todas as receitas são compatíveis.
 
 info.thermalexpansion.augment.machineCrucibleAlloy.0=Crisol Magmático: Especialização
 info.thermalexpansion.augment.machineCrucibleAlloy.a.0=Crisol Magmático: Especialização
@@ -209,13 +229,13 @@ info.thermalexpansion.apparatus.activator=Faz mais do que uma dica de ferramenta
 info.thermalexpansion.apparatus.breaker=Quebra blocos. Bem simples, não?
 info.thermalexpansion.apparatus.collector=Procura itens em uma área.
 
-info.thermalexpansion.capacitor.a.0=Armazena Redstone Flux. Carregando Itens Segurados
+info.thermalexpansion.capacitor.a.0=Armazena e Transfere Redstone Flux.
 info.thermalexpansion.capacitor.b.0=§ePressione (%s) para alterar o modo.§r
 info.thermalexpansion.capacitor.c.0=§bShift+clique para ativar.§r
 info.thermalexpansion.capacitor.c.1=§eShift+clique para desativar.§r
-info.thermalexpansion.capacitor.d.0=Carregando itens segurados
-info.thermalexpansion.capacitor.d.1=Carregando itens equipados
-info.thermalexpansion.capacitor.d.2=Carregando Equipamentos
+info.thermalexpansion.capacitor.d.0=Atualmente carregando itens segurados.
+info.thermalexpansion.capacitor.d.1=Atualmente carregando itens equipados.
+info.thermalexpansion.capacitor.d.2=Atualmente carregando todos os equipamentos.
 
 info.thermalexpansion.coolant=Líquido Refrigerante
 
@@ -256,7 +276,7 @@ info.thermalexpansion.morb.a.0=Prende um Mob em estase.
 info.thermalexpansion.morb.a.1=Esse Morb é reutilizável.
 info.thermalexpansion.morb.b.0=Jogue em um Mob para capturá-lo.
 info.thermalexpansion.morb.b.1=Jogue para soltar o mob preso.
-info.thermalexpansion.morb.b.2=Esse Morb prende um mob genérico.
+info.thermalexpansion.morb.b.2=Esse Morb contém um mob genérico.
 
 info.thermalexpansion.machine.brewer=Faz poções.
 info.thermalexpansion.machine.centrifuge=Separa itens em suas partes que o compõem.
@@ -317,11 +337,14 @@ item.thermalexpansion.augment.dynamoSteamTurbine.name=Transformar em Turbina
 item.thermalexpansion.augment.dynamoThrottle.name=Limitador de Campo de Excitação
 
 item.thermalexpansion.augment.machineBrewerReagent.name=Economia de Reagente
+item.thermalexpansion.augment.machineCentrifugeMobs.name=Aparato de Estabulação
 item.thermalexpansion.augment.machineChargerRepair.name=Reconstrução com Flux
 item.thermalexpansion.augment.machineChargerThroughput.name=Acelerador de Recarga
 item.thermalexpansion.augment.machineChargerWireless.name=Acoplagem de Parabólica de Flux
 item.thermalexpansion.augment.machineCompactorGear.name=Molde de Engrenagens
 item.thermalexpansion.augment.machineCompactorMint.name=Prensa Caça Níquel
+item.thermalexpansion.augment.machineCrafterInput.name=Validação de Padrão
+item.thermalexpansion.augment.machineCrafterTank.name=Fabricação Fluídica
 item.thermalexpansion.augment.machineCrucibleLava.name=Loop Piroconvectivo
 item.thermalexpansion.augment.machineFurnaceFood.name=Forno Microondas
 item.thermalexpansion.augment.machineFurnaceOre.name=Anodizador de Flux
@@ -545,10 +568,10 @@ tile.thermalexpansion.dynamo.steam.name=Dínamo a Vapor
 tile.thermalexpansion.dynamo=Dínamo
 
 tile.thermalexpansion.machine.brewer.name=Misturador Alquímico
-tile.thermalexpansion.machine.centrifuge.name=Centrífuga
+tile.thermalexpansion.machine.centrifuge.name=Separador Centrífugo
 tile.thermalexpansion.machine.charger.name=Infusor Energético
 tile.thermalexpansion.machine.compactor.name=Compactador
-tile.thermalexpansion.machine.crafter.name=Montador Cíclico
+tile.thermalexpansion.machine.crafter.name=Fabricador Sequencial
 tile.thermalexpansion.machine.crucible.name=Crisol Magmático
 tile.thermalexpansion.machine.enchanter.name=Enfeitiçador Arcano
 tile.thermalexpansion.machine.extruder.name=Extrusor Ígneo
