@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -87,6 +88,12 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	public int getType() {
 
 		return 0;
+	}
+
+	@Override
+	public int getComparatorInputOverride() {
+
+		return getAccess().isPublic() ? Container.calcRedstoneFromInventory(this) : 0;
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiItemBuffer;
 import cofh.thermalexpansion.gui.container.device.ContainerItemBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -71,6 +72,12 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	public int getComparatorInputOverride() {
+
+		return Container.calcRedstoneFromInventory(this);
 	}
 
 	@Override
