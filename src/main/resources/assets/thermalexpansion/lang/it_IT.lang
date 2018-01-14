@@ -1,107 +1,591 @@
 #it_IT
 
-achievement.thermalexpansion.florb.desc=Contiene un fluido. Lo puoi lanciare.
-achievement.thermalexpansion.florb=Lo posso lanciare?!
-achievement.thermalexpansion.florbMagmatic.desc=Florb. Si, contiene lava. Mostro.
-achievement.thermalexpansion.florbMagmatic=Guarda il mondo bruciare
+gui.thermalexpansion.device.item_buffer.decInput=Diminuisci l'Entrata di
+gui.thermalexpansion.device.item_buffer.decOutput=Diminuisci l'Uscita di
+gui.thermalexpansion.device.item_buffer.incInput=Aumenta l'Entrata di
+gui.thermalexpansion.device.item_buffer.incOutput=Aumenta l'Uscita di
 
-info.thermalexpansion.augment.dynamoCoilDuct.0=Permette di inserire e estrarre attraverso la bobina del dinamo.
+gui.thermalexpansion.jei.centrifuge.mobChance=Probabilità Base
+gui.thermalexpansion.jei.centrifuge.mobNotice=Fino alla quantità scritta possono essere prodotti.
+gui.thermalexpansion.jei.compactor.modeGear=Ingranaggio
+gui.thermalexpansion.jei.compactor.modeMint=Zecca
+gui.thermalexpansion.jei.compactor.modePress=Pressa
+gui.thermalexpansion.jei.compactor.modeStorage=Immagazzinamento
+gui.thermalexpansion.jei.transposer.modeEmpty=Svuota
+gui.thermalexpansion.jei.transposer.modeFill=Riempi
 
-info.thermalexpansion.augment.dynamoThrottle.0=Migliora l'accelerazione del dinamo così che può ridurre la corrente prodotta a 0 RF/t.
+gui.thermalexpansion.machine.compactor.modeGear=Modalità: Ingranaggio
+gui.thermalexpansion.machine.compactor.modeMint=Modalità: Zecca
+gui.thermalexpansion.machine.compactor.modePress=Modalità: Pressa
+gui.thermalexpansion.machine.compactor.modeStorage=Modalità: Immagazzinamento
 
-info.thermalexpansion.augment.machineFurnaceFood.0=Aumenta produzione del cibo.
+gui.thermalexpansion.machine.crafter.clearRecipe=Rimuovi la ricetta
+gui.thermalexpansion.machine.crafter.setRecipe=Imposta la ricetta
 
-info.thermalexpansion.device.nullifier=Rimuove gli oggetti dall'esistenza.
+gui.thermalexpansion.machine.enchanter.modeLocked=Slot degli Arcani Bloccato
+gui.thermalexpansion.machine.enchanter.modeUnlocked=Slot degli Arcani Sbloccato
 
-info.thermalexpansion.dynamo.compression=Richiede fluidi combustibili e un refrigerante.
-info.thermalexpansion.dynamo.enervation=Estrae flux da oggetti vari.
+gui.thermalexpansion.machine.insolator.modeLocked=Slot del Fertilizzante Bloccato
+gui.thermalexpansion.machine.insolator.modeUnlocked=Slot del Fertilizzante Sbloccato
+
+gui.thermalexpansion.machine.smelter.modeLocked=Slot del Flussante Metallurgico Bloccato
+gui.thermalexpansion.machine.smelter.modeUnlocked=Slot del Flussante Metallurgico Sbloccato
+
+gui.thermalexpansion.machine.transposer.modeEmpty=Modalità: Svuota
+gui.thermalexpansion.machine.transposer.modeFill=Modalità: Riempi
+gui.thermalexpansion.machine.transposer.modeLocked=Modalità Bloccata (Macchinario Attivo)
+
+gui.thermalexpansion.storage.cell.decRecv=Diminuisci l'Entrata di RF di
+gui.thermalexpansion.storage.cell.decSend=Diminuisci l'Uscita di RF di
+gui.thermalexpansion.storage.cell.incRecv=Aumenta l'Entrata di RF di
+gui.thermalexpansion.storage.cell.incSend=Aumenta l'Uscita di RF di
+
+info.thermalexpansion.augment.0=Aumentamento
+
+info.thermalexpansion.augment.dynamoBoiler.0=Dinamo: Output Specializzazione di Uscita
+info.thermalexpansion.augment.dynamoBoiler.a.0=Converte un Dinamo applicabile in una Caldaia a Vapore.
+info.thermalexpansion.augment.dynamoBoiler.a.1=Aumenta l'efficienza effettiva dei carburanti.
+info.thermalexpansion.augment.dynamoBoiler.b.0=La generazione non può essere interrotta.
+info.thermalexpansion.augment.dynamoBoiler.c.0=Viene prodotto Vapore invece di RF.
+
+info.thermalexpansion.augment.dynamoCoilDuct.0=Dinamo: Accessibilità Laterale
+info.thermalexpansion.augment.dynamoCoilDuct.a.0=Permette inserimento ed estrazione attraverso la bobina.
+
+info.thermalexpansion.augment.dynamoCompressionCoolant.0=Dinamo a Compressione: Specializzazione
+info.thermalexpansion.augment.dynamoCompressionCoolant.a.0=Il refrigerante non viene più consumato per le operazioni.
+info.thermalexpansion.augment.dynamoCompressionCoolant.b.0=Del refrigerante dev'essere presente.
+
+info.thermalexpansion.augment.dynamoCompressionFuel.0=Dinamo a Compressione: Specializzazione
+info.thermalexpansion.augment.dynamoCompressionFuel.a.0=Aumenta notevolmente la generazione di energia e l'efficienza.
+info.thermalexpansion.augment.dynamoCompressionFuel.b.0=Solo il §e§oCombustibile Raffinato§r§4 può essere utilizzato.
+
+info.thermalexpansion.augment.dynamoEfficiency.0=Dinamo: Efficienza Aumentata
+info.thermalexpansion.augment.dynamoEfficiency.a.0=Più energia (RF) viene prodotta dai carburanti.
+
+info.thermalexpansion.augment.dynamoEnervationEnchant.0=Dinamo a Enervazione: Specializzazione
+info.thermalexpansion.augment.dynamoEnervationEnchant.a.0=Permette agli oggetti incantati di essere utilizzati come carburante.
+info.thermalexpansion.augment.dynamoEnervationEnchant.a.1=Aumenta notevolmente la generazione di energia e l'efficienza.
+info.thermalexpansion.augment.dynamoEnervationEnchant.b.0=Solo oggetti incantati possono essere utilizzati.
+info.thermalexpansion.augment.dynamoEnervationEnchant.c.0=Gli oggetti sono distrutti nel processo.
+
+info.thermalexpansion.augment.dynamoMagmaticCoolant.0=Dinamo Magmatico: Specializzazione
+info.thermalexpansion.augment.dynamoMagmaticCoolant.a.0=Aumenta notevolmente la generazione di energia e l'efficienza.
+info.thermalexpansion.augment.dynamoMagmaticCoolant.b.0=Il refrigerante è richiesto per le operazioni.
+
+info.thermalexpansion.augment.dynamoNumismaticGem.0=Dinamo Numismatico: Specializzazione
+info.thermalexpansion.augment.dynamoNumismaticGem.a.0=Permette a varie gemme di essere utilizzate come carburante.
+info.thermalexpansion.augment.dynamoNumismaticGem.a.1=Aumenta notevolmente la generazione di energia e l'efficienza.
+info.thermalexpansion.augment.dynamoNumismaticGem.b.0=Solo gemme possono essere utilizzate.
+
+info.thermalexpansion.augment.dynamoPower.0=Dinamo: Increased Output
+info.thermalexpansion.augment.dynamoPower.a.0=Aumenta la generazione di energia (RF/t).
+#info.thermalexpansion.augment.dynamoPower.b.0=Meno energia (RF) viene prodotta dai carburanti.
+
+info.thermalexpansion.augment.dynamoReactantElemental.0=Dinamo a Reazione: Specializzazione
+info.thermalexpansion.augment.dynamoReactantElemental.a.0=Aumenta notevolmente la generazione di energia e l'efficienza.
+info.thermalexpansion.augment.dynamoReactantElemental.b.0=Solo le Reazioni Elementali possono essere compiute.
+
+info.thermalexpansion.augment.dynamoSteamTurbine.0=Dinamo a Vapore: Specializzazione
+info.thermalexpansion.augment.dynamoSteamTurbine.a.0=Aumenta notevolmente la generazione di energia.
+info.thermalexpansion.augment.dynamoSteamTurbine.c.0=Il Vapore dev'essere fornito da una fonte esterna.
+
+info.thermalexpansion.augment.dynamoThrottle.0=Dinamo: Valvola Avanzata
+info.thermalexpansion.augment.dynamoThrottle.a.0=Previene la perdita di RF dovuta alla saturazione della bobina di flusso.
+
+info.thermalexpansion.augment.machineBrewerReagent.0=Impregnatore Alchemico: Efficienza
+info.thermalexpansion.augment.machineBrewerReagent.a.0=Fornisce una possibilità di non consumare il Reagente.
+info.thermalexpansion.augment.machineBrewerReagent.b.0=Richiede energia addizionale per le operazioni.
+
+info.thermalexpansion.augment.machineCentrifugeMobs.0=Separatore Centrifugo: Specializzazione
+info.thermalexpansion.augment.machineCentrifugeMobs.a.0=Permette al Mlobi di essere "processati".
+info.thermalexpansion.augment.machineCentrifugeMobs.a.1=I Mlobi forniranno oggetti dei mob contenuti.
+info.thermalexpansion.augment.machineCentrifugeMobs.b.0=Solo i Mlobi possono essere "processati".
+info.thermalexpansion.augment.machineCentrifugeMobs.c.0=Non tutti i mob sono compatibili.
+
+info.thermalexpansion.augment.machineChargerRepair.0=Infusore Energetico: Specializzazione
+info.thermalexpansion.augment.machineChargerRepair.a.0=Permette agli oggetti danneggiati di essere riparati.
+info.thermalexpansion.augment.machineChargerRepair.b.0=Non caricherà più gli oggetti.
+info.thermalexpansion.augment.machineChargerRepair.c.0=Dev'essere fornita Essenza della Conoscenza.
+
+info.thermalexpansion.augment.machineChargerThroughput.0=Infusore Energetico: Specializzazione
+info.thermalexpansion.augment.machineChargerThroughput.a.0=Permette agli oggetti ricaricabili di essere caricati molto rapidamente.
+info.thermalexpansion.augment.machineChargerThroughput.c.0=Non può superare il tasso di carica dell'oggetto stesso.
+
+info.thermalexpansion.augment.machineChargerWireless.0=Infusore Energetico: Specializzazione
+info.thermalexpansion.augment.machineChargerWireless.a.0=Permette la rapida ricarica senza fili di Condensatori di Flusso.
+info.thermalexpansion.augment.machineChargerWireless.b.0=Non accetterà, processerà o ricaricherà più oggetti.
+info.thermalexpansion.augment.machineChargerWireless.c.0=Nom può superare il tasso di carica dello Condensatore di Flusso stesso.
+
+info.thermalexpansion.augment.machineCompactorGear.0=Compattatore: Specializzazione
+info.thermalexpansion.augment.machineCompactorGear.a.0=Permette la crezione efficiente di Ingranaggi.
+info.thermalexpansion.augment.machineCompactorGear.a.1=Gli Ingranaggi sono utilizzati nella creazione di vari oggetti.
+info.thermalexpansion.augment.machineCompactorGear.c.0=Il Macchinario dev'essere impostato in modalità "Ingranaggio".
+
+info.thermalexpansion.augment.machineCompactorMint.0=Compattatore: Specializzazione
+info.thermalexpansion.augment.machineCompactorMint.a.0=Permette la creazione di valuta.
+info.thermalexpansion.augment.machineCompactorMint.a.1=La valuta può essere scambiata per beni e servizi.
+info.thermalexpansion.augment.machineCompactorMint.c.0=Il Macchinario dev'essere impostato in modalità "Zecca".
+
+info.thermalexpansion.augment.machineCrafterInput.0=Fabbricatore Sequenziale: Funzionalità
+info.thermalexpansion.augment.machineCrafterInput.a.0=Aggiunge un'intelligente capacità di Inserimento Automatico.
+info.thermalexpansion.augment.machineCrafterInput.c.0=Due slot sono designati per ogni slot di fabbricazione.
+
+info.thermalexpansion.augment.machineCrafterTank.0=Fabbricatore Sequenziale: Funzionalità
+info.thermalexpansion.augment.machineCrafterTank.a.0=Aggiunge una tanica al macchinario.
+info.thermalexpansion.augment.machineCrafterTank.a.1=Il fluido nella tanica può essere utilizzato nelle ricette.
+info.thermalexpansion.augment.machineCrafterTank.c.0=Non tutte le ricette sono compatibili.
+
+info.thermalexpansion.augment.machineCrucibleAlloy.0=Crogiolo Magmatico: Specializzazione
+info.thermalexpansion.augment.machineCrucibleAlloy.a.0=Crogiolo Magmatico: Specializzazione
+info.thermalexpansion.augment.machineCrucibleAlloy.b.0=Crogiolo Magmatico: Specializzazione
+
+info.thermalexpansion.augment.machineCrucibleLava.0=Crogiolo Magmatico: Specializzazione
+info.thermalexpansion.augment.machineCrucibleLava.a.0=Aumenta notevolmente la velocità di produzione di Lava.
+info.thermalexpansion.augment.machineCrucibleLava.b.0=Solo Lava può essere creata.
+
+info.thermalexpansion.augment.machineEnchanterEmpowered.0=Stregonatore Arcano: Specializzazione
+info.thermalexpansion.augment.machineEnchanterEmpowered.a.0=Concentra e allinea le energie arcane per massimizzare la potenza degli incantamenti.
+info.thermalexpansion.augment.machineEnchanterEmpowered.b.0=Richiede risorse addizionali.
+
+info.thermalexpansion.augment.machineExtruderNoWater.0=Estrusore Igneo: Specializzazione
+info.thermalexpansion.augment.machineExtruderNoWater.a.0=L'acqua non viene più consumata per le operazioni.
+
+info.thermalexpansion.augment.machineFurnaceFood.0=Fornace a Pietrarossa: Specializzazione
+info.thermalexpansion.augment.machineFurnaceFood.a.0=Guadagna cibo addizionale quando cuoce.
+info.thermalexpansion.augment.machineFurnaceFood.b.0=Solo il cibo può essere processato.
+
+info.thermalexpansion.augment.machineFurnaceOre.0=Fornace a Pietrarossa: Specializzazione
+info.thermalexpansion.augment.machineFurnaceOre.a.0=Guadagna produzione addizionale quando cuoce i minerali.
+info.thermalexpansion.augment.machineFurnaceOre.b.0=Solo i minerali possono essere processati.
+info.thermalexpansion.augment.machineFurnaceOre.b.1=Richiede energia addizionale per le operazioni.
+
+info.thermalexpansion.augment.machineFurnacePyrolysis.0=Fornace a Pietrarossa: Specializzazione
+info.thermalexpansion.augment.machineFurnacePyrolysis.a.0=Permette la Pirolisi e la produzione di Creosoto.
+info.thermalexpansion.augment.machineFurnacePyrolysis.b.0=Solo alcuni oggetti possono essere processati.
+info.thermalexpansion.augment.machineFurnacePyrolysis.b.1=La velocità di produzione è notevolmente diminuita.
+
+info.thermalexpansion.augment.machineInsolatorFertilizer.0=Insolatore Phytogenico: Efficienza
+info.thermalexpansion.augment.machineInsolatorFertilizer.a.0=Fornisce una possibilità di non consumare il Fertilizzante.
+info.thermalexpansion.augment.machineInsolatorFertilizer.b.0=Richiede energia addizionale per le operazioni.
+
+info.thermalexpansion.augment.machineInsolatorMonoculture.0=Insolatore Phytogenico: Specializzazione
+info.thermalexpansion.augment.machineInsolatorMonoculture.a.0=Le entrate non Fertilizzanti non sono consumate, migliorando l'automazione.
+info.thermalexpansion.augment.machineInsolatorMonoculture.a.1=Aumenta leggermente la possibilità di non condumare il Fertilizzante.
+info.thermalexpansion.augment.machineInsolatorMonoculture.b.0=Richiede energia addizionale per le operazioni.
+info.thermalexpansion.augment.machineInsolatorMonoculture.b.1=La probabilità di un prodotto secondario è ridotta notevolmente.
+
+info.thermalexpansion.augment.machineInsolatorTree.0=Insolatore Phytogenico: Funzionalità
+info.thermalexpansion.augment.machineInsolatorTree.a.0=Permette agli alberi di essere cresciuti.
+info.thermalexpansion.augment.machineInsolatorTree.c.0=Non tutti gli arboscelli sono compatibili.
+
+info.thermalexpansion.augment.machinePower.0=Macchinari: Velocità di lavorazione
+info.thermalexpansion.augment.machinePower.a.0=Aumenta l'utilizzo massimo di energia.
+info.thermalexpansion.augment.machinePower.b.0=Richiede energia addizionale per le operazioni.
+
+info.thermalexpansion.augment.machinePulverizerGeode.0=Polverizzatore: Specializzazione
+info.thermalexpansion.augment.machinePulverizerGeode.a.0=Permette ai Geodi di essere estratti da alcuni minerali.
+info.thermalexpansion.augment.machinePulverizerGeode.b.0=Richiede energia addizionale per le operazioni.
+
+info.thermalexpansion.augment.machinePulverizerPetrotheum.0=Polverizzatore: Specializzazione
+info.thermalexpansion.augment.machinePulverizerPetrotheum.a.0=Aumenta la resa dei minerali.
+info.thermalexpansion.augment.machinePulverizerPetrotheum.b.0=Richiede energia addizionale per le operazioni.
+info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=Dev'essere fornito di Petroteo Tettonico.
+
+info.thermalexpansion.augment.machineRefineryOil.0=Distillatore Frazionante: Specializzazione
+info.thermalexpansion.augment.machineRefineryOil.a.0=Aumenta notevolmente l'efficienza di conversione per i combustibili fossili.
+info.thermalexpansion.augment.machineRefineryOil.b.0=Solo combustibili fossili possono essere processati.
+info.thermalexpansion.augment.machineRefineryOil.b.1=Richiede energia addizionale per le operazioni.
+
+info.thermalexpansion.augment.machineRefineryPotion.0=Distillatore Frazionante: Specializzazione
+info.thermalexpansion.augment.machineRefineryPotion.a.0=Permette alle Pozioni di essere raffinate.
+info.thermalexpansion.augment.machineRefineryPotion.b.0=Solo le Pozioni possono essere processate.
+
+info.thermalexpansion.augment.machineSawmillTapper.0=Segheria: Specializzazione
+info.thermalexpansion.augment.machineSawmillTapper.a.0=Permette a dei fluidi di essere estratti dai tronchi.
+info.thermalexpansion.augment.machineSawmillTapper.b.0=Richiede energia addizionale per le operazioni.
+
+info.thermalexpansion.augment.machineSecondary.0=Macchinari: Produzione Secondaria
+info.thermalexpansion.augment.machineSecondary.a.0=Aumenta la possibilità di un prodotto secondario.
+info.thermalexpansion.augment.machineSecondary.b.0=Richiede energia addizionale per le operazioni.
+
+info.thermalexpansion.augment.machineSecondaryNull.0=Macchinari: Nullificatore Secondario
+info.thermalexpansion.augment.machineSecondaryNull.a.0=Diatrugge i prodotti secondari in eccsso.
+info.thermalexpansion.augment.machineSecondaryNull.b.0=Sul serio. Scompaiono. Andati.
+
+info.thermalexpansion.augment.machineSmelterFlux.0=Fonderia a induzione: Efficienza
+info.thermalexpansion.augment.machineSmelterFlux.a.0=Fornisce una possibilità di non consumare il Flussante Metallurgico.
+info.thermalexpansion.augment.machineSmelterFlux.b.0=Richiede energia addizionale per le operazioni.
+
+info.thermalexpansion.augment.machineSmelterPyrotheum.0=Fonderia a Induzione: Specializzazione
+info.thermalexpansion.augment.machineSmelterPyrotheum.a.0=Aumenta la resa dei minerali.
+info.thermalexpansion.augment.machineSmelterPyrotheum.b.0=Richiede energia addizionale per le operazioni.
+info.thermalexpansion.augment.machineSmelterPyrotheum.c.0=Dev'essere fornito di Piroteo Fiammante.
+
+info.thermalexpansion.augment.noticeAdvanced=NYI
+info.thermalexpansion.augment.noticeCreative=Richiede un blocco Creativo.
+info.thermalexpansion.augment.noticeEnder=Richiede un blocco Risonante.
+info.thermalexpansion.augment.noticeMode=Può essere installata solo una Specializzazione.
+
+info.thermalexpansion.apparatus.activator=Fa più di quanto una descrizione possa spiegare.
+info.thermalexpansion.apparatus.breaker=Rompe i blocchi. Abbastanza semplice.
+info.thermalexpansion.apparatus.collector=Procura oggetti da un'area.
+
+info.thermalexpansion.capacitor.a.0=Contiene Flusso Pietrarossico. Può ricaricare l'equipaggiamento.
+info.thermalexpansion.capacitor.b.0=§ePremi (%s) to cambiare modalità di Carica.§r
+info.thermalexpansion.capacitor.c.0=Usa mentre abbassato per attivare.
+info.thermalexpansion.capacitor.c.1=Usa mentre abbassato per disattivare.
+info.thermalexpansion.capacitor.d.0=Carica Oggetti Mantenuti
+info.thermalexpansion.capacitor.d.1=Carica Oggetti Indossati
+info.thermalexpansion.capacitor.d.2=Carica Equipaggiamento
+
+info.thermalexpansion.coolant=Refrigerante
+
+info.thermalexpansion.device.diffuser=Sparge pozioni in un'area.
+info.thermalexpansion.device.fisher=Cattura pesci e altra vita acquatica.
+info.thermalexpansion.device.fluid_buffer=Contiene e trasferisce fluidi.
+info.thermalexpansion.device.heat_sink=Migliora la velocità di operazione dei blocchi circostanti.
+info.thermalexpansion.device.item_buffer=Contiene e trasferisce oggetti.
+info.thermalexpansion.device.lexicon=Trasmuta gli oggetti tra forme equivalenti.
+info.thermalexpansion.device.nullifier=Rimuove le cose dall'esistenza.
+info.thermalexpansion.device.tapper=Estra fluido da un albero.
+info.thermalexpansion.device.water_gen=Estra acqua dalle sue vicinanze.
+info.thermalexpansion.device.xp_collector=Colleziona esperienza in un'area.
+
+info.thermalexpansion.dynamo.0=Genera Energia (Flusso Pietrarossico).
+info.thermalexpansion.dynamo.compression=Richiede carburante e refrigerante fluidi.
+info.thermalexpansion.dynamo.enervation=Estrae Flusso da vari oggetti.
 info.thermalexpansion.dynamo.magmatic=Richiede fluidi caldi.
-info.thermalexpansion.dynamo.reactant=Richiede fluido combustibile e un reagente solido.
-info.thermalexpansion.dynamo.steam=Richiede acqua e combustibile solido.
+info.thermalexpansion.dynamo.numismatic=Richiede...valuta?
+info.thermalexpansion.dynamo.reactant=Richiede carburante fluido e um reagente solido.
+info.thermalexpansion.dynamo.steam=Richiede acqua e carburante solido.
 
-info.thermalexpansion.machine.charger=Carica oggetti con RF.
-info.thermalexpansion.machine.crucible=Fonde oggetti in fluidi.
-info.thermalexpansion.machine.extruder=Combina fluidi caldi e freddi.
-info.thermalexpansion.machine.furnace=Cuoce oggetti.
-info.thermalexpansion.machine.insolator=Infonde le piante con 'sole e RF.
-info.thermalexpansion.machine.precipitator=Congela fluidi in solidi.
-info.thermalexpansion.machine.pulverizer=Frantuma oggetti.
-info.thermalexpansion.machine.sawmill=Produce legna extra.
-info.thermalexpansion.machine.smelter=Fonde metalli e leghe. Due entrate.
-info.thermalexpansion.machine.transposer=Manipola fluidi e contenitori di fluidi.
+info.thermalexpansion.florb.a.0=Contiene 1000 mB della maggior parte dei fluidi.
+info.thermalexpansion.florb.b.0=Contiene 1000 mB della maggior parte dei fluidi caldi.
+info.thermalexpansion.florb.c.0=Riempilo con un §e§oFluido Traspositore§r§7.
+info.thermalexpansion.florb.c.1=Sì, lo puoi lanciare.
+info.thermalexpansion.florb.d.0=Questo fluido è più leggero dell'aria.
+info.thermalexpansion.florb.d.1=Il Florb viaggierà più lontano.
 
-item.thermalexpansion.augment.dynamoCoilDuct.name=Bobina di trasmissione con tubatura
-item.thermalexpansion.augment.dynamoThrottle.name=Limitatore di campo eccitazionale
+info.thermalexpansion.level.0=Base
+info.thermalexpansion.level.1=Indurito
+info.thermalexpansion.level.2=Rinforzato
+info.thermalexpansion.level.3=Signalio
+info.thermalexpansion.level.4=Risonante
+info.thermalexpansion.level.creative=Creativo
 
-item.thermalexpansion.augment.machineFurnaceFood.name=Camera a pentola
+info.thermalexpansion.morb.a.0=Contiene un mob in stasi.
+info.thermalexpansion.morb.a.1=Questo Mlobo è riutilizzabile.
+info.thermalexpansion.morb.b.0=Lancialo a un mob per catturarlo.
+info.thermalexpansion.morb.b.1=Lancialo per rilasciare il mob catturato.
+info.thermalexpansion.morb.b.2=Questo Mlobo contiene un mob generico.
 
-item.thermalexpansion.florb.standard.name=Florb
-item.thermalexpansion.florb.magmatic.name=Florb magmatico
+info.thermalexpansion.machine.brewer=Infonde pozioni.
+info.thermalexpansion.machine.centrifuge=Separa gli oggetti nei loro componenti.
+info.thermalexpansion.machine.charger=Carica gli oggetti con RF.
+info.thermalexpansion.machine.compactor=Comprime gli oggetti.
+info.thermalexpansion.machine.crafter=Crafta gli oggetti.
+info.thermalexpansion.machine.crucible=Fonde gli oggetti in fluidi.
+info.thermalexpansion.machine.enchanter=Crea tomi e pergamene magici.
+info.thermalexpansion.machine.extruder=Mischia fluidi caldi e freddi.
+info.thermalexpansion.machine.furnace=Cuoce gli oggetti.
+info.thermalexpansion.machine.insolator=Infonde le piante con 'sole' e RF.
+info.thermalexpansion.machine.precipitator=Congela i fluidi in solidi.
+info.thermalexpansion.machine.pulverizer=Frantuma gli oggetti.
+info.thermalexpansion.machine.refinery=Raffina i fluidi in altri prodotti.
+info.thermalexpansion.machine.sawmill=Fornisce legno addizionale.
+info.thermalexpansion.machine.smelter=Fonde leghe e metalli. Due immissione.
+info.thermalexpansion.machine.transposer=Manipola i fluidi e i contenitori di fluidi.
+
+info.thermalexpansion.reservoir.a.0=Contiene e colleziona un fluido. Can riempire l'equipaggiamento.
+info.thermalexpansion.reservoir.a.1=Usa per riempire il fluido.
+info.thermalexpansion.reservoir.a.2=Usa per svuotare il fluido.
+info.thermalexpansion.reservoir.b.0=§ePremi (%s) per cambiare l'azione quando utilizzato.§r
+info.thermalexpansion.reservoir.c.0=Usa mentre abbassato per attivare.
+info.thermalexpansion.reservoir.c.1=Usa mentre abbassato per disattivare.
+info.thermalexpansion.reservoir.d.0=Se Utilizzato: Riempi
+info.thermalexpansion.reservoir.d.1=Se Utilizzato: Svuota
+info.thermalexpansion.reservoir.d.2=Riempiendo l'Equipaggiamento
+
+info.thermalexpansion.satchel.a.0=Contiene e colleziona oggetti. Può essere sicurato.
+info.thermalexpansion.satchel.a.1=Usa su un inventario mentre abbassato per trasferire in esso.
+info.thermalexpansion.satchel.a.2=Usa mentre abbassato per configurarlo.
+info.thermalexpansion.satchel.a.c=Contiene una quantità infinita di un singolo oggetto. Può essere sicurato.
+info.thermalexpansion.satchel.a.v=Rimuove gli oggetti dall'esistenza. Può essere sicurato.
+info.thermalexpansion.satchel.b.0=§bPremi (%s) per abilitare l'auto-collezione.§r
+info.thermalexpansion.satchel.b.1=§ePremi (%s) per disabilitare l'auto-collezione.§r
+info.thermalexpansion.satchel.c.0=Auto-collezione Disabilitata
+info.thermalexpansion.satchel.c.1=Auto-collezione Abilitata
+
+info.thermalexpansion.storage.cache=Contiene una grande quantità di un oggetto.
+info.thermalexpansion.storage.cell=Contiene una grande quantità di Flusso Pietrarossico.
+info.thermalexpansion.storage.strongbox=Contiene oggetti. Può essere sicurata.
+info.thermalexpansion.storage.tank=Contiene una grande quantità di un fluido.
+
+item.thermalexpansion.augment.apparatusDepth.name=WIP
+item.thermalexpansion.augment.apparatusRadius.name=WIP
+
+item.thermalexpansion.augment.dynamoBoiler.name=Conversione a Caldaia
+item.thermalexpansion.augment.dynamoCoilDuct.name=Canalizzazione della Bobina di Trasmissione
+item.thermalexpansion.augment.dynamoCompressionCoolant.name=Raffreddamento a Ciclo Chiuso
+item.thermalexpansion.augment.dynamoCompressionFuel.name=Prese d'accensione
+item.thermalexpansion.augment.dynamoEfficiency.name=Catalizzatore di Carburante
+item.thermalexpansion.augment.dynamoEnervationEnchant.name=Estrazione Disgiuntiva
+item.thermalexpansion.augment.dynamoMagmaticCoolant.name=Serbatoio Isoentropico
+item.thermalexpansion.augment.dynamoNumismaticGem.name=Calibrazione Lapidaria
+item.thermalexpansion.augment.dynamoPower.name=Bobina di Trasmissione Ausiliare
+item.thermalexpansion.augment.dynamoReactantElemental.name=Catalizzatore Elementale
+item.thermalexpansion.augment.dynamoSteamTurbine.name=Conversione a Turbina
+item.thermalexpansion.augment.dynamoThrottle.name=Limitatore del Campo di Eccitazione
+
+item.thermalexpansion.augment.machineBrewerReagent.name=Recupero di Reagenti
+item.thermalexpansion.augment.machineCentrifugeMobs.name=Apparato di Instabulazione
+item.thermalexpansion.augment.machineChargerRepair.name=Ricostruzione Flussica
+item.thermalexpansion.augment.machineChargerThroughput.name=Concentratore di Concatenamento di Flusso
+item.thermalexpansion.augment.machineChargerWireless.name=Giunto Parabolico di Flusso
+item.thermalexpansion.augment.machineCompactorGear.name=Matrice per Lavorazione Ingranaggica
+item.thermalexpansion.augment.machineCompactorMint.name=Pressa Numismatica
+item.thermalexpansion.augment.machineCrafterInput.name=Validazione Schemica
+item.thermalexpansion.augment.machineCrafterTank.name=Fabbricazione Fluidica
+item.thermalexpansion.augment.machineCrucibleLava.name=Ciclo Piroconvettivo
+item.thermalexpansion.augment.machineFurnaceFood.name=Camera di Trivellazione
+item.thermalexpansion.augment.machineFurnaceOre.name=Anodizzatori di Flussante
+item.thermalexpansion.augment.machineFurnacePyrolysis.name=Conversione Pirolitica
+item.thermalexpansion.augment.machineEnchanterEmpowered.name=Focalizzazione Ricombinante
+item.thermalexpansion.augment.machineExtruderAndesite.name=Subduzione Andesitica
+item.thermalexpansion.augment.machineExtruderDiorite.name=Subduzione Dioritica
+item.thermalexpansion.augment.machineExtruderGranite.name=Subduzione Granitica
+item.thermalexpansion.augment.machineExtruderNoWater.name=Iniezione Piroclastica
+item.thermalexpansion.augment.machineInsolatorFertilizer.name=Recupero di Nutrienti
+item.thermalexpansion.augment.machineInsolatorMonoculture.name=Ciclo di Monocultura
+item.thermalexpansion.augment.machineInsolatorTree.name=Infusore di Arboscelli
+item.thermalexpansion.augment.machinePower.name=Bobina di Ricezione Ausiliare
+item.thermalexpansion.augment.machinePulverizerGeode.name=Acrobata di Geodi
+item.thermalexpansion.augment.machinePulverizerPetrotheum.name=Iniziatore Tettonico
+item.thermalexpansion.augment.machineRefineryOil.name=Colonna di Riflusso
+item.thermalexpansion.augment.machineRefineryPotion.name=Distorsione Alchemica
+item.thermalexpansion.augment.machineSawmillTapper.name=Imbuto di Resina
+item.thermalexpansion.augment.machineSmelterFlux.name=Recupero Metallurgico
+item.thermalexpansion.augment.machineSmelterPyrotheum.name=Piro-Concentratore
+item.thermalexpansion.augment.machineSecondary.name=Setaccio Ausiliare
+item.thermalexpansion.augment.machineSecondaryNull.name=Camera di Nullificazione
+
+item.thermalexpansion.capacitor.creative.name=Condensatore di Flusso (Creativo)
+item.thermalexpansion.capacitor.standard0.name=Condensatore di Flusso (Base)
+item.thermalexpansion.capacitor.standard1.name=Condensatore di Flusso (Indurito)
+item.thermalexpansion.capacitor.standard2.name=Condensatore di Flusso (Rinforzato)
+item.thermalexpansion.capacitor.standard3.name=Condensatore di Flusso (Signalio)
+item.thermalexpansion.capacitor.standard4.name=Condensatore di Flusso(Risonante)
+
+item.thermalexpansion.florb.standard.name=Flobo
+item.thermalexpansion.florb.magmatic.name=Flobo Magmatico
+
+item.thermalexpansion.morb.reusable.name=Mlobo Riutilizzabile
+item.thermalexpansion.morb.standard.name=Mlobo
+
+item.thermalexpansion.frame.frameApparatus.name=Telaio per Apparati
+item.thermalexpansion.frame.frameCell.name=Telaio per Celle Energetiche
+item.thermalexpansion.frame.frameCell1.name=Telaio per Celle Indurito
+item.thermalexpansion.frame.frameCell2.name=Telaio per Celle Rinforzato (Vuoto)
+item.thermalexpansion.frame.frameCell3.name=Telaio per Celle Signalio (Vuoto)
+item.thermalexpansion.frame.frameCell4.name=Telaio per Celle Risonante (Vuoto)
+item.thermalexpansion.frame.frameCell2Filled.name=Telaio per Celle Rinforzato (Pieno)
+item.thermalexpansion.frame.frameCell3Filled.name=Telaio per Celle Signalio (Pieno)
+item.thermalexpansion.frame.frameCell4Filled.name=Telaio per Celle Risonante (Pieno)
+item.thermalexpansion.frame.frameDevice.name=Telaio per Apparecchi
+item.thermalexpansion.frame.frameLight.name=Telaio per Illuminante
+item.thermalexpansion.frame.frameMachine.name=Telaio per Macchinari
+
+item.thermalexpansion.reservoir.creative.name=Serbatoio (Creativo)
+item.thermalexpansion.reservoir.standard0.name=Serbatoio (Base)
+item.thermalexpansion.reservoir.standard1.name=Serbatoio (Indurito)
+item.thermalexpansion.reservoir.standard2.name=Serbatoio (Rinforzato)
+item.thermalexpansion.reservoir.standard3.name=Serbatoio (Signalio)
+item.thermalexpansion.reservoir.standard4.name=Serbatoio (Risonante)
+
+item.thermalexpansion.satchel.creative.name=Zaino (Creativo)
+item.thermalexpansion.satchel.name=Zaino
+item.thermalexpansion.satchel.standard0.name=Zaino (Base)
+item.thermalexpansion.satchel.standard1.name=Zaino (Indurito)
+item.thermalexpansion.satchel.standard2.name=Zaino (Rinforzato)
+item.thermalexpansion.satchel.standard3.name=Zaino (Signalio)
+item.thermalexpansion.satchel.standard4.name=Zaino (Risonante)
+item.thermalexpansion.satchel.void.name=Zaino (Vuoto)
 
 itemGroup.thermalexpansion.creativeTab=Thermal Expansion
-itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: florbs
-itemGroup.thermalexpansion.creativeTabItems=Thermal Expansion: oggetti
+itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Flobi
+itemGroup.thermalexpansion.creativeTabMorbs=Thermal Expansion: Mlobi
+itemGroup.thermalexpansion.creativeTabItems=Thermal Expansion: Oggetti
 
-tab.thermalexpansion.device.nullifier.0=Manda tutto a /dev/null!
-tab.thermalexpansion.device.nullifier.1=E' un posto orribile; persino i fluidi non possono uscirne.
+tab.thermalexpansion.apparatus.activator.0=Affetta! Taglia! Versa le cose, lancia le cose!
+tab.thermalexpansion.apparatus.activator.1=Forse è casuale, forse no. Forse è abbassato, forse no.
+tab.thermalexpansion.apparatus.activator.2=Ingannevolmente versatile!
+tab.thermalexpansion.apparatus.breaker.0=Rompi tutto!
+tab.thermalexpansion.apparatus.breaker.1=Tenere lontana la faccia dalla parte anteriore.
+tab.thermalexpansion.apparatus.collector.0=Colleziona gli oggetti nell'area circostante.
+tab.thermalexpansion.apparatus.collector.1=Tutto ciò che non è fissato è perduto!
+tab.thermalexpansion.apparatus.collector.2=Probabiente non ruberà dal tuo inventario. Probabilmente.
 
-tab.thermalexpansion.dynamo.0=La quantità di energia generata dipende dalla richiesta.
-tab.thermalexpansion.dynamo.compression.0=Genera Redstone Flux usando combustibili fluidi o refrigeranti.
-tab.thermalexpansion.dynamo.enervation.0=Estrae Redstone Flux direttamente da risorse naturali o da oggetti che lo contengono.
-tab.thermalexpansion.dynamo.magmatic.0=Genera Redstone Flux usando fluidi estremamente caldi.
-tab.thermalexpansion.dynamo.reactant.0=Genera Redstone Flux usando reazioni alchemiche.
-tab.thermalexpansion.dynamo.reactant.1=Sono necessari un reagente solido e un combustibile fluido.
-tab.thermalexpansion.dynamo.steam.0=Genera Redstone Flux usando vapore.
-tab.thermalexpansion.dynamo.steam.1=Combustibili solidi e acqua possono essere usati per generare vapore.
+tab.thermalexpansion.device.diffuser.0=Sparge pozioni nell'area circostante.
+tab.thermalexpansion.device.diffuser.1=La durata delle pozioni è ridotta in confronto alla bevuta.
+tab.thermalexpansion.device.diffuser.2=Alcuni reagenti incrementeranno l'effetto.
+tab.thermalexpansion.device.fisher.0=Cattura vita acquatica assortita. Usa esche per incrementare la produzione.
+tab.thermalexpansion.device.fisher.1=Dev'essere piazzato in un pozza d'acqua.
+tab.thermalexpansion.device.fisher.2=Appendi la canna da pesca al chiodo.
+tab.thermalexpansion.device.fluid_buffer.0=Contiene e trasferisce fluidi. Può estrarre automaticamente.
+tab.thermalexpansion.device.fluid_buffer.1=È come una tramoggia, per i fluidi!
+tab.thermalexpansion.device.fluid_buffer.2=Tieni premuto Shift o Ctrl per regolare la quantità.
+tab.thermalexpansion.device.heat_sink.0=Raffredda i blocchi adiacenti, aumentandone la velocità.
+tab.thermalexpansion.device.heat_sink.1=Riempilo con refrigerante e guardalo lavorare!
+tab.thermalexpansion.device.heat_sink.2=I refrigeranti hanno vari gradi di effettività.
+tab.thermalexpansion.device.item_buffer.0=Contiene e trasferisce oggetti. Può estrarre automaticamente.
+tab.thermalexpansion.device.item_buffer.1=Meglio di una tramoggia, sul serio!
+tab.thermalexpansion.device.item_buffer.2=Tieni premuto Shift o Ctrl per regolare la quantità.
+tab.thermalexpansion.device.lexicon.0=Trasmuta oggetti equivalenti.
+tab.thermalexpansion.device.lexicon.1=Piazza gli oggetti preferiti nella lista di trasmutazione.
+tab.thermalexpansion.device.lexicon.2=Gli oggetti potrebbero essere limitati da poteri più alti.
+tab.thermalexpansion.device.nullifier.0=Manda tutto al /dev/null!
+tab.thermalexpansion.device.nullifier.1=È un posto orribile; nemmeno i fluidi possono scappare.
+tab.thermalexpansion.device.tapper.0=Estrae fluidi dagli alberi adiacenti. Usa il fertilizzante per incrementare la produzione.
+tab.thermalexpansion.device.tapper.1=Non ogni albero sarà produttivo.
+tab.thermalexpansion.device.tapper.2=Posa l'ascia.
+tab.thermalexpansion.device.water_gen.0=Estrae acqua dai blocchi circostanti.
+tab.thermalexpansion.device.water_gen.1=Piazza in una pozza d'acqua per velocizzarlo.
+tab.thermalexpansion.device.water_gen.2=Non annegare.
+tab.thermalexpansion.device.xp_collector.0=Colleziona esperienza dall'area circostante.
+tab.thermalexpansion.device.xp_collector.1=L'esperienza viene convertita in una versatile forma fluida.
+tab.thermalexpansion.device.xp_collector.2=Alcuni catalizzatori incrementeranno la produzione.
 
-tab.thermalexpansion.machine.charger.0=Infonde energia in oggetti compatibili.
-tab.thermalexpansion.machine.charger.1=La velocità può essere limitata dall'oggetto stesso.
-tab.thermalexpansion.machine.charger.2=Senti il ronzio.
+tab.thermalexpansion.dynamo.0=Il tasso di generazione varia a seconda della domanda di energia.
+tab.thermalexpansion.dynamo.compression.0=Genera Flusso Pietrarossico usando carburante e refrigerante fluidi.
+tab.thermalexpansion.dynamo.enervation.0=Estrae Flusso Pietrarossico direttamente da fonti naturali o da oggetti che lo contengono.
+tab.thermalexpansion.dynamo.magmatic.0=Genera Flusso Pietrarossico usando fluidi estremamente caldi.
+tab.thermalexpansion.dynamo.numismatic.0=Genera Flusso Pietrarossico usando arbitrio economico.
+tab.thermalexpansion.dynamo.numismatic.1=Potrebbe essere un portale per una dimensione alternativa di pura avarizia.
+tab.thermalexpansion.dynamo.numismatic.2=Non pensarci troppo, inserisci i gettoni.
+tab.thermalexpansion.dynamo.reactant.0=Genera Flusso Pietrarossico usando reazioni alchemiche.
+tab.thermalexpansion.dynamo.reactant.1=Devono essere forniti un reagente solido e un carburante fluido.
+tab.thermalexpansion.dynamo.steam.0=Genera Flusso Pietrarossico usando il Vapore.
+tab.thermalexpansion.dynamo.steam.1=Carburanti solidi e Acqua possono essere usati per generare Vapore.
+
+tab.thermalexpansion.machine.brewer.0=Prepara pozioni e infonde fluidi.
+tab.thermalexpansion.machine.brewer.1=Ne potresti volere alcuni in una fila.
+tab.thermalexpansion.machine.brewer.2=Bottiglie non incluse.
+tab.thermalexpansion.machine.centrifuge.0=Separa gli oggetti nei loro componenti.
+tab.thermalexpansion.machine.centrifuge.1=Alcuni oggetti avranno un componente fluido.
+tab.thermalexpansion.machine.centrifuge.2=Gira per vincere!
+tab.thermalexpansion.machine.charger.0=Infonde energia negli oggetti compatibili.
+tab.thermalexpansion.machine.charger.1=Il tasso di carica potrebbe essere limitato dall'oggetto.
+tab.thermalexpansion.machine.charger.2=Ascolta il ronzio.
+tab.thermalexpansion.machine.compactor.0=Applica pressione agli oggetti, cambiandone la forma.
+tab.thermalexpansion.machine.compactor.1=Utile per fabbricare componenti avanzati.
+tab.thermalexpansion.machine.compactor.2=Premi il pulsante per cambiare modalità.
+tab.thermalexpansion.machine.crafter.0=Inserisci gli oggetti nella griglia per impostare una ricetta.
+tab.thermalexpansion.machine.crafter.1=Premi semplicemente il pulsante di conferma, poi vai via!
+tab.thermalexpansion.machine.crafter.2=Non tutte le ricette sono valide.
 tab.thermalexpansion.machine.crucible.0=Trasforma materiali solidi in fluidi!
-tab.thermalexpansion.machine.crucible.1=Molto utile per costruire dispositivi avanzati.
+tab.thermalexpansion.machine.crucible.1=Molto utile per costruire blocchi avanzati.
 tab.thermalexpansion.machine.crucible.2=Tenere lontano da bambini e animali.
-tab.thermalexpansion.machine.extruder.0=Combina acqua e lava per formare varie roccia magmatiche.
-tab.thermalexpansion.machine.extruder.1=L'oggetto selezionato sarà ciò che otterrai se hai abbastanza acqua e lava nel serbatoio.
-tab.thermalexpansion.machine.extruder.2=La fisica di Minecraft è fantastica!
-tab.thermalexpansion.machine.furnace.0=Fonde oggetti usando Redstone Flux.
-tab.thermalexpansion.machine.furnace.1=Usa veramente poca energia per cuocere il cibo.
+tab.thermalexpansion.machine.enchanter.0=Incanta libri e altri arcani.
+tab.thermalexpansion.machine.enchanter.1=Utile per acquisire un incantamento specifico.
+tab.thermalexpansion.machine.enchanter.2=Lo slot sinistro può essere bloccato per contenere oggetti specifici.
+tab.thermalexpansion.machine.enchanter.3=Indietro, magitecnolgia.
+tab.thermalexpansion.machine.extruder.0=Mescola acqua e lava per fare diversi tipi di roccia ignea.
+tab.thermalexpansion.machine.extruder.1=L'oggetto selezionato è ciò che riceverai, se c'è abbastanza acqua e lava nelle taniche.
+tab.thermalexpansion.machine.extruder.2=La fisica di Minecraft è divertente!
+tab.thermalexpansion.machine.furnace.0=Cuoce gli oggetti usando Flusso Pietrarossico.
+tab.thermalexpansion.machine.furnace.1=Usa pochissima energia per cuocere il cibo.
 tab.thermalexpansion.machine.furnace.2=Om nom nom.
-tab.thermalexpansion.machine.insolator.0=Infonde nelle piante luce e sostanze usando RF.
-tab.thermalexpansion.machine.insolator.1=Non proprio agricoltura 'organica'.
-tab.thermalexpansion.machine.insolator.2=Gloriosamente incandescente!
-tab.thermalexpansion.machine.insolator.3=Lo slot sinistro può essere bloccato per poter contenere solo certi oggetti.
-tab.thermalexpansion.machine.precipitator.0=Usa Redstone Flux per congelare fluidi vari!
-tab.thermalexpansion.machine.precipitator.1=L'oggetto selezionato sarà ciò che otterrai se hai abbastanza fluidi nel serbatoio.
-tab.thermalexpansion.machine.precipitator.2=Battaglia di palle di neve.
-tab.thermalexpansion.machine.pulverizer.0=Frantuma oggetti in altri oggetti.
-tab.thermalexpansion.machine.pulverizer.1=Utile per lavorare minerali o convertire oggetti.
-tab.thermalexpansion.machine.pulverizer.2=Questo è normalmente non reversibile.
-tab.thermalexpansion.machine.sawmill.0=Taglia tronchi in assi e rilavora oggetti legnosi.
-tab.thermalexpansion.machine.sawmill.1=Molto utile per ottenere il massimo dagli alberi.
-tab.thermalexpansion.machine.sawmill.2=Attento alle mani.
+tab.thermalexpansion.machine.insolator.0=Infonde nutrienti e luce nelle piante utilizzando Flusso Pietrarossico.
+tab.thermalexpansion.machine.insolator.1=Non esattamente agricoltura 'organica'.
+tab.thermalexpansion.machine.insolator.2=Lo slot sinistro può essere bloccato per contenere oggetti specifici.
+tab.thermalexpansion.machine.insolator.3=Gloriosamente incandescente!
+tab.thermalexpansion.machine.precipitator.0=Utilizza Flusso Pietrarossico per raffreddare i fluidi!
+tab.thermalexpansion.machine.precipitator.1=L'oggetto selezionato è ciò che riceverai, se c'è abbastanza fluido nella tanica.
+tab.thermalexpansion.machine.precipitator.2=Fate a palle di neve.
+tab.thermalexpansion.machine.pulverizer.0=Frantuma le cose in altre cose.
+tab.thermalexpansion.machine.pulverizer.1=Utile per processare i minerali o convertire gli oggetti.
+tab.thermalexpansion.machine.pulverizer.2=Tipicamente non reversibile.
+tab.thermalexpansion.machine.refinery.0=Raffina vari fluidi.
+tab.thermalexpansion.machine.refinery.1=Alcuni fluidi lascieranno dietro un componente solido.
+tab.thermalexpansion.machine.refinery.2=I prodotti potrebbero non essere potabili.
+tab.thermalexpansion.machine.sawmill.0=Taglia i tronchi in assi and riprocessa le cose di legno.
+tab.thermalexpansion.machine.sawmill.1=Molto utile per fare il massimo da un albero.
+tab.thermalexpansion.machine.sawmill.2=Occhio alle mani.
 tab.thermalexpansion.machine.smelter.0=Fonde metalli e oggetti che richiedono alte temperature.
-tab.thermalexpansion.machine.smelter.1=Utile per lavorare minerali e costruire dispositivi avanzati.
-tab.thermalexpansion.machine.smelter.2=Lo slot sinistro può essere bloccato per poter contenere solo certi oggetti.
-tab.thermalexpansion.machine.smelter.3=Non cuocerà cibo.
-tab.thermalexpansion.machine.transposer.0=Riempie o svuota oggetti che contengono fluidi.
-tab.thermalexpansion.machine.transposer.1=Clicca il pulsante per scambiare tra Riempi e Svuota.
+tab.thermalexpansion.machine.smelter.1=Utile per processare i minerali e costruire blocchi avanzati.
+tab.thermalexpansion.machine.smelter.2=Lo slot sinistro può essere bloccato per contenere oggetti specifici.
+tab.thermalexpansion.machine.smelter.3=Non cuocerà assolutamente il cibo.
+tab.thermalexpansion.machine.transposer.0=Riempe o svuota oggetti che contengono fluidi.
+tab.thermalexpansion.machine.transposer.1=Premi il pulsante per cambiare modalità.
 tab.thermalexpansion.machine.transposer.2=Tipicamente reversibile.
 
+tab.thermalexpansion.storage.cache.0=Traduzioni di SonicLC
+tab.thermalexpansion.storage.cache.1=Sul serio!
+
+tab.thermalexpansion.storage.cell.0= Contiene Flusso Pietrarossico.
+tab.thermalexpansion.storage.cell.1=Tieni premuto Shift e/o Ctrl per regolare il controllo energetico.
+
+tab.thermalexpansion.storage.enchant=Può essere incantato/a per contenere più roba.
+
+tab.thermalexpansion.storage.satchel.0=È uno Zaino. Ti permette di contenere più oggeti.
+tab.thermalexpansion.storage.satchel.1=Non contenerà alcuni oggetti.
+
+tab.thermalexpansion.storage.satchel_c.0=È uno Zaino, più o meno. Crea copie di tutto ciò che inserisci.
+tab.thermalexpansion.storage.satchel_c.1=Non contenerà alcuni oggetti.
+tab.thermalexpansion.storage.satchel_c.2=È "Creativo" come la modalità. Non dovrebbe essere molto intelligene.
+
+tab.thermalexpansion.storage.satchel_filter.0=Configura quali oggetti può raccogliere automaticamente lo Zainetto.
+tab.thermalexpansion.storage.satchel_filter.1=Riconquista il tuo inventario!
+
+tab.thermalexpansion.storage.satchel_v.0=È uno Zaino, più o meno. Tutto ciò che inserisci scompare per sempre.
+tab.thermalexpansion.storage.satchel_v.1=Questo include gli oggetti collezionati automaticamente.
+tab.thermalexpansion.storage.satchel_v.2=Occhio alle mani!
+
+tab.thermalexpansion.storage.strongbox.0=È una scatola! Contiene le cose. Be', la maggior parte.
+
+tab.thermalexpansion.storage.tank.0=È una tanica! Contiene i fluidi.
+tab.thermalexpansion.storage.tank.1=Può emettere automaticamente dal lato inferiore.
+
+tile.thermalexpansion.apparatus.breaker.name=Distruttore Terrenico
+tile.thermalexpansion.apparatus.collector.name=Apparato di Acquisizione
+
+tile.thermalexpansion.device.diffuser.name=Diffusore Decottivo
+tile.thermalexpansion.device.fisher.name=Impigliatore Acquatico
+tile.thermalexpansion.device.fluid_buffer.name=Allocatore Fluidico
+tile.thermalexpansion.device.heat_sink.name=Mediatore Termico
+tile.thermalexpansion.device.item_buffer.name=Allocatore Oggettico
+tile.thermalexpansion.device.lexicon.name=Trasmutatore Lessicale
 tile.thermalexpansion.device.nullifier.name=Nullificatore
+tile.thermalexpansion.device.tapper.name=Estrattore Arboreo
+tile.thermalexpansion.device.water_gen.name=Accumulatore Acqueo
+tile.thermalexpansion.device.xp_collector.name=Condensatore Intuitivo
 
-tile.thermalexpansion.dynamo.compression.name=Dinamo a compressione
-tile.thermalexpansion.dynamo.enervation.name=Dinamo prosciugante
-tile.thermalexpansion.dynamo.magmatic.name=Dinamo magmatico
-tile.thermalexpansion.dynamo.reactant.name=Dinamo a reazione
-tile.thermalexpansion.dynamo.steam.name=Dinamo a vapore
+tile.thermalexpansion.dynamo.compression.name=Dinamo a Compressione
+tile.thermalexpansion.dynamo.enervation.name=Dinamo a Enervazione
+tile.thermalexpansion.dynamo.magmatic.name=Dinamo Magmatico
+tile.thermalexpansion.dynamo.numismatic.name=Dinamo Numismatico
+tile.thermalexpansion.dynamo.reactant.name=Dinamo a Reazione
+tile.thermalexpansion.dynamo.steam.name=Dinamo a Vapore
+tile.thermalexpansion.dynamo=Dinamo
 
-tile.thermalexpansion.machine.charger.name=Infondatore energetico
-tile.thermalexpansion.machine.crucible.name=Crogiolo magmatico
-tile.thermalexpansion.machine.extruder.name=Estrudatore igneo
-tile.thermalexpansion.machine.furnace.name=Fornace a pietrarossa
-tile.thermalexpansion.machine.insolator.name=Isolatore phytogenico
-tile.thermalexpansion.machine.precipitator.name=Precipitatore glaciale
-tile.thermalexpansion.machine.pulverizer.name=Polverizatore
+tile.thermalexpansion.machine.brewer.name=Impregnatore Alchemico
+tile.thermalexpansion.machine.centrifuge.name=Separatore Cetrifugo
+tile.thermalexpansion.machine.charger.name=Infusore Energetico
+tile.thermalexpansion.machine.compactor.name=Compattatore
+tile.thermalexpansion.machine.crafter.name=Fanbricatore Sequenziale
+tile.thermalexpansion.machine.crucible.name=Crogiolo Magmatico
+tile.thermalexpansion.machine.enchanter.name=Stregonatore Arcano
+tile.thermalexpansion.machine.extruder.name=Estrusore Igneo
+tile.thermalexpansion.machine.furnace.name=Fornace a Pietrarossa
+tile.thermalexpansion.machine.insolator.name=Insolatore Phytogenico
+tile.thermalexpansion.machine.precipitator.name=Precipitatore Glaciale
+tile.thermalexpansion.machine.pulverizer.name=Polverizzatore
+tile.thermalexpansion.machine.refinery.name=Distilleria Frazionante
 tile.thermalexpansion.machine.sawmill.name=Segheria
-tile.thermalexpansion.machine.smelter.name=Fonderia ad induzione
-tile.thermalexpansion.machine.transposer.name=Trasposatore di fluidi
+tile.thermalexpansion.machine.smelter.name=Fonderia a Induzione
+tile.thermalexpansion.machine.transposer.name=Traspositore Fluido
+
+tile.thermalexpansion.storage.cache.name=Cassetto
+tile.thermalexpansion.storage.cell.name=Cella Energetica
+tile.thermalexpansion.storage.strongbox.name=Scatola Evoluta
+tile.thermalexpansion.storage.tank.name=Tanica Portatile
