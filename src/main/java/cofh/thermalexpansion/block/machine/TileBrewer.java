@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.AugmentHelper;
@@ -348,12 +347,6 @@ public class TileBrewer extends TileMachineBase {
 
 		super.preAugmentInstall();
 
-	}
-
-	@Override
-	protected boolean isValidAugment(AugmentType type, String id) {
-
-		return super.isValidAugment(type, id);
 	}
 
 	@Override

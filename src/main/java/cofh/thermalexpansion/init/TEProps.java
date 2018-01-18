@@ -306,6 +306,7 @@ public class TEProps {
 	public static final String MACHINE_ENCHANTER_EMPOWERED = "machineEnchanterEmpowered";
 
 	public static final String MACHINE_EXTRUDER_NO_WATER = "machineExtruderNoWater";
+	public static final String MACHINE_EXTRUDER_SEDIMENTARY = "machineExtruderSedimentary";
 
 	/* DYNAMOS */
 	public static final String DYNAMO_POWER = "dynamoPower";

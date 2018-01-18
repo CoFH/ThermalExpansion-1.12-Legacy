@@ -126,7 +126,7 @@ public class IMCHandler {
 						EnchanterManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(PRIMARY_INPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_INPUT)), new ItemStack(nbt.getCompoundTag(PRIMARY_OUTPUT)), nbt.getInteger(EXPERIENCE), Type.STANDARD);
 						continue;
 
-					/* REMOVE RECIPES */
+						/* REMOVE RECIPES */
 					case REMOVE_FURNACE_RECIPE:
 						FurnaceManager.removeRecipe(new ItemStack(nbt.getCompoundTag(INPUT)));
 						continue;
@@ -176,7 +176,7 @@ public class IMCHandler {
 						EnchanterManager.removeRecipe(new ItemStack(nbt.getCompoundTag(PRIMARY_INPUT)), new ItemStack(nbt.getCompoundTag(SECONDARY_INPUT)));
 						continue;
 
-					/* FUELS */
+						/* FUELS */
 					case ADD_STEAM_FUEL:
 						SteamManager.addFuel(new ItemStack(nbt.getCompoundTag(INPUT)), nbt.getInteger(ENERGY));
 						continue;
@@ -214,7 +214,7 @@ public class IMCHandler {
 						NumismaticManager.removeFuel(new ItemStack(nbt.getCompoundTag(INPUT)));
 						continue;
 
-					/* COOLANT */
+						/* COOLANT */
 					case ADD_COOLANT:
 						CoolantManager.addCoolant(nbt.getString(FLUID_NAME).toLowerCase(Locale.ENGLISH), nbt.getInteger(ENERGY), nbt.getInteger(FACTOR));
 						continue;

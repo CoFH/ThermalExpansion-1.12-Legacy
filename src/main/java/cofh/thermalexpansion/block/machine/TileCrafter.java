@@ -457,7 +457,7 @@ public class TileCrafter extends TileMachineBase {
 		if (!augmentInput) {
 			return true;
 		}
-		return slot >= SLOT_OUTPUT || craftRecipe.validStack(stack, slot % 9);
+		return slot >= SLOT_OUTPUT || craftRecipe == null || craftRecipe.validStack(stack, slot % 9);
 	}
 
 	/* ITransferControl */
@@ -539,7 +539,7 @@ public class TileCrafter extends TileMachineBase {
 		private boolean valid = true;
 
 		private int[] craftSlots = new int[9];
-		private Ingredient[] craftIngredients = new Ingredient[9];
+		private Ingredient[] craftIngredients;
 
 		private boolean isItemStackRecipe = false;
 		private ItemStack[] craftStacks = new ItemStack[9];

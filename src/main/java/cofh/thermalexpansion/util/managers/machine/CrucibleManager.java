@@ -78,7 +78,7 @@ public class CrucibleManager {
 
 		/* TF MATERIALS */
 		{
-			addRecipe(2000, ItemMaterial.globTar, new FluidStack(TFFluids.fluidCreosote, 100));
+			addRecipe(2000, ItemMaterial.globTar, new FluidStack(TFFluids.fluidCreosote, 250));
 			addRecipe(4000, ItemMaterial.dustCoal, new FluidStack(TFFluids.fluidCoal, 100));
 
 			addRecipe(2000, ItemMaterial.crystalCrudeOil, new FluidStack(TFFluids.fluidCrudeOil, 250));

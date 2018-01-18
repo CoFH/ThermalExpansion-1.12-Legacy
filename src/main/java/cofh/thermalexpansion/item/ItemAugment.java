@@ -228,6 +228,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		// machineEnchanterEmpowered = addAugmentItem(464, TEProps.MACHINE_ENCHANTER_EMPOWERED, AugmentType.MODE);
 
 		machineExtruderNoWater = addAugmentItem(496, TEProps.MACHINE_EXTRUDER_NO_WATER, AugmentType.MODE);
+		machineExtruderSedimentary = addAugmentItem(497, TEProps.MACHINE_EXTRUDER_SEDIMENTARY, AugmentType.MODE);
 
 		/* DYNAMOS */
 		dynamoPower = addAugmentItem(512, TEProps.DYNAMO_POWER);
@@ -535,6 +536,15 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateInvar",
 				'X', "dustCryotheum"
 		);
+		addShapedRecipe(machineExtruderSedimentary,
+				" G ",
+				"ICI",
+				" X ",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearNickel",
+				'I', "plateLead",
+				'X', "dustAerotheum"
+		);
 
 		/* DYNAMO */
 		addShapedRecipe(dynamoPower,
@@ -769,6 +779,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineEnchanterEmpowered;
 
 	public static ItemStack machineExtruderNoWater;
+	public static ItemStack machineExtruderSedimentary;
 
 	/* Dynamo */
 	public static ItemStack dynamoPower;

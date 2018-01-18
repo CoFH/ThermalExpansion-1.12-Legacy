@@ -35,7 +35,7 @@ public class CompressionManager {
 
 	public static void initialize() {
 
-		addFuel("creosote", 20000);
+		addFuel("creosote", 40000);
 		addFuel("coal", 400000);
 		addFuel("crude_oil", 400000);
 		addFuel("tree_oil", 1000000);

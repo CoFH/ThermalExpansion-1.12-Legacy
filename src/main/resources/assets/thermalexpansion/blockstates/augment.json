@@ -154,6 +154,11 @@
 					"layer0": "thermalexpansion:items/augment/machine_extruder_no_water"
 				}
 			},
+			"machineextrudersedimentary": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_extruder_sedimentary"
+				}
+			},
 			"dynamopower": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/dynamo_power"

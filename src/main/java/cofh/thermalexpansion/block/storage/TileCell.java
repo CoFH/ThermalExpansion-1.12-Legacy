@@ -68,7 +68,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		int capacity = CAPACITY_BASE;
 		comment = "Adjust this value to change the amount of Energy (in RF) stored by a Basic Cell. This base value will scale with block level.";
-		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, 50000, capacity * 10, comment);
 
 		int recv = XFER_BASE;
 		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be received by a Basic Cell. This base value will scale with block level.";
@@ -278,7 +278,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 			compareTracker = curScale;
 			callNeighborTileChange();
 		}
-		curScale = energyStorage.getEnergyStored() > 0 ? 1 + getScaledEnergyStored(8) : 0;
+		curScale = energyStorage.getEnergyStored() > 0 ? 1 + Math.min(getScaledEnergyStored(8), 7) : 0;
 		if (meterTracker != curScale) {
 			meterTracker = curScale;
 			updateLighting();
@@ -392,6 +392,8 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		enchantHolding = payload.getByte();
 		amountRecv = payload.getInt();
 		amountSend = payload.getInt();
+
+		callBlockUpdate();
 	}
 
 	/* IEnergyReceiver */

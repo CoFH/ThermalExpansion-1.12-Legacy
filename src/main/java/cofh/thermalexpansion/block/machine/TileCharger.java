@@ -43,9 +43,9 @@ public class TileCharger extends TileMachineBase {
 	private static final int ENERGY_TRANSFER[] = new int[] { 1, 4, 9, 16, 25 };
 	public static int basePower = 50;
 
-	public static final int REPAIR_ENERGY = 500;
-	public static final int FLUID_AMOUNT = CoreProps.MB_PER_XP / 4;
-	public static final int WIRELESS_RANGE = 32 * 32;
+	public static int repairEnergy = 500;
+	public static int repairFluid = CoreProps.MB_PER_XP / 4;
+	public static int wirelessRange = 32;
 
 	//public static final int WIRELESS_RANGE[] = new int[] { 3, 5, 7, 9, 11 };
 
@@ -86,6 +86,17 @@ public class TileCharger extends TileMachineBase {
 
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
+
+		comment = "Adjust this value to change the amount of RF per point of durability in the Energetic Infuser with the Flux Reconstruction augment.";
+		repairEnergy = ThermalExpansion.CONFIG.getConfiguration().getInt("RepairEnergy", category, repairEnergy, 100, 10000, comment);
+
+		comment = "Adjust this value to change the amount of Essence of Knowledge per point of durability in the Energetic Infuser with the Flux Reconstruction augment.";
+		repairFluid = ThermalExpansion.CONFIG.getConfiguration().getInt("RepairFluid", category, repairFluid, 1, 1000, comment);
+
+		comment = "Adjust this value to change the wireless range for the Energetic Infuser with the Parabolic Flux Coupling augment.";
+		wirelessRange = ThermalExpansion.CONFIG.getConfiguration().getInt("WirelessRange", category, wirelessRange, 8, 128, comment);
+
+		wirelessRange = wirelessRange * wirelessRange;
 	}
 
 	private int inputTracker;
@@ -129,10 +140,7 @@ public class TileCharger extends TileMachineBase {
 
 		boolean curActive = isActive;
 
-		if (augmentWireless) {
-			transferContainerItem();
-			processOff();
-		} else if (augmentRepair) {
+		if (augmentWireless || augmentRepair) {
 			transferContainerItem();
 			processOff();
 		} else if (isActive) {
@@ -190,14 +198,10 @@ public class TileCharger extends TileMachineBase {
 
 		boolean curActive = isActive;
 
-		if (augmentRepair) {
+		if (augmentWireless || augmentRepair) {
 			transferHandler();
 			processOff();
-		} else if (augmentWireless) {
-			transferHandler();
-			processOff();
-		}
-		if (isActive) {
+		} else if (isActive) {
 			processTickHandler();
 
 			if (canFinishHandler()) {
@@ -303,10 +307,10 @@ public class TileCharger extends TileMachineBase {
 		}
 		int energy = calcEnergyRepair();
 		processRem += energy;
-		if (processRem >= REPAIR_ENERGY) {
+		if (processRem >= repairEnergy) {
 			inventory[1].setItemDamage(inventory[1].getItemDamage() - 1);
-			tank.modifyFluidStored(-FLUID_AMOUNT);
-			processRem -= REPAIR_ENERGY;
+			tank.modifyFluidStored(-repairFluid);
+			processRem -= repairEnergy;
 		}
 		energyStorage.modifyEnergyStored(-energy);
 		return energy;
@@ -341,7 +345,7 @@ public class TileCharger extends TileMachineBase {
 		players.clear();
 		Vec3d posCenter = new Vec3d(pos).addVector(0.5D, 0.5D, 0.5D);
 		for (EntityPlayer player : world.playerEntities) {
-			if (player.getPositionVector().squareDistanceTo(posCenter) < WIRELESS_RANGE) {
+			if (player.getPositionVector().squareDistanceTo(posCenter) < wirelessRange) {
 				players.add(player);
 			}
 		}
@@ -700,9 +704,9 @@ public class TileCharger extends TileMachineBase {
 		} else if (inventory[1].isItemStackDamageable()) {
 			hasRepairItem = true;
 			/*
-			* This seems weird to have twice but it's a catch for the case where the repair augment is removed
-			* and the output slot is full and remains such until the chunk is unloaded.
-			*/
+			 * This seems weird to have twice but it's a catch for the case where the repair augment is removed
+			 * and the output slot is full and remains such until the chunk is unloaded.
+			 */
 		}
 		tank.readFromNBT(nbt);
 	}
@@ -817,10 +821,10 @@ public class TileCharger extends TileMachineBase {
 
 	private int calcEnergyRepair() {
 
-		if (tank.getFluidAmount() < FLUID_AMOUNT) {
+		if (tank.getFluidAmount() < repairFluid) {
 			return 0;
 		}
-		return Math.max(calcEnergy(), REPAIR_ENERGY);
+		return Math.max(calcEnergy(), repairEnergy);
 	}
 
 	private int calcEnergyWireless() {

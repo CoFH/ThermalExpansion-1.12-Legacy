@@ -21,7 +21,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -66,7 +65,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 
 		int capacity = CAPACITY_BASE;
 		comment = "Adjust this value to change the amount of Items stored by a Basic Cache. This base value will scale with block level.";
-		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, 500, 500000, comment);
 
 		for (int i = 0; i < CAPACITY.length; i++) {
 			CAPACITY[i] *= capacity;
@@ -184,7 +183,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 			compareTracker = curScale;
 			callNeighborTileChange();
 		}
-		curScale = getStoredCount() > 0 ? 1 + getScaledItemsStored(8) : 0;
+		curScale = getStoredCount() > 0 ? 1 + Math.min(getScaledItemsStored(8), 7) : 0;
 		if (meterTracker != curScale) {
 			meterTracker = curScale;
 			sendTilePacket(Side.CLIENT);

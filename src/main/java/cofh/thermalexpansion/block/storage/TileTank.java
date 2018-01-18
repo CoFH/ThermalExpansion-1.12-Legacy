@@ -20,6 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -35,7 +36,7 @@ import java.util.List;
 
 public class TileTank extends TileAugmentableSecure implements ITickable, ITileInfo {
 
-	public static final int CAPACITY_BASE = 20000;
+	public static final int CAPACITY_BASE = Fluid.BUCKET_VOLUME * 20;
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int RENDER_LEVELS = 100;
 
@@ -66,7 +67,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		int capacity = CAPACITY_BASE;
 		comment = "Adjust this value to change the amount of Fluid (in mB) stored by a Basic Tank. This base value will scale with block level.";
-		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, Fluid.BUCKET_VOLUME * 2, Fluid.BUCKET_VOLUME * 1000, comment);
 
 		for (int i = 0; i < CAPACITY.length; i++) {
 			CAPACITY[i] *= capacity;

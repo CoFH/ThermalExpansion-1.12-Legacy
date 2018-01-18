@@ -31,4 +31,10 @@ public class ContainerCharger extends ContainerTEBase implements ISlotValidator 
 		return myTile.isItemValidForSlot(0, stack);
 	}
 
+	//	@Override
+	//	protected boolean supportsShiftClick(EntityPlayer player, int slotIndex) {
+	//
+	//		return supportsShiftClick(slotIndex);
+	//	}
+
 }

@@ -46,6 +46,7 @@ public class RecipeUidsTE {
 
 	public static final String PRECIPITATOR = "thermalexpansion.precipitator";
 	public static final String EXTRUDER = "thermalexpansion.extruder";
+	public static final String EXTRUDER_SEDIMENTARY = "thermalexpansion.extruder_sedimentary";
 
 	public static final String DYNAMO_STEAM = "thermalexpansion.steam";
 	public static final String DYNAMO_MAGMATIC = "thermalexpansion.magmatic";

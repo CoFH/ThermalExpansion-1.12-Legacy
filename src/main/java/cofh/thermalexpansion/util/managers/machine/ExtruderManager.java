@@ -16,56 +16,78 @@ import java.util.Map.Entry;
 
 public class ExtruderManager {
 
-	private static Map<ItemWrapper, ExtruderRecipe> recipeMap = new THashMap<>();
-	private static List<ItemStack> outputList = new ArrayList<>();
+	private static Map<ItemWrapper, ExtruderRecipe> recipeMapIgneous = new THashMap<>();
+	private static Map<ItemWrapper, ExtruderRecipe> recipeMapSedimentary = new THashMap<>();
+	private static List<ItemStack> outputListIgneous = new ArrayList<>();
+	private static List<ItemStack> outputListSedimentary = new ArrayList<>();
 
 	public static final int DEFAULT_ENERGY = 800;
 
-	public static ExtruderRecipe getRecipe(ItemStack input) {
+	public static ExtruderRecipe getRecipe(ItemStack input, boolean sedimentary) {
 
-		return input.isEmpty() ? null : recipeMap.get(new ItemWrapper(input));
+		if (input.isEmpty()) {
+			return null;
+		}
+		return sedimentary ? recipeMapSedimentary.get(new ItemWrapper(input)) : recipeMapIgneous.get(new ItemWrapper(input));
 	}
 
-	public static boolean recipeExists(ItemStack input) {
+	public static boolean recipeExists(ItemStack input, boolean sedimentary) {
 
-		return getRecipe(input) != null;
+		return getRecipe(input, sedimentary) != null;
 	}
 
-	public static ItemStack getOutput(int index) {
+	public static ItemStack getOutput(int index, boolean sedimentary) {
 
-		return outputList.get(index);
+		return sedimentary ? outputListSedimentary.get(index) : outputListIgneous.get(index);
 	}
 
-	public static int getOutputListSize() {
+	public static int getOutputListSize(boolean sedimentary) {
 
-		return outputList.size();
+		return sedimentary ? outputListSedimentary.size() : outputListIgneous.size();
 	}
 
-	public static int getIndex(ItemStack output) {
+	public static int getIndex(ItemStack output, boolean sedimentary) {
 
-		for (int i = 0; i < outputList.size(); i++) {
-			if (ItemHelper.itemsIdentical(output, outputList.get(i))) {
-				return i;
+		if (sedimentary) {
+			for (int i = 0; i < outputListSedimentary.size(); i++) {
+				if (ItemHelper.itemsIdentical(output, outputListSedimentary.get(i))) {
+					return i;
+				}
+			}
+		} else {
+			for (int i = 0; i < outputListIgneous.size(); i++) {
+				if (ItemHelper.itemsIdentical(output, outputListIgneous.get(i))) {
+					return i;
+				}
 			}
 		}
 		// Default to first if no match found.
 		return 0;
 	}
 
-	public static ExtruderRecipe[] getRecipeList() {
+	public static ExtruderRecipe[] getRecipeList(boolean sedimentary) {
 
-		return recipeMap.values().toArray(new ExtruderRecipe[recipeMap.size()]);
+		if (sedimentary) {
+			return recipeMapSedimentary.values().toArray(new ExtruderRecipe[recipeMapSedimentary.size()]);
+		}
+		return recipeMapIgneous.values().toArray(new ExtruderRecipe[recipeMapIgneous.size()]);
 	}
 
 	public static void initialize() {
 
-		addRecipe(DEFAULT_ENERGY / 2, new ItemStack(Blocks.COBBLESTONE), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 0));
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Blocks.STONE), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
-		addRecipe(DEFAULT_ENERGY * 2, new ItemStack(Blocks.OBSIDIAN), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
+		addRecipeIgneous(DEFAULT_ENERGY / 2, new ItemStack(Blocks.COBBLESTONE), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 0));
+		addRecipeIgneous(DEFAULT_ENERGY, new ItemStack(Blocks.STONE), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
+		addRecipeIgneous(DEFAULT_ENERGY * 2, new ItemStack(Blocks.OBSIDIAN), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
 
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Blocks.STONE, 1, 1), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Blocks.STONE, 1, 3), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Blocks.STONE, 1, 5), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
+		addRecipeIgneous(DEFAULT_ENERGY, new ItemStack(Blocks.STONE, 1, 1), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
+		addRecipeIgneous(DEFAULT_ENERGY, new ItemStack(Blocks.STONE, 1, 3), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
+		addRecipeIgneous(DEFAULT_ENERGY, new ItemStack(Blocks.STONE, 1, 5), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
+
+		addRecipeSedimentary(DEFAULT_ENERGY * 3, new ItemStack(Blocks.GRAVEL, 1), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 1500));
+		addRecipeSedimentary(DEFAULT_ENERGY * 4, new ItemStack(Blocks.SAND, 1), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 1500));
+		addRecipeSedimentary(DEFAULT_ENERGY * 4, new ItemStack(Blocks.SAND, 1, 1), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 1500));
+		addRecipeSedimentary(DEFAULT_ENERGY * 8, new ItemStack(Blocks.SANDSTONE, 1), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME * 2));
+		addRecipeSedimentary(DEFAULT_ENERGY * 8, new ItemStack(Blocks.RED_SANDSTONE, 1), new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME * 2));
 
 		/* LOAD RECIPES */
 		loadRecipes();
@@ -77,34 +99,54 @@ public class ExtruderManager {
 
 	public static void refresh() {
 
-		Map<ItemWrapper, ExtruderRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Map<ItemWrapper, ExtruderRecipe> tempMapIgneous = new THashMap<>(recipeMapIgneous.size());
+		Map<ItemWrapper, ExtruderRecipe> tempMapSedimentary = new THashMap<>(recipeMapSedimentary.size());
 		ExtruderRecipe tempRecipe;
 
-		for (Entry<ItemWrapper, ExtruderRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<ItemWrapper, ExtruderRecipe> entry : recipeMapIgneous.entrySet()) {
 			tempRecipe = entry.getValue();
 			ItemWrapper output = new ItemWrapper(tempRecipe.output);
-			tempMap.put(output, tempRecipe);
+			tempMapIgneous.put(output, tempRecipe);
 		}
-		recipeMap.clear();
-		recipeMap = tempMap;
+		for (Entry<ItemWrapper, ExtruderRecipe> entry : recipeMapSedimentary.entrySet()) {
+			tempRecipe = entry.getValue();
+			ItemWrapper output = new ItemWrapper(tempRecipe.output);
+			tempMapSedimentary.put(output, tempRecipe);
+		}
+		recipeMapIgneous.clear();
+		recipeMapSedimentary.clear();
+
+		recipeMapIgneous = tempMapIgneous;
+		recipeMapSedimentary = tempMapSedimentary;
 	}
 
 	/* ADD RECIPES */
-	public static ExtruderRecipe addRecipe(int energy, ItemStack output, FluidStack inputHot, FluidStack inputCold) {
+	public static ExtruderRecipe addRecipeIgneous(int energy, ItemStack output, FluidStack inputHot, FluidStack inputCold) {
 
-		if (output.isEmpty() || inputHot == null || inputCold == null || inputHot.amount > Fluid.BUCKET_VOLUME || inputCold.amount > Fluid.BUCKET_VOLUME || energy <= 0 || recipeExists(output)) {
+		if (output.isEmpty() || inputHot == null || inputCold == null || energy <= 0 || recipeExists(output, false)) {
 			return null;
 		}
 		ExtruderRecipe recipe = new ExtruderRecipe(output, inputHot, inputCold, energy);
-		recipeMap.put(new ItemWrapper(output), recipe);
-		outputList.add(output);
+		recipeMapIgneous.put(new ItemWrapper(output), recipe);
+		outputListIgneous.add(output);
+		return recipe;
+	}
+
+	public static ExtruderRecipe addRecipeSedimentary(int energy, ItemStack output, FluidStack inputHot, FluidStack inputCold) {
+
+		if (output.isEmpty() || inputHot == null || inputCold == null || energy <= 0 || recipeExists(output, true)) {
+			return null;
+		}
+		ExtruderRecipe recipe = new ExtruderRecipe(output, inputHot, inputCold, energy);
+		recipeMapSedimentary.put(new ItemWrapper(output), recipe);
+		outputListSedimentary.add(output);
 		return recipe;
 	}
 
 	/* REMOVE RECIPES */
 	//	public static ExtruderRecipe removeRecipe(ItemStack output) {
 	//
-	//		return recipeMap.remove(new ItemWrapper(output));
+	//		return recipeMapIgneous.remove(new ItemWrapper(output));
 	//	}
 
 	/* RECIPE CLASS */

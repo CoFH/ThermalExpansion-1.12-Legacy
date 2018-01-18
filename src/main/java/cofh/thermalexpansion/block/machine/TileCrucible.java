@@ -227,6 +227,7 @@ public class TileCrucible extends TileMachineBase {
 			}
 		}
 	}
+
 	@Override
 	public void update() {
 
@@ -235,7 +236,6 @@ public class TileCrucible extends TileMachineBase {
 		}
 		super.update();
 	}
-
 
 	/* GUI METHODS */
 	@Override

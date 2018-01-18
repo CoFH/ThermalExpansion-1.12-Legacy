@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.gui.container.ICustomInventory;
 import cofh.core.network.PacketBase;
@@ -58,6 +57,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_NO_WATER);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_SEDIMENTARY);
 
 		LIGHT_VALUES[TYPE] = 14;
 
@@ -88,8 +88,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 	/* AUGMENTS */
 	protected boolean augmentNoWater;
+	protected boolean augmentSedimentary;
 
 	protected boolean flagNoWater;
+	protected boolean flagSedimentary;
 
 	public TileExtruder() {
 
@@ -98,7 +100,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		Arrays.fill(inventory, ItemStack.EMPTY);
 		createAllSlots(inventory.length);
 
-		outputItem[0] = ExtruderManager.getOutput(index);
+		outputItem[0] = ExtruderManager.getOutput(index, augmentSedimentary);
 		outputItem[1] = outputItem[0].copy();
 		hotTank.setLock(FluidRegistry.LAVA);
 		coldTank.setLock(FluidRegistry.WATER);
@@ -120,15 +122,15 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected boolean canStart() {
 
-		ExtruderRecipe recipe = ExtruderManager.getRecipe(outputItem[0]);
+		ExtruderRecipe recipe = ExtruderManager.getRecipe(outputItem[0], augmentSedimentary);
 
 		if (recipe == null) {
 			return false;
 		}
-		if (hotTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
+		if (hotTank.getFluidAmount() < Math.max(recipe.getInputHot().amount, Fluid.BUCKET_VOLUME)) {
 			return false;
 		}
-		if (!augmentNoWater && coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
+		if (!augmentNoWater && coldTank.getFluidAmount() < Math.max(recipe.getInputCold().amount, Fluid.BUCKET_VOLUME)) {
 			return false;
 		}
 		if (energyStorage.getEnergyStored() <= 0) {
@@ -152,7 +154,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected void processStart() {
 
-		processMax = ExtruderManager.getRecipe(outputItem[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = ExtruderManager.getRecipe(outputItem[0], augmentSedimentary).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 		outputItem[1] = outputItem[0].copy();
 	}
@@ -160,7 +162,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected void processFinish() {
 
-		ExtruderRecipe recipe = ExtruderManager.getRecipe(outputItem[1]);
+		ExtruderRecipe recipe = ExtruderManager.getRecipe(outputItem[1], augmentSedimentary);
 
 		if (recipe == null) {
 			processOff();
@@ -208,8 +210,8 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 			return false;
 		}
 		if (tag.hasKey("OutputItem", 10)) {
-			index = ExtruderManager.getIndex(new ItemStack(tag.getCompoundTag("OutputItem")));
-			outputItem[0] = ExtruderManager.getOutput(index);
+			index = ExtruderManager.getIndex(new ItemStack(tag.getCompoundTag("OutputItem")), augmentSedimentary);
+			outputItem[0] = ExtruderManager.getOutput(index, augmentSedimentary);
 			if (!isActive) {
 				outputItem[1] = outputItem[0].copy();
 			}
@@ -238,12 +240,12 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 	private void setOutput() {
 
-		if (index >= ExtruderManager.getOutputListSize()) {
+		if (index >= ExtruderManager.getOutputListSize(augmentSedimentary)) {
 			index = 0;
 		} else if (index < 0) {
-			index = ExtruderManager.getOutputListSize() - 1;
+			index = ExtruderManager.getOutputListSize(augmentSedimentary) - 1;
 		}
-		outputItem[0] = ExtruderManager.getOutput(index);
+		outputItem[0] = ExtruderManager.getOutput(index, augmentSedimentary);
 		if (!isActive) {
 			outputItem[1] = outputItem[0].copy();
 		}
@@ -297,11 +299,12 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		super.readFromNBT(nbt);
 
 		outputTracker = nbt.getInteger("TrackOut");
+		augmentSedimentary = nbt.getByte("Mode") == 1;
 
 		if (nbt.hasKey("OutputItem", 10)) {
-			index = ExtruderManager.getIndex(new ItemStack(nbt.getCompoundTag("OutputItem")));
+			index = ExtruderManager.getIndex(new ItemStack(nbt.getCompoundTag("OutputItem")), augmentSedimentary);
 		}
-		outputItem[0] = ExtruderManager.getOutput(index);
+		outputItem[0] = ExtruderManager.getOutput(index, augmentSedimentary);
 		outputItem[1] = outputItem[0].copy();
 
 		hotTank.readFromNBT(nbt.getCompoundTag("HotTank"));
@@ -314,6 +317,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setByte("Mode", augmentSedimentary ? (byte) 1 : 0);
 
 		nbt.setTag("OutputItem", outputItem[0].writeToNBT(new NBTTagCompound()));
 		nbt.setTag("HotTank", hotTank.writeToNBT(new NBTTagCompound()));
@@ -352,6 +356,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		PacketBase payload = super.getTilePacket();
 
 		payload.addBool(augmentNoWater);
+		payload.addBool(augmentSedimentary);
 		return payload;
 	}
 
@@ -364,6 +369,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		payload.addFluidStack(coldTank.getFluid());
 
 		payload.addBool(augmentNoWater);
+		payload.addBool(augmentSedimentary);
 
 		return payload;
 	}
@@ -375,7 +381,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		super.handleTilePacket(payload);
 
 		augmentNoWater = payload.getBool();
+		augmentSedimentary = payload.getBool();
+
 		flagNoWater = augmentNoWater;
+		flagSedimentary = augmentSedimentary;
 	}
 
 	@Override
@@ -387,7 +396,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		coldTank.setFluid(payload.getFluidStack());
 
 		augmentNoWater = payload.getBool();
+		augmentSedimentary = payload.getBool();
+
 		flagNoWater = augmentNoWater;
+		flagSedimentary = augmentSedimentary;
 	}
 
 	/* HELPERS */
@@ -398,8 +410,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		if (world != null && ServerHelper.isServerWorld(world)) {
 			flagNoWater = augmentNoWater;
+			flagSedimentary = augmentSedimentary;
 		}
 		augmentNoWater = false;
+		augmentSedimentary = false;
 	}
 
 	@Override
@@ -410,18 +424,15 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		if (!augmentNoWater && isActive && coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
 			processOff();
 		}
+		if (world != null && flagSedimentary != augmentSedimentary) {
+			processOff();
+			index = 0;
+			outputItem[0] = ExtruderManager.getOutput(index, augmentSedimentary);
+			outputItem[1] = outputItem[0].copy();
+		}
 		if (world != null && ServerHelper.isServerWorld(world) && flagNoWater != augmentNoWater) {
 			sendTilePacket(Side.CLIENT);
 		}
-	}
-
-	@Override
-	protected boolean isValidAugment(AugmentType type, String id) {
-
-		if (augmentNoWater && TEProps.MACHINE_EXTRUDER_NO_WATER.equals(id)) {
-			return false;
-		}
-		return super.isValidAugment(type, id);
 	}
 
 	@Override
@@ -431,6 +442,12 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		if (!augmentNoWater && TEProps.MACHINE_EXTRUDER_NO_WATER.equals(id)) {
 			augmentNoWater = true;
+			hasModeAugment = true;
+			return true;
+		}
+		if (!augmentSedimentary && TEProps.MACHINE_EXTRUDER_SEDIMENTARY.equals(id)) {
+			augmentSedimentary = true;
+			hasModeAugment = true;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

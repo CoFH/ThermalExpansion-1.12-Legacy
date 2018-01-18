@@ -81,7 +81,6 @@ info.thermalexpansion.augment.dynamoNumismaticGem.b.0=Only gemstones may be util
 
 info.thermalexpansion.augment.dynamoPower.0=Dynamos: Increased Output
 info.thermalexpansion.augment.dynamoPower.a.0=Increases power generation (RF/t).
-#info.thermalexpansion.augment.dynamoPower.b.0=Less energy (RF) is produced by fuels.
 
 info.thermalexpansion.augment.dynamoReactantElemental.0=Reactant Dynamo: Specialization
 info.thermalexpansion.augment.dynamoReactantElemental.a.0=Greatly increases power generation and efficiency.
@@ -151,6 +150,10 @@ info.thermalexpansion.augment.machineEnchanterEmpowered.b.0=Additional resources
 
 info.thermalexpansion.augment.machineExtruderNoWater.0=Igneous Extruder: Specialization
 info.thermalexpansion.augment.machineExtruderNoWater.a.0=Water is no longer consumed for operation.
+
+info.thermalexpansion.augment.machineExtruderSedimentary.0=Igneous Extruder: Specialization
+info.thermalexpansion.augment.machineExtruderSedimentary.a.0=Allows for the creation of sedimentary rock.
+info.thermalexpansion.augment.machineExtruderSedimentary.c.0=Igneous rock cannot be created.
 
 info.thermalexpansion.augment.machineFurnaceFood.0=Redstone Furnace: Specialization
 info.thermalexpansion.augment.machineFurnaceFood.a.0=Gain additional food when cooking.
@@ -353,10 +356,8 @@ item.thermalexpansion.augment.machineFurnaceFood.name=Trivection Chamber
 item.thermalexpansion.augment.machineFurnaceOre.name=Flux Anodizers
 item.thermalexpansion.augment.machineFurnacePyrolysis.name=Pyrolytic Conversion
 item.thermalexpansion.augment.machineEnchanterEmpowered.name=Recombinant Focus
-item.thermalexpansion.augment.machineExtruderAndesite.name=Andesitic Subduction
-item.thermalexpansion.augment.machineExtruderDiorite.name=Dioritic Subduction
-item.thermalexpansion.augment.machineExtruderGranite.name=Granitic Subduction
 item.thermalexpansion.augment.machineExtruderNoWater.name=Pyroclastic Injection
+item.thermalexpansion.augment.machineExtruderSedimentary.name=Clastic Deposition
 item.thermalexpansion.augment.machineInsolatorFertilizer.name=Nutrient Recovery
 item.thermalexpansion.augment.machineInsolatorMonoculture.name=Monoculture Cycle
 item.thermalexpansion.augment.machineInsolatorTree.name=Sapling Infuser
@@ -492,7 +493,7 @@ tab.thermalexpansion.machine.enchanter.0=Enchants books and other arcana.
 tab.thermalexpansion.machine.enchanter.1=Useful for acquiring a specific tome of enchantment.
 tab.thermalexpansion.machine.enchanter.2=Left slot can be locked to only contain specific items.
 tab.thermalexpansion.machine.enchanter.3=Behold, magitech.
-tab.thermalexpansion.machine.extruder.0=Mixes water and lava to make different types of igneous rock.
+tab.thermalexpansion.machine.extruder.0=Mixes water and lava to create various types of rock.
 tab.thermalexpansion.machine.extruder.1=The selected item is what you'll get, if there is enough water and lava in the tanks.
 tab.thermalexpansion.machine.extruder.2=Minecraft physics are fun!
 tab.thermalexpansion.machine.furnace.0=Smelts things using Redstone Flux.
