@@ -438,12 +438,12 @@ public class InsolatorManager {
 
 		public static final String SEED = "seed";
 		public static final String CROP = "crop";
-		public static final String SEEDS_TIER = "seedsTier";
+		public static final String SEEDS = "seeds";
 
 		@Override
 		public boolean safeOreType(String oreName) {
 
-			return !oreName.startsWith(SEEDS_TIER) && (oreName.startsWith(SEED) || oreName.startsWith(CROP));
+			return !oreName.startsWith(SEEDS) && (oreName.startsWith(SEED) || oreName.startsWith(CROP));
 		}
 
 		public ComparableItemStackInsolator(ItemStack stack) {
