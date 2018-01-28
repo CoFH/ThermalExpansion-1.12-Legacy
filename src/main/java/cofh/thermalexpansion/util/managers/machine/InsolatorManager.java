@@ -151,7 +151,7 @@ public class InsolatorManager {
 		/* END */
 		{
 			ItemStack input = new ItemStack(Blocks.CHORUS_FLOWER);
-			ItemStack output = new ItemStack(Blocks.CHORUS_PLANT);
+			ItemStack output = new ItemStack(Items.CHORUS_FRUIT);
 
 			addDefaultRecipe(input, ItemHelper.cloneStack(output, 2), input, 100);
 		}
