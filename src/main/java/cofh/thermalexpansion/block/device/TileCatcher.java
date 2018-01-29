@@ -95,7 +95,6 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 		transferInput();
 
 		boolean curActive = isActive;
-
 		if (isActive) {
 			
 			catchMobs();
@@ -172,11 +171,13 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 			}
 		}
 		if(mob!=null) {
-			ItemStack stack = ItemMorb.setTag(inventory[0],EntityList.getKey(mob).toString(),false);
+			ItemStack morb = inventory[0].copy();
+			morb.setCount(1);
+			ItemStack stack = ItemMorb.setTag(morb,EntityList.getKey(mob).toString(),false);
 			for(int i = 1; i<5; i++) {
 				Entity currentMob = mobs.get(0);
 				boolean spaceFound = false;
-				if(inventory[i].isItemEqual(stack)) {
+				if(ItemMorb.containSameMob(inventory[i],morb)) {
 					inventory[i].grow(1);
 					spaceFound = true;
 				} else if(inventory[i].isEmpty()) {
