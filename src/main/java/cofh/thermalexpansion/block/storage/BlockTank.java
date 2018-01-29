@@ -220,6 +220,12 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 	@SideOnly (Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 
+		TileEntity tile = world.getTileEntity(pos);
+		
+		if (!(tile instanceof TileTank)) {
+			return state;
+		}
+		
 		return ModelBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world, pos);
 	}
 

@@ -268,6 +268,12 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 	@SideOnly (Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 
+		TileEntity tile = world.getTileEntity(pos);
+		
+		if (!(tile instanceof TileDynamoBase)) {
+			return state;
+		}
+		
 		return ModelBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world, pos);
 	}
 
