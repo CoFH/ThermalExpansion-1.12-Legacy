@@ -77,6 +77,7 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 		enableAutoInput = true;
 		enableAutoOutput = true;
 	}
+	
 	@Override
 	public int getType() {
 		return TYPE;
@@ -85,15 +86,18 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 	@Override
 	public void update() {
 
+
 		if (!timeCheckOffset()) {
 			return;
 		}
+		
 		transferOutput();
 		transferInput();
 
 		boolean curActive = isActive;
 
 		if (isActive) {
+			
 			catchMobs();
 
 			if (!redstoneControlOrDisable()) {
@@ -160,32 +164,34 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 		List<EntityLiving> mobs = world.getEntitiesWithinAABB(EntityLiving.class, area, EntitySelectors.IS_ALIVE);
 		if(mobs.isEmpty())
 			return;
-		for(EntityLiving mob : mobs) {
-			if(!ItemMorb.validMobs.contains(EntityList.getKey(mob).toString())) {
-				mobs.remove(mob);
+		EntityLiving mob=null;
+		for(EntityLiving possibleMob : mobs) {
+			if(ItemMorb.validMobs.contains(EntityList.getKey(possibleMob).toString())) {
+				mob = possibleMob;
+				break;
 			}
 		}
-		if(mobs.isEmpty())
-			return;
-		ItemStack stack = ItemMorb.fillMorb(inventory[0].getMetadata(),mobs.get(0).serializeNBT());
-		for(int i = 1; i<5; i++) {
-			Entity currentMob = mobs.get(0);
-			boolean spaceFound = false;
-			if(inventory[i].isItemEqual(stack)) {
-				inventory[i].grow(1);
-				spaceFound = true;
-			} else if(inventory[i].isEmpty()) {
-				inventory[i] = stack.copy();
-				spaceFound = true;
+		if(mob!=null) {
+			ItemStack stack = ItemMorb.setTag(inventory[0],EntityList.getKey(mob).toString(),false);
+			for(int i = 1; i<5; i++) {
+				Entity currentMob = mobs.get(0);
+				boolean spaceFound = false;
+				if(inventory[i].isItemEqual(stack)) {
+					inventory[i].grow(1);
+					spaceFound = true;
+				} else if(inventory[i].isEmpty()) {
+					inventory[i] = stack.copy();
+					spaceFound = true;
+				}
+				if(spaceFound) {
+					inventory[0].grow(-1);
+					BlockPos entityPos = currentMob.getPosition();
+					currentMob.setDead();
+					mobs.remove(currentMob);
+					((WorldServer) world).spawnParticle(EnumParticleTypes.CLOUD, entityPos.getX() + 0.5, entityPos.getY() + 0.2, entityPos.getZ() + 0.5, 2, 0, 0, 0, 0.0, 0);
+					break;
+				}			
 			}
-			if(spaceFound) {
-				inventory[0].grow(-1);
-				BlockPos entityPos = currentMob.getPosition();
-				currentMob.setDead();
-				mobs.remove(currentMob);
-				((WorldServer) world).spawnParticle(EnumParticleTypes.CLOUD, entityPos.getX() + 0.5, entityPos.getY() + 0.2, entityPos.getZ() + 0.5, 2, 0, 0, 0, 0.0, 0);
-				break;
-			}			
 		}
 	}
 	
