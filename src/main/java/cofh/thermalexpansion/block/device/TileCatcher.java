@@ -94,7 +94,6 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 		boolean curActive = isActive;
 
 		if (isActive) {
-			System.out.println("active");
 			catchMobs();
 
 			if (!redstoneControlOrDisable()) {
