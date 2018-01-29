@@ -11,6 +11,7 @@ import cofh.thermalexpansion.gui.container.device.ContainerCatcher;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemMorb;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -18,8 +19,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileCatcher extends TileDeviceBase implements ITickable{
@@ -152,8 +156,10 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 	}
 	
 	protected void doWork() {
-		AxisAlignedBB area = new AxisAlignedBB(pos.add(-CATCH_RADIUS, -CATCH_RADIUS, -CATCH_RADIUS), pos.add(1 + CATCH_RADIUS, 1 + CATCH_RADIUS, 1 + CATCH_RADIUS));
+		AxisAlignedBB area = new AxisAlignedBB(pos.add(-CATCH_RADIUS, -CATCH_RADIUS, -2), pos.add(1 + CATCH_RADIUS, 1 + CATCH_RADIUS, 1 + 2));
 		List<EntityCreature> mobs = world.getEntitiesWithinAABB(EntityCreature.class, area, EntitySelectors.IS_ALIVE);
+		if(mobs.isEmpty())
+			return;
 		for(EntityCreature mob : mobs) {
 			if(!ItemMorb.validMobs.contains(EntityList.getKey(mob).toString())) {
 				mobs.remove(mob);
@@ -161,22 +167,25 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 		}
 		if(mobs.isEmpty())
 			return;
+		ItemStack stack = ItemMorb.fillMorb(inventory[0].getMetadata(),mobs.get(0).serializeNBT());
 		for(int i = 1; i<5; i++) {
-			if(inventory[i].isEmpty()) {
-				ItemStack morb = inventory[0].getMetadata() == 0 ? ItemMorb.morbStandard.copy() : ItemMorb.morbReusable.copy();
-				ItemMorb.setTag(morb, EntityList.getKey(mobs.get(0)).toString(), false);
-				inventory[i] = morb;
-				inventory[0].grow(-1);
-				mobs.get(0).setDead();
-				mobs.remove(0);
-				break;
-			} else if(inventory[i].getTagCompound().getString("id").equals(EntityList.getKey(mobs.get(0)).toString())) {
+			Entity currentMob = mobs.get(0);
+			boolean spaceFound = false;
+			if(inventory[i].isItemEqual(stack)) {
 				inventory[i].grow(1);
-				inventory[0].grow(-1);
-				mobs.get(0).setDead();
-				mobs.remove(0);
-				break;
+				spaceFound = true;
+			} else if(inventory[i].isEmpty()) {
+				inventory[i] = stack.copy();
+				spaceFound = true;
 			}
+			if(spaceFound) {
+				inventory[0].grow(-1);
+				BlockPos entityPos = currentMob.getPosition();
+				currentMob.setDead();
+				mobs.remove(currentMob);
+				((WorldServer) world).spawnParticle(EnumParticleTypes.CLOUD, entityPos.getX() + 0.5, entityPos.getY() + 0.2, entityPos.getZ() + 0.5, 2, 0, 0, 0, 0.0, 0);
+				break;
+			}			
 		}
 	}
 	
@@ -225,7 +234,7 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return stack.getItem() instanceof ItemMorb && stack.getTagCompound().getTag("id")==null;
+		return (stack.getItem() instanceof ItemMorb) &&(stack.serializeNBT() == null || !stack.serializeNBT().hasKey("id"));
 	}
 	
 	/* ISidedTexture */

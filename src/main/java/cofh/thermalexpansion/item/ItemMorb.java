@@ -171,6 +171,13 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 
 	public static void dropMorb(int type, NBTTagCompound nbt, World world, BlockPos pos) {
 
+		ItemStack stack = fillMorb(type, nbt);
+		
+		CoreUtils.dropItemStackIntoWorldWithVelocity(stack, world, pos);
+	}
+	
+	public static ItemStack fillMorb(int type, NBTTagCompound nbt) {
+		
 		ItemStack stack = type == 0 ? morbStandard.copy() : morbReusable.copy();
 
 		if (nbt != null && validMobs.contains(nbt.getString("id"))) {
@@ -196,7 +203,7 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 				stack.setTagCompound(nbt);
 			}
 		}
-		CoreUtils.dropItemStackIntoWorldWithVelocity(stack, world, pos);
+		return stack;
 	}
 
 	public static void parseMorbs() {
