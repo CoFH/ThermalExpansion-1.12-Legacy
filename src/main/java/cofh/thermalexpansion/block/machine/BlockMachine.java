@@ -246,6 +246,12 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 	@SideOnly (Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 
+		TileEntity tile = world.getTileEntity(pos);
+		
+		if (!(tile instanceof TileMachineBase)) {
+			return state;
+		}
+		
 		return ModelBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world, pos);
 	}
 
