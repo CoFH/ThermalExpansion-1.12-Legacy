@@ -8,12 +8,11 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiCatcher;
 import cofh.thermalexpansion.gui.container.device.ContainerCatcher;
-import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalexpansion.init.TEItems;
 import cofh.thermalexpansion.item.ItemMorb;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,7 +34,7 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 5;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 0 }, {}, { 0 } };
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2, 3, 4 }, { 0, 1, 2, 3, 4 }, { 0, 1, 2, 3, 4 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, INPUT_PRIMARY, INPUT_SECONDARY, OPEN };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
 
@@ -95,10 +94,12 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 		boolean curActive = isActive;
 
 		if (isActive) {
+			System.out.println("active");
 			catchMobs();
-		}
-		if (!redstoneControlOrDisable()) {
-			isActive = false;
+
+			if (!redstoneControlOrDisable()) {
+				isActive = false;
+			}
 		}
 		updateIfChanged(curActive);
 
@@ -156,11 +157,11 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 	}
 	
 	protected void doWork() {
-		AxisAlignedBB area = new AxisAlignedBB(pos.add(-CATCH_RADIUS, -CATCH_RADIUS, -2), pos.add(1 + CATCH_RADIUS, 1 + CATCH_RADIUS, 1 + 2));
-		List<EntityCreature> mobs = world.getEntitiesWithinAABB(EntityCreature.class, area, EntitySelectors.IS_ALIVE);
+		AxisAlignedBB area = new AxisAlignedBB(pos.add(-CATCH_RADIUS, -2, -CATCH_RADIUS), pos.add(1 + CATCH_RADIUS, 1 + 2, 1 + CATCH_RADIUS));
+		List<EntityLiving> mobs = world.getEntitiesWithinAABB(EntityLiving.class, area, EntitySelectors.IS_ALIVE);
 		if(mobs.isEmpty())
 			return;
-		for(EntityCreature mob : mobs) {
+		for(EntityLiving mob : mobs) {
 			if(!ItemMorb.validMobs.contains(EntityList.getKey(mob).toString())) {
 				mobs.remove(mob);
 			}
@@ -234,23 +235,8 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return (stack.getItem() instanceof ItemMorb) &&(stack.serializeNBT() == null || !stack.serializeNBT().hasKey("id"));
+		return stack.getItem().equals(TEItems.itemMorb) && (stack.getTagCompound()==null || !stack.getTagCompound().hasKey("id"));
 	}
 	
 	/* ISidedTexture */
-	@Override
-	public TextureAtlasSprite getTexture(int side, int pass) {
-
-		if (pass == 0) {
-			if (side == 0) {
-				return TETextures.MACHINE_BOTTOM;
-			} else if (side == 1) {
-				return TETextures.MACHINE_TOP;
-			}
-			return side != facing ? TETextures.MACHINE_SIDE : isActive ? TETextures.MACHINE_ACTIVE[getType()] : TETextures.MACHINE_FACE[getType()];
-		} else if (side < 6) {
-			return TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]];
-		}
-		return TETextures.MACHINE_SIDE;
-	}
 }

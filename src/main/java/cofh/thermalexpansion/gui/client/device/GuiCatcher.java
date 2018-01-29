@@ -1,10 +1,7 @@
 package cofh.thermalexpansion.gui.client.device;
 
 import cofh.core.gui.element.ElementBase;
-import cofh.core.gui.element.ElementDualScaled;
-import cofh.thermalexpansion.block.device.TileCatcher;
-import cofh.thermalexpansion.block.device.TileChunkLoader;
-import cofh.thermalexpansion.gui.container.device.ContainerDiffuser;
+import cofh.thermalexpansion.gui.container.device.ContainerCatcher;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlayQuad;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
@@ -23,7 +20,7 @@ public class GuiCatcher extends GuiDeviceBase{
 	private ElementSlotOverlayQuad slotOutput;
 	
 	public GuiCatcher(InventoryPlayer inventory, TileEntity tile) {
-		super(new ContainerDiffuser(inventory, tile), tile, inventory.player, TEXTURE);
+		super(new ContainerCatcher(inventory, tile), tile, inventory.player, TEXTURE);
 		
 		generateInfo("tab.thermalexpansion.device.catcher");
 	}
