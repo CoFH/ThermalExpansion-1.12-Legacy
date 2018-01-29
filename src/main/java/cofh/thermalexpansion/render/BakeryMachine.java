@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -51,13 +52,16 @@ public class BakeryMachine extends CubeBakeryBase {
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess world, BlockPos pos) {
 
-		TileMachineBase machineBase = (TileMachineBase) world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-		if (machineBase == null) {
+		if (tile == null) {
 			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Null tile. Position: %s", pos));
+		} else if (!(tile instanceof TileMachineBase)) {
+			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Tile is not an instance of TileMachineBase, was %s. Pos: %s", tile.getClass().getName(), pos));
 		}
 		state = state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.OK);
-		state = state.withProperty(TEProps.TILE_MACHINE, machineBase);
+		state = state.withProperty(TEProps.TILE_MACHINE, (TileMachineBase) tile);
+		state = state.withProperty(TEProps.BAKERY_WORLD, world);
 		return state;
 	}
 
@@ -98,6 +102,7 @@ public class BakeryMachine extends CubeBakeryBase {
 			Block block = state.getBlock();
 			IWorldBlockTextureProvider provider = (IWorldBlockTextureProvider) block;
 			TileMachineBase tile = state.getValue(TEProps.TILE_MACHINE);
+			IBlockAccess world = state.getValue(TEProps.BAKERY_WORLD);
 
 			boolean creative = tile.isCreative;
 			int level = tile.getLevel();
@@ -108,7 +113,7 @@ public class BakeryMachine extends CubeBakeryBase {
 			ccrs.reset();
 			ccrs.bind(buffer);
 
-			renderFace(ccrs, face, provider.getTexture(face, state, layer, tile.getWorld(), tile.getPos()), tile.getColorMask(layer, face));
+			renderFace(ccrs, face, provider.getTexture(face, state, layer, world, tile.getPos()), tile.getColorMask(layer, face));
 
 			if (layer == BlockRenderLayer.CUTOUT && level > 0) {
 				renderFace(ccrs, face, creative ? TETextures.MACHINE_OVERLAY_C : getOverlaySprite(face, level), 0xFFFFFFFF);

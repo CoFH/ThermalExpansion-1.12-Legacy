@@ -17,10 +17,12 @@ import cofh.thermalexpansion.block.storage.TileCell;
 import cofh.thermalexpansion.block.storage.TileTank;
 import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalexpansion.item.ItemMorb;
+import cofh.thermalexpansion.util.UnlistedGenericProperty;
 import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.relauncher.Side;
@@ -258,6 +260,7 @@ public class TEProps {
 	public static final UnlistedGenericTile<TileCell> TILE_CELL = new UnlistedGenericTile<>("tile_cell", TileCell.class);
 	public static final UnlistedGenericTile<TileCache> TILE_CACHE = new UnlistedGenericTile<>("tile_cache", TileCache.class);
 	public static final UnlistedGenericTile<TileDeviceBase> TILE_DEVICE = new UnlistedGenericTile<>("tile_device", TileDeviceBase.class);
+	public static final UnlistedGenericProperty<IBlockAccess> BAKERY_WORLD = new UnlistedGenericProperty<>("bakery_world", IBlockAccess.class);
 
 	/* AUGMENT IDENTIFIERS */
 

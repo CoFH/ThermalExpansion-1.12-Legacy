@@ -75,6 +75,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		// UnListed
 		builder.add(ModelErrorStateProperty.ERROR_STATE);
 		builder.add(TEProps.TILE_DEVICE);
+		builder.add(TEProps.BAKERY_WORLD);
 
 		return builder.build();
 	}

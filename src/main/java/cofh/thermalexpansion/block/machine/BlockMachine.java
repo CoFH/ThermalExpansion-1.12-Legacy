@@ -86,6 +86,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		// UnListed
 		builder.add(ModelErrorStateProperty.ERROR_STATE);
 		builder.add(TEProps.TILE_MACHINE);
+		builder.add(TEProps.BAKERY_WORLD);
 
 		return builder.build();
 	}

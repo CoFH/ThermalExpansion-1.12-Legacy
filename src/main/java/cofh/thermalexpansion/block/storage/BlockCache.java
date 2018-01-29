@@ -71,6 +71,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 		// UnListed
 		builder.add(ModelErrorStateProperty.ERROR_STATE);
 		builder.add(TEProps.TILE_CACHE);
+		builder.add(TEProps.BAKERY_WORLD);
 
 		return builder.build();
 	}
