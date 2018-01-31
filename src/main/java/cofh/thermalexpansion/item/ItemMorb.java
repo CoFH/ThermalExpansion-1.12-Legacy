@@ -196,6 +196,7 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 				stack.setTagCompound(nbt);
 			}
 		}
+		
 		CoreUtils.dropItemStackIntoWorldWithVelocity(stack, world, pos);
 	}
 
@@ -224,6 +225,15 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 			return setTag(stack, nbt.getString("id"), false);
 		}
 		return ItemStack.EMPTY;
+	}
+	
+	/*Compares type of mob inside both itemstacks*/
+	public static boolean containSameMob(ItemStack first, ItemStack second) {
+		if(first.getTagCompound()==null || second.getTagCompound()==null)
+			return false;
+		if(!first.getTagCompound().hasKey("id") || !second.getTagCompound().hasKey("id"))
+			return false;
+		return first.getTagCompound().getString("id").equals(second.getTagCompound().getString("id"));
 	}
 
 	/* IModelRegister */
