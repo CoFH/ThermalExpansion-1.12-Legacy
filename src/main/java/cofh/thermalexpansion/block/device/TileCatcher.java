@@ -55,7 +55,7 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 	
-	private static final int TIME_CONSTANT = 20;
+	private static final int TIME_CONSTANT = 128;
 	private static final int CATCH_RADIUS = 5;
 	
 	private int inputTracker;
@@ -70,6 +70,7 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 		createAllSlots(inventory.length);
 
 		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
+		
 
 		hasAutoInput = true;
 		hasAutoOutput = true;
@@ -96,12 +97,13 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 
 		boolean curActive = isActive;
 		if (isActive) {
-			
 			catchMobs();
 
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
 			}
+		} else if (redstoneControlOrDisable()) {
+			isActive = true;
 		}
 		updateIfChanged(curActive);
 
@@ -175,25 +177,24 @@ public class TileCatcher extends TileDeviceBase implements ITickable{
 			morb.setCount(1);
 			ItemStack stack = ItemMorb.setTag(morb,EntityList.getKey(mob).toString(),false);
 			for(int i = 1; i<5; i++) {
-				Entity currentMob = mobs.get(0);
-				boolean spaceFound = false;
 				if(ItemMorb.containSameMob(inventory[i],morb)) {
 					inventory[i].grow(1);
-					spaceFound = true;
+					mobCaught(mob);
+					break;
 				} else if(inventory[i].isEmpty()) {
 					inventory[i] = stack.copy();
-					spaceFound = true;
-				}
-				if(spaceFound) {
-					inventory[0].grow(-1);
-					BlockPos entityPos = currentMob.getPosition();
-					currentMob.setDead();
-					mobs.remove(currentMob);
-					((WorldServer) world).spawnParticle(EnumParticleTypes.CLOUD, entityPos.getX() + 0.5, entityPos.getY() + 0.2, entityPos.getZ() + 0.5, 2, 0, 0, 0, 0.0, 0);
+					mobCaught(mob);
 					break;
 				}			
 			}
 		}
+	}
+	
+	protected void mobCaught(Entity mob) {
+			inventory[0].grow(-1);
+			BlockPos entityPos = mob.getPosition();
+			mob.setDead();
+			((WorldServer) world).spawnParticle(EnumParticleTypes.CLOUD, entityPos.getX() + 0.5, entityPos.getY() + 0.2, entityPos.getZ() + 0.5, 2, 0, 0, 0, 0.0, 0);
 	}
 	
 	protected boolean timeCheckOffset() {
