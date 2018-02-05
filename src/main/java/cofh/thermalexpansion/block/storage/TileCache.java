@@ -642,7 +642,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 			if (storedStack.isEmpty()) {
 				return ItemStack.EMPTY;
 			}
-			int toExtract = amount;
+			int toExtract = Math.min(amount, storedStack.getMaxStackSize());
 			if (storedStack.getCount() < toExtract) {
 				toExtract = storedStack.getCount();
 			}

@@ -162,7 +162,7 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess world, BlockPos pos) {
 
-		TileEntity tile =  world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile == null) {
 			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Null tile. Position: %s", pos));

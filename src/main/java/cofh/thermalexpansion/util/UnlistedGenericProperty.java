@@ -8,6 +8,7 @@ public class UnlistedGenericProperty<T> extends UnlistedPropertyBase<T> {
 	private final Class<T> clazz;
 
 	public UnlistedGenericProperty(String name, Class<T> clazz) {
+
 		super(name);
 		this.clazz = clazz;
 	}

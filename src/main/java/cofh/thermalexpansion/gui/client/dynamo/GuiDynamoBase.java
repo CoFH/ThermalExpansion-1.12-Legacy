@@ -21,7 +21,7 @@ public abstract class GuiDynamoBase extends GuiContainerCore {
 	protected UUID playerName;
 
 	protected TabBase energyTab;
-	protected TabBase steamTab;
+	protected TabSteam steamTab;
 
 	protected TabBase augmentTab;
 	protected TabBase redstoneTab;
@@ -46,7 +46,7 @@ public abstract class GuiDynamoBase extends GuiContainerCore {
 		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
 
 		// Right Side
-		steamTab = addTab(new TabSteam(this, baseTile, baseTile.isSteamProducer()));
+		steamTab = (TabSteam) addTab(new TabSteam(this, baseTile, baseTile.isSteamProducer()));
 		steamTab.setVisible(baseTile.showSteamTab());
 
 		augmentTab = addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
@@ -78,6 +78,7 @@ public abstract class GuiDynamoBase extends GuiContainerCore {
 		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 		energyTab.setVisible(baseTile.showEnergyTab());
 		steamTab.setVisible(baseTile.showSteamTab());
+		steamTab.setProducer(baseTile.isSteamProducer());
 	}
 
 	@Override
