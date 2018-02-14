@@ -28,8 +28,7 @@ public class PacketTEBase extends PacketBase {
 					ThermalExpansion.LOG.error("Unknown Packet! Internal: TEPH, ID: " + type);
 			}
 		} catch (Exception e) {
-			ThermalExpansion.LOG.error("Packet payload failure! Please check your config files!");
-			e.printStackTrace();
+			ThermalExpansion.LOG.error("Packet payload failure! Please check your config files!", e);
 		}
 	}
 
