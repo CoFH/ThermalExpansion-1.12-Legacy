@@ -5,15 +5,22 @@ gui.thermalexpansion.device.item_buffer.decOutput=按一下减少输出量
 gui.thermalexpansion.device.item_buffer.incInput=按一下增加输入量
 gui.thermalexpansion.device.item_buffer.incOutput=按一下增加输出量
 
+gui.thermalexpansion.jei.centrifuge.mobChance=基础概率
+gui.thermalexpansion.jei.centrifuge.mobNotice=上限为限定的概率
+gui.thermalexpansion.jei.compactor.modeGear=齿轮
 gui.thermalexpansion.jei.compactor.modeMint=铸币
 gui.thermalexpansion.jei.compactor.modePress=辊压
 gui.thermalexpansion.jei.compactor.modeStorage=压缩
 gui.thermalexpansion.jei.transposer.modeEmpty=空置
 gui.thermalexpansion.jei.transposer.modeFill=装填
 
+gui.thermalexpansion.machine.compactor.modeGear=齿轮模式
 gui.thermalexpansion.machine.compactor.modeMint=铸币模式
 gui.thermalexpansion.machine.compactor.modePress=辊压模式
 gui.thermalexpansion.machine.compactor.modeStorage=压缩模式
+
+gui.thermalexpansion.machine.crafter.clearRecipe=清除合成
+gui.thermalexpansion.machine.crafter.setRecipe=设定合成
 
 gui.thermalexpansion.machine.enchanter.modeLocked=附魔槽已锁定
 gui.thermalexpansion.machine.enchanter.modeUnlocked=附魔槽已解锁
@@ -89,6 +96,12 @@ info.thermalexpansion.augment.machineBrewerReagent.0=Alchemical Imbuer: Efficien
 info.thermalexpansion.augment.machineBrewerReagent.a.0=有机会不消耗试剂。
 info.thermalexpansion.augment.machineBrewerReagent.b.0=合成中需要更多能量。
 
+info.thermalexpansion.augment.machineCentrifugeMobs.0=离心机：模拟刀具
+info.thermalexpansion.augment.machineCentrifugeMobs.a.0=可以加工生物球。
+info.thermalexpansion.augment.machineCentrifugeMobs.a.1=可以用生物球从它捕捉的生物中提取出掉落物。
+info.thermalexpansion.augment.machineCentrifugeMobs.b.0=只能加工生物球。
+info.thermalexpansion.augment.machineCentrifugeMobs.c.0=并不能支持一切生物。
+
 info.thermalexpansion.augment.machineChargerRepair.0=能量灌注机: 通量修复
 info.thermalexpansion.augment.machineChargerRepair.a.0=可以修复损坏的物品。
 info.thermalexpansion.augment.machineChargerRepair.b.0=不能再充能物品了。
@@ -98,10 +111,29 @@ info.thermalexpansion.augment.machineChargerThroughput.0=能量灌注器：无�
 info.thermalexpansion.augment.machineChargerThroughput.a.0=可大幅加快充能速度。
 info.thermalexpansion.augment.machineChargerThroughput.c.0=无法突破物品本身的充能速度上限。
 
+info.thermalexpansion.augment.machineChargerWireless.0=能量灌注器：无线充电
+info.thermalexpansion.augment.machineChargerWireless.a.0=可以让通量电容快速无线充能。
+info.thermalexpansion.augment.machineChargerWireless.b.0=无法再为物品充电，也不能修复物品。
+info.thermalexpansion.augment.machineChargerWireless.c.0=无法突破电容本身的充能速度上限。
+
+info.thermalexpansion.augment.machineCompactorGear.0=压缩机：齿轮滚花
+info.thermalexpansion.augment.machineCompactorGear.a.0=允许高效地制作齿轮
+info.thermalexpansion.augment.machineCompactorGear.a.1=齿轮可以用于不少用途。
+info.thermalexpansion.augment.machineCompactorGear.c.0=机器必须调整为齿轮模式。
+
 info.thermalexpansion.augment.machineCompactorMint.0=压缩机：铸币产权
 info.thermalexpansion.augment.machineCompactorMint.a.0=压缩机将可用于制造货币。
 info.thermalexpansion.augment.machineCompactorMint.a.1=货币可用于购买商品和服务。
 info.thermalexpansion.augment.machineCompactorMint.b.0=安装后，该压缩机将不能进行辊压。
+
+info.thermalexpansion.augment.machineCrafterInput.0=循环装配台：智能输入
+info.thermalexpansion.augment.machineCrafterInput.a.0=添加智能自动输入容器。
+info.thermalexpansion.augment.machineCrafterInput.c.0=每个合成格子会被指派两个容器槽。
+
+info.thermalexpansion.augment.machineCrafterTank.0=循环装配台：液体缓存
+info.thermalexpansion.augment.machineCrafterTank.a.0=为机器添加了液体存储槽。
+info.thermalexpansion.augment.machineCrafterTank.a.1=槽中的液体可以用于那些涉及流体的合成。
+info.thermalexpansion.augment.machineCrafterTank.c.0=并不能支持所有合成。
 
 info.thermalexpansion.augment.machineCrucibleAlloy.0=熔岩炉：专业化
 info.thermalexpansion.augment.machineCrucibleAlloy.a.0=熔岩炉专业化升级
@@ -137,12 +169,14 @@ info.thermalexpansion.augment.machineInsolatorFertilizer.a.0=有几率不消耗�
 info.thermalexpansion.augment.machineInsolatorFertilizer.b.0=工作时需要消耗更多能量。
 
 info.thermalexpansion.augment.machineInsolatorMonoculture.0=有机灌注器：种子循环
-info.thermalexpansion.augment.machineInsolatorMonoculture.a.0=将产生的副产种子返回到输入槽中，提升产量与自动化。
-info.thermalexpansion.augment.machineInsolatorMonoculture.b.0=工作时需要消耗更多能量。
-info.thermalexpansion.augment.machineInsolatorMonoculture.b.1=很难再输出副产物了。
+info.thermalexpansion.augment.machineInsolatorMonoculture.a.0=将产生的副产种子返回到输入槽中，提升自动化。
+info.thermalexpansion.augment.machineInsolatorMonoculture.a.1=工作时需要消耗更多能量。
+info.thermalexpansion.augment.machineInsolatorMonoculture.b.0=很难再输出副产物了。
+info.thermalexpansion.augment.machineInsolatorMonoculture.b.1=同时副产产出率相当降低。
 
 info.thermalexpansion.augment.machineInsolatorTree.0=有机灌注器：无土树场
 info.thermalexpansion.augment.machineInsolatorTree.a.0=允许种树。
+info.thermalexpansion.augment.machineInsolatorTree.c.0=并不支持所有树种。
 
 info.thermalexpansion.augment.machinePower.0=机器：速度加成
 info.thermalexpansion.augment.machinePower.a.0=提升最大功率。
@@ -192,9 +226,17 @@ info.thermalexpansion.augment.noticeCreative=需要安装在创造级设备上�
 info.thermalexpansion.augment.noticeEnder=需要安装在谐振级设备上。
 info.thermalexpansion.augment.noticeMode=一台机器只能安装一个专业化升级。
 
-info.thermalexpansion.apparatus.activator=信息提示里无法容纳这玩意的全部功能的介绍。
+info.thermalexpansion.apparatus.activator=一言难尽。
 info.thermalexpansion.apparatus.breaker=破坏方块。就是这样。
 info.thermalexpansion.apparatus.collector=收集周围的掉落物。
+
+info.thermalexpansion.capacitor.a.0=存储红石通量（RF），可以为身上的设备充能。
+info.thermalexpansion.capacitor.b.0=§e按下 (%s) 改变充能模式。§r
+info.thermalexpansion.capacitor.c.0=潜行使用激活。
+info.thermalexpansion.capacitor.c.1=潜行使用停用。
+info.thermalexpansion.capacitor.d.0=充能手持物品
+info.thermalexpansion.capacitor.d.1=充能护甲
+info.thermalexpansion.capacitor.d.2=充能设备
 
 info.thermalexpansion.coolant=冷却剂
 
