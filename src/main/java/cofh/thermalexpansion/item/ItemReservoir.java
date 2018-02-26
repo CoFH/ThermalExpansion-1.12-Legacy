@@ -140,7 +140,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		Iterable<ItemStack> equipment = Iterables.concat(entity.getEquipmentAndArmor(), getBaubles(entity));
 
 		for (ItemStack equipmentStack : equipment) {
-			if (equipmentStack.equals(stack)) {
+			if (equipmentStack.equals(stack) || equipmentStack.getItem() == Items.BUCKET) {
 				continue;
 			}
 			if (FluidHelper.isFluidHandler(equipmentStack)) {

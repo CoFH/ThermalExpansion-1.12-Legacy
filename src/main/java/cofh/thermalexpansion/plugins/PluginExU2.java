@@ -72,8 +72,8 @@ public class PluginExU2 extends ModPlugin {
 
 			/* INSOLATOR */
 			{
-				InsolatorManager.addDefaultRecipe(InsolatorManager.DEFAULT_ENERGY * 4, InsolatorManager.DEFAULT_FLUID * 4, enderLily, new ItemStack(Items.ENDER_PEARL), enderLily, 100, 105, 110, Type.STANDARD);
-				InsolatorManager.addDefaultRecipe(InsolatorManager.DEFAULT_ENERGY * 10, InsolatorManager.DEFAULT_FLUID * 4, redOrchid, new ItemStack(Items.REDSTONE), redOrchid, 100, 105, 110, Type.STANDARD);
+				InsolatorManager.addDefaultRecipe(240000, 5000, enderLily, new ItemStack(Items.ENDER_PEARL), enderLily, 100, 105, 110, Type.STANDARD);
+				InsolatorManager.addDefaultRecipe(120000, 4000, redOrchid, new ItemStack(Items.REDSTONE), redOrchid, 100, 105, 110, Type.STANDARD);
 			}
 
 			/* COMPACTOR */

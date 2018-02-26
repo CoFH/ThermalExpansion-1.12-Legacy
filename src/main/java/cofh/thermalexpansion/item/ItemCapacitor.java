@@ -267,7 +267,7 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 		if (ItemHelper.getItemDamage(container) == CREATIVE) {
 			return maxExtract;
 		}
-		int stored = container.getTagCompound().getInteger("Energy");
+		int stored = Math.min(container.getTagCompound().getInteger("Energy"), getMaxEnergyStored(container));
 		int extract = Math.min(maxExtract, Math.min(stored, getSend(container)));
 
 		if (!simulate) {

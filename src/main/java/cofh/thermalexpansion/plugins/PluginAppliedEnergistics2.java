@@ -49,8 +49,8 @@ public class PluginAppliedEnergistics2 extends ModPlugin {
 			}
 			/* INSOLATOR */
 			{
-				int energy = 80000;
-				int water = 4000;
+				int energy = 120000;
+				int water = 5000;
 
 				InsolatorManager.addRecipe(energy, water, getItemStack("crystal_seed"), new ItemStack(Items.GLOWSTONE_DUST), getItemStack("material", 1, 10));
 				InsolatorManager.addRecipe(energy, water, getItemStack("crystal_seed", 1, 600), new ItemStack(Items.GLOWSTONE_DUST), getItemStack("material", 1, 11));

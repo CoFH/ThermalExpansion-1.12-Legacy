@@ -136,7 +136,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		}
 		int level = getLevel(container);
 
-		int stored = container.getTagCompound().getInteger("Energy");
+		int stored = Math.min(container.getTagCompound().getInteger("Energy"), getMaxEnergyStored(container));
 		int receive = Math.min(maxReceive, Math.min(getMaxEnergyStored(container) - stored, TileCell.RECV[level]));
 
 		if (!simulate) {
@@ -154,7 +154,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		}
 		int level = getLevel(container);
 
-		int stored = container.getTagCompound().getInteger("Energy");
+		int stored = Math.min(container.getTagCompound().getInteger("Energy"), getMaxEnergyStored(container));
 		int extract = Math.min(maxExtract, Math.min(stored, TileCell.SEND[level]));
 
 		if (!simulate) {
@@ -170,7 +170,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		if (container.getTagCompound() == null) {
 			setDefaultTag(container);
 		}
-		return container.getTagCompound().getInteger("Energy");
+		return Math.min(container.getTagCompound().getInteger("Energy"), getMaxEnergyStored(container));
 	}
 
 	@Override
