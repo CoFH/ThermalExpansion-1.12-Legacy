@@ -474,6 +474,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 	/* ISidedTexture */
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {

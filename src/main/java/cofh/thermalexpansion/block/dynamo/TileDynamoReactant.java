@@ -112,6 +112,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getBaseUnderlayTexture() {
 
 		return TextureHelper.getTexture(renderFluid.getFluid().getStill());

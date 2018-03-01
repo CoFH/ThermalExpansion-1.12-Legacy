@@ -240,6 +240,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
 
 		TileEntity tileEntity = world.getTileEntity(pos);

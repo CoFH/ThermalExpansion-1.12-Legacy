@@ -139,6 +139,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getBaseUnderlayTexture() {
 
 		return TextureHelper.getTexture(renderFluid.getFluid().getStill(renderFluid));

@@ -243,6 +243,7 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 		return angle * Math.PI * -0.5;
 	}
 
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getBreakTexture() {
 
 		if (isCreative) {

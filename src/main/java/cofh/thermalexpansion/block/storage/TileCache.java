@@ -390,6 +390,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {

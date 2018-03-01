@@ -155,6 +155,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getBaseUnderlayTexture() {
 
 		return TextureHelper.getTexture(TFFluids.fluidSteam.getStill());

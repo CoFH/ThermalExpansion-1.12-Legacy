@@ -459,6 +459,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 	/* ISidedTexture */
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {

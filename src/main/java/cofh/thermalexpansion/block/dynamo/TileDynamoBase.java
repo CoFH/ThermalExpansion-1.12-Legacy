@@ -394,11 +394,13 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		return augmentBoiler ? 1 : 0;
 	}
 
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getCoilUnderlayTexture() {
 
 		return TextureHelper.getTexture(TFFluids.fluidSteam.getStill());
 	}
 
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getBaseUnderlayTexture() {
 
 		return TextureHelper.getTexture(FluidRegistry.WATER.getStill());
