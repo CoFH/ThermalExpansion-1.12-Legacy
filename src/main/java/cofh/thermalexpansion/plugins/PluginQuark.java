@@ -6,10 +6,16 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalfoundation.item.ItemMaterial;
+
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionType;
+
 import net.minecraftforge.fml.common.Loader;
 
 import java.util.Locale;
@@ -186,6 +192,24 @@ public class PluginQuark extends ModPlugin {
 				CentrifugeManager.addDefaultMobRecipe("quark:pirate", asList(new ItemStack(Items.ARROW, 2), new ItemStack(Items.BONE, 2), pirateHat), asList(50, 50, 2), 5);
 				CentrifugeManager.addDefaultMobRecipe("quark:wraith", singletonList(soulBead), singletonList(100), 5);
 			}
+
+			/* BREWER */
+			{
+				Block glowShroom = getBlock("glowshroom");
+				ItemStack primaryIngredient;
+				if(glowShroom==null) {
+					primaryIngredient = new ItemStack(Items.FISH,1,2);
+				} else {
+					primaryIngredient = new ItemStack(Item.getItemFromBlock(glowShroom),1,0);
+					BrewerManager.addDefaultPotionRecipes(PotionTypes.WATER, primaryIngredient, PotionTypes.MUNDANE);
+				}
+				
+				PotionType danger_sight = getPotionType("danger_sight","");
+				PotionType danger_sight_long = getPotionType("danger_sight","long");
+
+				BrewerManager.addDefaultPotionRecipes(PotionTypes.AWKWARD, primaryIngredient, danger_sight);
+				BrewerManager.addDefaultPotionRecipes(danger_sight, new ItemStack(Items.REDSTONE), danger_sight_long);
+			}
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
 			error = true;
@@ -196,4 +220,17 @@ public class PluginQuark extends ModPlugin {
 		return !error;
 	}
 
+	/* HELPERS */
+	public static PotionType getPotionType(String baseName, String qualifier) {
+
+		if (qualifier.isEmpty()) {
+			return PotionType.getPotionTypeForName(MOD_ID + ":" + baseName);
+		}
+		PotionType ret = PotionType.getPotionTypeForName(MOD_ID + ":" + baseName + "_" + qualifier);
+
+		if (ret == PotionTypes.EMPTY) {
+			ret = PotionType.getPotionTypeForName(MOD_ID + ":" + qualifier + "_" + baseName);
+		}
+		return ret;
+	}
 }
