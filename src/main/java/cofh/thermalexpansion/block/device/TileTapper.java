@@ -11,6 +11,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiTapper;
 import cofh.thermalexpansion.gui.container.device.ContainerTapper;
+import cofh.thermalexpansion.init.TEBlocks;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.managers.device.TapperManager;
@@ -242,13 +243,24 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 					}
 				}
 				if (leafCount >= NUM_LEAVES) {
-					Iterable<BlockPos.MutableBlockPos> trunk = BlockPos.getAllInBoxMutable(trunkPos, trunkPos.add(0, leafPos[0].getY() - trunkPos.getY(), 0));
+					Iterable<BlockPos.MutableBlockPos> scanArea = BlockPos.getAllInBoxMutable(trunkPos, trunkPos.add(0, leafPos[0].getY() - trunkPos.getY(), 0));
 
-					for (BlockPos scan : trunk) {
+					for (BlockPos scan : scanArea) {
 						IBlockState state = world.getBlockState(scan);
 						Material material = state.getMaterial();
 
 						if (material == Material.GRASS || material == Material.GROUND || material == Material.ROCK) {
+							validTree = false;
+							cached = true;
+							return;
+						}
+					}
+					scanArea = BlockPos.getAllInBoxMutable(pos, pos.add(0, leafPos[0].getY() - pos.getY(), 0));
+
+					for (BlockPos scan : scanArea) {
+						IBlockState state = world.getBlockState(scan);
+
+						if (state.getBlock() == TEBlocks.blockDevice && TEBlocks.blockDevice.getMetaFromState(state) == TYPE) {
 							validTree = false;
 							cached = true;
 							return;
@@ -293,13 +305,24 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			}
 		}
 		if (leafCount >= NUM_LEAVES) {
-			Iterable<BlockPos.MutableBlockPos> trunk = BlockPos.getAllInBoxMutable(trunkPos, trunkPos.add(0, leafPos[0].getY() - trunkPos.getY(), 0));
+			Iterable<BlockPos.MutableBlockPos> scanArea = BlockPos.getAllInBoxMutable(trunkPos, trunkPos.add(0, leafPos[0].getY() - trunkPos.getY(), 0));
 
-			for (BlockPos scan : trunk) {
+			for (BlockPos scan : scanArea) {
 				IBlockState state = world.getBlockState(scan);
 				Material material = state.getMaterial();
 
 				if (material == Material.GRASS || material == Material.GROUND || material == Material.ROCK) {
+					validTree = false;
+					cached = true;
+					return;
+				}
+			}
+			scanArea = BlockPos.getAllInBoxMutable(pos, pos.add(0, leafPos[0].getY() - pos.getY(), 0));
+
+			for (BlockPos scan : scanArea) {
+				IBlockState state = world.getBlockState(scan);
+
+				if (state.getBlock() == TEBlocks.blockDevice && TEBlocks.blockDevice.getMetaFromState(state) == TYPE) {
 					validTree = false;
 					cached = true;
 					return;

@@ -596,6 +596,8 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 					break;
 				}
 				return false;
+			case ENDER:
+				return false;
 			case CREATIVE:
 				if (isCreative) {
 					return false;

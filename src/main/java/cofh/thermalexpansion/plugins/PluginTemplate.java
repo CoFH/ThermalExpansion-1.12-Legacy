@@ -1,10 +1,6 @@
 package cofh.thermalexpansion.plugins;
 
-import cofh.core.util.ModPlugin;
-import cofh.thermalexpansion.ThermalExpansion;
-import net.minecraftforge.fml.common.Loader;
-
-public class PluginTemplate extends ModPlugin {
+public class PluginTemplate extends PluginTEBase {
 
 	public static final String MOD_ID = "template";
 	public static final String MOD_NAME = "Template";
@@ -14,36 +10,14 @@ public class PluginTemplate extends ModPlugin {
 		super(MOD_ID, MOD_NAME);
 	}
 
-	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public void initializeDelegate() {
 
-		String category = "Plugins";
-		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
-		enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment) && Loader.isModLoaded(MOD_ID);
-
-		if (!enable) {
-			return false;
-		}
-		return !error;
 	}
 
 	@Override
-	public boolean register() {
+	public void registerDelegate() {
 
-		if (!enable) {
-			return false;
-		}
-		try {
-
-		} catch (Throwable t) {
-			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
-			error = true;
-		}
-		if (!error) {
-			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
-		}
-		return !error;
 	}
 
 }

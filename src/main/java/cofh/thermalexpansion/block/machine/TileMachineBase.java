@@ -32,6 +32,8 @@ import java.util.HashSet;
 public abstract class TileMachineBase extends TilePowered implements IAccelerable, ITickable {
 
 	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[Type.values().length];
+	public static final SideConfig[] ALT_SIDE_CONFIGS = new SideConfig[Type.values().length];
+
 	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[Type.values().length];
 	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[Type.values().length];
 	public static final HashSet<String>[] VALID_AUGMENTS = new HashSet[Type.values().length];

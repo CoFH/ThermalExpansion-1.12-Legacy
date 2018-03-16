@@ -15,6 +15,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class TileDeviceBase extends TileReconfigurable {
 
 	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[Type.values().length];
+	public static final SideConfig[] ALT_SIDE_CONFIGS = new SideConfig[Type.values().length];
+
 	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[Type.values().length];
 

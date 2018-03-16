@@ -1,13 +1,11 @@
 package cofh.thermalexpansion.plugins;
 
-import cofh.core.util.ModPlugin;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.Loader;
 
-public class PluginMysticalAgriculture extends ModPlugin {
+public class PluginMysticalAgriculture extends PluginTEBase {
 
 	public static final String MOD_ID = "mysticalagriculture";
 	public static final String MOD_NAME = "Mystical Agriculture";
@@ -21,13 +19,11 @@ public class PluginMysticalAgriculture extends ModPlugin {
 		super(MOD_ID, MOD_NAME);
 	}
 
-	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public void initializeDelegate() {
 
 		String category = "Plugins";
-		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
-		enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment) && Loader.isModLoaded(MOD_ID);
+		String comment;
 
 		// TODO: Remove at some point.
 		ThermalExpansion.CONFIG.renameProperty(category, "BaseSecondaryChance", "Plugins." + MOD_NAME, "BaseSecondaryChance", true);
@@ -44,201 +40,184 @@ public class PluginMysticalAgriculture extends ModPlugin {
 
 		comment = "Secondary chance for seeds when using Fluxed Phyto-Gro.";
 		secondaryChanceFlux = ThermalExpansion.CONFIG.getConfiguration().getInt("FluxedSecondaryChance", category, secondaryChanceFlux, 0, 150, comment);
-
-		if (!enable) {
-			return false;
-		}
-		return !error;
 	}
 
 	@Override
-	public boolean register() {
+	public void registerDelegate() {
 
-		if (!enable) {
-			return false;
-		}
-		try {
-			// @formatter:off
-			String[] names = {
-					"stone",
-					"dirt",
-					"nature",
-					"wood",
-					"water",
-					"ice",
-					"fire",
-					"dye",
-					"nether",
-					"coal",
-					"iron",
-					"nether_quartz",
-					"glowstone",
-					"redstone",
-					"obsidian",
-					"gold",
-					"lapis_lazuli",
-					"end",
-					"experience",
-					"diamond",
-					"emerald",
+		// @formatter:off
+		String[] names = {
+				"stone",
+				"dirt",
+				"nature",
+				"wood",
+				"water",
+				"ice",
+				"fire",
+				"dye",
+				"nether",
+				"coal",
+				"iron",
+				"nether_quartz",
+				"glowstone",
+				"redstone",
+				"obsidian",
+				"gold",
+				"lapis_lazuli",
+				"end",
+				"experience",
+				"diamond",
+				"emerald",
 
-					"zombie",
-					"pig",
-					"chicken",
-					"cow",
-					"sheep",
-					"slime",
-					"skeleton",
-					"creeper",
-					"spider",
-					"rabbit",
-					"guardian",
-					"blaze",
-					"ghast",
-					"enderman",
-					"wither_skeleton",
+				"zombie",
+				"pig",
+				"chicken",
+				"cow",
+				"sheep",
+				"slime",
+				"skeleton",
+				"creeper",
+				"spider",
+				"rabbit",
+				"guardian",
+				"blaze",
+				"ghast",
+				"enderman",
+				"wither_skeleton",
 
-					"rubber",
-					"silicon",
-					"sulfur",
-					"aluminum",
-					"copper",
-					"saltpeter",
-					"tin",
-					"bronze",
-					"zinc",
-					"brass",
-					"silver",
-					"lead",
-					"steel",
-					"nickel",
-					"constantan",
-					"electrum",
-					"invar",
-					"mithril",
-					"tungsten",
-					"titanium",
-					"uranium",
-					"chrome",
-					"platinum",
-					"iridium",
+				"rubber",
+				"silicon",
+				"sulfur",
+				"aluminum",
+				"copper",
+				"saltpeter",
+				"tin",
+				"bronze",
+				"zinc",
+				"brass",
+				"silver",
+				"lead",
+				"steel",
+				"nickel",
+				"constantan",
+				"electrum",
+				"invar",
+				"mithril",
+				"tungsten",
+				"titanium",
+				"uranium",
+				"chrome",
+				"platinum",
+				"iridium",
 
-					"ruby",
-					"sapphire",
-					"peridot",
-					"amber",
-					"topaz",
-					"malachite",
-					"tanzanite",
+				"ruby",
+				"sapphire",
+				"peridot",
+				"amber",
+				"topaz",
+				"malachite",
+				"tanzanite",
 
-					"blizz",
-					"blitz",
-					"basalz",
-					"signalum",
-					"lumium",
-					"enderium",
-					"fluxed_electrum",
+				"blizz",
+				"blitz",
+				"basalz",
+				"signalum",
+				"lumium",
+				"enderium",
+				"fluxed_electrum",
 
-					"aluminum_brass",
-					"knightslime",
-					"ardite",
-					"cobalt",
-					"manyullyn",
+				"aluminum_brass",
+				"knightslime",
+				"ardite",
+				"cobalt",
+				"manyullyn",
 
-					"electrical_steel",
-					"redstone_alloy",
-					"conductive_iron",
-					"soularium",
-					"dark_steel",
-					"pulsating_iron",
-					"energetic_alloy",
-					"vibrant_alloy",
+				"electrical_steel",
+				"redstone_alloy",
+				"conductive_iron",
+				"soularium",
+				"dark_steel",
+				"pulsating_iron",
+				"energetic_alloy",
+				"vibrant_alloy",
 
-					"mystical_flower",
-					"manasteel",
-					"elementium",
-					"terrasteel",
+				"mystical_flower",
+				"manasteel",
+				"elementium",
+				"terrasteel",
 
-					"dawnstone",
+				"dawnstone",
 
-					"uranium_238",
-					"iridium_ore",
+				"uranium_238",
+				"iridium_ore",
 
-					"osmium",
-					"glowstone_ingot",
-					"refined_obsidian",
+				"osmium",
+				"glowstone_ingot",
+				"refined_obsidian",
 
-					"aquarium",
-					"cold_iron",
-					"star_steel",
-					"adamantine",
+				"aquarium",
+				"cold_iron",
+				"star_steel",
+				"adamantine",
 
-					"marble",
-					"limestone",
-					"basalt",
+				"marble",
+				"limestone",
+				"basalt",
 
-					"apatite",
+				"apatite",
 
-					"steeleaf",
-					"ironwood",
-					"knightmetal",
-					"fiery_ingot",
+				"steeleaf",
+				"ironwood",
+				"knightmetal",
+				"fiery_ingot",
 
-					"meteoric_iron",
-					"desh",
+				"meteoric_iron",
+				"desh",
 
-					"black_quartz",
+				"black_quartz",
 
-					"menril",
+				"menril",
 
-					"vinteum",
-					"chimerite",
-					"blue_topaz",
-					"moonstone",
-					"sunstone",
+				"vinteum",
+				"chimerite",
+				"blue_topaz",
+				"moonstone",
+				"sunstone",
 
-					"aquamarine",
-					"starmetal",
-					"rock_crystal",
+				"aquamarine",
+				"starmetal",
+				"rock_crystal",
 
-					"ender_biotite",
+				"ender_biotite",
 
-					"slate",
+				"slate",
 
-					"ender_amethyst",
+				"ender_amethyst",
 
-					"draconium",
+				"draconium",
 
-					"yellorium",
+				"yellorium",
 
-					"sky_stone",
-					"certus_quartz",
-					"fluix",
+				"sky_stone",
+				"certus_quartz",
+				"fluix",
 
-					"quartz_enriched_iron"
-			};
-			// @formatter:on
+				"quartz_enriched_iron"
+		};
+		// @formatter:on
 
-			/* INSOLATOR */
-			{
-				for (String name : names) {
-					ItemStack seeds = getSeeds(name);
-					ItemStack essence = getEssence(name);
-					InsolatorManager.addDefaultRecipe(InsolatorManager.DEFAULT_ENERGY * 2, InsolatorManager.DEFAULT_FLUID * 2, seeds, essence, seeds, secondaryChanceBase, secondaryChanceRich, secondaryChanceFlux, Type.STANDARD);
-				}
-				for (int i = 1; i <= 5; i++) {
-					ItemStack seeds = getSeeds("tier" + i + "_inferium");
-					InsolatorManager.addDefaultRecipe(InsolatorManager.DEFAULT_ENERGY * i, InsolatorManager.DEFAULT_FLUID * 4, seeds, getItemStack("crafting", i, 0), seeds, secondaryChanceBase, secondaryChanceRich, secondaryChanceFlux, Type.STANDARD);
-				}
+		/* INSOLATOR */
+		{
+			for (String name : names) {
+				ItemStack seeds = getSeeds(name);
+				ItemStack essence = getEssence(name);
+				InsolatorManager.addDefaultRecipe(InsolatorManager.DEFAULT_ENERGY * 2, InsolatorManager.DEFAULT_FLUID * 2, seeds, essence, seeds, secondaryChanceBase, secondaryChanceRich, secondaryChanceFlux, Type.STANDARD);
 			}
-		} catch (Throwable t) {
-			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
-			error = true;
+			for (int i = 1; i <= 5; i++) {
+				ItemStack seeds = getSeeds("tier" + i + "_inferium");
+				InsolatorManager.addDefaultRecipe(InsolatorManager.DEFAULT_ENERGY * i, InsolatorManager.DEFAULT_FLUID * 4, seeds, getItemStack("crafting", i, 0), seeds, secondaryChanceBase, secondaryChanceRich, secondaryChanceFlux, Type.STANDARD);
+			}
 		}
-		if (!error) {
-			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
-		}
-		return !error;
 	}
 
 	/* HELPERS */
