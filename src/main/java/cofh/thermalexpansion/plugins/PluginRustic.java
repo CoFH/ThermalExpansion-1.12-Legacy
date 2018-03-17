@@ -8,6 +8,7 @@ import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -65,11 +66,11 @@ public class PluginRustic extends PluginTEBase {
 		ItemStack saplingApple = getItemStack("sapling_apple", 1, 0);
 
 		Block blockLog = getBlock("log");
-
 		Block blockLeaves = getBlock("leaves");
 		Block blockLeavesApple = getBlock("leaves_apple");
 
 		Fluid honey = FluidRegistry.getFluid("honey");
+		Fluid juiceApple = FluidRegistry.getFluid("applejuice");
 		Fluid juiceGrape = FluidRegistry.getFluid("grapejuice");
 		Fluid juiceIronberry = FluidRegistry.getFluid("ironberryjuice");
 		Fluid juiceWildberry = FluidRegistry.getFluid("wildberryjuice");
@@ -120,6 +121,9 @@ public class PluginRustic extends PluginTEBase {
 
 			if (honey != null) {
 				CentrifugeManager.addRecipe(energy, honeycomb, singletonList(beeswax), new FluidStack(honey, 250));
+			}
+			if (juiceApple != null) {
+				CentrifugeManager.addRecipe(energy, new ItemStack(Items.APPLE), singletonList(seedApple), new FluidStack(juiceApple, 250));
 			}
 			if (juiceGrape != null) {
 				CentrifugeManager.addRecipe(energy, grapes, new ArrayList<>(), new FluidStack(juiceGrape, 250));

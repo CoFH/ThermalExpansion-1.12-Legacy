@@ -3,6 +3,10 @@ package cofh.thermalexpansion.init;
 import cofh.core.util.core.IInitializer;
 import cofh.thermalexpansion.plugins.*;
 import cofh.thermalexpansion.plugins.forestry.*;
+import cofh.thermalexpansion.plugins.pam.PluginBoneCraft;
+import cofh.thermalexpansion.plugins.pam.PluginHarvestCraft;
+import cofh.thermalexpansion.plugins.pam.PluginRedbudTree;
+import cofh.thermalexpansion.plugins.pam.PluginSpookyTree;
 import cofh.thermalexpansion.plugins.top.PluginTOP;
 
 import java.util.ArrayList;
@@ -23,6 +27,11 @@ public class TEPlugins {
 		pluginGendustry = new PluginGendustry();
 		pluginMagicBees = new PluginMagicBees();
 
+		pluginHarvestCraft = new PluginHarvestCraft();
+		pluginBoneCraft = new PluginBoneCraft();
+		pluginRedbudTree = new PluginRedbudTree();
+		pluginSpookyTree = new PluginSpookyTree();
+
 		pluginActuallyAdditions = new PluginActuallyAdditions();
 		pluginAppliedEnergistics2 = new PluginAppliedEnergistics2();
 		pluginBiomesOPlenty = new PluginBiomesOPlenty();
@@ -30,7 +39,6 @@ public class TEPlugins {
 		pluginEvilCraft = new PluginEvilCraft();
 		pluginExtraAlchemy = new PluginExtraAlchemy();
 		pluginExU2 = new PluginExU2();
-		pluginHarvestCraft = new PluginHarvestCraft();
 		pluginIC2 = new PluginIC2();
 		pluginIceAndFire = new PluginIceAndFire();
 		pluginIntegratedDynamics = new PluginIntegratedDynamics();
@@ -53,6 +61,11 @@ public class TEPlugins {
 		initList.add(pluginGendustry);
 		initList.add(pluginMagicBees);
 
+		initList.add(pluginHarvestCraft);
+		initList.add(pluginBoneCraft);
+		initList.add(pluginRedbudTree);
+		initList.add(pluginSpookyTree);
+
 		initList.add(pluginActuallyAdditions);
 		initList.add(pluginAppliedEnergistics2);
 		initList.add(pluginBiomesOPlenty);
@@ -60,7 +73,6 @@ public class TEPlugins {
 		initList.add(pluginEvilCraft);
 		initList.add(pluginExtraAlchemy);
 		initList.add(pluginExU2);
-		initList.add(pluginHarvestCraft);
 		initList.add(pluginIC2);
 		initList.add(pluginIceAndFire);
 		initList.add(pluginIntegratedDynamics);
@@ -98,6 +110,11 @@ public class TEPlugins {
 	public static PluginGendustry pluginGendustry;
 	public static PluginMagicBees pluginMagicBees;
 
+	public static PluginHarvestCraft pluginHarvestCraft;
+	public static PluginBoneCraft pluginBoneCraft;
+	public static PluginRedbudTree pluginRedbudTree;
+	public static PluginSpookyTree pluginSpookyTree;
+
 	public static PluginActuallyAdditions pluginActuallyAdditions;
 	public static PluginAppliedEnergistics2 pluginAppliedEnergistics2;
 	public static PluginBiomesOPlenty pluginBiomesOPlenty;
@@ -105,7 +122,6 @@ public class TEPlugins {
 	public static PluginEvilCraft pluginEvilCraft;
 	public static PluginExtraAlchemy pluginExtraAlchemy;
 	public static PluginExU2 pluginExU2;
-	public static PluginHarvestCraft pluginHarvestCraft;
 	public static PluginIC2 pluginIC2;
 	public static PluginIceAndFire pluginIceAndFire;
 	public static PluginIntegratedDynamics pluginIntegratedDynamics;

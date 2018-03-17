@@ -101,12 +101,12 @@ public class SawmillManager {
 		{
 			int energy = DEFAULT_ENERGY * 3 / 2;
 
-			addRecipe(energy, new ItemStack(Blocks.OAK_FENCE), new ItemStack(Blocks.PLANKS, 1, 0), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Blocks.SPRUCE_FENCE), new ItemStack(Blocks.PLANKS, 1, 1), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Blocks.BIRCH_FENCE), new ItemStack(Blocks.PLANKS, 1, 2), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Blocks.JUNGLE_FENCE), new ItemStack(Blocks.PLANKS, 1, 3), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Blocks.ACACIA_FENCE), new ItemStack(Blocks.PLANKS, 1, 4), ItemMaterial.dustWood, 25);
-			addRecipe(energy, new ItemStack(Blocks.DARK_OAK_FENCE), new ItemStack(Blocks.PLANKS, 1, 5), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.OAK_FENCE, 2), new ItemStack(Blocks.PLANKS, 1, 0), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.SPRUCE_FENCE, 2), new ItemStack(Blocks.PLANKS, 1, 1), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.BIRCH_FENCE, 2), new ItemStack(Blocks.PLANKS, 1, 2), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.JUNGLE_FENCE, 2), new ItemStack(Blocks.PLANKS, 1, 3), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.ACACIA_FENCE, 2), new ItemStack(Blocks.PLANKS, 1, 4), ItemMaterial.dustWood, 25);
+			addRecipe(energy, new ItemStack(Blocks.DARK_OAK_FENCE, 2), new ItemStack(Blocks.PLANKS, 1, 5), ItemMaterial.dustWood, 25);
 		}
 
 		/* FENCE GATES */
@@ -173,7 +173,7 @@ public class SawmillManager {
 			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
 				addRecipe(energy, new ItemStack(Items.BED, 1, i), new ItemStack(Blocks.PLANKS, 2), new ItemStack(Blocks.WOOL, 2, i));
 			}
-			addRecipe(energy, new ItemStack(Blocks.BOOKSHELF), new ItemStack(Blocks.PLANKS, 3), new ItemStack(Items.BOOK, 3), 25);
+			addRecipe(energy, new ItemStack(Blocks.BOOKSHELF), new ItemStack(Blocks.PLANKS, 4), new ItemStack(Items.BOOK, 3), 25);
 			addRecipe(energy, new ItemStack(Blocks.JUKEBOX), new ItemStack(Blocks.PLANKS, 4), new ItemStack(Items.DIAMOND), 25);
 			addRecipe(energy, new ItemStack(Blocks.NOTEBLOCK), new ItemStack(Blocks.PLANKS, 4), new ItemStack(Items.REDSTONE), 25);
 		}

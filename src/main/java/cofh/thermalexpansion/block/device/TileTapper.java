@@ -255,7 +255,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 							return;
 						}
 					}
-					scanArea = BlockPos.getAllInBoxMutable(pos, pos.add(0, leafPos[0].getY() - pos.getY(), 0));
+					scanArea = BlockPos.getAllInBoxMutable(pos.add(0, 1, 0), pos.add(0, leafPos[0].getY() - pos.getY(), 0));
 
 					for (BlockPos scan : scanArea) {
 						IBlockState state = world.getBlockState(scan);
@@ -317,7 +317,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 					return;
 				}
 			}
-			scanArea = BlockPos.getAllInBoxMutable(pos, pos.add(0, leafPos[0].getY() - pos.getY(), 0));
+			scanArea = BlockPos.getAllInBoxMutable(pos.add(0, 1, 0), pos.add(0, leafPos[0].getY() - pos.getY(), 0));
 
 			for (BlockPos scan : scanArea) {
 				IBlockState state = world.getBlockState(scan);

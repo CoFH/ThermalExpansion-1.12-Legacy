@@ -80,7 +80,7 @@ public class PluginTerraqueous extends PluginTEBase {
 				SawmillManager.addRecipe(energy, door[i], plank[i], ItemMaterial.dustWood, 50);
 				SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapdoor[i], 2), plank[i], ItemMaterial.dustWood, 75);
 				SawmillManager.addRecipe(energy, gate[i], plank[i], ItemMaterial.dustWood, 150);
-				SawmillManager.addRecipe(energy, fence[i], plank[i], ItemMaterial.dustWood, 25);
+				SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fence[i], 2), plank[i], ItemMaterial.dustWood, 25);
 				SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairs[i], 2), plank[i], ItemMaterial.dustWood, 25);
 			}
 		}

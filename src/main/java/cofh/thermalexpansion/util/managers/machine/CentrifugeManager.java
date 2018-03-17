@@ -14,6 +14,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -84,6 +85,7 @@ public class CentrifugeManager {
 		int energy = DEFAULT_ENERGY;
 
 		addRecipe(energy, new ItemStack(Items.MAGMA_CREAM), asList(new ItemStack(Items.SLIME_BALL), new ItemStack(Items.BLAZE_POWDER)), null);
+		addRecipe(energy, new ItemStack(Items.REEDS), singletonList(new ItemStack(Items.SUGAR, 2)), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME / 4));
 
 		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustElectrum, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustGold), ItemHelper.cloneStack(ItemMaterial.dustSilver)), null);
 		addRecipe(energy * 3, ItemHelper.cloneStack(ItemMaterial.dustInvar, 3), asList(ItemHelper.cloneStack(ItemMaterial.dustIron, 2), ItemHelper.cloneStack(ItemMaterial.dustNickel)), null);

@@ -443,7 +443,7 @@ public class InsolatorManager {
 		@Override
 		public boolean safeOreType(String oreName) {
 
-			return !oreName.startsWith(SEEDS) && (oreName.startsWith(SEED) || oreName.startsWith(CROP));
+			return !oreName.startsWith(SEEDS) && (oreName.startsWith(SEED) && oreName.length() > SEED.length() || oreName.startsWith(CROP) && oreName.length() > CROP.length());
 		}
 
 		public ComparableItemStackInsolator(ItemStack stack) {

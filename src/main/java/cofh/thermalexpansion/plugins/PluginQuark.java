@@ -4,12 +4,10 @@ import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalfoundation.item.ItemMaterial;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionType;
 
@@ -96,24 +94,28 @@ public class PluginQuark extends PluginTEBase {
 		{
 			int energy = SawmillManager.DEFAULT_ENERGY * 3 / 2;
 
+			/* CHESTS */
 			SawmillManager.addRecipe(energy, getItemStack("custom_chest", 1, 0), new ItemStack(Blocks.PLANKS, 4, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 			SawmillManager.addRecipe(energy, getItemStack("custom_chest", 1, 1), new ItemStack(Blocks.PLANKS, 4, 2), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 			SawmillManager.addRecipe(energy, getItemStack("custom_chest", 1, 2), new ItemStack(Blocks.PLANKS, 4, 3), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 			SawmillManager.addRecipe(energy, getItemStack("custom_chest", 1, 3), new ItemStack(Blocks.PLANKS, 4, 4), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 			SawmillManager.addRecipe(energy, getItemStack("custom_chest", 1, 4), new ItemStack(Blocks.PLANKS, 4, 5), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 
+			/* TRAPPED CHESTS */
 			SawmillManager.addRecipe(energy, getItemStack("custom_chest_trap", 1, 0), new ItemStack(Blocks.PLANKS, 4, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 			SawmillManager.addRecipe(energy, getItemStack("custom_chest_trap", 1, 1), new ItemStack(Blocks.PLANKS, 4, 2), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 			SawmillManager.addRecipe(energy, getItemStack("custom_chest_trap", 1, 2), new ItemStack(Blocks.PLANKS, 4, 3), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 			SawmillManager.addRecipe(energy, getItemStack("custom_chest_trap", 1, 3), new ItemStack(Blocks.PLANKS, 4, 4), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 			SawmillManager.addRecipe(energy, getItemStack("custom_chest_trap", 1, 4), new ItemStack(Blocks.PLANKS, 4, 5), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 
-			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 0), new ItemStack(Blocks.PLANKS, 3, 1), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 1), new ItemStack(Blocks.PLANKS, 3, 2), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 2), new ItemStack(Blocks.PLANKS, 3, 3), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 3), new ItemStack(Blocks.PLANKS, 3, 4), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 4), new ItemStack(Blocks.PLANKS, 3, 5), new ItemStack(Items.BOOK, 3), 25);
+			/* BOOKSHELVES */
+			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 0), new ItemStack(Blocks.PLANKS, 4, 1), new ItemStack(Items.BOOK, 3), 25);
+			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 1), new ItemStack(Blocks.PLANKS, 4, 2), new ItemStack(Items.BOOK, 3), 25);
+			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 2), new ItemStack(Blocks.PLANKS, 4, 3), new ItemStack(Items.BOOK, 3), 25);
+			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 3), new ItemStack(Blocks.PLANKS, 4, 4), new ItemStack(Items.BOOK, 3), 25);
+			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 4), new ItemStack(Blocks.PLANKS, 4, 5), new ItemStack(Items.BOOK, 3), 25);
 
+			/* TRAPDOORS */
 			SawmillManager.addRecipe(energy, getItemStack("spruce_trapdoor", 2), new ItemStack(Blocks.PLANKS, 1, 1), ItemMaterial.dustWood, 75);
 			SawmillManager.addRecipe(energy, getItemStack("birch_trapdoor", 2), new ItemStack(Blocks.PLANKS, 1, 2), ItemMaterial.dustWood, 75);
 			SawmillManager.addRecipe(energy, getItemStack("jungle_trapdoor", 2), new ItemStack(Blocks.PLANKS, 1, 3), ItemMaterial.dustWood, 75);
@@ -172,19 +174,13 @@ public class PluginQuark extends PluginTEBase {
 
 		/* BREWER */
 		{
-			Block glowShroom = getBlock("glowshroom");
-			ItemStack primaryIngredient;
-			if (glowShroom == null) {
-				primaryIngredient = new ItemStack(Items.FISH, 1, 2);
-			} else {
-				primaryIngredient = new ItemStack(Item.getItemFromBlock(glowShroom), 1, 0);
-				BrewerManager.addDefaultPotionRecipes(PotionTypes.WATER, primaryIngredient, PotionTypes.MUNDANE);
-			}
+			ItemStack glowshroom = getItemStack("glowshroom", 1, 0);
 
 			PotionType danger_sight = getPotionType("danger_sight", "");
 			PotionType danger_sight_long = getPotionType("danger_sight", "long");
 
-			BrewerManager.addDefaultPotionRecipes(PotionTypes.AWKWARD, primaryIngredient, danger_sight);
+			BrewerManager.addDefaultPotionRecipes(PotionTypes.WATER, glowshroom, PotionTypes.MUNDANE);
+			BrewerManager.addDefaultPotionRecipes(PotionTypes.AWKWARD, glowshroom, danger_sight);
 			BrewerManager.addDefaultPotionRecipes(danger_sight, new ItemStack(Items.REDSTONE), danger_sight_long);
 		}
 	}
