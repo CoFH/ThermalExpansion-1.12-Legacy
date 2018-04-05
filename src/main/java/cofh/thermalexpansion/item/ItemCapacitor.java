@@ -138,12 +138,6 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-
-		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || getEnergyStored(oldStack) > 0 != getEnergyStored(newStack) > 0);
-	}
-
-	@Override
 	public int getItemEnchantability(ItemStack stack) {
 
 		return 10;

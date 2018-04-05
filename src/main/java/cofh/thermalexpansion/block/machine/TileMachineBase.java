@@ -42,11 +42,14 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public static final int MIN_BASE_POWER = 10;
 	public static final int MAX_BASE_POWER = 200;
 	public static final int[] POWER_SCALING = { 100, 150, 200, 250, 300 };
+	public static final int[] ENERGY_SCALING = { 100, 100, 100, 100, 100 };
 	public static final int[] CUSTOM_POWER_SCALING = { 100, 150, 250, 400, 600 };
+	public static final int[] CUSTOM_ENERGY_SCALING = { 100, 105, 110, 115, 120 };
 
 	protected static boolean enableCreative = false;
 	protected static boolean enableSecurity = true;
-	protected static boolean customScaling = false;
+	protected static boolean customPowerScaling = false;
+	protected static boolean customEnergyScaling = false;
 	protected static boolean smallStorage = false;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
@@ -70,34 +73,66 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		comment = "If TRUE, Machines can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockMachine.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockMachine.enableUpgradeKitCrafting, comment);
 
-		comment = "If TRUE, Machine RF scaling will use a custom set of values rather than default behavior. The default custom configuration provides a reasonable alternate progression.";
-		customScaling = ThermalExpansion.CONFIG.get(category, "CustomScaling", customScaling, comment);
+		// TODO: Remove in 5.3.12
+		ThermalExpansion.CONFIG.renameProperty(category, "CustomScaling", category, "CustomPowerScaling", true);
+		ThermalExpansion.CONFIG.renameCategory("Machine.CustomScaling", "Machine.CustomPowerScaling");
+
+		comment = "If TRUE, Machine RF/t (POWER) scaling will use a custom set of values rather than default behavior. The default custom configuration provides a reasonable alternate progression.";
+		customPowerScaling = ThermalExpansion.CONFIG.get(category, "CustomPowerScaling", customPowerScaling, comment);
+
+		comment = "If TRUE, Machine Total RF (ENERGY) scaling will use a custom set of values rather than default behavior (no scaling). The default custom configuration provides an alternate progression where machines use 5% additional total RF per tier.";
+		customEnergyScaling = ThermalExpansion.CONFIG.get(category, "CustomEnergyScaling", customEnergyScaling, comment);
 
 		comment = "If TRUE, Machines will have much smaller internal energy (RF) storage. Processing speed will no longer scale with internal energy.";
 		smallStorage = ThermalExpansion.CONFIG.get(category, "SmallStorage", smallStorage, comment);
 
-		category = "Machine.CustomScaling";
+		/* CUSTOM SCALING */
+		category = "Machine.CustomPowerScaling";
 		comment = "ADVANCED FEATURE - ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING.\nValues are expressed as a percentage of Base Power; Base Scale Factor is 100 percent.\nValues will be checked for validity and rounded down to the nearest 10.";
 
 		ThermalExpansion.CONFIG.getCategory(category).setComment(comment);
 		boolean validScaling = true;
 
 		for (int i = TFProps.LEVEL_MIN + 1; i <= TFProps.LEVEL_MAX; i++) {
-			CUSTOM_POWER_SCALING[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, CUSTOM_POWER_SCALING[i], POWER_BASE + 10 * i, POWER_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Machines.");
+			CUSTOM_POWER_SCALING[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, CUSTOM_POWER_SCALING[i], POWER_BASE, POWER_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Machines.");
 		}
 		for (int i = 1; i < CUSTOM_POWER_SCALING.length; i++) {
 			CUSTOM_POWER_SCALING[i] /= 10;
 			CUSTOM_POWER_SCALING[i] *= 10;
 
-			if (CUSTOM_POWER_SCALING[i] <= CUSTOM_POWER_SCALING[i - 1]) {
+			if (CUSTOM_POWER_SCALING[i] < CUSTOM_POWER_SCALING[i - 1]) {
 				validScaling = false;
 			}
 		}
-		if (customScaling) {
+		if (customPowerScaling) {
 			if (!validScaling) {
 				ThermalExpansion.LOG.error(category + " settings are invalid. They will not be used.");
 			} else {
 				System.arraycopy(CUSTOM_POWER_SCALING, 0, POWER_SCALING, 0, POWER_SCALING.length);
+			}
+		}
+		category = "Machine.CustomEnergyScaling";
+		comment = "ADVANCED FEATURE - ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING.\nValues are expressed as a percentage of Base Energy; Base Scale Factor is 100 percent.\nValues will be checked for validity and rounded down to the nearest 5.";
+
+		ThermalExpansion.CONFIG.getCategory(category).setComment(comment);
+		validScaling = true;
+
+		for (int i = TFProps.LEVEL_MIN + 1; i <= TFProps.LEVEL_MAX; i++) {
+			CUSTOM_ENERGY_SCALING[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, CUSTOM_ENERGY_SCALING[i], ENERGY_BASE, ENERGY_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Machines.");
+		}
+		for (int i = 1; i < CUSTOM_ENERGY_SCALING.length; i++) {
+			CUSTOM_ENERGY_SCALING[i] /= 20;
+			CUSTOM_ENERGY_SCALING[i] *= 20;
+
+			if (CUSTOM_ENERGY_SCALING[i] < CUSTOM_ENERGY_SCALING[i - 1]) {
+				validScaling = false;
+			}
+		}
+		if (customEnergyScaling) {
+			if (!validScaling) {
+				ThermalExpansion.LOG.error(category + " settings are invalid. They will not be used.");
+			} else {
+				System.arraycopy(CUSTOM_ENERGY_SCALING, 0, ENERGY_SCALING, 0, ENERGY_SCALING.length);
 			}
 		}
 	}
@@ -229,6 +264,11 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	protected int getBasePower(int level) {
 
 		return ENERGY_CONFIGS[getType()].maxPower * POWER_SCALING[MathHelper.clamp(level, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX)] / POWER_BASE;
+	}
+
+	protected int getBaseEnergy(int level) {
+
+		return ENERGY_SCALING[MathHelper.clamp(level, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX)] / ENERGY_BASE;
 	}
 
 	protected int calcEnergy() {
@@ -399,6 +439,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	protected void postAugmentInstall() {
 
 		energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 4);
+		energyMod *= getBaseEnergy(this.level);
 	}
 
 	@Override

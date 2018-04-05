@@ -121,10 +121,10 @@ public class InsolatorManager {
 			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 7), new ItemStack(Blocks.RED_FLOWER, 3, 7), ItemStack.EMPTY, 0);
 			addDefaultRecipe(new ItemStack(Blocks.RED_FLOWER, 1, 8), new ItemStack(Blocks.RED_FLOWER, 3, 8), ItemStack.EMPTY, 0);
 
-			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 0), new ItemStack(Blocks.DOUBLE_PLANT, 3, 0), ItemStack.EMPTY, 0);
-			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 1), new ItemStack(Blocks.DOUBLE_PLANT, 3, 1), ItemStack.EMPTY, 0);
-			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), new ItemStack(Blocks.DOUBLE_PLANT, 3, 4), ItemStack.EMPTY, 0);
-			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 5), new ItemStack(Blocks.DOUBLE_PLANT, 3, 5), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 0), new ItemStack(Blocks.DOUBLE_PLANT, 2, 0), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 1), new ItemStack(Blocks.DOUBLE_PLANT, 2, 1), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), new ItemStack(Blocks.DOUBLE_PLANT, 2, 4), ItemStack.EMPTY, 0);
+			addDefaultRecipe(new ItemStack(Blocks.DOUBLE_PLANT, 1, 5), new ItemStack(Blocks.DOUBLE_PLANT, 2, 5), ItemStack.EMPTY, 0);
 		}
 
 		/* MYCELIUM */

@@ -48,9 +48,10 @@ public class TEPlugins {
 		pluginQuark = new PluginQuark();
 		pluginRustic = new PluginRustic();
 		pluginTConstruct = new PluginTConstruct();
+		pluginTechReborn = new PluginTechReborn();
 		pluginTerraqueous = new PluginTerraqueous();
 		pluginTraverse = new PluginTraverse();
-		pluginTechReborn = new PluginTechReborn();
+		pluginTropicraft = new PluginTropicraft();
 		pluginTwilightForest = new PluginTwilightForest();
 
 		initList.add(pluginTOP);
@@ -82,9 +83,10 @@ public class TEPlugins {
 		initList.add(pluginQuark);
 		initList.add(pluginRustic);
 		initList.add(pluginTConstruct);
+		initList.add(pluginTechReborn);
 		initList.add(pluginTerraqueous);
 		initList.add(pluginTraverse);
-		initList.add(pluginTechReborn);
+		initList.add(pluginTropicraft);
 		initList.add(pluginTwilightForest);
 
 		for (IInitializer init : initList) {
@@ -131,9 +133,10 @@ public class TEPlugins {
 	public static PluginQuark pluginQuark;
 	public static PluginRustic pluginRustic;
 	public static PluginTConstruct pluginTConstruct;
+	public static PluginTechReborn pluginTechReborn;
 	public static PluginTerraqueous pluginTerraqueous;
 	public static PluginTraverse pluginTraverse;
-	public static PluginTechReborn pluginTechReborn;
+	public static PluginTropicraft pluginTropicraft;
 	public static PluginTwilightForest pluginTwilightForest;
 
 }

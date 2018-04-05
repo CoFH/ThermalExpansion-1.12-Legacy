@@ -83,20 +83,25 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		comment = "If TRUE, Dynamos can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockDynamo.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockDynamo.enableUpgradeKitCrafting, comment);
 
-		comment = "If TRUE, Dynamo RF scaling will use a custom set of values rather than default behavior. The default custom configuration provides a reasonable alternate progression.";
-		customScaling = ThermalExpansion.CONFIG.get(category, "CustomScaling", customScaling, comment);
+		// TODO: Remove in 5.3.12
+		ThermalExpansion.CONFIG.renameProperty(category, "CustomScaling", category, "CustomPowerScaling", true);
+		ThermalExpansion.CONFIG.renameCategory("Dynamo.CustomScaling", "Dynamo.CustomPowerScaling");
+
+		comment = "If TRUE, Dynamo RF/t (POWER) scaling will use a custom set of values rather than default behavior. The default custom configuration provides a reasonable alternate progression.";
+		customScaling = ThermalExpansion.CONFIG.get(category, "CustomPowerScaling", customScaling, comment);
 
 		comment = "If TRUE, Dynamos will have much smaller internal energy (RF) storage. Generation speed will no longer scale with internal energy.";
 		smallStorage = ThermalExpansion.CONFIG.get(category, "SmallStorage", smallStorage, comment);
 
-		category = "Dynamo.CustomScaling";
+		/* CUSTOM SCALING */
+		category = "Dynamo.CustomPowerScaling";
 		comment = "ADVANCED FEATURE - ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING.\nValues are expressed as a percentage of Base Power; Base Scale Factor is 100 percent.\nValues will be checked for validity and rounded down to the nearest 10.";
 
 		ThermalExpansion.CONFIG.getCategory(category).setComment(comment);
 		boolean validScaling = true;
 
 		for (int i = TFProps.LEVEL_MIN + 1; i <= TFProps.LEVEL_MAX; i++) {
-			CUSTOM_POWER_SCALING[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, CUSTOM_POWER_SCALING[i], POWER_BASE + 10 * i, POWER_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Dynamos.");
+			CUSTOM_POWER_SCALING[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, CUSTOM_POWER_SCALING[i], POWER_BASE, POWER_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Dynamos.");
 		}
 		for (int i = 1; i < CUSTOM_POWER_SCALING.length; i++) {
 			CUSTOM_POWER_SCALING[i] /= 10;

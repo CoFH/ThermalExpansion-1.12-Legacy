@@ -11,7 +11,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -26,6 +25,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+
+import javax.annotation.Nullable;
 
 public class EntityMorb extends EntityThrowable {
 
@@ -200,7 +201,7 @@ public class EntityMorb extends EntityThrowable {
 	public static Entity spawnCreature(World world, NBTTagCompound entityData, double x, double y, double z) {
 
 		if (entityData.getBoolean(ItemMorb.GENERIC)) {
-			ItemMonsterPlacer.spawnCreature(world, new ResourceLocation(entityData.getString("id")), x, y, z);
+			spawnGenericCreature(world, new ResourceLocation(entityData.getString("id")), x, y, z);
 		} else {
 			Entity entity = EntityList.createEntityFromNBT(entityData, world);
 			if (entity == null) {
@@ -213,6 +214,27 @@ public class EntityMorb extends EntityThrowable {
 			}
 		}
 		return null;
+	}
+
+	@Nullable
+	public static Entity spawnGenericCreature(World worldIn, @Nullable ResourceLocation entityID, double x, double y, double z) {
+
+		Entity entity = null;
+
+		if (entityID != null) {
+			entity = EntityList.createEntityByIDFromName(entityID, worldIn);
+
+			if (entity instanceof EntityLiving) {
+				EntityLiving entityliving = (EntityLiving) entity;
+				entity.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
+				entityliving.rotationYawHead = entityliving.rotationYaw;
+				entityliving.renderYawOffset = entityliving.rotationYaw;
+				entityliving.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), null);
+				worldIn.spawnEntity(entity);
+				entityliving.playLivingSound();
+			}
+		}
+		return entity;
 	}
 
 }
