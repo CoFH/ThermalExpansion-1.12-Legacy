@@ -88,6 +88,13 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
+	protected void setLevelFlags() {
+
+		level = 0;
+		hasRedstoneControl = true;
+	}
+
+	@Override
 	public void update() {
 
 		if (world.getTotalWorldTime() % CoreProps.TIME_CONSTANT_QUARTER != 0) {

@@ -3,6 +3,7 @@ package cofh.thermalexpansion.proxy;
 import cofh.thermalexpansion.gui.container.storage.ContainerSatchel;
 import cofh.thermalexpansion.gui.container.storage.ContainerSatchelFilter;
 import cofh.thermalexpansion.item.ItemSatchel;
+import cofh.thermalexpansion.network.PacketTEBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,7 +18,7 @@ public class EventHandler {
 	@SubscribeEvent
 	public void handlePlayerLoggedInEvent(PlayerLoggedInEvent event) {
 
-		// PacketTEBase.sendConfigSyncPacketToClient(event.player);
+		PacketTEBase.sendConfigSyncPacketToClient(event.player);
 	}
 
 	@SubscribeEvent

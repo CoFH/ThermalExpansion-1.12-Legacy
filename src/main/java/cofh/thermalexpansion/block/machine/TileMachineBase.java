@@ -50,7 +50,10 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	protected static boolean enableSecurity = true;
 	protected static boolean customPowerScaling = false;
 	protected static boolean customEnergyScaling = false;
-	protected static boolean smallStorage = false;
+	public static boolean disableAutoInput = false;
+	public static boolean disableAutoOutput = false;
+	// protected static boolean limitedConfig = false;
+	public static boolean smallStorage = false;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 	protected static final int ENERGY_BASE = 100;
@@ -82,6 +85,15 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 		comment = "If TRUE, Machine Total RF (ENERGY) scaling will use a custom set of values rather than default behavior (no scaling). The default custom configuration provides an alternate progression where machines use 5% additional total RF per tier.";
 		customEnergyScaling = ThermalExpansion.CONFIG.get(category, "CustomEnergyScaling", customEnergyScaling, comment);
+
+		comment = "If TRUE, Machines will no longer have Auto-Input functionality. Not recommended, but knock yourself out.";
+		disableAutoInput = ThermalExpansion.CONFIG.get(category, "DisableAutoInput", disableAutoInput, comment);
+
+		comment = "If TRUE, Machines will no longer have Auto-Output functionality. Not recommended, but knock yourself out.";
+		disableAutoOutput = ThermalExpansion.CONFIG.get(category, "DisableAutoOutput", disableAutoOutput, comment);
+
+		//		comment = "If TRUE, Machines will only have two side configurations: Open and Closed. Machines will not be able to Auto-Input or Auto-Output.";
+		//		limitedConfig = ThermalExpansion.CONFIG.get(category, "LimitedConfig", limitedConfig, comment);
 
 		comment = "If TRUE, Machines will have much smaller internal energy (RF) storage. Processing speed will no longer scale with internal energy.";
 		smallStorage = ThermalExpansion.CONFIG.get(category, "SmallStorage", smallStorage, comment);
@@ -221,6 +233,24 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	protected void setLevelFlags() {
+
+		super.setLevelFlags();
+
+		if (disableAutoInput) {
+			hasAutoInput = false;
+		}
+		if (disableAutoOutput) {
+			hasAutoOutput = false;
+		}
+
+		//		if (limitedConfig) {
+		//			hasAutoInput = false;
+		//			hasAutoOutput = false;
+		//		}
 	}
 
 	@Override

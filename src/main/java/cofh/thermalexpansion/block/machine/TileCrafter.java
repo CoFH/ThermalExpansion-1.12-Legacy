@@ -470,13 +470,13 @@ public class TileCrafter extends TileMachineBase {
 	@Override
 	public boolean hasTransferIn() {
 
-		return augmentInput;
+		return augmentInput && hasAutoInput;
 	}
 
 	@Override
 	public boolean getTransferIn() {
 
-		return augmentInput && enableAutoInput && !hasRecipeChanges;
+		return hasTransferIn() && enableAutoInput && !hasRecipeChanges;
 	}
 
 	/* CAPABILITIES */

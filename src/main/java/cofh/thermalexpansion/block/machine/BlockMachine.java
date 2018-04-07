@@ -179,6 +179,11 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 			int storedFacing = ReconfigurableHelper.getFacing(stack);
 			byte[] sideCache = ReconfigurableHelper.getSideCache(stack, tile.getDefaultSides());
 
+			for (int i = 0; i < sideCache.length; i++) {
+				if (sideCache[i] >= tile.getNumConfig(i)) {
+					sideCache[i] = 0;
+				}
+			}
 			tile.sideCache[0] = sideCache[0];
 			tile.sideCache[1] = sideCache[1];
 			tile.sideCache[facing] = 0;

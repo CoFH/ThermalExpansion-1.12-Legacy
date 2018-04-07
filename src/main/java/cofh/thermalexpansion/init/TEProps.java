@@ -3,6 +3,7 @@ package cofh.thermalexpansion.init;
 import codechicken.lib.block.property.unlisted.UnlistedGenericTile;
 import cofh.CoFHCore;
 import cofh.core.gui.CreativeTabCore;
+import cofh.core.network.PacketBase;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.TimeTracker;
 import cofh.core.util.helpers.MathHelper;
@@ -17,6 +18,8 @@ import cofh.thermalexpansion.block.storage.TileCell;
 import cofh.thermalexpansion.block.storage.TileTank;
 import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalexpansion.item.ItemMorb;
+import cofh.thermalexpansion.network.PacketTEBase;
+import cofh.thermalexpansion.network.PacketTEBase.PacketTypes;
 import cofh.thermalexpansion.util.UnlistedGenericProperty;
 import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -201,6 +204,34 @@ public class TEProps {
 			}
 
 		};
+	}
+
+	public static PacketBase getConfigSync() {
+
+		PacketBase payload = PacketTEBase.getPacket(PacketTypes.CONFIG_SYNC);
+
+		payload.addBool(TileMachineBase.disableAutoInput);
+		payload.addBool(TileMachineBase.disableAutoOutput);
+		payload.addBool(TileMachineBase.smallStorage);
+
+		payload.addBool(TileDeviceBase.disableAutoInput);
+		payload.addBool(TileDeviceBase.disableAutoOutput);
+
+		payload.addBool(TileDynamoBase.smallStorage);
+
+		return payload;
+	}
+
+	public static void handleConfigSync(PacketBase payload) {
+
+		TileMachineBase.disableAutoInput = payload.getBool();
+		TileMachineBase.disableAutoOutput = payload.getBool();
+		TileMachineBase.smallStorage = payload.getBool();
+
+		TileDeviceBase.disableAutoInput = payload.getBool();
+		TileDeviceBase.disableAutoOutput = payload.getBool();
+
+		TileDynamoBase.smallStorage = payload.getBool();
 	}
 
 	/* GENERAL */

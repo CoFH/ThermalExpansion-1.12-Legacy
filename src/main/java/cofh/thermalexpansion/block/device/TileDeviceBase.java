@@ -20,13 +20,21 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[Type.values().length];
 
-	private static boolean enableSecurity = true;
+	protected static boolean enableSecurity = true;
+	public static boolean disableAutoInput = false;
+	public static boolean disableAutoOutput = false;
 
 	public static void config() {
 
 		String category = "Device";
 		String comment = "If TRUE, Devices are securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", true, comment);
+
+		comment = "If TRUE, most Devices will no longer have Auto-Input functionality. Not recommended, but knock yourself out.";
+		disableAutoInput = ThermalExpansion.CONFIG.get(category, "DisableAutoInput", disableAutoInput, comment);
+
+		comment = "If TRUE, most Devices will no longer have Auto-Output functionality. Not recommended, but knock yourself out.";
+		disableAutoOutput = ThermalExpansion.CONFIG.get(category, "DisableAutoOutput", disableAutoOutput, comment);
 	}
 
 	public TileDeviceBase() {
@@ -85,6 +93,13 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 
 		level = 0;
 		hasRedstoneControl = true;
+
+		if (disableAutoInput) {
+			hasAutoInput = false;
+		}
+		if (disableAutoOutput) {
+			hasAutoOutput = false;
+		}
 	}
 
 	protected void updateIfChanged(boolean curActive) {

@@ -36,7 +36,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	public static final HashSet[] VALID_AUGMENTS = new HashSet[Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[Type.values().length];
 
-	private static boolean enableSecurity = true;
+	protected static boolean enableSecurity = true;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 

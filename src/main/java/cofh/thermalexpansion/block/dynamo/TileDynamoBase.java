@@ -55,7 +55,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	protected static boolean enableCreative = false;
 	protected static boolean enableSecurity = true;
 	protected static boolean customScaling = false;
-	protected static boolean smallStorage = false;
+	public static boolean smallStorage = false;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 	protected static final int ENERGY_BASE = 100;

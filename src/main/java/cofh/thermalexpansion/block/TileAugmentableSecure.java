@@ -508,13 +508,13 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	@Override
 	public boolean getTransferIn() {
 
-		return enableAutoInput;
+		return hasTransferIn() && enableAutoInput;
 	}
 
 	@Override
 	public boolean getTransferOut() {
 
-		return enableAutoOutput;
+		return hasTransferOut() && enableAutoOutput;
 	}
 
 	@Override

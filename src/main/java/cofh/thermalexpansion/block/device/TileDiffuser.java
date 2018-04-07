@@ -67,15 +67,26 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		category = "Device.Diffuser";
-		enableParticles = ThermalExpansion.CONFIG_CLIENT.get(category, "EnableParticles", true);
+		String comment = "If TRUE, the Diffuser will display potion effect particles.";
+		enableParticles = ThermalExpansion.CONFIG_CLIENT.get(category, "EnableParticles", enableParticles, comment);
+
+		comment = "Adjust this value to change the area effect radius when Potion fluid is used.";
+		radiusPotion = ThermalExpansion.CONFIG.getConfiguration().getInt("PotionRadius", category, radiusPotion, 2, 32, comment);
+
+		comment = "Adjust this value to change the area effect radius when Splash Potion fluid is used.";
+		radiusSplash = ThermalExpansion.CONFIG.getConfiguration().getInt("SplashPotionRadius", category, radiusSplash, 2, 32, comment);
+
+		comment = "Adjust this value to change the area effect radius when Lingering Potion fluid is used.";
+		radiusLingering = ThermalExpansion.CONFIG.getConfiguration().getInt("LingeringPotionRadius", category, radiusLingering, 2, 32, comment);
 	}
+
+	public static int radiusPotion = 6;
+	public static int radiusSplash = 8;
+	public static int radiusLingering = 10;
 
 	private static final int TIME_CONSTANT = 60;
 	private static final int BOOST_TIME = 15;
 	private static final int FLUID_AMOUNT = 50;
-	private static final int RADIUS_POTION = 3;
-	private static final int RADIUS_SPLASH = 4;
-	private static final int RADIUS_LINGERING = 5;
 
 	private static final int MAX_AMPLIFIER = 4;
 	private static final int MAX_DURATION = 7200;
@@ -175,7 +186,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 		if (renderFluid == null) {
 			return;
 		}
-		int radius = isSplashPotion(renderFluid) ? RADIUS_SPLASH : isLingeringPotion(renderFluid) ? RADIUS_LINGERING : RADIUS_POTION;
+		int radius = isSplashPotion(renderFluid) ? radiusSplash : isLingeringPotion(renderFluid) ? radiusLingering : radiusPotion;
 
 		List<PotionEffect> effects = PotionUtils.getEffectsFromTag(renderFluid.tag);
 		int color = PotionUtils.getPotionColorFromEffectList(effects);
@@ -222,7 +233,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 			renderFluid = new FluidStack(potionFluid, 0);
 			sendFluidPacket();
 		}
-		int radius = isSplashPotion(potionFluid) ? RADIUS_SPLASH : isLingeringPotion(potionFluid) ? RADIUS_LINGERING : RADIUS_POTION;
+		int radius = isSplashPotion(potionFluid) ? radiusSplash : isLingeringPotion(potionFluid) ? radiusLingering : radiusPotion;
 
 		AxisAlignedBB area = new AxisAlignedBB(pos.add(-radius, 1 - radius, -radius), pos.add(1 + radius, radius, 1 + radius));
 		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, area);

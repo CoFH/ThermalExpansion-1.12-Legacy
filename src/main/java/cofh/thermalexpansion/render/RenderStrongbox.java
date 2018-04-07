@@ -132,4 +132,5 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 		}
 		return Collections.singleton(TextureUtils.getMissingSprite());
 	}
+
 }
