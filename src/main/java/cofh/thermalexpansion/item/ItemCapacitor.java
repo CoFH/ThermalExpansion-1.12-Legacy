@@ -2,7 +2,6 @@ package cofh.thermalexpansion.item;
 
 import baubles.api.cap.IBaublesItemHandler;
 import cofh.api.item.IMultiModeItem;
-import cofh.api.item.INBTCopyIngredient;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.item.IEnchantableItem;
 import cofh.core.item.ItemMultiRF;
@@ -47,7 +46,7 @@ import java.util.stream.IntStream;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
-public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem, INBTCopyIngredient {
+public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem {
 
 	public ItemCapacitor() {
 
@@ -321,7 +320,6 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 			return false;
 		}
 		// @formatter:off
-
 		addShapedRecipe(capacitorBasic,
 				" R ",
 				"IXI",
@@ -331,9 +329,7 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 				'X', "ingotCopper",
 				'Y', "dustSulfur"
 		);
-
 		// @formatter:on
-
 		return true;
 	}
 

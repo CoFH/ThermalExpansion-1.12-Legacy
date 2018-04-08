@@ -44,7 +44,7 @@ public class TileFactorizer extends TileDeviceBase implements ITickable {
 
 	public static void config() {
 
-		String category = "Device.Lexicon";
+		String category = "Device.Factorizer";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 

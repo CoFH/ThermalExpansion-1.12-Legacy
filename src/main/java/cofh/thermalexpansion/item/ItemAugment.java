@@ -658,7 +658,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		/* APPARATUS */
 
 		// @formatter:on
-
 		return true;
 	}
 

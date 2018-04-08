@@ -89,7 +89,6 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 	public boolean register() {
 
 		// @formatter:off
-
 		addShapedRecipe(frameMachine,
 				"IGI",
 				"GCG",
@@ -122,6 +121,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 				'G', "blockGlass",
 				'I', "ingotIron"
 		);
+
 		if (BlockCell.enableClassicRecipes) {
 			addShapedRecipe(frameCell1,
 				" I ",
@@ -176,9 +176,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 //				'I', "ingotSignalum",
 //				'Q', "gemQuartz"
 //		);
-
 		// @formatter:on
-
 		return true;
 	}
 

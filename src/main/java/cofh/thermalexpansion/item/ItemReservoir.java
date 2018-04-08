@@ -493,7 +493,6 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 			return false;
 		}
 		// @formatter:off
-
 		addShapedRecipe(reservoirBasic,
 				" R ",
 				"IXI",
@@ -503,9 +502,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 				'X', Items.BUCKET,
 				'Y', ItemMaterial.redstoneServo
 		);
-
 		// @formatter:on
-
 		return true;
 	}
 

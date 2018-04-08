@@ -412,7 +412,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 			return false;
 		}
 		// @formatter:off
-
 		addShapedRecipe(satchelBasic,
 				" Y ",
 				"IXI",
@@ -446,9 +445,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 				'X', Items.LAVA_BUCKET,
 				'Y', "blockRockwool"
 		);
-
 		// @formatter:on
-
 		return true;
 	}
 

@@ -378,7 +378,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 				updateLighting();
 			}
 			sendTilePacket(Side.CLIENT);
-		} else if (wasActive && tracker.hasDelayPassed(world, CoreProps.TILE_UPDATE_DELAY)) {
+		} else if (wasActive && tracker.hasDelayPassed(world, CoreProps.tileUpdateDelay)) {
 			wasActive = false;
 			if (LIGHT_VALUES[getType()] != 0) {
 				updateLighting();

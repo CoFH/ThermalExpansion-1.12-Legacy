@@ -95,10 +95,10 @@ public class CentrifugeManager {
 		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustLumium, 4), asList(ItemHelper.cloneStack(ItemMaterial.dustTin, 3), ItemHelper.cloneStack(ItemMaterial.dustSilver)), new FluidStack(TFFluids.fluidGlowstone, Fluid.BUCKET_VOLUME));
 		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustEnderium, 4), asList(ItemHelper.cloneStack(ItemMaterial.dustLead, 3), ItemHelper.cloneStack(ItemMaterial.dustPlatinum)), new FluidStack(TFFluids.fluidEnder, Fluid.BUCKET_VOLUME));
 
-		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustPyrotheum, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustCoal), ItemHelper.cloneStack(ItemMaterial.dustSulfur), new ItemStack(Items.BLAZE_POWDER), new ItemStack(Items.REDSTONE)), null);
-		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustCryotheum, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustNiter), ItemHelper.cloneStack(ItemMaterial.dustBlizz), new ItemStack(Items.SNOWBALL), new ItemStack(Items.REDSTONE)), null);
-		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustAerotheum, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustNiter), ItemHelper.cloneStack(ItemMaterial.dustBlitz), new ItemStack(Blocks.SAND), new ItemStack(Items.REDSTONE)), null);
-		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustPetrotheum, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustObsidian), ItemHelper.cloneStack(ItemMaterial.dustBasalz), new ItemStack(Items.CLAY_BALL), new ItemStack(Items.REDSTONE)), null);
+		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustPyrotheum, 2), asList(new ItemStack(Items.BLAZE_POWDER), ItemHelper.cloneStack(ItemMaterial.dustSulfur), new ItemStack(Items.REDSTONE)), null);
+		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustCryotheum, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustBlizz), new ItemStack(Items.SNOWBALL), new ItemStack(Items.REDSTONE)), null);
+		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustAerotheum, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustBlitz), ItemHelper.cloneStack(ItemMaterial.dustNiter), new ItemStack(Items.REDSTONE)), null);
+		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustPetrotheum, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustBasalz), ItemHelper.cloneStack(ItemMaterial.dustObsidian), new ItemStack(Items.REDSTONE)), null);
 
 		/* CONCRETE POWDER */
 		{

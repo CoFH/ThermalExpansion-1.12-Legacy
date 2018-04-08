@@ -387,7 +387,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (curActive != isActive && !wasActive) {
 			updateLighting();
 			sendTilePacket(Side.CLIENT);
-		} else if (wasActive && tracker.hasDelayPassed(world, CoreProps.TILE_UPDATE_DELAY)) {
+		} else if (wasActive && tracker.hasDelayPassed(world, CoreProps.tileUpdateDelay)) {
 			wasActive = false;
 			updateLighting();
 			sendTilePacket(Side.CLIENT);

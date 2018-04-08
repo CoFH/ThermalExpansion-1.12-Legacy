@@ -141,11 +141,13 @@ public class BrewerManager {
 			addDefaultPotionRecipes(CorePotions.resistance, redstone, CorePotions.resistanceLong);
 			addDefaultPotionRecipes(CorePotions.levitation, redstone, CorePotions.levitationLong);
 			addDefaultPotionRecipes(CorePotions.absorption, redstone, CorePotions.absorptionLong);
+			addDefaultPotionRecipes(CorePotions.luck, redstone, CorePotions.luckLong);
 			addDefaultPotionRecipes(CorePotions.wither, redstone, CorePotions.witherLong);
 
 			addDefaultPotionRecipes(CorePotions.haste, glowstone, CorePotions.hasteStrong);
 			addDefaultPotionRecipes(CorePotions.resistance, glowstone, CorePotions.resistanceStrong);
 			addDefaultPotionRecipes(CorePotions.absorption, glowstone, CorePotions.absorptionStrong);
+			addDefaultPotionRecipes(CorePotions.luck, glowstone, CorePotions.luckStrong);
 			addDefaultPotionRecipes(CorePotions.wither, glowstone, CorePotions.witherStrong);
 		}
 
@@ -257,7 +259,7 @@ public class BrewerManager {
 		@Override
 		public boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(DUST) || oreName.startsWith(NUGGET);
+			return oreName.startsWith(DUST) || oreName.startsWith(GEM);
 		}
 
 		public ComparableItemStackBrewer(ItemStack stack) {
