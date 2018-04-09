@@ -74,6 +74,7 @@ public class TileBrewer extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private BrewerRecipe curRecipe;
 	private int inputTracker;
 	private int inputTrackerFluid;
 	private int outputTrackerFluid;
@@ -102,36 +103,53 @@ public class TileBrewer extends TileMachineBase {
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0 || outputTank.getSpace() <= 0) {
 			return false;
 		}
-		BrewerRecipe recipe = BrewerManager.getRecipe(inventory[0], inputTank.getFluid());
+		getRecipe();
 
-		if (recipe == null) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (inventory[0].getCount() < recipe.getInput().getCount()) {
+		if (inventory[0].getCount() < curRecipe.getInput().getCount()) {
 			return false;
 		}
-		if (inputTank.getFluidAmount() < recipe.getInputFluid().amount) {
+		if (inputTank.getFluidAmount() < curRecipe.getInputFluid().amount) {
 			return false;
 		}
-		FluidStack outputFluid = recipe.getOutputFluid();
+		FluidStack outputFluid = curRecipe.getOutputFluid();
 		return outputTank.fill(outputFluid, false) == outputFluid.amount;
 	}
 
 	@Override
 	protected boolean hasValidInput() {
 
-		BrewerRecipe recipe = BrewerManager.getRecipe(inventory[0], inputTank.getFluid());
-		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
+			return false;
+		}
+		return curRecipe.getInput().getCount() <= inventory[0].getCount();
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = BrewerManager.getRecipe(inventory[0], inputTank.getFluid());
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = BrewerManager.getRecipe(inventory[0], inputTank.getFluid()).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
 		FluidStack prevStack = renderFluid.copy();
-		renderFluid = BrewerManager.getRecipe(inventory[0], inputTank.getFluid()).getOutputFluid().copy();
+		renderFluid = curRecipe.getOutputFluid().copy();
 		renderFluid.amount = 0;
 
 		if (!FluidHelper.isFluidEqual(prevStack, renderFluid)) {
@@ -142,16 +160,17 @@ public class TileBrewer extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		BrewerRecipe recipe = BrewerManager.getRecipe(inventory[0], inputTank.getFluid());
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		outputTank.fill(recipe.getOutputFluid(), true);
-		inputTank.drain(recipe.getInputFluid().amount, true);
+		outputTank.fill(curRecipe.getOutputFluid(), true);
+		inputTank.drain(curRecipe.getInputFluid().amount, true);
 
-		int count = recipe.getInput().getCount();
+		int count = curRecipe.getInput().getCount();
 
 		if (reuseChance > 0) {
 			if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {

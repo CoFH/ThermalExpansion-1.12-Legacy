@@ -86,6 +86,7 @@ public class TileRefinery extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private RefineryRecipe curRecipe;
 	private int outputTracker;
 	private int outputTrackerFluid;
 
@@ -130,16 +131,16 @@ public class TileRefinery extends TileMachineBase {
 		if (energyStorage.getEnergyStored() <= 0 || outputTank.getSpace() <= 0) {
 			return false;
 		}
-		RefineryRecipe recipe = augmentPotion ? RefineryManager.getRecipePotion(inputTank.getFluid()) : RefineryManager.getRecipe(inputTank.getFluid());
+		getRecipe();
 
-		if (recipe == null) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (inputTank.getFluidAmount() < recipe.getInput().amount) {
+		if (inputTank.getFluidAmount() < curRecipe.getInput().amount) {
 			return false;
 		}
-		FluidStack outputFluid = recipe.getOutputFluid();
-		ItemStack outputItem = recipe.getOutputItem();
+		FluidStack outputFluid = curRecipe.getOutputFluid();
+		ItemStack outputItem = curRecipe.getOutputItem();
 
 		if (!outputItem.isEmpty() && !inventory[0].isEmpty()) {
 			if (!augmentSecondaryNull) {
@@ -157,20 +158,28 @@ public class TileRefinery extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		RefineryRecipe recipe;
-
-		if (augmentPotion) {
-			recipe = RefineryManager.getRecipePotion(inputTank.getFluid());
-		} else {
-			recipe = RefineryManager.getRecipe(inputTank.getFluid());
+		if (curRecipe == null) {
+			getRecipe();
 		}
-		return recipe != null;
+		return curRecipe != null;
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = augmentPotion ? RefineryManager.getRecipePotion(inputTank.getFluid()) : RefineryManager.getRecipe(inputTank.getFluid());
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = augmentPotion ? RefineryManager.getRecipePotion(inputTank.getFluid()).getEnergy() * energyMod / ENERGY_BASE : RefineryManager.getRecipe(inputTank.getFluid()).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
 		FluidStack prevStack = renderFluid.copy();
@@ -185,23 +194,24 @@ public class TileRefinery extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		RefineryRecipe recipe = augmentPotion ? RefineryManager.getRecipePotion(inputTank.getFluid()) : RefineryManager.getRecipe(inputTank.getFluid());
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		if (augmentOil && RefineryManager.isFossilFuel(recipe.getInput())) {
-			outputTank.fill(new FluidStack(recipe.getOutputFluid(), recipe.getOutputFluid().amount + OIL_FLUID_BOOST), true);
+		if (augmentOil && RefineryManager.isFossilFuel(curRecipe.getInput())) {
+			outputTank.fill(new FluidStack(curRecipe.getOutputFluid(), curRecipe.getOutputFluid().amount + OIL_FLUID_BOOST), true);
 		} else {
-			outputTank.fill(recipe.getOutputFluid(), true);
+			outputTank.fill(curRecipe.getOutputFluid(), true);
 		}
-		ItemStack outputItem = recipe.getOutputItem();
+		ItemStack outputItem = curRecipe.getOutputItem();
 
 		if (!outputItem.isEmpty()) {
 			int modifiedChance = secondaryChance;
 
-			int recipeChance = recipe.getChance();
+			int recipeChance = curRecipe.getChance();
 			if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
 				if (inventory[0].isEmpty()) {
 					inventory[0] = ItemHelper.cloneStack(outputItem);
@@ -221,7 +231,7 @@ public class TileRefinery extends TileMachineBase {
 				}
 			}
 		}
-		inputTank.drain(recipe.getInput().amount, true);
+		inputTank.drain(curRecipe.getInput().amount, true);
 	}
 
 	@Override

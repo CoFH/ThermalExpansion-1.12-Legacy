@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStackSafe;
+import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.item.ItemBait;
 import cofh.thermalfoundation.item.ItemFertilizer;
@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 
 public class ChargerManager {
 
-	private static Map<ComparableItemStackSafe, ChargerRecipe> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackValidated, ChargerRecipe> recipeMap = new THashMap<>();
 
 	public static final int DEFAULT_ENERGY = 8000;
 
@@ -22,7 +22,7 @@ public class ChargerManager {
 		if (input.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackSafe query = new ComparableItemStackSafe(input);
+		ComparableItemStackValidated query = new ComparableItemStackValidated(input);
 
 		ChargerRecipe recipe = recipeMap.get(query);
 
@@ -58,12 +58,12 @@ public class ChargerManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackSafe, ChargerRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidated, ChargerRecipe> tempMap = new THashMap<>(recipeMap.size());
 		ChargerRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackSafe, ChargerRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackValidated, ChargerRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			tempMap.put(new ComparableItemStackSafe(tempRecipe.input), tempRecipe);
+			tempMap.put(new ComparableItemStackValidated(tempRecipe.input), tempRecipe);
 		}
 		recipeMap.clear();
 		recipeMap = tempMap;
@@ -76,14 +76,14 @@ public class ChargerManager {
 			return null;
 		}
 		ChargerRecipe recipe = new ChargerRecipe(input, output, energy);
-		recipeMap.put(new ComparableItemStackSafe(input), recipe);
+		recipeMap.put(new ComparableItemStackValidated(input), recipe);
 		return recipe;
 	}
 
 	/* REMOVE RECIPES */
 	public static ChargerRecipe removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackSafe(input));
+		return recipeMap.remove(new ComparableItemStackValidated(input));
 	}
 
 	/* HELPERS */

@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStackSafe;
+import cofh.core.inventory.ComparableItemStackValidated;
+import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalfoundation.item.ItemFertilizer;
@@ -21,9 +22,15 @@ import static java.util.Arrays.asList;
 
 public class InsolatorManager {
 
-	private static Map<List<ComparableItemStackInsolator>, InsolatorRecipe> recipeMap = new THashMap<>();
-	private static Set<ComparableItemStackInsolator> validationSet = new THashSet<>();
-	private static Set<ComparableItemStackInsolator> lockSet = new THashSet<>();
+	private static Map<List<ComparableItemStackValidated>, InsolatorRecipe> recipeMap = new THashMap<>();
+	private static Set<ComparableItemStackValidated> validationSet = new THashSet<>();
+	private static Set<ComparableItemStackValidated> lockSet = new THashSet<>();
+	private static OreValidator oreValidator = new OreValidator();
+
+	static {
+		oreValidator.addPrefix("seed");
+		oreValidator.addPrefix("crop");
+	}
 
 	public static final int CROP_MULTIPLIER_RICH = 3;
 	public static final int CROP_MULTIPLIER_FLUX = 4;
@@ -38,8 +45,8 @@ public class InsolatorManager {
 		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return false;
 		}
-		ComparableItemStackInsolator query = new ComparableItemStackInsolator(primaryInput);
-		ComparableItemStackInsolator querySecondary = new ComparableItemStackInsolator(secondaryInput);
+		ComparableItemStackValidated query = convertInput(primaryInput);
+		ComparableItemStackValidated querySecondary = convertInput(secondaryInput);
 
 		InsolatorRecipe recipe = recipeMap.get(asList(query, querySecondary));
 		return recipe == null && recipeMap.get(asList(querySecondary, query)) != null;
@@ -50,8 +57,8 @@ public class InsolatorManager {
 		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackInsolator query = new ComparableItemStackInsolator(primaryInput);
-		ComparableItemStackInsolator querySecondary = new ComparableItemStackInsolator(secondaryInput);
+		ComparableItemStackValidated query = convertInput(primaryInput);
+		ComparableItemStackValidated querySecondary = convertInput(secondaryInput);
 
 		InsolatorRecipe recipe = recipeMap.get(asList(query, querySecondary));
 
@@ -76,12 +83,12 @@ public class InsolatorManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return !input.isEmpty() && validationSet.contains(new ComparableItemStackInsolator(input));
+		return !input.isEmpty() && validationSet.contains(convertInput(input));
 	}
 
 	public static boolean isItemFertilizer(ItemStack input) {
 
-		return !input.isEmpty() && lockSet.contains(new ComparableItemStackInsolator(input));
+		return !input.isEmpty() && lockSet.contains(convertInput(input));
 	}
 
 	public static void initialize() {
@@ -185,14 +192,14 @@ public class InsolatorManager {
 
 	public static void refresh() {
 
-		Map<List<ComparableItemStackInsolator>, InsolatorRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Set<ComparableItemStackInsolator> tempSet = new THashSet<>();
+		Map<List<ComparableItemStackValidated>, InsolatorRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Set<ComparableItemStackValidated> tempSet = new THashSet<>();
 		InsolatorRecipe tempRecipe;
 
-		for (Entry<List<ComparableItemStackInsolator>, InsolatorRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<List<ComparableItemStackValidated>, InsolatorRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackInsolator primary = new ComparableItemStackInsolator(tempRecipe.primaryInput);
-			ComparableItemStackInsolator secondary = new ComparableItemStackInsolator(tempRecipe.secondaryInput);
+			ComparableItemStackValidated primary = convertInput(tempRecipe.primaryInput);
+			ComparableItemStackValidated secondary = convertInput(tempRecipe.secondaryInput);
 
 			tempMap.put(asList(primary, secondary), tempRecipe);
 			tempSet.add(primary);
@@ -204,9 +211,9 @@ public class InsolatorManager {
 		validationSet.clear();
 		validationSet = tempSet;
 
-		Set<ComparableItemStackInsolator> tempSet2 = new THashSet<>();
-		for (ComparableItemStackInsolator entry : lockSet) {
-			ComparableItemStackInsolator lock = new ComparableItemStackInsolator(new ItemStack(entry.item, entry.stackSize, entry.metadata));
+		Set<ComparableItemStackValidated> tempSet2 = new THashSet<>();
+		for (ComparableItemStackValidated entry : lockSet) {
+			ComparableItemStackValidated lock = convertInput(new ItemStack(entry.item, entry.stackSize, entry.metadata));
 			tempSet2.add(lock);
 		}
 		lockSet.clear();
@@ -220,9 +227,9 @@ public class InsolatorManager {
 			return null;
 		}
 		InsolatorRecipe recipe = new InsolatorRecipe(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryOutput.isEmpty() ? 0 : secondaryChance, energy, water, type);
-		recipeMap.put(asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)), recipe);
-		validationSet.add(new ComparableItemStackInsolator(primaryInput));
-		validationSet.add(new ComparableItemStackInsolator(secondaryInput));
+		recipeMap.put(asList(convertInput(primaryInput), convertInput(secondaryInput)), recipe);
+		validationSet.add(convertInput(primaryInput));
+		validationSet.add(convertInput(secondaryInput));
 		return recipe;
 	}
 
@@ -265,13 +272,18 @@ public class InsolatorManager {
 	/* REMOVE RECIPES */
 	public static InsolatorRecipe removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
-		return recipeMap.remove(asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)));
+		return recipeMap.remove(asList(convertInput(primaryInput), convertInput(secondaryInput)));
 	}
 
 	/* HELPERS */
+	public static ComparableItemStackValidated convertInput(ItemStack stack) {
+
+		return new ComparableItemStackValidated(stack, oreValidator);
+	}
+
 	private static void addFertilizer(ItemStack fertilizer) {
 
-		lockSet.add(new ComparableItemStackInsolator(fertilizer));
+		lockSet.add(convertInput(fertilizer));
 	}
 
 	public static void addDefaultOreDictionaryRecipe(String oreType) {
@@ -431,25 +443,6 @@ public class InsolatorManager {
 	/* TYPE ENUM */
 	public enum Type {
 		STANDARD, TREE
-	}
-
-	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackInsolator extends ComparableItemStackSafe {
-
-		public static final String SEED = "seed";
-		public static final String CROP = "crop";
-		public static final String SEEDS = "seeds";
-
-		@Override
-		public boolean safeOreType(String oreName) {
-
-			return !oreName.startsWith(SEEDS) && (oreName.startsWith(SEED) && oreName.length() > SEED.length() || oreName.startsWith(CROP) && oreName.length() > CROP.length());
-		}
-
-		public ComparableItemStackInsolator(ItemStack stack) {
-
-			super(stack);
-		}
 	}
 
 }

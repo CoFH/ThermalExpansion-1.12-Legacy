@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.util.managers.device;
 
-import cofh.core.inventory.ComparableItemStackSafe;
+import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.block.BlockStorage;
 import cofh.thermalfoundation.block.BlockStorageAlloy;
@@ -17,15 +17,15 @@ import java.util.Map;
 
 public class FactorizerManager {
 
-	private static Map<ComparableItemStackSafe, FactorizerRecipe> recipeMap = new THashMap<>();
-	private static Map<ComparableItemStackSafe, FactorizerRecipe> recipeMapReverse = new THashMap<>();
+	private static Map<ComparableItemStackValidated, FactorizerRecipe> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackValidated, FactorizerRecipe> recipeMapReverse = new THashMap<>();
 
 	public static FactorizerRecipe getRecipe(ItemStack input, boolean reverse) {
 
 		if (input.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackSafe query = new ComparableItemStackSafe(input);
+		ComparableItemStackValidated query = new ComparableItemStackValidated(input);
 		FactorizerRecipe recipe;
 
 		if (reverse) {
@@ -134,18 +134,18 @@ public class FactorizerManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackSafe, FactorizerRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Map<ComparableItemStackSafe, FactorizerRecipe> tempMapReverse = new THashMap<>(recipeMapReverse.size());
+		Map<ComparableItemStackValidated, FactorizerRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidated, FactorizerRecipe> tempMapReverse = new THashMap<>(recipeMapReverse.size());
 		FactorizerRecipe tempRecipe;
 
-		for (Map.Entry<ComparableItemStackSafe, FactorizerRecipe> entry : recipeMap.entrySet()) {
+		for (Map.Entry<ComparableItemStackValidated, FactorizerRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackSafe input = new ComparableItemStackSafe(tempRecipe.input);
+			ComparableItemStackValidated input = new ComparableItemStackValidated(tempRecipe.input);
 			tempMap.put(input, tempRecipe);
 		}
-		for (Map.Entry<ComparableItemStackSafe, FactorizerRecipe> entry : recipeMapReverse.entrySet()) {
+		for (Map.Entry<ComparableItemStackValidated, FactorizerRecipe> entry : recipeMapReverse.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackSafe input = new ComparableItemStackSafe(tempRecipe.input);
+			ComparableItemStackValidated input = new ComparableItemStackValidated(tempRecipe.input);
 			tempMapReverse.put(input, tempRecipe);
 		}
 		recipeMap.clear();
@@ -164,9 +164,9 @@ public class FactorizerManager {
 		FactorizerRecipe recipe = new FactorizerRecipe(input, output);
 
 		if (reverse) {
-			recipeMapReverse.put(new ComparableItemStackSafe(input), recipe);
+			recipeMapReverse.put(new ComparableItemStackValidated(input), recipe);
 		} else {
-			recipeMap.put(new ComparableItemStackSafe(input), recipe);
+			recipeMap.put(new ComparableItemStackValidated(input), recipe);
 		}
 		return recipe;
 	}
@@ -175,9 +175,9 @@ public class FactorizerManager {
 	public static FactorizerRecipe removeRecipe(ItemStack input, boolean reverse) {
 
 		if (reverse) {
-			return recipeMapReverse.remove(new ComparableItemStackSafe(input));
+			return recipeMapReverse.remove(new ComparableItemStackValidated(input));
 		} else {
-			return recipeMap.remove(new ComparableItemStackSafe(input));
+			return recipeMap.remove(new ComparableItemStackValidated(input));
 		}
 	}
 

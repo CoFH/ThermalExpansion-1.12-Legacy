@@ -332,6 +332,14 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		return true;
 	}
 
+	protected void clearRecipe() {
+
+	}
+
+	protected void getRecipe() {
+
+	}
+
 	protected void processStart() {
 
 	}
@@ -345,6 +353,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		processRem = 0;
 		isActive = false;
 		wasActive = true;
+		clearRecipe();
 
 		if (world != null) {
 			tracker.markTime(world);

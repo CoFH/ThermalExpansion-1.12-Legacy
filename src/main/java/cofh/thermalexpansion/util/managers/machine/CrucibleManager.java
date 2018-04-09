@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.init.CoreProps;
-import cofh.core.inventory.ComparableItemStackSafeNBT;
+import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.thermalfoundation.block.BlockOreFluid;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -20,14 +20,14 @@ import java.util.Set;
 
 public class CrucibleManager {
 
-	private static Map<ComparableItemStackCrucible, CrucibleRecipe> recipeMap = new THashMap<>();
-	private static Set<ComparableItemStackCrucible> lavaSet = new THashSet<>();
+	private static Map<ComparableItemStackValidated, CrucibleRecipe> recipeMap = new THashMap<>();
+	private static Set<ComparableItemStackValidated> lavaSet = new THashSet<>();
 
 	public static final int DEFAULT_ENERGY = 8000;
 
 	public static CrucibleRecipe getRecipe(ItemStack input) {
 
-		return input.isEmpty() ? null : recipeMap.get(new ComparableItemStackCrucible(input));
+		return input.isEmpty() ? null : recipeMap.get(new ComparableItemStackValidated(input));
 	}
 
 	public static boolean recipeExists(ItemStack input) {
@@ -42,7 +42,7 @@ public class CrucibleManager {
 
 	public static boolean isLava(ItemStack input) {
 
-		return !input.isEmpty() && lavaSet.contains(new ComparableItemStackCrucible(input));
+		return !input.isEmpty() && lavaSet.contains(new ComparableItemStackValidated(input));
 	}
 
 	public static void initialize() {
@@ -111,13 +111,13 @@ public class CrucibleManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackCrucible, CrucibleRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Set<ComparableItemStackCrucible> tempSet = new THashSet<>();
+		Map<ComparableItemStackValidated, CrucibleRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Set<ComparableItemStackValidated> tempSet = new THashSet<>();
 		CrucibleRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackCrucible, CrucibleRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackValidated, CrucibleRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackCrucible input = new ComparableItemStackCrucible(tempRecipe.input);
+			ComparableItemStackValidated input = new ComparableItemStackValidated(tempRecipe.input);
 			tempMap.put(input, tempRecipe);
 
 			if (FluidRegistry.LAVA.equals(tempRecipe.getOutput().getFluid())) {
@@ -137,7 +137,7 @@ public class CrucibleManager {
 		if (input.isEmpty() || output == null || output.amount <= 0 || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
-		ComparableItemStackCrucible inputCrucible = new ComparableItemStackCrucible(input);
+		ComparableItemStackValidated inputCrucible = new ComparableItemStackValidated(input);
 
 		CrucibleRecipe recipe = new CrucibleRecipe(input, output, energy);
 		recipeMap.put(inputCrucible, recipe);
@@ -151,9 +151,15 @@ public class CrucibleManager {
 	/* REMOVE RECIPES */
 	public static CrucibleRecipe removeRecipe(ItemStack input) {
 
-		ComparableItemStackCrucible inputCrucible = new ComparableItemStackCrucible(input);
+		ComparableItemStackValidated inputCrucible = new ComparableItemStackValidated(input);
 		lavaSet.remove(inputCrucible);
 		return recipeMap.remove(inputCrucible);
+	}
+
+	/* HELPERS */
+	public static ComparableItemStackValidated convertInput(ItemStack stack) {
+
+		return new ComparableItemStackValidated(stack);
 	}
 
 	/* RECIPE CLASS */
@@ -183,23 +189,6 @@ public class CrucibleManager {
 		public int getEnergy() {
 
 			return energy;
-		}
-	}
-
-	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackCrucible extends ComparableItemStackSafeNBT {
-
-		public static final String PLATE = "plate";
-
-		@Override
-		public boolean safeOreType(String oreName) {
-
-			return oreName.startsWith(INGOT) || oreName.startsWith(ORE) || oreName.startsWith(NUGGET) || oreName.startsWith(BLOCK) || oreName.startsWith(DUST) || oreName.equals(PLATE);
-		}
-
-		public ComparableItemStackCrucible(ItemStack stack) {
-
-			super(stack);
 		}
 	}
 

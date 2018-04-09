@@ -85,6 +85,7 @@ public class TileCrucible extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private CrucibleRecipe curRecipe;
 	private int inputTracker;
 	private int outputTrackerFluid;
 
@@ -132,37 +133,53 @@ public class TileCrucible extends TileMachineBase {
 		if (augmentLava && !CrucibleManager.isLava(inventory[0])) {
 			return false;
 		}
-		CrucibleRecipe recipe = CrucibleManager.getRecipe(inventory[0]);
+		getRecipe();
 
-		if (recipe == null) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (inventory[0].getCount() < recipe.getInput().getCount()) {
+		if (inventory[0].getCount() < curRecipe.getInput().getCount()) {
 			return false;
 		}
-		FluidStack output = recipe.getOutput();
+		FluidStack output = curRecipe.getOutput();
 		return tank.fill(output, false) == output.amount;
 	}
 
 	@Override
 	protected boolean hasValidInput() {
 
-		CrucibleRecipe recipe = CrucibleManager.getRecipe(inventory[0]);
-
 		if (augmentLava && !CrucibleManager.isLava(inventory[0])) {
 			return false;
 		}
-		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
+			return false;
+		}
+		return curRecipe.getInput().getCount() <= inventory[0].getCount();
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = CrucibleManager.getRecipe(inventory[0]);
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = CrucibleManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
 		FluidStack prevStack = renderFluid.copy();
-		renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput().copy();
+		renderFluid = curRecipe.getOutput().copy();
 		renderFluid.amount = 0;
 
 		if (!FluidHelper.isFluidEqual(prevStack, renderFluid)) {
@@ -173,13 +190,14 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		CrucibleRecipe recipe = CrucibleManager.getRecipe(inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		tank.fill(recipe.getOutput(), true);
+		tank.fill(curRecipe.getOutput(), true);
 		inventory[0].shrink(1);
 
 		if (inventory[0].getCount() <= 0) {
@@ -283,10 +301,11 @@ public class TileCrucible extends TileMachineBase {
 		outputTrackerFluid = nbt.getInteger("TrackOut");
 		tank.readFromNBT(nbt);
 
+		getRecipe();
 		if (tank.getFluid() != null) {
 			renderFluid = tank.getFluid().copy();
-		} else if (CrucibleManager.getRecipe(inventory[0]) != null) {
-			renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput().copy();
+		} else if (curRecipe != null) {
+			renderFluid = curRecipe.getOutput().copy();
 		}
 	}
 

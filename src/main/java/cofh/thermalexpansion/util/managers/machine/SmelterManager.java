@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStackSafe;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackValidated;
+import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
@@ -27,10 +29,31 @@ import static java.util.Arrays.asList;
 
 public class SmelterManager {
 
-	private static Map<List<ComparableItemStackSmelter>, SmelterRecipe> recipeMap = new THashMap<>();
-	private static Map<List<ComparableItemStackSmelter>, SmelterRecipe> recipeMapRecycle = new THashMap<>();
-	private static Set<ComparableItemStackSmelter> validationSet = new THashSet<>();
-	private static Set<ComparableItemStackSmelter> lockSet = new THashSet<>();
+	private static Map<List<ComparableItemStackValidated>, SmelterRecipe> recipeMap = new THashMap<>();
+	private static Set<ComparableItemStackValidated> validationSet = new THashSet<>();
+	private static Set<ComparableItemStackValidated> lockSet = new THashSet<>();
+	private static OreValidator oreValidator = new OreValidator();
+
+	static {
+		oreValidator.addPrefix(ComparableItemStack.BLOCK);
+		oreValidator.addPrefix(ComparableItemStack.ORE);
+		oreValidator.addPrefix(ComparableItemStack.DUST);
+		oreValidator.addPrefix(ComparableItemStack.INGOT);
+		oreValidator.addPrefix(ComparableItemStack.NUGGET);
+		oreValidator.addPrefix(ComparableItemStack.GEM);
+		oreValidator.addPrefix(ComparableItemStack.PLATE);
+
+		oreValidator.addExact("sand");
+
+		oreValidator.addExact("crystalSlag");
+		oreValidator.addExact("crystalSlagRich");
+		oreValidator.addExact("crystalCinnabar");
+
+		oreValidator.addExact("itemSlag");
+		oreValidator.addExact("itemSlagRich");
+		oreValidator.addExact("itemCinnabar");
+		oreValidator.addExact("fuelCoke");
+	}
 
 	static final ItemStack BLOCK_SAND = new ItemStack(Blocks.SAND);
 	static final ItemStack BLOCK_SOUL_SAND = new ItemStack(Blocks.SOUL_SAND);
@@ -45,8 +68,8 @@ public class SmelterManager {
 		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return false;
 		}
-		ComparableItemStackSmelter query = new ComparableItemStackSmelter(primaryInput);
-		ComparableItemStackSmelter querySecondary = new ComparableItemStackSmelter(secondaryInput);
+		ComparableItemStackValidated query = convertInput(primaryInput);
+		ComparableItemStackValidated querySecondary = convertInput(secondaryInput);
 
 		SmelterRecipe recipe = recipeMap.get(asList(query, querySecondary));
 		return recipe == null && recipeMap.get(asList(querySecondary, query)) != null;
@@ -57,8 +80,8 @@ public class SmelterManager {
 		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackSmelter query = new ComparableItemStackSmelter(primaryInput);
-		ComparableItemStackSmelter querySecondary = new ComparableItemStackSmelter(secondaryInput);
+		ComparableItemStackValidated query = convertInput(primaryInput);
+		ComparableItemStackValidated querySecondary = convertInput(secondaryInput);
 
 		SmelterRecipe recipe = recipeMap.get(asList(query, querySecondary));
 
@@ -83,12 +106,12 @@ public class SmelterManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return !input.isEmpty() && validationSet.contains(new ComparableItemStackSmelter(input));
+		return !input.isEmpty() && validationSet.contains(convertInput(input));
 	}
 
 	public static boolean isItemFlux(ItemStack input) {
 
-		return !input.isEmpty() && lockSet.contains(new ComparableItemStackSmelter(input));
+		return !input.isEmpty() && lockSet.contains(convertInput(input));
 	}
 
 	public static void initialize() {
@@ -419,14 +442,14 @@ public class SmelterManager {
 
 	public static void refresh() {
 
-		Map<List<ComparableItemStackSmelter>, SmelterRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Set<ComparableItemStackSmelter> tempSet = new THashSet<>();
+		Map<List<ComparableItemStackValidated>, SmelterRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Set<ComparableItemStackValidated> tempSet = new THashSet<>();
 		SmelterRecipe tempRecipe;
 
-		for (Entry<List<ComparableItemStackSmelter>, SmelterRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<List<ComparableItemStackValidated>, SmelterRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackSmelter primary = new ComparableItemStackSmelter(tempRecipe.primaryInput);
-			ComparableItemStackSmelter secondary = new ComparableItemStackSmelter(tempRecipe.secondaryInput);
+			ComparableItemStackValidated primary = convertInput(tempRecipe.primaryInput);
+			ComparableItemStackValidated secondary = convertInput(tempRecipe.secondaryInput);
 
 			tempMap.put(asList(primary, secondary), tempRecipe);
 			tempSet.add(primary);
@@ -438,9 +461,9 @@ public class SmelterManager {
 		validationSet.clear();
 		validationSet = tempSet;
 
-		Set<ComparableItemStackSmelter> tempSet2 = new THashSet<>();
-		for (ComparableItemStackSmelter entry : lockSet) {
-			ComparableItemStackSmelter lock = new ComparableItemStackSmelter(new ItemStack(entry.item, entry.stackSize, entry.metadata));
+		Set<ComparableItemStackValidated> tempSet2 = new THashSet<>();
+		for (ComparableItemStackValidated entry : lockSet) {
+			ComparableItemStackValidated lock = convertInput(new ItemStack(entry.item, entry.stackSize, entry.metadata));
 			tempSet2.add(lock);
 		}
 		lockSet.clear();
@@ -454,9 +477,9 @@ public class SmelterManager {
 			return null;
 		}
 		SmelterRecipe recipe = new SmelterRecipe(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryOutput.isEmpty() ? 0 : secondaryChance, energy);
-		recipeMap.put(asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput)), recipe);
-		validationSet.add(new ComparableItemStackSmelter(primaryInput));
-		validationSet.add(new ComparableItemStackSmelter(secondaryInput));
+		recipeMap.put(asList(convertInput(primaryInput), convertInput(secondaryInput)), recipe);
+		validationSet.add(convertInput(primaryInput));
+		validationSet.add(convertInput(secondaryInput));
 		return recipe;
 	}
 
@@ -473,13 +496,18 @@ public class SmelterManager {
 	/* REMOVE RECIPES */
 	public static SmelterRecipe removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
-		return recipeMap.remove(asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput)));
+		return recipeMap.remove(asList(convertInput(primaryInput), convertInput(secondaryInput)));
 	}
 
 	/* HELPERS */
+	public static ComparableItemStackValidated convertInput(ItemStack stack) {
+
+		return new ComparableItemStackValidated(stack, oreValidator);
+	}
+
 	private static void addFlux(ItemStack flux) {
 
-		lockSet.add(new ComparableItemStackSmelter(flux));
+		lockSet.add(convertInput(flux));
 	}
 
 	private static void addDefaultOreDictionaryRecipe(String oreName, String dustName, ItemStack ingot, ItemStack ingotRelated, int richSlagChance, int slagOreChance, int slagDustChance) {
@@ -663,36 +691,6 @@ public class SmelterManager {
 		public boolean hasFlux() {
 
 			return hasFlux;
-		}
-	}
-
-	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackSmelter extends ComparableItemStackSafe {
-
-		public static final Set<String> EQUALS = new THashSet<>();
-
-		static {
-			EQUALS.add("sand");
-
-			EQUALS.add("crystalSlag");
-			EQUALS.add("crystalSlagRich");
-			EQUALS.add("crystalCinnabar");
-
-			EQUALS.add("itemSlag");
-			EQUALS.add("itemSlagRich");
-			EQUALS.add("itemCinnabar");
-			EQUALS.add("fuelCoke");
-		}
-
-		@Override
-		public boolean safeOreType(String oreName) {
-
-			return EQUALS.contains(oreName) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET);
-		}
-
-		public ComparableItemStackSmelter(ItemStack stack) {
-
-			super(stack);
 		}
 	}
 

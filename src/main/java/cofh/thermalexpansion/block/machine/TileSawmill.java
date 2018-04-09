@@ -83,6 +83,7 @@ public class TileSawmill extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private SawmillRecipe curRecipe;
 	private int inputTracker;
 	private int outputTrackerPrimary;
 	private int outputTrackerSecondary;
@@ -115,16 +116,16 @@ public class TileSawmill extends TileMachineBase {
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		SawmillRecipe recipe = SawmillManager.getRecipe(inventory[0]);
+		getRecipe();
 
-		if (recipe == null) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (inventory[0].getCount() < recipe.getInput().getCount()) {
+		if (inventory[0].getCount() < curRecipe.getInput().getCount()) {
 			return false;
 		}
-		ItemStack primaryItem = recipe.getPrimaryOutput();
-		ItemStack secondaryItem = recipe.getSecondaryOutput();
+		ItemStack primaryItem = curRecipe.getPrimaryOutput();
+		ItemStack secondaryItem = curRecipe.getSecondaryOutput();
 
 		if (!secondaryItem.isEmpty() && !inventory[2].isEmpty()) {
 			if (!augmentSecondaryNull) {
@@ -142,8 +143,25 @@ public class TileSawmill extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		SawmillRecipe recipe = SawmillManager.getRecipe(inventory[0]);
-		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
+			return false;
+		}
+		return curRecipe.getInput().getCount() <= inventory[0].getCount();
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = SawmillManager.getRecipe(inventory[0]);
 	}
 
 	@Override
@@ -152,21 +170,22 @@ public class TileSawmill extends TileMachineBase {
 		if (augmentTapper && TapperManager.mappingExists(inventory[0])) {
 			renderFluid = new FluidStack(TapperManager.getFluid(inventory[0]).copy(), 0);
 		}
-		processMax = SawmillManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		SawmillRecipe recipe = SawmillManager.getRecipe(inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		ItemStack primaryItem = recipe.getPrimaryOutput();
-		ItemStack secondaryItem = recipe.getSecondaryOutput();
+		ItemStack primaryItem = curRecipe.getPrimaryOutput();
+		ItemStack secondaryItem = curRecipe.getSecondaryOutput();
 
 		if (inventory[1].isEmpty()) {
 			inventory[1] = ItemHelper.cloneStack(primaryItem);
@@ -176,7 +195,7 @@ public class TileSawmill extends TileMachineBase {
 		if (!secondaryItem.isEmpty()) {
 			int modifiedChance = secondaryChance;
 
-			int recipeChance = recipe.getSecondaryOutputChance();
+			int recipeChance = curRecipe.getSecondaryOutputChance();
 			if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
 				if (inventory[2].isEmpty()) {
 					inventory[2] = ItemHelper.cloneStack(secondaryItem);
@@ -201,7 +220,7 @@ public class TileSawmill extends TileMachineBase {
 			;
 			tank.fill(treeFluid, true);
 		}
-		inventory[0].shrink(recipe.getInput().getCount());
+		inventory[0].shrink(curRecipe.getInput().getCount());
 
 		if (inventory[0].getCount() <= 0) {
 			inventory[0] = ItemStack.EMPTY;

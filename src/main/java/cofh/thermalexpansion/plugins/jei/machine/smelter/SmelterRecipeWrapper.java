@@ -7,7 +7,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
-import cofh.thermalexpansion.util.managers.machine.SmelterManager.ComparableItemStackSmelter;
+import cofh.thermalexpansion.util.managers.machine.SmelterManager;
 import cofh.thermalexpansion.util.managers.machine.SmelterManager.SmelterRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import mezz.jei.api.IGuiHelper;
@@ -16,7 +16,6 @@ import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -55,8 +54,7 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeInputsPrimary = new ArrayList<>();
 		List<ItemStack> recipeInputsSecondary = new ArrayList<>();
 
-		ComparableItemStackSmelter instance = new ComparableItemStackSmelter(new ItemStack(Items.DIAMOND));
-		int oreID = instance.getOreID(recipe.getPrimaryInput());
+		int oreID = SmelterManager.convertInput(recipe.getPrimaryInput()).oreID;
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputsPrimary.add(ItemHelper.cloneStack(ore, recipe.getPrimaryInput().getCount()));
@@ -64,7 +62,7 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 		} else {
 			recipeInputsPrimary.add(recipe.getPrimaryInput());
 		}
-		oreID = instance.getOreID(recipe.getSecondaryInput());
+		oreID = SmelterManager.convertInput(recipe.getSecondaryInput()).oreID;
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputsSecondary.add(ItemHelper.cloneStack(ore, recipe.getSecondaryInput().getCount()));

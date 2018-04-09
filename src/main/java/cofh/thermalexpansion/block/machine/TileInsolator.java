@@ -83,6 +83,7 @@ public class TileInsolator extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private InsolatorRecipe curRecipe;
 	private int inputTrackerPrimary;
 	private int inputTrackerSecondary;
 	private int outputTrackerPrimary;
@@ -123,25 +124,28 @@ public class TileInsolator extends TileMachineBase {
 		if (inventory[0].isEmpty() || inventory[1].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		InsolatorRecipe recipe = InsolatorManager.getRecipe(inventory[1], inventory[0]);
+		getRecipe();
 
-		if (recipe == null || tank.getFluidAmount() < recipe.getWater()) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (recipe.getType() == InsolatorManager.Type.TREE && !augmentTree) {
+		if (tank.getFluidAmount() < curRecipe.getWater()) {
+			return false;
+		}
+		if (curRecipe.getType() == InsolatorManager.Type.TREE && !augmentTree) {
 			return false;
 		}
 		if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
-			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
+			if (curRecipe.getPrimaryInput().getCount() > inventory[1].getCount() || curRecipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
 				return false;
 			}
 		} else {
-			if (recipe.getPrimaryInput().getCount() > inventory[0].getCount() || recipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
+			if (curRecipe.getPrimaryInput().getCount() > inventory[0].getCount() || curRecipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
 				return false;
 			}
 		}
-		ItemStack primaryItem = recipe.getPrimaryOutput();
-		ItemStack secondaryItem = recipe.getSecondaryOutput();
+		ItemStack primaryItem = curRecipe.getPrimaryOutput();
+		ItemStack secondaryItem = curRecipe.getSecondaryOutput();
 
 		if (!secondaryItem.isEmpty() && !inventory[3].isEmpty()) {
 			if (!augmentSecondaryNull) {
@@ -159,46 +163,55 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		InsolatorRecipe recipe = InsolatorManager.getRecipe(inventory[1], inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			return false;
 		}
 		if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
-			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
-				return false;
-			}
+			return curRecipe.getPrimaryInput().getCount() <= inventory[1].getCount() && curRecipe.getSecondaryInput().getCount() <= inventory[0].getCount();
 		} else {
-			if (recipe.getPrimaryInput().getCount() > inventory[0].getCount() || recipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
-				return false;
-			}
+			return curRecipe.getPrimaryInput().getCount() <= inventory[0].getCount() && curRecipe.getSecondaryInput().getCount() <= inventory[1].getCount();
 		}
-		return true;
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = InsolatorManager.getRecipe(inventory[1], inventory[0]);
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = InsolatorManager.getRecipe(inventory[1], inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		InsolatorRecipe recipe = InsolatorManager.getRecipe(inventory[1], inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		tank.modifyFluidStored(-recipe.getWater());
-		ItemStack primaryItem = recipe.getPrimaryOutput();
-		ItemStack secondaryItem = recipe.getSecondaryOutput();
-		boolean hasFertilizer = recipe.hasFertilizer();
+		tank.modifyFluidStored(-curRecipe.getWater());
+		ItemStack primaryItem = curRecipe.getPrimaryOutput();
+		ItemStack secondaryItem = curRecipe.getSecondaryOutput();
+		boolean hasFertilizer = curRecipe.hasFertilizer();
 
 		if (hasFertilizer) { // Fertilizer is *always* secondary input, if present.
-			ItemStack input = recipe.getPrimaryInput();
+			ItemStack input = curRecipe.getPrimaryInput();
 
 			if (inventory[2].isEmpty()) {
 				inventory[2] = ItemHelper.cloneStack(primaryItem);
@@ -208,7 +221,7 @@ public class TileInsolator extends TileMachineBase {
 			if (!secondaryItem.isEmpty()) {
 				int modifiedChance = secondaryChance;
 
-				int recipeChance = recipe.getSecondaryOutputChance();
+				int recipeChance = curRecipe.getSecondaryOutputChance();
 				if (augmentMonoculture && secondaryItem.isItemEqual(input)) {
 					recipeChance -= 100;
 				}
@@ -231,8 +244,8 @@ public class TileInsolator extends TileMachineBase {
 					}
 				}
 			}
-			int countInput = augmentMonoculture ? 0 : recipe.getPrimaryInput().getCount();
-			int countFertilizer = recipe.getSecondaryInput().getCount();
+			int countInput = augmentMonoculture ? 0 : curRecipe.getPrimaryInput().getCount();
+			int countFertilizer = curRecipe.getSecondaryInput().getCount();
 
 			if (reuseChance > 0) {
 				if (InsolatorManager.isItemFertilizer(inventory[0])) {
@@ -264,7 +277,7 @@ public class TileInsolator extends TileMachineBase {
 			if (!secondaryItem.isEmpty()) {
 				int modifiedChance = secondaryChance;
 
-				int recipeChance = recipe.getSecondaryOutputChance();
+				int recipeChance = curRecipe.getSecondaryOutputChance();
 				if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
 					if (inventory[3].isEmpty()) {
 						inventory[3] = ItemHelper.cloneStack(secondaryItem);
@@ -284,8 +297,8 @@ public class TileInsolator extends TileMachineBase {
 					}
 				}
 			}
-			int count1 = recipe.getPrimaryInput().getCount();
-			int count2 = recipe.getSecondaryInput().getCount();
+			int count1 = curRecipe.getPrimaryInput().getCount();
+			int count2 = curRecipe.getSecondaryInput().getCount();
 
 			if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
 				inventory[1].shrink(count1);

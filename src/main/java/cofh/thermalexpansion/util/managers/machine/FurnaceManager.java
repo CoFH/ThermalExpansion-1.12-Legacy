@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStackSafe;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackValidated;
+import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.block.BlockStorageResource;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -20,9 +22,16 @@ import java.util.Set;
 
 public class FurnaceManager {
 
-	private static Map<ComparableItemStackFurnace, FurnaceRecipe> recipeMap = new THashMap<>();
-	private static Map<ComparableItemStackFurnace, FurnaceRecipe> recipeMapPyrolysis = new THashMap<>();
-	private static Set<ComparableItemStackFurnace> foodSet = new THashSet<>();
+	private static Map<ComparableItemStackValidated, FurnaceRecipe> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackValidated, FurnaceRecipe> recipeMapPyrolysis = new THashMap<>();
+	private static Set<ComparableItemStackValidated> foodSet = new THashSet<>();
+	private static OreValidator oreValidator = new OreValidator();
+
+	static {
+		oreValidator.addPrefix(ComparableItemStack.ORE);
+		oreValidator.addPrefix(ComparableItemStack.DUST);
+		oreValidator.addPrefix("log");
+	}
 
 	public static final int DEFAULT_ENERGY = 2000;
 
@@ -31,7 +40,7 @@ public class FurnaceManager {
 		if (input.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
+		ComparableItemStackValidated query = convertInput(input);
 
 		FurnaceRecipe recipe = recipeMap.get(query);
 
@@ -47,7 +56,7 @@ public class FurnaceManager {
 		if (input.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
+		ComparableItemStackValidated query = convertInput(input);
 
 		FurnaceRecipe recipe = recipeMapPyrolysis.get(query);
 
@@ -83,7 +92,7 @@ public class FurnaceManager {
 		if (input.isEmpty()) {
 			return false;
 		}
-		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
+		ComparableItemStackValidated query = convertInput(input);
 
 		if (foodSet.contains(query)) {
 			return true;
@@ -113,14 +122,14 @@ public class FurnaceManager {
 			addRecipe(energy, new ItemStack(Items.FISH, 1, 0), new ItemStack(Items.COOKED_FISH, 1, 0));
 			addRecipe(energy, new ItemStack(Items.FISH, 1, 1), new ItemStack(Items.COOKED_FISH, 1, 1));
 
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.PORKCHOP, 1, OreDictionary.WILDCARD_VALUE)));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.BEEF, 1, OreDictionary.WILDCARD_VALUE)));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.CHICKEN, 1, OreDictionary.WILDCARD_VALUE)));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.MUTTON, 1, OreDictionary.WILDCARD_VALUE)));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.RABBIT, 1, OreDictionary.WILDCARD_VALUE)));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.POTATO, 1, OreDictionary.WILDCARD_VALUE)));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.FISH, 1, 0)));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.FISH, 1, 1)));
+			foodSet.add(convertInput(new ItemStack(Items.PORKCHOP, 1, OreDictionary.WILDCARD_VALUE)));
+			foodSet.add(convertInput(new ItemStack(Items.BEEF, 1, OreDictionary.WILDCARD_VALUE)));
+			foodSet.add(convertInput(new ItemStack(Items.CHICKEN, 1, OreDictionary.WILDCARD_VALUE)));
+			foodSet.add(convertInput(new ItemStack(Items.MUTTON, 1, OreDictionary.WILDCARD_VALUE)));
+			foodSet.add(convertInput(new ItemStack(Items.RABBIT, 1, OreDictionary.WILDCARD_VALUE)));
+			foodSet.add(convertInput(new ItemStack(Items.POTATO, 1, OreDictionary.WILDCARD_VALUE)));
+			foodSet.add(convertInput(new ItemStack(Items.FISH, 1, 0)));
+			foodSet.add(convertInput(new ItemStack(Items.FISH, 1, 1)));
 		}
 
 		/* ORES */
@@ -238,8 +247,6 @@ public class FurnaceManager {
 		reservedMap.put("dustLumium", ItemMaterial.ingotLumium);
 		reservedMap.put("dustEnderium", ItemMaterial.ingotEnderium);
 
-		ComparableItemStackFurnace instance = new ComparableItemStackFurnace(new ItemStack(Items.DIAMOND));
-
 		for (ItemStack key : smeltingList.keySet()) {
 			if (key.isEmpty() || recipeExists(key)) {
 				continue;
@@ -255,7 +262,7 @@ public class FurnaceManager {
 
 			/* FOOD */
 			if (output.getItem() instanceof ItemFood) {
-				foodSet.add(new ComparableItemStackFurnace(key));
+				foodSet.add(convertInput(key));
 				energy /= 2;
 			}
 			/* DUST */
@@ -268,7 +275,7 @@ public class FurnaceManager {
 					ItemStack testKey = ItemHelper.cloneStack(key);
 					testKey.setItemDamage(0);
 
-					if (ItemHelper.hasOreName(testKey) && instance.safeOreType(ItemHelper.getOreName(testKey))) {
+					if (ItemHelper.hasOreName(testKey) && oreValidator.validate(ItemHelper.getOreName(testKey))) {
 						addRecipe(energy, testKey, output);
 						continue;
 					}
@@ -280,21 +287,21 @@ public class FurnaceManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackFurnace, FurnaceRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Map<ComparableItemStackFurnace, FurnaceRecipe> tempMapPyrolysis = new THashMap<>(recipeMapPyrolysis.size());
-		Set<ComparableItemStackFurnace> tempFood = new THashSet<>();
+		Map<ComparableItemStackValidated, FurnaceRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidated, FurnaceRecipe> tempMapPyrolysis = new THashMap<>(recipeMapPyrolysis.size());
+		Set<ComparableItemStackValidated> tempFood = new THashSet<>();
 		FurnaceRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackFurnace, FurnaceRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackValidated, FurnaceRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			tempMap.put(new ComparableItemStackFurnace(tempRecipe.input), tempRecipe);
+			tempMap.put(convertInput(tempRecipe.input), tempRecipe);
 		}
-		for (Entry<ComparableItemStackFurnace, FurnaceRecipe> entry : recipeMapPyrolysis.entrySet()) {
+		for (Entry<ComparableItemStackValidated, FurnaceRecipe> entry : recipeMapPyrolysis.entrySet()) {
 			tempRecipe = entry.getValue();
-			tempMapPyrolysis.put(new ComparableItemStackFurnace(tempRecipe.input), tempRecipe);
+			tempMapPyrolysis.put(convertInput(tempRecipe.input), tempRecipe);
 		}
-		for (ComparableItemStackFurnace entry : foodSet) {
-			ComparableItemStackFurnace food = new ComparableItemStackFurnace(new ItemStack(entry.item, entry.stackSize, entry.metadata));
+		for (ComparableItemStackValidated entry : foodSet) {
+			ComparableItemStackValidated food = convertInput(new ItemStack(entry.item, entry.stackSize, entry.metadata));
 			tempFood.add(food);
 		}
 		recipeMap.clear();
@@ -314,7 +321,7 @@ public class FurnaceManager {
 			return null;
 		}
 		FurnaceRecipe recipe = new FurnaceRecipe(input, output, energy);
-		recipeMap.put(new ComparableItemStackFurnace(input), recipe);
+		recipeMap.put(convertInput(input), recipe);
 		return recipe;
 	}
 
@@ -324,22 +331,27 @@ public class FurnaceManager {
 			return null;
 		}
 		FurnaceRecipe recipe = new FurnaceRecipe(input, output, energy, creosote);
-		recipeMapPyrolysis.put(new ComparableItemStackFurnace(input), recipe);
+		recipeMapPyrolysis.put(convertInput(input), recipe);
 		return recipe;
 	}
 
 	/* REMOVE RECIPES */
 	public static FurnaceRecipe removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackFurnace(input));
+		return recipeMap.remove(convertInput(input));
 	}
 
 	public static FurnaceRecipe removeRecipePyrolysis(ItemStack input) {
 
-		return recipeMapPyrolysis.remove(new ComparableItemStackFurnace(input));
+		return recipeMapPyrolysis.remove(convertInput(input));
 	}
 
 	/* HELPERS */
+	public static ComparableItemStackValidated convertInput(ItemStack stack) {
+
+		return new ComparableItemStackValidated(stack, oreValidator);
+	}
+
 	private static void addOreDictRecipe(int energy, String oreName, ItemStack output) {
 
 		if (ItemHelper.oreNameExists(oreName) && !recipeExists(OreDictionary.getOres(oreName, false).get(0))) {
@@ -386,23 +398,6 @@ public class FurnaceManager {
 		public int getCreosote() {
 
 			return creosote;
-		}
-	}
-
-	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackFurnace extends ComparableItemStackSafe {
-
-		public static final String LOG = "log";
-
-		@Override
-		public boolean safeOreType(String oreName) {
-
-			return oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(LOG);
-		}
-
-		public ComparableItemStackFurnace(ItemStack stack) {
-
-			super(stack);
 		}
 	}
 

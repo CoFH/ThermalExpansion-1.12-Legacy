@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStackSafe;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackValidated;
+import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
@@ -21,7 +23,17 @@ import java.util.Map.Entry;
 
 public class PulverizerManager {
 
-	private static Map<ComparableItemStackPulverizer, PulverizerRecipe> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackValidated, PulverizerRecipe> recipeMap = new THashMap<>();
+	private static OreValidator oreValidator = new OreValidator();
+
+	static {
+		oreValidator.addPrefix(ComparableItemStack.ORE);
+		oreValidator.addPrefix(ComparableItemStack.INGOT);
+		oreValidator.addPrefix(ComparableItemStack.NUGGET);
+		oreValidator.addPrefix("plank");
+		oreValidator.addPrefix("log");
+		oreValidator.addExact("sand");
+	}
 
 	static final int ORE_MULTIPLIER = 2;
 	public static final int DEFAULT_ENERGY = 4000;
@@ -31,7 +43,7 @@ public class PulverizerManager {
 		if (input.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackPulverizer query = new ComparableItemStackPulverizer(input);
+		ComparableItemStackValidated query = convertInput(input);
 
 		PulverizerRecipe recipe = recipeMap.get(query);
 
@@ -333,12 +345,12 @@ public class PulverizerManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackPulverizer, PulverizerRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidated, PulverizerRecipe> tempMap = new THashMap<>(recipeMap.size());
 		PulverizerRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackPulverizer, PulverizerRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackValidated, PulverizerRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			tempMap.put(new ComparableItemStackPulverizer(tempRecipe.input), tempRecipe);
+			tempMap.put(convertInput(tempRecipe.input), tempRecipe);
 		}
 		recipeMap.clear();
 		recipeMap = tempMap;
@@ -351,7 +363,7 @@ public class PulverizerManager {
 			return null;
 		}
 		PulverizerRecipe recipe = new PulverizerRecipe(input, primaryOutput, secondaryOutput, secondaryOutput.isEmpty() ? 0 : secondaryChance, energy);
-		recipeMap.put(new ComparableItemStackPulverizer(input), recipe);
+		recipeMap.put(convertInput(input), recipe);
 		return recipe;
 	}
 
@@ -368,10 +380,15 @@ public class PulverizerManager {
 	/* REMOVE RECIPES */
 	public static PulverizerRecipe removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackPulverizer(input));
+		return recipeMap.remove(convertInput(input));
 	}
 
 	/* HELPERS */
+	public static ComparableItemStackValidated convertInput(ItemStack stack) {
+
+		return new ComparableItemStackValidated(stack, oreValidator);
+	}
+
 	private static void addDefaultOreDictionaryRecipe(String oreType) {
 
 		addDefaultOreDictionaryRecipe(oreType, "");
@@ -434,7 +451,7 @@ public class PulverizerManager {
 		String oreName = "ore" + StringHelper.titleCase(oreType);
 		String dustName = "dust" + StringHelper.titleCase(oreType);
 		String gemName = "gem" + StringHelper.titleCase(oreType);
-		String relatedName = null;
+		String relatedName;
 
 		List<ItemStack> registeredOre = OreDictionary.getOres(oreName, false);
 		List<ItemStack> registeredDust = OreDictionary.getOres(dustName, false);
@@ -539,25 +556,6 @@ public class PulverizerManager {
 			return energy;
 		}
 
-	}
-
-	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackPulverizer extends ComparableItemStackSafe {
-
-		protected static final String PLANK = "plank";
-		protected static final String LOG = "log";
-		protected static final String SAND = "sand";
-
-		@Override
-		public boolean safeOreType(String oreName) {
-
-			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.startsWith(PLANK) || oreName.startsWith(LOG) || oreName.equals(SAND);
-		}
-
-		public ComparableItemStackPulverizer(ItemStack stack) {
-
-			super(stack);
-		}
 	}
 
 }

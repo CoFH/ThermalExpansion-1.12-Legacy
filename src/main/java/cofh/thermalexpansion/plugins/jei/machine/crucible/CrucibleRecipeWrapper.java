@@ -6,7 +6,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
-import cofh.thermalexpansion.util.managers.machine.CrucibleManager.ComparableItemStackCrucible;
+import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager.CrucibleRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -45,7 +45,7 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 
-		int oreID = new ComparableItemStackCrucible(recipe.getInput()).getOreID(recipe.getInput());
+		int oreID = CrucibleManager.convertInput(recipe.getInput()).oreID;
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));

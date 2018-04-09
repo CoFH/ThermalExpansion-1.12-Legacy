@@ -1,7 +1,9 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStackSafe;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.core.inventory.InventoryCraftingFalse;
+import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -19,7 +21,14 @@ import java.util.Map.Entry;
 
 public class SawmillManager {
 
-	private static Map<ComparableItemStackSawmill, SawmillRecipe> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackValidated, SawmillRecipe> recipeMap = new THashMap<>();
+	private static OreValidator oreValidator = new OreValidator();
+
+	static {
+		oreValidator.addPrefix(ComparableItemStack.ORE);
+		oreValidator.addPrefix(ComparableItemStack.INGOT);
+		oreValidator.addPrefix(ComparableItemStack.NUGGET);
+	}
 
 	static final float LOG_MULTIPLIER = 1.5F;
 	public static final int DEFAULT_ENERGY = 1600;
@@ -29,7 +38,7 @@ public class SawmillManager {
 		if (input.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackSawmill query = new ComparableItemStackSawmill(input);
+		ComparableItemStackValidated query = convertInput(input);
 
 		SawmillRecipe recipe = recipeMap.get(query);
 
@@ -211,12 +220,12 @@ public class SawmillManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackSawmill, SawmillRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidated, SawmillRecipe> tempMap = new THashMap<>(recipeMap.size());
 		SawmillRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackSawmill, SawmillRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackValidated, SawmillRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			tempMap.put(new ComparableItemStackSawmill(tempRecipe.input), tempRecipe);
+			tempMap.put(convertInput(tempRecipe.input), tempRecipe);
 		}
 		recipeMap.clear();
 		recipeMap = tempMap;
@@ -229,7 +238,7 @@ public class SawmillManager {
 			return null;
 		}
 		SawmillRecipe recipe = new SawmillRecipe(input, primaryOutput, secondaryOutput, secondaryOutput.isEmpty() ? 0 : secondaryChance, energy);
-		recipeMap.put(new ComparableItemStackSawmill(input), recipe);
+		recipeMap.put(convertInput(input), recipe);
 		return recipe;
 	}
 
@@ -246,10 +255,15 @@ public class SawmillManager {
 	/* REMOVE RECIPES */
 	public static SawmillRecipe removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackSawmill(input));
+		return recipeMap.remove(convertInput(input));
 	}
 
 	/* HELPERS */
+	public static ComparableItemStackValidated convertInput(ItemStack stack) {
+
+		return new ComparableItemStackValidated(stack, oreValidator);
+	}
+
 	private static void addAllLogs() {
 
 		InventoryCraftingFalse tempCrafting = new InventoryCraftingFalse(3, 3);
@@ -334,21 +348,6 @@ public class SawmillManager {
 		public int getEnergy() {
 
 			return energy;
-		}
-	}
-
-	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackSawmill extends ComparableItemStackSafe {
-
-		@Override
-		public boolean safeOreType(String oreName) {
-
-			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET);
-		}
-
-		public ComparableItemStackSawmill(ItemStack stack) {
-
-			super(stack);
 		}
 	}
 

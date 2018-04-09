@@ -1,7 +1,9 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.init.CoreProps;
-import cofh.core.inventory.ComparableItemStackSafeNBT;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackValidatedNBT;
+import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.init.TEItems;
@@ -30,8 +32,13 @@ import static java.util.Collections.singletonList;
 
 public class CentrifugeManager {
 
-	private static Map<ComparableItemStackCentrifuge, CentrifugeRecipe> recipeMap = new THashMap<>();
-	private static Map<ComparableItemStackCentrifuge, CentrifugeRecipe> recipeMapMobs = new THashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> recipeMapMobs = new THashMap<>();
+	private static OreValidator oreValidator = new OreValidator();
+
+	static {
+		oreValidator.addPrefix(ComparableItemStack.DUST);
+	}
 
 	public static final int DEFAULT_ENERGY = 2000;
 
@@ -40,7 +47,7 @@ public class CentrifugeManager {
 		if (input.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackCentrifuge query = new ComparableItemStackCentrifuge(input);
+		ComparableItemStackValidatedNBT query = convertInput(input);
 
 		CentrifugeRecipe recipe = recipeMap.get(query);
 
@@ -56,7 +63,7 @@ public class CentrifugeManager {
 		if (input.isEmpty() || !input.getItem().equals(TEItems.itemMorb)) {
 			return null;
 		}
-		ComparableItemStackCentrifuge query = new ComparableItemStackCentrifuge(ItemMorb.getGenericMorb(input));
+		ComparableItemStackValidatedNBT query = convertInput(ItemMorb.getGenericMorb(input));
 		return recipeMapMobs.get(query);
 	}
 
@@ -190,17 +197,17 @@ public class CentrifugeManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackCentrifuge, CentrifugeRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Map<ComparableItemStackCentrifuge, CentrifugeRecipe> tempMapMobs = new THashMap<>(recipeMapMobs.size());
+		Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> tempMapMobs = new THashMap<>(recipeMapMobs.size());
 		CentrifugeRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackCentrifuge, CentrifugeRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackValidatedNBT, CentrifugeRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			tempMap.put(new ComparableItemStackCentrifuge(tempRecipe.input), tempRecipe);
+			tempMap.put(convertInput(tempRecipe.input), tempRecipe);
 		}
-		for (Entry<ComparableItemStackCentrifuge, CentrifugeRecipe> entry : recipeMapMobs.entrySet()) {
+		for (Entry<ComparableItemStackValidatedNBT, CentrifugeRecipe> entry : recipeMapMobs.entrySet()) {
 			tempRecipe = entry.getValue();
-			tempMapMobs.put(new ComparableItemStackCentrifuge(tempRecipe.input), tempRecipe);
+			tempMapMobs.put(convertInput(tempRecipe.input), tempRecipe);
 		}
 		recipeMap.clear();
 		recipeMap = tempMap;
@@ -216,7 +223,7 @@ public class CentrifugeManager {
 			return null;
 		}
 		CentrifugeRecipe recipe = new CentrifugeRecipe(input, output, chance, fluid, energy);
-		recipeMap.put(new ComparableItemStackCentrifuge(input), recipe);
+		recipeMap.put(convertInput(input), recipe);
 		return recipe;
 	}
 
@@ -226,7 +233,7 @@ public class CentrifugeManager {
 			return null;
 		}
 		CentrifugeRecipe recipe = new CentrifugeRecipe(input, output, null, fluid, energy);
-		recipeMap.put(new ComparableItemStackCentrifuge(input), recipe);
+		recipeMap.put(convertInput(input), recipe);
 		return recipe;
 	}
 
@@ -236,22 +243,27 @@ public class CentrifugeManager {
 			return null;
 		}
 		CentrifugeRecipe recipe = new CentrifugeRecipe(input, output, chance, fluid, energy);
-		recipeMapMobs.put(new ComparableItemStackCentrifuge(input), recipe);
+		recipeMapMobs.put(convertInput(input), recipe);
 		return recipe;
 	}
 
 	/* REMOVE RECIPES */
 	public static CentrifugeRecipe removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackCentrifuge(input));
+		return recipeMap.remove(convertInput(input));
 	}
 
 	public static CentrifugeRecipe removeRecipeMob(ItemStack input) {
 
-		return recipeMapMobs.remove(new ComparableItemStackCentrifuge(input));
+		return recipeMapMobs.remove(convertInput(input));
 	}
 
 	/* HELPERS */
+	public static ComparableItemStackValidatedNBT convertInput(ItemStack stack) {
+
+		return new ComparableItemStackValidatedNBT(stack, oreValidator);
+	}
+
 	public static void addDefaultMobRecipe(String entityId, List<ItemStack> output, List<Integer> chance, int xp) {
 
 		if (!ItemMorb.validMobs.contains(entityId)) {
@@ -324,21 +336,6 @@ public class CentrifugeManager {
 		public int getEnergy() {
 
 			return energy;
-		}
-	}
-
-	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackCentrifuge extends ComparableItemStackSafeNBT {
-
-		@Override
-		public boolean safeOreType(String oreName) {
-
-			return oreName.startsWith(DUST);
-		}
-
-		public ComparableItemStackCentrifuge(ItemStack stack) {
-
-			super(stack);
 		}
 	}
 

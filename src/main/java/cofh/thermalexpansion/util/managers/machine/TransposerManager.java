@@ -1,7 +1,9 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.init.CoreProps;
-import cofh.core.inventory.ComparableItemStackSafeNBT;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackValidatedNBT;
+import cofh.core.inventory.OreValidator;
 import cofh.core.util.ItemWrapper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
@@ -35,20 +37,27 @@ import static java.util.Arrays.asList;
 public class TransposerManager {
 
 	private static Map<List<Integer>, TransposerRecipe> recipeMapFill = new THashMap<>();
-	private static Map<ComparableItemStackTransposer, TransposerRecipe> recipeMapExtract = new THashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, TransposerRecipe> recipeMapExtract = new THashMap<>();
 	private static Map<ItemWrapper, ContainerOverride> containerOverrides = new THashMap<>();
-	private static Set<ComparableItemStackTransposer> validationSet = new THashSet<>();
+	private static Set<ComparableItemStackValidatedNBT> validationSet = new THashSet<>();
+	private static OreValidator oreValidator = new OreValidator();
+
+	static {
+		oreValidator.addPrefix(ComparableItemStack.GEM);
+		oreValidator.addPrefix("seed");
+		oreValidator.addPrefix("crop");
+	}
 
 	public static final int DEFAULT_ENERGY = 400;
 
 	public static TransposerRecipe getFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return input.isEmpty() || fluid == null ? null : recipeMapFill.get(asList(new ComparableItemStackTransposer(input).hashCode(), FluidHelper.getFluidHash(fluid)));
+		return input.isEmpty() || fluid == null ? null : recipeMapFill.get(asList(convertInput(input).hashCode(), FluidHelper.getFluidHash(fluid)));
 	}
 
 	public static TransposerRecipe getExtractRecipe(ItemStack input) {
 
-		return input.isEmpty() ? null : recipeMapExtract.get(new ComparableItemStackTransposer(input));
+		return input.isEmpty() ? null : recipeMapExtract.get(convertInput(input));
 	}
 
 	public static ContainerOverride getContainerOverride(ItemStack input) {
@@ -83,7 +92,7 @@ public class TransposerManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return !input.isEmpty() && validationSet.contains(new ComparableItemStackTransposer(input));
+		return !input.isEmpty() && validationSet.contains(convertInput(input));
 	}
 
 	public static void initialize() {
@@ -266,21 +275,21 @@ public class TransposerManager {
 	public static void refresh() {
 
 		Map<List<Integer>, TransposerRecipe> tempFill = new THashMap<>(recipeMapFill.size());
-		Map<ComparableItemStackTransposer, TransposerRecipe> tempExtract = new THashMap<>(recipeMapExtract.size());
+		Map<ComparableItemStackValidatedNBT, TransposerRecipe> tempExtract = new THashMap<>(recipeMapExtract.size());
 		Map<ItemWrapper, ContainerOverride> tempOverrides = new THashMap<>(containerOverrides.size());
-		Set<ComparableItemStackTransposer> tempSet = new THashSet<>();
+		Set<ComparableItemStackValidatedNBT> tempSet = new THashSet<>();
 		TransposerRecipe tempRecipe;
 		ContainerOverride tempOverride;
 
 		for (Entry<List<Integer>, TransposerRecipe> entry : recipeMapFill.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackTransposer input = new ComparableItemStackTransposer(tempRecipe.input);
+			ComparableItemStackValidatedNBT input = convertInput(tempRecipe.input);
 			tempFill.put(asList(input.hashCode(), FluidHelper.getFluidHash(tempRecipe.fluid)), tempRecipe);
 			tempSet.add(input);
 		}
-		for (Entry<ComparableItemStackTransposer, TransposerRecipe> entry : recipeMapExtract.entrySet()) {
+		for (Entry<ComparableItemStackValidatedNBT, TransposerRecipe> entry : recipeMapExtract.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackTransposer input = new ComparableItemStackTransposer(tempRecipe.input);
+			ComparableItemStackValidatedNBT input = convertInput(tempRecipe.input);
 			tempExtract.put(input, tempRecipe);
 			tempSet.add(input);
 		}
@@ -312,8 +321,8 @@ public class TransposerManager {
 			return null;
 		}
 		TransposerRecipe recipeFill = new TransposerRecipe(input, output, fluid, energy, 100);
-		recipeMapFill.put(asList(new ComparableItemStackTransposer(input).hashCode(), FluidHelper.getFluidHash(fluid)), recipeFill);
-		validationSet.add(new ComparableItemStackTransposer(input));
+		recipeMapFill.put(asList(convertInput(input).hashCode(), FluidHelper.getFluidHash(fluid)), recipeFill);
+		validationSet.add(convertInput(input));
 
 		if (reversible) {
 			addExtractRecipe(energy, output, input, fluid, 100, false);
@@ -333,8 +342,8 @@ public class TransposerManager {
 			return null;
 		}
 		TransposerRecipe recipeExtraction = new TransposerRecipe(input, output, fluid, energy, chance);
-		recipeMapExtract.put(new ComparableItemStackTransposer(input), recipeExtraction);
-		validationSet.add(new ComparableItemStackTransposer(input));
+		recipeMapExtract.put(convertInput(input), recipeExtraction);
+		validationSet.add(convertInput(input));
 
 		if (reversible) {
 			addFillRecipe(energy, output, input, fluid, false);
@@ -345,15 +354,20 @@ public class TransposerManager {
 	/* REMOVE RECIPES */
 	public static TransposerRecipe removeFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return recipeMapFill.remove(asList(new ComparableItemStackTransposer(input).hashCode(), FluidHelper.getFluidHash(fluid)));
+		return recipeMapFill.remove(asList(convertInput(input).hashCode(), FluidHelper.getFluidHash(fluid)));
 	}
 
 	public static TransposerRecipe removeExtractRecipe(ItemStack input) {
 
-		return recipeMapExtract.remove(new ComparableItemStackTransposer(input));
+		return recipeMapExtract.remove(convertInput(input));
 	}
 
 	/* HELPERS */
+	public static ComparableItemStackValidatedNBT convertInput(ItemStack stack) {
+
+		return new ComparableItemStackValidatedNBT(stack, oreValidator);
+	}
+
 	public static ContainerOverride addContainerOverride(ItemStack input, ItemStack output, int chance) {
 
 		if (input.isEmpty() || output.isEmpty() || chance <= 0) {
@@ -488,25 +502,6 @@ public class TransposerManager {
 			return chance;
 		}
 
-	}
-
-	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackTransposer extends ComparableItemStackSafeNBT {
-
-		public static final String CROP = "crop";
-		public static final String SEED = "seed";
-		public static final String GEM = "gem";
-
-		@Override
-		public boolean safeOreType(String oreName) {
-
-			return oreName.startsWith(CROP) || oreName.startsWith(SEED) || oreName.startsWith(GEM) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET);
-		}
-
-		public ComparableItemStackTransposer(ItemStack stack) {
-
-			super(stack);
-		}
 	}
 
 }

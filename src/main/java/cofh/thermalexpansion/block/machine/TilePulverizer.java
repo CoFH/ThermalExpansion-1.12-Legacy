@@ -91,6 +91,7 @@ public class TilePulverizer extends TileMachineBase {
 		return amount + Math.max(1, amount * 50 / 100);
 	}
 
+	private PulverizerRecipe curRecipe;
 	private int inputTracker;
 	private int outputTrackerPrimary;
 	private int outputTrackerSecondary;
@@ -123,12 +124,12 @@ public class TilePulverizer extends TileMachineBase {
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		PulverizerRecipe recipe = PulverizerManager.getRecipe(inventory[0]);
+		getRecipe();
 
-		if (recipe == null) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (inventory[0].getCount() < recipe.getInput().getCount()) {
+		if (inventory[0].getCount() < curRecipe.getInput().getCount()) {
 			return false;
 		}
 		boolean augmentPetrotheumCheck = augmentPetrotheum && ItemHelper.isOre(inventory[0]);
@@ -136,8 +137,8 @@ public class TilePulverizer extends TileMachineBase {
 		if (augmentPetrotheumCheck && tank.getFluidAmount() < FLUID_AMOUNT) {
 			return false;
 		}
-		ItemStack primaryItem = recipe.getPrimaryOutput();
-		ItemStack secondaryItem = recipe.getSecondaryOutput();
+		ItemStack primaryItem = curRecipe.getPrimaryOutput();
+		ItemStack secondaryItem = curRecipe.getSecondaryOutput();
 
 		if (!secondaryItem.isEmpty() && !inventory[2].isEmpty()) {
 			if (!augmentSecondaryNull) {
@@ -155,32 +156,49 @@ public class TilePulverizer extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		PulverizerRecipe recipe = PulverizerManager.getRecipe(inventory[0]);
-
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
+			return false;
+		}
 		if (augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() < FLUID_AMOUNT) {
 			return false;
 		}
-		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
+		return curRecipe.getInput().getCount() <= inventory[0].getCount();
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = PulverizerManager.getRecipe(inventory[0]);
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = PulverizerManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		PulverizerRecipe recipe = PulverizerManager.getRecipe(inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		ItemStack primaryItem = recipe.getPrimaryOutput();
-		ItemStack secondaryItem = recipe.getSecondaryOutput();
+		ItemStack primaryItem = curRecipe.getPrimaryOutput();
+		ItemStack secondaryItem = curRecipe.getSecondaryOutput();
 
 		boolean augmentPetrotheumCheck = augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() >= FLUID_AMOUNT;
 
@@ -201,7 +219,7 @@ public class TilePulverizer extends TileMachineBase {
 		if (!secondaryItem.isEmpty()) {
 			int modifiedChance = augmentPetrotheumCheck ? secondaryChance - PETROTHEUM_SECONDARY_MOD : secondaryChance;
 
-			int recipeChance = recipe.getSecondaryOutputChance();
+			int recipeChance = curRecipe.getSecondaryOutputChance();
 			if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
 				if (inventory[2].isEmpty()) {
 					inventory[2] = ItemHelper.cloneStack(secondaryItem);
@@ -221,7 +239,7 @@ public class TilePulverizer extends TileMachineBase {
 				}
 			}
 		}
-		inventory[0].shrink(recipe.getInput().getCount());
+		inventory[0].shrink(curRecipe.getInput().getCount());
 
 		if (inventory[0].getCount() <= 0) {
 			inventory[0] = ItemStack.EMPTY;

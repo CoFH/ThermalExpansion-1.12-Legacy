@@ -80,6 +80,7 @@ public class TileEnchanter extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private EnchanterRecipe curRecipe;
 	private int inputTrackerPrimary;
 	private int inputTrackerSecondary;
 	private int outputTracker;
@@ -118,24 +119,27 @@ public class TileEnchanter extends TileMachineBase {
 		if (inventory[0].isEmpty() || inventory[1].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[1], inventory[0]);
+		getRecipe();
 
-		if (recipe == null || tank.getFluidAmount() < recipe.getExperience()) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (recipe.getType() == EnchanterManager.Type.EMPOWERED && !augmentEmpowered) {
+		if (tank.getFluidAmount() < curRecipe.getExperience()) {
+			return false;
+		}
+		if (curRecipe.getType() == EnchanterManager.Type.EMPOWERED && !augmentEmpowered) {
 			return false;
 		}
 		if (EnchanterManager.isRecipeReversed(inventory[0], inventory[1])) {
-			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
+			if (curRecipe.getPrimaryInput().getCount() > inventory[1].getCount() || curRecipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
 				return false;
 			}
 		} else {
-			if (recipe.getPrimaryInput().getCount() > inventory[0].getCount() || recipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
+			if (curRecipe.getPrimaryInput().getCount() > inventory[0].getCount() || curRecipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
 				return false;
 			}
 		}
-		ItemStack output = recipe.getOutput();
+		ItemStack output = curRecipe.getOutput();
 
 		return inventory[2].isEmpty() || inventory[2].isItemEqual(output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
 	}
@@ -143,52 +147,61 @@ public class TileEnchanter extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[1], inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			return false;
 		}
 		if (EnchanterManager.isRecipeReversed(inventory[0], inventory[1])) {
-			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
-				return false;
-			}
+			return curRecipe.getPrimaryInput().getCount() <= inventory[1].getCount() && curRecipe.getSecondaryInput().getCount() <= inventory[0].getCount();
 		} else {
-			if (recipe.getPrimaryInput().getCount() > inventory[0].getCount() || recipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
-				return false;
-			}
+			return curRecipe.getPrimaryInput().getCount() <= inventory[0].getCount() && curRecipe.getSecondaryInput().getCount() <= inventory[1].getCount();
 		}
-		return true;
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = EnchanterManager.getRecipe(inventory[1], inventory[0]);
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = EnchanterManager.getRecipe(inventory[1], inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[1], inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		tank.drain(recipe.getExperience(), true);
-		ItemStack primaryItem = recipe.getOutput();
+		tank.drain(curRecipe.getExperience(), true);
+		ItemStack primaryItem = curRecipe.getOutput();
 		if (inventory[2].isEmpty()) {
 			inventory[2] = ItemHelper.cloneStack(primaryItem);
 		} else {
 			inventory[2].grow(primaryItem.getCount());
 		}
 		if (EnchanterManager.isRecipeReversed(inventory[0], inventory[1])) {
-			inventory[1].shrink(recipe.getPrimaryInput().getCount());
-			inventory[0].shrink(recipe.getSecondaryInput().getCount());
+			inventory[1].shrink(curRecipe.getPrimaryInput().getCount());
+			inventory[0].shrink(curRecipe.getSecondaryInput().getCount());
 		} else {
-			inventory[0].shrink(recipe.getPrimaryInput().getCount());
-			inventory[1].shrink(recipe.getSecondaryInput().getCount());
+			inventory[0].shrink(curRecipe.getPrimaryInput().getCount());
+			inventory[1].shrink(curRecipe.getSecondaryInput().getCount());
 		}
 		if (inventory[0].getCount() <= 0) {
 			inventory[0] = ItemStack.EMPTY;

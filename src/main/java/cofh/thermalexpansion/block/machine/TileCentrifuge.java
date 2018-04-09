@@ -78,6 +78,7 @@ public class TileCentrifuge extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private CentrifugeRecipe curRecipe;
 	private int inputTracker;
 	private int outputTracker;
 	private int outputTrackerFluid;
@@ -107,16 +108,16 @@ public class TileCentrifuge extends TileMachineBase {
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		CentrifugeRecipe recipe = augmentMobs ? CentrifugeManager.getRecipeMob(inventory[0]) : CentrifugeManager.getRecipe(inventory[0]);
+		getRecipe();
 
-		if (recipe == null) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (inventory[0].getCount() < recipe.getInput().getCount()) {
+		if (inventory[0].getCount() < curRecipe.getInput().getCount()) {
 			return false;
 		}
-		FluidStack fluid = recipe.getFluid();
-		List<ItemStack> outputs = recipe.getOutput();
+		FluidStack fluid = curRecipe.getFluid();
+		List<ItemStack> outputs = curRecipe.getOutput();
 
 		if (outputs.isEmpty()) {
 			return fluid != null && tank.fill(fluid, false) == fluid.amount;
@@ -135,28 +136,46 @@ public class TileCentrifuge extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		CentrifugeRecipe recipe = augmentMobs ? CentrifugeManager.getRecipeMob(inventory[0]) : CentrifugeManager.getRecipe(inventory[0]);
-		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
+			return false;
+		}
+		return curRecipe.getInput().getCount() <= inventory[0].getCount();
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = augmentMobs ? CentrifugeManager.getRecipeMob(inventory[0]) : CentrifugeManager.getRecipe(inventory[0]);
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = (augmentMobs ? CentrifugeManager.getRecipeMob(inventory[0]).getEnergy() : CentrifugeManager.getRecipe(inventory[0]).getEnergy()) * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		CentrifugeRecipe recipe = augmentMobs ? CentrifugeManager.getRecipeMob(inventory[0]) : CentrifugeManager.getRecipe(inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		List<ItemStack> outputs = recipe.getOutput();
-		List<Integer> chances = recipe.getChance();
+		List<ItemStack> outputs = curRecipe.getOutput();
+		List<Integer> chances = curRecipe.getChance();
 
 		if (augmentMobs) {
 			for (int i = 0; i < outputs.size(); i++) {
@@ -181,10 +200,10 @@ public class TileCentrifuge extends TileMachineBase {
 				}
 			}
 		}
-		FluidStack fluid = recipe.getFluid();
+		FluidStack fluid = curRecipe.getFluid();
 		tank.fill(fluid, true);
 
-		inventory[0].shrink(recipe.getInput().getCount());
+		inventory[0].shrink(curRecipe.getInput().getCount());
 
 		if (inventory[0].getCount() <= 0) {
 			inventory[0] = ItemStack.EMPTY;

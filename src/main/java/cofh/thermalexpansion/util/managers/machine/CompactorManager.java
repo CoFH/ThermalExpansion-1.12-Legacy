@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStackSafe;
+import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalfoundation.block.BlockStorage;
@@ -23,11 +23,11 @@ import java.util.Set;
 
 public class CompactorManager {
 
-	private static Map<ComparableItemStackSafe, CompactorRecipe> recipeMapPress = new THashMap<>();
-	private static Map<ComparableItemStackSafe, CompactorRecipe> recipeMapStorage = new THashMap<>();
-	private static Map<ComparableItemStackSafe, CompactorRecipe> recipeMapMint = new THashMap<>();
-	private static Map<ComparableItemStackSafe, CompactorRecipe> recipeMapGear = new THashMap<>();
-	private static Set<ComparableItemStackSafe> validationSet = new THashSet<>();
+	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapPress = new THashMap<>();
+	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapStorage = new THashMap<>();
+	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapMint = new THashMap<>();
+	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapGear = new THashMap<>();
+	private static Set<ComparableItemStackValidated> validationSet = new THashSet<>();
 
 	public static final int DEFAULT_ENERGY = 4000;
 	public static final int DEFAULT_ENERGY_STORAGE = 400;
@@ -37,7 +37,7 @@ public class CompactorManager {
 		if (input.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackSafe query = new ComparableItemStackSafe(input);
+		ComparableItemStackValidated query = new ComparableItemStackValidated(input);
 		CompactorRecipe recipe = null;
 
 		switch (mode) {
@@ -94,7 +94,7 @@ public class CompactorManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return !input.isEmpty() && validationSet.contains(new ComparableItemStackSafe(input));
+		return !input.isEmpty() && validationSet.contains(new ComparableItemStackValidated(input));
 	}
 
 	public static void initialize() {
@@ -274,34 +274,34 @@ public class CompactorManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackSafe, CompactorRecipe> tempPress = new THashMap<>(recipeMapPress.size());
-		Map<ComparableItemStackSafe, CompactorRecipe> tempStorage = new THashMap<>(recipeMapStorage.size());
-		Map<ComparableItemStackSafe, CompactorRecipe> tempMint = new THashMap<>(recipeMapMint.size());
-		Map<ComparableItemStackSafe, CompactorRecipe> tempGear = new THashMap<>(recipeMapGear.size());
-		Set<ComparableItemStackSafe> tempSet = new THashSet<>();
+		Map<ComparableItemStackValidated, CompactorRecipe> tempPress = new THashMap<>(recipeMapPress.size());
+		Map<ComparableItemStackValidated, CompactorRecipe> tempStorage = new THashMap<>(recipeMapStorage.size());
+		Map<ComparableItemStackValidated, CompactorRecipe> tempMint = new THashMap<>(recipeMapMint.size());
+		Map<ComparableItemStackValidated, CompactorRecipe> tempGear = new THashMap<>(recipeMapGear.size());
+		Set<ComparableItemStackValidated> tempSet = new THashSet<>();
 		CompactorRecipe tempRecipe;
 
-		for (Map.Entry<ComparableItemStackSafe, CompactorRecipe> entry : recipeMapPress.entrySet()) {
+		for (Map.Entry<ComparableItemStackValidated, CompactorRecipe> entry : recipeMapPress.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackSafe input = new ComparableItemStackSafe(tempRecipe.input);
+			ComparableItemStackValidated input = new ComparableItemStackValidated(tempRecipe.input);
 			tempPress.put(input, tempRecipe);
 			tempSet.add(input);
 		}
-		for (Map.Entry<ComparableItemStackSafe, CompactorRecipe> entry : recipeMapStorage.entrySet()) {
+		for (Map.Entry<ComparableItemStackValidated, CompactorRecipe> entry : recipeMapStorage.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackSafe input = new ComparableItemStackSafe(tempRecipe.input);
+			ComparableItemStackValidated input = new ComparableItemStackValidated(tempRecipe.input);
 			tempStorage.put(input, tempRecipe);
 			tempSet.add(input);
 		}
-		for (Map.Entry<ComparableItemStackSafe, CompactorRecipe> entry : recipeMapMint.entrySet()) {
+		for (Map.Entry<ComparableItemStackValidated, CompactorRecipe> entry : recipeMapMint.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackSafe input = new ComparableItemStackSafe(tempRecipe.input);
+			ComparableItemStackValidated input = new ComparableItemStackValidated(tempRecipe.input);
 			tempMint.put(input, tempRecipe);
 			tempSet.add(input);
 		}
-		for (Map.Entry<ComparableItemStackSafe, CompactorRecipe> entry : recipeMapGear.entrySet()) {
+		for (Map.Entry<ComparableItemStackValidated, CompactorRecipe> entry : recipeMapGear.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackSafe input = new ComparableItemStackSafe(tempRecipe.input);
+			ComparableItemStackValidated input = new ComparableItemStackValidated(tempRecipe.input);
 			tempGear.put(input, tempRecipe);
 			tempSet.add(input);
 		}
@@ -329,19 +329,19 @@ public class CompactorManager {
 
 		switch (mode) {
 			case PRESS:
-				recipeMapPress.put(new ComparableItemStackSafe(input), recipe);
+				recipeMapPress.put(new ComparableItemStackValidated(input), recipe);
 				break;
 			case STORAGE:
-				recipeMapStorage.put(new ComparableItemStackSafe(input), recipe);
+				recipeMapStorage.put(new ComparableItemStackValidated(input), recipe);
 				break;
 			case MINT:
-				recipeMapMint.put(new ComparableItemStackSafe(input), recipe);
+				recipeMapMint.put(new ComparableItemStackValidated(input), recipe);
 				break;
 			case GEAR:
-				recipeMapGear.put(new ComparableItemStackSafe(input), recipe);
+				recipeMapGear.put(new ComparableItemStackValidated(input), recipe);
 				break;
 		}
-		validationSet.add(new ComparableItemStackSafe(input));
+		validationSet.add(new ComparableItemStackValidated(input));
 		return recipe;
 	}
 
@@ -350,13 +350,13 @@ public class CompactorManager {
 
 		switch (mode) {
 			case PRESS:
-				return recipeMapPress.remove(new ComparableItemStackSafe(input));
+				return recipeMapPress.remove(new ComparableItemStackValidated(input));
 			case STORAGE:
-				return recipeMapStorage.remove(new ComparableItemStackSafe(input));
+				return recipeMapStorage.remove(new ComparableItemStackValidated(input));
 			case MINT:
-				return recipeMapMint.remove(new ComparableItemStackSafe(input));
+				return recipeMapMint.remove(new ComparableItemStackValidated(input));
 			default:
-				return recipeMapGear.remove(new ComparableItemStackSafe(input));
+				return recipeMapGear.remove(new ComparableItemStackValidated(input));
 		}
 	}
 

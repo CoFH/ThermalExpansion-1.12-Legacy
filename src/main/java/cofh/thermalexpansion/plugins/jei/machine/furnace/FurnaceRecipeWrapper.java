@@ -6,7 +6,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
-import cofh.thermalexpansion.util.managers.machine.FurnaceManager.ComparableItemStackFurnace;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
 import cofh.thermalexpansion.util.managers.machine.FurnaceManager.FurnaceRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import mezz.jei.api.IGuiHelper;
@@ -15,7 +15,6 @@ import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -51,8 +50,7 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 		List<FluidStack> recipeOutputFluids = new ArrayList<>();
 
-		ComparableItemStackFurnace instance = new ComparableItemStackFurnace(new ItemStack(Items.DIAMOND));
-		int oreID = instance.getOreID(recipe.getInput());
+		int oreID = FurnaceManager.convertInput(recipe.getInput()).oreID;
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));
