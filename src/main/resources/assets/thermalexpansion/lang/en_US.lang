@@ -1,5 +1,8 @@
 #en_US
 
+gui.thermalexpansion.device.factorizer.modeCombine=Mode: Combine
+gui.thermalexpansion.device.factorizer.modeSplit=Mode: Split
+
 gui.thermalexpansion.device.item_buffer.decInput=Decrease Input by
 gui.thermalexpansion.device.item_buffer.decOutput=Decrease Output by
 gui.thermalexpansion.device.item_buffer.incInput=Increase Input by
@@ -246,6 +249,7 @@ info.thermalexpansion.capacitor.d.2=Charging Equipment
 info.thermalexpansion.coolant=Coolant
 
 info.thermalexpansion.device.diffuser=Spreads potion effects to an area.
+info.thermalexpansion.device.factorizer=Combines and splits various items.
 info.thermalexpansion.device.fisher=Catches fish and other aquatic life.
 info.thermalexpansion.device.fluid_buffer=Stores and transfers fluid.
 info.thermalexpansion.device.heat_sink=Improves operational speed of adjacent blocks.
@@ -431,6 +435,10 @@ tab.thermalexpansion.apparatus.collector.2=Probably won't steal from your invent
 tab.thermalexpansion.device.diffuser.0=Spreads potions within the nearby area.
 tab.thermalexpansion.device.diffuser.1=Potion duration is reduced compared to drinking.
 tab.thermalexpansion.device.diffuser.2=Certain reagents will boost the effect.
+
+tab.thermalexpansion.device.factorizer.0=Combines or splits items into smaller or larger forms.
+tab.thermalexpansion.device.factorizer.1=Click the button to change modes.
+tab.thermalexpansion.device.factorizer.2=Refactor your storage!
 tab.thermalexpansion.device.fisher.0=Captures assorted aquatic life. Use bait to boost production.
 tab.thermalexpansion.device.fisher.1=Must be placed in a body of water.
 tab.thermalexpansion.device.fisher.2=Hang up your fishing rod.
@@ -554,6 +562,7 @@ tile.thermalexpansion.apparatus.breaker.name=Terrain Smasher
 tile.thermalexpansion.apparatus.collector.name=Acquisition Apparatus
 
 tile.thermalexpansion.device.diffuser.name=Decoctive Diffuser
+tile.thermalexpansion.device.factorizer.name=Factorizer
 tile.thermalexpansion.device.fisher.name=Aquatic Entangler
 tile.thermalexpansion.device.fluid_buffer.name=Fluid Allocator
 tile.thermalexpansion.device.heat_sink.name=Thermal Mediator

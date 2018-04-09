@@ -159,6 +159,7 @@ public class ThermalExpansion {
 		FisherManager.initialize();
 		XpCollectorManager.initialize();
 		DiffuserManager.initialize();
+		FactorizerManager.initialize();
 
 		SteamManager.initialize();
 		MagmaticManager.initialize();
@@ -190,6 +191,7 @@ public class ThermalExpansion {
 		FisherManager.refresh();
 		XpCollectorManager.refresh();
 		DiffuserManager.refresh();
+		FactorizerManager.refresh();
 
 		SteamManager.refresh();
 		MagmaticManager.refresh();

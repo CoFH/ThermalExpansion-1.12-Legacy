@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.init.CoreProps;
+import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
@@ -8,7 +9,6 @@ import cofh.thermalexpansion.gui.client.device.GuiFactorizer;
 import cofh.thermalexpansion.gui.container.device.ContainerFactorizer;
 import cofh.thermalexpansion.util.managers.device.FactorizerManager;
 import cofh.thermalexpansion.util.managers.device.FactorizerManager.FactorizerRecipe;
-import gnu.trove.map.hash.THashMap;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,7 +17,6 @@ import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Arrays;
-import java.util.Map;
 
 public class TileFactorizer extends TileDeviceBase implements ITickable {
 
@@ -37,7 +36,7 @@ public class TileFactorizer extends TileDeviceBase implements ITickable {
 
 		LIGHT_VALUES[TYPE] = 4;
 
-		GameRegistry.registerTileEntity(TileLexicon.class, "thermalexpansion:device_factorizer");
+		GameRegistry.registerTileEntity(TileFactorizer.class, "thermalexpansion:device_factorizer");
 
 		config();
 	}
@@ -52,9 +51,6 @@ public class TileFactorizer extends TileDeviceBase implements ITickable {
 	private int outputTracker;
 
 	public boolean recipeMode;
-	public boolean recipeFlag;
-
-	private Map<String, ItemStack> preferredStacks = new THashMap<>();
 
 	public TileFactorizer() {
 
@@ -176,6 +172,14 @@ public class TileFactorizer extends TileDeviceBase implements ITickable {
 		return new ContainerFactorizer(inventory, this);
 	}
 
+	public void setMode(boolean mode) {
+
+		boolean lastMode = recipeMode;
+		recipeMode = mode;
+		sendModePacket();
+		recipeMode = lastMode;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -184,8 +188,7 @@ public class TileFactorizer extends TileDeviceBase implements ITickable {
 
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
-
-		// TODO: Add mode.
+		recipeMode = nbt.getBoolean("Mode");
 	}
 
 	@Override
@@ -195,8 +198,50 @@ public class TileFactorizer extends TileDeviceBase implements ITickable {
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
-
+		nbt.setBoolean("Mode", recipeMode);
 		return nbt;
+	}
+
+	/* NETWORK METHODS */
+
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketBase getModePacket() {
+
+		PacketBase payload = super.getModePacket();
+
+		payload.addBool(recipeMode);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketBase payload) {
+
+		super.handleModePacket(payload);
+
+		recipeMode = payload.getBool();
+
+		callNeighborTileChange();
+	}
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketBase getGuiPacket() {
+
+		PacketBase payload = super.getGuiPacket();
+
+		payload.addBool(recipeMode);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		recipeMode = payload.getBool();
 	}
 
 	/* IInventory */

@@ -317,7 +317,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		TileLexicon.initialize();
 		TileXpCollector.initialize();
 		TileDiffuser.initialize();
-		// TileFactorizer.initialize();
+		TileFactorizer.initialize();
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -337,7 +337,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		deviceLexicon = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.LEXICON.getMetadata()));
 		deviceExpCollector = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.XP_COLLECTOR.getMetadata()));
 		deviceDiffuser = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.DIFFUSER.getMetadata()));
-		// deviceFactorizer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FACTORIZER.getMetadata()));
+		deviceFactorizer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FACTORIZER.getMetadata()));
 
 		addRecipes();
 
@@ -470,18 +470,18 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'Y', "ingotSilver"
 			);
 		}
-//		if (enable[Type.FACTORIZER.getMetadata()]) {
-//			addShapedRecipe(deviceFactorizer,
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', ItemFrame.frameDevice,
-//					'I', ironPart,
-//					'P', ItemMaterial.redstoneServo,
-//					'X', "blockGlassHardened",
-//					'Y', "ingotSilver"
-//			);
-//		}
+		if (enable[Type.FACTORIZER.getMetadata()]) {
+			addShapedRecipe(deviceFactorizer,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameDevice,
+					'I', ironPart,
+					'P', ItemMaterial.redstoneServo,
+					'X', "workbench",
+					'Y', "ingotLead"
+			);
+		}
 		// @formatter:on
 	}
 

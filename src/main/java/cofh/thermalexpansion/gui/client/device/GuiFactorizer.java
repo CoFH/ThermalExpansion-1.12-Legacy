@@ -3,7 +3,7 @@ package cofh.thermalexpansion.gui.client.device;
 import cofh.core.gui.element.ElementBase;
 import cofh.core.gui.element.ElementButton;
 import cofh.thermalexpansion.block.device.TileFactorizer;
-import cofh.thermalexpansion.gui.container.device.ContainerLexicon;
+import cofh.thermalexpansion.gui.container.device.ContainerFactorizer;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
@@ -27,7 +27,7 @@ public class GuiFactorizer extends GuiDeviceBase {
 
 	public GuiFactorizer(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerLexicon(inventory, tile), tile, inventory.player, TEXTURE);
+		super(new ContainerFactorizer(inventory, tile), tile, inventory.player, TEXTURE);
 
 		generateInfo("tab.thermalexpansion.device.factorizer");
 
@@ -53,19 +53,27 @@ public class GuiFactorizer extends GuiDeviceBase {
 		slotInput.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
 		slotOutput.setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
-		// TODO: Mode.
+		if (myTile.recipeMode) {
+			mode.setToolTip("gui.thermalexpansion.device.factorizer.modeSplit");
+			mode.setSheetX(176);
+			mode.setHoverX(176);
+		} else {
+			mode.setToolTip("gui.thermalexpansion.device.factorizer.modeCombine");
+			mode.setSheetX(192);
+			mode.setHoverX(192);
+		}
 	}
 
 	@Override
 	public void handleElementButtonClick(String buttonName, int mouseButton) {
 
 		if (buttonName.equalsIgnoreCase("Mode")) {
-			//			if (myTile.lockPrimary) {
-			//				playClickSound(0.6F);
-			//			} else {
-			//				playClickSound(0.8F);
-			//			}
-			//			myTile.setMode(!myTile.lockPrimary);
+			if (myTile.recipeMode) {
+				playClickSound(0.6F);
+			} else {
+				playClickSound(0.8F);
+			}
+			myTile.setMode(!myTile.recipeMode);
 		}
 	}
 
