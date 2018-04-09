@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.item;
 
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 import baubles.api.cap.IBaublesItemHandler;
 import cofh.api.item.IMultiModeItem;
 import cofh.core.init.CoreEnchantments;
@@ -20,6 +22,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
@@ -34,6 +37,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -46,7 +50,8 @@ import java.util.stream.IntStream;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
-public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem {
+@Optional.Interface (iface = "baubles.api.IBauble", modid = "baubles")
+public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem, IBauble {
 
 	public ItemCapacitor() {
 
@@ -268,6 +273,54 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 			container.getTagCompound().setInteger("Energy", stored);
 		}
 		return extract;
+	}
+
+	/* IBauble */
+	@Override
+	public BaubleType getBaubleType(ItemStack stack) {
+
+		return BaubleType.TRINKET;
+	}
+
+	@Override
+	public void onWornTick(ItemStack stack, EntityLivingBase player) {
+
+		World world = player.world;
+
+		if (ServerHelper.isClientWorld(world) || !isActive(stack)) {
+			return;
+		}
+		Iterable<ItemStack> equipment;
+
+		switch (getMode(stack)) {
+			case HELD_ITEMS:
+				equipment = player.getHeldEquipment();
+				break;
+			case WORN_ITEMS:
+				equipment = Iterables.concat(player.getArmorInventoryList(), getBaubles(player));
+				break;
+			default:
+				equipment = Iterables.concat(player.getEquipmentAndArmor(), getBaubles(player));
+		}
+		for (ItemStack equipmentStack : equipment) {
+			if (equipmentStack.equals(stack)) {
+				continue;
+			}
+			if (EnergyHelper.isEnergyContainerItem(equipmentStack)) {
+				extractEnergy(stack, ((IEnergyContainerItem) equipmentStack.getItem()).receiveEnergy(equipmentStack, Math.min(getEnergyStored(stack), getSend(stack)), false), false);
+			} else if (EnergyHelper.isEnergyHandler(equipmentStack)) {
+				IEnergyStorage handler = EnergyHelper.getEnergyHandler(equipmentStack);
+				if (handler != null) {
+					extractEnergy(stack, handler.receiveEnergy(Math.min(getEnergyStored(stack), getSend(stack)), false), false);
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean willAutoSync(ItemStack stack, EntityLivingBase player) {
+
+		return true;
 	}
 
 	/* CAPABILITIES */
