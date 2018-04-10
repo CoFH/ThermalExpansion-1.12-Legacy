@@ -106,6 +106,7 @@ public class TETextures {
 		DEVICE_FACE_XP_COLLECTOR =    		register(DEVICE_FACE_ + "xp_collector");
 		DEVICE_FACE_DIFFUSER =    	    	register(DEVICE_FACE_ + "diffuser");
 		DEVICE_FACE_FACTORIZER =            register(DEVICE_FACE_ + "factorizer");
+		DEVICE_FACE_MOB_CATCHER =           register(DEVICE_FACE_ + "mob_catcher");
 
 		DEVICE_ACTIVE_WATER_GEN =			register(DEVICE_ACTIVE_ + "water_gen");
 		DEVICE_ACTIVE_NULLIFIER =			register(DEVICE_ACTIVE_ + "nullifier");
@@ -118,6 +119,7 @@ public class TETextures {
 		DEVICE_ACTIVE_XP_COLLECTOR =      	register(DEVICE_ACTIVE_ + "xp_collector");
 		DEVICE_ACTIVE_DIFFUSER =        	register(DEVICE_ACTIVE_ + "diffuser");
 		DEVICE_ACTIVE_FACTORIZER =          register(DEVICE_ACTIVE_ + "factorizer");
+		DEVICE_ACTIVE_MOB_CATCHER =         register(DEVICE_ACTIVE_ + "mob_catcher");
 
         DEVICE_FRAME_TOP =                  register(DEVICE_ + "frame_top");
 		DEVICE_FRAME_SIDE =                 register(DEVICE_ + "frame_side");
@@ -342,7 +344,8 @@ public class TETextures {
 				DEVICE_FACE_LEXICON,
 				DEVICE_FACE_XP_COLLECTOR,
 				DEVICE_FACE_DIFFUSER,
-				DEVICE_FACE_FACTORIZER
+				DEVICE_FACE_FACTORIZER,
+				DEVICE_FACE_MOB_CATCHER
 		};
 
 		DEVICE_ACTIVE = new TextureAtlasSprite[] {
@@ -356,7 +359,8 @@ public class TETextures {
 				DEVICE_ACTIVE_LEXICON,
 				DEVICE_ACTIVE_XP_COLLECTOR,
 				DEVICE_ACTIVE_DIFFUSER,
-				DEVICE_FACE_FACTORIZER
+				DEVICE_ACTIVE_FACTORIZER,
+				DEVICE_ACTIVE_MOB_CATCHER
 		};
 
 		DYNAMO_COIL = new TextureAtlasSprite[] {
@@ -651,6 +655,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_FACE_XP_COLLECTOR;
 	public static TextureAtlasSprite DEVICE_FACE_DIFFUSER;
 	public static TextureAtlasSprite DEVICE_FACE_FACTORIZER;
+	public static TextureAtlasSprite DEVICE_FACE_MOB_CATCHER;
 
 	public static TextureAtlasSprite[] DEVICE_ACTIVE;
 	public static TextureAtlasSprite DEVICE_ACTIVE_WATER_GEN;
@@ -664,6 +669,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_ACTIVE_XP_COLLECTOR;
 	public static TextureAtlasSprite DEVICE_ACTIVE_DIFFUSER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_FACTORIZER;
+	public static TextureAtlasSprite DEVICE_ACTIVE_MOB_CATCHER;
 
 	public static TextureAtlasSprite DEVICE_FRAME_TOP;
 	public static TextureAtlasSprite DEVICE_FRAME_SIDE;

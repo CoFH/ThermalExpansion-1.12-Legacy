@@ -23,7 +23,6 @@ import java.util.HashSet;
 public class TileCompactor extends TileMachineBase {
 
 	private static final int TYPE = Type.COMPACTOR.getMetadata();
-	private static final Mode[] VALUES = new Mode[4];
 	public static int basePower = 20;
 
 	public static void initialize() {
@@ -48,11 +47,6 @@ public class TileCompactor extends TileMachineBase {
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_COMPACTOR_MINT);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_COMPACTOR_GEAR);
 
-		VALUES[0] = Mode.PRESS;
-		VALUES[1] = Mode.STORAGE;
-		VALUES[2] = Mode.MINT;
-		VALUES[3] = Mode.GEAR;
-
 		GameRegistry.registerTileEntity(TileCompactor.class, "thermalexpansion:machine_compactor");
 
 		config();
@@ -70,11 +64,12 @@ public class TileCompactor extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	CompactorRecipe curRecipe;
+
 	private int inputTracker;
 	private int outputTracker;
 
-	public byte mode;
-	public byte modeFlag;
+	private Mode mode = Mode.PLATE;
 
 	/* AUGMENTS */
 	protected boolean augmentMint;
@@ -100,7 +95,7 @@ public class TileCompactor extends TileMachineBase {
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		CompactorRecipe recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
+		CompactorRecipe recipe = CompactorManager.getRecipe(inventory[0], mode);
 
 		if (recipe == null) {
 			return false;
@@ -116,21 +111,21 @@ public class TileCompactor extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		CompactorRecipe recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
+		CompactorRecipe recipe = CompactorManager.getRecipe(inventory[0], mode);
 		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = CompactorManager.getRecipe(inventory[0], VALUES[mode]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = CompactorManager.getRecipe(inventory[0], mode).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		CompactorRecipe recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
+		CompactorRecipe recipe = CompactorManager.getRecipe(inventory[0], mode);
 
 		if (recipe == null) {
 			processOff();
@@ -201,54 +196,28 @@ public class TileCompactor extends TileMachineBase {
 		return new ContainerCompactor(inventory, this);
 	}
 
-	public void toggleMode() {
+	/* NBT METHODS */
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
 
-		switch (VALUES[mode]) {
-			case PRESS:
-				setMode(1);
-				break;
-			case MINT:
-			case GEAR:
-				setMode(0);
-				break;
-			case STORAGE:
-				setMode(augmentMint ? 2 : augmentGear ? 3 : 0);
-				break;
-		}
+		super.readFromNBT(nbt);
+
+		inputTracker = nbt.getInteger("TrackIn");
+		outputTracker = nbt.getInteger("TrackOut");
 	}
 
-	private void setMode(int mode) {
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
-		this.mode = (byte) mode;
-		sendModePacket();
+		super.writeToNBT(nbt);
+
+		nbt.setInteger("TrackIn", inputTracker);
+		nbt.setInteger("TrackOut", outputTracker);
+
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
-
-	/* CLIENT -> SERVER */
-	@Override
-	public PacketBase getModePacket() {
-
-		PacketBase payload = super.getModePacket();
-
-		payload.addByte(mode);
-
-		return payload;
-	}
-
-	@Override
-	protected void handleModePacket(PacketBase payload) {
-
-		super.handleModePacket(payload);
-
-		mode = payload.getByte();
-		modeFlag = mode;
-
-		if (isActive) {
-			processOff();
-		}
-		callNeighborTileChange();
-	}
 
 	/* SERVER -> CLIENT */
 	@Override
@@ -258,8 +227,6 @@ public class TileCompactor extends TileMachineBase {
 
 		payload.addBool(augmentMint);
 		payload.addBool(augmentGear);
-		payload.addByte(mode);
-		payload.addByte(modeFlag);
 
 		return payload;
 	}
@@ -271,32 +238,6 @@ public class TileCompactor extends TileMachineBase {
 
 		augmentMint = payload.getBool();
 		augmentGear = payload.getBool();
-		mode = payload.getByte();
-		modeFlag = payload.getByte();
-	}
-
-	/* NBT METHODS */
-	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-
-		super.readFromNBT(nbt);
-
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
-		mode = nbt.getByte("Mode");
-		modeFlag = mode;
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-
-		super.writeToNBT(nbt);
-
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
-		nbt.setByte("Mode", mode);
-
-		return nbt;
 	}
 
 	/* HELPERS */
@@ -314,15 +255,11 @@ public class TileCompactor extends TileMachineBase {
 
 		super.postAugmentInstall();
 
-		if (!augmentMint && VALUES[mode] == Mode.MINT) {
-			mode = 0;
-			modeFlag = 0;
-			processOff();
-		}
-		if (!augmentGear && VALUES[mode] == Mode.GEAR) {
-			mode = 0;
-			modeFlag = 0;
-			processOff();
+		if (!augmentMint && !augmentGear) {
+			if (mode != Mode.PLATE && isActive && !inventory[1].isEmpty()) {
+				processOff();
+			}
+			mode = Mode.PLATE;
 		}
 	}
 
@@ -333,11 +270,19 @@ public class TileCompactor extends TileMachineBase {
 
 		if (!augmentMint && TEProps.MACHINE_COMPACTOR_MINT.equals(id)) {
 			augmentMint = true;
+			if (mode != Mode.MINT && isActive && !inventory[1].isEmpty()) {
+				processOff();
+			}
+			mode = Mode.MINT;
 			hasModeAugment = true;
 			return true;
 		}
 		if (!augmentGear && TEProps.MACHINE_COMPACTOR_GEAR.equals(id)) {
 			augmentGear = true;
+			if (mode != Mode.GEAR && isActive && !inventory[1].isEmpty()) {
+				processOff();
+			}
+			mode = Mode.GEAR;
 			hasModeAugment = true;
 			return true;
 		}

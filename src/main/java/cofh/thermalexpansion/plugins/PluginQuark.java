@@ -151,7 +151,7 @@ public class PluginQuark extends PluginTEBase {
 		{
 			int energy = SmelterManager.DEFAULT_ENERGY;
 
-			SmelterManager.addRecycleRecipe(energy, getItemStack("iron_ladder", 1, 0), new ItemStack(Items.IRON_NUGGET), 3);
+			SmelterManager.addRecycleRecipe(energy, getItemStack("iron_ladder", 1, 0), new ItemStack(Items.IRON_NUGGET), 3, false);
 		}
 
 		/* INSOLATOR */

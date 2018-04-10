@@ -41,7 +41,7 @@ public class CompactorRecipeCategoryMint extends CompactorRecipeCategory {
 
 		super(guiHelper);
 
-		localizedName += " - " + StringHelper.localize("gui.thermalexpansion.jei.compactor.modeMint");
+		localizedName = StringHelper.localize("item.thermalexpansion.augment.machineCompactorMint.name");
 	}
 
 	@Nonnull

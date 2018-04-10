@@ -129,7 +129,8 @@ public class SmelterManager {
 			int energy = DEFAULT_ENERGY;
 
 			addRecipe(energy, new ItemStack(Blocks.COBBLESTONE, 2), BLOCK_SAND, new ItemStack(Blocks.STONEBRICK, 1), ItemMaterial.crystalSlag, 100);
-			addRecipe(energy, new ItemStack(Blocks.REDSTONE_ORE), BLOCK_SAND, new ItemStack(Blocks.REDSTONE_BLOCK), ItemMaterial.crystalSlagRich, 50);
+			addRecipe(energy, new ItemStack(Blocks.REDSTONE_ORE), BLOCK_SAND, new ItemStack(Items.REDSTONE, 8), ItemMaterial.crystalSlagRich, 50);
+			addRecipe(energy, new ItemStack(Blocks.LAPIS_ORE), BLOCK_SAND, new ItemStack(Items.DYE, 10, 4), ItemMaterial.crystalSlagRich, 50);
 			addRecipe(energy, new ItemStack(Blocks.NETHERRACK, 2), BLOCK_SOUL_SAND, new ItemStack(Blocks.NETHER_BRICK, 2), ItemMaterial.dustSulfur, 25);
 			addRecipe(energy, new ItemStack(Blocks.QUARTZ_ORE), BLOCK_SOUL_SAND, new ItemStack(Blocks.QUARTZ_BLOCK), ItemMaterial.crystalSlagRich, 25);
 		}
@@ -306,7 +307,7 @@ public class SmelterManager {
 			addRecycleRecipe(energy, new ItemStack(Items.IRON_DOOR), ingot, 2);
 			addRecycleRecipe(energy, new ItemStack(Items.CAULDRON), ingot, 7);
 			addRecycleRecipe(energy, new ItemStack(Blocks.HOPPER), ingot, 5);
-			addRecycleRecipe(energy, new ItemStack(Blocks.IRON_BARS, 8), ingot, 3);
+			addRecycleRecipe(energy, new ItemStack(Blocks.IRON_BARS, 8), ingot, 3, false);
 			addRecycleRecipe(energy, new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), ingot, 2);
 
 			addRecycleRecipe(energy, new ItemStack(Items.IRON_SWORD), ingot, 2);
@@ -323,7 +324,7 @@ public class SmelterManager {
 			addRecycleRecipe(energy, new ItemStack(Items.IRON_HORSE_ARMOR), ingot, 4);
 
 			for (int i = 0; i < 3; i++) {
-				addRecycleRecipe(4800 + 1200 * (3 - i), new ItemStack(Blocks.ANVIL, 1, i), ingot, 4 + 9 * (3 - i));
+				addRecycleRecipe(4800 + 1200 * (3 - i), new ItemStack(Blocks.ANVIL, 1, i), ingot, 4 + 8 * (3 - i), false);
 			}
 			ingot = new ItemStack(Items.GOLD_INGOT);
 
@@ -371,10 +372,10 @@ public class SmelterManager {
 			for (ArmorSet armor : ArmorSet.values()) {
 				ingot = OreDictionary.getOres(armor.ingot, false).get(0);
 
-				addRecycleRecipe(energy, armor.armorHelmet, ingot, 5);
-				addRecycleRecipe(energy, armor.armorChestplate, ingot, 8);
-				addRecycleRecipe(energy, armor.armorLegs, ingot, 7);
-				addRecycleRecipe(energy, armor.armorBoots, ingot, 4);
+				addRecycleRecipe(energy, armor.armorHelmet, ingot, 4);
+				addRecycleRecipe(energy, armor.armorChestplate, ingot, 7);
+				addRecycleRecipe(energy, armor.armorLegs, ingot, 6);
+				addRecycleRecipe(energy, armor.armorBoots, ingot, 3);
 			}
 		}
 
@@ -621,9 +622,15 @@ public class SmelterManager {
 		addRecipe(energy, primaryInput, secondaryInput, primaryOutput, ItemStack.EMPTY, 0);
 	}
 
-	public static SmelterRecipe addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
+	public static void addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
 
-		return addRecipe(energy, input, BLOCK_SAND, ItemHelper.cloneStack(output, outputSize), ItemMaterial.crystalSlag, outputSize * 5 + 5);
+		addRecycleRecipe(energy, input, output, outputSize, true);
+	}
+
+	public static void addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize, boolean wildcard) {
+
+		ItemStack recycleInput = wildcard ? input.copy() : new ItemStack(input.getItem(), 1, OreDictionary.WILDCARD_VALUE);
+		addRecipe(energy, recycleInput, BLOCK_SAND, ItemHelper.cloneStack(output, outputSize), ItemMaterial.crystalSlag, Math.min(100, outputSize * 5 + 5));
 	}
 
 	private static boolean isStandardOre(String oreName) {

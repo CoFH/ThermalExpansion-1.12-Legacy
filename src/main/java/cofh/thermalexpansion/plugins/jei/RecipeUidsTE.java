@@ -19,8 +19,7 @@ public class RecipeUidsTE {
 	public static final String INSOLATOR = "thermalexpansion.insolator";
 	public static final String INSOLATOR_TREE = "thermalexpansion.insolator_tree";
 
-	public static final String COMPACTOR_PRESS = "thermalexpansion.compactor_press";
-	public static final String COMPACTOR_STORAGE = "thermalexpansion.compactor_storage";
+	public static final String COMPACTOR = "thermalexpansion.compactor";
 	public static final String COMPACTOR_MINT = "thermalexpansion.compactor_mint";
 	public static final String COMPACTOR_GEAR = "thermalexpansion.compactor_gear";
 

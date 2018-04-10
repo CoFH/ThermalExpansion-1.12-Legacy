@@ -109,15 +109,6 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 		}
 	}
 
-	// TODO: Remove eventually.
-	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isSelected) {
-
-		if (stack.getItemDamage() > 1) {
-			stack.setItemDamage(1);
-		}
-	}
-
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 
@@ -140,7 +131,6 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 
 		ItemStack stack = player.getHeldItem(hand);
 
-		// TODO: Remove eventually.
 		if (stack.getItemDamage() > 1) {
 			stack.setItemDamage(1);
 		}
@@ -197,6 +187,36 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 			}
 		}
 		CoreUtils.dropItemStackIntoWorldWithVelocity(stack, world, pos);
+	}
+
+	public static ItemStack getMorb(int type, NBTTagCompound nbt) {
+
+		ItemStack stack = type == 0 ? morbStandard.copy() : morbReusable.copy();
+
+		if (nbt != null && validMobs.contains(nbt.getString("id"))) {
+			if (nbt.hasKey(GENERIC)) {
+				stack = setTag(stack, nbt.getString("id"), true);
+			} else {
+				nbt.removeTag("Pos");
+				nbt.removeTag("Motion");
+				nbt.removeTag("Rotation");
+				nbt.removeTag("FallDistance");
+				nbt.removeTag("Fire");
+				nbt.removeTag("Air");
+				nbt.removeTag("OnGround");
+				nbt.removeTag("Dimension");
+				// nbt.removeTag("Invulnerable");
+				nbt.removeTag("PortalCooldown");
+				nbt.removeTag("UUIDMost");
+				nbt.removeTag("UUIDLeast");
+
+				nbt.removeTag("Leashed");
+				nbt.removeTag("Leash");
+
+				stack.setTagCompound(nbt);
+			}
+		}
+		return stack;
 	}
 
 	public static void parseMorbs() {

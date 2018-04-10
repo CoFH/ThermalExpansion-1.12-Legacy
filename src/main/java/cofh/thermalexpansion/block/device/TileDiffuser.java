@@ -67,22 +67,28 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		category = "Device.Diffuser";
-		String comment = "If TRUE, the Diffuser will display potion effect particles.";
+		String comment = "If TRUE, the Decoctive Diffuser will display potion effect particles.";
 		enableParticles = ThermalExpansion.CONFIG_CLIENT.get(category, "EnableParticles", enableParticles, comment);
 
-		comment = "Adjust this value to change the area effect radius when Potion fluid is used.";
-		radiusPotion = ThermalExpansion.CONFIG.getConfiguration().getInt("PotionRadius", category, radiusPotion, 2, 32, comment);
+		// TODO: Remove in 5.3.13
+		if (ThermalExpansion.CONFIG.getConfigVersion().equals("5.3.11")) {
+			ThermalExpansion.CONFIG.removeProperty(category, "PotionRadius");
+			ThermalExpansion.CONFIG.removeProperty(category, "SplashPotionRadius");
+			ThermalExpansion.CONFIG.removeProperty(category, "LingeringPotionRadius");
+		}
+		comment = "Adjust this value to change the area effect radius when Potion fluid is used in a Decoctive Diffuser.";
+		radiusPotion = ThermalExpansion.CONFIG.getConfiguration().getInt("PotionRadius", category, radiusPotion, 2, 16, comment);
 
-		comment = "Adjust this value to change the area effect radius when Splash Potion fluid is used.";
-		radiusSplash = ThermalExpansion.CONFIG.getConfiguration().getInt("SplashPotionRadius", category, radiusSplash, 2, 32, comment);
+		comment = "Adjust this value to change the area effect radius when Splash Potion fluid is used in a Decoctive Diffuser.";
+		radiusSplash = ThermalExpansion.CONFIG.getConfiguration().getInt("SplashPotionRadius", category, radiusSplash, 2, 16, comment);
 
-		comment = "Adjust this value to change the area effect radius when Lingering Potion fluid is used.";
-		radiusLingering = ThermalExpansion.CONFIG.getConfiguration().getInt("LingeringPotionRadius", category, radiusLingering, 2, 32, comment);
+		comment = "Adjust this value to change the area effect radius when Lingering Potion fluid is used in a Decoctive Diffuser.";
+		radiusLingering = ThermalExpansion.CONFIG.getConfiguration().getInt("LingeringPotionRadius", category, radiusLingering, 2, 16, comment);
 	}
 
-	public static int radiusPotion = 6;
-	public static int radiusSplash = 8;
-	public static int radiusLingering = 10;
+	public static int radiusPotion = 4;
+	public static int radiusSplash = 6;
+	public static int radiusLingering = 8;
 
 	private static final int TIME_CONSTANT = 60;
 	private static final int BOOST_TIME = 15;

@@ -1,9 +1,7 @@
 package cofh.thermalexpansion.plugins;
 
-import cofh.thermalexpansion.util.managers.machine.CompactorManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -57,27 +55,27 @@ public class PluginExU2 extends PluginTEBase {
 
 		/* COMPACTOR */
 		{
-			CompactorManager.addDefaultStorageRecipe(new ItemStack(Blocks.COBBLESTONE), cobblestone[0]);
-			CompactorManager.addDefaultStorageRecipe(new ItemStack(Blocks.DIRT), dirt[0]);
-			// CompactorManager.addDefaultStorageRecipe(new ItemStack(Blocks.SAND), sand[0]);
-			CompactorManager.addDefaultStorageRecipe(new ItemStack(Blocks.GRAVEL), gravel[0]);
-			CompactorManager.addDefaultStorageRecipe(new ItemStack(Blocks.NETHERRACK), netherrack[0]);
-
-			for (int i = 0; i < cobblestone.length - 1; i++) {
-				CompactorManager.addDefaultStorageRecipe(cobblestone[i], cobblestone[i + 1]);
-			}
-			for (int i = 0; i < dirt.length - 1; i++) {
-				CompactorManager.addDefaultStorageRecipe(dirt[i], dirt[i + 1]);
-			}
-			for (int i = 0; i < sand.length - 1; i++) {
-				CompactorManager.addDefaultStorageRecipe(sand[i], sand[i + 1]);
-			}
-			for (int i = 0; i < gravel.length - 1; i++) {
-				CompactorManager.addDefaultStorageRecipe(gravel[i], gravel[i + 1]);
-			}
-			for (int i = 0; i < netherrack.length - 1; i++) {
-				CompactorManager.addDefaultStorageRecipe(netherrack[i], netherrack[i + 1]);
-			}
+			//			CompactorManager.addDefaultStorageRecipe(new ItemStack(Blocks.COBBLESTONE), cobblestone[0]);
+			//			CompactorManager.addDefaultStorageRecipe(new ItemStack(Blocks.DIRT), dirt[0]);
+			//			// CompactorManager.addDefaultStorageRecipe(new ItemStack(Blocks.SAND), sand[0]);
+			//			CompactorManager.addDefaultStorageRecipe(new ItemStack(Blocks.GRAVEL), gravel[0]);
+			//			CompactorManager.addDefaultStorageRecipe(new ItemStack(Blocks.NETHERRACK), netherrack[0]);
+			//
+			//			for (int i = 0; i < cobblestone.length - 1; i++) {
+			//				CompactorManager.addDefaultStorageRecipe(cobblestone[i], cobblestone[i + 1]);
+			//			}
+			//			for (int i = 0; i < dirt.length - 1; i++) {
+			//				CompactorManager.addDefaultStorageRecipe(dirt[i], dirt[i + 1]);
+			//			}
+			//			for (int i = 0; i < sand.length - 1; i++) {
+			//				CompactorManager.addDefaultStorageRecipe(sand[i], sand[i + 1]);
+			//			}
+			//			for (int i = 0; i < gravel.length - 1; i++) {
+			//				CompactorManager.addDefaultStorageRecipe(gravel[i], gravel[i + 1]);
+			//			}
+			//			for (int i = 0; i < netherrack.length - 1; i++) {
+			//				CompactorManager.addDefaultStorageRecipe(netherrack[i], netherrack[i + 1]);
+			//			}
 		}
 	}
 

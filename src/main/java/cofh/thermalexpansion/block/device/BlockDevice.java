@@ -139,6 +139,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 				return new TileDiffuser();
 			case FACTORIZER:
 				return new TileFactorizer();
+			case MOB_CATCHER:
+				return new TileMobCatcher();
 			//			case CHUNK_LOADER:                      // TODO
 			//				return null;
 			default:
@@ -318,6 +320,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		TileXpCollector.initialize();
 		TileDiffuser.initialize();
 		TileFactorizer.initialize();
+		TileMobCatcher.initialize();
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -338,6 +341,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		deviceExpCollector = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.XP_COLLECTOR.getMetadata()));
 		deviceDiffuser = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.DIFFUSER.getMetadata()));
 		deviceFactorizer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FACTORIZER.getMetadata()));
+		deviceMobCatcher = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.MOB_CATCHER.getMetadata()));
 
 		addRecipes();
 
@@ -500,7 +504,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		XP_COLLECTOR(8, "xp_collector"),
 		DIFFUSER(9, "diffuser"),
 		FACTORIZER(10, "factorizer"),
-		CHUNK_LOADER(11, "chunk_loader");
+		MOB_CATCHER(11, "mob_catcher"),
+		CHUNK_LOADER(12, "chunk_loader");
 		// @formatter:on
 
 		private static final Type[] METADATA_LOOKUP = new Type[values().length];
@@ -565,8 +570,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 	public static ItemStack deviceExpCollector;
 	public static ItemStack deviceDiffuser;
 	public static ItemStack deviceFactorizer;
+	public static ItemStack deviceMobCatcher;
 	public static ItemStack deviceChunkLoader;
-	public static ItemStack deviceTrader;
 
 	public static ItemBlockDevice itemBlock;
 
