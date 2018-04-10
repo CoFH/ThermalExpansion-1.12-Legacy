@@ -8,6 +8,7 @@ import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import static java.util.Arrays.asList;
@@ -82,7 +83,9 @@ public class PluginHarvestCraft extends PluginTEBase {
 		ItemStack itemPomegranate = getItemStack("pomegranateitem");
 		ItemStack itemRaspberry = getItemStack("raspberryitem");
 		ItemStack itemSilkenTofu = getItemStack("silkentofuitem");
+		ItemStack itemFirmTofu = getItemStack("firmtofuitem");
 		ItemStack itemSoybean = getItemStack("soybeanitem");
+		ItemStack itemSoyMilk = getItemStack("soymilkitem");
 		ItemStack itemStarfruit = getItemStack("starfruititem");
 		ItemStack itemStrawberry = getItemStack("strawberryitem");
 		ItemStack itemTeaLeaf = getItemStack("tealeafitem");
@@ -326,6 +329,7 @@ public class PluginHarvestCraft extends PluginTEBase {
 
 			CentrifugeManager.addRecipe(energy, itemAlmond, asList(milkFresh, baitGrain), null);
 			CentrifugeManager.addRecipe(energy, itemSoybean, asList(itemSilkenTofu, baitGrain), null);
+			CentrifugeManager.addRecipe(energy, itemSilkenTofu, asList(itemFirmTofu, itemSoyMilk), null);
 			CentrifugeManager.addRecipe(energy, itemTeaLeaf, asList(oilCooking, baitGrain), null);
 			CentrifugeManager.addRecipe(energy, itemWalnut, asList(oilCooking, baitGrain), null);
 			CentrifugeManager.addRecipe(energy, new ItemStack(Items.PUMPKIN_SEEDS), asList(oilCooking, baitGrain), null);
