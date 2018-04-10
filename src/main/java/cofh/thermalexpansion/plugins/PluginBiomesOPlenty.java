@@ -2,6 +2,7 @@ package cofh.thermalexpansion.plugins;
 
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.managers.device.TapperManager;
+import cofh.thermalexpansion.util.managers.machine.ExtruderManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
@@ -30,6 +31,8 @@ public class PluginBiomesOPlenty extends PluginTEBase {
 	public void registerDelegate() {
 
 		ItemStack sandWhite = getItemStack("white_sand", 1, 0);
+		ItemStack sandStoneWhite = getItemStack("white_sandstone", 1, 0);
+		ItemStack driedSand = getItemStack("dried_sand", 1, 0);
 
 		ItemStack logYellowAutumn = new ItemStack(Blocks.LOG, 1, 2);
 		ItemStack logOrangeAutumn = new ItemStack(Blocks.LOG2, 1, 1);
@@ -347,6 +350,13 @@ public class PluginBiomesOPlenty extends PluginTEBase {
 			addLeafMapping(blockLog3, 5, blockLeaves5, 9);
 			addLeafMapping(blockLog3, 6, blockLeaves5, 10);
 			addLeafMapping(blockLog3, 7, blockLeaves5, 11);
+		}
+
+		/* EXTRUDER */
+		{
+			ExtruderManager.addRecipeSedimentary(ExtruderManager.DEFAULT_ENERGY * 4, sandWhite, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 1500));
+			ExtruderManager.addRecipeSedimentary(ExtruderManager.DEFAULT_ENERGY * 4, driedSand, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 1000));
+			ExtruderManager.addRecipeSedimentary(ExtruderManager.DEFAULT_ENERGY * 8, sandStoneWhite, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME * 2));
 		}
 	}
 
