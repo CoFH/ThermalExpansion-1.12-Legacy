@@ -1,10 +1,10 @@
 package cofh.thermalexpansion.plugins.jei.machine.compactor;
 
-import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.machine.TileCompactor;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.CompactorRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -12,7 +12,6 @@ import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -37,8 +36,7 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 
-		ComparableItemStackValidated instance = new ComparableItemStackValidated(new ItemStack(Items.DIAMOND));
-		int oreID = instance.getOreID(recipe.getInput());
+		int oreID = CompactorManager.convertInput(recipe.getInput()).oreID;
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));

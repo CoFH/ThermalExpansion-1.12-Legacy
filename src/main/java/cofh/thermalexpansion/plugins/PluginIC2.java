@@ -48,10 +48,10 @@ public class PluginIC2 extends PluginTEBase {
 
 			int energy = CompactorManager.DEFAULT_ENERGY;
 
-			CompactorManager.addRecipe(energy, ItemHelper.cloneStack(ItemMaterial.dustCoal, 8), coalBall, Mode.PRESS);
-			CompactorManager.addRecipe(energy, coalBall, coalBallCompressed, Mode.PRESS);
-			CompactorManager.addRecipe(energy, ItemHelper.cloneStack(coalBallCompressed, 8), coalChunk, Mode.PRESS);
-			CompactorManager.addRecipe(energy, coalChunk, ItemMaterial.gemDiamond, Mode.PRESS);
+			CompactorManager.addRecipe(energy, ItemHelper.cloneStack(ItemMaterial.dustCoal, 8), coalBall, Mode.ALL);
+			CompactorManager.addRecipe(energy, coalBall, coalBallCompressed, Mode.ALL);
+			CompactorManager.addRecipe(energy, ItemHelper.cloneStack(coalBallCompressed, 8), coalChunk, Mode.ALL);
+			CompactorManager.addRecipe(energy, coalChunk, ItemMaterial.gemDiamond, Mode.ALL);
 		}
 
 		/* REFINERY */

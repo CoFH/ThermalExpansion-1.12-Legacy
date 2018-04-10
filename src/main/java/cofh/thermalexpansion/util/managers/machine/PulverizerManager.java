@@ -153,7 +153,7 @@ public class PulverizerManager {
 			addRecipe(energy, new ItemStack(Blocks.COAL_ORE), new ItemStack(Items.COAL, 3, 0), ItemMaterial.dustCoal, 25);
 			addRecipe(energy, new ItemStack(Blocks.DIAMOND_ORE), new ItemStack(Items.DIAMOND, 2, 0));
 			addRecipe(energy, new ItemStack(Blocks.EMERALD_ORE), new ItemStack(Items.EMERALD, 2, 0));
-			addRecipe(energy, new ItemStack(Blocks.LAPIS_ORE), new ItemStack(Items.DYE, 10, 4), ItemMaterial.dustSulfur, 20);
+			addRecipe(energy, new ItemStack(Blocks.LAPIS_ORE), new ItemStack(Items.DYE, 8, 4), ItemMaterial.dustSulfur, 20);
 			addRecipe(energy, new ItemStack(Blocks.REDSTONE_ORE), new ItemStack(Items.REDSTONE, 6), ItemMaterial.crystalCinnabar, 25);
 			addRecipe(energy, new ItemStack(Blocks.QUARTZ_ORE), new ItemStack(Items.QUARTZ, 3), ItemMaterial.dustSulfur, 15);
 
@@ -241,25 +241,27 @@ public class PulverizerManager {
 
 			energy = DEFAULT_ENERGY * 3 / 2;
 
-			addRecipe(energy, new ItemStack(Items.DIAMOND_SWORD), new ItemStack(Items.DIAMOND, 2));
-			addRecipe(energy, new ItemStack(Items.DIAMOND_PICKAXE), new ItemStack(Items.DIAMOND, 3));
-			addRecipe(energy, new ItemStack(Items.DIAMOND_AXE), new ItemStack(Items.DIAMOND, 3));
-			addRecipe(energy, new ItemStack(Items.DIAMOND_SHOVEL), new ItemStack(Items.DIAMOND));
-			addRecipe(energy, new ItemStack(Items.DIAMOND_HOE), new ItemStack(Items.DIAMOND, 2));
+			ItemStack diamond = new ItemStack(Items.DIAMOND);
 
-			addRecipe(energy, new ItemStack(Items.DIAMOND_HELMET), new ItemStack(Items.DIAMOND, 5));
-			addRecipe(energy, new ItemStack(Items.DIAMOND_CHESTPLATE), new ItemStack(Items.DIAMOND, 8));
-			addRecipe(energy, new ItemStack(Items.DIAMOND_LEGGINGS), new ItemStack(Items.DIAMOND, 7));
-			addRecipe(energy, new ItemStack(Items.DIAMOND_BOOTS), new ItemStack(Items.DIAMOND, 4));
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_SWORD), diamond, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_PICKAXE), diamond, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_AXE), diamond, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_SHOVEL), diamond, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HOE), diamond, 2);
 
-			addRecipe(energy, new ItemStack(Items.DIAMOND_HORSE_ARMOR), new ItemStack(Items.DIAMOND, 4));
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HELMET), diamond, 4);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_CHESTPLATE), diamond, 7);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_LEGGINGS), diamond, 6);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_BOOTS), diamond, 3);
 
-			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolBow, new ItemStack(Items.DIAMOND, 2));
-			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolFishingRod, new ItemStack(Items.DIAMOND, 2));
-			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShears, new ItemStack(Items.DIAMOND, 2));
-			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolSickle, new ItemStack(Items.DIAMOND, 3));
-			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolHammer, new ItemStack(Items.DIAMOND, 5));
-			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShield, new ItemStack(Items.DIAMOND, 6));
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HORSE_ARMOR), diamond, 4);
+
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolBow, diamond, 2);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolFishingRod, diamond, 2);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShears, diamond, 2);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolSickle, diamond, 3);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolHammer, diamond, 5);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShield, diamond, 6);
 		}
 
 		/* LOAD RECIPES */
@@ -403,7 +405,7 @@ public class PulverizerManager {
 		String dustName = "dust" + StringHelper.titleCase(oreType);
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
 		String clusterName = "cluster" + StringHelper.titleCase(oreType);
-		String relatedName = null;
+		String relatedName;
 
 		List<ItemStack> registeredOre = OreDictionary.getOres(oreName, false);
 		List<ItemStack> registeredDust = OreDictionary.getOres(dustName, false);
@@ -511,6 +513,17 @@ public class PulverizerManager {
 		if (!registeredOres.isEmpty() && !recipeExists(OreDictionary.getOres(ingotName, false).get(0))) {
 			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), dust, ItemStack.EMPTY, 0);
 		}
+	}
+
+	public static void addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
+
+		addRecycleRecipe(energy, input, output, outputSize, true);
+	}
+
+	public static void addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize, boolean wildcard) {
+
+		ItemStack recycleInput = wildcard ? input.copy() : new ItemStack(input.getItem(), 1, OreDictionary.WILDCARD_VALUE);
+		addRecipe(energy, recycleInput, ItemHelper.cloneStack(output, outputSize));
 	}
 
 	/* RECIPE CLASS */

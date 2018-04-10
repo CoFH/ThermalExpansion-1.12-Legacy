@@ -286,9 +286,6 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 		category = "Blacklist";
 		comment = "List of fluids that are not allowed to be placed in Florbs.";
 		blacklist = CONFIG_FLORBS.getConfiguration().getStringList("Blacklist", category, blacklist, comment);
-
-		// TODO: Remove in 5.3.10.
-		CONFIG_FLORBS.removeCategory("Whitelist");
 	}
 
 	public static final ConfigHandler CONFIG_FLORBS = new ConfigHandler(ThermalExpansion.VERSION);

@@ -484,7 +484,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 		public CacheItemHandler readFromNBT(NBTTagCompound nbt) {
 
 			locked = false;
-			// TODO: Remove old Key check in 5.3.12.
+			// TODO: Remove old Key check in 5.3.13.
 			if (nbt.hasKey("Inventory")) {
 				ItemStack inventory[] = new ItemStack[2];
 				inventory[0] = ItemStack.EMPTY;

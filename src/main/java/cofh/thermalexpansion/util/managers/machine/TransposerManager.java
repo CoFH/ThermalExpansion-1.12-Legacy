@@ -12,16 +12,15 @@ import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import cofh.thermalfoundation.item.ItemMaterial;
+import cofh.thermalfoundation.util.helpers.FluidPotionHelper;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -139,12 +138,12 @@ public class TransposerManager {
 
 		/* ELEMENTAL */
 		{
-			FluidStack redstoneFluid = new FluidStack(TFFluids.fluidRedstone, 200);
+			FluidStack glowstoneFluid = new FluidStack(TFFluids.fluidGlowstone, 200);
 
-			addFillRecipe(4000, new ItemStack(Items.GLOWSTONE_DUST), new ItemStack(Items.BLAZE_POWDER), redstoneFluid, false);
-			addFillRecipe(4000, new ItemStack(Items.SNOWBALL), ItemHelper.cloneStack(ItemMaterial.dustBlizz, 1), redstoneFluid, false);
-			addFillRecipe(4000, new ItemStack(Blocks.SAND), ItemHelper.cloneStack(ItemMaterial.dustBlitz), redstoneFluid, false);
-			addFillRecipe(4000, ItemHelper.cloneStack(ItemMaterial.dustObsidian), ItemHelper.cloneStack(ItemMaterial.dustBasalz), redstoneFluid, false);
+			addFillRecipe(4000, ItemMaterial.dustSulfur, new ItemStack(Items.BLAZE_POWDER), glowstoneFluid, false);
+			addFillRecipe(4000, new ItemStack(Items.SNOWBALL), ItemMaterial.dustBlizz, glowstoneFluid, false);
+			addFillRecipe(4000, ItemMaterial.dustNiter, ItemMaterial.dustBlitz, glowstoneFluid, false);
+			addFillRecipe(4000, ItemMaterial.dustObsidian, ItemMaterial.dustBasalz, glowstoneFluid, false);
 		}
 
 		/* CELLS */
@@ -159,7 +158,7 @@ public class TransposerManager {
 		}
 
 		addFillRecipe(4000, new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Blocks.SPONGE, 1, 1), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), true);
-		addFillRecipe(2000, ItemHelper.cloneStack(ItemFertilizer.fertilizerBasic), ItemHelper.cloneStack(ItemFertilizer.fertilizerRich), new FluidStack(TFFluids.fluidSap, 200), false);
+		addFillRecipe(2000, ItemFertilizer.fertilizerBasic, ItemFertilizer.fertilizerRich, new FluidStack(TFFluids.fluidSap, 200), false);
 		addFillRecipe(400, new ItemStack(Items.BOWL), new ItemStack(Items.MUSHROOM_STEW), new FluidStack(TFFluids.fluidMushroomStew, 250), true);
 		addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(TFFluids.fluidExperience, 250), false);
 
@@ -176,79 +175,6 @@ public class TransposerManager {
 	}
 
 	public static void loadPotions() {
-
-		//		/* VANILLA */
-		//		{
-		//			addDefaultPotionRecipes(PotionTypes.MUNDANE);
-		//			addDefaultPotionRecipes(PotionTypes.THICK);
-		//			addDefaultPotionRecipes(PotionTypes.AWKWARD);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.NIGHT_VISION);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_NIGHT_VISION);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.INVISIBILITY);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_INVISIBILITY);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.LEAPING);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_LEAPING);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_LEAPING);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.FIRE_RESISTANCE);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_FIRE_RESISTANCE);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.SWIFTNESS);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_SWIFTNESS);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_SWIFTNESS);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.SLOWNESS);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_SLOWNESS);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.WATER_BREATHING);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_WATER_BREATHING);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.HEALING);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_HEALING);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.HARMING);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_HARMING);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.POISON);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_POISON);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_POISON);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.REGENERATION);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_REGENERATION);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_REGENERATION);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.STRENGTH);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_STRENGTH);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_STRENGTH);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.WEAKNESS);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_WEAKNESS);
-		//		}
-		//
-		//		/* COFH */
-		//		{
-		//			addDefaultPotionRecipes(CorePotions.haste);
-		//			addDefaultPotionRecipes(CorePotions.hasteLong);
-		//			addDefaultPotionRecipes(CorePotions.hasteStrong);
-		//
-		//			addDefaultPotionRecipes(CorePotions.resistance);
-		//			addDefaultPotionRecipes(CorePotions.resistanceLong);
-		//			addDefaultPotionRecipes(CorePotions.resistanceStrong);
-		//
-		//			addDefaultPotionRecipes(CorePotions.levitation);
-		//			addDefaultPotionRecipes(CorePotions.levitationLong);
-		//
-		//			addDefaultPotionRecipes(CorePotions.absorption);
-		//			addDefaultPotionRecipes(CorePotions.absorptionLong);
-		//			addDefaultPotionRecipes(CorePotions.absorptionStrong);
-		//
-		//			addDefaultPotionRecipes(CorePotions.wither);
-		//			addDefaultPotionRecipes(CorePotions.witherLong);
-		//			addDefaultPotionRecipes(CorePotions.witherStrong);
-		//		}
 
 		for (PotionType type : PotionType.REGISTRY) {
 
@@ -384,48 +310,10 @@ public class TransposerManager {
 
 	public static void addDefaultPotionRecipes(PotionType type) {
 
-		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(ItemHelper.cloneStack(Items.POTIONITEM, 1), type), getPotion(CoreProps.BOTTLE_VOLUME, type), true);
-		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(ItemHelper.cloneStack(Items.SPLASH_POTION, 1), type), getSplashPotion(CoreProps.BOTTLE_VOLUME, type), true);
-		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(ItemHelper.cloneStack(Items.LINGERING_POTION, 1), type), getLingeringPotion(CoreProps.BOTTLE_VOLUME, type), true);
-		addFillRecipe(DEFAULT_ENERGY, new ItemStack(Items.ARROW), PotionUtils.addPotionToItemStack(new ItemStack(Items.TIPPED_ARROW), type), getLingeringPotion(CoreProps.BOTTLE_VOLUME / 10, type), false);
-	}
-
-	public static FluidStack getPotion(int amount, PotionType type) {
-
-		if (type == PotionTypes.WATER) {
-			return new FluidStack(FluidRegistry.WATER, amount);
-		}
-		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, amount), type);
-	}
-
-	public static FluidStack getSplashPotion(int amount, PotionType type) {
-
-		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, amount), type);
-	}
-
-	public static FluidStack getLingeringPotion(int amount, PotionType type) {
-
-		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, amount), type);
-	}
-
-	public static FluidStack addPotionToFluidStack(FluidStack stack, PotionType type) {
-
-		ResourceLocation resourcelocation = PotionType.REGISTRY.getNameForObject(type);
-
-		if (type == PotionTypes.EMPTY) {
-			if (stack.tag != null) {
-				stack.tag.removeTag("Potion");
-				if (stack.tag.hasNoTags()) {
-					stack.tag = null;
-				}
-			}
-		} else {
-			if (stack.tag == null) {
-				stack.tag = new NBTTagCompound();
-			}
-			stack.tag.setString("Potion", resourcelocation.toString());
-		}
-		return stack;
+		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM, 1), type), FluidPotionHelper.getPotion(CoreProps.BOTTLE_VOLUME, type), true);
+		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION, 1), type), FluidPotionHelper.getSplashPotion(CoreProps.BOTTLE_VOLUME, type), true);
+		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION, 1), type), FluidPotionHelper.getLingeringPotion(CoreProps.BOTTLE_VOLUME, type), true);
+		addFillRecipe(DEFAULT_ENERGY, new ItemStack(Items.ARROW), PotionUtils.addPotionToItemStack(new ItemStack(Items.TIPPED_ARROW), type), FluidPotionHelper.getLingeringPotion(CoreProps.BOTTLE_VOLUME / 10, type), false);
 	}
 
 	/* RECIPE CLASS */

@@ -41,7 +41,7 @@ public class CompactorRecipeCategoryGear extends CompactorRecipeCategory {
 
 		super(guiHelper);
 
-		localizedName += " - " + StringHelper.localize("gui.thermalexpansion.jei.compactor.modeGear");
+		localizedName = StringHelper.localize("item.thermalexpansion.augment.machineCompactorGear.name");
 	}
 
 	@Nonnull

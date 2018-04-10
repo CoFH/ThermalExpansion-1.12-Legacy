@@ -2,10 +2,7 @@ package cofh.thermalexpansion.plugins;
 
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.managers.device.TapperManager;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
-import cofh.thermalexpansion.util.managers.machine.SawmillManager;
-import cofh.thermalexpansion.util.managers.machine.TransposerManager;
+import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.Block;
@@ -30,6 +27,7 @@ public class PluginBiomesOPlenty extends PluginTEBase {
 	public void registerDelegate() {
 
 		ItemStack sandWhite = getItemStack("white_sand", 1, 0);
+		ItemStack sandstoneWhite = getItemStack("white_sandstone", 1, 0);
 
 		ItemStack logYellowAutumn = new ItemStack(Blocks.LOG, 1, 2);
 		ItemStack logOrangeAutumn = new ItemStack(Blocks.LOG2, 1, 1);
@@ -290,6 +288,12 @@ public class PluginBiomesOPlenty extends PluginTEBase {
 			TransposerManager.addFillRecipe(energy, new ItemStack(Blocks.DIRT), getItemStack("mud"), water, false);
 			TransposerManager.addFillRecipe(energy, getItemStack("dirt"), getItemStack("mud"), water, false);
 			TransposerManager.addFillRecipe(energy, getItemStack("dried_sand"), new ItemStack(Blocks.SAND), water, false);
+		}
+
+		/* EXTRUDER */
+		{
+			ExtruderManager.addRecipeSedimentary(ExtruderManager.DEFAULT_ENERGY * 4, sandWhite, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 1500));
+			ExtruderManager.addRecipeSedimentary(ExtruderManager.DEFAULT_ENERGY * 8, sandstoneWhite, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME * 2));
 		}
 
 		/* TAPPER */

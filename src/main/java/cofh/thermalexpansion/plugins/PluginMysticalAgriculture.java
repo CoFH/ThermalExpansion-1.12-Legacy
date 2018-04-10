@@ -22,15 +22,8 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 	@Override
 	public void initializeDelegate() {
 
-		String category = "Plugins";
+		String category = "Plugins." + MOD_NAME;
 		String comment;
-
-		// TODO: Remove at some point.
-		ThermalExpansion.CONFIG.renameProperty(category, "BaseSecondaryChance", "Plugins." + MOD_NAME, "BaseSecondaryChance", true);
-		ThermalExpansion.CONFIG.renameProperty(category, "RichSecondaryChance", "Plugins." + MOD_NAME, "RichSecondaryChance", true);
-		ThermalExpansion.CONFIG.renameProperty(category, "FluxedSecondaryChance", "Plugins." + MOD_NAME, "FluxedSecondaryChance", true);
-
-		category = "Plugins." + MOD_NAME;
 
 		comment = "Secondary chance for seeds when using Phyto-Gro.";
 		secondaryChanceBase = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseSecondaryChance", category, secondaryChanceBase, 0, 150, comment);
