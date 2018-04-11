@@ -486,6 +486,18 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'Y', "ingotLead"
 			);
 		}
+		if (enable[Type.MOB_CATCHER.getMetadata()]) {
+			addShapedRecipe(deviceMobCatcher,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameDevice,
+					'I', ironPart,
+					'P', ItemMaterial.redstoneServo,
+					'X', Blocks.DISPENSER,
+					'Y', "ingotConstantan"
+			);
+		}
 		// @formatter:on
 	}
 

@@ -2,7 +2,6 @@ package cofh.thermalexpansion.util;
 
 import codechicken.lib.block.property.unlisted.UnlistedPropertyBase;
 
-//TODO, move to ccl.
 public class UnlistedGenericProperty<T> extends UnlistedPropertyBase<T> {
 
 	private final Class<T> clazz;
@@ -24,4 +23,5 @@ public class UnlistedGenericProperty<T> extends UnlistedPropertyBase<T> {
 
 		return value.toString();
 	}
+
 }

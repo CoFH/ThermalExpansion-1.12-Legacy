@@ -358,7 +358,7 @@ public class PluginBiomesOPlenty extends PluginTEBase {
 		{
 			ExtruderManager.addRecipeSedimentary(ExtruderManager.DEFAULT_ENERGY * 4, sandWhite, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 1500));
 			ExtruderManager.addRecipeSedimentary(ExtruderManager.DEFAULT_ENERGY * 4, driedSand, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 1000));
-			ExtruderManager.addRecipeSedimentary(ExtruderManager.DEFAULT_ENERGY * 8, sandStoneWhite, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME * 2));
+			ExtruderManager.addRecipeSedimentary(ExtruderManager.DEFAULT_ENERGY * 8, sandstoneWhite, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME * 2));
 		}
 	}
 

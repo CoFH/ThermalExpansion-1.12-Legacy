@@ -13,7 +13,6 @@ import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.block.apparatus.BlockApparatus.Type;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.util.Utils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -138,7 +137,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 					EnumFacing side = EnumFacing.VALUES[i];
 					TileEntity curTile = BlockHelper.getAdjacentTileEntity(this, side);
 					/* Add to Adjacent Inventory */
-					if (Utils.isAccessibleOutput(curTile, side)) {
+					if (InventoryHelper.isAccessibleOutput(curTile, side)) {
 						LinkedList<ItemStack> newStuffed = new LinkedList<>();
 						for (ItemStack curItem : stuffedItems) {
 							if (curItem.isEmpty()) {

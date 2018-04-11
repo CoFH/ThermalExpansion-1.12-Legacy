@@ -3,7 +3,6 @@ package cofh.thermalexpansion.block;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.InventoryHelper;
 import cofh.core.util.helpers.ItemHelper;
-import cofh.thermalexpansion.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -39,7 +38,7 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 		int initialAmount = amount;
 		TileEntity adjInv = BlockHelper.getAdjacentTileEntity(this, side);
 
-		if (Utils.isAccessibleInput(adjInv, side)) {
+		if (InventoryHelper.isAccessibleInput(adjInv, side)) {
 			IItemHandler inv = InventoryHelper.getItemHandlerCap(adjInv, side.getOpposite());
 			if (inv == null) {
 				return false;
@@ -81,7 +80,7 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 		initialStack.setCount(Math.min(amount, initialStack.getCount()));
 		TileEntity adjInv = BlockHelper.getAdjacentTileEntity(this, side);
 
-		if (Utils.isAccessibleOutput(adjInv, side)) {
+		if (InventoryHelper.isAccessibleOutput(adjInv, side)) {
 			ItemStack inserted = InventoryHelper.addToInventory(adjInv, side, initialStack);
 
 			if (inserted.getCount() >= initialStack.getCount()) {

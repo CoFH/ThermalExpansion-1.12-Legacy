@@ -153,10 +153,9 @@ public abstract class BlockTEBase extends BlockCoreTile {
 	}
 
 	@Override
-	@SideOnly (Side.CLIENT)
-	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+	public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity) {
 
-		return CustomParticleHandler.handleDestroyEffects(world, pos, manager);
+		return false;
 	}
 
 	@Override
@@ -164,6 +163,13 @@ public abstract class BlockTEBase extends BlockCoreTile {
 	public boolean addHitEffects(IBlockState state, World world, RayTraceResult trace, ParticleManager manager) {
 
 		return CustomParticleHandler.handleHitEffects(state, world, trace, manager);
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+
+		return CustomParticleHandler.handleDestroyEffects(world, pos, manager);
 	}
 
 	/* HELPERS */

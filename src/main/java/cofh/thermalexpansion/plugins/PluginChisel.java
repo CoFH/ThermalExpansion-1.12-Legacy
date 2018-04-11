@@ -1,13 +1,10 @@
 package cofh.thermalexpansion.plugins;
 
-import net.minecraft.init.Blocks;
+import cofh.thermalexpansion.util.managers.machine.ExtruderManager;
 import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import cofh.thermalexpansion.util.managers.machine.ExtruderManager;
 
 public class PluginChisel extends PluginTEBase {
 
@@ -22,13 +19,14 @@ public class PluginChisel extends PluginTEBase {
 	@Override
 	public void registerDelegate() {
 
-		ItemStack basalt = getItemStack("basalt2",1,7);	//"raw" basalt
-		ItemStack limeStone = getItemStack("limestone2",1,7); //"raw" limestone
+		ItemStack basalt = getItemStack("basalt2", 1, 7);    //"raw" basalt
+		ItemStack limestone = getItemStack("limestone2", 1, 7); //"raw" limestone
 
 		/* EXTRUDER */
 		{
-			ExtruderManager.addRecipeIgneous(ExtruderManager.DEFAULT_ENERGY * 2, basalt, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
-			ExtruderManager.addRecipeSedimentary(ExtruderManager.DEFAULT_ENERGY * 2, limeStone, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 1500));
+			ExtruderManager.addRecipeIgneous(ExtruderManager.DEFAULT_ENERGY * 2, basalt, new FluidStack(FluidRegistry.LAVA, 500), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
+			ExtruderManager.addRecipeSedimentary(ExtruderManager.DEFAULT_ENERGY * 2, limestone, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 1500));
 		}
 	}
+
 }

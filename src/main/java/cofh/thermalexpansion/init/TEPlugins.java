@@ -40,6 +40,7 @@ public class TEPlugins {
 		pluginEvilCraft = new PluginEvilCraft();
 		pluginExtraAlchemy = new PluginExtraAlchemy();
 		pluginExU2 = new PluginExU2();
+		pluginFamiliarFauna = new PluginFamiliarFauna();
 		pluginIC2 = new PluginIC2();
 		pluginIceAndFire = new PluginIceAndFire();
 		pluginIntegratedDynamics = new PluginIntegratedDynamics();
@@ -76,6 +77,7 @@ public class TEPlugins {
 		initList.add(pluginEvilCraft);
 		initList.add(pluginExtraAlchemy);
 		initList.add(pluginExU2);
+		initList.add(pluginFamiliarFauna);
 		initList.add(pluginIC2);
 		initList.add(pluginIceAndFire);
 		initList.add(pluginIntegratedDynamics);
@@ -127,6 +129,7 @@ public class TEPlugins {
 	public static PluginEvilCraft pluginEvilCraft;
 	public static PluginExtraAlchemy pluginExtraAlchemy;
 	public static PluginExU2 pluginExU2;
+	public static PluginFamiliarFauna pluginFamiliarFauna;
 	public static PluginIC2 pluginIC2;
 	public static PluginIceAndFire pluginIceAndFire;
 	public static PluginIntegratedDynamics pluginIntegratedDynamics;
