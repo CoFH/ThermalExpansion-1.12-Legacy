@@ -80,7 +80,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
 		if (enable) {
-			if (TEProps.creativeTabShowAllLevels) {
+			if (TEProps.creativeTabShowAllBlockLevels) {
 				for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
 					items.add(itemBlock.setDefaultTag(new ItemStack(this), j));
 				}

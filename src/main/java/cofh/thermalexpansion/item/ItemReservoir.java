@@ -16,6 +16,7 @@ import cofh.core.util.capabilities.FluidContainerItemWrapper;
 import cofh.core.util.core.IInitializer;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import com.google.common.collect.Iterables;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -70,7 +71,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		super("thermalexpansion");
 
 		setUnlocalizedName("reservoir");
-		setCreativeTab(ThermalExpansion.tabItems);
+		setCreativeTab(ThermalExpansion.tabTools);
 
 		setHasSubtypes(true);
 		setMaxStackSize(1);
@@ -131,7 +132,13 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 
 		if (isInCreativeTab(tab)) {
 			for (int metadata : itemList) {
-				items.add(new ItemStack(this, 1, metadata));
+				if (metadata != CREATIVE) {
+					items.add(new ItemStack(this, 1, metadata));
+				} else {
+					if (TFProps.showCreativeItems) {
+						items.add(new ItemStack(this, 1, metadata));
+					}
+				}
 			}
 		}
 	}
@@ -178,7 +185,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 
-		return ItemHelper.getItemDamage(stack) != CREATIVE;
+		return ItemHelper.getItemDamage(stack) != CREATIVE && (stack.getTagCompound() == null || !stack.getTagCompound().getBoolean("CreativeTab"));
 	}
 
 	@Override

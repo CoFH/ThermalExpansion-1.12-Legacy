@@ -17,6 +17,7 @@ import cofh.core.util.filter.ItemFilterWrapper;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
+import cofh.thermalfoundation.init.TFProps;
 import com.mojang.authlib.GameProfile;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -79,7 +80,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 
 		setMaxStackSize(1);
 		setUnlocalizedName("satchel");
-		setCreativeTab(ThermalExpansion.tabItems);
+		setCreativeTab(ThermalExpansion.tabTools);
 	}
 
 	@Override
@@ -119,7 +120,13 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 
 		if (isInCreativeTab(tab)) {
 			for (int metadata : itemList) {
-				items.add(setDefaultInventoryTag(new ItemStack(this, 1, metadata)));
+				if (metadata != CREATIVE) {
+					items.add(setDefaultInventoryTag(new ItemStack(this, 1, metadata)));
+				} else {
+					if (TFProps.showCreativeItems) {
+						items.add(setDefaultInventoryTag(new ItemStack(this, 1, metadata)));
+					}
+				}
 			}
 		}
 	}

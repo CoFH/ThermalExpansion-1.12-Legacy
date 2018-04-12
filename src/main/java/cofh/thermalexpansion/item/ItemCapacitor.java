@@ -14,6 +14,7 @@ import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.util.EnergyContainerItemWrapper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalfoundation.init.TFProps;
 import com.google.common.collect.Iterables;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -58,7 +59,7 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 		super("thermalexpansion");
 
 		setUnlocalizedName("capacitor");
-		setCreativeTab(ThermalExpansion.tabItems);
+		setCreativeTab(ThermalExpansion.tabTools);
 
 		setHasSubtypes(true);
 		setMaxStackSize(1);
@@ -99,10 +100,16 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 		if (isInCreativeTab(tab)) {
 			for (int metadata : itemList) {
 				if (metadata != CREATIVE) {
-					items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), 0));
-					items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), getBaseCapacity(metadata)));
+					if (TFProps.showEmptyItems) {
+						items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), 0));
+					}
+					if (TFProps.showFullItems) {
+						items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), getBaseCapacity(metadata)));
+					}
 				} else {
-					items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), getBaseCapacity(metadata)));
+					if (TFProps.showCreativeItems) {
+						items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), getBaseCapacity(metadata)));
+					}
 				}
 			}
 		}

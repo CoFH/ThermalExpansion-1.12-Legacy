@@ -85,7 +85,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
-				if (TEProps.creativeTabShowAllLevels) {
+				if (TEProps.creativeTabShowAllBlockLevels) {
 					for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
 						items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i), j));
 					}

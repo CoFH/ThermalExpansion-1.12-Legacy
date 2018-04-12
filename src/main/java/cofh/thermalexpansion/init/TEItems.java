@@ -2,7 +2,10 @@ package cofh.thermalexpansion.init;
 
 import cofh.core.util.core.IInitializer;
 import cofh.thermalexpansion.item.*;
+import cofh.thermalfoundation.init.TFProps;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -42,6 +45,25 @@ public class TEItems {
 		for (IInitializer init : initList) {
 			init.initialize();
 		}
+		for (int i = 0; i < 5; i++) {
+			ItemStack iconStack = new ItemStack(itemCapacitor, 1, i);
+			iconStack.setTagCompound(new NBTTagCompound());
+			iconStack.getTagCompound().setBoolean("CreativeTab", true);
+			TFProps.toolList.add(iconStack.copy());
+
+			iconStack = new ItemStack(itemReservoir, 1, i);
+			iconStack.setTagCompound(new NBTTagCompound());
+			iconStack.getTagCompound().setBoolean("CreativeTab", true);
+			TFProps.toolList.add(iconStack.copy());
+
+			iconStack = new ItemStack(itemSatchel, 1, i);
+			TFProps.toolList.add(iconStack.copy());
+		}
+		TFProps.miscList.add(ItemFlorb.florbStandard.copy());
+		TFProps.miscList.add(ItemFlorb.florbMagmatic.copy());
+		TFProps.miscList.add(ItemMorb.morbStandard.copy());
+		TFProps.miscList.add(ItemMorb.morbReusable.copy());
+
 		MinecraftForge.EVENT_BUS.register(INSTANCE);
 	}
 

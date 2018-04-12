@@ -13,6 +13,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.entity.projectile.EntityMorb;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.BehaviorMorbDispense;
+import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.block.BlockDispenser;
@@ -232,6 +233,9 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 				continue;
 			}
 			addMorb(ItemHelper.cloneStack(morbStandard), name.toString());
+		}
+		if (TFProps.useUnifiedTabs) {
+			TFProps.miscList.addAll(morbList);
 		}
 		CONFIG_MORBS.cleanUp(false, true);
 	}

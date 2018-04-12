@@ -222,11 +222,14 @@ public class BrewerManager {
 		addRecipe(DEFAULT_ENERGY, reagent, TFFluids.getSplashPotion(DEFAULT_AMOUNT, input), TFFluids.getSplashPotion(DEFAULT_AMOUNT, output));
 		addRecipe(DEFAULT_ENERGY, reagent, TFFluids.getLingeringPotion(DEFAULT_AMOUNT, input), TFFluids.getLingeringPotion(DEFAULT_AMOUNT, output));
 
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.GUNPOWDER), TFFluids.getPotion(DEFAULT_AMOUNT, input), TFFluids.getSplashPotion(DEFAULT_AMOUNT, input));
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.DRAGON_BREATH), TFFluids.getSplashPotion(DEFAULT_AMOUNT, input), TFFluids.getLingeringPotion(DEFAULT_AMOUNT, input));
+		addSwapPotionRecipes(input);
+		addSwapPotionRecipes(output);
+	}
 
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.GUNPOWDER), TFFluids.getPotion(DEFAULT_AMOUNT, output), TFFluids.getSplashPotion(DEFAULT_AMOUNT, output));
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.DRAGON_BREATH), TFFluids.getSplashPotion(DEFAULT_AMOUNT, output), TFFluids.getLingeringPotion(DEFAULT_AMOUNT, output));
+	public static void addSwapPotionRecipes(PotionType potion) {
+
+		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.GUNPOWDER), TFFluids.getPotion(DEFAULT_AMOUNT, potion), TFFluids.getSplashPotion(DEFAULT_AMOUNT, potion));
+		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.DRAGON_BREATH), TFFluids.getSplashPotion(DEFAULT_AMOUNT, potion), TFFluids.getLingeringPotion(DEFAULT_AMOUNT, potion));
 	}
 
 	/* RECIPE CLASS */

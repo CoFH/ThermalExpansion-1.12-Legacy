@@ -196,7 +196,7 @@ public class RefineryManager {
 		int outputAmount;
 
 		for (int i = maxRank; i > 2; i--) {
-			outputAmount = baseAmount + baseAmount * (CoreProps.POTION_MAX - i);
+			outputAmount = 2 * baseAmount + baseAmount * (CoreProps.POTION_MAX - i);
 			inputAmount = outputAmount + baseAmount;
 
 			PotionType inputType = getPotionType(baseName, i - 1, postfix);

@@ -21,6 +21,7 @@ import cofh.thermalexpansion.item.ItemMorb;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.network.PacketTEBase.PacketTypes;
 import cofh.thermalexpansion.util.UnlistedGenericProperty;
+import cofh.thermalfoundation.ThermalFoundation;
 import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.item.ItemStack;
@@ -74,13 +75,13 @@ public class TEProps {
 		boolean slotOverlayAlt;
 		boolean slotOverlayCB;
 
-		comment = "If TRUE, Thermal Expansion Items and Tools appear under the general \"Thermal Expansion\" Creative Tab.";
+		comment = "If TRUE, Thermal Expansion Items and Tools appear under the general \"Thermal Expansion\" Creative Tab. Does not work if \"Thermal Series\" Creative Tabs are in use.";
 		itemTabCommon = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ItemsInCommonTab", category, itemTabCommon, comment);
 
-		comment = "If TRUE, Thermal Expansion Florbs appear under the general \"Thermal Expansion\" Creative Tab. Not really recommended.";
+		comment = "If TRUE, Thermal Expansion Florbs appear under the general \"Thermal Expansion\" Creative Tab. Does not work if \"Thermal Series\" Creative Tabs are in use.";
 		florbTabCommon = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("FlorbsInCommonTab", category, florbTabCommon, comment);
 
-		comment = "If TRUE, Thermal Expansion Morbs appear under the general \"Thermal Expansion\" Creative Tab. Not really recommended.";
+		comment = "If TRUE, Thermal Expansion Morbs appear under the general \"Thermal Expansion\" Creative Tab. Does not work if \"Thermal Series\" Creative Tabs are in use.";
 		morbTabCommon = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("MorbsInCommonTab", category, morbTabCommon, comment);
 
 		category = "Interface.CreativeTabs";
@@ -89,7 +90,7 @@ public class TEProps {
 		creativeTabLevel = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getInt("DefaultLevel", category, creativeTabLevel, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX, comment);
 
 		comment = "If TRUE, all regular levels for a given Block will show in the Creative Tab.";
-		creativeTabShowAllLevels = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ShowAllBlockLevels", category, creativeTabShowAllLevels, comment);
+		creativeTabShowAllBlockLevels = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ShowAllBlockLevels", category, creativeTabShowAllBlockLevels, comment);
 
 		comment = "If TRUE, Creative version of Blocks will show in the Creative Tab.";
 		creativeTabShowCreative = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ShowCreativeBlocks", category, creativeTabShowCreative, comment);
@@ -131,79 +132,90 @@ public class TEProps {
 		}
 
 		/* CREATIVE TABS */
-		ThermalExpansion.tabCommon = new CreativeTabCore("thermalexpansion") {
+		if (TFProps.useUnifiedTabs) {
+			ThermalExpansion.tabCommon = ThermalFoundation.tabCommon;
+			ThermalExpansion.tabItems = ThermalFoundation.tabItems;
+			ThermalExpansion.tabUtils = ThermalFoundation.tabUtils;
 
-			@Override
-			@SideOnly (Side.CLIENT)
-			public ItemStack getIconItemStack() {
+			TFProps.initToolTab();
+			ThermalExpansion.tabTools = ThermalFoundation.tabTools;
 
-				return BlockMachine.machineFurnace;
-			}
-
-		};
-
-		if (itemTabCommon) {
-			ThermalExpansion.tabItems = ThermalExpansion.tabCommon;
+			TFProps.initMiscTab();
+			ThermalExpansion.tabFlorbs = ThermalFoundation.tabMisc;
+			ThermalExpansion.tabMorbs = ThermalFoundation.tabMisc;
 		} else {
-			ThermalExpansion.tabItems = new CreativeTabCore("thermalexpansion", "Items") {
+			ThermalExpansion.tabCommon = new CreativeTabCore("thermalexpansion") {
 
 				@Override
 				@SideOnly (Side.CLIENT)
-				public ItemStack getIconItemStack() {
+				public ItemStack getTabIconItem() {
 
-					return ItemMaterial.powerCoilElectrum;
+					return BlockMachine.machineFurnace;
 				}
-
 			};
+
+			if (itemTabCommon) {
+				ThermalExpansion.tabItems = ThermalExpansion.tabCommon;
+			} else {
+				ThermalExpansion.tabItems = new CreativeTabCore("thermalexpansion", "Items") {
+
+					@Override
+					@SideOnly (Side.CLIENT)
+					public ItemStack getTabIconItem() {
+
+						return ItemMaterial.powerCoilElectrum;
+					}
+				};
+			}
+			ThermalExpansion.tabFlorbs = florbTabCommon || creativeTabHideFlorbs ? ThermalExpansion.tabCommon : new CreativeTabCore("thermalexpansion", "Florbs") {
+
+				int iconIndex = 0;
+				TimeTracker iconTracker = new TimeTracker();
+
+				public void updateIcon() {
+
+					World world = CoFHCore.proxy.getClientWorld();
+					if (CoreUtils.isClient() && iconTracker.hasDelayPassed(world, 80)) {
+						int next = MathHelper.RANDOM.nextInt(ItemFlorb.florbList.size() - 1);
+						iconIndex = next >= iconIndex ? next + 1 : next;
+						iconTracker.markTime(world);
+					}
+				}
+
+				@Override
+				@SideOnly (Side.CLIENT)
+				public ItemStack getTabIconItem() {
+
+					updateIcon();
+					return ItemFlorb.florbList.get(iconIndex);
+				}
+			};
+			ThermalExpansion.tabMorbs = morbTabCommon || creativeTabHideMorbs ? ThermalExpansion.tabCommon : new CreativeTabCore("thermalexpansion", "Morbs") {
+
+				int iconIndex = 0;
+				TimeTracker iconTracker = new TimeTracker();
+
+				public void updateIcon() {
+
+					World world = CoFHCore.proxy.getClientWorld();
+					if (CoreUtils.isClient() && iconTracker.hasDelayPassed(world, 80)) {
+						int next = MathHelper.RANDOM.nextInt(ItemMorb.morbList.size() - 1);
+						iconIndex = next >= iconIndex ? next + 1 : next;
+						iconTracker.markTime(world);
+					}
+				}
+
+				@Override
+				@SideOnly (Side.CLIENT)
+				public ItemStack getTabIconItem() {
+
+					updateIcon();
+					return ItemMorb.morbList.get(iconIndex);
+				}
+			};
+			ThermalExpansion.tabUtils = ThermalExpansion.tabItems;
+			ThermalExpansion.tabTools = ThermalExpansion.tabItems;
 		}
-		ThermalExpansion.tabFlorbs = florbTabCommon || creativeTabHideFlorbs ? ThermalExpansion.tabCommon : new CreativeTabCore("thermalexpansion", "Florbs") {
-
-			int iconIndex = 0;
-			TimeTracker iconTracker = new TimeTracker();
-
-			void updateIcon() {
-
-				World world = CoFHCore.proxy.getClientWorld();
-				if (CoreUtils.isClient() && iconTracker.hasDelayPassed(world, 80)) {
-					int next = MathHelper.RANDOM.nextInt(ItemFlorb.florbList.size() - 1);
-					iconIndex = next >= iconIndex ? next + 1 : next;
-					iconTracker.markTime(world);
-				}
-			}
-
-			@Override
-			@SideOnly (Side.CLIENT)
-			public ItemStack getIconItemStack() {
-
-				updateIcon();
-				return ItemFlorb.florbList.get(iconIndex);
-			}
-
-		};
-		ThermalExpansion.tabMorbs = morbTabCommon || creativeTabHideMorbs ? ThermalExpansion.tabCommon : new CreativeTabCore("thermalexpansion", "Morbs") {
-
-			int iconIndex = 0;
-			TimeTracker iconTracker = new TimeTracker();
-
-			void updateIcon() {
-
-				World world = CoFHCore.proxy.getClientWorld();
-				if (CoreUtils.isClient() && iconTracker.hasDelayPassed(world, 80)) {
-					int next = MathHelper.RANDOM.nextInt(ItemMorb.morbList.size() - 1);
-					iconIndex = next >= iconIndex ? next + 1 : next;
-					iconTracker.markTime(world);
-				}
-			}
-
-			@Override
-			@SideOnly (Side.CLIENT)
-			public ItemStack getIconItemStack() {
-
-				updateIcon();
-				return ItemMorb.morbList.get(iconIndex);
-			}
-
-		};
 	}
 
 	public static PacketBase getConfigSync() {
@@ -239,7 +251,7 @@ public class TEProps {
 	public static final int MAX_FLUID_MEDIUM = Fluid.BUCKET_VOLUME * 8;
 	public static final int MAX_FLUID_LARGE = Fluid.BUCKET_VOLUME * 10;
 
-	public static boolean creativeTabShowAllLevels = false;
+	public static boolean creativeTabShowAllBlockLevels = false;
 	public static boolean creativeTabShowCreative = false;
 	public static int creativeTabLevel = 0;
 

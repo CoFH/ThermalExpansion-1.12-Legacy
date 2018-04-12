@@ -20,6 +20,7 @@ import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.item.ModelFlorb;
 import cofh.thermalexpansion.util.BehaviorFlorbDispense;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
+import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -209,6 +210,9 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 				addFlorb(ItemHelper.cloneStack(florbMagmatic), fluid);
 				TransposerManager.addFillRecipe(1600, ItemFlorb.florbMagmatic, florbList.get(florbList.size() - 1), new FluidStack(fluid, Fluid.BUCKET_VOLUME), false);
 			}
+		}
+		if (TFProps.useUnifiedTabs) {
+			TFProps.miscList.addAll(florbList);
 		}
 		CONFIG_FLORBS.cleanUp(false, true);
 	}
