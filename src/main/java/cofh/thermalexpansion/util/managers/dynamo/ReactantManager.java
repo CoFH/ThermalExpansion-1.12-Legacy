@@ -3,7 +3,6 @@ package cofh.thermalexpansion.util.managers.dynamo;
 import cofh.core.inventory.ComparableItemStack;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,12 +23,6 @@ public class ReactantManager {
 	private static Set<ComparableItemStack> validReactantsElemental = new THashSet<>();
 	private static Set<String> validFluidsElemental = new THashSet<>();
 
-	static final ItemStack SUGAR = new ItemStack(Items.SUGAR);
-	static final ItemStack NETHER_WART = new ItemStack(Items.NETHER_WART);
-	static final ItemStack GUNPOWDER = new ItemStack(Items.GUNPOWDER);
-	static final ItemStack BLAZE_POWDER = new ItemStack(Items.BLAZE_POWDER);
-	static final ItemStack GHAST_TEAR = new ItemStack(Items.GHAST_TEAR);
-
 	public static int DEFAULT_ENERGY = 100000;
 
 	public static Reaction getReaction(ItemStack reactant, FluidStack fluid) {
@@ -44,12 +37,17 @@ public class ReactantManager {
 
 	public static boolean reactionExists(ItemStack reactant, FluidStack fluid) {
 
-		return getReaction(reactant, fluid.getFluid()) != null;
+		return getReaction(reactant, fluid) != null;
 	}
 
 	public static boolean reactionExists(ItemStack reactant, Fluid fluid) {
 
 		return getReaction(reactant, fluid) != null;
+	}
+
+	public static boolean reactionExistsElemental(ItemStack reactant, Fluid fluid) {
+
+		return validReactantElemental(reactant) && validFluidElemental(fluid);
 	}
 
 	public static Reaction[] getReactionList() {
@@ -62,24 +60,14 @@ public class ReactantManager {
 		return !reactant.isEmpty() && validReactants.contains(new ComparableItemStack(reactant));
 	}
 
-	public static boolean validFluid(FluidStack fluid) {
-
-		return fluid != null && validFluids.contains(fluid.getFluid().getName());
-	}
-
-	public static boolean isElementalReaction(ItemStack reactant, Fluid fluid) {
-
-		return validReactantElemental(reactant) && validFluidElemental(fluid);
-	}
-
 	public static boolean validReactantElemental(ItemStack reactant) {
 
 		return !reactant.isEmpty() && validReactantsElemental.contains(new ComparableItemStack(reactant));
 	}
 
-	public static boolean validFluidElemental(Fluid fluid) {
+	public static boolean validFluid(FluidStack fluid) {
 
-		return fluid != null && validFluidsElemental.contains(fluid.getName());
+		return fluid != null && validFluids.contains(fluid.getFluid().getName());
 	}
 
 	public static boolean validFluidElemental(FluidStack fluid) {
@@ -87,30 +75,9 @@ public class ReactantManager {
 		return fluid != null && validFluidsElemental.contains(fluid.getFluid().getName());
 	}
 
-	public static void initialize() {
+	public static boolean validFluidElemental(Fluid fluid) {
 
-		//		addReaction(SUGAR, TFFluids.fluidRedstone, 80000);
-		//		addReaction(NETHER_WART, TFFluids.fluidRedstone, 100000);
-		//		addReaction(GUNPOWDER, TFFluids.fluidRedstone, 100000);
-		//		addReaction(BLAZE_POWDER, TFFluids.fluidRedstone, 150000);
-		//		addReaction(GHAST_TEAR, TFFluids.fluidRedstone, 150000);
-		//
-		//		addReaction(SUGAR, TFFluids.fluidGlowstone, 100000);
-		//		addReaction(NETHER_WART, TFFluids.fluidGlowstone, 125000);
-		//		addReaction(GUNPOWDER, TFFluids.fluidGlowstone, 125000);
-		//		addReaction(BLAZE_POWDER, TFFluids.fluidGlowstone, 200000);
-		//		addReaction(GHAST_TEAR, TFFluids.fluidGlowstone, 200000);
-		//
-		//		addElementalReaction(ItemMaterial.dustPyrotheum, TFFluids.fluidCryotheum, 400000);
-		//		addElementalReaction(ItemMaterial.dustCryotheum, TFFluids.fluidPyrotheum, 400000);
-		//		addElementalReaction(ItemMaterial.dustAerotheum, TFFluids.fluidPetrotheum, 400000);
-		//		addElementalReaction(ItemMaterial.dustPetrotheum, TFFluids.fluidAerotheum, 400000);
-		//
-		//		loadReactions();
-	}
-
-	public static void loadReactions() {
-
+		return fluid != null && validFluidsElemental.contains(fluid.getName());
 	}
 
 	public static void refresh() {
@@ -170,6 +137,13 @@ public class ReactantManager {
 	public static boolean removeReaction(ItemStack reactant, Fluid fluid) {
 
 		return reactionMap.remove(asList(new ComparableItemStack(reactant).hashCode(), fluid.getName().hashCode())) != null;
+	}
+
+	public static boolean removeElementalReaction(ItemStack reactant, Fluid fluid) {
+
+		validReactantsElemental.remove(new ComparableItemStack(reactant));
+		validFluidsElemental.remove(fluid.getName());
+		return true;
 	}
 
 	/* REACTION CLASS */

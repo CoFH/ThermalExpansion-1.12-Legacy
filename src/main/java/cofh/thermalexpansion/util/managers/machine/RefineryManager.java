@@ -60,21 +60,6 @@ public class RefineryManager {
 
 	public static void initialize() {
 
-		//		int energy = DEFAULT_ENERGY;
-		//
-		//		/* FOSSIL FUELS */
-		//		{
-		//			addFossilFuel(TFFluids.fluidCoal);
-		//			addFossilFuel(TFFluids.fluidCrudeOil);
-		//			addFossilFuel(TFFluids.fluidRefinedOil);
-		//
-		//			addRecipe(energy, new FluidStack(TFFluids.fluidCoal, 200), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar, 75);
-		//			addRecipe(energy, new FluidStack(TFFluids.fluidCrudeOil, 200), new FluidStack(TFFluids.fluidRefinedOil, 150), ItemMaterial.globTar, 50);
-		//			addRecipe(energy, new FluidStack(TFFluids.fluidRefinedOil, 150), new FluidStack(TFFluids.fluidFuel, 100), ItemMaterial.dustSulfur, 50);
-		//		}
-
-		// addRecipe(energy, new FluidStack(TFFluids.fluidResin, 100), new FluidStack(TFFluids.fluidTreeOil, 50), ItemMaterial.globRosin, 75);
-
 		int max = CoreProps.POTION_MAX;
 
 		addStrongPotionRecipes("leaping", max);
@@ -106,22 +91,8 @@ public class RefineryManager {
 		addStrongPotionRecipes("luck", max, "+");
 		addStrongPotionRecipes("unluck", max, "+");
 		addStrongPotionRecipes("wither", max, "+");
-
-		/* LOAD RECIPES */
-		loadRecipes();
 	}
 
-	public static void loadRecipes() {
-
-		/* IMMERSIVE PETROLEUM */
-		{
-			Fluid oil = FluidRegistry.getFluid("oil");
-			if (oil != null) {
-				addFossilFuel(oil);
-				addRecipe(DEFAULT_ENERGY, new FluidStack(oil, 200), new FluidStack(TFFluids.fluidRefinedOil, 150), ItemMaterial.globTar, 50);
-			}
-		}
-	}
 
 	public static void refresh() {
 

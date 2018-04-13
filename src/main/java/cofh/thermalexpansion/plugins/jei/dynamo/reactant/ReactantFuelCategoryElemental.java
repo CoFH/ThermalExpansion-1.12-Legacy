@@ -30,7 +30,7 @@ public class ReactantFuelCategoryElemental extends ReactantFuelCategory {
 		List<ReactantFuelWrapper> recipes = new ArrayList<>();
 
 		for (ReactantManager.Reaction reaction : ReactantManager.getReactionList()) {
-			if (ReactantManager.isElementalReaction(reaction.getReactant(), reaction.getFluid())) {
+			if (ReactantManager.reactionExistsElemental(reaction.getReactant(), reaction.getFluid())) {
 				recipes.add(new ReactantFuelWrapper(guiHelper, reaction, RecipeUidsTE.DYNAMO_REACTANT_ELEMENTAL));
 			}
 		}

@@ -68,6 +68,8 @@ public abstract class BaseParser implements IContentParser {
 			/* DATA */
 			if (itemObject.has("data")) {
 				data = itemObject.get("data").getAsInt();
+			} else if (itemObject.has("wildcard") && itemObject.get("wildcard").getAsBoolean()) {
+				data = OreDictionary.WILDCARD_VALUE;
 			}
 			/* COUNT */
 			if (itemObject.has("count")) {

@@ -2,7 +2,7 @@
 	"furnace": [{
 		"input": {
 			"item": "minecraft:cactus",
-			"data": 32767
+			"wildcard": true
 		},
 		"output": {
 			"item": "minecraft:dye",

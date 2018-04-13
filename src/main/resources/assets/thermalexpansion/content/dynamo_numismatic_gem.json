@@ -1,0 +1,113 @@
+{
+	"dynamo_numismatic": [{
+		"type": "gem",
+		"input": {
+			"ore": "gemQuartz"
+		},
+		"energy": 40000
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemLapis"
+		},
+		"energy": 80000
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemPrismarine"
+		},
+		"energy": 150000
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemEmerald"
+		},
+		"energy": 200000
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemDiamond"
+		},
+		"energy": 1200000
+	}, {
+		"//": "Biomes O' Plenty"
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemAmethyst"
+		},
+		"energy": 200000
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemRuby"
+		},
+		"energy": 200000
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemPeridot"
+		},
+		"energy": 200000
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemTopaz"
+		},
+		"energy": 200000
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemTanzanite"
+		},
+		"energy": 200000
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemMalachite"
+		},
+		"energy": 200000
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemSapphire"
+		},
+		"energy": 200000
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemAmber"
+		},
+		"energy": 200000
+	}, {
+		"//": "Forestry"
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemApatite"
+		},
+		"energy": 40000
+	}, {
+		"//": "Redstone Arsenal"
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemCrystalFlux"
+		},
+		"energy": 1500000
+	}, {
+		"//": "Tech Reborn"
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemRedGarnet"
+		},
+		"energy": 200000
+	}, {
+		"type": "gem",
+		"input": {
+			"ore": "gemYellowGarnet"
+		},
+		"energy": 200000
+	}]
+}

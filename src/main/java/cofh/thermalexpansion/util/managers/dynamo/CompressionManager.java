@@ -33,56 +33,6 @@ public class CompressionManager {
 		return fluid == null ? 0 : fuelMap.get(fluid.getFluid().getName()) / 10;
 	}
 
-	public static void initialize() {
-
-		//		addFuel("creosote", 40000);
-		//		addFuel("coal", 400000);
-		//		addFuel("crude_oil", 400000);
-		//		addFuel("tree_oil", 1000000);
-		//		addFuel("refined_oil", 1250000);
-		//		addFuel("refined_fuel", 2000000);
-		//
-		//		loadFuels();
-	}
-
-	public static void loadFuels() {
-
-		//		/* ACTUALLY ADDITIONS */
-		//		{
-		//			addFuel("canolaoil", 80000);
-		//			addFuel("refinedcanolaoil", 200000);
-		//			addFuel("crystaloil", 400000);
-		//			addFuel("empoweredoil", 700000);
-		//		}
-		//
-		//		/* FORESTRY */
-		//		{
-		//			addFuel("bio.ethanol", 500000);
-		//		}
-		//
-		//		/* IMMERSIVE ENGINEERING */
-		//		{
-		//			addFuel("biodiesel", 500000);
-		//		}
-		//
-		//		/* IMMERSIVE PETROLEUM */
-		//		{
-		//			addFuel("oil", 400000);
-		//			addFuel("diesel", 800000);
-		//			addFuel("gasoline", 1200000);
-		//		}
-		//
-		//		/* INDUSTRIALCRAFT 2 */
-		//		{
-		//			addFuel("ic2biogas", 50000);
-		//		}
-		//
-		//		/* MINEFACTORY RELOADED */
-		//		{
-		//			addFuel("biofuel", 500000);
-		//		}
-	}
-
 	public static void refresh() {
 
 	}

@@ -57,5 +57,22 @@
 			"data": 832,
 			"chance": 75
 		}
+	}, {
+		"//": "Immersive Petroleum"
+	}, {
+		"type": "fossil_fuel",
+		"input": {
+			"fluid": "oil",
+			"amount": 200
+		},
+		"output": {
+			"fluid": "refined_oil",
+			"amount": 150
+		},
+		"output2": {
+			"item": "thermalfoundation:material",
+			"data": 833,
+			"chance": 50
+		}
 	}]
 }

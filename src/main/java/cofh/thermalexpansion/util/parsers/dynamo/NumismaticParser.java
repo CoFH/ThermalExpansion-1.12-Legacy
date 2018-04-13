@@ -9,6 +9,9 @@ import net.minecraft.item.ItemStack;
 
 public class NumismaticParser extends BaseParser {
 
+	public static final String GEM = "gem";
+	public static final String LAPIDARY = "lapidary";
+
 	int defaultEnergy = NumismaticManager.DEFAULT_ENERGY;
 
 	@Override
@@ -32,7 +35,19 @@ public class NumismaticParser extends BaseParser {
 			} else if (content.has(ENERGY_MOD)) {
 				energy = content.get(ENERGY_MOD).getAsInt() * defaultEnergy / 100;
 			}
-			if (NumismaticManager.addFuel(input, energy)) {
+			/* TYPE */
+			if (content.has(TYPE)) {
+				String type = content.get(TYPE).getAsString();
+				if (GEM.equals(type) || LAPIDARY.equals(type)) {
+					if (NumismaticManager.addGemFuel(input, energy)) {
+						parseCount++;
+					} else {
+						errorCount++;
+					}
+				} else {
+					errorCount++;
+				}
+			} else if (NumismaticManager.addFuel(input, energy)) {
 				parseCount++;
 			} else {
 				errorCount++;

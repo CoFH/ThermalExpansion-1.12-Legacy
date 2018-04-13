@@ -42,22 +42,6 @@ public class SteamManager {
 		return 0;
 	}
 
-	public static void initialize() {
-
-		//		addFuel(new ItemStack(Items.COAL, 1, 0), 24000);
-		//		addFuel(new ItemStack(Blocks.COAL_BLOCK), 24000 * 10);
-		//		addFuel(new ItemStack(Items.COAL, 1, 1), 16000);
-		//		addFuel(ItemHelper.cloneStack(BlockStorageResource.blockCharcoal, 1), 16000 * 10);
-		//		addFuel(ItemHelper.cloneStack(ItemMaterial.fuelCoke, 1), 40000);
-		//		addFuel(ItemHelper.cloneStack(BlockStorageResource.blockCoke, 1), 40000 * 10);
-
-		loadFuels();
-	}
-
-	public static void loadFuels() {
-
-	}
-
 	public static void refresh() {
 
 		TObjectIntHashMap<ComparableItemStack> tempMap = new TObjectIntHashMap<>(fuelMap.size());

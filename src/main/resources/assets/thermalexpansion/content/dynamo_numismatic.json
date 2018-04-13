@@ -1,6 +1,120 @@
 {
 	"dynamo_numismatic": [{
 		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 0
+		},
+		"energy": 30000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 1
+		},
+		"energy": 40000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 64
+		},
+		"energy": 30000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 65
+		},
+		"energy": 30000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 66
+		},
+		"energy": 40000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 67
+		},
+		"energy": 40000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 68
+		},
+		"energy": 40000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 69
+		},
+		"energy": 60000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 70
+		},
+		"energy": 80000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 71
+		},
+		"energy": 100000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 72
+		},
+		"energy": 150000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 96
+		},
+		"energy": 40000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 97
+		},
+		"energy": 40000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 98
+		},
+		"energy": 40000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 99
+		},
+		"energy": 30000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 100
+		},
+		"energy": 45000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 101
+		},
+		"energy": 100000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 102
+		},
+		"energy": 100000
+	}, {
+		"input": {
+			"item": "thermalfoundation:coin",
+			"data": 103
+		},
+		"energy": 150000
+	}, {
+		"input": {
 			"ore": "gemEmerald"
 		},
 		"energy": 200000

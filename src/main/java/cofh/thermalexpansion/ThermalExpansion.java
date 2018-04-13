@@ -168,13 +168,6 @@ public class ThermalExpansion {
 		XpCollectorManager.initialize();
 		DiffuserManager.initialize();
 		FactorizerManager.initialize();
-
-		SteamManager.initialize();
-		MagmaticManager.initialize();
-		CompressionManager.initialize();
-		ReactantManager.initialize();
-		EnervationManager.initialize();
-		NumismaticManager.initialize();
 	}
 
 	private synchronized void managerRefresh() {

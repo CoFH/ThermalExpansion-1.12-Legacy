@@ -401,15 +401,15 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 
 		int capacity = CAPACITY_BASE;
 		comment = "Adjust this value to change the amount of Energy (in RF) stored by a Basic Flux Capacitor. This base value will scale with item level.";
-		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, CAPACITY_MIN, CAPACITY_MAX, comment);
 
 		int recv = XFER_BASE * 2;
 		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be received by a Basic Flux Capacitor. This base value will scale with item level.";
-		recv = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseReceive", category, recv, recv / 10, recv * 10, comment);
+		recv = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseReceive", category, recv, XFER_MIN, XFER_MAX, comment);
 
 		int send = XFER_BASE;
 		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be sent by a Basic Flux Capacitor. This base value will scale with item level.";
-		send = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseSend", category, send, send / 10, send * 10, comment);
+		send = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseSend", category, send, XFER_MIN, XFER_MAX, comment);
 
 		for (int i = 0; i < CAPACITY.length; i++) {
 			CAPACITY[i] *= capacity;
@@ -476,6 +476,5 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 	public static ItemStack capacitorResonant;
 
 	public static ItemStack capacitorCreative;
-	public static ItemStack capacitorPotato;
 
 }

@@ -562,7 +562,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 
 		int capacity = CAPACITY_BASE;
 		comment = "Adjust this value to change the amount of Fluid (in mB) stored by a Basic Reservoir. This base value will scale with item level.";
-		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, Fluid.BUCKET_VOLUME * 2, capacity * 10, comment);
 
 		for (int i = 0; i < CAPACITY.length; i++) {
 			CAPACITY[i] *= capacity;

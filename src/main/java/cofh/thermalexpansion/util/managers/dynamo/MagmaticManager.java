@@ -33,23 +33,6 @@ public class MagmaticManager {
 		return fluid == null ? 0 : fuelMap.get(fluid.getFluid().getName()) / 10;
 	}
 
-	public static void initialize() {
-
-		//		addFuel("lava", CoreProps.LAVA_RF * 60 / 100);
-		//		addFuel("pyrotheum", 2000000);
-		//
-		//		loadFuels();
-	}
-
-	public static void loadFuels() {
-
-		/* INDUSTRIALCRAFT 2 */
-		//		{
-		//			addFuel("ic2pahoehoe_lava", CoreProps.LAVA_RF * 40 / 100);
-		//			addFuel("ic2hot_coolant", 40000);
-		//		}
-	}
-
 	public static void refresh() {
 
 	}

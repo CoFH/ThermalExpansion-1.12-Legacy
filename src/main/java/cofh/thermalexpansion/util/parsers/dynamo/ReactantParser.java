@@ -40,9 +40,13 @@ public class ReactantParser extends BaseParser {
 				energy = content.get(ENERGY_MOD).getAsInt() * defaultEnergy / 100;
 			}
 			/* TYPE */
-			if (content.has(TYPE) && ELEMENTAL.equals(content.get(TYPE).getAsString())) {
-				if (ReactantManager.addElementalReaction(input, FluidRegistry.getFluid(fluidName), energy)) {
-					parseCount++;
+			if (content.has(TYPE)) {
+				if (ELEMENTAL.equals(content.get(TYPE).getAsString())) {
+					if (ReactantManager.addElementalReaction(input, FluidRegistry.getFluid(fluidName), energy)) {
+						parseCount++;
+					} else {
+						errorCount++;
+					}
 				} else {
 					errorCount++;
 				}
