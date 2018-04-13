@@ -6,8 +6,6 @@ import cofh.redstoneflux.api.IEnergyContainerItem;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import java.util.Set;
@@ -16,7 +14,7 @@ public class EnervationManager {
 
 	private static TObjectIntHashMap<ComparableItemStack> fuelMap = new TObjectIntHashMap<>();
 
-	public static int DEFAULT_ENERGY = 32000;
+	public static int DEFAULT_ENERGY = 64000;
 
 	public static Set<ComparableItemStack> getFuels() {
 
@@ -42,10 +40,10 @@ public class EnervationManager {
 
 	public static void initialize() {
 
-		addFuel(new ItemStack(Items.REDSTONE), 64000);
-		addFuel(new ItemStack(Blocks.REDSTONE_BLOCK), 64000 * 10);
-
-		loadFuels();
+		//		addFuel(new ItemStack(Items.REDSTONE), 64000);
+		//		addFuel(new ItemStack(Blocks.REDSTONE_BLOCK), 64000 * 10);
+		//
+		//		loadFuels();
 	}
 
 	public static void loadFuels() {

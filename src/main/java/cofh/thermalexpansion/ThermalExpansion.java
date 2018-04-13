@@ -14,6 +14,7 @@ import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.managers.device.*;
 import cofh.thermalexpansion.util.managers.dynamo.*;
 import cofh.thermalexpansion.util.managers.machine.*;
+import cofh.thermalexpansion.util.parsers.ContentParser;
 import cofh.thermalfoundation.ThermalFoundation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
@@ -90,6 +91,8 @@ public class ThermalExpansion {
 	@EventHandler
 	public void initialize(FMLInitializationEvent event) {
 
+		ContentParser.initialize();
+
 		proxy.initialize(event);
 	}
 
@@ -137,6 +140,8 @@ public class ThermalExpansion {
 	}
 
 	private void managerInitialize() {
+
+		ContentParser.parseFiles();
 
 		ItemFlorb.parseFlorbs();
 		ItemMorb.parseMorbs();

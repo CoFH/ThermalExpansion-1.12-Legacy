@@ -1,0 +1,75 @@
+{
+	"crucible": [{
+		"input": {
+			"item": "minecraft:ice"
+		},
+		"output": {
+			"fluid": "water",
+			"amount": 1000
+		},
+		"energy": 1600
+	}, {
+		"input": {
+			"item": "minecraft:snow"
+		},
+		"output": {
+			"fluid": "water",
+			"amount": 500
+		},
+		"energy": 800
+	}, {
+		"input": {
+			"item": "minecraft:snowball"
+		},
+		"output": {
+			"fluid": "water",
+			"amount": 125
+		},
+		"energy": 200
+	}, {
+		"input": {
+			"ore": "dustRedstone"
+		},
+		"output": {
+			"fluid": "redstone",
+			"amount": 100
+		},
+		"energy": 8000
+	}, {
+		"input": {
+			"ore": "blockRedstone"
+		},
+		"output": {
+			"fluid": "redstone",
+			"amount": 900
+		},
+		"energy": 72000
+	}, {
+		"input": {
+			"ore": "dustGlowStone"
+		},
+		"output": {
+			"fluid": "glowstone",
+			"amount": 250
+		},
+		"energy": 20000
+	}, {
+		"input": {
+			"ore": "blockGlowstone"
+		},
+		"output": {
+			"fluid": "glowstone",
+			"amount": 1000
+		},
+		"energy": 80000
+	}, {
+		"input": {
+			"ore": "enderpearl"
+		},
+		"output": {
+			"fluid": "ender",
+			"amount": 250
+		},
+		"energy": 20000
+	}]
+}

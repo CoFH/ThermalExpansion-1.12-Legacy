@@ -99,7 +99,7 @@ public class CentrifugeManager {
 		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustBronze, 4), asList(ItemHelper.cloneStack(ItemMaterial.dustCopper, 3), ItemHelper.cloneStack(ItemMaterial.dustTin)), null);
 		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustConstantan, 2), asList(ItemHelper.cloneStack(ItemMaterial.dustCopper), ItemHelper.cloneStack(ItemMaterial.dustNickel)), null);
 		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustSignalum, 4), asList(ItemHelper.cloneStack(ItemMaterial.dustCopper, 3), ItemHelper.cloneStack(ItemMaterial.dustSilver)), new FluidStack(TFFluids.fluidRedstone, Fluid.BUCKET_VOLUME));
-		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustLumium, 4), asList(ItemHelper.cloneStack(ItemMaterial.dustTin, 3), ItemHelper.cloneStack(ItemMaterial.dustSilver)), new FluidStack(TFFluids.fluidGlowstone, Fluid.BUCKET_VOLUME));
+		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustLumium, 4), asList(ItemHelper.cloneStack(ItemMaterial.dustTin, 3), ItemHelper.cloneStack(ItemMaterial.dustSilver)), new FluidStack(TFFluids.expFluid, Fluid.BUCKET_VOLUME));
 		addRecipe(energy * 4, ItemHelper.cloneStack(ItemMaterial.dustEnderium, 4), asList(ItemHelper.cloneStack(ItemMaterial.dustLead, 3), ItemHelper.cloneStack(ItemMaterial.dustPlatinum)), new FluidStack(TFFluids.fluidEnder, Fluid.BUCKET_VOLUME));
 
 		addRecipe(energy * 2, ItemHelper.cloneStack(ItemMaterial.dustPyrotheum, 2), asList(ItemHelper.cloneStack(Items.BLAZE_POWDER, 2), ItemHelper.cloneStack(ItemMaterial.dustSulfur), new ItemStack(Items.REDSTONE)), null);

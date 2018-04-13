@@ -417,7 +417,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'C', ItemFrame.frameMachine,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', "gearIron",
+					'X', ItemMaterial.partSawBlade,
 					'Y', "plankWood"
 			);
 		}

@@ -1,0 +1,19 @@
+{
+	"smelter": [{
+		"input": {
+			"item": "minecraft:netherrack",
+			"count": 2
+		},
+		"input2": {
+			"item": "minecraft:soul_sand"
+		},
+		"output": {
+			"item": "minecraft:nether_brick",
+			"count": 2
+		},
+		"output2": {
+			"ore": "dustSulfur",
+			"chance": 25
+		}
+	}]
+}

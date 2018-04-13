@@ -1,0 +1,22 @@
+{
+	"furnace": [{
+		"input": {
+			"item": "minecraft:cactus"
+		},
+		"output": {
+			"item": "minecraft:dye",
+			"data": 2
+		},
+		"energy_mod": 50
+	}, {
+		"input": {
+			"item": "minecraft:rotten_flesh",
+			"count": 3
+
+		},
+		"output": {
+			"item": "minecraft:leather"
+		},
+		"energy_mod": 100
+	}]
+}

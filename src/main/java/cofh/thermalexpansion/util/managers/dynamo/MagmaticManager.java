@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
-import cofh.core.init.CoreProps;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -36,19 +35,19 @@ public class MagmaticManager {
 
 	public static void initialize() {
 
-		addFuel("lava", CoreProps.LAVA_RF * 60 / 100);
-		addFuel("pyrotheum", 2000000);
-
-		loadFuels();
+		//		addFuel("lava", CoreProps.LAVA_RF * 60 / 100);
+		//		addFuel("pyrotheum", 2000000);
+		//
+		//		loadFuels();
 	}
 
 	public static void loadFuels() {
 
 		/* INDUSTRIALCRAFT 2 */
-		{
-			addFuel("ic2pahoehoe_lava", CoreProps.LAVA_RF * 40 / 100);
-			addFuel("ic2hot_coolant", 40000);
-		}
+		//		{
+		//			addFuel("ic2pahoehoe_lava", CoreProps.LAVA_RF * 40 / 100);
+		//			addFuel("ic2hot_coolant", 40000);
+		//		}
 	}
 
 	public static void refresh() {

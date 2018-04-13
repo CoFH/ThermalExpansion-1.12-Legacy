@@ -189,8 +189,8 @@ public class PluginPlants extends PluginTEBase {
 			InsolatorManager.addDefaultTreeRecipe(saplingAshen, ItemHelper.cloneStack(logAshen, 6), saplingAshen);
 			InsolatorManager.addDefaultTreeRecipe(saplingBlazing, ItemHelper.cloneStack(logBlazing, 6), saplingBlazing);
 
-			InsolatorManager.addDefaultTreeRecipe(saplingCrystal, ItemHelper.cloneStack(logCrystal, 6), saplingCrystal);
-			InsolatorManager.addDefaultTreeRecipe(saplingDarkCrystal, ItemHelper.cloneStack(logDarkCrystal, 6), saplingDarkCrystal);
+			//			InsolatorManager.addDefaultTreeRecipe(saplingCrystal, ItemHelper.cloneStack(logCrystal, 6), saplingCrystal);
+			//			InsolatorManager.addDefaultTreeRecipe(saplingDarkCrystal, ItemHelper.cloneStack(logDarkCrystal, 6), saplingDarkCrystal);
 		}
 
 		/* TAPPER */

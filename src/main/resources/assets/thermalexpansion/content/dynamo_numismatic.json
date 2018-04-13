@@ -1,0 +1,8 @@
+{
+	"dynamo_numismatic": [{
+		"input": {
+			"ore": "gemEmerald"
+		},
+		"energy": 200000
+	}]
+}

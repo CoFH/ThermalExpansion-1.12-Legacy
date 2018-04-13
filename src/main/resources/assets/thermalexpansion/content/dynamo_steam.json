@@ -1,0 +1,33 @@
+{
+	"dynamo_steam": [{
+		"input": {
+			"item": "minecraft:coal"
+		},
+		"energy": 24000
+	}, {
+		"input": {
+			"item": "minecraft:coal",
+			"data": 1
+		}
+	}, {
+		"input": {
+			"ore": "blockCoal"
+		},
+		"energy": 240000
+	}, {
+		"input": {
+			"ore": "blockCharcoal"
+		},
+		"energy": 160000
+	}, {
+		"input": {
+			"ore": "fuelCoke"
+		},
+		"energy": 40000
+	}, {
+		"input": {
+			"ore": "blockFuelCoke"
+		},
+		"energy": 400000
+	}]
+}

@@ -191,7 +191,7 @@ public class SawmillManager {
 		{
 			int energy = DEFAULT_ENERGY * 3 / 4;
 
-			addRecipe(energy, new ItemStack(Blocks.MELON_BLOCK), new ItemStack(Items.MELON, 9));
+			// addRecipe(energy, new ItemStack(Blocks.MELON_BLOCK), new ItemStack(Items.MELON, 9));
 			addRecipe(energy, new ItemStack(Blocks.LEVER), new ItemStack(Blocks.COBBLESTONE), ItemMaterial.dustWood, 25);
 			addRecipe(energy, new ItemStack(Blocks.REDSTONE_TORCH), new ItemStack(Items.REDSTONE), ItemMaterial.dustWood, 25);
 			addRecipe(energy, new ItemStack(Items.PAINTING), new ItemStack(Blocks.WOOL), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));

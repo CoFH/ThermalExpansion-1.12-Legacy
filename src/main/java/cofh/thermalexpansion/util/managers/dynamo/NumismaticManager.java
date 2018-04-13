@@ -68,7 +68,7 @@ public class NumismaticManager {
 		addFuel(ItemCoin.coinLumium, 100000);
 		addFuel(ItemCoin.coinEnderium, 150000);
 
-		addFuel(new ItemStack(Items.EMERALD), 200000);
+		// addFuel(new ItemStack(Items.EMERALD), 200000);
 
 		addGemFuel(new ItemStack(Items.QUARTZ), 40000);
 		addGemFuel(new ItemStack(Items.DYE, 1, 4), 80000);

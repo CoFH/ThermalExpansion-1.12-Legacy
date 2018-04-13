@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.util.parsers;
 
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 
 public interface IContentParser {
 
-	boolean parseContent(JsonObject content);
+	boolean parseContent(JsonElement content);
 
 }

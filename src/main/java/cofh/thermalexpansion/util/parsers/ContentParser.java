@@ -2,6 +2,8 @@ package cofh.thermalexpansion.util.parsers;
 
 import cofh.core.init.CoreProps;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.util.parsers.dynamo.*;
+import cofh.thermalexpansion.util.parsers.machine.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -33,8 +35,18 @@ public class ContentParser {
 				// pokemon!
 			}
 		}
+		contentParsers.put("furnace", new FurnaceParser());
 		contentParsers.put("pulverizer", new PulverizerParser());
 		contentParsers.put("sawmill", new SawmillParser());
+		contentParsers.put("smelter", new SmelterParser());
+		contentParsers.put("crucible", new CrucibleParser());
+
+		contentParsers.put("dynamo_steam", new SteamParser());
+		contentParsers.put("dynamo_magmatic", new MagmaticParser());
+		contentParsers.put("dynamo_compression", new CompressionParser());
+		//contentParsers.put("dynamo_reactant", new ReactantParser());
+		contentParsers.put("dynamo_enervation", new EnervationParser());
+		contentParsers.put("dynamo_numismatic", new NumismaticParser());
 	}
 
 	private static void addFiles(ArrayList<File> list, File folder) {
@@ -69,21 +81,21 @@ public class ContentParser {
 				ThermalExpansion.LOG.error("Critical error reading from a content file: " + contentFile + " > Please be sure the file is correct!", t);
 				continue;
 			}
-			ThermalExpansion.LOG.info("Reading template info from: " + contentFile + ":");
+			ThermalExpansion.LOG.info("Reading template info from: " + contentFile + "...");
 			for (Entry<String, JsonElement> contentEntry : contentList.entrySet()) {
-				if (parseEntry(contentEntry.getValue())) {
+				if (parseEntry(contentEntry.getKey(), contentEntry.getValue())) {
 					ThermalExpansion.LOG.debug("Content entry added: \"" + contentEntry.getKey() + "\"");
 				} else {
-					ThermalExpansion.LOG.error("Error handling entry: \"" + contentEntry.getKey() + "\" > Please check the parameters. If adding a recipe, it *may* conflict with an existing recipe or entry. If removing a recipe, the recipe may not have existed.");
+					ThermalExpansion.LOG.error("Error parsing entry: \"" + contentEntry.getKey() + "\" > Please make sure the entry is a valid JSON Array.");
 				}
 			}
+			//			for (IContentParser contentParser : contentParsers.values()) {
+			//				// TODO: Recipe diagnostics.
+			//			}
 		}
 	}
 
-	private static boolean parseEntry(JsonElement contentObject) {
-
-		JsonObject content = contentObject.getAsJsonObject();
-		String type = content.get("type").getAsString();
+	private static boolean parseEntry(String type, JsonElement content) {
 
 		if (contentParsers.containsKey(type)) {
 			return contentParsers.get(type).parseContent(content);

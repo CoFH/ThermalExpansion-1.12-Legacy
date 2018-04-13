@@ -2,14 +2,9 @@ package cofh.thermalexpansion.util.managers.dynamo;
 
 import cofh.core.init.CoreProps;
 import cofh.core.inventory.ComparableItemStack;
-import cofh.core.util.helpers.ItemHelper;
-import cofh.thermalfoundation.block.BlockStorageResource;
-import cofh.thermalfoundation.item.ItemMaterial;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 
@@ -49,12 +44,12 @@ public class SteamManager {
 
 	public static void initialize() {
 
-		addFuel(new ItemStack(Items.COAL, 1, 0), 24000);
-		addFuel(new ItemStack(Blocks.COAL_BLOCK), 24000 * 10);
-		addFuel(new ItemStack(Items.COAL, 1, 1), 16000);
-		addFuel(ItemHelper.cloneStack(BlockStorageResource.blockCharcoal, 1), 16000 * 10);
-		addFuel(ItemHelper.cloneStack(ItemMaterial.fuelCoke, 1), 40000);
-		addFuel(ItemHelper.cloneStack(BlockStorageResource.blockCoke, 1), 40000 * 10);
+		//		addFuel(new ItemStack(Items.COAL, 1, 0), 24000);
+		//		addFuel(new ItemStack(Blocks.COAL_BLOCK), 24000 * 10);
+		//		addFuel(new ItemStack(Items.COAL, 1, 1), 16000);
+		//		addFuel(ItemHelper.cloneStack(BlockStorageResource.blockCharcoal, 1), 16000 * 10);
+		//		addFuel(ItemHelper.cloneStack(ItemMaterial.fuelCoke, 1), 40000);
+		//		addFuel(ItemHelper.cloneStack(BlockStorageResource.blockCoke, 1), 40000 * 10);
 
 		loadFuels();
 	}

@@ -92,11 +92,11 @@ public class ReactantManager {
 		addReaction(BLAZE_POWDER, TFFluids.fluidRedstone, 150000);
 		addReaction(GHAST_TEAR, TFFluids.fluidRedstone, 150000);
 
-		addReaction(SUGAR, TFFluids.fluidGlowstone, 100000);
-		addReaction(NETHER_WART, TFFluids.fluidGlowstone, 125000);
-		addReaction(GUNPOWDER, TFFluids.fluidGlowstone, 125000);
-		addReaction(BLAZE_POWDER, TFFluids.fluidGlowstone, 200000);
-		addReaction(GHAST_TEAR, TFFluids.fluidGlowstone, 200000);
+		addReaction(SUGAR, TFFluids.expFluid, 100000);
+		addReaction(NETHER_WART, TFFluids.expFluid, 125000);
+		addReaction(GUNPOWDER, TFFluids.expFluid, 125000);
+		addReaction(BLAZE_POWDER, TFFluids.expFluid, 200000);
+		addReaction(GHAST_TEAR, TFFluids.expFluid, 200000);
 
 		addElementalReaction(ItemMaterial.dustPyrotheum, TFFluids.fluidCryotheum, 400000);
 		addElementalReaction(ItemMaterial.dustCryotheum, TFFluids.fluidPyrotheum, 400000);

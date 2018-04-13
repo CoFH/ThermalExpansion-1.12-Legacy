@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.util.parsers;
 
 import cofh.core.util.helpers.ItemHelper;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.item.Item;
@@ -18,34 +19,32 @@ import net.minecraftforge.oredict.OreDictionary;
 public abstract class BaseParser implements IContentParser {
 
 	public static final String INPUT = "input";
+	public static final String INPUT2 = "input2";
 	public static final String OUTPUT = "output";
 	public static final String OUTPUT2 = "output2";
+	public static final String FLUID = "fluid";
 	public static final String ENERGY = "energy";
+	public static final String ENERGY_MOD = "energy_mod";
 	public static final String CHANCE = "chance";
+	public static final String COMMENT = "//";
 
-	public static final String ADD_RECIPE = "add";
-	public static final String REMOVE_RECIPE = "remove";
+	protected int parseCount = 0;
+	protected int errorCount = 0;
 
 	@Override
-	public boolean parseContent(JsonObject content) {
+	public boolean parseContent(JsonElement content) {
 
 		if (content.isJsonNull()) {
 			return false;
 		}
-		String operation = "";
-
-		if (content.has("operation")) {
-			operation = content.get("operation").getAsString();
+		if (content.isJsonArray()) {
+			parseArray(content.getAsJsonArray());
+			return true;
 		}
-		if (operation.equals(REMOVE_RECIPE)) {
-			return removeRecipe(content);
-		}
-		return addRecipe(content);
+		return false;
 	}
 
-	public abstract boolean addRecipe(JsonObject content);
-
-	public abstract boolean removeRecipe(JsonObject content);
+	public abstract void parseArray(JsonArray contentArray);
 
 	/* HELPERS */
 	public static ItemStack parseItemStack(JsonElement element) {
@@ -142,6 +141,16 @@ public abstract class BaseParser implements IContentParser {
 			}
 		}
 		return stack;
+	}
+
+	public static int getChance(JsonElement element) {
+
+		JsonObject chanceObject = element.getAsJsonObject();
+
+		if (chanceObject.has(CHANCE)) {
+			return chanceObject.get(CHANCE).getAsInt();
+		}
+		return 100;
 	}
 
 }
