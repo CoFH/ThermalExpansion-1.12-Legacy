@@ -2,8 +2,6 @@ package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.core.util.helpers.ItemHelper;
-import cofh.thermalfoundation.item.ItemBait;
-import cofh.thermalfoundation.item.ItemFertilizer;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -45,11 +43,11 @@ public class ChargerManager {
 
 	public static void initialize() {
 
-		addRecipe(DEFAULT_ENERGY, ItemFertilizer.fertilizerRich, ItemFertilizer.fertilizerFlux);
-		addRecipe(DEFAULT_ENERGY, ItemBait.baitRich, ItemBait.baitFlux);
-
-		/* LOAD RECIPES */
-		loadRecipes();
+		//		addRecipe(DEFAULT_ENERGY, ItemFertilizer.fertilizerRich, ItemFertilizer.fertilizerFlux);
+		//		addRecipe(DEFAULT_ENERGY, ItemBait.baitRich, ItemBait.baitFlux);
+		//
+		//		/* LOAD RECIPES */
+		//		loadRecipes();
 	}
 
 	public static void loadRecipes() {

@@ -38,6 +38,7 @@ public class ReactantFuelCategory extends BaseFuelCategory<ReactantFuelWrapper> 
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipeCategories(new ReactantFuelCategory(guiHelper));
+		registry.addRecipeCategories(new ReactantFuelCategoryElemental(guiHelper));
 	}
 
 	public static void initialize(IModRegistry registry) {
@@ -49,8 +50,10 @@ public class ReactantFuelCategory extends BaseFuelCategory<ReactantFuelWrapper> 
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.DYNAMO_REACTANT);
-		registry.addRecipeClickArea(GuiDynamoReactant.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_REACTANT);
+		registry.addRecipeClickArea(GuiDynamoReactant.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_REACTANT, RecipeUidsTE.DYNAMO_REACTANT_ELEMENTAL);
 		registry.addRecipeCatalyst(BlockDynamo.dynamoReactant, RecipeUidsTE.DYNAMO_REACTANT);
+
+		ReactantFuelCategoryElemental.initialize(registry);
 	}
 
 	public static List<ReactantFuelWrapper> getRecipes(IGuiHelper guiHelper) {

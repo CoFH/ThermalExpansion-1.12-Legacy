@@ -80,6 +80,15 @@
 		"energy_mod": 150
 	}, {
 		"input": {
+			"item": "minecraft:reeds"
+		},
+		"output": {
+			"item": "minecraft:sugar",
+			"data": 2
+		},
+		"energy_mod": 50
+	}, {
+		"input": {
 			"item": "minecraft:stone"
 		},
 		"output": {

@@ -1,7 +1,8 @@
 {
 	"furnace": [{
 		"input": {
-			"item": "minecraft:cactus"
+			"item": "minecraft:cactus",
+			"data": 32767
 		},
 		"output": {
 			"item": "minecraft:dye",
@@ -11,12 +12,28 @@
 	}, {
 		"input": {
 			"item": "minecraft:rotten_flesh",
-			"count": 3
-
+			"count": 4
 		},
 		"output": {
 			"item": "minecraft:leather"
 		},
-		"energy_mod": 100
+		"energy_mod": 200
+	}, {
+		"input": {
+			"ore": "oreLapis"
+		},
+		"output": {
+			"item": "minecraft:dye",
+			"data": 4,
+			"count": 4
+		}
+	}, {
+		"input": {
+			"ore": "oreRedstone"
+		},
+		"output": {
+			"item": "minecraft:redstone",
+			"count": 4
+		}
 	}]
 }

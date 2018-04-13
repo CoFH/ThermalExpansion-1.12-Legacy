@@ -26,6 +26,7 @@ public abstract class BaseParser implements IContentParser {
 	public static final String ENERGY = "energy";
 	public static final String ENERGY_MOD = "energy_mod";
 	public static final String CHANCE = "chance";
+	public static final String TYPE = "type";
 	public static final String COMMENT = "//";
 
 	protected int parseCount = 0;

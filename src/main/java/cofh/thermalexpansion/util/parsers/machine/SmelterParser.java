@@ -17,6 +17,9 @@ public class SmelterParser extends BaseParser {
 		for (JsonElement recipe : contentArray) {
 			JsonObject content = recipe.getAsJsonObject();
 
+			if (content.has(COMMENT)) {
+				continue;
+			}
 			ItemStack input;
 			ItemStack input2;
 			ItemStack output;

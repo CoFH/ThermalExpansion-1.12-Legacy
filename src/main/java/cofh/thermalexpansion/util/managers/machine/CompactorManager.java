@@ -7,7 +7,6 @@ import cofh.thermalfoundation.item.ItemCoin;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -88,10 +87,10 @@ public class CompactorManager {
 
 	public static void initialize() {
 
-		addDefaultRecipe(new ItemStack(Items.BLAZE_POWDER, 5), new ItemStack(Items.BLAZE_ROD));
-		addDefaultRecipe(ItemHelper.cloneStack(ItemMaterial.dustBlizz, 5), ItemMaterial.rodBlizz);
-		addDefaultRecipe(ItemHelper.cloneStack(ItemMaterial.dustBlitz, 5), ItemMaterial.rodBlitz);
-		addDefaultRecipe(ItemHelper.cloneStack(ItemMaterial.dustBasalz, 5), ItemMaterial.rodBasalz);
+		//		addDefaultRecipe(new ItemStack(Items.BLAZE_POWDER, 5), new ItemStack(Items.BLAZE_ROD));
+		//		addDefaultRecipe(ItemHelper.cloneStack(ItemMaterial.dustBlizz, 5), ItemMaterial.rodBlizz);
+		//		addDefaultRecipe(ItemHelper.cloneStack(ItemMaterial.dustBlitz, 5), ItemMaterial.rodBlitz);
+		//		addDefaultRecipe(ItemHelper.cloneStack(ItemMaterial.dustBasalz, 5), ItemMaterial.rodBasalz);
 
 		/* PLATES */
 		{

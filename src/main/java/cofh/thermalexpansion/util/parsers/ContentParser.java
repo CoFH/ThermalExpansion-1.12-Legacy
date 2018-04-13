@@ -39,12 +39,15 @@ public class ContentParser {
 		contentParsers.put("pulverizer", new PulverizerParser());
 		contentParsers.put("sawmill", new SawmillParser());
 		contentParsers.put("smelter", new SmelterParser());
+		contentParsers.put("compactor", new CompactorParser());
 		contentParsers.put("crucible", new CrucibleParser());
+		contentParsers.put("refinery", new RefineryParser());
+		contentParsers.put("charger", new ChargerParser());
 
 		contentParsers.put("dynamo_steam", new SteamParser());
 		contentParsers.put("dynamo_magmatic", new MagmaticParser());
 		contentParsers.put("dynamo_compression", new CompressionParser());
-		//contentParsers.put("dynamo_reactant", new ReactantParser());
+		contentParsers.put("dynamo_reactant", new ReactantParser());
 		contentParsers.put("dynamo_enervation", new EnervationParser());
 		contentParsers.put("dynamo_numismatic", new NumismaticParser());
 	}
@@ -81,7 +84,7 @@ public class ContentParser {
 				ThermalExpansion.LOG.error("Critical error reading from a content file: " + contentFile + " > Please be sure the file is correct!", t);
 				continue;
 			}
-			ThermalExpansion.LOG.info("Reading template info from: " + contentFile + "...");
+			ThermalExpansion.LOG.info("Reading content from: " + contentFile + "...");
 			for (Entry<String, JsonElement> contentEntry : contentList.entrySet()) {
 				if (parseEntry(contentEntry.getKey(), contentEntry.getValue())) {
 					ThermalExpansion.LOG.debug("Content entry added: \"" + contentEntry.getKey() + "\"");

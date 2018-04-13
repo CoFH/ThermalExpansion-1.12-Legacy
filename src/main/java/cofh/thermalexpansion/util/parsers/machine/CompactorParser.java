@@ -1,15 +1,21 @@
 package cofh.thermalexpansion.util.parsers.machine;
 
-import cofh.thermalexpansion.util.managers.machine.SawmillManager;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
 import cofh.thermalexpansion.util.parsers.BaseParser;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 
-public class SawmillParser extends BaseParser {
+public class CompactorParser extends BaseParser {
 
-	int defaultEnergy = SawmillManager.DEFAULT_ENERGY;
+	public static final String PLATE = "plate";
+	public static final String COIN = "coin";
+	public static final String MINT = "mint";
+	public static final String GEAR = "gear";
+
+	int defaultEnergy = CompactorManager.DEFAULT_ENERGY;
 
 	@Override
 	public void parseArray(JsonArray contentArray) {
@@ -22,9 +28,8 @@ public class SawmillParser extends BaseParser {
 			}
 			ItemStack input;
 			ItemStack output;
-			ItemStack output2 = ItemStack.EMPTY;
 			int energy = defaultEnergy;
-			int chance = 100;
+			Mode mode = Mode.ALL;
 
 			/* INPUT */
 			input = parseItemStack(content.get(INPUT));
@@ -32,10 +37,22 @@ public class SawmillParser extends BaseParser {
 			/* OUTPUT */
 			output = parseItemStack(content.get(OUTPUT));
 
-			if (content.has(OUTPUT2)) {
-				JsonElement outputElement = content.get(OUTPUT2);
-				output2 = parseItemStack(outputElement);
-				chance = getChance(outputElement);
+			/* TYPE */
+			if (content.has(TYPE)) {
+				switch (content.get(TYPE).getAsString()) {
+					case PLATE:
+						mode = Mode.PLATE;
+						break;
+					case MINT:
+					case COIN:
+						mode = Mode.MINT;
+						break;
+					case GEAR:
+						mode = Mode.GEAR;
+						break;
+					default:
+						mode = Mode.ALL;
+				}
 			}
 			/* ENERGY */
 			if (content.has(ENERGY)) {
@@ -43,7 +60,7 @@ public class SawmillParser extends BaseParser {
 			} else if (content.has(ENERGY_MOD)) {
 				energy = content.get(ENERGY_MOD).getAsInt() * defaultEnergy / 100;
 			}
-			if (SawmillManager.addRecipe(energy, input, output, output2, chance) != null) {
+			if (CompactorManager.addRecipe(energy, input, output, mode) != null) {
 				parseCount++;
 			} else {
 				errorCount++;

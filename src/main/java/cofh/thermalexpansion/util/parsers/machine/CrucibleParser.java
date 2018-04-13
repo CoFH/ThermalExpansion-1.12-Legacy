@@ -18,6 +18,9 @@ public class CrucibleParser extends BaseParser {
 		for (JsonElement recipe : contentArray) {
 			JsonObject content = recipe.getAsJsonObject();
 
+			if (content.has(COMMENT)) {
+				continue;
+			}
 			ItemStack input;
 			FluidStack output;
 			int energy = defaultEnergy;

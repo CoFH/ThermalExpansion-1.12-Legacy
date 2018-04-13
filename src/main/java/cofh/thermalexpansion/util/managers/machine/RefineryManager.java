@@ -60,20 +60,20 @@ public class RefineryManager {
 
 	public static void initialize() {
 
-		int energy = DEFAULT_ENERGY;
+		//		int energy = DEFAULT_ENERGY;
+		//
+		//		/* FOSSIL FUELS */
+		//		{
+		//			addFossilFuel(TFFluids.fluidCoal);
+		//			addFossilFuel(TFFluids.fluidCrudeOil);
+		//			addFossilFuel(TFFluids.fluidRefinedOil);
+		//
+		//			addRecipe(energy, new FluidStack(TFFluids.fluidCoal, 200), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar, 75);
+		//			addRecipe(energy, new FluidStack(TFFluids.fluidCrudeOil, 200), new FluidStack(TFFluids.fluidRefinedOil, 150), ItemMaterial.globTar, 50);
+		//			addRecipe(energy, new FluidStack(TFFluids.fluidRefinedOil, 150), new FluidStack(TFFluids.fluidFuel, 100), ItemMaterial.dustSulfur, 50);
+		//		}
 
-		/* FOSSIL FUELS */
-		{
-			addFossilFuel(TFFluids.fluidCoal);
-			addFossilFuel(TFFluids.fluidCrudeOil);
-			addFossilFuel(TFFluids.fluidRefinedOil);
-
-			addRecipe(energy, new FluidStack(TFFluids.fluidCoal, 200), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar, 75);
-			addRecipe(energy, new FluidStack(TFFluids.fluidCrudeOil, 200), new FluidStack(TFFluids.fluidRefinedOil, 150), ItemMaterial.globTar, 50);
-			addRecipe(energy, new FluidStack(TFFluids.fluidRefinedOil, 150), new FluidStack(TFFluids.fluidFuel, 100), ItemMaterial.dustSulfur, 50);
-		}
-
-		addRecipe(energy, new FluidStack(TFFluids.fluidResin, 100), new FluidStack(TFFluids.fluidTreeOil, 50), ItemMaterial.globRosin, 75);
+		// addRecipe(energy, new FluidStack(TFFluids.fluidResin, 100), new FluidStack(TFFluids.fluidTreeOil, 50), ItemMaterial.globRosin, 75);
 
 		int max = CoreProps.POTION_MAX;
 
@@ -176,9 +176,9 @@ public class RefineryManager {
 	}
 
 	/* HELPERS */
-	private static void addFossilFuel(Fluid fluid) {
+	public static void addFossilFuel(Fluid fluid) {
 
-		if (fluid == null) {
+		if (!FluidRegistry.isFluidRegistered(fluid)) {
 			return;
 		}
 		oilFluids.add(fluid.getName());

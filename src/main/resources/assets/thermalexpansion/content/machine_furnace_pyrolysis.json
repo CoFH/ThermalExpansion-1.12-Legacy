@@ -1,0 +1,78 @@
+{
+	"furnace": [{
+		"type": "pyrolysis",
+		"input": {
+			"item": "minecraft:cactus",
+			"count": 4
+		},
+		"output": {
+			"item": "minecraft:coal",
+			"data": 1
+		},
+		"creosote": 50
+	}, {
+		"type": "pyrolysis",
+		"input": {
+			"item": "minecraft:coal"
+		},
+		"output": {
+			"ore": "fuelCoke"
+		},
+		"creosote": 250
+	}, {
+		"type": "pyrolysis",
+		"input": {
+			"item": "minecraft:hay_block"
+		},
+		"output": {
+			"item": "minecraft:coal",
+			"data": 1
+		},
+		"creosote": 100
+	}, {
+		"type": "pyrolysis",
+		"input": {
+			"item": "minecraft:reeds",
+			"count": 8
+		},
+		"output": {
+			"item": "minecraft:coal",
+			"data": 1
+		},
+		"creosote": 50,
+		"energy_mod": 50
+	}, {
+		"type": "pyrolysis",
+		"input": {
+			"item": "thermalfoundation:material",
+			"data": 801
+		},
+		"output": {
+			"item": "minecraft:coal",
+			"data": 1
+		},
+		"creosote": 50,
+		"energy_mod": 50
+	}, {
+		"type": "pyrolysis",
+		"input": {
+			"ore": "blockCoal"
+		},
+		"output": {
+			"ore": "blockFuelCoke"
+		},
+		"creosote": 2500,
+		"energy_mod": 800
+	}, {
+		"type": "pyrolysis",
+		"input": {
+			"ore": "logWood"
+		},
+		"output": {
+			"item": "minecraft:coal",
+			"data": 1
+		},
+		"creosote": 100,
+		"energy_mod": 50
+	}]
+}

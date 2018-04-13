@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 
 public class FurnaceParser extends BaseParser {
 
+	public static final String CREOSOTE = "creosote";
+
 	int defaultEnergy = FurnaceManager.DEFAULT_ENERGY;
 
 	@Override
@@ -17,8 +19,12 @@ public class FurnaceParser extends BaseParser {
 		for (JsonElement recipe : contentArray) {
 			JsonObject content = recipe.getAsJsonObject();
 
+			if (content.has(COMMENT)) {
+				continue;
+			}
 			ItemStack input;
 			ItemStack output;
+			int creosote;
 			int energy = defaultEnergy;
 
 			/* INPUT */
@@ -33,10 +39,20 @@ public class FurnaceParser extends BaseParser {
 			} else if (content.has(ENERGY_MOD)) {
 				energy = content.get(ENERGY_MOD).getAsInt() * defaultEnergy / 100;
 			}
-			if (FurnaceManager.addRecipe(energy, input, output) != null) {
-				parseCount++;
+			/* CREOSOTE */
+			if (content.has(CREOSOTE)) {
+				creosote = content.get(CREOSOTE).getAsInt();
+				if (FurnaceManager.addRecipePyrolysis(energy, input, output, creosote) != null) {
+					parseCount++;
+				} else {
+					errorCount++;
+				}
 			} else {
-				errorCount++;
+				if (FurnaceManager.addRecipe(energy, input, output) != null) {
+					parseCount++;
+				} else {
+					errorCount++;
+				}
 			}
 		}
 	}

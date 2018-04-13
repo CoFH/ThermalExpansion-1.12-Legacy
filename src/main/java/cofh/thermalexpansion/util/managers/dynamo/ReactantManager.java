@@ -1,8 +1,6 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
 import cofh.core.inventory.ComparableItemStack;
-import cofh.thermalfoundation.init.TFFluids;
-import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Items;
@@ -69,7 +67,7 @@ public class ReactantManager {
 		return fluid != null && validFluids.contains(fluid.getFluid().getName());
 	}
 
-	public static boolean isElementalReaction(ItemStack reactant, FluidStack fluid) {
+	public static boolean isElementalReaction(ItemStack reactant, Fluid fluid) {
 
 		return validReactantElemental(reactant) && validFluidElemental(fluid);
 	}
@@ -79,6 +77,11 @@ public class ReactantManager {
 		return !reactant.isEmpty() && validReactantsElemental.contains(new ComparableItemStack(reactant));
 	}
 
+	public static boolean validFluidElemental(Fluid fluid) {
+
+		return fluid != null && validFluidsElemental.contains(fluid.getName());
+	}
+
 	public static boolean validFluidElemental(FluidStack fluid) {
 
 		return fluid != null && validFluidsElemental.contains(fluid.getFluid().getName());
@@ -86,24 +89,24 @@ public class ReactantManager {
 
 	public static void initialize() {
 
-		addReaction(SUGAR, TFFluids.fluidRedstone, 80000);
-		addReaction(NETHER_WART, TFFluids.fluidRedstone, 100000);
-		addReaction(GUNPOWDER, TFFluids.fluidRedstone, 100000);
-		addReaction(BLAZE_POWDER, TFFluids.fluidRedstone, 150000);
-		addReaction(GHAST_TEAR, TFFluids.fluidRedstone, 150000);
-
-		addReaction(SUGAR, TFFluids.expFluid, 100000);
-		addReaction(NETHER_WART, TFFluids.expFluid, 125000);
-		addReaction(GUNPOWDER, TFFluids.expFluid, 125000);
-		addReaction(BLAZE_POWDER, TFFluids.expFluid, 200000);
-		addReaction(GHAST_TEAR, TFFluids.expFluid, 200000);
-
-		addElementalReaction(ItemMaterial.dustPyrotheum, TFFluids.fluidCryotheum, 400000);
-		addElementalReaction(ItemMaterial.dustCryotheum, TFFluids.fluidPyrotheum, 400000);
-		addElementalReaction(ItemMaterial.dustAerotheum, TFFluids.fluidPetrotheum, 400000);
-		addElementalReaction(ItemMaterial.dustPetrotheum, TFFluids.fluidAerotheum, 400000);
-
-		loadReactions();
+		//		addReaction(SUGAR, TFFluids.fluidRedstone, 80000);
+		//		addReaction(NETHER_WART, TFFluids.fluidRedstone, 100000);
+		//		addReaction(GUNPOWDER, TFFluids.fluidRedstone, 100000);
+		//		addReaction(BLAZE_POWDER, TFFluids.fluidRedstone, 150000);
+		//		addReaction(GHAST_TEAR, TFFluids.fluidRedstone, 150000);
+		//
+		//		addReaction(SUGAR, TFFluids.fluidGlowstone, 100000);
+		//		addReaction(NETHER_WART, TFFluids.fluidGlowstone, 125000);
+		//		addReaction(GUNPOWDER, TFFluids.fluidGlowstone, 125000);
+		//		addReaction(BLAZE_POWDER, TFFluids.fluidGlowstone, 200000);
+		//		addReaction(GHAST_TEAR, TFFluids.fluidGlowstone, 200000);
+		//
+		//		addElementalReaction(ItemMaterial.dustPyrotheum, TFFluids.fluidCryotheum, 400000);
+		//		addElementalReaction(ItemMaterial.dustCryotheum, TFFluids.fluidPyrotheum, 400000);
+		//		addElementalReaction(ItemMaterial.dustAerotheum, TFFluids.fluidPetrotheum, 400000);
+		//		addElementalReaction(ItemMaterial.dustPetrotheum, TFFluids.fluidAerotheum, 400000);
+		//
+		//		loadReactions();
 	}
 
 	public static void loadReactions() {

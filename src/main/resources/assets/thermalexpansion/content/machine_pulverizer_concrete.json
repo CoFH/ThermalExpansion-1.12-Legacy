@@ -1,0 +1,147 @@
+{
+	"pulverizer": [{
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 0
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 0
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 1
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 1
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 2
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 2
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 3
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 3
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 4
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 4
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 5
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 5
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 6
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 6
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 7
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 7
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 8
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 8
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 9
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 9
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 10
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 10
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 11
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 11
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 12
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 12
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 13
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 13
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 14
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 14
+		}
+	}, {
+		"input": {
+			"item": "minecraft:concrete",
+			"data": 15
+		},
+		"output": {
+			"item": "minecraft:concrete_powder",
+			"data": 15
+		}
+	}]
+}

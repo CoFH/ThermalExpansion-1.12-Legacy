@@ -70,8 +70,8 @@ public class CrucibleManager {
 		//
 		//			addRecipe(8000, new ItemStack(Items.REDSTONE), new FluidStack(TFFluids.fluidRedstone, 100));
 		//			addRecipe(8000 * 9, new ItemStack(Blocks.REDSTONE_BLOCK), new FluidStack(TFFluids.fluidRedstone, 100 * 9));
-		//			addRecipe(20000, new ItemStack(Items.GLOWSTONE_DUST), new FluidStack(TFFluids.expFluid, 250));
-		//			addRecipe(20000 * 4, new ItemStack(Blocks.GLOWSTONE), new FluidStack(TFFluids.expFluid, Fluid.BUCKET_VOLUME));
+		//			addRecipe(20000, new ItemStack(Items.GLOWSTONE_DUST), new FluidStack(TFFluids.fluidGlowstone, 250));
+		//			addRecipe(20000 * 4, new ItemStack(Blocks.GLOWSTONE), new FluidStack(TFFluids.fluidGlowstone, Fluid.BUCKET_VOLUME));
 		//			addRecipe(20000, new ItemStack(Items.ENDER_PEARL), new FluidStack(TFFluids.fluidEnder, 250));
 		//		}
 
@@ -82,7 +82,7 @@ public class CrucibleManager {
 
 			addRecipe(2000, ItemMaterial.crystalCrudeOil, new FluidStack(TFFluids.fluidCrudeOil, 250));
 			addRecipe(2000, ItemMaterial.crystalRedstone, new FluidStack(TFFluids.fluidRedstone, 250));
-			addRecipe(2000, ItemMaterial.crystalGlowstone, new FluidStack(TFFluids.expFluid, 250));
+			addRecipe(2000, ItemMaterial.crystalGlowstone, new FluidStack(TFFluids.fluidGlowstone, 250));
 			addRecipe(2000, ItemMaterial.crystalEnder, new FluidStack(TFFluids.fluidEnder, 250));
 
 			addRecipe(8000, ItemMaterial.dustPyrotheum, new FluidStack(TFFluids.fluidPyrotheum, 250));
@@ -96,7 +96,7 @@ public class CrucibleManager {
 			addRecipe(4000, BlockOreFluid.oreFluidCrudeOilSand, new FluidStack(TFFluids.fluidCrudeOil, Fluid.BUCKET_VOLUME));
 			addRecipe(4000, BlockOreFluid.oreFluidCrudeOilGravel, new FluidStack(TFFluids.fluidCrudeOil, Fluid.BUCKET_VOLUME));
 			addRecipe(4000, BlockOreFluid.oreFluidRedstone, new FluidStack(TFFluids.fluidRedstone, Fluid.BUCKET_VOLUME));
-			addRecipe(4000, BlockOreFluid.oreFluidGlowstone, new FluidStack(TFFluids.expFluid, Fluid.BUCKET_VOLUME));
+			addRecipe(4000, BlockOreFluid.oreFluidGlowstone, new FluidStack(TFFluids.fluidGlowstone, Fluid.BUCKET_VOLUME));
 			addRecipe(4000, BlockOreFluid.oreFluidEnder, new FluidStack(TFFluids.fluidEnder, Fluid.BUCKET_VOLUME));
 		}
 

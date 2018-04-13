@@ -15,14 +15,15 @@ public class PulverizerParser extends BaseParser {
 	public void parseArray(JsonArray contentArray) {
 
 		for (JsonElement recipe : contentArray) {
-
 			JsonObject content = recipe.getAsJsonObject();
 
+			if (content.has(COMMENT)) {
+				continue;
+			}
 			ItemStack input;
 			ItemStack output;
 			ItemStack output2 = ItemStack.EMPTY;
-
-			int energy = PulverizerManager.DEFAULT_ENERGY;
+			int energy = defaultEnergy;
 			int chance = 100;
 
 			/* INPUT */
@@ -36,6 +37,7 @@ public class PulverizerParser extends BaseParser {
 				output2 = parseItemStack(outputElement);
 				chance = getChance(outputElement);
 			}
+			/* ENERGY */
 			if (content.has(ENERGY)) {
 				energy = content.get(ENERGY).getAsInt();
 			} else if (content.has(ENERGY_MOD)) {

@@ -132,13 +132,13 @@ public class TransposerManager {
 
 			addFillRecipe(energy, ItemMaterial.dustCryotheum, new ItemStack(Blocks.ICE), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), false);
 			addFillRecipe(energy, ItemMaterial.dustCryotheum, new ItemStack(Items.REDSTONE, 10), new FluidStack(TFFluids.fluidRedstone, Fluid.BUCKET_VOLUME), false);
-			addFillRecipe(energy, ItemMaterial.dustCryotheum, new ItemStack(Items.GLOWSTONE_DUST, 4), new FluidStack(TFFluids.expFluid, Fluid.BUCKET_VOLUME), false);
+			addFillRecipe(energy, ItemMaterial.dustCryotheum, new ItemStack(Items.GLOWSTONE_DUST, 4), new FluidStack(TFFluids.fluidGlowstone, Fluid.BUCKET_VOLUME), false);
 			addFillRecipe(energy, ItemMaterial.dustCryotheum, new ItemStack(Items.ENDER_PEARL, 4), new FluidStack(TFFluids.fluidEnder, Fluid.BUCKET_VOLUME), false);
 		}
 
 		/* ELEMENTAL */
 		//		{
-		FluidStack expFluid = new FluidStack(TFFluids.expFluid, 200);
+		FluidStack expFluid = new FluidStack(TFFluids.fluidExperience, 200);
 
 		addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustSulfur, 4), new ItemStack(Items.BLAZE_POWDER), expFluid, false);
 		addFillRecipe(16000, ItemHelper.cloneStack(Items.SNOWBALL, 4), ItemMaterial.dustBlizz, expFluid, false);
