@@ -241,16 +241,11 @@ public class TileSmelter extends TileMachineBase {
 			if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
 				if (inventory[3].isEmpty()) {
 					inventory[3] = ItemHelper.cloneStack(secondaryItem);
-
-					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-						inventory[3].grow(secondaryItem.getCount());
-					}
 				} else if (inventory[3].isItemEqual(secondaryItem)) {
 					inventory[3].grow(secondaryItem.getCount());
-
-					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-						inventory[3].grow(secondaryItem.getCount());
-					}
+				}
+				if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+					inventory[3].grow(secondaryItem.getCount());
 				}
 				if (inventory[3].getCount() > inventory[3].getMaxStackSize()) {
 					inventory[3].setCount(inventory[3].getMaxStackSize());

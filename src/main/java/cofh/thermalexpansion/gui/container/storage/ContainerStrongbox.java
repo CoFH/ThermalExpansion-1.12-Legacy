@@ -8,6 +8,7 @@ import cofh.thermalexpansion.block.storage.TileStrongbox;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import gnu.trove.map.hash.THashMap;
 import invtweaks.api.container.ChestContainer;
+import invtweaks.api.container.ChestContainer.RowSizeCallback;
 import invtweaks.api.container.ContainerSection;
 import invtweaks.api.container.ContainerSectionCallback;
 import net.minecraft.entity.player.EntityPlayer;
@@ -93,6 +94,14 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 		return myTile;
 	}
 
+	/* ISlotValidator */
+	@Override
+	public boolean isItemValid(ItemStack stack) {
+
+		return !stack.isEmpty() && (!(stack.getItem() instanceof IInventoryContainerItem) || ((IInventoryContainerItem) stack.getItem()).getSizeInventory(stack) <= 0);
+	}
+
+	/* INVENTORY TWEAKS */
 	@ContainerSectionCallback
 	@Optional.Method (modid = "inventorytweaks")
 	public Map<ContainerSection, List<Slot>> getContainerSections() {
@@ -107,11 +116,11 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 		return slotRefs;
 	}
 
-	/* ISlotValidator */
-	@Override
-	public boolean isItemValid(ItemStack stack) {
+	@RowSizeCallback
+	@Optional.Method (modid = "inventorytweaks")
+	public int getRowSize() {
 
-		return !stack.isEmpty() && (!(stack.getItem() instanceof IInventoryContainerItem) || ((IInventoryContainerItem) stack.getItem()).getSizeInventory(stack) <= 0);
+		return rowSize;
 	}
 
 }

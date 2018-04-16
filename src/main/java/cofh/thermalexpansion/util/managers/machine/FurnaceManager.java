@@ -4,7 +4,7 @@ import cofh.core.inventory.ComparableItemStack;
 import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
-import cofh.thermalfoundation.item.ItemMaterial;
+import cofh.thermalexpansion.util.parsers.ConstantParser;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.item.ItemFood;
@@ -99,138 +99,8 @@ public class FurnaceManager {
 
 	public static void initialize() {
 
-		//      /* SPECIAL */
-		//		{
-		//			addRecipe(DEFAULT_ENERGY / 2, new ItemStack(Blocks.CACTUS), new ItemStack(Items.DYE, 1, 2));
-		//			addRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.ROTTEN_FLESH, 3, 0), new ItemStack(Items.LEATHER));
-		//		}
-
-		//		/* FOOD */
-		//		{
-		//			int energy = DEFAULT_ENERGY / 2;
-		//
-		//			addRecipe(energy, new ItemStack(Items.PORKCHOP, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.COOKED_PORKCHOP));
-		//			addRecipe(energy, new ItemStack(Items.BEEF, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.COOKED_BEEF));
-		//			addRecipe(energy, new ItemStack(Items.CHICKEN, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.COOKED_CHICKEN));
-		//			addRecipe(energy, new ItemStack(Items.MUTTON, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.COOKED_MUTTON));
-		//			addRecipe(energy, new ItemStack(Items.RABBIT, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.COOKED_RABBIT));
-		//			addRecipe(energy, new ItemStack(Items.POTATO, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.BAKED_POTATO));
-		//			addRecipe(energy, new ItemStack(Items.FISH, 1, 0), new ItemStack(Items.COOKED_FISH, 1, 0));
-		//			addRecipe(energy, new ItemStack(Items.FISH, 1, 1), new ItemStack(Items.COOKED_FISH, 1, 1));
-		//
-		//			foodSet.add(convertInput(new ItemStack(Items.PORKCHOP, 1, OreDictionary.WILDCARD_VALUE)));
-		//			foodSet.add(convertInput(new ItemStack(Items.BEEF, 1, OreDictionary.WILDCARD_VALUE)));
-		//			foodSet.add(convertInput(new ItemStack(Items.CHICKEN, 1, OreDictionary.WILDCARD_VALUE)));
-		//			foodSet.add(convertInput(new ItemStack(Items.MUTTON, 1, OreDictionary.WILDCARD_VALUE)));
-		//			foodSet.add(convertInput(new ItemStack(Items.RABBIT, 1, OreDictionary.WILDCARD_VALUE)));
-		//			foodSet.add(convertInput(new ItemStack(Items.POTATO, 1, OreDictionary.WILDCARD_VALUE)));
-		//			foodSet.add(convertInput(new ItemStack(Items.FISH, 1, 0)));
-		//			foodSet.add(convertInput(new ItemStack(Items.FISH, 1, 1)));
-		//		}
-
-		/* ORES */
-		{
-			int energy = DEFAULT_ENERGY;
-
-			addOreDictRecipe(energy, "oreIron", ItemMaterial.ingotIron);
-			addOreDictRecipe(energy, "oreGold", ItemMaterial.ingotGold);
-
-			addOreDictRecipe(energy, "oreCopper", ItemMaterial.ingotCopper);
-			addOreDictRecipe(energy, "oreTin", ItemMaterial.ingotTin);
-			addOreDictRecipe(energy, "oreSilver", ItemMaterial.ingotSilver);
-			addOreDictRecipe(energy, "oreLead", ItemMaterial.ingotLead);
-			addOreDictRecipe(energy, "oreAluminum", ItemMaterial.ingotAluminum);
-			addOreDictRecipe(energy, "oreNickel", ItemMaterial.ingotNickel);
-			addOreDictRecipe(energy, "orePlatinum", ItemMaterial.ingotPlatinum);
-			addOreDictRecipe(energy, "oreIridium", ItemMaterial.ingotIridium);
-			addOreDictRecipe(energy, "oreMithril", ItemMaterial.ingotMithril);
-
-			//			addOreDictRecipe(energy, "oreCoal", new ItemStack(Items.COAL, 1, 0));
-			//			addOreDictRecipe(energy, "oreDiamond", new ItemStack(Items.DIAMOND, 1, 0));
-			//			addOreDictRecipe(energy, "oreEmerald", new ItemStack(Items.EMERALD, 1, 0));
-			//			addOreDictRecipe(energy, "oreLapis", new ItemStack(Items.DYE, 4, 4));
-			//			addOreDictRecipe(energy, "oreRedstone", new ItemStack(Items.REDSTONE, 4, 0));
-			//			addOreDictRecipe(energy, "oreQuartz", new ItemStack(Items.QUARTZ, 1, 0));
-		}
-
-		/* DUSTS */
-		{
-			int energy = DEFAULT_ENERGY * 14 / 20;
-
-			addOreDictRecipe(energy, "dustIron", ItemMaterial.ingotIron);
-			addOreDictRecipe(energy, "dustGold", ItemMaterial.ingotGold);
-
-			addOreDictRecipe(energy, "dustCopper", ItemMaterial.ingotCopper);
-			addOreDictRecipe(energy, "dustTin", ItemMaterial.ingotTin);
-			addOreDictRecipe(energy, "dustSilver", ItemMaterial.ingotSilver);
-			addOreDictRecipe(energy, "dustLead", ItemMaterial.ingotLead);
-			addOreDictRecipe(energy, "dustAluminum", ItemMaterial.ingotAluminum);
-			addOreDictRecipe(energy, "dustNickel", ItemMaterial.ingotNickel);
-			addOreDictRecipe(energy, "dustPlatinum", ItemMaterial.ingotPlatinum);
-			addOreDictRecipe(energy, "dustIridium", ItemMaterial.ingotIridium);
-			addOreDictRecipe(energy, "dustMithril", ItemMaterial.ingotMithril);
-
-			// addOreDictRecipe(energy, "dustSteel", ItemMaterial.ingotSteel);
-			addOreDictRecipe(energy, "dustElectrum", ItemMaterial.ingotElectrum);
-			addOreDictRecipe(energy, "dustInvar", ItemMaterial.ingotInvar);
-			addOreDictRecipe(energy, "dustBronze", ItemMaterial.ingotBronze);
-			addOreDictRecipe(energy, "dustConstantan", ItemMaterial.ingotConstantan);
-			// addOreDictRecipe(energy, "dustSignalum", ItemMaterial.ingotSignalum);
-			// addOreDictRecipe(energy, "dustLumium", ItemMaterial.ingotLumium);
-			// addOreDictRecipe(energy, "dustEnderium", ItemMaterial.ingotEnderium);
-		}
-
-		/* OREBERRIES */
-		{
-			int energy = DEFAULT_ENERGY * 8 / 20;
-			// addOreDictRecipe(energy, "oreberryIron", ItemMaterial.nuggetIron);
-			// addOreDictRecipe(energy, "oreberryGold", ItemMaterial.nuggetGold);
-			addOreDictRecipe(energy, "oreberryCopper", ItemMaterial.nuggetCopper);
-			addOreDictRecipe(energy, "oreberryTin", ItemMaterial.nuggetTin);
-			addOreDictRecipe(energy, "oreberrySilver", ItemMaterial.nuggetSilver);
-			addOreDictRecipe(energy, "oreberryLead", ItemMaterial.nuggetLead);
-			addOreDictRecipe(energy, "oreberryAluminum", ItemMaterial.nuggetAluminum);
-			addOreDictRecipe(energy, "oreberryNickel", ItemMaterial.nuggetNickel);
-			addOreDictRecipe(energy, "oreberryPlatinum", ItemMaterial.nuggetPlatinum);
-			addOreDictRecipe(energy, "oreberryIridium", ItemMaterial.nuggetIridium);
-			addOreDictRecipe(energy, "oreberryMithril", ItemMaterial.nuggetMithril);
-
-			// addOreDictRecipe(energy, "oreberrySteel", ItemMaterial.nuggetSteel);
-			// addOreDictRecipe(energy, "oreberryElectrum", ItemMaterial.nuggetElectrum);
-			// addOreDictRecipe(energy, "oreberryInvar", ItemMaterial.nuggetInvar);
-			// addOreDictRecipe(energy, "oreberryBronze", ItemMaterial.nuggetBronze);
-			// addOreDictRecipe(energy, "oreberrySignalum", ItemMaterial.nuggetSignalum);
-			// addOreDictRecipe(energy, "oreberryLumium", ItemMaterial.nuggetLumium);
-			// addOreDictRecipe(energy, "oreberryEnderium", ItemMaterial.nuggetEnderium);
-		}
-
-		/* PYROLYSIS */
-		//		{
-		//			ItemStack charcoal = new ItemStack(Items.COAL, 1, 1);
-		//
-		//			addRecipePyrolysis(DEFAULT_ENERGY / 2, ItemMaterial.dustWoodCompressed, charcoal, 50);
-		//			addRecipePyrolysis(DEFAULT_ENERGY / 2, new ItemStack(Blocks.LOG), charcoal, 100);
-		//			addRecipePyrolysis(DEFAULT_ENERGY / 2, new ItemStack(Items.REEDS, 8), charcoal, 50);
-		//			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Blocks.HAY_BLOCK), charcoal, 100);
-		//			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Blocks.CACTUS, 4), charcoal, 50);
-		//			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Items.COAL), ItemMaterial.fuelCoke, 250);
-		//			addRecipePyrolysis(DEFAULT_ENERGY * 8, new ItemStack(Blocks.COAL_BLOCK), BlockStorageResource.blockCoke, 2500);
-		//		}
-
-		/* LOAD RECIPES */
-		loadRecipes();
-	}
-
-	public static void loadRecipes() {
-
 		Map<ItemStack, ItemStack> smeltingList = FurnaceRecipes.instance().getSmeltingList();
-		Map<String, ItemStack> reservedMap = new THashMap<>();
 		ItemStack output;
-
-		reservedMap.put("dustSteel", ItemMaterial.ingotSteel);
-		reservedMap.put("dustSignalum", ItemMaterial.ingotSignalum);
-		reservedMap.put("dustLumium", ItemMaterial.ingotLumium);
-		reservedMap.put("dustEnderium", ItemMaterial.ingotEnderium);
 
 		for (ItemStack key : smeltingList.keySet()) {
 			if (key.isEmpty() || recipeExists(key)) {
@@ -238,8 +108,8 @@ public class FurnaceManager {
 			}
 			output = smeltingList.get(key);
 
-			if (reservedMap.containsKey(ItemHelper.getOreName(key))) {
-				output = ItemHelper.cloneStack(reservedMap.get(ItemHelper.getOreName(key)), output.getCount());
+			if (ConstantParser.hasOre(ItemHelper.getOreName(output))) {
+				output = ItemHelper.cloneStack(ConstantParser.getOre(ItemHelper.getOreName(output)), output.getCount());
 			}
 			int energy = DEFAULT_ENERGY;
 
@@ -250,8 +120,7 @@ public class FurnaceManager {
 			}
 			/* DUST */
 			if (ItemHelper.isDust(key) && ItemHelper.isIngot(output)) {
-				addRecipe(energy * 14 / 20, key, output);
-
+				addRecipe(energy * 3 / 4, key, output);
 				/* STANDARD */
 			} else {
 				if (ItemHelper.getItemDamage(key) == OreDictionary.WILDCARD_VALUE) {

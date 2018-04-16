@@ -78,9 +78,12 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 
 		super("thermalexpansion");
 
-		setMaxStackSize(1);
+		register("satchel");
 		setUnlocalizedName("satchel");
 		setCreativeTab(ThermalExpansion.tabTools);
+
+		setHasSubtypes(true);
+		setMaxStackSize(1);
 	}
 
 	@Override

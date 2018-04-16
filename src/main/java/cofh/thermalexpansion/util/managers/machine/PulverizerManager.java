@@ -435,9 +435,11 @@ public class PulverizerManager {
 		if (related.isEmpty() && !registeredRelated.isEmpty()) {
 			related = registeredRelated.get(0);
 		}
-		addOreToDustRecipe(4000, oreName, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
-		addOreToDustRecipe(4800, clusterName, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
-		addIngotToDustRecipe(2400, ingotName, ItemHelper.cloneStack(dust, 1));
+		int energy = DEFAULT_ENERGY;
+
+		addOreToDustRecipe(energy, oreName, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
+		addOreToDustRecipe(energy * 3 / 4, clusterName, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
+		addIngotToDustRecipe(energy / 2, ingotName, ItemHelper.cloneStack(dust, 1));
 	}
 
 	private static void addDefaultOreDictionaryRecipeGem(String oreType) {

@@ -69,6 +69,7 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 
 		super("thermalexpansion");
 
+		register("morb");
 		setUnlocalizedName("morb");
 		setCreativeTab(ThermalExpansion.tabMorbs);
 	}

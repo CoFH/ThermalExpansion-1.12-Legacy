@@ -1,0 +1,138 @@
+{
+	"crucible": [{
+		"input": {
+			"constant": "tar"
+		},
+		"output": {
+			"fluid": "creosote",
+			"amount": 250
+		},
+		"energy": 2000
+	}, {
+		"input": {
+			"ore": "dustCoal"
+		},
+		"output": {
+			"fluid": "coal",
+			"amount": 100
+		},
+		"energy": 4000
+	}, {
+		"input": {
+			"constant": "oil_clathrate"
+		},
+		"output": {
+			"fluid": "crude_oil",
+			"amount": 250
+		},
+		"energy": 2000
+	}, {
+		"input": {
+			"constant": "redstone_clathrate"
+		},
+		"output": {
+			"fluid": "redstone",
+			"amount": 250
+		},
+		"energy": 2000
+	}, {
+		"input": {
+			"constant": "glowstone_clathrate"
+		},
+		"output": {
+			"fluid": "glowstone",
+			"amount": 250
+		},
+		"energy": 2000
+	}, {
+		"input": {
+			"constant": "ender_clathrate"
+		},
+		"output": {
+			"fluid": "ender",
+			"amount": 250
+		},
+		"energy": 2000
+	}, {
+		"input": {
+			"ore": "dustPyrotheum"
+		},
+		"output": {
+			"fluid": "pyrotheum",
+			"amount": 250
+		},
+		"energy": 8000
+	}, {
+		"input": {
+			"ore": "dustCryotheum"
+		},
+		"output": {
+			"fluid": "cryotheum",
+			"amount": 250
+		},
+		"energy": 8000
+	}, {
+		"input": {
+			"ore": "dustAerotheum"
+		},
+		"output": {
+			"fluid": "aerotheum",
+			"amount": 250
+		},
+		"energy": 8000
+	}, {
+		"input": {
+			"ore": "dustPetrotheum"
+		},
+		"output": {
+			"fluid": "petrotheum",
+			"amount": 250
+		},
+		"energy": 8000
+	}, {
+		"input": {
+			"ore": "oreFluidCrudeOilSand"
+		},
+		"output": {
+			"fluid": "crude_oil",
+			"amount": 1000
+		},
+		"energy": 4000
+	}, {
+		"input": {
+			"ore": "oreFluidCrudeOilShale"
+		},
+		"output": {
+			"fluid": "crude_oil",
+			"amount": 1000
+		},
+		"energy": 4000
+	}, {
+		"input": {
+			"ore": "oreFluidRedstone"
+		},
+		"output": {
+			"fluid": "redstone",
+			"amount": 1000
+		},
+		"energy": 4000
+	}, {
+		"input": {
+			"ore": "oreFluidGlowstone"
+		},
+		"output": {
+			"fluid": "glowstone",
+			"amount": 1000
+		},
+		"energy": 4000
+	}, {
+		"input": {
+			"ore": "oreFluidEnder"
+		},
+		"output": {
+			"fluid": "ender",
+			"amount": 1000
+		},
+		"energy": 4000
+	}]
+}

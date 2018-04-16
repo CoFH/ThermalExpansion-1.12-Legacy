@@ -68,6 +68,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 
 		super("thermalexpansion");
 
+		register("florb");
 		setUnlocalizedName("florb");
 		setCreativeTab(ThermalExpansion.tabFlorbs);
 	}

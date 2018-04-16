@@ -37,6 +37,10 @@ public class RefineryParser extends BaseParser {
 			/* OUTPUT */
 			output = parseFluidStack(content.get(OUTPUT));
 
+			if (input == null || output == null) {
+				errorCount++;
+				continue;
+			}
 			if (content.has(OUTPUT2)) {
 				JsonElement outputElement = content.get(OUTPUT2);
 				output2 = parseItemStack(outputElement);

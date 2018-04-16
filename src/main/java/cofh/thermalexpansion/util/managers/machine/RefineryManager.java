@@ -3,7 +3,6 @@ package cofh.thermalexpansion.util.managers.machine;
 import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalfoundation.init.TFFluids;
-import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.PotionTypes;
@@ -92,7 +91,6 @@ public class RefineryManager {
 		addStrongPotionRecipes("unluck", max, "+");
 		addStrongPotionRecipes("wither", max, "+");
 	}
-
 
 	public static void refresh() {
 

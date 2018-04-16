@@ -223,16 +223,11 @@ public class TilePulverizer extends TileMachineBase {
 			if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
 				if (inventory[2].isEmpty()) {
 					inventory[2] = ItemHelper.cloneStack(secondaryItem);
-
-					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-						inventory[2].grow(secondaryItem.getCount());
-					}
 				} else if (inventory[2].isItemEqual(secondaryItem)) {
 					inventory[2].grow(secondaryItem.getCount());
-
-					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-						inventory[2].grow(secondaryItem.getCount());
-					}
+				}
+				if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+					inventory[2].grow(secondaryItem.getCount());
 				}
 				if (inventory[2].getCount() > inventory[2].getMaxStackSize()) {
 					inventory[2].setCount(inventory[2].getMaxStackSize());

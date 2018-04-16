@@ -29,6 +29,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 
 		super("thermalexpansion");
 
+		register("frame");
 		setUnlocalizedName("frame");
 		setCreativeTab(ThermalExpansion.tabItems);
 	}

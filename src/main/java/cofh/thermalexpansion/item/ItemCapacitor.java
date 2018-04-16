@@ -58,6 +58,7 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 
 		super("thermalexpansion");
 
+		register("capacitor");
 		setUnlocalizedName("capacitor");
 		setCreativeTab(ThermalExpansion.tabTools);
 

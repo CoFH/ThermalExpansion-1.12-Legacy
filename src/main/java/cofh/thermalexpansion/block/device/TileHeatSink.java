@@ -39,6 +39,8 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	private static final int TYPE = Type.HEAT_SINK.getMetadata();
 	public static int fluidAmount = 100;
 
+	public static final int USE_FACTOR = 5;
+
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
@@ -63,8 +65,6 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		String category = "Device.HeatSink";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
-
-	private static final int USE_FACTOR = 5;
 
 	private boolean cached;
 	private IAccelerable[] accelerables = new IAccelerable[6];

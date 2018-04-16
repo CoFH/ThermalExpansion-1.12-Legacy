@@ -35,6 +35,9 @@ public class ContentParser {
 				// pokemon!
 			}
 		}
+		contentParsers.put("oredict", new OreDictParser());
+		contentParsers.put("constants", new ConstantParser());
+
 		contentParsers.put("furnace", new FurnaceParser());
 		contentParsers.put("pulverizer", new PulverizerParser());
 		contentParsers.put("sawmill", new SawmillParser());

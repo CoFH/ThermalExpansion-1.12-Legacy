@@ -70,6 +70,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 
 		super("thermalexpansion");
 
+		register("reservoir");
 		setUnlocalizedName("reservoir");
 		setCreativeTab(ThermalExpansion.tabTools);
 

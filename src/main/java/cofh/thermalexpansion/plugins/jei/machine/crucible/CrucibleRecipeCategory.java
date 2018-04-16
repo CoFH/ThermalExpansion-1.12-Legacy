@@ -82,7 +82,7 @@ public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWra
 		progress = Drawables.getDrawables(guiHelper).getProgress(2);
 		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_FLAME);
 		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
-		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK);
+		tankOverlay = Drawables.getDrawables(guiHelper).getTankLargeOverlay(Drawables.TANK);
 	}
 
 	@Nonnull

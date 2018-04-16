@@ -62,6 +62,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		// UnListed
 		builder.add(ModelErrorStateProperty.ERROR_STATE);
 		builder.add(TEProps.TILE_APPARATUS);
+		builder.add(TEProps.BAKERY_WORLD);
 
 		return builder.build();
 	}

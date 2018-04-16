@@ -10,8 +10,7 @@
 			"amount": 100
 		},
 		"output2": {
-			"item": "thermalfoundation:material",
-			"data": 833,
+			"constant": "tar",
 			"chance": 75
 		}
 	}, {
@@ -25,8 +24,7 @@
 			"amount": 150
 		},
 		"output2": {
-			"item": "thermalfoundation:material",
-			"data": 833,
+			"constant": "tar",
 			"chance": 50
 		}
 	}, {
@@ -53,8 +51,7 @@
 			"amount": 50
 		},
 		"output2": {
-			"item": "thermalfoundation:material",
-			"data": 832,
+			"constant": "rosin",
 			"chance": 75
 		}
 	}, {
@@ -70,8 +67,7 @@
 			"amount": 150
 		},
 		"output2": {
-			"item": "thermalfoundation:material",
-			"data": 833,
+			"constant": "tar",
 			"chance": 50
 		}
 	}]

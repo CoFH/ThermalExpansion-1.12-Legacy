@@ -44,6 +44,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		super("thermalexpansion");
 
+		register("augment");
 		setUnlocalizedName("augment");
 		setCreativeTab(ThermalExpansion.tabUtils);
 	}
