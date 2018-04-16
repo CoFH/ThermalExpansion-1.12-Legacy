@@ -43,15 +43,6 @@ public class ChargerManager {
 
 	public static void initialize() {
 
-		//		addRecipe(DEFAULT_ENERGY, ItemFertilizer.fertilizerRich, ItemFertilizer.fertilizerFlux);
-		//		addRecipe(DEFAULT_ENERGY, ItemBait.baitRich, ItemBait.baitFlux);
-		//
-		//		/* LOAD RECIPES */
-		//		loadRecipes();
-	}
-
-	public static void loadRecipes() {
-
 	}
 
 	public static void refresh() {

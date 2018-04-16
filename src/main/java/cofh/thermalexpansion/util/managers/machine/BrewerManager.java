@@ -232,6 +232,26 @@ public class BrewerManager {
 		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.DRAGON_BREATH), TFFluids.getSplashPotion(DEFAULT_AMOUNT, potion), TFFluids.getLingeringPotion(DEFAULT_AMOUNT, potion));
 	}
 
+	public static PotionType getPotionType(String baseName, int rank, String postfix) {
+
+		PotionType ret;
+
+		switch (rank) {
+			case 1:
+				ret = PotionType.getPotionTypeForName(baseName);
+				break;
+			case 2:
+				ret = PotionType.getPotionTypeForName("cofhcore:" + baseName + 2 + postfix);
+				if (ret == PotionTypes.EMPTY) { // Vanilla Potion
+					ret = PotionType.getPotionTypeForName("strong_" + baseName);
+				}
+				break;
+			default:
+				ret = PotionType.getPotionTypeForName("cofhcore:" + baseName + rank + postfix);
+		}
+		return ret;
+	}
+
 	/* RECIPE CLASS */
 	public static class BrewerRecipe {
 
