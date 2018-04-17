@@ -8,6 +8,7 @@ import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
 import cofh.api.block.IConfigGui;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.StateMapper;
 import cofh.core.util.helpers.FluidHelper;
@@ -109,8 +110,8 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 			tile.enchantHolding = (byte) EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 
-			if (stack.getTagCompound().hasKey("Fluid")) {
-				FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
+			if (stack.getTagCompound().hasKey(CoreProps.FLUID)) {
+				FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag(CoreProps.FLUID));
 				tile.getTank().setFluid(fluid);
 				tile.setLocked(stack.getTagCompound().getBoolean("Lock"));
 			}
@@ -201,7 +202,7 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 			}
 			FluidStack fluid = tile.getTankFluid();
 			if (fluid != null) {
-				retTag.setTag("Fluid", fluid.writeToNBT(new NBTTagCompound()));
+				retTag.setTag(CoreProps.FLUID, fluid.writeToNBT(new NBTTagCompound()));
 				retTag.setBoolean("Lock", tile.isLocked());
 			}
 		}
@@ -264,7 +265,7 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 			String fluidAppend = "";
 			if (stack.getTagCompound() != null) {
 
-				FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
+				FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag(CoreProps.FLUID));
 				if (fluid != null && fluid.amount > 0) {
 					fluidAppend = ",fluid=" + fluid.getFluid().getName() + ",amount=" + fluid.amount;
 				}

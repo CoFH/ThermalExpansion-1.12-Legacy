@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.device;
 
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.MathHelper;
@@ -247,7 +248,7 @@ public class TileMobCatcher extends TileDeviceBase implements ITickable {
 
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
-		mode = nbt.getByte("Mode");
+		mode = nbt.getByte(CoreProps.MODE);
 	}
 
 	@Override
@@ -257,7 +258,7 @@ public class TileMobCatcher extends TileDeviceBase implements ITickable {
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
-		nbt.setByte("Mode", mode);
+		nbt.setByte(CoreProps.MODE, mode);
 
 		return nbt;
 	}

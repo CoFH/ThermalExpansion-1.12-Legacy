@@ -7,6 +7,7 @@ import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.StateMapper;
 import cofh.core.util.helpers.BlockHelper;
@@ -103,7 +104,7 @@ public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryPro
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 			tile.amountRecv = stack.getTagCompound().getInteger("Recv");
 			tile.amountSend = stack.getTagCompound().getInteger("Send");
-			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
+			tile.setEnergyStored(stack.getTagCompound().getInteger(CoreProps.ENERGY));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
 			int storedFacing = ReconfigurableHelper.getFacing(stack);

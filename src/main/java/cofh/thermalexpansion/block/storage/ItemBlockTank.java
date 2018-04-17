@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.storage;
 import cofh.api.fluid.IFluidContainerItem;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
 import cofh.core.util.capabilities.FluidContainerItemWrapper;
 import cofh.core.util.helpers.RedstoneControlHelper;
@@ -118,10 +119,10 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		if (container.getTagCompound() == null) {
 			setDefaultTag(container);
 		}
-		if (!container.getTagCompound().hasKey("Fluid")) {
+		if (!container.getTagCompound().hasKey(CoreProps.FLUID)) {
 			return null;
 		}
-		return FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
+		return FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag(CoreProps.FLUID));
 	}
 
 	@Override
@@ -142,10 +143,10 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		int capacity = getCapacity(container);
 
 		if (!doFill) {
-			if (!container.getTagCompound().hasKey("Fluid")) {
+			if (!container.getTagCompound().hasKey(CoreProps.FLUID)) {
 				return Math.min(capacity, resource.amount);
 			}
-			FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
+			FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag(CoreProps.FLUID));
 
 			if (stack == null) {
 				return Math.min(capacity, resource.amount);
@@ -155,19 +156,19 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 			}
 			return Math.min(capacity - stack.amount, resource.amount);
 		}
-		if (!container.getTagCompound().hasKey("Fluid")) {
+		if (!container.getTagCompound().hasKey(CoreProps.FLUID)) {
 			NBTTagCompound fluidTag = resource.writeToNBT(new NBTTagCompound());
 
 			if (capacity < resource.amount) {
-				fluidTag.setInteger("Amount", capacity);
-				container.getTagCompound().setTag("Fluid", fluidTag);
+				fluidTag.setInteger(CoreProps.AMOUNT, capacity);
+				container.getTagCompound().setTag(CoreProps.FLUID, fluidTag);
 				return capacity;
 			}
-			fluidTag.setInteger("Amount", resource.amount);
-			container.getTagCompound().setTag("Fluid", fluidTag);
+			fluidTag.setInteger(CoreProps.AMOUNT, resource.amount);
+			container.getTagCompound().setTag(CoreProps.FLUID, fluidTag);
 			return resource.amount;
 		}
-		NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag("Fluid");
+		NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag(CoreProps.FLUID);
 		FluidStack stack = FluidStack.loadFluidStackFromNBT(fluidTag);
 
 		if (!stack.isFluidEqual(resource)) {
@@ -181,7 +182,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		} else {
 			stack.amount = capacity;
 		}
-		container.getTagCompound().setTag("Fluid", stack.writeToNBT(fluidTag));
+		container.getTagCompound().setTag(CoreProps.FLUID, stack.writeToNBT(fluidTag));
 		return filled;
 	}
 
@@ -191,10 +192,10 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		if (container.getTagCompound() == null) {
 			setDefaultTag(container);
 		}
-		if (!container.getTagCompound().hasKey("Fluid") || maxDrain == 0) {
+		if (!container.getTagCompound().hasKey(CoreProps.FLUID) || maxDrain == 0) {
 			return null;
 		}
-		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
+		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag(CoreProps.FLUID));
 
 		if (stack == null || stack.amount <= 0) {
 			return null;
@@ -204,17 +205,17 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		if (doDrain && !isCreative(container)) {
 			if (drained >= stack.amount) {
 				if (isLocked(container)) {
-					NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag("Fluid");
-					fluidTag.setInteger("Amount", 0);
-					container.getTagCompound().setTag("Fluid", fluidTag);
+					NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag(CoreProps.FLUID);
+					fluidTag.setInteger(CoreProps.AMOUNT, 0);
+					container.getTagCompound().setTag(CoreProps.FLUID, fluidTag);
 				} else {
-					container.getTagCompound().removeTag("Fluid");
+					container.getTagCompound().removeTag(CoreProps.FLUID);
 				}
 				return stack;
 			}
-			NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag("Fluid");
-			fluidTag.setInteger("Amount", fluidTag.getInteger("Amount") - drained);
-			container.getTagCompound().setTag("Fluid", fluidTag);
+			NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag(CoreProps.FLUID);
+			fluidTag.setInteger(CoreProps.AMOUNT, fluidTag.getInteger(CoreProps.AMOUNT) - drained);
+			container.getTagCompound().setTag(CoreProps.FLUID, fluidTag);
 		}
 		stack.amount = drained;
 		return stack;

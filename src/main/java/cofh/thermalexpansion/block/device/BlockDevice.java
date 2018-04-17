@@ -155,9 +155,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		if (stack.getTagCompound() != null) {
 			TileDeviceBase tile = (TileDeviceBase) world.getTileEntity(pos);
 
-			// tile.readAugmentsFromNBT(stack.getTagCompound());
-			// tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
-
 			int facing = BlockHelper.determineXZPlaceFacing(living);
 			int storedFacing = ReconfigurableHelper.getFacing(stack);
 			byte[] sideCache = ReconfigurableHelper.getSideCache(stack, tile.getDefaultSides());

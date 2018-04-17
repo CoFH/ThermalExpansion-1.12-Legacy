@@ -188,7 +188,7 @@ public class TileFactorizer extends TileDeviceBase implements ITickable {
 
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
-		recipeMode = nbt.getBoolean("Mode");
+		recipeMode = nbt.getBoolean(CoreProps.MODE);
 	}
 
 	@Override
@@ -198,7 +198,7 @@ public class TileFactorizer extends TileDeviceBase implements ITickable {
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
-		nbt.setBoolean("Mode", recipeMode);
+		nbt.setBoolean(CoreProps.MODE, recipeMode);
 		return nbt;
 	}
 

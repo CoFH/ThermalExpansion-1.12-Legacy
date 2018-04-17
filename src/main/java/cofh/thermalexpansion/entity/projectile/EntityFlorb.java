@@ -151,7 +151,7 @@ public class EntityFlorb extends EntityThrowable {
 
 		super.readEntityFromNBT(nbt);
 
-		fluid = FluidRegistry.getFluid(nbt.getString("Fluid"));
+		fluid = FluidRegistry.getFluid(nbt.getString(CoreProps.FLUID));
 
 		if (fluid == null || fluid.getBlock() == null) {
 			fluid = FluidRegistry.WATER;
@@ -163,7 +163,7 @@ public class EntityFlorb extends EntityThrowable {
 
 		super.writeEntityToNBT(nbt);
 
-		nbt.setString("Fluid", fluid.getName());
+		nbt.setString(CoreProps.FLUID, fluid.getName());
 	}
 
 }

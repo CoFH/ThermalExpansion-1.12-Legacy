@@ -7,6 +7,7 @@ import cofh.api.fluid.IFluidContainerItem;
 import cofh.api.item.IMultiModeItem;
 import cofh.api.item.INBTCopyIngredient;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
 import cofh.core.item.ItemMulti;
 import cofh.core.key.KeyBindingItemMultiMode;
@@ -112,7 +113,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 			}
 			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName(fluid) + StringHelper.LIGHT_GRAY);
 
-			if (ItemHelper.getItemDamage(stack) == CREATIVE) {
+			if (isCreative(stack)) {
 				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));
 			} else {
 				tooltip.add(StringHelper.localize("info.cofh.level") + ": " + StringHelper.formatNumber(fluid.amount) + " / " + StringHelper.formatNumber(getCapacity(stack)) + " mB");
@@ -120,7 +121,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		} else {
 			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
 
-			if (ItemHelper.getItemDamage(stack) == CREATIVE) {
+			if (isCreative(stack)) {
 				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));
 			} else {
 				tooltip.add(StringHelper.localize("info.cofh.level") + ": 0 / " + StringHelper.formatNumber(getCapacity(stack)) + " mB");
@@ -180,13 +181,13 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 
-		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Fluid"));
+		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, CoreProps.FLUID));
 	}
 
 	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 
-		return ItemHelper.getItemDamage(stack) != CREATIVE && (stack.getTagCompound() == null || !stack.getTagCompound().getBoolean("CreativeTab"));
+		return ItemHelper.getItemDamage(stack) != CREATIVE && (stack.getTagCompound() == null || !stack.getTagCompound().getBoolean(CoreProps.CREATIVE_TAB));
 	}
 
 	@Override
@@ -276,16 +277,16 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	/* HELPERS */
 	public boolean isActive(ItemStack stack) {
 
-		return stack.getTagCompound() != null && stack.getTagCompound().getBoolean("Active");
+		return stack.getTagCompound() != null && stack.getTagCompound().getBoolean(CoreProps.ACTIVE);
 	}
 
 	public boolean setActiveState(ItemStack stack, boolean state) {
 
 		if (getFluid(stack) != null) {
-			stack.getTagCompound().setBoolean("Active", state);
+			stack.getTagCompound().setBoolean(CoreProps.ACTIVE, state);
 			return true;
 		}
-		stack.getTagCompound().setBoolean("Active", false);
+		stack.getTagCompound().setBoolean(CoreProps.ACTIVE, false);
 		return false;
 	}
 
@@ -338,10 +339,10 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (container.getTagCompound() == null) {
 			container.setTagCompound(new NBTTagCompound());
 		}
-		if (!container.getTagCompound().hasKey("Fluid")) {
+		if (!container.getTagCompound().hasKey(CoreProps.FLUID)) {
 			return null;
 		}
-		return FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
+		return FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag(CoreProps.FLUID));
 	}
 
 	@Override
@@ -370,16 +371,16 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (ItemHelper.getItemDamage(container) == CREATIVE) {
 			if (doFill) {
 				NBTTagCompound fluidTag = resource.writeToNBT(new NBTTagCompound());
-				fluidTag.setInteger("Amount", capacity - Fluid.BUCKET_VOLUME);
-				container.getTagCompound().setTag("Fluid", fluidTag);
+				fluidTag.setInteger(CoreProps.AMOUNT, capacity - Fluid.BUCKET_VOLUME);
+				container.getTagCompound().setTag(CoreProps.FLUID, fluidTag);
 			}
 			return resource.amount;
 		}
 		if (!doFill) {
-			if (!container.getTagCompound().hasKey("Fluid")) {
+			if (!container.getTagCompound().hasKey(CoreProps.FLUID)) {
 				return Math.min(capacity, resource.amount);
 			}
-			FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
+			FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag(CoreProps.FLUID));
 
 			if (stack == null) {
 				return Math.min(capacity, resource.amount);
@@ -389,19 +390,19 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 			}
 			return Math.min(capacity - stack.amount, resource.amount);
 		}
-		if (!container.getTagCompound().hasKey("Fluid")) {
+		if (!container.getTagCompound().hasKey(CoreProps.FLUID)) {
 			NBTTagCompound fluidTag = resource.writeToNBT(new NBTTagCompound());
 
 			if (capacity < resource.amount) {
-				fluidTag.setInteger("Amount", capacity);
-				container.getTagCompound().setTag("Fluid", fluidTag);
+				fluidTag.setInteger(CoreProps.AMOUNT, capacity);
+				container.getTagCompound().setTag(CoreProps.FLUID, fluidTag);
 				return capacity;
 			}
-			fluidTag.setInteger("Amount", resource.amount);
-			container.getTagCompound().setTag("Fluid", fluidTag);
+			fluidTag.setInteger(CoreProps.AMOUNT, resource.amount);
+			container.getTagCompound().setTag(CoreProps.FLUID, fluidTag);
 			return resource.amount;
 		}
-		NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag("Fluid");
+		NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag(CoreProps.FLUID);
 		FluidStack stack = FluidStack.loadFluidStackFromNBT(fluidTag);
 
 		if (!stack.isFluidEqual(resource)) {
@@ -415,7 +416,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		} else {
 			stack.amount = capacity;
 		}
-		container.getTagCompound().setTag("Fluid", stack.writeToNBT(fluidTag));
+		container.getTagCompound().setTag(CoreProps.FLUID, stack.writeToNBT(fluidTag));
 		return filled;
 	}
 
@@ -425,25 +426,25 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (container.getTagCompound() == null) {
 			container.setTagCompound(new NBTTagCompound());
 		}
-		if (!container.getTagCompound().hasKey("Fluid") || maxDrain == 0) {
+		if (!container.getTagCompound().hasKey(CoreProps.FLUID) || maxDrain == 0) {
 			return null;
 		}
-		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
+		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag(CoreProps.FLUID));
 
 		if (stack == null) {
 			return null;
 		}
-		boolean creative = ItemHelper.getItemDamage(container) == CREATIVE;
+		boolean creative = isCreative(container);
 		int drained = creative ? maxDrain : Math.min(stack.amount, maxDrain);
 
 		if (doDrain && !creative) {
 			if (maxDrain >= stack.amount) {
-				container.getTagCompound().removeTag("Fluid");
+				container.getTagCompound().removeTag(CoreProps.FLUID);
 				return stack;
 			}
-			NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag("Fluid");
-			fluidTag.setInteger("Amount", fluidTag.getInteger("Amount") - drained);
-			container.getTagCompound().setTag("Fluid", fluidTag);
+			NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag(CoreProps.FLUID);
+			fluidTag.setInteger(CoreProps.AMOUNT, fluidTag.getInteger(CoreProps.AMOUNT) - drained);
+			container.getTagCompound().setTag(CoreProps.FLUID, fluidTag);
 		}
 		stack.amount = drained;
 		return stack;

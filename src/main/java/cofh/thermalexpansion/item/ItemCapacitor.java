@@ -5,6 +5,7 @@ import baubles.api.IBauble;
 import baubles.api.cap.IBaublesItemHandler;
 import cofh.api.item.IMultiModeItem;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
 import cofh.core.item.ItemMultiRF;
 import cofh.core.key.KeyBindingItemMultiMode;
@@ -183,16 +184,16 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 	/* HELPERS */
 	public boolean isActive(ItemStack stack) {
 
-		return stack.getTagCompound() != null && stack.getTagCompound().getBoolean("Active");
+		return stack.getTagCompound() != null && stack.getTagCompound().getBoolean(CoreProps.ACTIVE);
 	}
 
 	public boolean setActiveState(ItemStack stack, boolean state) {
 
 		if (getEnergyStored(stack) > 0) {
-			stack.getTagCompound().setBoolean("Active", state);
+			stack.getTagCompound().setBoolean(CoreProps.ACTIVE, state);
 			return true;
 		}
-		stack.getTagCompound().setBoolean("Active", false);
+		stack.getTagCompound().setBoolean(CoreProps.ACTIVE, false);
 		return false;
 	}
 
@@ -270,15 +271,15 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 		if (container.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
-		if (ItemHelper.getItemDamage(container) == CREATIVE) {
+		if (isCreative(container)) {
 			return maxExtract;
 		}
-		int stored = Math.min(container.getTagCompound().getInteger("Energy"), getMaxEnergyStored(container));
+		int stored = Math.min(container.getTagCompound().getInteger(CoreProps.ENERGY), getMaxEnergyStored(container));
 		int extract = Math.min(maxExtract, Math.min(stored, getSend(container)));
 
 		if (!simulate) {
 			stored -= extract;
-			container.getTagCompound().setInteger("Energy", stored);
+			container.getTagCompound().setInteger(CoreProps.ENERGY, stored);
 		}
 		return extract;
 	}

@@ -59,7 +59,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 
 		if (fluid != null && fluid.canBePlacedInWorld()) {
 			container.setTagCompound(new NBTTagCompound());
-			container.getTagCompound().setString("Fluid", fluid.getName());
+			container.getTagCompound().setString(CoreProps.FLUID, fluid.getName());
 		}
 		return container;
 	}
@@ -77,7 +77,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 
 		if (stack.getTagCompound() != null) {
-			Fluid fluid = FluidRegistry.getFluid(stack.getTagCompound().getString("Fluid"));
+			Fluid fluid = FluidRegistry.getFluid(stack.getTagCompound().getString(CoreProps.FLUID));
 
 			if (fluid == null || fluid.getDensity() >= 0) {
 				return;
@@ -124,7 +124,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 		String closeParen = StringHelper.END + ")";
 
 		if (stack.getTagCompound() != null) {
-			Fluid fluid = FluidRegistry.getFluid(stack.getTagCompound().getString("Fluid"));
+			Fluid fluid = FluidRegistry.getFluid(stack.getTagCompound().getString(CoreProps.FLUID));
 
 			if (fluid != null) {
 				fluidName = fluid.getUnlocalizedName();
@@ -148,7 +148,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 		if (!stack.hasTagCompound()) {
 			return new ActionResult<>(EnumActionResult.PASS, stack);
 		}
-		Fluid fluid = FluidRegistry.getFluid(stack.getTagCompound().getString("Fluid"));
+		Fluid fluid = FluidRegistry.getFluid(stack.getTagCompound().getString(CoreProps.FLUID));
 		if (fluid == null) {
 			return new ActionResult<>(EnumActionResult.PASS, stack);
 		}
@@ -239,7 +239,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitialize
 
 			String fluid = "";
 			if (stack.getTagCompound() != null) {
-				fluid = "," + stack.getTagCompound().getString("Fluid");
+				fluid = "," + stack.getTagCompound().getString(CoreProps.FLUID);
 			}
 			return ModelBakery.defaultItemKeyGenerator.generateKey(stack) + fluid;
 		});

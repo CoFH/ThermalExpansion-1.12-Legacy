@@ -6,6 +6,7 @@ import cofh.api.core.ISecurable;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.core.block.BlockCoreTile;
 import cofh.core.block.TileCore;
+import cofh.core.init.CoreProps;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.RayTracer;
 import cofh.core.util.helpers.*;
@@ -199,7 +200,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 			retTag = ReconfigurableHelper.setItemStackTagReconfig(retTag, (TileReconfigurable) tile);
 		}
 		if (tile instanceof IEnergyHandler) {
-			retTag.setInteger("Energy", ((IEnergyHandler) tile).getEnergyStored(null));
+			retTag.setInteger(CoreProps.ENERGY, ((IEnergyHandler) tile).getEnergyStored(null));
 		}
 		return retTag;
 	}

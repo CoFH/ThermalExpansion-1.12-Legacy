@@ -11,14 +11,13 @@ import cofh.core.item.IEnchantableItem;
 import cofh.core.item.ItemMulti;
 import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
-import cofh.core.util.RegistrySocial;
 import cofh.core.util.core.IInitializer;
 import cofh.core.util.filter.ItemFilterWrapper;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalfoundation.init.TFProps;
-import com.mojang.authlib.GameProfile;
+import cofh.thermalfoundation.item.ItemSecurity;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -54,9 +53,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.thermalfoundation.util.TFCrafting.addSecureRecipe;
 
 public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeItem, IInventoryContainerItem, IEnchantableItem, INBTCopyIngredient {
 
@@ -247,33 +246,9 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	}
 
 	/* HELPERS */
-	public static boolean canPlayerAccess(ItemStack stack, EntityPlayer player) {
-
-		if (!SecurityHelper.isSecure(stack)) {
-			return true;
-		}
-		String name = player.getName();
-		AccessMode access = SecurityHelper.getAccess(stack);
-		if (access.isPublic() || (CoreProps.enableOpSecureAccess && CoreUtils.isOp(name))) {
-			return true;
-		}
-		GameProfile profile = SecurityHelper.getOwner(stack);
-		UUID ownerID = profile.getId();
-		if (SecurityHelper.isDefaultUUID(ownerID)) {
-			return true;
-		}
-		UUID otherID = SecurityHelper.getID(player);
-		return ownerID.equals(otherID) || access.isFriendsOnly() && RegistrySocial.playerHasAccess(name, profile);
-	}
-
 	public static boolean hasHoldingEnchant(ItemStack stack) {
 
 		return EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack) > 0;
-	}
-
-	public static boolean isCreative(ItemStack stack) {
-
-		return ItemHelper.getItemDamage(stack) == CREATIVE;
 	}
 
 	public static boolean isVoid(ItemStack stack) {
@@ -456,6 +431,12 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 				'Y', "blockRockwool"
 		);
 		// @formatter:on
+
+		addSecureRecipe(satchelBasic, satchelBasic, ItemSecurity.lock);
+		addSecureRecipe(satchelHardened, satchelHardened, ItemSecurity.lock);
+		addSecureRecipe(satchelReinforced, satchelReinforced, ItemSecurity.lock);
+		addSecureRecipe(satchelSignalum, satchelSignalum, ItemSecurity.lock);
+		addSecureRecipe(satchelResonant, satchelResonant, ItemSecurity.lock);
 		return true;
 	}
 
@@ -492,7 +473,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	private static TIntObjectHashMap<TypeEntry> typeMap = new TIntObjectHashMap<>();
 
 	public static final int VOID = 100;
-	public static final int CREATIVE = 32000;
 
 	public static boolean enable = true;
 	public static boolean enableSecurity = true;

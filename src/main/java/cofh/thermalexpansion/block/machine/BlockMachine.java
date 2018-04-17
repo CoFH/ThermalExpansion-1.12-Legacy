@@ -8,6 +8,7 @@ import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.FluidHelper;
@@ -173,7 +174,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 			tile.readAugmentsFromNBT(stack.getTagCompound());
 			tile.updateAugmentStatus();
-			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
+			tile.setEnergyStored(stack.getTagCompound().getInteger(CoreProps.ENERGY));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
 			int storedFacing = ReconfigurableHelper.getFacing(stack);

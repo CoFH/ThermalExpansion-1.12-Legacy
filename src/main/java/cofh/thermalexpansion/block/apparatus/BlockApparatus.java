@@ -6,6 +6,7 @@ import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -121,7 +122,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 
 			tile.readAugmentsFromNBT(stack.getTagCompound());
 			tile.updateAugmentStatus();
-			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
+			tile.setEnergyStored(stack.getTagCompound().getInteger(CoreProps.ENERGY));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
 			int storedFacing = ReconfigurableHelper.getFacing(stack);

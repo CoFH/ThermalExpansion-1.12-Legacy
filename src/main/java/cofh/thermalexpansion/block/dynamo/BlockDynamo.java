@@ -10,6 +10,7 @@ import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Vector3;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.FluidHelper;
@@ -191,7 +192,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 			tile.readAugmentsFromNBT(stack.getTagCompound());
 			tile.updateAugmentStatus();
-			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
+			tile.setEnergyStored(stack.getTagCompound().getInteger(CoreProps.ENERGY));
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}

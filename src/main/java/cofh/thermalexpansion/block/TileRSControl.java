@@ -4,6 +4,7 @@ import codechicken.lib.vec.Vector3;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.core.audio.ISoundSource;
 import cofh.core.audio.SoundTile;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.network.PacketCore;
 import cofh.core.util.helpers.RedstoneControlHelper;
@@ -82,12 +83,12 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 
 		super.readFromNBT(nbt);
 
-		isActive = nbt.getBoolean("Active");
+		isActive = nbt.getBoolean(CoreProps.ACTIVE);
 		NBTTagCompound rsTag = nbt.getCompoundTag("RS");
 
 		isPowered = rsTag.getBoolean("Power");
 		powerLevel = rsTag.getByte("Level");
-		rsMode = ControlMode.values()[rsTag.getByte("Mode")];
+		rsMode = ControlMode.values()[rsTag.getByte(CoreProps.MODE)];
 	}
 
 	@Override
@@ -95,12 +96,12 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 
 		super.writeToNBT(nbt);
 
-		nbt.setBoolean("Active", isActive);
+		nbt.setBoolean(CoreProps.ACTIVE, isActive);
 		NBTTagCompound rsTag = new NBTTagCompound();
 
 		rsTag.setBoolean("Power", isPowered);
 		rsTag.setByte("Level", (byte) powerLevel);
-		rsTag.setByte("Mode", (byte) rsMode.ordinal());
+		rsTag.setByte(CoreProps.MODE, (byte) rsMode.ordinal());
 		nbt.setTag("RS", rsTag);
 		return nbt;
 	}

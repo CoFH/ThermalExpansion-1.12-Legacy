@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.gui.container.ICustomInventory;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
@@ -305,7 +306,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		super.readFromNBT(nbt);
 
 		outputTracker = nbt.getInteger("TrackOut");
-		augmentSedimentary = nbt.getByte("Mode") == 1;
+		augmentSedimentary = nbt.getByte(CoreProps.MODE) == 1;
 
 		if (nbt.hasKey("OutputItem", 10)) {
 			index = ExtruderManager.getIndex(new ItemStack(nbt.getCompoundTag("OutputItem")), augmentSedimentary);
@@ -323,7 +324,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("TrackOut", outputTracker);
-		nbt.setByte("Mode", augmentSedimentary ? (byte) 1 : 0);
+		nbt.setByte(CoreProps.MODE, augmentSedimentary ? (byte) 1 : 0);
 
 		nbt.setTag("OutputItem", outputItem[0].writeToNBT(new NBTTagCompound()));
 		nbt.setTag("HotTank", hotTank.writeToNBT(new NBTTagCompound()));

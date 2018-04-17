@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
@@ -548,7 +549,7 @@ public class TileTransposer extends TileMachineBase {
 		if (!inventory[1].isEmpty() && inventory[1].hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
 			hasFluidHandler = true;
 		}
-		extractMode = nbt.getByte("Mode") == 1;
+		extractMode = nbt.getByte(CoreProps.MODE) == 1;
 		extractFlag = extractMode;
 		tank.readFromNBT(nbt);
 
@@ -568,7 +569,7 @@ public class TileTransposer extends TileMachineBase {
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut1", outputTracker);
 		nbt.setInteger("TrackOut2", outputTrackerFluid);
-		nbt.setByte("Mode", extractMode ? (byte) 1 : 0);
+		nbt.setByte(CoreProps.MODE, extractMode ? (byte) 1 : 0);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
