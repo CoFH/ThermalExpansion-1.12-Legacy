@@ -90,9 +90,6 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
-		if (world.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF != 0) {
-			return;
-		}
 		boolean curActive = isActive;
 
 		if (isActive) {

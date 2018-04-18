@@ -968,7 +968,18 @@ public class TileCharger extends TileMachineBase {
 		if (augmentRepair) {
 			return slot != 0 || stack.isItemStackDamageable() || ChargerManager.recipeExists(stack);
 		}
-		return slot != 0 || (EnergyHelper.isEnergyContainerItem(stack) || EnergyHelper.isEnergyHandler(stack) || ChargerManager.recipeExists(stack));
+		if (slot != 0) {
+			return true;
+		}
+		if (EnergyHelper.isEnergyContainerItem(stack)) {
+			IEnergyContainerItem containerItem = (IEnergyContainerItem) stack.getItem();
+			return containerItem.getEnergyStored(stack) < containerItem.getMaxEnergyStored(stack);
+		}
+		if (EnergyHelper.isEnergyHandler(stack)) {
+			IEnergyStorage containerItem = EnergyHelper.getEnergyHandler(stack);
+			return containerItem.getEnergyStored() < containerItem.getMaxEnergyStored();
+		}
+		return ChargerManager.recipeExists(stack);
 	}
 
 	/* CAPABILITIES */

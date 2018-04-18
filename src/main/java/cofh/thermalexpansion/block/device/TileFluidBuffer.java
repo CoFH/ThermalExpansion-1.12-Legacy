@@ -97,9 +97,6 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
-		if (world.getTotalWorldTime() % CoreProps.TIME_CONSTANT_QUARTER != 0) {
-			return;
-		}
 		boolean curActive = isActive;
 
 		if (isActive) {
