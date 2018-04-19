@@ -187,7 +187,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 
-		return ItemHelper.getItemDamage(stack) != CREATIVE && (stack.getTagCompound() == null || !stack.getTagCompound().getBoolean(CoreProps.CREATIVE_TAB));
+		return !isCreative(stack) && getFluidAmount(stack) > 0;
 	}
 
 	@Override

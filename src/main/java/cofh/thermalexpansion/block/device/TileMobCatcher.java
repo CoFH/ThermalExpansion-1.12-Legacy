@@ -231,11 +231,18 @@ public class TileMobCatcher extends TileDeviceBase implements ITickable {
 		return new ContainerMobCatcher(inventory, this);
 	}
 
-	public void toggleMode() {
+	public void toggleMode(boolean decrement) {
 
-		mode++;
-		if (mode > 2) {
-			mode = 0;
+		if (decrement) {
+			mode--;
+			if (mode < 0) {
+				mode = 2;
+			}
+		} else {
+			mode++;
+			if (mode > 2) {
+				mode = 0;
+			}
 		}
 		sendModePacket();
 	}

@@ -328,6 +328,37 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 		return eventItem.isEmpty();
 	}
 
+	public static boolean hasColor1(ItemStack stack) {
+
+		return stack.hasTagCompound() && stack.getTagCompound().hasKey(CoreProps.COLOR_1);
+	}
+
+	public static boolean hasColor2(ItemStack stack) {
+
+		return stack.hasTagCompound() && stack.getTagCompound().hasKey(CoreProps.COLOR_1);
+	}
+
+	public static int getColor1(ItemStack stack) {
+
+		return !stack.hasTagCompound() ? 0xFFFFFF : stack.getTagCompound().getInteger(CoreProps.COLOR_1);
+	}
+
+	public static int getColor2(ItemStack stack) {
+
+		return !stack.hasTagCompound() ? 0xFFFFFF : stack.getTagCompound().getInteger(CoreProps.COLOR_2);
+	}
+
+	/* IItemColor */
+	public int colorMultiplier(ItemStack stack, int tintIndex) {
+
+		if (tintIndex == 2 && hasColor1(stack)) {
+			return getColor1(stack);
+		} else if (tintIndex == 3 && hasColor2(stack)) {
+			return getColor2(stack);
+		}
+		return 0xFFFFFF;
+	}
+
 	/* IMultiModeItem */
 	@Override
 	public int getNumModes(ItemStack stack) {
@@ -347,11 +378,15 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("access=%s,type=%s", SecurityHelper.getAccess(stack).toString().toLowerCase(Locale.US), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("access=%s,color1=%s,color2=%s,type=%s", SecurityHelper.getAccess(stack).toString().toLowerCase(Locale.US), hasColor1(stack) ? 1 : 0, hasColor2(stack) ? 1 : 0, typeMap.get(ItemHelper.getItemDamage(stack)).name)));
 
 		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
 			for (int i = 0; i < AccessMode.values().length; i++) {
-				ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("access=%s,type=%s", AccessMode.values()[i].toString().toLowerCase(Locale.US), entry.getValue().name)));
+				for (int j = 0; j < 2; j++) {
+					for (int k = 0; k < 2; k++) {
+						ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("access=%s,color1=%s,color2=%s,type=%s", AccessMode.values()[i].toString().toLowerCase(Locale.US), j, k, entry.getValue().name)));
+					}
+				}
 			}
 		}
 	}

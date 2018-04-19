@@ -1,12 +1,10 @@
 package cofh.thermalexpansion.init;
 
-import cofh.core.init.CoreProps;
 import cofh.core.util.core.IInitializer;
 import cofh.thermalexpansion.item.*;
 import cofh.thermalfoundation.init.TFProps;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -48,13 +46,9 @@ public class TEItems {
 		}
 		for (int i = 0; i < 5; i++) {
 			ItemStack iconStack = new ItemStack(itemCapacitor, 1, i);
-			iconStack.setTagCompound(new NBTTagCompound());
-			iconStack.getTagCompound().setBoolean(CoreProps.CREATIVE_TAB, true);
 			TFProps.toolList.add(iconStack.copy());
 
 			iconStack = new ItemStack(itemReservoir, 1, i);
-			iconStack.setTagCompound(new NBTTagCompound());
-			iconStack.getTagCompound().setBoolean(CoreProps.CREATIVE_TAB, true);
 			TFProps.toolList.add(iconStack.copy());
 
 			iconStack = new ItemStack(itemSatchel, 1, i);

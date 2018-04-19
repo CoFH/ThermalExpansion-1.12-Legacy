@@ -114,6 +114,13 @@ public class TEProps {
 		comment = "If TRUE, various Thermal Expansion Blocks will play ambient sounds when active.";
 		enableSounds = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("EnableSounds", category, enableSounds, comment);
 
+		category = "Render";
+		comment = "If TRUE, Dynamos will display overlay textures corresponding to their block level.";
+		renderDynamoOverlay = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("RenderDynamoLevelOverlay", category, renderDynamoOverlay, comment);
+
+		comment = "If TRUE, Machines will display overlay textures corresponding to their block level.";
+		renderMachineOverlay = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("RenderMachineLevelOverlay", category, renderMachineOverlay, comment);
+
 		/* SLOT OVERLAYS */
 		if (slotOverlayAlt) {
 			if (slotOverlayCB) {
@@ -294,6 +301,9 @@ public class TEProps {
 	public static ResourceLocation textureGuiCommon = PATH_SLOTS;
 	public static ResourceLocation textureGuiSlots4 = PATH_SLOTS_4;
 	public static ResourceLocation textureGuiSlotsCrafter = PATH_SLOTS;
+
+	public static boolean renderDynamoOverlay = true;
+	public static boolean renderMachineOverlay = true;
 
 	/* BLOCKSTATE PROPERTIES */
 	public static final UnlistedGenericTile<TileApparatusBase> TILE_APPARATUS = new UnlistedGenericTile<>("tile_apparatus", TileApparatusBase.class);

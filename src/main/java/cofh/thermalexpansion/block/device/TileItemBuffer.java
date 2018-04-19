@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.device;
 
-import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;

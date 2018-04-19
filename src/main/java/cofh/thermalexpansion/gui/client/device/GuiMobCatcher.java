@@ -71,7 +71,7 @@ public class GuiMobCatcher extends GuiDeviceBase {
 
 		if (buttonName.equalsIgnoreCase("Mode")) {
 			playClickSound(0.6F + myTile.mode * 0.1F);
-			myTile.toggleMode();
+			myTile.toggleMode(mouseButton == 1);
 		}
 	}
 

@@ -83,7 +83,7 @@ public class BakeryMachine extends CubeBakeryBase {
 			IItemBlockTextureProvider provider = TEBlocks.blockMachine;
 			renderFace(ccrs, face, provider.getTexture(face, stack), 0xFFFFFFFF);
 
-			if (level > 0) {
+			if (TEProps.renderMachineOverlay && level > 0) {
 				renderFaceOverlay(ccrs, face, creative ? TETextures.MACHINE_OVERLAY_C : getOverlaySprite(face, level), 0xFFFFFFFF);
 			}
 			buffer.finishDrawing();
@@ -115,7 +115,7 @@ public class BakeryMachine extends CubeBakeryBase {
 
 			renderFace(ccrs, face, provider.getTexture(face, state, layer, world, tile.getPos()), tile.getColorMask(layer, face));
 
-			if (layer == BlockRenderLayer.CUTOUT && level > 0) {
+			if (layer == BlockRenderLayer.CUTOUT && TEProps.renderMachineOverlay && level > 0) {
 				renderFace(ccrs, face, creative ? TETextures.MACHINE_OVERLAY_C : getOverlaySprite(face, level), 0xFFFFFFFF);
 			}
 			buffer.finishDrawing();

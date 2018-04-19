@@ -190,7 +190,7 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 			renderCoil(ccrs, 1, false, 0);
 			renderBase(ccrs, 1, false, stack.getMetadata());
 
-			if (level > 0) {
+			if (TEProps.renderDynamoOverlay && level > 0) {
 				renderBaseOverlay(ccrs, 1, false, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(face, level));
 			}
 			buffer.finishDrawing();
@@ -226,7 +226,7 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 				renderCoil(ccrs, facing, active, coil);
 				renderBase(ccrs, facing, active, type);
 
-				if (level > 0) {
+				if (TEProps.renderDynamoOverlay && level > 0) {
 					renderBaseOverlay(ccrs, facing, active, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(face, level));
 				}
 			} else if (TileDynamoBase.COIL_UNDERLAY[coil]) {

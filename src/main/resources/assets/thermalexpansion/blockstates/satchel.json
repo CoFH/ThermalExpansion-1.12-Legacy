@@ -31,6 +31,26 @@
 				}
 			}
 		},
+		"color1": {
+			"0": {
+
+			},
+			"1": {
+				"textures": {
+					"layer2": "thermalexpansion:items/satchel/satchel_flap"
+				}
+			}
+		},
+		"color2": {
+			"0": {
+
+			},
+			"1": {
+				"textures": {
+					"layer3": "thermalexpansion:items/satchel/satchel_body"
+				}
+			}
+		},
 		"type": {
 			"standard0": {
 				"textures": {
