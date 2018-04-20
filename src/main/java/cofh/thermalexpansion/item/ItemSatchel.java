@@ -335,7 +335,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 
 	public static boolean hasColor2(ItemStack stack) {
 
-		return stack.hasTagCompound() && stack.getTagCompound().hasKey(CoreProps.COLOR_1);
+		return stack.hasTagCompound() && stack.getTagCompound().hasKey(CoreProps.COLOR_2);
 	}
 
 	public static int getColor1(ItemStack stack) {

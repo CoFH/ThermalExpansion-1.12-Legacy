@@ -127,7 +127,7 @@ public class TETextures {
 		DEVICE_FRAME_INNER =                register(DEVICE_ + "frame_inner");
 
 		/* DYNAMOS */
-		DYNAMO_COIL_REDSTONE =				register(DYNAMO_ + "coil_redstone");
+		DYNAMO_COIL_REDSTONE =				registerAnim(DYNAMO_ + "coil_redstone");
 		DYNAMO_COIL_STEAM =     		    register(DYNAMO_ + "coil_steam");
 
 		DYNAMO_STEAM =						register(DYNAMO_ + "steam");
@@ -540,6 +540,15 @@ public class TETextures {
 		return register(sprite);
 	}
 
+	private static TextureAtlasSprite registerAnim(String sprite) {
+
+		if (TEProps.animatedDynamoCoilTexture) {
+			sprite += ANIM_POSTFIX;
+		}
+		return register(sprite);
+	}
+
+	private static String ANIM_POSTFIX = "_anim";
 	private static String CB_POSTFIX = "_cb";
 
 	private static final String BLOCKS_ = "thermalexpansion:blocks/";

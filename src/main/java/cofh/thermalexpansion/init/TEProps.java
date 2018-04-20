@@ -115,6 +115,10 @@ public class TEProps {
 		enableSounds = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("EnableSounds", category, enableSounds, comment);
 
 		category = "Render";
+
+		comment = "If TRUE, Dynamos will have animated coil textures.";
+		animatedDynamoCoilTexture = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("AnimatedDynamoCoilTextures", category, animatedDynamoCoilTexture, comment);
+
 		comment = "If TRUE, Dynamos will display overlay textures corresponding to their block level.";
 		renderDynamoOverlay = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("RenderDynamoLevelOverlay", category, renderDynamoOverlay, comment);
 
@@ -302,6 +306,7 @@ public class TEProps {
 	public static ResourceLocation textureGuiSlots4 = PATH_SLOTS_4;
 	public static ResourceLocation textureGuiSlotsCrafter = PATH_SLOTS;
 
+	public static boolean animatedDynamoCoilTexture = true;
 	public static boolean renderDynamoOverlay = true;
 	public static boolean renderMachineOverlay = true;
 
