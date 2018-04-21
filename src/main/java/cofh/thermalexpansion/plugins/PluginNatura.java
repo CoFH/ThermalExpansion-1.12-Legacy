@@ -252,23 +252,6 @@ public class PluginNatura extends PluginTEBase {
 		{
 			int energy = SawmillManager.DEFAULT_ENERGY * 3 / 2;
 
-			// TODO: Remove when Mantle fixes their bug.
-			/* LOGS */
-			SawmillManager.addRecipe(energy, logMaple, ItemHelper.cloneStack(plankMaple, 6), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, logSilverbell, ItemHelper.cloneStack(plankSilverbell, 6), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, logAmaranth, ItemHelper.cloneStack(plankAmaranth, 6), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, logTigerwood, ItemHelper.cloneStack(plankTigerwood, 6), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, logWillow, ItemHelper.cloneStack(plankWillow, 6), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, logEucalyptus, ItemHelper.cloneStack(plankEucalyptus, 6), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, logHopseed, ItemHelper.cloneStack(plankHopseed, 6), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, logSakura, ItemHelper.cloneStack(plankSakura, 6), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, logRedwood, ItemHelper.cloneStack(plankRedwood, 6), ItemMaterial.dustWood);
-
-			SawmillManager.addRecipe(energy, logGhostwood, ItemHelper.cloneStack(plankGhostwood, 6), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, logBloodwood, ItemHelper.cloneStack(plankBloodwood, 6), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, logDarkwood, ItemHelper.cloneStack(plankDarkwood, 6), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, logFusewood, ItemHelper.cloneStack(plankFusewood, 6), ItemMaterial.dustWood);
-
 			/* BOOKSHELVES */
 			SawmillManager.addRecipe(energy, bookshelfMaple, ItemHelper.cloneStack(plankMaple, 4), new ItemStack(Items.BOOK, 3), 25);
 			SawmillManager.addRecipe(energy, bookshelfSilverbell, ItemHelper.cloneStack(plankSilverbell, 4), new ItemStack(Items.BOOK, 3), 25);

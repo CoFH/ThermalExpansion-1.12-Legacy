@@ -4,7 +4,9 @@
 		"model": "builtin/generated",
 		"textures": {
 			"layer0": "thermalexpansion:items/satchel/satchel_0",
-			"layer1": "thermalexpansion:items/satchel/access_public"
+			"layer1": "thermalexpansion:items/satchel/access_public",
+			"layer2": "thermalexpansion:items/blank",
+			"layer3": "thermalexpansion:items/blank"
 		},
 		"transform": "forge:default-item"
 	},
@@ -37,7 +39,7 @@
 			},
 			"1": {
 				"textures": {
-					"layer2": "thermalexpansion:items/satchel/satchel_flap"
+					"layer2": "thermalexpansion:items/satchel/color_1"
 				}
 			}
 		},
@@ -47,7 +49,7 @@
 			},
 			"1": {
 				"textures": {
-					"layer3": "thermalexpansion:items/satchel/satchel_body"
+					"layer3": "thermalexpansion:items/satchel/color_2"
 				}
 			}
 		},

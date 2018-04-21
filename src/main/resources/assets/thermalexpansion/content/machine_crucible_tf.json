@@ -19,7 +19,7 @@
 		"energy": 4000
 	}, {
 		"input": {
-			"constant": "oil_clathrate"
+			"ore": "clathrateOil"
 		},
 		"output": {
 			"fluid": "crude_oil",
@@ -28,7 +28,7 @@
 		"energy": 2000
 	}, {
 		"input": {
-			"constant": "redstone_clathrate"
+			"ore": "clathrateRedstone"
 		},
 		"output": {
 			"fluid": "redstone",
@@ -37,7 +37,7 @@
 		"energy": 2000
 	}, {
 		"input": {
-			"constant": "glowstone_clathrate"
+			"ore": "clathrateGlowstone"
 		},
 		"output": {
 			"fluid": "glowstone",
@@ -46,7 +46,7 @@
 		"energy": 2000
 	}, {
 		"input": {
-			"constant": "ender_clathrate"
+			"ore": "clathrateEnder"
 		},
 		"output": {
 			"fluid": "ender",
@@ -91,7 +91,7 @@
 		"energy": 8000
 	}, {
 		"input": {
-			"ore": "oreFluidCrudeOilSand"
+			"ore": "oreClathrateOilSand"
 		},
 		"output": {
 			"fluid": "crude_oil",
@@ -100,7 +100,7 @@
 		"energy": 4000
 	}, {
 		"input": {
-			"ore": "oreFluidCrudeOilShale"
+			"ore": "oreClathrateOilShale"
 		},
 		"output": {
 			"fluid": "crude_oil",
@@ -109,7 +109,7 @@
 		"energy": 4000
 	}, {
 		"input": {
-			"ore": "oreFluidRedstone"
+			"ore": "oreClathrateRedstone"
 		},
 		"output": {
 			"fluid": "redstone",
@@ -118,7 +118,7 @@
 		"energy": 4000
 	}, {
 		"input": {
-			"ore": "oreFluidGlowstone"
+			"ore": "oreClathrateGlowstone"
 		},
 		"output": {
 			"fluid": "glowstone",
@@ -127,7 +127,7 @@
 		"energy": 4000
 	}, {
 		"input": {
-			"ore": "oreFluidEnder"
+			"ore": "oreClathrateEnder"
 		},
 		"output": {
 			"fluid": "ender",

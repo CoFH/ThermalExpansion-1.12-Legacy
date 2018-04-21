@@ -1,0 +1,39 @@
+{
+	"pulverizer": [{
+		"input": {
+			"ore": "oreApatite"
+		},
+		"output": {
+			"ore": "gemApatite",
+			"count": 12
+		},
+		"output2": {
+			"ore": "dustSulfur",
+			"chance": 15
+		}
+	}, {
+		"input": {
+			"ore": "oreNiter"
+		},
+		"output": {
+			"ore": "dustNiter",
+			"count": 4
+		}
+	}, {
+		"input": {
+			"ore": "oreSaltpeter"
+		},
+		"output": {
+			"ore": "dustSaltpeter",
+			"count": 4
+		}
+	}, {
+		"input": {
+			"ore": "oreSulfur"
+		},
+		"output": {
+			"ore": "dustSulfur",
+			"count": 6
+		}
+	}]
+}

@@ -6,7 +6,6 @@ import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
-import cofh.thermalfoundation.block.BlockOreFluid;
 import cofh.thermalfoundation.init.TFEquipment;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
@@ -66,61 +65,6 @@ public class PulverizerManager {
 
 	public static void initialize() {
 
-		//		/* SPECIAL */
-		//		{
-		//			int energy = DEFAULT_ENERGY;
-		//
-		//			addRecipe(energy, new ItemStack(Blocks.STONE), new ItemStack(Blocks.GRAVEL), new ItemStack(Blocks.SAND), 15);
-		//			addRecipe(energy, new ItemStack(Blocks.COBBLESTONE), new ItemStack(Blocks.SAND), new ItemStack(Blocks.GRAVEL), 15);
-		//			addRecipe(energy, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), 15);
-		//			addRecipe(energy, new ItemStack(Blocks.NETHERRACK), new ItemStack(Blocks.GRAVEL), ItemMaterial.dustSulfur, 15);
-		//			addRecipe(energy, new ItemStack(Blocks.GLOWSTONE), new ItemStack(Items.GLOWSTONE_DUST, 4));
-		//			addRecipe(energy, new ItemStack(Blocks.MAGMA), new ItemStack(Items.MAGMA_CREAM, 4));
-		//
-		//			addRecipe(energy / 4, new ItemStack(Blocks.STONEBRICK), new ItemStack(Blocks.STONEBRICK, 1, 2));
-		//			addRecipe(energy * 3 / 2, new ItemStack(Blocks.OBSIDIAN), ItemHelper.cloneStack(ItemMaterial.dustObsidian, 4));
-		//
-		//			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
-		//				addRecipe(energy, new ItemStack(Blocks.CONCRETE, 1, i), new ItemStack(Blocks.CONCRETE_POWDER, 1, i));
-		//			}
-		//
-		//			energy = DEFAULT_ENERGY / 2;
-		//
-		//			addRecipe(energy, new ItemStack(Items.COAL, 1, 0), ItemMaterial.dustCoal, ItemMaterial.dustSulfur, 15);
-		//			addRecipe(energy, new ItemStack(Items.COAL, 1, 1), ItemMaterial.dustCharcoal);
-		//
-		//			addRecipe(energy, new ItemStack(Items.BLAZE_ROD), new ItemStack(Items.BLAZE_POWDER, 4), ItemMaterial.dustSulfur, 50);
-		//			addRecipe(energy, ItemMaterial.rodBlizz, ItemHelper.cloneStack(ItemMaterial.dustBlizz, 4), new ItemStack(Items.SNOWBALL), 50);
-		//			addRecipe(energy, ItemMaterial.rodBlitz, ItemHelper.cloneStack(ItemMaterial.dustBlitz, 4), ItemMaterial.dustNiter, 50);
-		//			addRecipe(energy, ItemMaterial.rodBasalz, ItemHelper.cloneStack(ItemMaterial.dustBasalz, 4), ItemMaterial.dustObsidian, 50);
-		//		}
-
-		//		/* PLANTS */
-		//		{
-		//			int energy = DEFAULT_ENERGY / 2;
-		//
-		//			addRecipe(energy, new ItemStack(Blocks.LOG), ItemHelper.cloneStack(ItemMaterial.dustWood, 8));
-		//			addRecipe(energy / 4, new ItemStack(Blocks.PLANKS), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-		//
-		//			addRecipe(energy, new ItemStack(Blocks.YELLOW_FLOWER), new ItemStack(Items.DYE, 4, 11));
-		//			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 0), new ItemStack(Items.DYE, 4, 1));
-		//			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 1), new ItemStack(Items.DYE, 4, 12));
-		//			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 2), new ItemStack(Items.DYE, 4, 13));
-		//			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 3), new ItemStack(Items.DYE, 4, 7));
-		//			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 4), new ItemStack(Items.DYE, 4, 1));
-		//			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 5), new ItemStack(Items.DYE, 4, 14));
-		//			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 6), new ItemStack(Items.DYE, 4, 7));
-		//			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 7), new ItemStack(Items.DYE, 4, 9));
-		//			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 8), new ItemStack(Items.DYE, 4, 7));
-		//
-		//			addRecipe(energy, new ItemStack(Blocks.DOUBLE_PLANT, 1, 0), new ItemStack(Items.DYE, 4, 11));
-		//			addRecipe(energy, new ItemStack(Blocks.DOUBLE_PLANT, 1, 1), new ItemStack(Items.DYE, 4, 13));
-		//			addRecipe(energy, new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), new ItemStack(Items.DYE, 4, 1));
-		//			addRecipe(energy, new ItemStack(Blocks.DOUBLE_PLANT, 1, 5), new ItemStack(Items.DYE, 4, 9));
-		//
-		//			addRecipe(energy, new ItemStack(Items.REEDS), new ItemStack(Items.SUGAR, 2));
-		//		}
-
 		/* DYES */
 		{
 			int energy = DEFAULT_ENERGY * 3 / 4;
@@ -144,62 +88,6 @@ public class PulverizerManager {
 				}
 			}
 			addRecipe(energy, new ItemStack(Items.BONE), new ItemStack(Items.DYE, 6, 15));
-		}
-
-		/* ORES */
-		{
-			int energy = DEFAULT_ENERGY;
-
-			addRecipe(energy, new ItemStack(Blocks.COAL_ORE), new ItemStack(Items.COAL, 3, 0), ItemMaterial.dustCoal, 25);
-			addRecipe(energy, new ItemStack(Blocks.DIAMOND_ORE), new ItemStack(Items.DIAMOND, 2, 0));
-			addRecipe(energy, new ItemStack(Blocks.EMERALD_ORE), new ItemStack(Items.EMERALD, 2, 0));
-			addRecipe(energy, new ItemStack(Blocks.LAPIS_ORE), new ItemStack(Items.DYE, 8, 4), ItemMaterial.dustSulfur, 20);
-			addRecipe(energy, new ItemStack(Blocks.REDSTONE_ORE), new ItemStack(Items.REDSTONE, 6), ItemMaterial.crystalCinnabar, 25);
-			addRecipe(energy, new ItemStack(Blocks.QUARTZ_ORE), new ItemStack(Items.QUARTZ, 3), ItemMaterial.dustSulfur, 15);
-
-			addOreToDustRecipe(energy, "oreIron", ItemMaterial.dustIron, ItemMaterial.dustNickel, 10);
-			addOreToDustRecipe(energy, "oreGold", ItemMaterial.dustGold, ItemMaterial.crystalCinnabar, 5);
-
-			addOreToDustRecipe(energy, "oreCopper", ItemMaterial.dustCopper, ItemMaterial.dustGold, 10);
-			addOreToDustRecipe(energy, "oreTin", ItemMaterial.dustTin, ItemMaterial.dustIron, 10);
-			addOreToDustRecipe(energy, "oreSilver", ItemMaterial.dustSilver, ItemMaterial.dustLead, 10);
-			addOreToDustRecipe(energy, "oreAluminum", ItemMaterial.dustAluminum, ItemMaterial.dustIron, 10);
-			addOreToDustRecipe(energy, "oreLead", ItemMaterial.dustLead, ItemMaterial.dustSilver, 10);
-			addOreToDustRecipe(energy, "oreNickel", ItemMaterial.dustNickel, ItemMaterial.dustPlatinum, 10);
-			addOreToDustRecipe(energy, "orePlatinum", ItemMaterial.dustPlatinum, ItemMaterial.dustIridium, 5);
-			addOreToDustRecipe(energy, "oreIridium", ItemMaterial.dustIridium, ItemMaterial.dustPlatinum, 10);
-			addOreToDustRecipe(energy, "oreMithril", ItemMaterial.dustMithril, ItemMaterial.dustGold, 10);
-
-			addRecipe(energy, BlockOreFluid.oreFluidCrudeOilSand, ItemHelper.cloneStack(ItemMaterial.crystalCrudeOil, 3), ItemMaterial.globTar, 50);
-			addRecipe(energy, BlockOreFluid.oreFluidCrudeOilGravel, ItemHelper.cloneStack(ItemMaterial.crystalCrudeOil, 3), new ItemStack(Items.FLINT), 50);
-			addRecipe(energy, BlockOreFluid.oreFluidRedstone, ItemHelper.cloneStack(ItemMaterial.crystalRedstone, 3), ItemMaterial.crystalCinnabar, 50);
-			addRecipe(energy, BlockOreFluid.oreFluidGlowstone, ItemHelper.cloneStack(ItemMaterial.crystalGlowstone, 3), ItemMaterial.dustSulfur, 30);
-			addRecipe(energy, BlockOreFluid.oreFluidEnder, ItemHelper.cloneStack(ItemMaterial.crystalEnder, 3));
-		}
-
-		/* DUSTS */
-		{
-			int energy = DEFAULT_ENERGY / 2;
-
-			addIngotToDustRecipe(energy, "ingotIron", ItemMaterial.dustIron);
-			addIngotToDustRecipe(energy, "ingotGold", ItemMaterial.dustGold);
-			addIngotToDustRecipe(energy, "ingotCopper", ItemMaterial.dustCopper);
-			addIngotToDustRecipe(energy, "ingotTin", ItemMaterial.dustTin);
-			addIngotToDustRecipe(energy, "ingotSilver", ItemMaterial.dustSilver);
-			addIngotToDustRecipe(energy, "ingotLead", ItemMaterial.dustLead);
-			addIngotToDustRecipe(energy, "ingotAluminum", ItemMaterial.dustAluminum);
-			addIngotToDustRecipe(energy, "ingotNickel", ItemMaterial.dustNickel);
-			addIngotToDustRecipe(energy, "ingotPlatinum", ItemMaterial.dustPlatinum);
-			addIngotToDustRecipe(energy, "ingotIridium", ItemMaterial.dustIridium);
-			addIngotToDustRecipe(energy, "ingotMithril", ItemMaterial.dustMithril);
-
-			addIngotToDustRecipe(energy, "ingotSteel", ItemMaterial.dustSteel);
-			addIngotToDustRecipe(energy, "ingotElectrum", ItemMaterial.dustElectrum);
-			addIngotToDustRecipe(energy, "ingotInvar", ItemMaterial.dustInvar);
-			addIngotToDustRecipe(energy, "ingotBronze", ItemMaterial.dustBronze);
-			addIngotToDustRecipe(energy, "ingotSignalum", ItemMaterial.dustSignalum);
-			addIngotToDustRecipe(energy, "ingotLumium", ItemMaterial.dustLumium);
-			addIngotToDustRecipe(energy, "ingotEnderium", ItemMaterial.dustEnderium);
 		}
 
 		/* RECYCLING */
@@ -289,13 +177,6 @@ public class PulverizerManager {
 			}
 		}
 
-		/* FORESTRY */
-		{
-			if (ItemHelper.oreNameExists("oreApatite") && ItemHelper.oreNameExists("gemApatite")) {
-				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreApatite", false).get(0), ItemHelper.cloneStack(OreDictionary.getOres("gemApatite", false).get(0), 12), ItemMaterial.dustSulfur, 10);
-			}
-		}
-
 		/* TERRAQUEOUS */
 		{
 			if (ItemHelper.oreNameExists("oreEndimium") && ItemHelper.oreNameExists("dustEndimium") && ItemHelper.oreNameExists("dustTinyEndimium")) {
@@ -309,19 +190,6 @@ public class PulverizerManager {
 					addIngotToDustRecipe(DEFAULT_ENERGY, "gemBurnium", OreDictionary.getOres("dustBurnium", false).get(0));
 				}
 				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreBurnium", false).get(0), ItemHelper.cloneStack(OreDictionary.getOres("dustBurnium", false).get(0), 4), ItemHelper.cloneStack(OreDictionary.getOres("dustTinyBurnium", false).get(0), 3), 40);
-			}
-		}
-
-		/* SPECIFIC INTERACTIONS */
-		{
-			if (ItemHelper.oreNameExists("oreNiter")) {
-				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreNiter", false).get(0), ItemHelper.cloneStack(ItemMaterial.dustNiter, 4));
-			}
-			if (ItemHelper.oreNameExists("oreSaltpeter")) {
-				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreSaltpeter", false).get(0), ItemHelper.cloneStack(ItemMaterial.dustNiter, 4));
-			}
-			if (ItemHelper.oreNameExists("oreSulfur")) {
-				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreSulfur", false).get(0), ItemHelper.cloneStack(ItemMaterial.dustSulfur, 6));
 			}
 		}
 
