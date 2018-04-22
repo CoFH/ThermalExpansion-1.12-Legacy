@@ -85,6 +85,11 @@ public class SawmillRecipeCategoryTapper extends SawmillRecipeCategory {
 
 		guiFluidStacks.init(0, true, 141, 1, 16, 60, Fluid.BUCKET_VOLUME, false, null);
 		guiFluidStacks.set(0, outputFluids.get(0));
+
+		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+			tooltip.add(StringHelper.ORANGE + StringHelper.localize("info.cofh.output"));
+		});
 	}
 
 }

@@ -14,22 +14,22 @@
 		"access": {
 			"public": {
 				"textures": {
-					"layer1": "thermalexpansion:items/satchel/access_public"
+					"layer1": "thermalexpansion:items/satchel/satchel_access_public"
 				}
 			},
 			"friends": {
 				"textures": {
-					"layer1": "thermalexpansion:items/satchel/access_friends"
+					"layer1": "thermalexpansion:items/satchel/satchel_access_friends"
 				}
 			},
 			"team": {
 				"textures": {
-					"layer1": "thermalexpansion:items/satchel/access_team"
+					"layer1": "thermalexpansion:items/satchel/satchel_access_team"
 				}
 			},
 			"private": {
 				"textures": {
-					"layer1": "thermalexpansion:items/satchel/access_private"
+					"layer1": "thermalexpansion:items/satchel/satchel_access_private"
 				}
 			}
 		},
@@ -39,7 +39,7 @@
 			},
 			"1": {
 				"textures": {
-					"layer2": "thermalexpansion:items/satchel/color_1"
+					"layer2": "thermalexpansion:items/satchel/satchel_color_1"
 				}
 			}
 		},
@@ -49,7 +49,7 @@
 			},
 			"1": {
 				"textures": {
-					"layer3": "thermalexpansion:items/satchel/color_2"
+					"layer3": "thermalexpansion:items/satchel/satchel_color_2"
 				}
 			}
 		},

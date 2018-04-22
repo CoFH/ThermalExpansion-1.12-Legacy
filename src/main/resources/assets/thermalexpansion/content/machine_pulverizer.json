@@ -33,6 +33,16 @@
 		}
 	}, {
 		"input": {
+			"item": "minecraft:bone"
+		},
+		"output": {
+			"item": "minecraft:dye",
+			"data": 15,
+			"count": 6
+		},
+		"energy_mod": 75
+	}, {
+		"input": {
 			"item": "minecraft:glowstone"
 		},
 		"output": {
@@ -116,54 +126,6 @@
 			"count": 8
 		},
 		"energy_mod": 50
-	}, {
-		"input": {
-			"ore": "oreCoal"
-		},
-		"output": {
-			"item": "minecraft:coal",
-			"count": 3
-		},
-		"output2": {
-			"ore": "dustCoal",
-			"chance": 25
-		}
-	}, {
-		"input": {
-			"ore": "oreLapis"
-		},
-		"output": {
-			"ore": "gemLapis",
-			"count": 8
-		},
-		"output2": {
-			"ore": "dustSulfur",
-			"chance": 20
-		}
-	}, {
-		"input": {
-			"ore": "oreQuartz"
-		},
-		"output": {
-			"ore": "gemQuartz",
-			"count": 3
-		},
-		"output2": {
-			"ore": "dustSulfur",
-			"chance": 15
-		}
-	}, {
-		"input": {
-			"ore": "oreRedstone"
-		},
-		"output": {
-			"ore": "dustRedstone",
-			"count": 6
-		},
-		"output2": {
-			"ore": "crystalCinnabar",
-			"chance": 25
-		}
 	}, {
 		"input": {
 			"ore": "plankWood"

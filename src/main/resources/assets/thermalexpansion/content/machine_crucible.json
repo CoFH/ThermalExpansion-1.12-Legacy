@@ -46,7 +46,7 @@
 		"energy": 72000
 	}, {
 		"input": {
-			"ore": "dustGlowStone"
+			"ore": "dustGlowstone"
 		},
 		"output": {
 			"fluid": "glowstone",

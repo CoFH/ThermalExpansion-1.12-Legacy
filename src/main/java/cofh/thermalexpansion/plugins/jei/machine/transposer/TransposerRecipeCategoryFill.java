@@ -109,10 +109,10 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 		guiItemStacks.set(1, outputs.get(0));
 		guiFluidStacks.set(0, fluids.get(0));
 
-		guiFluidStacks.addTooltipCallback((i, b, fluidStack, list) -> {
+		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
 
-			if (FluidHelper.isPotionFluid(fluidStack)) {
-				FluidHelper.addPotionTooltip(fluidStack, list);
+			if (FluidHelper.isPotionFluid(ingredient)) {
+				FluidHelper.addPotionTooltip(ingredient, tooltip);
 			}
 		});
 	}

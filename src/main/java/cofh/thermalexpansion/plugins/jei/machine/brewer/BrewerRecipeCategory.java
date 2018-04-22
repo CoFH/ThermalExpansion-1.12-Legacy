@@ -119,10 +119,10 @@ public class BrewerRecipeCategory extends BaseRecipeCategory<BrewerRecipeWrapper
 		guiFluidStacks.set(0, inputFluids.get(0));
 		guiFluidStacks.set(1, outputFluids.get(0));
 
-		guiFluidStacks.addTooltipCallback((i, b, fluidStack, list) -> {
+		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
 
-			if (FluidHelper.isPotionFluid(fluidStack)) {
-				FluidHelper.addPotionTooltip(fluidStack, list);
+			if (FluidHelper.isPotionFluid(ingredient)) {
+				FluidHelper.addPotionTooltip(ingredient, tooltip);
 			}
 		});
 	}

@@ -156,6 +156,11 @@ public class EnchanterRecipeCategory extends BaseRecipeCategory<EnchanterRecipeW
 		guiItemStacks.set(2, outputs.get(0));
 
 		guiFluidStacks.set(0, inputFluids.get(0));
+
+		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+			tooltip.add(StringHelper.LIGHT_BLUE + StringHelper.localize("info.cofh.input"));
+		});
 	}
 
 }

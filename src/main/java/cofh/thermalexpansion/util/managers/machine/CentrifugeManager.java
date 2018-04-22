@@ -9,6 +9,7 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.init.TEItems;
 import cofh.thermalexpansion.item.ItemMorb;
 import cofh.thermalfoundation.init.TFFluids;
+import cofh.thermalfoundation.init.TFItems;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Blocks;
@@ -109,36 +110,16 @@ public class CentrifugeManager {
 
 		/* CONCRETE POWDER */
 		{
-			int[] dyeChance = new int[ColorHelper.WOOL_COLOR_CONFIG.length];
-			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
-				dyeChance[i] = 10;
-			}
-			dyeChance[EnumDyeColor.WHITE.getMetadata()] = 0;
-			dyeChance[EnumDyeColor.BROWN.getMetadata()] = 0;
-			dyeChance[EnumDyeColor.BLUE.getMetadata()] = 0;
-			dyeChance[EnumDyeColor.BLACK.getMetadata()] = 0;
-
 			ItemStack gravel = new ItemStack(Blocks.GRAVEL);
 			ItemStack sand = new ItemStack(Blocks.SAND);
 
 			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
-				if (dyeChance[i] > 0) {
-					addRecipe(energy, new ItemStack(Blocks.CONCRETE_POWDER, 2, i), asList(gravel, sand, new ItemStack(Items.DYE, 1, 15 - i)), asList(100, 100, dyeChance[i]), null);
-				} else {
-					addRecipe(energy, new ItemStack(Blocks.CONCRETE_POWDER, 2, i), asList(gravel, sand), null);
-				}
+				addRecipe(energy, new ItemStack(Blocks.CONCRETE_POWDER, 2, i), asList(gravel, sand, new ItemStack(TFItems.itemDye, 1, 15 - i)), asList(100, 100, 10), null);
 			}
 		}
 
 		/* MOBS */
 		loadMobs();
-
-		/* LOAD RECIPES */
-		loadRecipes();
-	}
-
-	public static void loadRecipes() {
-
 	}
 
 	public static void loadMobs() {

@@ -85,6 +85,11 @@ public class SmelterRecipeCategoryPyrotheum extends SmelterRecipeCategory {
 
 		guiFluidStacks.init(0, true, 141, 1, 16, 60, Fluid.BUCKET_VOLUME, false, null);
 		guiFluidStacks.set(0, inputFluids.get(0));
+
+		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+			tooltip.add(StringHelper.LIGHT_BLUE + StringHelper.localize("info.cofh.input"));
+		});
 	}
 
 }

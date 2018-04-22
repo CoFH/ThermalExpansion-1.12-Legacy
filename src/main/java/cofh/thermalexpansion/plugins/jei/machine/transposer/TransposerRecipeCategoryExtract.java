@@ -120,10 +120,10 @@ public class TransposerRecipeCategoryExtract extends TransposerRecipeCategory {
 			}
 		});
 
-		guiFluidStacks.addTooltipCallback((i, b, fluidStack, list) -> {
+		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
 
-			if (FluidHelper.isPotionFluid(fluidStack)) {
-				FluidHelper.addPotionTooltip(fluidStack, list);
+			if (FluidHelper.isPotionFluid(ingredient)) {
+				FluidHelper.addPotionTooltip(ingredient, tooltip);
 			}
 		});
 	}

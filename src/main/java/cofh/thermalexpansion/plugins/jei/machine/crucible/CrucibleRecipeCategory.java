@@ -116,10 +116,10 @@ public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWra
 		guiItemStacks.set(0, inputs.get(0));
 		guiFluidStacks.set(0, outputs.get(0));
 
-		guiFluidStacks.addTooltipCallback((i, b, fluidStack, list) -> {
+		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
 
-			if (FluidHelper.isPotionFluid(fluidStack)) {
-				FluidHelper.addPotionTooltip(fluidStack, list);
+			if (FluidHelper.isPotionFluid(ingredient)) {
+				FluidHelper.addPotionTooltip(ingredient, tooltip);
 			}
 		});
 	}

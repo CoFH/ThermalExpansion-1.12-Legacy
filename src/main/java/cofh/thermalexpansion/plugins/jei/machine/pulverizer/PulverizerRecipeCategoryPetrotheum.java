@@ -14,6 +14,7 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.ITooltipCallback;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.Fluid;
@@ -85,6 +86,11 @@ public class PulverizerRecipeCategoryPetrotheum extends PulverizerRecipeCategory
 
 		guiFluidStacks.init(0, true, 141, 1, 16, 60, Fluid.BUCKET_VOLUME, false, null);
 		guiFluidStacks.set(0, inputFluids.get(0));
+
+		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+			tooltip.add(StringHelper.LIGHT_BLUE + StringHelper.localize("info.cofh.input"));
+		});
 	}
 
 }

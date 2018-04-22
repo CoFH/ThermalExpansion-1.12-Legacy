@@ -3,7 +3,6 @@ package cofh.thermalexpansion.util.managers.machine;
 import cofh.core.inventory.ComparableItemStack;
 import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.core.inventory.OreValidator;
-import cofh.core.util.helpers.ColorHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalfoundation.init.TFEquipment;
@@ -11,7 +10,6 @@ import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -64,31 +62,6 @@ public class PulverizerManager {
 	}
 
 	public static void initialize() {
-
-		/* DYES */
-		{
-			int energy = DEFAULT_ENERGY * 3 / 4;
-
-			int[] dyeChance = new int[ColorHelper.WOOL_COLOR_CONFIG.length];
-			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
-				dyeChance[i] = 15;
-			}
-			dyeChance[EnumDyeColor.WHITE.getMetadata()] = 0;
-			dyeChance[EnumDyeColor.BROWN.getMetadata()] = 0;
-			dyeChance[EnumDyeColor.BLUE.getMetadata()] = 0;
-			dyeChance[EnumDyeColor.BLACK.getMetadata()] = 0;
-
-			ItemStack stringStack = ItemHelper.cloneStack(Items.STRING, 4);
-
-			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
-				if (dyeChance[i] > 0) {
-					addRecipe(energy, new ItemStack(Blocks.WOOL, 1, i), stringStack, new ItemStack(Items.DYE, 1, 15 - i), dyeChance[i]);
-				} else {
-					addRecipe(energy, new ItemStack(Blocks.WOOL, 1, i), stringStack);
-				}
-			}
-			addRecipe(energy, new ItemStack(Items.BONE), new ItemStack(Items.DYE, 6, 15));
-		}
 
 		/* RECYCLING */
 		{

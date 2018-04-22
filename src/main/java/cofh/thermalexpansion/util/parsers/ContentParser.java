@@ -4,20 +4,33 @@ import cofh.core.init.CoreProps;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.parsers.dynamo.*;
 import cofh.thermalexpansion.util.parsers.machine.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import gnu.trove.map.hash.THashMap;
+import net.minecraft.util.JsonUtils;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.JsonContext;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.ModContainer;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map.Entry;
+import java.util.function.BiFunction;
 
 public class ContentParser {
 
+	private static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	private static File contentFolder;
 	private static THashMap<String, IContentParser> contentParsers = new THashMap<>();
 
@@ -69,36 +82,38 @@ public class ContentParser {
 
 	public static void parseFiles() {
 
-		JsonParser parser = new JsonParser();
+		ModContainer mod = FMLCommonHandler.instance().findContainerFor(ThermalExpansion.MOD_ID);
 
-		ArrayList<File> contentFileList = new ArrayList<>();
-		addFiles(contentFileList, contentFolder);
+		JsonContext ctx = new JsonContext(mod.getModId());
+		CraftingHelper.findFiles(mod, "assets/" + ThermalExpansion.MOD_ID + "/content/", null, new BiFunction<Path, Path, Boolean>() {
 
-		for (int i = 0; i < contentFileList.size(); ++i) {
-			File contentFile = contentFileList.get(i);
-			if (contentFile.isDirectory()) {
-				addFiles(contentFileList, contentFile);
-				continue;
-			}
-			JsonObject contentList;
-			try {
-				contentList = (JsonObject) parser.parse(new FileReader(contentFile));
-			} catch (Throwable t) {
-				ThermalExpansion.LOG.error("Critical error reading from a content file: " + contentFile + " > Please be sure the file is correct!", t);
-				continue;
-			}
-			ThermalExpansion.LOG.info("Reading content from: " + contentFile + "...");
-			for (Entry<String, JsonElement> contentEntry : contentList.entrySet()) {
-				if (parseEntry(contentEntry.getKey(), contentEntry.getValue())) {
-					ThermalExpansion.LOG.debug("Content entry added: \"" + contentEntry.getKey() + "\"");
-				} else {
-					ThermalExpansion.LOG.error("Error parsing entry: \"" + contentEntry.getKey() + "\" > Please make sure the entry is a valid JSON Array.");
+			@Override
+			public Boolean apply(Path root, Path file) {
+
+				String relative = root.relativize(file).toString();
+				if (!"json".equals(FilenameUtils.getExtension(file.toString())) || relative.startsWith("_")) {
+					return true;
 				}
+				BufferedReader reader = null;
+				try {
+					reader = Files.newBufferedReader(file);
+					JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
+
+					for (Entry<String, JsonElement> contentEntry : json.entrySet()) {
+						if (parseEntry(contentEntry.getKey(), contentEntry.getValue())) {
+							ThermalExpansion.LOG.debug("Content entry added from file " + relative + ": \"" + contentEntry.getKey() + "\"");
+						} else {
+							ThermalExpansion.LOG.error("Error parsing entry from file " + relative + ": \"" + contentEntry.getKey() + "\" > Please make sure the entry is a valid JSON Array.");
+						}
+					}
+				} catch (IOException e) {
+					ThermalExpansion.LOG.error("Error parsing content file " + relative + "!", e);
+				} finally {
+					IOUtils.closeQuietly(reader);
+				}
+				return true;
 			}
-			//			for (IContentParser contentParser : contentParsers.values()) {
-			//				// TODO: Recipe diagnostics.
-			//			}
-		}
+		}, false, false);
 	}
 
 	private static boolean parseEntry(String type, JsonElement content) {

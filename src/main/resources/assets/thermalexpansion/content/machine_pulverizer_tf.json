@@ -1,30 +1,6 @@
 {
 	"pulverizer": [{
 		"input": {
-			"ore": "oreIron"
-		},
-		"output": {
-			"ore": "dustIron",
-			"count": 2
-		},
-		"output2": {
-			"ore": "dustNickel",
-			"chance": 10
-		}
-	}, {
-		"input": {
-			"ore": "oreGold"
-		},
-		"output": {
-			"ore": "dustGold",
-			"count": 2
-		},
-		"output2": {
-			"constant": "cinnabar",
-			"chance": 10
-		}
-	}, {
-		"input": {
 			"ore": "oreCopper"
 		},
 		"output": {
@@ -61,18 +37,6 @@
 		}
 	}, {
 		"input": {
-			"ore": "oreAluminum"
-		},
-		"output": {
-			"ore": "dustAluminum",
-			"count": 2
-		},
-		"output2": {
-			"ore": "dustIron",
-			"chance": 10
-		}
-	}, {
-		"input": {
 			"ore": "oreLead"
 		},
 		"output": {
@@ -81,6 +45,18 @@
 		},
 		"output2": {
 			"ore": "dustSilver",
+			"chance": 10
+		}
+	}, {
+		"input": {
+			"ore": "oreAluminum"
+		},
+		"output": {
+			"ore": "dustAluminum",
+			"count": 2
+		},
+		"output2": {
+			"ore": "dustIron",
 			"chance": 10
 		}
 	}, {
