@@ -154,9 +154,10 @@ public abstract class BlockTEBase extends BlockCoreTile {
 	}
 
 	@Override
+    @SideOnly (Side.CLIENT)
 	public boolean addRunningEffects(IBlockState state, World world, BlockPos pos, Entity entity) {
 
-		return false;
+		return CustomParticleHandler.handleRunningEffects(world, pos, state, entity);
 	}
 
 	@Override
