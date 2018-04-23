@@ -106,7 +106,7 @@ public class FurnaceManager {
 			/* DUST */
 			if (ItemHelper.isDust(key) && ItemHelper.isIngot(output)) {
 				addRecipe(energy * 3 / 4, key, output);
-			/* STANDARD */
+				/* STANDARD */
 			} else {
 				if (ItemHelper.getItemDamage(key) == OreDictionary.WILDCARD_VALUE) {
 					ItemStack testKey = ItemHelper.cloneStack(key);

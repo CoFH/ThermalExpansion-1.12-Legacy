@@ -413,21 +413,6 @@ public class SmelterManager {
 		}
 	}
 
-	public static void addAlloyRecipe(int energy, String primaryOreName, int primaryAmount, String secondaryOreName, int secondaryAmount, ItemStack primaryOutput) {
-
-		List<ItemStack> primaryOreList = OreDictionary.getOres(primaryOreName, false);
-		List<ItemStack> secondaryOreList = OreDictionary.getOres(secondaryOreName, false);
-
-		if (primaryOreList.size() > 0 && secondaryOreList.size() > 0) {
-			addAlloyRecipe(energy, ItemHelper.cloneStack(primaryOreList.get(0), primaryAmount), ItemHelper.cloneStack(secondaryOreList.get(0), secondaryAmount), primaryOutput);
-		}
-	}
-
-	public static void addAlloyRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
-
-		addRecipe(energy, primaryInput, secondaryInput, primaryOutput, ItemStack.EMPTY, 0);
-	}
-
 	public static void addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
 
 		addRecycleRecipe(energy, input, output, outputSize, true);
