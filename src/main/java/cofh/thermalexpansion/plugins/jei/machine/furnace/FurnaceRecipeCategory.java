@@ -62,7 +62,7 @@ public class FurnaceRecipeCategory extends BaseRecipeCategory<FurnaceRecipeWrapp
 
 		List<FurnaceRecipeWrapper> recipes = new ArrayList<>();
 
-		for (FurnaceRecipe recipe : FurnaceManager.getRecipeList()) {
+		for (FurnaceRecipe recipe : FurnaceManager.getRecipeList(false)) {
 			recipes.add(new FurnaceRecipeWrapper(guiHelper, recipe));
 		}
 		return recipes;

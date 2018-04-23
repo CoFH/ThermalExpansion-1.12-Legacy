@@ -43,6 +43,7 @@ public class TransposerManager {
 
 	static {
 		oreValidator.addPrefix(ComparableItemStack.GEM);
+		oreValidator.addPrefix("log");
 		oreValidator.addPrefix("seed");
 		oreValidator.addPrefix("crop");
 	}

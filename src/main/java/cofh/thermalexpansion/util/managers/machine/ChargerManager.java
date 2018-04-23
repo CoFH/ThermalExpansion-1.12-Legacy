@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.inventory.ComparableItemStackValidated;
-import cofh.core.util.helpers.ItemHelper;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -73,19 +72,6 @@ public class ChargerManager {
 	public static ChargerRecipe removeRecipe(ItemStack input) {
 
 		return recipeMap.remove(new ComparableItemStackValidated(input));
-	}
-
-	/* HELPERS */
-	private static void addOreDictRecipe(String oreName, ItemStack output) {
-
-		addOreDictRecipe(DEFAULT_ENERGY, oreName, output);
-	}
-
-	private static void addOreDictRecipe(int energy, String oreName, ItemStack output) {
-
-		if (ItemHelper.oreNameExists(oreName) && !recipeExists(OreDictionary.getOres(oreName, false).get(0))) {
-			addRecipe(energy, ItemHelper.cloneStack(OreDictionary.getOres(oreName, false).get(0), 1), output);
-		}
 	}
 
 	/* RECIPE CLASS */

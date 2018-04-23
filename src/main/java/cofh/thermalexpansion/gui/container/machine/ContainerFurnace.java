@@ -35,10 +35,7 @@ public class ContainerFurnace extends ContainerTEBase implements ISlotValidator 
 		if (myTile.augmentOre() && !ItemHelper.isOre(stack)) {
 			return false;
 		}
-		if (myTile.augmentPyrolysis()) {
-			return FurnaceManager.recipeExistsPyrolysis(stack);
-		}
-		return FurnaceManager.recipeExists(stack);
+		return FurnaceManager.recipeExists(stack, myTile.augmentPyrolysis());
 	}
 
 }

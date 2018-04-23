@@ -70,12 +70,6 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 		String comment = "If TRUE, the Decoctive Diffuser will display potion effect particles.";
 		enableParticles = ThermalExpansion.CONFIG_CLIENT.get(category, "EnableParticles", enableParticles, comment);
 
-		// TODO: Remove in 5.3.13
-		if (ThermalExpansion.CONFIG.getConfigVersion().equals("5.3.11")) {
-			ThermalExpansion.CONFIG.removeProperty(category, "PotionRadius");
-			ThermalExpansion.CONFIG.removeProperty(category, "SplashPotionRadius");
-			ThermalExpansion.CONFIG.removeProperty(category, "LingeringPotionRadius");
-		}
 		comment = "Adjust this value to change the area effect radius when Potion fluid is used in a Decoctive Diffuser.";
 		radiusPotion = ThermalExpansion.CONFIG.getConfiguration().getInt("PotionRadius", category, radiusPotion, 2, 16, comment);
 

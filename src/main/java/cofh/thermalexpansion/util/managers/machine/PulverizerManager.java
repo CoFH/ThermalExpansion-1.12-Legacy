@@ -125,47 +125,6 @@ public class PulverizerManager {
 			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShield, diamond, 6);
 		}
 
-		/* LOAD RECIPES */
-		loadRecipes();
-	}
-
-	public static void loadRecipes() {
-
-		/* APPLIED ENERGISTICS 2 */
-		{
-			int energy = DEFAULT_ENERGY * 3 / 4;
-
-			if (ItemHelper.oreNameExists("oreCertusQuartz") && ItemHelper.oreNameExists("dustCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartz")) {
-				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreCertusQuartz", false).get(0), ItemHelper.cloneStack(OreDictionary.getOres("crystalCertusQuartz", false).get(0), 2), OreDictionary.getOres("dustCertusQuartz", false).get(0), 10);
-				addRecipe(energy, OreDictionary.getOres("crystalCertusQuartz", false).get(0), OreDictionary.getOres("dustCertusQuartz", false).get(0));
-			}
-			if (ItemHelper.oreNameExists("dustEnderPearl")) {
-				addRecipe(energy, new ItemStack(Items.ENDER_PEARL), ItemHelper.cloneStack(OreDictionary.getOres("dustEnderPearl", false).get(0), 1));
-			}
-			if (ItemHelper.oreNameExists("dustFluix") && ItemHelper.oreNameExists("crystalFluix")) {
-				addRecipe(energy, OreDictionary.getOres("crystalFluix", false).get(0), OreDictionary.getOres("dustFluix", false).get(0));
-			}
-			if (ItemHelper.oreNameExists("dustNetherQuartz")) {
-				addRecipe(energy, new ItemStack(Items.QUARTZ), ItemHelper.cloneStack(OreDictionary.getOres("dustNetherQuartz", false).get(0), 1));
-			}
-		}
-
-		/* TERRAQUEOUS */
-		{
-			if (ItemHelper.oreNameExists("oreEndimium") && ItemHelper.oreNameExists("dustEndimium") && ItemHelper.oreNameExists("dustTinyEndimium")) {
-				if (ItemHelper.oreNameExists("gemEndimium")) {
-					addIngotToDustRecipe(DEFAULT_ENERGY, "gemEndimium", OreDictionary.getOres("dustEndimium", false).get(0));
-				}
-				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreEndimium", false).get(0), ItemHelper.cloneStack(OreDictionary.getOres("dustEndimium", false).get(0), 4), ItemHelper.cloneStack(OreDictionary.getOres("dustTinyEndimium", false).get(0), 3), 40);
-			}
-			if (ItemHelper.oreNameExists("oreBurnium") && ItemHelper.oreNameExists("dustBurnium") && ItemHelper.oreNameExists("dustTinyBurnium")) {
-				if (ItemHelper.oreNameExists("gemBurnium")) {
-					addIngotToDustRecipe(DEFAULT_ENERGY, "gemBurnium", OreDictionary.getOres("dustBurnium", false).get(0));
-				}
-				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreBurnium", false).get(0), ItemHelper.cloneStack(OreDictionary.getOres("dustBurnium", false).get(0), 4), ItemHelper.cloneStack(OreDictionary.getOres("dustTinyBurnium", false).get(0), 3), 40);
-			}
-		}
-
 		/* GENERAL SCAN */
 		{
 			String[] oreNames = OreDictionary.getOreNames();

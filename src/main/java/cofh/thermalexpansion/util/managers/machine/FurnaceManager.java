@@ -31,15 +31,23 @@ public class FurnaceManager {
 
 	public static final int DEFAULT_ENERGY = 2000;
 
-	public static FurnaceRecipe getRecipe(ItemStack input) {
+	public static FurnaceRecipe getRecipe(ItemStack input, boolean pyrolysis) {
 
 		if (input.isEmpty()) {
 			return null;
 		}
 		ComparableItemStackValidated query = convertInput(input);
+		FurnaceRecipe recipe;
 
-		FurnaceRecipe recipe = recipeMap.get(query);
-
+		if (pyrolysis) {
+			recipe = recipeMapPyrolysis.get(query);
+			if (recipe == null) {
+				query.metadata = OreDictionary.WILDCARD_VALUE;
+				recipe = recipeMapPyrolysis.get(query);
+			}
+			return recipe;
+		}
+		recipe = recipeMap.get(query);
 		if (recipe == null) {
 			query.metadata = OreDictionary.WILDCARD_VALUE;
 			recipe = recipeMap.get(query);
@@ -47,40 +55,17 @@ public class FurnaceManager {
 		return recipe;
 	}
 
-	public static FurnaceRecipe getRecipePyrolysis(ItemStack input) {
+	public static boolean recipeExists(ItemStack input, boolean pyrolysis) {
 
-		if (input.isEmpty()) {
-			return null;
+		return getRecipe(input, pyrolysis) != null;
+	}
+
+	public static FurnaceRecipe[] getRecipeList(boolean pyrolysis) {
+
+		if (pyrolysis) {
+			return recipeMapPyrolysis.values().toArray(new FurnaceRecipe[recipeMapPyrolysis.size()]);
 		}
-		ComparableItemStackValidated query = convertInput(input);
-
-		FurnaceRecipe recipe = recipeMapPyrolysis.get(query);
-
-		if (recipe == null) {
-			query.metadata = OreDictionary.WILDCARD_VALUE;
-			recipe = recipeMapPyrolysis.get(query);
-		}
-		return recipe;
-	}
-
-	public static boolean recipeExists(ItemStack input) {
-
-		return getRecipe(input) != null;
-	}
-
-	public static boolean recipeExistsPyrolysis(ItemStack input) {
-
-		return getRecipePyrolysis(input) != null;
-	}
-
-	public static FurnaceRecipe[] getRecipeList() {
-
 		return recipeMap.values().toArray(new FurnaceRecipe[recipeMap.size()]);
-	}
-
-	public static FurnaceRecipe[] getRecipeListPyrolysis() {
-
-		return recipeMapPyrolysis.values().toArray(new FurnaceRecipe[recipeMapPyrolysis.size()]);
 	}
 
 	public static boolean isFood(ItemStack input) {
@@ -103,7 +88,7 @@ public class FurnaceManager {
 		ItemStack output;
 
 		for (ItemStack key : smeltingList.keySet()) {
-			if (key.isEmpty() || recipeExists(key)) {
+			if (key.isEmpty() || recipeExists(key, false)) {
 				continue;
 			}
 			output = smeltingList.get(key);
@@ -169,7 +154,7 @@ public class FurnaceManager {
 	/* ADD RECIPES */
 	public static FurnaceRecipe addRecipe(int energy, ItemStack input, ItemStack output) {
 
-		if (input.isEmpty() || output.isEmpty() || energy <= 0 || recipeExists(input)) {
+		if (input.isEmpty() || output.isEmpty() || energy <= 0 || recipeExists(input, false)) {
 			return null;
 		}
 		FurnaceRecipe recipe = new FurnaceRecipe(input, output, energy);
@@ -179,7 +164,7 @@ public class FurnaceManager {
 
 	public static FurnaceRecipe addRecipePyrolysis(int energy, ItemStack input, ItemStack output, int creosote) {
 
-		if (input.isEmpty() || output.isEmpty() || energy <= 0 || recipeExistsPyrolysis(input)) {
+		if (input.isEmpty() || output.isEmpty() || energy <= 0 || recipeExists(input, true)) {
 			return null;
 		}
 		FurnaceRecipe recipe = new FurnaceRecipe(input, output, energy, creosote);
@@ -202,13 +187,6 @@ public class FurnaceManager {
 	public static ComparableItemStackValidated convertInput(ItemStack stack) {
 
 		return new ComparableItemStackValidated(stack, oreValidator);
-	}
-
-	private static void addOreDictRecipe(int energy, String oreName, ItemStack output) {
-
-		if (ItemHelper.oreNameExists(oreName) && !recipeExists(OreDictionary.getOres(oreName, false).get(0))) {
-			addRecipe(energy, ItemHelper.cloneStack(OreDictionary.getOres(oreName, false).get(0), 1), output);
-		}
 	}
 
 	/* RECIPE CLASS */

@@ -63,9 +63,6 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		String category = "Device.WaterGen";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		// TODO: Remove in 5.3.13
-		ThermalExpansion.CONFIG.removeProperty(category, "InfiniteSource");
-
 		String comment = "If TRUE, the Aqueous Accumulator will act as an Infinite Source and will also function in the Nether.";
 		infiniteSource = ThermalExpansion.CONFIG.get(category, "Infinite", infiniteSource, comment);
 

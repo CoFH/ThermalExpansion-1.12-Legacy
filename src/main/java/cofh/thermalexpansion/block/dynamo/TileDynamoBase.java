@@ -83,10 +83,6 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		comment = "If TRUE, Dynamos can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockDynamo.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockDynamo.enableUpgradeKitCrafting, comment);
 
-		// TODO: Remove in 5.3.13
-		ThermalExpansion.CONFIG.renameProperty(category, "CustomScaling", category, "CustomPowerScaling", true);
-		ThermalExpansion.CONFIG.renameCategory("Dynamo.CustomScaling", "Dynamo.CustomPowerScaling");
-
 		comment = "If TRUE, Dynamo RF/t (POWER) scaling will use a custom set of values rather than default behavior. The default custom configuration provides a reasonable alternate progression.";
 		customScaling = ThermalExpansion.CONFIG.get(category, "CustomPowerScaling", customScaling, comment);
 

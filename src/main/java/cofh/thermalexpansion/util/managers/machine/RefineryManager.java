@@ -70,7 +70,7 @@ public class RefineryManager {
 		addStrongPotionRecipes("strength", max);
 
 		addStrongPotionRecipes("haste", 4);
-		addStrongPotionRecipes("resistance", max);
+		addStrongPotionRecipes("resistance", 4);
 		addStrongPotionRecipes("absorption", max);
 		addStrongPotionRecipes("luck", max);
 		addStrongPotionRecipes("unluck", max);
@@ -191,7 +191,6 @@ public class RefineryManager {
 	public static PotionType getPotionType(String baseName, int rank, String postfix) {
 
 		PotionType ret;
-
 		switch (rank) {
 			case 1:
 				ret = PotionType.getPotionTypeForName(baseName);

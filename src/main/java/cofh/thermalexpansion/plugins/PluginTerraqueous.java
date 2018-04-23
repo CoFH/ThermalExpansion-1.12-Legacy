@@ -3,6 +3,7 @@ package cofh.thermalexpansion.plugins;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.managers.device.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -71,6 +72,17 @@ public class PluginTerraqueous extends PluginTEBase {
 			fruit[i] = getItemStack("multifood", i - 1);
 		}
 		fruit[0] = new ItemStack(Items.APPLE);
+
+		/* PULVERIZER */
+		{
+			int energy = PulverizerManager.DEFAULT_ENERGY;
+
+			PulverizerManager.addRecipe(energy, ItemHelper.getOre("gemEndimium"), ItemHelper.getOre("dustEndimium"));
+			PulverizerManager.addRecipe(energy, ItemHelper.getOre("oreEndimium"), ItemHelper.getOre("dustEndimium", 4), ItemHelper.getOre("dustTinyEndimium", 3), 40);
+
+			PulverizerManager.addRecipe(energy, ItemHelper.getOre("gemBurnium"), ItemHelper.getOre("dustBurnium"));
+			PulverizerManager.addRecipe(energy, ItemHelper.getOre("oreBurnium"), ItemHelper.getOre("dustBurnium", 4), ItemHelper.getOre("dustTinyBurnium", 3), 40);
+		}
 
 		/* SAWMILL */
 		{

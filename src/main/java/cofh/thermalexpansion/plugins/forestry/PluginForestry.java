@@ -84,6 +84,11 @@ public class PluginForestry extends PluginTEBase {
 			FurnaceManager.addRecipePyrolysis(4000, woodPile, new ItemStack(Items.COAL, 6, 1), 600);
 		}
 
+		/* PULVERIZER */
+		{
+
+		}
+
 		/* REFINERY */
 		{
 			if (biomass != null && ethanol != null) {

@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins;
 
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.managers.machine.ChargerManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
@@ -25,6 +26,15 @@ public class PluginAppliedEnergistics2 extends PluginTEBase {
 
 			PulverizerManager.addRecipe(energy, new ItemStack(Items.WHEAT), getItemStack("material", 1, 4));
 			PulverizerManager.addRecipe(energy, getItemStack("sky_stone_block"), getItemStack("material", 1, 45));
+
+			PulverizerManager.addRecipe(energy, ItemHelper.getOre("oreCertusQuartz"), ItemHelper.getOre("crystalCertusQuartz", 2), ItemHelper.getOre("dustCertusQuartz"), 10);
+			PulverizerManager.addRecipe(energy, ItemHelper.getOre("crystalCertusQuartz"), ItemHelper.getOre("dustCertusQuartz"));
+
+			energy = energy * 3 / 4;
+
+			PulverizerManager.addRecipe(energy, new ItemStack(Items.ENDER_PEARL), ItemHelper.getOre("dustEnderPearl"));
+			PulverizerManager.addRecipe(energy, ItemHelper.getOre("crystalFluix"), ItemHelper.getOre("dustFluix"));
+			PulverizerManager.addRecipe(energy, new ItemStack(Items.QUARTZ), ItemHelper.getOre("dustNetherQuartz"));
 		}
 
 		/* INSOLATOR */

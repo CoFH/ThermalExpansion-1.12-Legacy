@@ -166,7 +166,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	protected void getRecipe() {
 
-		curRecipe = augmentPyrolysis ? FurnaceManager.getRecipePyrolysis(inventory[0]) : FurnaceManager.getRecipe(inventory[0]);
+		curRecipe = FurnaceManager.getRecipe(inventory[0], augmentPyrolysis);
 	}
 
 	@Override
@@ -434,7 +434,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot != 0 || (augmentFood ? FurnaceManager.isFood(stack) : augmentOre ? ItemHelper.isOre(stack) && FurnaceManager.recipeExists(stack) : augmentPyrolysis ? FurnaceManager.recipeExistsPyrolysis(stack) : FurnaceManager.recipeExists(stack));
+		return slot != 0 || (augmentFood ? FurnaceManager.isFood(stack) : augmentOre ? ItemHelper.isOre(stack) && FurnaceManager.recipeExists(stack, augmentPyrolysis) : FurnaceManager.recipeExists(stack, augmentPyrolysis));
 	}
 
 	/* ISoundSource */

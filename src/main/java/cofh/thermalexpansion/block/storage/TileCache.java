@@ -18,7 +18,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -484,31 +483,8 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 		public CacheItemHandler readFromNBT(NBTTagCompound nbt) {
 
 			locked = false;
-			// TODO: Remove old Key check in 5.3.13.
-			if (nbt.hasKey("Inventory")) {
-				ItemStack inventory[] = new ItemStack[2];
-				inventory[0] = ItemStack.EMPTY;
-				inventory[1] = ItemStack.EMPTY;
-				NBTTagList list = nbt.getTagList("Inventory", 10);
-				for (int i = 0; i < list.tagCount(); i++) {
-					NBTTagCompound tag = list.getCompoundTagAt(i);
-					int slot = tag.getInteger("Slot");
-					if (slot >= 0 && slot < inventory.length) {
-						inventory[slot] = new ItemStack(tag);
-					}
-				}
-				if (!inventory[1].isEmpty()) {
-					storedInstance = ItemHelper.cloneStack(inventory[1], 1);
-					int storedCount = nbt.getInteger("CacheCount");
-					storedCount += inventory[1].getCount();
-					if (!inventory[0].isEmpty()) {
-						storedCount += inventory[0].getCount();
-					}
-					storedStack = ItemHelper.cloneStack(storedInstance, storedCount);
-					locked = nbt.getBoolean("Lock");
-				}
 
-			} else if (nbt.hasKey("Item")) {
+			if (nbt.hasKey("Item")) {
 				ItemStack stack = new ItemStack(nbt.getCompoundTag("Item"));
 				storedInstance = ItemHelper.cloneStack(stack, 1);
 				int storedCount = nbt.getInteger("StoredCount");

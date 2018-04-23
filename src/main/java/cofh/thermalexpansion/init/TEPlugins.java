@@ -43,6 +43,7 @@ public class TEPlugins {
 		pluginFamiliarFauna = new PluginFamiliarFauna();
 		pluginIC2 = new PluginIC2();
 		pluginIceAndFire = new PluginIceAndFire();
+		pluginImmersiveEngineering = new PluginImmersiveEngineering();
 		pluginIntegratedDynamics = new PluginIntegratedDynamics();
 		pluginMysticalAgriculture = new PluginMysticalAgriculture();
 		pluginNatura = new PluginNatura();
@@ -80,6 +81,7 @@ public class TEPlugins {
 		initList.add(pluginFamiliarFauna);
 		initList.add(pluginIC2);
 		initList.add(pluginIceAndFire);
+		initList.add(pluginImmersiveEngineering);
 		initList.add(pluginIntegratedDynamics);
 		initList.add(pluginMysticalAgriculture);
 		initList.add(pluginNatura);
@@ -132,6 +134,7 @@ public class TEPlugins {
 	public static PluginFamiliarFauna pluginFamiliarFauna;
 	public static PluginIC2 pluginIC2;
 	public static PluginIceAndFire pluginIceAndFire;
+	public static PluginImmersiveEngineering pluginImmersiveEngineering;
 	public static PluginIntegratedDynamics pluginIntegratedDynamics;
 	public static PluginMysticalAgriculture pluginMysticalAgriculture;
 	public static PluginNatura pluginNatura;

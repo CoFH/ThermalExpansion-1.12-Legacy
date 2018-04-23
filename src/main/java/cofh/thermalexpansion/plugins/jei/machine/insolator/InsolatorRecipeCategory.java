@@ -137,7 +137,7 @@ public class InsolatorRecipeCategory extends BaseRecipeCategory<InsolatorRecipeW
 			});
 		}
 		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
-			
+
 			tooltip.add(StringHelper.LIGHT_BLUE + StringHelper.localize("info.cofh.input"));
 		});
 	}

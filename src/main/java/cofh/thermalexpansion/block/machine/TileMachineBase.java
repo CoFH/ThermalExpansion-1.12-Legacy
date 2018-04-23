@@ -76,10 +76,6 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		comment = "If TRUE, Machines can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockMachine.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockMachine.enableUpgradeKitCrafting, comment);
 
-		// TODO: Remove in 5.3.13
-		ThermalExpansion.CONFIG.renameProperty(category, "CustomScaling", category, "CustomPowerScaling", true);
-		ThermalExpansion.CONFIG.renameCategory("Machine.CustomScaling", "Machine.CustomPowerScaling");
-
 		comment = "If TRUE, Machine RF/t (POWER) scaling will use a custom set of values rather than default behavior. The default custom configuration provides a reasonable alternate progression.";
 		customPowerScaling = ThermalExpansion.CONFIG.get(category, "CustomPowerScaling", customPowerScaling, comment);
 

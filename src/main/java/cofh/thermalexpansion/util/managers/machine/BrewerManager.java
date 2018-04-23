@@ -159,17 +159,40 @@ public class BrewerManager {
 			addDefaultPotionRecipes(CorePotions.wither, glowstone, CorePotions.witherStrong);
 		}
 
-		/* LOAD RECIPES */
-		loadRecipes();
-	}
+		/* SWAPS */
+		{
+			int max = CoreProps.POTION_MAX;
 
-	public static void loadRecipes() {
+			addSwapPotionRecipes("leaping", max);
+			addSwapPotionRecipes("swiftness", max);
+			addSwapPotionRecipes("healing", max);
+			addSwapPotionRecipes("harming", max);
+			addSwapPotionRecipes("poison", max);
+			addSwapPotionRecipes("regeneration", max);
+			addSwapPotionRecipes("strength", max);
 
-		//		for (PotionType type : PotionType.REGISTRY) {
-		//			System.out.println(type.getRegistryName());
-		//			System.out.println(type.getNamePrefixed(""));
-		//			System.out.println(type.getEffects());
-		//		}
+			addSwapPotionRecipes("haste", 4);
+			addSwapPotionRecipes("resistance", 4);
+			addSwapPotionRecipes("absorption", max);
+			addSwapPotionRecipes("luck", max);
+			addSwapPotionRecipes("unluck", max);
+			addSwapPotionRecipes("wither", max);
+
+			max = 3;
+
+			addSwapPotionRecipes("leaping", max, "+");
+			addSwapPotionRecipes("swiftness", max, "+");
+			addSwapPotionRecipes("poison", max, "+");
+			addSwapPotionRecipes("regeneration", max, "+");
+			addSwapPotionRecipes("strength", max, "+");
+
+			addSwapPotionRecipes("haste", max, "+");
+			addSwapPotionRecipes("resistance", max, "+");
+			addSwapPotionRecipes("absorption", max, "+");
+			addSwapPotionRecipes("luck", max, "+");
+			addSwapPotionRecipes("unluck", max, "+");
+			addSwapPotionRecipes("wither", max, "+");
+		}
 	}
 
 	public static void refresh() {
@@ -232,10 +255,28 @@ public class BrewerManager {
 		addRecipe(DEFAULT_ENERGY, new ItemStack(Items.DRAGON_BREATH), TFFluids.getSplashPotion(DEFAULT_AMOUNT, potion), TFFluids.getLingeringPotion(DEFAULT_AMOUNT, potion));
 	}
 
+	public static void addSwapPotionRecipes(String baseName, int maxRank) {
+
+		addSwapPotionRecipes(baseName, maxRank, "");
+	}
+
+	public static void addSwapPotionRecipes(String baseName, int maxRank, String postfix) {
+
+		for (int i = maxRank; i > 2; i--) {
+			PotionType type = getPotionType(baseName, i, postfix);
+
+			System.out.println(type);
+
+			if (type == PotionTypes.EMPTY) {
+				continue;
+			}
+			addSwapPotionRecipes(type);
+		}
+	}
+
 	public static PotionType getPotionType(String baseName, int rank, String postfix) {
 
 		PotionType ret;
-
 		switch (rank) {
 			case 1:
 				ret = PotionType.getPotionTypeForName(baseName);

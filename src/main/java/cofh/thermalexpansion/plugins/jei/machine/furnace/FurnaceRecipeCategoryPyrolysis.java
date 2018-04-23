@@ -38,7 +38,7 @@ public class FurnaceRecipeCategoryPyrolysis extends FurnaceRecipeCategory {
 
 		List<FurnaceRecipeWrapper> recipes = new ArrayList<>();
 
-		for (FurnaceRecipe recipe : FurnaceManager.getRecipeListPyrolysis()) {
+		for (FurnaceRecipe recipe : FurnaceManager.getRecipeList(true)) {
 			recipes.add(new FurnaceRecipeWrapper(guiHelper, recipe, RecipeUidsTE.FURNACE_PYROLYSIS));
 		}
 		return recipes;

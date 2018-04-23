@@ -31,7 +31,7 @@ public class FurnaceRecipeCategoryOre extends FurnaceRecipeCategory {
 
 		List<FurnaceRecipeWrapper> recipes = new ArrayList<>();
 
-		for (FurnaceRecipe recipe : FurnaceManager.getRecipeList()) {
+		for (FurnaceRecipe recipe : FurnaceManager.getRecipeList(false)) {
 			if (ItemHelper.isOre(recipe.getInput())) {
 				recipes.add(new FurnaceRecipeWrapper(guiHelper, recipe, RecipeUidsTE.FURNACE_ORE));
 			}

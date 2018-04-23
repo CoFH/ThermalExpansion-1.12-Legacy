@@ -251,6 +251,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.DOWN, new FluidStack(tank.getFluid(), Math.min(getFluidTransfer(level), tank.getFluidAmount())), true);
 
 		if (toDrain > 0) {
+			System.out.println("wheee");
 			renderFlag = !isCreative;
 			tank.drain(toDrain, !isCreative);
 		}
@@ -305,23 +306,14 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		renderFlag = false;
 		boolean sendUpdate = false;
 
-		int curDisplayLevel = 0;
-
 		if (tank.getFluidAmount() > 0) {
-			curDisplayLevel = (int) (tank.getFluidAmount() / (float) getCapacity(level, enchantHolding) * (RENDER_LEVELS - 1));
-			if (curDisplayLevel == 0) {
-				curDisplayLevel = 1;
-			}
-			if (lastDisplayLevel == 0) {
+			int curDisplayLevel = (int) Math.max(1, (tank.getFluidAmount() / (float) getCapacity(level, enchantHolding) * (RENDER_LEVELS - 1)));
+			if (lastDisplayLevel != curDisplayLevel) {
 				lastDisplayLevel = curDisplayLevel;
 				sendUpdate = true;
 			}
-		} else if (lastDisplayLevel != 0) {
+		} else {
 			lastDisplayLevel = 0;
-			sendUpdate = true;
-		}
-		if (lastDisplayLevel != curDisplayLevel) {
-			lastDisplayLevel = curDisplayLevel;
 			sendUpdate = true;
 		}
 		if (sendUpdate) {

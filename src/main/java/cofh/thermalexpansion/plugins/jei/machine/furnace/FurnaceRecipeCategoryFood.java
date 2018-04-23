@@ -30,7 +30,7 @@ public class FurnaceRecipeCategoryFood extends FurnaceRecipeCategory {
 
 		List<FurnaceRecipeWrapper> recipes = new ArrayList<>();
 
-		for (FurnaceRecipe recipe : FurnaceManager.getRecipeList()) {
+		for (FurnaceRecipe recipe : FurnaceManager.getRecipeList(false)) {
 			if (FurnaceManager.isFood(recipe.getInput())) {
 				recipes.add(new FurnaceRecipeWrapper(guiHelper, recipe, RecipeUidsTE.FURNACE_FOOD));
 			}
