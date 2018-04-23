@@ -11,6 +11,7 @@ import cofh.core.item.ItemMultiRF;
 import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.core.IInitializer;
+import cofh.core.util.crafting.FluidIngredientFactory.FluidIngredient;
 import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.util.EnergyContainerItemWrapper;
@@ -44,16 +45,17 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.*;
 
 @Optional.Interface (iface = "baubles.api.IBauble", modid = "baubles")
-public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem, IBauble {
+public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble, IEnchantableItem, IEnergyContainerItem, IMultiModeItem {
 
 	public ItemCapacitor() {
 
@@ -124,16 +126,17 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 			return;
 		}
 		Iterable<ItemStack> equipment;
+		EntityPlayer player = (EntityPlayer) entity;
 
 		switch (getMode(stack)) {
-			case HELD_ITEMS:
-				equipment = entity.getHeldEquipment();
+			case EQUIPMENT:
+				equipment = Iterables.concat(player.getEquipmentAndArmor(), getBaubles(player));
 				break;
-			case WORN_ITEMS:
-				equipment = Iterables.concat(entity.getArmorInventoryList(), getBaubles(entity));
+			case INVENTORY:
+				equipment = player.inventory.mainInventory;
 				break;
 			default:
-				equipment = Iterables.concat(entity.getEquipmentAndArmor(), getBaubles(entity));
+				equipment = Iterables.concat(Arrays.asList(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory, getBaubles(player)));
 		}
 		for (ItemStack equipmentStack : equipment) {
 			if (equipmentStack.equals(stack)) {
@@ -234,34 +237,53 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 		return typeMap.get(metadata).capacity;
 	}
 
-	/* IModelRegister */
+	/* IBauble */
 	@Override
-	@SideOnly (Side.CLIENT)
-	public void registerModels() {
+	public BaubleType getBaubleType(ItemStack stack) {
 
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.getEnergyStored(stack) > 0 && this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+		return BaubleType.TRINKET;
+	}
 
-		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
-			for (int active = 0; active < 2; active++) {
-				for (int mode = 0; mode < 3; mode++) {
-					ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", active, mode, entry.getValue().name)));
+	@Override
+	public void onWornTick(ItemStack stack, EntityLivingBase entity) {
+
+		World world = entity.world;
+
+		if (ServerHelper.isClientWorld(world) || !isActive(stack)) {
+			return;
+		}
+		Iterable<ItemStack> equipment;
+		EntityPlayer player = (EntityPlayer) entity;
+
+		switch (getMode(stack)) {
+			case EQUIPMENT:
+				equipment = Iterables.concat(entity.getEquipmentAndArmor(), getBaubles(entity));
+				break;
+			case INVENTORY:
+				equipment = player.inventory.mainInventory;
+				break;
+			default:
+				equipment = Iterables.concat(Arrays.asList(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory, getBaubles(player)));
+		}
+		for (ItemStack equipmentStack : equipment) {
+			if (equipmentStack.equals(stack)) {
+				continue;
+			}
+			if (EnergyHelper.isEnergyContainerItem(equipmentStack)) {
+				extractEnergy(stack, ((IEnergyContainerItem) equipmentStack.getItem()).receiveEnergy(equipmentStack, Math.min(getEnergyStored(stack), getSend(stack)), false), false);
+			} else if (EnergyHelper.isEnergyHandler(equipmentStack)) {
+				IEnergyStorage handler = EnergyHelper.getEnergyHandler(equipmentStack);
+				if (handler != null) {
+					extractEnergy(stack, handler.receiveEnergy(Math.min(getEnergyStored(stack), getSend(stack)), false), false);
 				}
 			}
 		}
 	}
 
-	/* IMultiModeItem */
 	@Override
-	public int getNumModes(ItemStack stack) {
+	public boolean willAutoSync(ItemStack stack, EntityLivingBase player) {
 
-		return 3;
-	}
-
-	@Override
-	public void onModeChange(EntityPlayer player, ItemStack stack) {
-
-		player.world.playSound(null, player.getPosition(), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, 0.4F, (isActive(stack) ? 0.7F : 0.5F) + 0.1F * getMode(stack));
-		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.capacitor.d." + getMode(stack)));
+		return true;
 	}
 
 	/* IEnergyContainerItem */
@@ -284,52 +306,18 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 		return extract;
 	}
 
-	/* IBauble */
+	/* IMultiModeItem */
 	@Override
-	public BaubleType getBaubleType(ItemStack stack) {
+	public int getNumModes(ItemStack stack) {
 
-		return BaubleType.TRINKET;
+		return 3;
 	}
 
 	@Override
-	public void onWornTick(ItemStack stack, EntityLivingBase player) {
+	public void onModeChange(EntityPlayer player, ItemStack stack) {
 
-		World world = player.world;
-
-		if (ServerHelper.isClientWorld(world) || !isActive(stack)) {
-			return;
-		}
-		Iterable<ItemStack> equipment;
-
-		switch (getMode(stack)) {
-			case HELD_ITEMS:
-				equipment = player.getHeldEquipment();
-				break;
-			case WORN_ITEMS:
-				equipment = Iterables.concat(player.getArmorInventoryList(), getBaubles(player));
-				break;
-			default:
-				equipment = Iterables.concat(player.getEquipmentAndArmor(), getBaubles(player));
-		}
-		for (ItemStack equipmentStack : equipment) {
-			if (equipmentStack.equals(stack)) {
-				continue;
-			}
-			if (EnergyHelper.isEnergyContainerItem(equipmentStack)) {
-				extractEnergy(stack, ((IEnergyContainerItem) equipmentStack.getItem()).receiveEnergy(equipmentStack, Math.min(getEnergyStored(stack), getSend(stack)), false), false);
-			} else if (EnergyHelper.isEnergyHandler(equipmentStack)) {
-				IEnergyStorage handler = EnergyHelper.getEnergyHandler(equipmentStack);
-				if (handler != null) {
-					extractEnergy(stack, handler.receiveEnergy(Math.min(getEnergyStored(stack), getSend(stack)), false), false);
-				}
-			}
-		}
-	}
-
-	@Override
-	public boolean willAutoSync(ItemStack stack, EntityLivingBase player) {
-
-		return true;
+		player.world.playSound(null, player.getPosition(), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, 0.4F, (isActive(stack) ? 0.7F : 0.5F) + 0.1F * getMode(stack));
+		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.capacitor.d." + getMode(stack)));
 	}
 
 	/* CAPABILITIES */
@@ -354,6 +342,24 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 			return Collections.emptyList();
 		}
 		return IntStream.range(0, handler.getSlots()).mapToObj(handler::getStackInSlot).filter(stack -> !stack.isEmpty()).collect(Collectors.toList());
+	}
+
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("color0=%s,mode=%s_%s,type=%s", ColorHelper.hasColor0(stack) ? 1 : 0, this.getEnergyStored(stack) > 0 && this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+
+		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
+			for (int color0 = 0; color0 < 2; color0++) {
+				for (int active = 0; active < 2; active++) {
+					for (int mode = 0; mode < 3; mode++) {
+						ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("color0=%s,mode=%s_%s,type=%s", color0, active, mode, entry.getValue().name)));
+					}
+				}
+			}
+		}
 	}
 
 	/* IInitializer */
@@ -392,6 +398,18 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 				'Y', "dustSulfur"
 		);
 		// @formatter:on
+
+		addColorRecipe(capacitorBasic, capacitorBasic, "dye");
+		addColorRecipe(capacitorHardened, capacitorHardened, "dye");
+		addColorRecipe(capacitorReinforced, capacitorReinforced, "dye");
+		addColorRecipe(capacitorSignalum, capacitorSignalum, "dye");
+		addColorRecipe(capacitorResonant, capacitorResonant, "dye");
+
+		addColorRemoveRecipe(capacitorBasic, capacitorBasic, new FluidIngredient("water"));
+		addColorRemoveRecipe(capacitorHardened, capacitorHardened, new FluidIngredient("water"));
+		addColorRemoveRecipe(capacitorReinforced, capacitorReinforced, new FluidIngredient("water"));
+		addColorRemoveRecipe(capacitorSignalum, capacitorSignalum, new FluidIngredient("water"));
+		addColorRemoveRecipe(capacitorResonant, capacitorResonant, new FluidIngredient("water"));
 		return true;
 	}
 
@@ -456,8 +474,8 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 
 	private static TIntObjectHashMap<TypeEntry> typeMap = new TIntObjectHashMap<>();
 
-	public static final int HELD_ITEMS = 0;
-	public static final int WORN_ITEMS = 1;
+	public static final int EQUIPMENT = 0;
+	public static final int INVENTORY = 1;
 
 	public static final int CAPACITY_BASE = 1000000;
 	public static final int XFER_BASE = 1000;

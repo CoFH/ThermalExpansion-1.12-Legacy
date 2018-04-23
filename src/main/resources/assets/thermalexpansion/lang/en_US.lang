@@ -233,13 +233,13 @@ info.thermalexpansion.apparatus.activator=Does more than a tooltip can explain.
 info.thermalexpansion.apparatus.breaker=Breaks blocks. Simple enough.
 info.thermalexpansion.apparatus.collector=Procures items from an area.
 
-info.thermalexpansion.capacitor.a.0=Stores Redstone Flux. Can recharge equipment.
+info.thermalexpansion.capacitor.a.0=Stores Redstone Flux. Can recharge equipment and items.
 info.thermalexpansion.capacitor.b.0=§ePress (%s) to change Charge mode.§r
 info.thermalexpansion.capacitor.c.0=Use while sneaking to activate.
 info.thermalexpansion.capacitor.c.1=Use while sneaking to deactivate.
-info.thermalexpansion.capacitor.d.0=Charging Held Items
-info.thermalexpansion.capacitor.d.1=Charging Worn Items
-info.thermalexpansion.capacitor.d.2=Charging Equipment
+info.thermalexpansion.capacitor.d.0=Charging Equipment
+info.thermalexpansion.capacitor.d.1=Charging Inventory
+info.thermalexpansion.capacitor.d.2=Charging All Items
 
 info.thermalexpansion.coolant=Coolant
 

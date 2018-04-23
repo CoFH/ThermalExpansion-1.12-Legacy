@@ -251,6 +251,26 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 		return ItemStack.EMPTY;
 	}
 
+	/* IItemColor */
+	public int colorMultiplier(ItemStack stack, int tintIndex) {
+
+		EntityList.EntityEggInfo info = null;
+
+		if (stack.hasTagCompound()) {
+			ResourceLocation id = new ResourceLocation(stack.getTagCompound().getString("id"));
+			info = EntityList.ENTITY_EGGS.get(id);
+		}
+		if (info != null) {
+			switch (tintIndex) {
+				case TINT_INDEX_1:
+					return info.primaryColor;
+				case TINT_INDEX_2:
+					return info.secondaryColor;
+			}
+		}
+		return 0xFFFFFF;
+	}
+
 	/* IModelRegister */
 	@Override
 	@SideOnly (Side.CLIENT)
@@ -263,26 +283,6 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 				ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("full=%s,type=%s", i, entry.getValue().name)));
 			}
 		}
-	}
-
-	/* IItemColor */
-	public int colorMultiplier(ItemStack stack, int tintIndex) {
-
-		EntityList.EntityEggInfo info = null;
-
-		if (stack.hasTagCompound()) {
-			ResourceLocation id = new ResourceLocation(stack.getTagCompound().getString("id"));
-			info = EntityList.ENTITY_EGGS.get(id);
-		}
-		if (info != null) {
-			switch (tintIndex) {
-				case 1:
-					return info.primaryColor;
-				case 2:
-					return info.secondaryColor;
-			}
-		}
-		return 0xFFFFFF;
 	}
 
 	/* IInitializer */
@@ -331,6 +331,9 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 	}
 
 	public static final ConfigHandler CONFIG_MORBS = new ConfigHandler(ThermalExpansion.VERSION);
+
+	public static final int TINT_INDEX_1 = 1;
+	public static final int TINT_INDEX_2 = 2;
 
 	public static ArrayList<ItemStack> morbList = new ArrayList<>();
 	public static Set<String> validMobs = new THashSet<>();

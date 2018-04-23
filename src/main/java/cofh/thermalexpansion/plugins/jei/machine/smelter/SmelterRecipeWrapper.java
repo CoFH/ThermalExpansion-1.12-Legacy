@@ -70,8 +70,8 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 		} else {
 			recipeInputsSecondary.add(recipe.getSecondaryInput());
 		}
-		recipeInputs.add(recipeInputsPrimary);
 		recipeInputs.add(recipeInputsSecondary);
+		recipeInputs.add(recipeInputsPrimary);
 
 		if (uId.equals(RecipeUidsTE.SMELTER_PYROTHEUM)) {
 			recipeInputFluids.add(new FluidStack(TFFluids.fluidPyrotheum, TileSmelter.FLUID_AMOUNT));

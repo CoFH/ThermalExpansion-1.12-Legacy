@@ -53,7 +53,7 @@ import java.util.Map;
 import static cofh.core.util.helpers.RecipeHelper.addShapelessRecipe;
 import static java.util.Arrays.asList;
 
-public class ItemFlorb extends ItemMulti implements IBakeryProvider, IInitializer {
+public class ItemFlorb extends ItemMulti implements IInitializer, IBakeryProvider {
 
 	public static ItemStack setTag(ItemStack container, Fluid fluid) {
 

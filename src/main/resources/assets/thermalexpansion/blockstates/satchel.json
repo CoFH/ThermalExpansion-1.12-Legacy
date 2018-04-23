@@ -33,23 +33,23 @@
 				}
 			}
 		},
+		"color0": {
+			"0": {
+
+			},
+			"1": {
+				"textures": {
+					"layer2": "thermalexpansion:items/satchel/satchel_color_0"
+				}
+			}
+		},
 		"color1": {
 			"0": {
 
 			},
 			"1": {
 				"textures": {
-					"layer2": "thermalexpansion:items/satchel/satchel_color_1"
-				}
-			}
-		},
-		"color2": {
-			"0": {
-
-			},
-			"1": {
-				"textures": {
-					"layer3": "thermalexpansion:items/satchel/satchel_color_2"
+					"layer3": "thermalexpansion:items/satchel/satchel_color_1"
 				}
 			}
 		},

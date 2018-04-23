@@ -58,7 +58,7 @@ import java.util.Map;
 import static cofh.core.util.helpers.RecipeHelper.*;
 import static cofh.thermalfoundation.util.TFCrafting.addSecureRecipe;
 
-public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeItem, IInventoryContainerItem, IEnchantableItem, IColorableItem {
+public class ItemSatchel extends ItemMulti implements IInitializer, IColorableItem, IEnchantableItem, IInventoryContainerItem, IMultiModeItem {
 
 	public static ItemStack setDefaultInventoryTag(ItemStack container) {
 
@@ -332,36 +332,32 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	/* IItemColor */
 	public int colorMultiplier(ItemStack stack, int tintIndex) {
 
-		if (tintIndex == TINT_INDEX_1 && ColorHelper.hasColor1(stack)) {
+		if (tintIndex == TINT_INDEX_0 && ColorHelper.hasColor0(stack)) {
+			return ColorHelper.getColor0(stack);
+		} else if (tintIndex == TINT_INDEX_1 && ColorHelper.hasColor1(stack)) {
 			return ColorHelper.getColor1(stack);
-		} else if (tintIndex == TINT_INDEX_2 && ColorHelper.hasColor2(stack)) {
-			return ColorHelper.getColor2(stack);
 		}
 		return 0xFFFFFF;
 	}
 
-	/* IColorableItem */
 	@Override
-	public void applyColor(ItemStack stack, int color, int colorIndex) {
+	public int getMaxColorIndex(ItemStack stack) {
 
-		if (stack.getTagCompound() == null) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		if (colorIndex == 0) {
-			stack.getTagCompound().setInteger(CoreProps.COLOR_1, color);
-		} else {
-			stack.getTagCompound().setInteger(CoreProps.COLOR_2, color);
-		}
+		return 1;
 	}
 
+	/* IEnchantableItem */
 	@Override
-	public void removeColor(ItemStack stack) {
+	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
 
-		if (stack.getTagCompound() == null) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		stack.getTagCompound().removeTag(CoreProps.COLOR_1);
-		stack.getTagCompound().removeTag(CoreProps.COLOR_2);
+		return enchantment == CoreEnchantments.holding;
+	}
+
+	/* IInventoryContainerItem */
+	@Override
+	public int getSizeInventory(ItemStack container) {
+
+		return CoreProps.STORAGE_SIZE[getStorageIndex(container)];
 	}
 
 	/* IMultiModeItem */
@@ -383,31 +379,17 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("access=%s,color1=%s,color2=%s,type=%s", SecurityHelper.getAccess(stack).toString().toLowerCase(Locale.US), ColorHelper.hasColor1(stack) ? 1 : 0, ColorHelper.hasColor2(stack) ? 1 : 0, typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("access=%s,color0=%s,color1=%s,type=%s", SecurityHelper.getAccess(stack).toString().toLowerCase(Locale.US), ColorHelper.hasColor0(stack) ? 1 : 0, ColorHelper.hasColor1(stack) ? 1 : 0, typeMap.get(ItemHelper.getItemDamage(stack)).name)));
 
 		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
 			for (int access = 0; access < AccessMode.values().length; access++) {
-				for (int color1 = 0; color1 < 2; color1++) {
-					for (int color2 = 0; color2 < 2; color2++) {
-						ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("access=%s,color1=%s,color2=%s,type=%s", AccessMode.values()[access].toString().toLowerCase(Locale.US), color1, color2, entry.getValue().name)));
+				for (int color0 = 0; color0 < 2; color0++) {
+					for (int color1 = 0; color1 < 2; color1++) {
+						ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("access=%s,color0=%s,color1=%s,type=%s", AccessMode.values()[access].toString().toLowerCase(Locale.US), color0, color1, entry.getValue().name)));
 					}
 				}
 			}
 		}
-	}
-
-	/* IInventoryContainerItem */
-	@Override
-	public int getSizeInventory(ItemStack container) {
-
-		return CoreProps.STORAGE_SIZE[getStorageIndex(container)];
-	}
-
-	/* IEnchantableItem */
-	@Override
-	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
-
-		return enchantment == CoreEnchantments.holding;
 	}
 
 	/* IInitializer */
@@ -478,23 +460,23 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 		addSecureRecipe(satchelSignalum, satchelSignalum, ItemSecurity.lock);
 		addSecureRecipe(satchelResonant, satchelResonant, ItemSecurity.lock);
 
-		addShapedColorRecipe(satchelBasic, "Y", "X", 'X', satchelBasic, 'Y', "dye");
-		addShapedColorRecipe(satchelHardened, "Y", "X", 'X', satchelHardened, 'Y', "dye");
-		addShapedColorRecipe(satchelReinforced, "Y", "X", 'X', satchelReinforced, 'Y', "dye");
-		addShapedColorRecipe(satchelSignalum, "Y", "X", 'X', satchelSignalum, 'Y', "dye");
-		addShapedColorRecipe(satchelResonant, "Y", "X", 'X', satchelResonant, 'Y', "dye");
+		addColorRecipe(satchelBasic, satchelBasic, "dye");
+		addColorRecipe(satchelHardened, satchelHardened, "dye");
+		addColorRecipe(satchelReinforced, satchelReinforced, "dye");
+		addColorRecipe(satchelSignalum, satchelSignalum, "dye");
+		addColorRecipe(satchelResonant, satchelResonant, "dye");
 
-		addShapedColorRecipe(satchelBasic, "Y", "X", 'Y', satchelBasic, 'X', "dye");
-		addShapedColorRecipe(satchelHardened, "Y", "X", 'Y', satchelHardened, 'X', "dye");
-		addShapedColorRecipe(satchelReinforced, "Y", "X", 'Y', satchelReinforced, 'X', "dye");
-		addShapedColorRecipe(satchelSignalum, "Y", "X", 'Y', satchelSignalum, 'X', "dye");
-		addShapedColorRecipe(satchelResonant, "Y", "X", 'Y', satchelResonant, 'X', "dye");
+		addColorRecipe(satchelBasic, satchelBasic, "dye", "dye");
+		addColorRecipe(satchelHardened, satchelHardened, "dye", "dye");
+		addColorRecipe(satchelReinforced, satchelReinforced, "dye", "dye");
+		addColorRecipe(satchelSignalum, satchelSignalum, "dye", "dye");
+		addColorRecipe(satchelResonant, satchelResonant, "dye", "dye");
 
-		addShapelessColorRemoveRecipe(satchelBasic, satchelBasic, new FluidIngredient("water"));
-		addShapelessColorRemoveRecipe(satchelHardened, satchelHardened, new FluidIngredient("water"));
-		addShapelessColorRemoveRecipe(satchelReinforced, satchelReinforced, new FluidIngredient("water"));
-		addShapelessColorRemoveRecipe(satchelSignalum, satchelSignalum, new FluidIngredient("water"));
-		addShapelessColorRemoveRecipe(satchelResonant, satchelResonant, new FluidIngredient("water"));
+		addColorRemoveRecipe(satchelBasic, satchelBasic, new FluidIngredient("water"));
+		addColorRemoveRecipe(satchelHardened, satchelHardened, new FluidIngredient("water"));
+		addColorRemoveRecipe(satchelReinforced, satchelReinforced, new FluidIngredient("water"));
+		addColorRemoveRecipe(satchelSignalum, satchelSignalum, new FluidIngredient("water"));
+		addColorRemoveRecipe(satchelResonant, satchelResonant, new FluidIngredient("water"));
 		return true;
 	}
 
@@ -532,8 +514,8 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IMultiModeIt
 
 	public static final int VOID = 100;
 
-	public static final int TINT_INDEX_1 = 2;
-	public static final int TINT_INDEX_2 = 3;
+	public static final int TINT_INDEX_0 = 2;
+	public static final int TINT_INDEX_1 = 3;
 
 	public static boolean enable = true;
 	public static boolean enableSecurity = true;

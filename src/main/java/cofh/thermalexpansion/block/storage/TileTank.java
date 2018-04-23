@@ -251,7 +251,6 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.DOWN, new FluidStack(tank.getFluid(), Math.min(getFluidTransfer(level), tank.getFluidAmount())), true);
 
 		if (toDrain > 0) {
-			System.out.println("wheee");
 			renderFlag = !isCreative;
 			tank.drain(toDrain, !isCreative);
 		}

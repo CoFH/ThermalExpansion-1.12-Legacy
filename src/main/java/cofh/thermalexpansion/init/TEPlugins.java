@@ -53,6 +53,7 @@ public class TEPlugins {
 		pluginTConstruct = new PluginTConstruct();
 		pluginTechReborn = new PluginTechReborn();
 		pluginTerraqueous = new PluginTerraqueous();
+		pluginThaumcraft = new PluginThaumcraft();
 		pluginTraverse = new PluginTraverse();
 		pluginTropicraft = new PluginTropicraft();
 		pluginTwilightForest = new PluginTwilightForest();
@@ -91,6 +92,7 @@ public class TEPlugins {
 		initList.add(pluginTConstruct);
 		initList.add(pluginTechReborn);
 		initList.add(pluginTerraqueous);
+		initList.add(pluginThaumcraft);
 		initList.add(pluginTraverse);
 		initList.add(pluginTropicraft);
 		initList.add(pluginTwilightForest);
@@ -144,6 +146,7 @@ public class TEPlugins {
 	public static PluginTConstruct pluginTConstruct;
 	public static PluginTechReborn pluginTechReborn;
 	public static PluginTerraqueous pluginTerraqueous;
+	public static PluginThaumcraft pluginThaumcraft;
 	public static PluginTraverse pluginTraverse;
 	public static PluginTropicraft pluginTropicraft;
 	public static PluginTwilightForest pluginTwilightForest;

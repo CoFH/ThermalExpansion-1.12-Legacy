@@ -521,6 +521,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	/* HELPERS */
 	protected void preAugmentInstall() {
 
+		renderCoil = getCoil();
 		energyConfig.setDefaultParams(getBasePower(this.level), smallStorage);
 
 		energyMod = ENERGY_BASE;

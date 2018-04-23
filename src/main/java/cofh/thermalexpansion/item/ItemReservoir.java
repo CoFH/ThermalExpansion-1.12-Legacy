@@ -4,8 +4,8 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import baubles.api.cap.IBaublesItemHandler;
 import cofh.api.fluid.IFluidContainerItem;
+import cofh.api.item.IColorableItem;
 import cofh.api.item.IMultiModeItem;
-import cofh.api.item.INBTCopyIngredient;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
@@ -65,7 +65,7 @@ import java.util.stream.IntStream;
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
 @Optional.Interface (iface = "baubles.api.IBauble", modid = "baubles")
-public class ItemReservoir extends ItemMulti implements IInitializer, IMultiModeItem, IFluidContainerItem, IEnchantableItem, INBTCopyIngredient, IBauble {
+public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, IColorableItem, IEnchantableItem, IFluidContainerItem, IMultiModeItem {
 
 	public ItemReservoir() {
 
@@ -301,35 +301,47 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		return getCapacity(stack) - getFluidAmount(stack);
 	}
 
-	/* IModelRegister */
+	/* IBauble */
 	@Override
-	@SideOnly (Side.CLIENT)
-	public void registerModels() {
+	public BaubleType getBaubleType(ItemStack stack) {
 
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+		return BaubleType.TRINKET;
+	}
 
-		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
-			for (int active = 0; active < 2; active++) {
-				for (int mode = 0; mode < 2; mode++) {
-					ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", active, mode, entry.getValue().name)));
+	@Override
+	public void onWornTick(ItemStack stack, EntityLivingBase player) {
+
+		World world = player.world;
+
+		if (ServerHelper.isClientWorld(world) || !isActive(stack)) {
+			return;
+		}
+		Iterable<ItemStack> equipment = Iterables.concat(player.getEquipmentAndArmor(), getBaubles(player));
+
+		for (ItemStack equipmentStack : equipment) {
+			if (equipmentStack.equals(stack) || equipmentStack.getItem() == Items.BUCKET) {
+				continue;
+			}
+			if (FluidHelper.isFluidHandler(equipmentStack)) {
+				IFluidHandlerItem handler = FluidUtil.getFluidHandler(equipmentStack);
+				if (handler != null && getFluid(stack) != null) {
+					drain(stack, handler.fill(new FluidStack(getFluid(stack), Math.min(getFluidAmount(stack), Fluid.BUCKET_VOLUME)), true), true);
 				}
 			}
 		}
 	}
 
-	/* IMultiModeItem */
 	@Override
-	public void onModeChange(EntityPlayer player, ItemStack stack) {
+	public boolean willAutoSync(ItemStack stack, EntityLivingBase player) {
 
-		switch (getMode(stack)) {
-			case BUCKET_FILL:
-				player.world.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_FILL, SoundCategory.PLAYERS, 0.6F, 1.0F);
-				break;
-			case BUCKET_EMPTY:
-				player.world.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 0.6F, 1.0F);
-				break;
-		}
-		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.reservoir.d." + getMode(stack)));
+		return true;
+	}
+
+	/* IEnchantableItem */
+	@Override
+	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
+
+		return enchantment == CoreEnchantments.holding;
 	}
 
 	/* IFluidContainerItem */
@@ -450,47 +462,19 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		return stack;
 	}
 
-	/* IEnchantableItem */
+	/* IMultiModeItem */
 	@Override
-	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
+	public void onModeChange(EntityPlayer player, ItemStack stack) {
 
-		return enchantment == CoreEnchantments.holding;
-	}
-
-	/* IBauble */
-	@Override
-	public BaubleType getBaubleType(ItemStack stack) {
-
-		return BaubleType.TRINKET;
-	}
-
-	@Override
-	public void onWornTick(ItemStack stack, EntityLivingBase player) {
-
-		World world = player.world;
-
-		if (ServerHelper.isClientWorld(world) || !isActive(stack)) {
-			return;
+		switch (getMode(stack)) {
+			case BUCKET_FILL:
+				player.world.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_FILL, SoundCategory.PLAYERS, 0.6F, 1.0F);
+				break;
+			case BUCKET_EMPTY:
+				player.world.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 0.6F, 1.0F);
+				break;
 		}
-		Iterable<ItemStack> equipment = Iterables.concat(player.getEquipmentAndArmor(), getBaubles(player));
-
-		for (ItemStack equipmentStack : equipment) {
-			if (equipmentStack.equals(stack) || equipmentStack.getItem() == Items.BUCKET) {
-				continue;
-			}
-			if (FluidHelper.isFluidHandler(equipmentStack)) {
-				IFluidHandlerItem handler = FluidUtil.getFluidHandler(equipmentStack);
-				if (handler != null && getFluid(stack) != null) {
-					drain(stack, handler.fill(new FluidStack(getFluid(stack), Math.min(getFluidAmount(stack), Fluid.BUCKET_VOLUME)), true), true);
-				}
-			}
-		}
-	}
-
-	@Override
-	public boolean willAutoSync(ItemStack stack, EntityLivingBase player) {
-
-		return true;
+		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.reservoir.d." + getMode(stack)));
 	}
 
 	/* CAPABILITIES */
@@ -515,6 +499,22 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 			return Collections.emptyList();
 		}
 		return IntStream.range(0, handler.getSlots()).mapToObj(handler::getStackInSlot).filter(stack -> !stack.isEmpty()).collect(Collectors.toList());
+	}
+
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+
+		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
+			for (int active = 0; active < 2; active++) {
+				for (int mode = 0; mode < 2; mode++) {
+					ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", active, mode, entry.getValue().name)));
+				}
+			}
+		}
 	}
 
 	/* IInitializer */

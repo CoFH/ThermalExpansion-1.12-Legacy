@@ -264,9 +264,6 @@ public class BrewerManager {
 
 		for (int i = maxRank; i > 2; i--) {
 			PotionType type = getPotionType(baseName, i, postfix);
-
-			System.out.println(type);
-
 			if (type == PotionTypes.EMPTY) {
 				continue;
 			}
