@@ -8,14 +8,14 @@ gui.thermalexpansion.device.item_buffer.incOutput=Увеличение выхо�
 gui.thermalexpansion.jei.centrifuge.mobChance=Базовый шанс
 gui.thermalexpansion.jei.centrifuge.mobNotice=До указанного количества может быть произведено.
 gui.thermalexpansion.jei.compactor.modeGear=Механизм
-gui.thermalexpansion.jei.compactor.modeMint=Чеканка
+gui.thermalexpansion.jei.compactor.modeCoin=Чеканка
 gui.thermalexpansion.jei.compactor.modePress=Пресс
 gui.thermalexpansion.jei.compactor.modeStorage=Хранение
 gui.thermalexpansion.jei.transposer.modeEmpty=Пустой
 gui.thermalexpansion.jei.transposer.modeFill=Полный
 
 gui.thermalexpansion.machine.compactor.modeGear=Режим: Механизм
-gui.thermalexpansion.machine.compactor.modeMint=Режим: Чеканка
+gui.thermalexpansion.machine.compactor.modeCoin=Режим: Чеканка
 gui.thermalexpansion.machine.compactor.modePress=Режим: Пресс
 gui.thermalexpansion.machine.compactor.modeStorage=Режим: Хранение
 
@@ -117,15 +117,15 @@ info.thermalexpansion.augment.machineChargerWireless.a.0=Позволяет бы
 info.thermalexpansion.augment.machineChargerWireless.b.0=Больше не будет принимать, обрабатывать или перезаряжать предметы.
 info.thermalexpansion.augment.machineChargerWireless.c.0=Не может превышать скорость заряда самого конденсатора.
 
+info.thermalexpansion.augment.machineCompactorCoin.0=Компактор: Специализация
+info.thermalexpansion.augment.machineCompactorCoin.a.0=Позволяет создавать валюту.
+info.thermalexpansion.augment.machineCompactorCoin.a.1=Валюту можно обменять на товары и услуги.
+info.thermalexpansion.augment.machineCompactorCoin.c.0=Машина должна быть переведена в режим "чеканка".
+
 info.thermalexpansion.augment.machineCompactorGear.0=Компактор: Специализация
 info.thermalexpansion.augment.machineCompactorGear.a.0=Позволяет эффективно создавать механизмы.
 info.thermalexpansion.augment.machineCompactorGear.a.1=Механизмы используются при строительстве многочисленных вещей.
 info.thermalexpansion.augment.machineCompactorGear.c.0=Машина должна быть переключена в режим "Механизм".
-
-info.thermalexpansion.augment.machineCompactorMint.0=Компактор: Специализация
-info.thermalexpansion.augment.machineCompactorMint.a.0=Позволяет создавать валюту.
-info.thermalexpansion.augment.machineCompactorMint.a.1=Валюту можно обменять на товары и услуги.
-info.thermalexpansion.augment.machineCompactorMint.c.0=Машина должна быть переведена в режим "чеканка".
 
 info.thermalexpansion.augment.machineCrafterInput.0=Секвентальный сборщик: Функциональность
 info.thermalexpansion.augment.machineCrafterInput.a.0=Добавляет интеллектуальные возможности автоматического ввода.
@@ -348,7 +348,7 @@ item.thermalexpansion.augment.machineChargerRepair.name=Флаксовый ре�
 item.thermalexpansion.augment.machineChargerThroughput.name=Концентратор связи потоков
 item.thermalexpansion.augment.machineChargerWireless.name=Параболическая флаксовая муфта
 item.thermalexpansion.augment.machineCompactorGear.name=Механическое оружие
-item.thermalexpansion.augment.machineCompactorMint.name=Нумизматический пресс
+item.thermalexpansion.augment.machineCompactorCoin.name=Нумизматический пресс
 item.thermalexpansion.augment.machineCrafterInput.name=Проверка шаблона
 item.thermalexpansion.augment.machineCrafterTank.name=Флюидовое производство
 item.thermalexpansion.augment.machineCrucibleLava.name=Пироконвективная петля

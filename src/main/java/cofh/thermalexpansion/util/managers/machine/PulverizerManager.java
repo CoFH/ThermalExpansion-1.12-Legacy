@@ -6,9 +6,7 @@ import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalfoundation.init.TFEquipment;
-import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -65,64 +63,31 @@ public class PulverizerManager {
 
 		/* RECYCLING */
 		{
-			int energy = DEFAULT_ENERGY * 3 / 4;
+			int energy = DEFAULT_ENERGY * 3 / 2;
+			// Output is 1/2, round down, minimum of 1.
 
-			addRecipe(energy, new ItemStack(Blocks.GLASS), new ItemStack(Blocks.SAND));
-
-			for (int i = 0; i < 15; i++) {
-				addRecipe(energy, new ItemStack(Blocks.STAINED_GLASS, 1, i), new ItemStack(Blocks.SAND));
-			}
-			addRecipe(energy, new ItemStack(Blocks.REDSTONE_LAMP), new ItemStack(Items.REDSTONE, 4), new ItemStack(Items.GLOWSTONE_DUST, 2));
-			addRecipe(energy, new ItemStack(Blocks.BRICK_BLOCK), new ItemStack(Items.BRICK, 4));
-			addRecipe(energy, new ItemStack(Blocks.NETHER_BRICK), new ItemStack(Items.NETHERBRICK, 4));
-
-			for (int i = 0; i < 3; i++) {
-				addRecipe(energy, new ItemStack(Blocks.QUARTZ_BLOCK, 1, i), new ItemStack(Items.QUARTZ, 4));
-				addRecipe(energy, new ItemStack(Blocks.SANDSTONE, 1, i), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 40);
-				addRecipe(energy, new ItemStack(Blocks.RED_SANDSTONE, 1, i), new ItemStack(Blocks.SAND, 2, 1), ItemMaterial.dustNiter, 40);
-			}
-
-			/* STAIRS */
-			addRecipe(energy, new ItemStack(Blocks.BRICK_STAIRS), new ItemStack(Items.BRICK, 3));
-			addRecipe(energy, new ItemStack(Blocks.NETHER_BRICK_STAIRS), new ItemStack(Items.NETHERBRICK, 3));
-			addRecipe(energy, new ItemStack(Blocks.QUARTZ_STAIRS), new ItemStack(Items.QUARTZ, 3));
-			addRecipe(energy, new ItemStack(Blocks.SANDSTONE_STAIRS), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 20);
-			addRecipe(energy, new ItemStack(Blocks.RED_SANDSTONE_STAIRS), new ItemStack(Blocks.SAND, 2, 1), ItemMaterial.dustNiter, 20);
-
-			/* SLABS */
-			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 4), new ItemStack(Items.BRICK, 2));
-			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 6), new ItemStack(Items.NETHERBRICK, 2));
-			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 7), new ItemStack(Items.QUARTZ, 2));
-			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 1), new ItemStack(Blocks.SAND), ItemMaterial.dustNiter, 20);
-			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB2, 1, 0), new ItemStack(Blocks.SAND, 1, 1), ItemMaterial.dustNiter, 20);
-
-			/* MISC */
-			addRecipe(energy / 2, new ItemStack(Items.FLOWER_POT), new ItemStack(Items.BRICK, 3));
-			addRecipe(energy / 2, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Blocks.SAND));
-
-			energy = DEFAULT_ENERGY * 3 / 2;
-
+			/* DIAMOND TOOLS / ARMOR */
 			ItemStack diamond = new ItemStack(Items.DIAMOND);
 
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_SWORD), diamond, 2);
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_PICKAXE), diamond, 3);
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_AXE), diamond, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_SWORD), diamond, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_PICKAXE), diamond, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_AXE), diamond, 1);
 			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_SHOVEL), diamond, 1);
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HOE), diamond, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HOE), diamond, 1);
 
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HELMET), diamond, 4);
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_CHESTPLATE), diamond, 7);
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_LEGGINGS), diamond, 6);
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_BOOTS), diamond, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HELMET), diamond, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_CHESTPLATE), diamond, 4);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_LEGGINGS), diamond, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_BOOTS), diamond, 2);
 
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HORSE_ARMOR), diamond, 4);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HORSE_ARMOR), diamond, 2);
 
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolBow, diamond, 2);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolFishingRod, diamond, 2);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShears, diamond, 2);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolSickle, diamond, 3);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolHammer, diamond, 5);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShield, diamond, 6);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolBow, diamond, 1);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolFishingRod, diamond, 1);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShears, diamond, 1);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolSickle, diamond, 1);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolHammer, diamond, 2);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShield, diamond, 3);
 		}
 
 		/* GENERAL SCAN */

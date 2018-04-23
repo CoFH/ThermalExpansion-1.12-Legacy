@@ -115,15 +115,15 @@ info.thermalexpansion.augment.machineChargerWireless.a.0=Allows for rapid wirele
 info.thermalexpansion.augment.machineChargerWireless.b.0=Will no longer accept, process, or recharge items.
 info.thermalexpansion.augment.machineChargerWireless.c.0=Cannot exceed charge rate of the Flux Capacitor itself.
 
+info.thermalexpansion.augment.machineCompactorCoin.0=Compactor: Specialization
+info.thermalexpansion.augment.machineCompactorCoin.a.0=Allows for the creation of currency.
+info.thermalexpansion.augment.machineCompactorCoin.a.1=Currency can be exchanged for goods and services.
+info.thermalexpansion.augment.machineCompactorCoin.c.0=Machine must be toggled into "Mint" mode.
+
 info.thermalexpansion.augment.machineCompactorGear.0=Compactor: Specialization
 info.thermalexpansion.augment.machineCompactorGear.a.0=Allows for the efficient creation of Gears.
 info.thermalexpansion.augment.machineCompactorGear.a.1=Gears are used in the construction of numerous things.
 info.thermalexpansion.augment.machineCompactorGear.c.0=Machine must be toggled into "Gear" mode.
-
-info.thermalexpansion.augment.machineCompactorMint.0=Compactor: Specialization
-info.thermalexpansion.augment.machineCompactorMint.a.0=Allows for the creation of currency.
-info.thermalexpansion.augment.machineCompactorMint.a.1=Currency can be exchanged for goods and services.
-info.thermalexpansion.augment.machineCompactorMint.c.0=Machine must be toggled into "Mint" mode.
 
 info.thermalexpansion.augment.machineCrafterInput.0=Sequential Fabricator: Functionality
 info.thermalexpansion.augment.machineCrafterInput.a.0=Adds intelligent auto-input capability.
@@ -347,8 +347,8 @@ item.thermalexpansion.augment.machineCentrifugeMobs.name=Enstabulation Apparatus
 item.thermalexpansion.augment.machineChargerRepair.name=Flux Reconstruction
 item.thermalexpansion.augment.machineChargerThroughput.name=Flux Linkage Concentrator
 item.thermalexpansion.augment.machineChargerWireless.name=Parabolic Flux Coupling
+item.thermalexpansion.augment.machineCompactorCoin.name=Numismatic Press
 item.thermalexpansion.augment.machineCompactorGear.name=Gearworking Die
-item.thermalexpansion.augment.machineCompactorMint.name=Numismatic Press
 item.thermalexpansion.augment.machineCrafterInput.name=Pattern Validation
 item.thermalexpansion.augment.machineCrafterTank.name=Fluidic Fabrication
 item.thermalexpansion.augment.machineCrucibleLava.name=Pyroconvective Loop

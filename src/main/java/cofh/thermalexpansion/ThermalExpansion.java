@@ -141,6 +141,8 @@ public class ThermalExpansion {
 
 	private void managerInitialize() {
 
+		SmelterManager.preInit();
+
 		ContentParser.parseFiles();
 
 		ItemFlorb.parseFlorbs();

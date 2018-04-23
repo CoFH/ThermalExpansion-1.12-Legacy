@@ -1,0 +1,23 @@
+{
+	"dynamo_magmatic": [
+		{
+			"fluid": "lava",
+			"energy_mod": 120
+		},
+		{
+			"fluid": "pyrotheum",
+			"energy": 2000000
+		},
+		{
+			"//": "IndustrialCraft 2"
+		},
+		{
+			"fluid": "ic2pahoehoe_lava",
+			"energy_mod": 80
+		},
+		{
+			"fluid": "ic2hot_coolant",
+			"energy": 40000
+		}
+	]
+}

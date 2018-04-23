@@ -1,0 +1,124 @@
+{
+	"smelter": [
+		{
+			"input": {
+				"ore": "dustIron",
+				"count": 1
+			},
+			"input2": {
+				"ore": "dustRedstone",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotConductiveIron",
+				"count": 1
+			},
+			"energy": 3800
+		},
+		{
+			"input": {
+				"ore": "ingotIron",
+				"count": 1
+			},
+			"input2": {
+				"ore": "dustRedstone",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotConductiveIron",
+				"count": 1
+			},
+			"energy": 4200
+		},
+		{
+			"input": {
+				"ore": "dustIron",
+				"count": 1
+			},
+			"input2": {
+				"ore": "enderpearl",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotPulsatingIron",
+				"count": 1
+			},
+			"energy": 6800
+		},
+		{
+			"input": {
+				"ore": "ingotIron",
+				"count": 1
+			},
+			"input2": {
+				"ore": "enderpearl",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotPulsatingIron",
+				"count": 1
+			},
+			"energy": 7200
+		},
+		{
+			"input": {
+				"ore": "dustGold",
+				"count": 1
+			},
+			"input2": {
+				"item": "minecraft:soul_sand",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotSoularium",
+				"count": 1
+			},
+			"energy": 6800
+		},
+		{
+			"input": {
+				"ore": "ingotGold",
+				"count": 1
+			},
+			"input2": {
+				"item": "minecraft:soul_sand",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotSoularium",
+				"count": 1
+			},
+			"energy": 7200
+		},
+		{
+			"input": {
+				"ore": "dustEnergeticAlloy",
+				"count": 1
+			},
+			"input2": {
+				"ore": "enderpearl",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotVibrantAlloy",
+				"count": 1
+			},
+			"energy": 6800
+		},
+		{
+			"input": {
+				"ore": "ingotEnergeticAlloy",
+				"count": 1
+			},
+			"input2": {
+				"ore": "enderpearl",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotVibrantAlloy",
+				"count": 1
+			},
+			"energy": 7200
+		}
+	]
+}

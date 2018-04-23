@@ -1,0 +1,194 @@
+{
+	"compactor": [
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotIron"
+			},
+			"output": {
+				"ore": "coinIron",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotGold"
+			},
+			"output": {
+				"ore": "coinGold",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotCopper"
+			},
+			"output": {
+				"ore": "coinCopper",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotTin"
+			},
+			"output": {
+				"ore": "coinTin",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotSilver"
+			},
+			"output": {
+				"ore": "coinSilver",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotLead"
+			},
+			"output": {
+				"ore": "coinLead",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotAluminum"
+			},
+			"output": {
+				"ore": "coinAluminum",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotNickel"
+			},
+			"output": {
+				"ore": "coinNickel",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotPlatinum"
+			},
+			"output": {
+				"ore": "coinPlatinum",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotIridium"
+			},
+			"output": {
+				"ore": "coinIridium",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotMithril"
+			},
+			"output": {
+				"ore": "coinMithril",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotSteel"
+			},
+			"output": {
+				"ore": "coinSteel",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotElectrum"
+			},
+			"output": {
+				"ore": "coinElectrum",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotInvar"
+			},
+			"output": {
+				"ore": "coinInvar",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotBronze"
+			},
+			"output": {
+				"ore": "coinBronze",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotConstantan"
+			},
+			"output": {
+				"ore": "coinConstantan",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotSignalum"
+			},
+			"output": {
+				"ore": "coinSignalum",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotLumium"
+			},
+			"output": {
+				"ore": "coinLumium",
+				"count": 3
+			}
+		},
+		{
+			"type": "coin",
+			"input": {
+				"ore": "ingotEnderium"
+			},
+			"output": {
+				"ore": "coinEnderium",
+				"count": 3
+			}
+		}
+	]
+}

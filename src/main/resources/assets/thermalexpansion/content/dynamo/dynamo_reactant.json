@@ -1,0 +1,74 @@
+{
+	"dynamo_reactant": [
+		{
+			"input": {
+				"item": "minecraft:sugar"
+			},
+			"fluid": "redstone",
+			"energy": 80000
+		},
+		{
+			"input": {
+				"item": "minecraft:nether_wart"
+			},
+			"fluid": "redstone",
+			"energy": 100000
+		},
+		{
+			"input": {
+				"item": "minecraft:gunpowder"
+			},
+			"fluid": "redstone",
+			"energy": 100000
+		},
+		{
+			"input": {
+				"ore": "dustBlaze"
+			},
+			"fluid": "redstone",
+			"energy": 150000
+		},
+		{
+			"input": {
+				"item": "minecraft:ghast_tear"
+			},
+			"fluid": "redstone",
+			"energy": 150000
+		},
+		{
+			"input": {
+				"item": "minecraft:sugar"
+			},
+			"fluid": "glowstone",
+			"energy": 100000
+		},
+		{
+			"input": {
+				"item": "minecraft:nether_wart"
+			},
+			"fluid": "glowstone",
+			"energy": 125000
+		},
+		{
+			"input": {
+				"item": "minecraft:gunpowder"
+			},
+			"fluid": "glowstone",
+			"energy": 125000
+		},
+		{
+			"input": {
+				"ore": "dustBlaze"
+			},
+			"fluid": "glowstone",
+			"energy": 200000
+		},
+		{
+			"input": {
+				"item": "minecraft:ghast_tear"
+			},
+			"fluid": "glowstone",
+			"energy": 200000
+		}
+	]
+}

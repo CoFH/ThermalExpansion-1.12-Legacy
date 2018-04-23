@@ -6,8 +6,6 @@ import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
-import cofh.thermalfoundation.block.BlockGlass;
-import cofh.thermalfoundation.block.BlockGlassAlloy;
 import cofh.thermalfoundation.init.TFEquipment.ArmorSet;
 import cofh.thermalfoundation.init.TFEquipment.ToolSet;
 import cofh.thermalfoundation.init.TFEquipment.ToolSetVanilla;
@@ -114,7 +112,7 @@ public class SmelterManager {
 		return !input.isEmpty() && lockSet.contains(convertInput(input));
 	}
 
-	public static void initialize() {
+	public static void preInit() {
 
 		/* FLUXES */
 		{
@@ -123,110 +121,9 @@ public class SmelterManager {
 			addFlux(ItemMaterial.crystalSlagRich);
 			addFlux(ItemMaterial.crystalCinnabar);
 		}
+	}
 
-		/* SPECIAL */
-		{
-			int energy = DEFAULT_ENERGY;
-
-			addRecipe(energy, new ItemStack(Blocks.COBBLESTONE, 2), BLOCK_SAND, new ItemStack(Blocks.STONEBRICK, 1), ItemMaterial.crystalSlag, 100);
-			addRecipe(energy, new ItemStack(Blocks.REDSTONE_ORE), BLOCK_SAND, new ItemStack(Items.REDSTONE, 8), ItemMaterial.crystalSlagRich, 50);
-			addRecipe(energy, new ItemStack(Blocks.LAPIS_ORE), BLOCK_SAND, new ItemStack(Items.DYE, 10, 4), ItemMaterial.crystalSlagRich, 50);
-			//addRecipe(energy, new ItemStack(Blocks.NETHERRACK, 2), BLOCK_SOUL_SAND, new ItemStack(Blocks.NETHER_BRICK, 2), ItemMaterial.dustSulfur, 25);
-			addRecipe(energy, new ItemStack(Blocks.QUARTZ_ORE), BLOCK_SOUL_SAND, new ItemStack(Blocks.QUARTZ_BLOCK), ItemMaterial.crystalSlagRich, 25);
-		}
-
-		/* GLASS */
-		{
-			ItemStack blockGlass;
-			int energy = DEFAULT_ENERGY;
-
-			blockGlass = ItemHelper.cloneStack(BlockGlass.glassLead, 2);
-			addAlloyRecipe(energy, "dustLead", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(energy, "ingotLead", 1, "dustObsidian", 4, blockGlass);
-
-			energy = DEFAULT_ENERGY * 3 / 2;
-
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustCopper, 1), ItemHelper.cloneStack(BlockGlass.glassCopper, 2));
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustTin, 1), ItemHelper.cloneStack(BlockGlass.glassTin, 2));
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustSilver, 1), ItemHelper.cloneStack(BlockGlass.glassSilver, 2));
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustAluminum, 1), ItemHelper.cloneStack(BlockGlass.glassAluminum, 2));
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustNickel, 1), ItemHelper.cloneStack(BlockGlass.glassNickel, 2));
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustPlatinum, 1), ItemHelper.cloneStack(BlockGlass.glassPlatinum, 2));
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustIridium, 1), ItemHelper.cloneStack(BlockGlass.glassIridium, 2));
-
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustSteel, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassSteel, 2));
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustElectrum, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassElectrum, 2));
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustInvar, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassInvar, 2));
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustBronze, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassBronze, 2));
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustConstantan, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassConstantan, 2));
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustSignalum, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassSignalum, 2));
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustLumium, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassLumium, 2));
-			addRecipe(energy, blockGlass, ItemHelper.cloneStack(ItemMaterial.dustEnderium, 1), ItemHelper.cloneStack(BlockGlassAlloy.glassEnderium, 2));
-
-			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassCopper, 2);
-			//			addAlloyRecipe(energy, "dustCopper", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotCopper", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassTin, 2);
-			//			addAlloyRecipe(energy, "dustTin", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotTin", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassSilver, 2);
-			//			addAlloyRecipe(energy, "dustSilver", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotSilver", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassAluminum, 2);
-			//			addAlloyRecipe(energy, "dustAluminum", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotAluminum", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassNickel, 2);
-			//			addAlloyRecipe(energy, "dustNickel", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotNickel", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassPlatinum, 2);
-			//			addAlloyRecipe(energy, "dustPlatinum", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotPlatinum", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassIridium, 2);
-			//			addAlloyRecipe(energy, "dustIridium", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotIridium", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassMithril, 2);
-			//			addAlloyRecipe(energy, "dustMithril", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "dustMithril", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassSteel, 2);
-			//			addAlloyRecipe(energy, "dustSteel", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotSteel", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassElectrum, 2);
-			//			addAlloyRecipe(energy, "dustElectrum", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotElectrum", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassInvar, 2);
-			//			addAlloyRecipe(energy, "dustInvar", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotInvar", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassBronze, 2);
-			//			addAlloyRecipe(energy, "dustBronze", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotBronze", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassConstantan, 2);
-			//			addAlloyRecipe(energy, "dustConstantan", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotConstantan", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassSignalum, 2);
-			//			addAlloyRecipe(energy, "dustSignalum", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotSignalum", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassLumium, 2);
-			//			addAlloyRecipe(energy, "dustLumium", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotLumium", 1, "dustObsidian", 4, blockGlass);
-			//
-			//			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassEnderium, 2);
-			//			addAlloyRecipe(energy, "dustEnderium", 1, "dustObsidian", 4, blockGlass);
-			//			addAlloyRecipe(energy, "ingotEnderium", 1, "dustObsidian", 4, blockGlass);
-		}
+	public static void initialize() {
 
 		/* ORES */
 		{
@@ -256,134 +153,78 @@ public class SmelterManager {
 			addDefaultOreDictionaryRecipe(null, "dustEnderium", ItemMaterial.ingotEnderium);
 		}
 
-		/* ALLOYS */
-		{
-			// Dust = 800, Ingot = 1200
-
-			ItemStack stackSteel = ItemHelper.cloneStack(ItemMaterial.ingotSteel, 1);
-			addAlloyRecipe(4000, "dustIron", 1, "dustCoal", 4, stackSteel);
-			addAlloyRecipe(4400, "ingotIron", 1, "dustCoal", 4, stackSteel);
-			addAlloyRecipe(4000, "dustIron", 1, "dustCharcoal", 4, stackSteel);
-			addAlloyRecipe(4400, "ingotIron", 1, "dustCharcoal", 4, stackSteel);
-
-			addAlloyRecipe(2000, "dustIron", 1, "fuelCoke", 1, stackSteel);
-			addAlloyRecipe(2400, "ingotIron", 1, "fuelCoke", 1, stackSteel);
-
-			ItemStack stackElectrum = ItemHelper.cloneStack(ItemMaterial.ingotElectrum, 2);
-			addAlloyRecipe(1600, "dustSilver", 1, "dustGold", 1, stackElectrum);
-			addAlloyRecipe(2000, "dustSilver", 1, "ingotGold", 1, stackElectrum);
-			addAlloyRecipe(2000, "ingotSilver", 1, "dustGold", 1, stackElectrum);
-			addAlloyRecipe(2400, "ingotSilver", 1, "ingotGold", 1, stackElectrum);
-
-			ItemStack stackInvar = ItemHelper.cloneStack(ItemMaterial.ingotInvar, 3);
-			addAlloyRecipe(2400, "dustNickel", 1, "dustIron", 2, stackInvar);
-			addAlloyRecipe(3000, "dustNickel", 1, "ingotIron", 2, stackInvar);
-			addAlloyRecipe(3000, "ingotNickel", 1, "dustIron", 2, stackInvar);
-			addAlloyRecipe(3600, "ingotNickel", 1, "ingotIron", 2, stackInvar);
-
-			ItemStack stackBronze = ItemHelper.cloneStack(ItemMaterial.ingotBronze, 4);
-			addAlloyRecipe(3200, "dustTin", 1, "dustCopper", 3, stackBronze);
-			addAlloyRecipe(4000, "dustTin", 1, "ingotCopper", 3, stackBronze);
-			addAlloyRecipe(4000, "ingotTin", 1, "dustCopper", 3, stackBronze);
-			addAlloyRecipe(4800, "ingotTin", 1, "ingotCopper", 3, stackBronze);
-
-			ItemStack stackConstantan = ItemHelper.cloneStack(ItemMaterial.ingotConstantan, 2);
-			addAlloyRecipe(1600, "dustCopper", 1, "dustNickel", 1, stackConstantan);
-			addAlloyRecipe(2000, "dustCopper", 1, "ingotNickel", 1, stackConstantan);
-			addAlloyRecipe(2000, "ingotCopper", 1, "dustNickel", 1, stackConstantan);
-			addAlloyRecipe(2400, "ingotCopper", 1, "ingotNickel", 1, stackConstantan);
-		}
-
 		/* RECYCLING */
 		{
 			int energy = DEFAULT_ENERGY * 3 / 2;
+			// Output is 1/2, round down, minimum of 1.
 
-			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.COMPASS), new ItemStack(Items.IRON_INGOT, 4), ItemMaterial.crystalSlagRich, 10);
-			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.FLINT_AND_STEEL), new ItemStack(Items.IRON_INGOT), ItemMaterial.crystalSlag, 90);
-
+			/* IRON TOOLS / ARMOR */
 			ItemStack ingot = new ItemStack(Items.IRON_INGOT);
-			// no minecart, rails. Railcraft causes resource duplication there
-			addRecycleRecipe(energy, new ItemStack(Items.BUCKET), ingot, 3);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_DOOR), ingot, 2);
-			addRecycleRecipe(energy, new ItemStack(Items.CAULDRON), ingot, 7);
-			addRecycleRecipe(energy, new ItemStack(Blocks.HOPPER), ingot, 5);
-			addRecycleRecipe(energy, new ItemStack(Blocks.IRON_BARS, 8), ingot, 3, false);
-			addRecycleRecipe(energy, new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), ingot, 2);
 
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_SWORD), ingot, 2);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_PICKAXE), ingot, 3);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_AXE), ingot, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_SWORD), ingot, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_PICKAXE), ingot, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_AXE), ingot, 1);
 			addRecycleRecipe(energy, new ItemStack(Items.IRON_SHOVEL), ingot, 1);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_HOE), ingot, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_HOE), ingot, 1);
 
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_HELMET), ingot, 5);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_CHESTPLATE), ingot, 8);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_LEGGINGS), ingot, 7);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_BOOTS), ingot, 4);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_HELMET), ingot, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_CHESTPLATE), ingot, 4);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_LEGGINGS), ingot, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_BOOTS), ingot, 2);
 
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_HORSE_ARMOR), ingot, 4);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_HORSE_ARMOR), ingot, 2);
 
-			for (int i = 0; i < 3; i++) {
-				addRecycleRecipe(4800 + 1200 * (3 - i), new ItemStack(Blocks.ANVIL, 1, i), ingot, 4 + 8 * (3 - i), false);
-			}
+			/* GOLD TOOLS / ARMOR */
 			ingot = new ItemStack(Items.GOLD_INGOT);
 
-			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.CLOCK), new ItemStack(Items.GOLD_INGOT, 4), ItemMaterial.crystalSlagRich, 10);
-			addRecycleRecipe(energy, new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE), ingot, 2);
-
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_SWORD), ingot, 2);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_PICKAXE), ingot, 3);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_AXE), ingot, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_SWORD), ingot, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_PICKAXE), ingot, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_AXE), ingot, 1);
 			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_SHOVEL), ingot, 1);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HOE), ingot, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HOE), ingot, 1);
 
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HELMET), ingot, 5);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_CHESTPLATE), ingot, 8);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_LEGGINGS), ingot, 7);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_BOOTS), ingot, 4);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HELMET), ingot, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_CHESTPLATE), ingot, 4);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_LEGGINGS), ingot, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_BOOTS), ingot, 2);
 
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HORSE_ARMOR), ingot, 4);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HORSE_ARMOR), ingot, 2);
 
+			/* TF TOOLS / ARMOR */
 			for (ToolSetVanilla tool : new ToolSetVanilla[] { ToolSetVanilla.IRON, ToolSetVanilla.GOLD }) {
-				ingot = OreDictionary.getOres(tool.ingot, false).get(0);
+				ingot = ItemHelper.getOre(tool.ingot);
 
-				addRecycleRecipe(energy, tool.toolBow, ingot, 2);
-				addRecycleRecipe(energy, tool.toolFishingRod, ingot, 2);
-				addRecycleRecipe(energy, tool.toolShears, ingot, 2);
-				addRecycleRecipe(energy, tool.toolSickle, ingot, 3);
-				addRecycleRecipe(energy, tool.toolHammer, ingot, 5);
-				addRecycleRecipe(energy, tool.toolShield, ingot, 6);
+				addRecycleRecipe(energy, tool.toolBow, ingot, 1);
+				addRecycleRecipe(energy, tool.toolFishingRod, ingot, 1);
+				addRecycleRecipe(energy, tool.toolShears, ingot, 1);
+				addRecycleRecipe(energy, tool.toolSickle, ingot, 1);
+				addRecycleRecipe(energy, tool.toolHammer, ingot, 2);
+				addRecycleRecipe(energy, tool.toolShield, ingot, 3);
 			}
 			for (ToolSet tool : ToolSet.values()) {
-				ingot = OreDictionary.getOres(tool.ingot, false).get(0);
+				ingot = ItemHelper.getOre(tool.ingot);
 
-				addRecycleRecipe(energy, tool.toolSword, ingot, 2);
-				addRecycleRecipe(energy, tool.toolPickaxe, ingot, 3);
-				addRecycleRecipe(energy, tool.toolAxe, ingot, 3);
+				addRecycleRecipe(energy, tool.toolSword, ingot, 1);
+				addRecycleRecipe(energy, tool.toolPickaxe, ingot, 1);
+				addRecycleRecipe(energy, tool.toolAxe, ingot, 1);
 				addRecycleRecipe(energy, tool.toolShovel, ingot, 1);
-				addRecycleRecipe(energy, tool.toolHoe, ingot, 2);
-				addRecycleRecipe(energy, tool.toolBow, ingot, 2);
-				addRecycleRecipe(energy, tool.toolFishingRod, ingot, 2);
-				addRecycleRecipe(energy, tool.toolShears, ingot, 2);
-				addRecycleRecipe(energy, tool.toolSickle, ingot, 3);
-				addRecycleRecipe(energy, tool.toolHammer, ingot, 5);
-				addRecycleRecipe(energy, tool.toolShield, ingot, 6);
+				addRecycleRecipe(energy, tool.toolHoe, ingot, 1);
+				addRecycleRecipe(energy, tool.toolBow, ingot, 1);
+				addRecycleRecipe(energy, tool.toolFishingRod, ingot, 1);
+				addRecycleRecipe(energy, tool.toolShears, ingot, 1);
+				addRecycleRecipe(energy, tool.toolSickle, ingot, 1);
+				addRecycleRecipe(energy, tool.toolHammer, ingot, 2);
+				addRecycleRecipe(energy, tool.toolShield, ingot, 3);
 			}
 			for (ArmorSet armor : ArmorSet.values()) {
-				ingot = OreDictionary.getOres(armor.ingot, false).get(0);
+				ingot = ItemHelper.getOre(armor.ingot);
 
-				addRecycleRecipe(energy, armor.armorHelmet, ingot, 4);
-				addRecycleRecipe(energy, armor.armorChestplate, ingot, 7);
-				addRecycleRecipe(energy, armor.armorLegs, ingot, 6);
-				addRecycleRecipe(energy, armor.armorBoots, ingot, 3);
+				addRecycleRecipe(energy, armor.armorHelmet, ingot, 2);
+				addRecycleRecipe(energy, armor.armorChestplate, ingot, 4);
+				addRecycleRecipe(energy, armor.armorLegs, ingot, 3);
+				addRecycleRecipe(energy, armor.armorBoots, ingot, 2);
 			}
 		}
-
-		/* LOAD RECIPES */
-		loadRecipes();
-	}
-
-	public static void loadRecipes() {
 
 		/* GENERAL SCAN */
 		{
@@ -402,41 +243,6 @@ public class SmelterManager {
 						addDefaultOreDictionaryRecipe(oreType);
 					}
 				}
-			}
-		}
-
-		/* ENDER IO */
-		{
-			if (ItemHelper.oreNameExists("ingotConductiveIron")) {
-				ItemStack output = OreDictionary.getOres("ingotConductiveIron", false).get(0);
-				addAlloyRecipe(1600, "dustIron", 1, "dustRedstone", 1, output);
-				addAlloyRecipe(2000, "ingotIron", 1, "dustRedstone", 1, output);
-			}
-			if (ItemHelper.oreNameExists("ingotPulsatingIron")) {
-				ItemStack output = OreDictionary.getOres("ingotPulsatingIron", false).get(0);
-				addAlloyRecipe(2000, "dustIron", 1, "enderpearl", 1, output);
-				addAlloyRecipe(2400, "ingotIron", 1, "enderpearl", 1, output);
-			}
-			if (ItemHelper.oreNameExists("ingotVibrantAlloy")) {
-				ItemStack output = OreDictionary.getOres("ingotVibrantAlloy", false).get(0);
-				addAlloyRecipe(2000, "dustEnergeticAlloy", 1, "enderpearl", 1, output);
-				addAlloyRecipe(2400, "ingotEnergeticAlloy", 1, "enderpearl", 1, output);
-			}
-			if (ItemHelper.oreNameExists("ingotSoularium")) {
-				ItemStack output = OreDictionary.getOres("ingotSoularium", false).get(0);
-				addAlloyRecipe(2000, ItemMaterial.dustGold, BLOCK_SOUL_SAND, output);
-				addAlloyRecipe(2400, ItemMaterial.ingotGold, BLOCK_SOUL_SAND, output);
-			}
-		}
-
-		/* TINKERS' CONSTRUCT */
-		{
-			addDefaultOreDictionaryRecipe("cobalt");
-			addDefaultOreDictionaryRecipe("ardite");
-
-			if (ItemHelper.oreNameExists("ingotManyullyn")) {
-				ItemStack output = OreDictionary.getOres("ingotManyullyn", false).get(0);
-				addAlloyRecipe(2400, "ingotCobalt", 1, "ingotArdite", 1, output);
 			}
 		}
 	}
@@ -474,7 +280,7 @@ public class SmelterManager {
 	/* ADD RECIPES */
 	public static SmelterRecipe addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
-		if (primaryInput.isEmpty() || secondaryInput.isEmpty() || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
+		if (primaryInput.isEmpty() || secondaryInput.isEmpty() || primaryOutput.isEmpty() || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
 			return null;
 		}
 		SmelterRecipe recipe = new SmelterRecipe(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryOutput.isEmpty() ? 0 : secondaryChance, energy);
@@ -630,7 +436,7 @@ public class SmelterManager {
 	public static void addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize, boolean wildcard) {
 
 		ItemStack recycleInput = wildcard ? input.copy() : new ItemStack(input.getItem(), 1, OreDictionary.WILDCARD_VALUE);
-		addRecipe(energy, recycleInput, BLOCK_SAND, ItemHelper.cloneStack(output, outputSize), ItemMaterial.crystalSlag, Math.min(100, outputSize * 5 + 5));
+		addRecipe(energy, recycleInput, BLOCK_SAND, ItemHelper.cloneStack(output, outputSize), ItemMaterial.crystalSlag, Math.min(50, outputSize * 5 + 5));
 	}
 
 	private static boolean isStandardOre(String oreName) {

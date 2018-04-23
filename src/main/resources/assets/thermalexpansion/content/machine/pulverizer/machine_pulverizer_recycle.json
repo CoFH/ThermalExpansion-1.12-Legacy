@@ -1,0 +1,62 @@
+{
+	"pulverizer": [
+		{
+			"input": {
+				"item": "minecraft:flower_pot"
+			},
+			"output": {
+				"item": "minecraft:brick",
+				"count": 3
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:glass"
+			},
+			"output": {
+				"item": "minecraft:sand"
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:glass_bottle"
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:glowstone"
+			},
+			"output": {
+				"ore": "dustGlowstone",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:magma"
+			},
+			"output": {
+				"item": "minecraft:magma_cream",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:redstone_lamp"
+			},
+			"output": {
+				"ore": "dustRedstone",
+				"count": 4
+			},
+			"output2": {
+				"ore": "dustGlowstone",
+				"count": 2
+			}
+		}
+	]
+}

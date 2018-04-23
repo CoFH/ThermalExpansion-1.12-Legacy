@@ -1,0 +1,81 @@
+{
+	"refinery": [
+		{
+			"type": "fossil_fuel",
+			"input": {
+				"fluid": "coal",
+				"amount": 200
+			},
+			"output": {
+				"fluid": "refined_oil",
+				"amount": 100
+			},
+			"output2": {
+				"constant": "tar",
+				"chance": 75
+			}
+		},
+		{
+			"type": "fossil_fuel",
+			"input": {
+				"fluid": "crude_oil",
+				"amount": 200
+			},
+			"output": {
+				"fluid": "refined_oil",
+				"amount": 150
+			},
+			"output2": {
+				"constant": "tar",
+				"chance": 50
+			}
+		},
+		{
+			"type": "fossil_fuel",
+			"input": {
+				"fluid": "refined_oil",
+				"amount": 150
+			},
+			"output": {
+				"fluid": "refined_fuel",
+				"amount": 100
+			},
+			"output2": {
+				"ore": "dustSulfur",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"fluid": "resin",
+				"amount": 100
+			},
+			"output": {
+				"fluid": "tree_oil",
+				"amount": 50
+			},
+			"output2": {
+				"constant": "rosin",
+				"chance": 75
+			}
+		},
+		{
+			"//": "Immersive Petroleum"
+		},
+		{
+			"type": "fossil_fuel",
+			"input": {
+				"fluid": "oil",
+				"amount": 200
+			},
+			"output": {
+				"fluid": "refined_oil",
+				"amount": 150
+			},
+			"output2": {
+				"constant": "tar",
+				"chance": 50
+			}
+		}
+	]
+}

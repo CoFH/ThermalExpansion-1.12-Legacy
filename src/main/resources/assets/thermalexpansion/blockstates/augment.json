@@ -79,9 +79,9 @@
 					"layer0": "thermalexpansion:items/augment/machine_insolator_monoculture"
 				}
 			},
-			"machinecompactormint": {
+			"machinecompactorcoin": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/machine_compactor_mint"
+					"layer0": "thermalexpansion:items/augment/machine_compactor_coin"
 				}
 			},
 			"machinecompactorgear": {

@@ -1,0 +1,173 @@
+{
+	"pulverizer": [
+		{
+			"input": {
+				"item": "minecraft:glass"
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 0
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 1
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 2
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 3
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 4
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 5
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 6
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 7
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 8
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 9
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 10
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 11
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 12
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 13
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 14
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_glass",
+				"data": 15
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"energy_mod": 75
+		}
+	]
+}

@@ -223,7 +223,7 @@ public class InsolatorManager {
 	/* ADD RECIPES */
 	public static InsolatorRecipe addRecipe(int energy, int water, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, Type type) {
 
-		if (primaryInput.isEmpty() || secondaryInput.isEmpty() || energy <= 0 || water <= 0 || recipeExists(primaryInput, secondaryInput)) {
+		if (primaryInput.isEmpty() || secondaryInput.isEmpty() || primaryOutput.isEmpty() || energy <= 0 || water <= 0 || recipeExists(primaryInput, secondaryInput)) {
 			return null;
 		}
 		InsolatorRecipe recipe = new InsolatorRecipe(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryOutput.isEmpty() ? 0 : secondaryChance, energy, water, type);

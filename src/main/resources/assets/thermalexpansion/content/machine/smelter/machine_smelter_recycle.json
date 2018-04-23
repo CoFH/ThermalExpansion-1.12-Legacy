@@ -1,0 +1,182 @@
+{
+	"smelter": [
+		{
+			"input": {
+				"item": "minecraft:anvil"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 31
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:anvil",
+				"data": 1
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 23
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 75
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:anvil",
+				"data": 2
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 15
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 100
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:bucket"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 3
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 15
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:cauldron"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 7
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 35
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:clock"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotGold",
+				"count": 4
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 20
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:compass"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 4
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 20
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:heavy_weighted_pressure_plate"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 2
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:hopper"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 5
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 25
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:iron_door"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 2
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:light_weighted_pressure_plate"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotGold",
+				"count": 2
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 10
+			}
+		}
+	]
+}

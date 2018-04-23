@@ -45,7 +45,7 @@ public class CompactorParser extends BaseParser {
 						break;
 					case MINT:
 					case COIN:
-						mode = Mode.MINT;
+						mode = Mode.COIN;
 						break;
 					case GEAR:
 						mode = Mode.GEAR;

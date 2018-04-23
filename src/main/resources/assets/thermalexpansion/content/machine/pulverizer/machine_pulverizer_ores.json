@@ -1,0 +1,122 @@
+{
+	"pulverizer": [
+		{
+			"input": {
+				"ore": "oreCoal"
+			},
+			"output": {
+				"item": "minecraft:coal",
+				"count": 3
+			},
+			"output2": {
+				"ore": "dustCoal",
+				"chance": 25
+			}
+		},
+		{
+			"input": {
+				"ore": "oreGold"
+			},
+			"output": {
+				"ore": "dustGold",
+				"count": 2
+			},
+			"output2": {
+				"constant": "cinnabar",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"ore": "oreIron"
+			},
+			"output": {
+				"ore": "dustIron",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustNickel",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"ore": "oreLapis"
+			},
+			"output": {
+				"ore": "gemLapis",
+				"count": 8
+			},
+			"output2": {
+				"ore": "dustSulfur",
+				"chance": 20
+			}
+		},
+		{
+			"input": {
+				"ore": "oreQuartz"
+			},
+			"output": {
+				"ore": "gemQuartz",
+				"count": 3
+			},
+			"output2": {
+				"ore": "dustSulfur",
+				"chance": 15
+			}
+		},
+		{
+			"input": {
+				"ore": "oreRedstone"
+			},
+			"output": {
+				"ore": "dustRedstone",
+				"count": 6
+			},
+			"output2": {
+				"ore": "crystalCinnabar",
+				"chance": 25
+			}
+		},
+		{
+			"input": {
+				"ore": "oreApatite"
+			},
+			"output": {
+				"ore": "gemApatite",
+				"count": 12
+			},
+			"output2": {
+				"ore": "dustSulfur",
+				"chance": 15
+			}
+		},
+		{
+			"input": {
+				"ore": "oreNiter"
+			},
+			"output": {
+				"ore": "dustNiter",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"ore": "oreSaltpeter"
+			},
+			"output": {
+				"ore": "dustSaltpeter",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"ore": "oreSulfur"
+			},
+			"output": {
+				"ore": "dustSulfur",
+				"count": 6
+			}
+		}
+	]
+}

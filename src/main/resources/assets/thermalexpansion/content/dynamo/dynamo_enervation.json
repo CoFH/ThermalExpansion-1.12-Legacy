@@ -1,0 +1,16 @@
+{
+	"dynamo_enervation": [
+		{
+			"input": {
+				"ore": "dustRedstone"
+			},
+			"energy": 64000
+		},
+		{
+			"input": {
+				"ore": "blockRedstone"
+			},
+			"energy": 640000
+		}
+	]
+}

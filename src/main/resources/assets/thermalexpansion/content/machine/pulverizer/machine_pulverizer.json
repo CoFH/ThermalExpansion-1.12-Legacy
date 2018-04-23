@@ -1,0 +1,192 @@
+{
+	"pulverizer": [
+		{
+			"input": {
+				"item": "minecraft:coal"
+			},
+			"output": {
+				"ore": "dustCoal"
+			},
+			"output2": {
+				"ore": "dustSulfur",
+				"chance": 15
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:coal",
+				"data": 1
+			},
+			"output": {
+				"ore": "dustCharcoal"
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:cobblestone"
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"output2": {
+				"item": "minecraft:gravel",
+				"chance": 15
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:bone"
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 15,
+				"count": 6
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:gravel"
+			},
+			"output": {
+				"item": "minecraft:flint"
+			},
+			"output2": {
+				"item": "minecraft:sand",
+				"chance": 15
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:netherrack"
+			},
+			"output": {
+				"item": "minecraft:gravel"
+			},
+			"output2": {
+				"ore": "dustSulfur",
+				"chance": 15
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:obsidian"
+			},
+			"output": {
+				"ore": "dustObsidian",
+				"count": 4
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"item": "minecraft:reeds"
+			},
+			"output": {
+				"item": "minecraft:sugar",
+				"data": 2
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:stone"
+			},
+			"output": {
+				"item": "minecraft:gravel"
+			},
+			"output2": {
+				"item": "minecraft:sand",
+				"chance": 15
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stone_brick"
+			},
+			"output": {
+				"item": "minecraft:stone_brick",
+				"data": 2
+			},
+			"energy_mod": 25
+		},
+		{
+			"input": {
+				"ore": "logWood"
+			},
+			"output": {
+				"ore": "dustWood",
+				"count": 8
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"ore": "plankWood"
+			},
+			"output": {
+				"ore": "dustWood",
+				"count": 2
+			},
+			"energy_mod": 25
+		},
+		{
+			"input": {
+				"ore": "rodBlaze"
+			},
+			"output": {
+				"ore": "dustBlaze",
+				"count": 4
+			},
+			"output2": {
+				"ore": "dustSulfur",
+				"chance": 50
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"ore": "rodBlizz"
+			},
+			"output": {
+				"ore": "dustBlizz",
+				"count": 4
+			},
+			"output2": {
+				"item": "minecraft:snowball",
+				"chance": 50
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"ore": "rodBlitz"
+			},
+			"output": {
+				"ore": "dustBlitz",
+				"count": 4
+			},
+			"output2": {
+				"ore": "dustSaltpeter",
+				"chance": 50
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"ore": "rodBasalz"
+			},
+			"output": {
+				"ore": "dustBasalz",
+				"count": 4
+			},
+			"output2": {
+				"ore": "dustObsidian",
+				"chance": 50
+			},
+			"energy_mod": 75
+		}
+	]
+}

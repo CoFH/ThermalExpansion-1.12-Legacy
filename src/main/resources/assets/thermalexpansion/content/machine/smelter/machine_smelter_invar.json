@@ -1,0 +1,64 @@
+{
+	"smelter": [
+		{
+			"input": {
+				"ore": "dustIron",
+				"count": 2
+			},
+			"input2": {
+				"ore": "dustNickel",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotInvar",
+				"count": 3
+			},
+			"energy": 2400
+		},
+		{
+			"input": {
+				"ore": "dustIron",
+				"count": 2
+			},
+			"input2": {
+				"ore": "ingotNickel",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotInvar",
+				"count": 3
+			},
+			"energy": 2800
+		},
+		{
+			"input": {
+				"ore": "ingotIron",
+				"count": 2
+			},
+			"input2": {
+				"ore": "dustNickel",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotInvar",
+				"count": 3
+			},
+			"energy": 3200
+		},
+		{
+			"input": {
+				"ore": "ingotIron",
+				"count": 2
+			},
+			"input2": {
+				"ore": "ingotNickel",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotInvar",
+				"count": 3
+			},
+			"energy": 3600
+		}
+	]
+}

@@ -1,0 +1,36 @@
+{
+	"dynamo_reactant": [
+		{
+			"type": "elemental",
+			"input": {
+				"ore": "dustPyrotheum"
+			},
+			"fluid": "cryotheum",
+			"energy": 400000
+		},
+		{
+			"type": "elemental",
+			"input": {
+				"ore": "dustCryotheum"
+			},
+			"fluid": "pyrotheum",
+			"energy": 400000
+		},
+		{
+			"type": "elemental",
+			"input": {
+				"ore": "dustAerotheum"
+			},
+			"fluid": "petrotheum",
+			"energy": 400000
+		},
+		{
+			"type": "elemental",
+			"input": {
+				"ore": "dustPetrotheum"
+			},
+			"fluid": "aerotheum",
+			"energy": 400000
+		}
+	]
+}

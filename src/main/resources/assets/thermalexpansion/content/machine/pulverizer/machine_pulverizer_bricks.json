@@ -1,0 +1,147 @@
+{
+	"pulverizer": [
+		{
+			"input": {
+				"item": "minecraft:brick_block"
+			},
+			"output": {
+				"item": "minecraft:brick",
+				"count": 4
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:nether_brick"
+			},
+			"output": {
+				"item": "minecraft:netherbrick",
+				"count": 4
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:quartz_block",
+				"data": 0
+			},
+			"output": {
+				"item": "minecraft:quartz",
+				"count": 4
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:quartz_block",
+				"data": 1
+			},
+			"output": {
+				"item": "minecraft:quartz",
+				"count": 4
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:quartz_block",
+				"data": 2
+			},
+			"output": {
+				"item": "minecraft:quartz",
+				"count": 4
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:sandstone",
+				"data": 0
+			},
+			"output": {
+				"item": "minecraft:sand",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustSaltpeter",
+				"chance": 30
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:sandstone",
+				"data": 1
+			},
+			"output": {
+				"item": "minecraft:sand",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustSaltpeter",
+				"chance": 30
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:sandstone",
+				"data": 2
+			},
+			"output": {
+				"item": "minecraft:sand",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustSaltpeter",
+				"chance": 30
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:red_sandstone",
+				"data": 0
+			},
+			"output": {
+				"item": "minecraft:sand",
+				"data": 1
+			},
+			"output2": {
+				"ore": "dustSaltpeter",
+				"chance": 30
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:red_sandstone",
+				"data": 1
+			},
+			"output": {
+				"item": "minecraft:sand",
+				"data": 1
+			},
+			"output2": {
+				"ore": "dustSaltpeter",
+				"chance": 30
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:red_sandstone",
+				"data": 2
+			},
+			"output": {
+				"item": "minecraft:sand",
+				"data": 1
+			},
+			"output2": {
+				"ore": "dustSaltpeter",
+				"chance": 30
+			},
+			"energy_mod": 75
+		}
+	]
+}

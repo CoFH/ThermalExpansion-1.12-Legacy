@@ -6,14 +6,14 @@ gui.thermalexpansion.device.item_buffer.incInput=搬入量を増やす:
 gui.thermalexpansion.device.item_buffer.incOutput=搬出量を増やす:
 
 gui.thermalexpansion.jei.compactor.modeGear=歯車
-gui.thermalexpansion.jei.compactor.modeMint=造幣
+gui.thermalexpansion.jei.compactor.modeCoin=造幣
 gui.thermalexpansion.jei.compactor.modePress=鈑金
 gui.thermalexpansion.jei.compactor.modeStorage=ブロック化
 gui.thermalexpansion.jei.transposer.modeEmpty=吸出
 gui.thermalexpansion.jei.transposer.modeFill=充填
 
 gui.thermalexpansion.machine.compactor.modeGear=歯車成型モード
-gui.thermalexpansion.machine.compactor.modeMint=造幣局モード
+gui.thermalexpansion.machine.compactor.modeCoin=造幣局モード
 gui.thermalexpansion.machine.compactor.modePress=鈑金モード
 gui.thermalexpansion.machine.compactor.modeStorage=ブロック化モード
 
@@ -105,15 +105,15 @@ info.thermalexpansion.augment.machineChargerWireless.a.0=フラックスキャ�
 info.thermalexpansion.augment.machineChargerWireless.b.0=アイテムを直接搬入などができなくなります
 info.thermalexpansion.augment.machineChargerWireless.c.0=フラックスキャパシタ自身の充電速度を超えることはありません
 
+info.thermalexpansion.augment.machineCompactorCoin.0=圧縮機: 特化
+info.thermalexpansion.augment.machineCompactorCoin.a.0=造幣局にある機械になります
+info.thermalexpansion.augment.machineCompactorCoin.a.1=コインはサービスを受けたり物品と交換することが出来ます
+info.thermalexpansion.augment.machineCompactorCoin.c.0=造幣局モードを選ぶとコインを作ることが出来ます
+
 info.thermalexpansion.augment.machineCompactorGear.0=圧縮機: 特化
 info.thermalexpansion.augment.machineCompactorGear.a.0=歯車を効率的に作成できるようになります
 info.thermalexpansion.augment.machineCompactorGear.a.1=歯車はいたるところで使用されています
 info.thermalexpansion.augment.machineCompactorGear.c.0=歯車成型モードを選ぶと歯車を作ることが出来ます
-
-info.thermalexpansion.augment.machineCompactorMint.0=圧縮機: 特化
-info.thermalexpansion.augment.machineCompactorMint.a.0=造幣局にある機械になります
-info.thermalexpansion.augment.machineCompactorMint.a.1=コインはサービスを受けたり物品と交換することが出来ます
-info.thermalexpansion.augment.machineCompactorMint.c.0=造幣局モードを選ぶとコインを作ることが出来ます
 
 info.thermalexpansion.augment.machineCrucibleAlloy.0=溶岩るつぼ: 特化
 info.thermalexpansion.augment.machineCrucibleAlloy.a.0= ? 合金の冶金に特化します
@@ -320,7 +320,7 @@ item.thermalexpansion.augment.machineChargerRepair.name=フラックス修繕
 item.thermalexpansion.augment.machineChargerThroughput.name=フラックス結合凝縮
 item.thermalexpansion.augment.machineChargerWireless.name=パラボラフラックス連結
 item.thermalexpansion.augment.machineCompactorGear.name=歯車式金型
-item.thermalexpansion.augment.machineCompactorMint.name=造幣用金型
+item.thermalexpansion.augment.machineCompactorCoin.name=造幣用金型
 item.thermalexpansion.augment.machineCrucibleLava.name=熱伝導ループ
 item.thermalexpansion.augment.machineFurnaceFood.name=トリベクション室
 item.thermalexpansion.augment.machineFurnaceOre.name=フラックス陽極酸化

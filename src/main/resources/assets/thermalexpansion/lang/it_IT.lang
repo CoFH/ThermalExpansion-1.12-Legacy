@@ -8,14 +8,14 @@ gui.thermalexpansion.device.item_buffer.incOutput=Aumenta l'Uscita di
 gui.thermalexpansion.jei.centrifuge.mobChance=Probabilità Base
 gui.thermalexpansion.jei.centrifuge.mobNotice=Fino alla quantità scritta possono essere prodotti.
 gui.thermalexpansion.jei.compactor.modeGear=Ingranaggio
-gui.thermalexpansion.jei.compactor.modeMint=Zecca
+gui.thermalexpansion.jei.compactor.modeCoin=Zecca
 gui.thermalexpansion.jei.compactor.modePress=Pressa
 gui.thermalexpansion.jei.compactor.modeStorage=Immagazzinamento
 gui.thermalexpansion.jei.transposer.modeEmpty=Svuota
 gui.thermalexpansion.jei.transposer.modeFill=Riempi
 
 gui.thermalexpansion.machine.compactor.modeGear=Modalità: Ingranaggio
-gui.thermalexpansion.machine.compactor.modeMint=Modalità: Zecca
+gui.thermalexpansion.machine.compactor.modeCoin=Modalità: Zecca
 gui.thermalexpansion.machine.compactor.modePress=Modalità: Pressa
 gui.thermalexpansion.machine.compactor.modeStorage=Modalità: Immagazzinamento
 
@@ -116,15 +116,15 @@ info.thermalexpansion.augment.machineChargerWireless.a.0=Permette la rapida rica
 info.thermalexpansion.augment.machineChargerWireless.b.0=Non accetterà, processerà o ricaricherà più oggetti.
 info.thermalexpansion.augment.machineChargerWireless.c.0=Nom può superare il tasso di carica dello Condensatore di Flusso stesso.
 
+info.thermalexpansion.augment.machineCompactorCoin.0=Compattatore: Specializzazione
+info.thermalexpansion.augment.machineCompactorCoin.a.0=Permette la creazione di valuta.
+info.thermalexpansion.augment.machineCompactorCoin.a.1=La valuta può essere scambiata per beni e servizi.
+info.thermalexpansion.augment.machineCompactorCoin.c.0=Il Macchinario dev'essere impostato in modalità "Zecca".
+
 info.thermalexpansion.augment.machineCompactorGear.0=Compattatore: Specializzazione
 info.thermalexpansion.augment.machineCompactorGear.a.0=Permette la crezione efficiente di Ingranaggi.
 info.thermalexpansion.augment.machineCompactorGear.a.1=Gli Ingranaggi sono utilizzati nella creazione di vari oggetti.
 info.thermalexpansion.augment.machineCompactorGear.c.0=Il Macchinario dev'essere impostato in modalità "Ingranaggio".
-
-info.thermalexpansion.augment.machineCompactorMint.0=Compattatore: Specializzazione
-info.thermalexpansion.augment.machineCompactorMint.a.0=Permette la creazione di valuta.
-info.thermalexpansion.augment.machineCompactorMint.a.1=La valuta può essere scambiata per beni e servizi.
-info.thermalexpansion.augment.machineCompactorMint.c.0=Il Macchinario dev'essere impostato in modalità "Zecca".
 
 info.thermalexpansion.augment.machineCrafterInput.0=Fabbricatore Sequenziale: Funzionalità
 info.thermalexpansion.augment.machineCrafterInput.a.0=Aggiunge un'intelligente capacità di Inserimento Automatico.
@@ -343,7 +343,7 @@ item.thermalexpansion.augment.machineChargerRepair.name=Ricostruzione Flussica
 item.thermalexpansion.augment.machineChargerThroughput.name=Concentratore di Concatenamento di Flusso
 item.thermalexpansion.augment.machineChargerWireless.name=Giunto Parabolico di Flusso
 item.thermalexpansion.augment.machineCompactorGear.name=Matrice per Lavorazione Ingranaggica
-item.thermalexpansion.augment.machineCompactorMint.name=Pressa Numismatica
+item.thermalexpansion.augment.machineCompactorCoin.name=Pressa Numismatica
 item.thermalexpansion.augment.machineCrafterInput.name=Validazione Schemica
 item.thermalexpansion.augment.machineCrafterTank.name=Fabbricazione Fluidica
 item.thermalexpansion.augment.machineCrucibleLava.name=Ciclo Piroconvettivo

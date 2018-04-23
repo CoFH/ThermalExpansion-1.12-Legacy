@@ -37,7 +37,7 @@ public class CompactorRecipeCategory extends BaseRecipeCategory<CompactorRecipeW
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipeCategories(new CompactorRecipeCategory(guiHelper));
-		registry.addRecipeCategories(new CompactorRecipeCategoryMint(guiHelper));
+		registry.addRecipeCategories(new CompactorRecipeCategoryCoin(guiHelper));
 		registry.addRecipeCategories(new CompactorRecipeCategoryGear(guiHelper));
 	}
 
@@ -50,10 +50,10 @@ public class CompactorRecipeCategory extends BaseRecipeCategory<CompactorRecipeW
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.COMPACTOR);
-		registry.addRecipeClickArea(GuiCompactor.class, 79, 34, 24, 16, RecipeUidsTE.COMPACTOR, RecipeUidsTE.COMPACTOR_MINT, RecipeUidsTE.COMPACTOR_GEAR);
+		registry.addRecipeClickArea(GuiCompactor.class, 79, 34, 24, 16, RecipeUidsTE.COMPACTOR, RecipeUidsTE.COMPACTOR_COIN, RecipeUidsTE.COMPACTOR_GEAR);
 		registry.addRecipeCatalyst(BlockMachine.machineCompactor, RecipeUidsTE.COMPACTOR);
 
-		CompactorRecipeCategoryMint.initialize(registry);
+		CompactorRecipeCategoryCoin.initialize(registry);
 		CompactorRecipeCategoryGear.initialize(registry);
 	}
 

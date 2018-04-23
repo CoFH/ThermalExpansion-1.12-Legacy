@@ -206,7 +206,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		machineInsolatorTree = addAugmentItem(323, TEProps.MACHINE_INSOLATOR_TREE, AugmentType.ADVANCED);
 		machineInsolatorMonoculture = addAugmentItem(324, TEProps.MACHINE_INSOLATOR_MONOCULTURE, AugmentType.MODE);
 
-		machineCompactorMint = addAugmentItem(336, TEProps.MACHINE_COMPACTOR_MINT, AugmentType.MODE);
+		machineCompactorCoin = addAugmentItem(336, TEProps.MACHINE_COMPACTOR_COIN, AugmentType.MODE);
 		machineCompactorGear = addAugmentItem(337, TEProps.MACHINE_COMPACTOR_GEAR, AugmentType.MODE);
 
 		machineCrucibleLava = addAugmentItem(352, TEProps.MACHINE_CRUCIBLE_LAVA, AugmentType.MODE);
@@ -393,7 +393,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', ItemFertilizer.fertilizerFlux
 		);
 
-		addShapedRecipe(machineCompactorMint,
+		addShapedRecipe(machineCompactorCoin,
 				" G ",
 				"ICI",
 				" X ",
@@ -756,7 +756,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineInsolatorTree;
 	public static ItemStack machineInsolatorMonoculture;
 
-	public static ItemStack machineCompactorMint;
+	public static ItemStack machineCompactorCoin;
 	public static ItemStack machineCompactorGear;
 
 	public static ItemStack machineCrucibleLava;

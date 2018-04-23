@@ -76,8 +76,8 @@ public class IMCHandler {
 					case ADD_COMPACTOR_PRESS_RECIPE:
 						CompactorManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(OUTPUT)), Mode.PLATE);
 						continue;
-					case ADD_COMPACTOR_MINT_RECIPE:
-						CompactorManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(OUTPUT)), Mode.MINT);
+					case ADD_COMPACTOR_COIN_RECIPE:
+						CompactorManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), new ItemStack(nbt.getCompoundTag(OUTPUT)), Mode.COIN);
 						continue;
 					case ADD_CRUCIBLE_RECIPE:
 						CrucibleManager.addRecipe(nbt.getInteger(ENERGY), new ItemStack(nbt.getCompoundTag(INPUT)), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(OUTPUT)));
@@ -143,7 +143,7 @@ public class IMCHandler {
 						CompactorManager.removeRecipe(new ItemStack(nbt.getCompoundTag(INPUT)), Mode.PLATE);
 						continue;
 					case REMOVE_COMPACTOR_MINT_RECIPE:
-						CompactorManager.removeRecipe(new ItemStack(nbt.getCompoundTag(INPUT)), Mode.MINT);
+						CompactorManager.removeRecipe(new ItemStack(nbt.getCompoundTag(INPUT)), Mode.COIN);
 						continue;
 					case REMOVE_CRUCIBLE_RECIPE:
 						CrucibleManager.removeRecipe(new ItemStack(nbt.getCompoundTag(INPUT)));
@@ -245,7 +245,7 @@ public class IMCHandler {
 	public static final String ADD_SMELTER_RECIPE = "addsmelterrecipe";
 	public static final String ADD_INSOLATOR_RECIPE = "addinsolatorrecipe";
 	public static final String ADD_COMPACTOR_PRESS_RECIPE = "addcompactorpressrecipe";
-	public static final String ADD_COMPACTOR_MINT_RECIPE = "addcompactormintrecipe";
+	public static final String ADD_COMPACTOR_COIN_RECIPE = "addcompactormintrecipe";
 	public static final String ADD_CRUCIBLE_RECIPE = "addcruciblerecipe";
 	public static final String ADD_REFINERY_RECIPE = "addrefineryrecipe";
 	public static final String ADD_TRANSPOSER_FILL_RECIPE = "addtransposerfillrecipe";

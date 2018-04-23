@@ -84,20 +84,20 @@ public class FurnaceManager {
 
 	public static void initialize() {
 
+		/* GENERAL SCAN */
 		Map<ItemStack, ItemStack> smeltingList = FurnaceRecipes.instance().getSmeltingList();
 		ItemStack output;
+		int energy;
 
 		for (ItemStack key : smeltingList.keySet()) {
 			if (key.isEmpty() || recipeExists(key, false)) {
 				continue;
 			}
 			output = smeltingList.get(key);
-
 			if (ConstantParser.hasOre(ItemHelper.getOreName(output))) {
 				output = ItemHelper.cloneStack(ConstantParser.getOre(ItemHelper.getOreName(output)), output.getCount());
 			}
-			int energy = DEFAULT_ENERGY;
-
+			energy = DEFAULT_ENERGY;
 			/* FOOD */
 			if (output.getItem() instanceof ItemFood) {
 				foodSet.add(convertInput(key));
@@ -106,12 +106,11 @@ public class FurnaceManager {
 			/* DUST */
 			if (ItemHelper.isDust(key) && ItemHelper.isIngot(output)) {
 				addRecipe(energy * 3 / 4, key, output);
-				/* STANDARD */
+			/* STANDARD */
 			} else {
 				if (ItemHelper.getItemDamage(key) == OreDictionary.WILDCARD_VALUE) {
 					ItemStack testKey = ItemHelper.cloneStack(key);
 					testKey.setItemDamage(0);
-
 					if (ItemHelper.hasOreName(testKey) && oreValidator.validate(ItemHelper.getOreName(testKey))) {
 						addRecipe(energy, testKey, output);
 						continue;

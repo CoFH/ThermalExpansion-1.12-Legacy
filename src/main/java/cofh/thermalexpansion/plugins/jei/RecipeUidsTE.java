@@ -20,7 +20,7 @@ public class RecipeUidsTE {
 	public static final String INSOLATOR_TREE = "thermalexpansion.insolator_tree";
 
 	public static final String COMPACTOR = "thermalexpansion.compactor";
-	public static final String COMPACTOR_MINT = "thermalexpansion.compactor_mint";
+	public static final String COMPACTOR_COIN = "thermalexpansion.compactor_mint";
 	public static final String COMPACTOR_GEAR = "thermalexpansion.compactor_gear";
 
 	public static final String CRUCIBLE = "thermalexpansion.crucible";

@@ -44,7 +44,7 @@ public class TileCompactor extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
-		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_COMPACTOR_MINT);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_COMPACTOR_COIN);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_COMPACTOR_GEAR);
 
 		GameRegistry.registerTileEntity(TileCompactor.class, "thermalexpansion:machine_compactor");
@@ -268,12 +268,12 @@ public class TileCompactor extends TileMachineBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-		if (!augmentMint && TEProps.MACHINE_COMPACTOR_MINT.equals(id)) {
+		if (!augmentMint && TEProps.MACHINE_COMPACTOR_COIN.equals(id)) {
 			augmentMint = true;
-			if (mode != Mode.MINT && isActive && !inventory[1].isEmpty()) {
+			if (mode != Mode.COIN && isActive && !inventory[1].isEmpty()) {
 				processOff();
 			}
-			mode = Mode.MINT;
+			mode = Mode.COIN;
 			hasModeAugment = true;
 			return true;
 		}

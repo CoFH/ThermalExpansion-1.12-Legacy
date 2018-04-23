@@ -1,555 +1,648 @@
 {
-	"oredict": [{
-		"ore": "dustCopper",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 64
-		}
-	}, {
-		"ore": "dustTin",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 65
-		}
-	}, {
-		"ore": "dustSilver",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 66
-		}
-	}, {
-		"ore": "dustLead",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 67
-		}
-	}, {
-		"ore": "dustAluminum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 68
-		}
-	}, {
-		"ore": "dustNickel",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 69
-		}
-	}, {
-		"ore": "dustPlatinum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 70
-		}
-	}, {
-		"ore": "dustIridium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 71
-		}
-	}, {
-		"ore": "dustMithril",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 72
-		}
-	}, {
-		"ore": "dustSteel",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 96
-		}
-	}, {
-		"ore": "dustElectrum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 97
-		}
-	}, {
-		"ore": "dustInvar",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 98
-		}
-	}, {
-		"ore": "dustBronze",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 99
-		}
-	}, {
-		"ore": "dustConstantan",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 100
-		}
-	}, {
-		"ore": "dustSignalum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 101
-		}
-	}, {
-		"ore": "dustLumium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 102
-		}
-	}, {
-		"ore": "dustEnderium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 103
-		}
-	}, {
-		"ore": "ingotCopper",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 128
-		}
-	}, {
-		"ore": "ingotTin",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 129
-		}
-	}, {
-		"ore": "ingotSilver",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 130
-		}
-	}, {
-		"ore": "ingotLead",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 131
-		}
-	}, {
-		"ore": "ingotAluminum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 132
-		}
-	}, {
-		"ore": "ingotNickel",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 133
-		}
-	}, {
-		"ore": "ingotPlatinum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 134
-		}
-	}, {
-		"ore": "ingotIridium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 135
-		}
-	}, {
-		"ore": "ingotMithril",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 136
-		}
-	}, {
-		"ore": "ingotSteel",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 160
-		}
-	}, {
-		"ore": "ingotElectrum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 161
-		}
-	}, {
-		"ore": "ingotInvar",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 162
-		}
-	}, {
-		"ore": "ingotBronze",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 163
-		}
-	}, {
-		"ore": "ingotConstantan",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 164
-		}
-	}, {
-		"ore": "ingotSignalum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 165
-		}
-	}, {
-		"ore": "ingotLumium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 166
-		}
-	}, {
-		"ore": "ingotEnderium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 167
-		}
-	}, {
-		"ore": "nuggetCopper",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 192
-		}
-	}, {
-		"ore": "nuggetTin",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 193
-		}
-	}, {
-		"ore": "nuggetSilver",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 194
-		}
-	}, {
-		"ore": "nuggetLead",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 195
-		}
-	}, {
-		"ore": "nuggetAluminum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 196
-		}
-	}, {
-		"ore": "nuggetNickel",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 197
-		}
-	}, {
-		"ore": "nuggetPlatinum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 198
-		}
-	}, {
-		"ore": "nuggetIridium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 199
-		}
-	}, {
-		"ore": "nuggetMithril",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 200
-		}
-	}, {
-		"ore": "nuggetSteel",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 224
-		}
-	}, {
-		"ore": "nuggetElectrum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 225
-		}
-	}, {
-		"ore": "nuggetInvar",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 226
-		}
-	}, {
-		"ore": "nuggetBronze",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 227
-		}
-	}, {
-		"ore": "nuggetConstantan",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 228
-		}
-	}, {
-		"ore": "nuggetSignalum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 229
-		}
-	}, {
-		"ore": "nuggetLumium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 230
-		}
-	}, {
-		"ore": "nuggetEnderium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 231
-		}
-	}, {
-		"ore": "gearCopper",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 256
-		}
-	}, {
-		"ore": "gearTin",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 257
-		}
-	}, {
-		"ore": "gearSilver",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 258
-		}
-	}, {
-		"ore": "gearLead",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 259
-		}
-	}, {
-		"ore": "gearAluminum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 260
-		}
-	}, {
-		"ore": "gearNickel",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 261
-		}
-	}, {
-		"ore": "gearPlatinum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 262
-		}
-	}, {
-		"ore": "gearIridium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 263
-		}
-	}, {
-		"ore": "gearMithril",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 264
-		}
-	}, {
-		"ore": "gearSteel",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 288
-		}
-	}, {
-		"ore": "gearElectrum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 289
-		}
-	}, {
-		"ore": "gearInvar",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 290
-		}
-	}, {
-		"ore": "gearBronze",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 291
-		}
-	}, {
-		"ore": "gearConstantan",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 292
-		}
-	}, {
-		"ore": "gearSignalum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 293
-		}
-	}, {
-		"ore": "gearLumium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 294
-		}
-	}, {
-		"ore": "gearEnderium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 295
-		}
-	}, {
-		"ore": "plateCopper",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 320
-		}
-	}, {
-		"ore": "plateTin",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 321
-		}
-	}, {
-		"ore": "plateSilver",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 322
-		}
-	}, {
-		"ore": "plateLead",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 323
-		}
-	}, {
-		"ore": "plateAluminum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 324
-		}
-	}, {
-		"ore": "plateNickel",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 325
-		}
-	}, {
-		"ore": "platePlatinum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 326
-		}
-	}, {
-		"ore": "plateIridium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 327
-		}
-	}, {
-		"ore": "plateMithril",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 328
-		}
-	}, {
-		"ore": "plateSteel",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 352
-		}
-	}, {
-		"ore": "plateElectrum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 353
-		}
-	}, {
-		"ore": "plateInvar",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 354
-		}
-	}, {
-		"ore": "plateBronze",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 355
-		}
-	}, {
-		"ore": "plateConstantan",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 356
-		}
-	}, {
-		"ore": "plateSignalum",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 357
-		}
-	}, {
-		"ore": "plateLumium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 358
-		}
-	}, {
-		"ore": "plateEnderium",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 359
-		}
-	}, {
-		"ore": "dustCoal",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 768
-		}
-	}, {
-		"ore": "dustCharcoal",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 769
-		}
-	}, {
-		"ore": "dustObsidian",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 770
-		}
-	}, {
-		"ore": "dustSulfur",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 771
-		}
-	}, {
-		"ore": "dustSaltpeter",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 772
-		}
-	}, {
-		"ore": "dustWood",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 800
-		}
-	}, {
-		"ore": "fuelCoke",
-		"entry": {
-			"item": "thermalfoundation:material",
-			"data": 802
-		}
-	}]
+	"oredict": [
+		{
+			"ore": "dustCopper",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 64
+			}
+		},
+		{
+			"ore": "dustTin",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 65
+			}
+		},
+		{
+			"ore": "dustSilver",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 66
+			}
+		},
+		{
+			"ore": "dustLead",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 67
+			}
+		},
+		{
+			"ore": "dustAluminum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 68
+			}
+		},
+		{
+			"ore": "dustNickel",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 69
+			}
+		},
+		{
+			"ore": "dustPlatinum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 70
+			}
+		},
+		{
+			"ore": "dustIridium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 71
+			}
+		},
+		{
+			"ore": "dustMithril",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 72
+			}
+		},
+		{
+			"ore": "dustSteel",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 96
+			}
+		},
+		{
+			"ore": "dustElectrum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 97
+			}
+		},
+		{
+			"ore": "dustInvar",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 98
+			}
+		},
+		{
+			"ore": "dustBronze",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 99
+			}
+		},
+		{
+			"ore": "dustConstantan",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 100
+			}
+		},
+		{
+			"ore": "dustSignalum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 101
+			}
+		},
+		{
+			"ore": "dustLumium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 102
+			}
+		},
+		{
+			"ore": "dustEnderium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 103
+			}
+		},
+		{
+			"ore": "ingotCopper",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 128
+			}
+		},
+		{
+			"ore": "ingotTin",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 129
+			}
+		},
+		{
+			"ore": "ingotSilver",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 130
+			}
+		},
+		{
+			"ore": "ingotLead",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 131
+			}
+		},
+		{
+			"ore": "ingotAluminum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 132
+			}
+		},
+		{
+			"ore": "ingotNickel",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 133
+			}
+		},
+		{
+			"ore": "ingotPlatinum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 134
+			}
+		},
+		{
+			"ore": "ingotIridium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 135
+			}
+		},
+		{
+			"ore": "ingotMithril",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 136
+			}
+		},
+		{
+			"ore": "ingotSteel",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 160
+			}
+		},
+		{
+			"ore": "ingotElectrum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 161
+			}
+		},
+		{
+			"ore": "ingotInvar",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 162
+			}
+		},
+		{
+			"ore": "ingotBronze",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 163
+			}
+		},
+		{
+			"ore": "ingotConstantan",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 164
+			}
+		},
+		{
+			"ore": "ingotSignalum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 165
+			}
+		},
+		{
+			"ore": "ingotLumium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 166
+			}
+		},
+		{
+			"ore": "ingotEnderium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 167
+			}
+		},
+		{
+			"ore": "nuggetCopper",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 192
+			}
+		},
+		{
+			"ore": "nuggetTin",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 193
+			}
+		},
+		{
+			"ore": "nuggetSilver",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 194
+			}
+		},
+		{
+			"ore": "nuggetLead",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 195
+			}
+		},
+		{
+			"ore": "nuggetAluminum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 196
+			}
+		},
+		{
+			"ore": "nuggetNickel",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 197
+			}
+		},
+		{
+			"ore": "nuggetPlatinum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 198
+			}
+		},
+		{
+			"ore": "nuggetIridium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 199
+			}
+		},
+		{
+			"ore": "nuggetMithril",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 200
+			}
+		},
+		{
+			"ore": "nuggetSteel",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 224
+			}
+		},
+		{
+			"ore": "nuggetElectrum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 225
+			}
+		},
+		{
+			"ore": "nuggetInvar",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 226
+			}
+		},
+		{
+			"ore": "nuggetBronze",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 227
+			}
+		},
+		{
+			"ore": "nuggetConstantan",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 228
+			}
+		},
+		{
+			"ore": "nuggetSignalum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 229
+			}
+		},
+		{
+			"ore": "nuggetLumium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 230
+			}
+		},
+		{
+			"ore": "nuggetEnderium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 231
+			}
+		},
+		{
+			"ore": "gearCopper",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 256
+			}
+		},
+		{
+			"ore": "gearTin",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 257
+			}
+		},
+		{
+			"ore": "gearSilver",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 258
+			}
+		},
+		{
+			"ore": "gearLead",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 259
+			}
+		},
+		{
+			"ore": "gearAluminum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 260
+			}
+		},
+		{
+			"ore": "gearNickel",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 261
+			}
+		},
+		{
+			"ore": "gearPlatinum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 262
+			}
+		},
+		{
+			"ore": "gearIridium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 263
+			}
+		},
+		{
+			"ore": "gearMithril",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 264
+			}
+		},
+		{
+			"ore": "gearSteel",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 288
+			}
+		},
+		{
+			"ore": "gearElectrum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 289
+			}
+		},
+		{
+			"ore": "gearInvar",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 290
+			}
+		},
+		{
+			"ore": "gearBronze",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 291
+			}
+		},
+		{
+			"ore": "gearConstantan",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 292
+			}
+		},
+		{
+			"ore": "gearSignalum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 293
+			}
+		},
+		{
+			"ore": "gearLumium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 294
+			}
+		},
+		{
+			"ore": "gearEnderium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 295
+			}
+		},
+		{
+			"ore": "plateCopper",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 320
+			}
+		},
+		{
+			"ore": "plateTin",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 321
+			}
+		},
+		{
+			"ore": "plateSilver",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 322
+			}
+		},
+		{
+			"ore": "plateLead",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 323
+			}
+		},
+		{
+			"ore": "plateAluminum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 324
+			}
+		},
+		{
+			"ore": "plateNickel",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 325
+			}
+		},
+		{
+			"ore": "platePlatinum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 326
+			}
+		},
+		{
+			"ore": "plateIridium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 327
+			}
+		},
+		{
+			"ore": "plateMithril",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 328
+			}
+		},
+		{
+			"ore": "plateSteel",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 352
+			}
+		},
+		{
+			"ore": "plateElectrum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 353
+			}
+		},
+		{
+			"ore": "plateInvar",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 354
+			}
+		},
+		{
+			"ore": "plateBronze",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 355
+			}
+		},
+		{
+			"ore": "plateConstantan",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 356
+			}
+		},
+		{
+			"ore": "plateSignalum",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 357
+			}
+		},
+		{
+			"ore": "plateLumium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 358
+			}
+		},
+		{
+			"ore": "plateEnderium",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 359
+			}
+		},
+		{
+			"ore": "dustCoal",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 768
+			}
+		},
+		{
+			"ore": "dustCharcoal",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 769
+			}
+		},
+		{
+			"ore": "dustObsidian",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 770
+			}
+		},
+		{
+			"ore": "dustSulfur",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 771
+			}
+		},
+		{
+			"ore": "dustSaltpeter",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 772
+			}
+		},
+		{
+			"ore": "dustWood",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 800
+			}
+		},
+		{
+			"ore": "fuelCoke",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 802
+			}
+		}
+	]
 }

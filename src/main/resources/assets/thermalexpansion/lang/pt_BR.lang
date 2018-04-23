@@ -8,14 +8,14 @@ gui.thermalexpansion.device.item_buffer.incOutput=Aumentar a Saída em
 gui.thermalexpansion.jei.centrifuge.mobChance=Chances Base
 gui.thermalexpansion.jei.centrifuge.mobNotice=Pode ser produzido até a quantidade listada.
 gui.thermalexpansion.jei.compactor.modeGear=Engrenagens
-gui.thermalexpansion.jei.compactor.modeMint=Moeda
+gui.thermalexpansion.jei.compactor.modeCoin=Moeda
 gui.thermalexpansion.jei.compactor.modePress=Prensa
 gui.thermalexpansion.jei.compactor.modeStorage=Armazanagem
 gui.thermalexpansion.jei.transposer.modeEmpty=Esvaziar
 gui.thermalexpansion.jei.transposer.modeFill=Encher
 
 gui.thermalexpansion.machine.compactor.modeGear=Modo: Engrenagens
-gui.thermalexpansion.machine.compactor.modeMint=Modo: Moedas
+gui.thermalexpansion.machine.compactor.modeCoin=Modo: Moedas
 gui.thermalexpansion.machine.compactor.modePress=Modo: Prensa
 gui.thermalexpansion.machine.compactor.modeStorage=Modo: Armazanagem
 
@@ -116,15 +116,15 @@ info.thermalexpansion.augment.machineChargerWireless.a.0=Permite recarregar rapi
 info.thermalexpansion.augment.machineChargerWireless.b.0=Porém, não mais aceita, nem processa e nem carrega itens em si mesmo.
 info.thermalexpansion.augment.machineChargerWireless.c.0=Não excede a taxa de carregamento do Capacitor de Flux.
 
+info.thermalexpansion.augment.machineCompactorCoin.0=Compactador: Especialização
+info.thermalexpansion.augment.machineCompactorCoin.a.0=Permite a criação de moedas.
+info.thermalexpansion.augment.machineCompactorCoin.a.1=Moedas podem ser trocadas por bens e serviços.
+info.thermalexpansion.augment.machineCompactorCoin.c.0=A máquina deve estar no modo "moedas".
+
 info.thermalexpansion.augment.machineCompactorGear.0=Compactador: Especialização
 info.thermalexpansion.augment.machineCompactorGear.a.0=Permite a criação de engrenagens de maneira eficiente.
 info.thermalexpansion.augment.machineCompactorGear.a.1=Engrenagens são usadas na construção de inumeras coisas.
 info.thermalexpansion.augment.machineCompactorGear.c.0=A máquina deve ser colocada no modo "Engrenagens".
-
-info.thermalexpansion.augment.machineCompactorMint.0=Compactador: Especialização
-info.thermalexpansion.augment.machineCompactorMint.a.0=Permite a criação de moedas.
-info.thermalexpansion.augment.machineCompactorMint.a.1=Moedas podem ser trocadas por bens e serviços.
-info.thermalexpansion.augment.machineCompactorMint.c.0=A máquina deve estar no modo "moedas".
 
 info.thermalexpansion.augment.machineCrafterInput.0=Fabricador Sequencial: Funcionalidade
 info.thermalexpansion.augment.machineCrafterInput.a.0=Adiciona a capacidade de auto-injetar itens.
@@ -342,7 +342,7 @@ item.thermalexpansion.augment.machineChargerRepair.name=Reconstrução com Flux
 item.thermalexpansion.augment.machineChargerThroughput.name=Acelerador de Recarga
 item.thermalexpansion.augment.machineChargerWireless.name=Acoplagem de Parabólica de Flux
 item.thermalexpansion.augment.machineCompactorGear.name=Molde de Engrenagens
-item.thermalexpansion.augment.machineCompactorMint.name=Prensa Caça Níquel
+item.thermalexpansion.augment.machineCompactorCoin.name=Prensa Caça Níquel
 item.thermalexpansion.augment.machineCrafterInput.name=Validação de Padrão
 item.thermalexpansion.augment.machineCrafterTank.name=Fabricação Fluídica
 item.thermalexpansion.augment.machineCrucibleLava.name=Loop Piroconvectivo

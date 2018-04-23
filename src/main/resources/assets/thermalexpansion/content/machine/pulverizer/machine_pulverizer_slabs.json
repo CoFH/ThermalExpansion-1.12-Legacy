@@ -1,0 +1,65 @@
+{
+	"pulverizer": [
+		{
+			"input": {
+				"item": "minecraft:stone_slab",
+				"data": 4
+			},
+			"output": {
+				"item": "minecraft:brick",
+				"count": 2
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stone_slab",
+				"data": 6
+			},
+			"output": {
+				"item": "minecraft:netherbrick",
+				"count": 2
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stone_slab",
+				"data": 7
+			},
+			"output": {
+				"item": "minecraft:quartz",
+				"count": 2
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stone_slab",
+				"data": 1
+			},
+			"output": {
+				"item": "minecraft:sand"
+			},
+			"output2": {
+				"ore": "dustSaltpeter",
+				"chance": 20
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:stone_slab2"
+			},
+			"output": {
+				"item": "minecraft:sand",
+				"data": 1
+			},
+			"output2": {
+				"ore": "dustSaltpeter",
+				"chance": 20
+			},
+			"energy_mod": 75
+		}
+	]
+}

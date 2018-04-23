@@ -1,0 +1,194 @@
+{
+	"compactor": [
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotIron",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearIron"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotGold",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearGold"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotCopper",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearCopper"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotTin",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearTin"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotSilver",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearSilver"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotLead",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearLead"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotAluminum",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearAluminum"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotNickel",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearNickel"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotPlatinum",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearPlatinum"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotIridium",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearIridium"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotMithril",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearMithril"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotSteel",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearSteel"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotElectrum",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearElectrum"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotInvar",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearInvar"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotBronze",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearBronze"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotConstantan",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearConstantan"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotSignalum",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearSignalum"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotLumium",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearLumium"
+			}
+		},
+		{
+			"type": "gear",
+			"input": {
+				"ore": "ingotEnderium",
+				"count": 4
+			},
+			"output": {
+				"ore": "gearEnderium"
+			}
+		}
+	]
+}

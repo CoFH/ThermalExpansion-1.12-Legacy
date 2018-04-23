@@ -1,0 +1,64 @@
+{
+	"smelter": [
+		{
+			"input": {
+				"ore": "dustGold",
+				"count": 1
+			},
+			"input2": {
+				"ore": "dustSilver",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotElectrum",
+				"count": 2
+			},
+			"energy": 1600
+		},
+		{
+			"input": {
+				"ore": "dustGold",
+				"count": 1
+			},
+			"input2": {
+				"ore": "ingotSilver",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotElectrum",
+				"count": 2
+			},
+			"energy": 2000
+		},
+		{
+			"input": {
+				"ore": "ingotGold",
+				"count": 1
+			},
+			"input2": {
+				"ore": "dustSilver",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotElectrum",
+				"count": 2
+			},
+			"energy": 2000
+		},
+		{
+			"input": {
+				"ore": "ingotGold",
+				"count": 1
+			},
+			"input2": {
+				"ore": "ingotSilver",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotElectrum",
+				"count": 2
+			},
+			"energy": 2400
+		}
+	]
+}

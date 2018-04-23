@@ -1,0 +1,40 @@
+{
+	"compactor": [
+		{
+			"input": {
+				"ore": "dustBlaze",
+				"count": 5
+			},
+			"output": {
+				"ore": "rodBlaze"
+			}
+		},
+		{
+			"input": {
+				"ore": "dustBlizz",
+				"count": 5
+			},
+			"output": {
+				"ore": "rodBlizz"
+			}
+		},
+		{
+			"input": {
+				"ore": "dustBlitz",
+				"count": 5
+			},
+			"output": {
+				"ore": "rodBlitz"
+			}
+		},
+		{
+			"input": {
+				"ore": "dustBasalz",
+				"count": 5
+			},
+			"output": {
+				"ore": "rodBasalz"
+			}
+		}
+	]
+}
