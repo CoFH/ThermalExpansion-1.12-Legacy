@@ -177,36 +177,22 @@ public class PulverizerManager {
 		String gemName = "gem" + StringHelper.titleCase(oreType);
 		String dustName = "dust" + StringHelper.titleCase(oreType);
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
-		String clusterName = "cluster" + StringHelper.titleCase(oreType);
 
 		ItemStack ore = ItemHelper.getOre(oreName);
 		ItemStack gem = ItemHelper.getOre(gemName);
 		ItemStack dust = ItemHelper.getOre(dustName);
 		ItemStack ingot = ItemHelper.getOre(ingotName);
-		ItemStack cluster = ItemHelper.getOre(clusterName);
 		ItemStack related = relatedOre.isEmpty() ? ItemStack.EMPTY : ItemHelper.getOre(relatedOre);
 
 		int energy = DEFAULT_ENERGY;
 
 		if (!gem.isEmpty()) {
-			addOreRecipe(energy, ore, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
-			addOreRecipe(energy * 3 / 4, cluster, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
-			addDustRecipe(energy / 2, gem, ItemHelper.cloneStack(dust, 1));
+			addRecipe(energy, ore, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
+			addRecipe(energy / 2, gem, ItemHelper.cloneStack(dust, 1));
 		} else {
-			addOreRecipe(energy, ore, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
-			addOreRecipe(energy * 3 / 4, cluster, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
-			addDustRecipe(energy / 2, ingot, ItemHelper.cloneStack(dust, 1));
+			addRecipe(energy, ore, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
+			addRecipe(energy / 2, ingot, ItemHelper.cloneStack(dust, 1));
 		}
-	}
-
-	private static void addOreRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
-
-		addRecipe(energy, input, ItemHelper.cloneStack(primaryOutput, ORE_MULTIPLIER), secondaryOutput, secondaryChance);
-	}
-
-	private static void addDustRecipe(int energy, ItemStack input, ItemStack dust) {
-
-		addRecipe(energy, input, dust, ItemStack.EMPTY, 0);
 	}
 
 	public static void addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
@@ -218,6 +204,11 @@ public class PulverizerManager {
 
 		ItemStack recycleInput = wildcard ? input.copy() : new ItemStack(input.getItem(), 1, OreDictionary.WILDCARD_VALUE);
 		addRecipe(energy, recycleInput, ItemHelper.cloneStack(output, outputSize));
+	}
+
+	public static boolean isOre(ItemStack stack) {
+
+		return ItemHelper.isOre(stack) || ItemHelper.isCluster(stack);
 	}
 
 	/* RECIPE CLASS */

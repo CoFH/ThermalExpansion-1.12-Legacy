@@ -32,6 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -44,7 +45,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		super("thermalexpansion");
 
-		register("augment");
 		setUnlocalizedName("augment");
 		setCreativeTab(ThermalExpansion.tabUtils);
 	}
@@ -183,7 +183,10 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
+
+		ForgeRegistries.ITEMS.register(setRegistryName("augment"));
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		/* MACHINES */
 		machinePower = addAugmentItem(128, TEProps.MACHINE_POWER);
@@ -256,13 +259,11 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		// apparatusDepth = addAugmentItem(896, TEProps.APPARATUS_DEPTH);
 		// apparatusRadius = addAugmentItem(897, TEProps.APPARATUS_RADIUS);
 
-		ThermalExpansion.proxy.addIModelRegister(this);
-
 		return true;
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		// @formatter:off
 

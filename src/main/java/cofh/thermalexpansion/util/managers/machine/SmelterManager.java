@@ -374,8 +374,13 @@ public class SmelterManager {
 
 	private static void addOreRecipe(int energy, ItemStack input, ItemStack output, ItemStack secondary, int richSlagChance, int slagChance) {
 
-		ItemStack ingot2 = ItemHelper.cloneStack(output, ORE_MULTIPLIER);
-		ItemStack ingot3 = ItemHelper.cloneStack(output, ORE_MULTIPLIER_SPECIAL);
+		addOreRecipe(energy, input, output, secondary, richSlagChance, slagChance, ORE_MULTIPLIER, ORE_MULTIPLIER_SPECIAL);
+	}
+
+	private static void addOreRecipe(int energy, ItemStack input, ItemStack output, ItemStack secondary, int richSlagChance, int slagChance, int oreMultiplier, int oreMultiplierSpecial) {
+
+		ItemStack ingot2 = ItemHelper.cloneStack(output, oreMultiplier);
+		ItemStack ingot3 = ItemHelper.cloneStack(output, oreMultiplierSpecial);
 
 		addRecipe(energy, input, BLOCK_SAND, ingot2, ItemMaterial.crystalSlagRich, richSlagChance);
 		addRecipe(energy, input, ItemMaterial.crystalSlagRich, ingot3, ItemMaterial.crystalSlag, slagChance);
@@ -406,6 +411,11 @@ public class SmelterManager {
 	private static boolean isStandardOre(String oreName) {
 
 		return ItemHelper.oreNameExists(oreName) && FurnaceManager.recipeExists(OreDictionary.getOres(oreName, false).get(0), false);
+	}
+
+	public static boolean isOre(ItemStack stack) {
+
+		return ItemHelper.isOre(stack);
 	}
 
 	/* RECIPE CLASS */

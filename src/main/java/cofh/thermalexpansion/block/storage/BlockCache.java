@@ -350,7 +350,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("cache");
 		ForgeRegistries.BLOCKS.register(this);
@@ -367,7 +367,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		cache = new ItemStack[5];
 

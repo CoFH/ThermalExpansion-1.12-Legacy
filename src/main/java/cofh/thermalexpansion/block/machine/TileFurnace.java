@@ -126,7 +126,7 @@ public class TileFurnace extends TileMachineBase {
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !ItemHelper.isOre(inventory[0])) {
+		if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !FurnaceManager.isOre(inventory[0])) {
 			return false;
 		}
 		getRecipe();
@@ -145,7 +145,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !ItemHelper.isOre(inventory[0])) {
+		if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !FurnaceManager.isOre(inventory[0])) {
 			return false;
 		}
 		if (curRecipe == null) {
@@ -195,7 +195,7 @@ public class TileFurnace extends TileMachineBase {
 		if (augmentPyrolysis) {
 			tank.fill(new FluidStack(TFFluids.fluidCreosote, curRecipe.getCreosote()), true);
 		} else {
-			if ((augmentFood && FurnaceManager.isFood(inventory[0]) || augmentOre && ItemHelper.isOre(inventory[0])) && inventory[1].getCount() < inventory[1].getMaxStackSize()) {
+			if ((augmentFood && FurnaceManager.isFood(inventory[0]) || augmentOre && FurnaceManager.isOre(inventory[0])) && inventory[1].getCount() < inventory[1].getMaxStackSize()) {
 				inventory[1].grow(output.getCount());
 			}
 		}
@@ -434,7 +434,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot != 0 || (augmentFood ? FurnaceManager.isFood(stack) : augmentOre ? ItemHelper.isOre(stack) && FurnaceManager.recipeExists(stack, augmentPyrolysis) : FurnaceManager.recipeExists(stack, augmentPyrolysis));
+		return slot != 0 || (augmentFood ? FurnaceManager.isFood(stack) : augmentOre ? FurnaceManager.isOre(stack) && FurnaceManager.recipeExists(stack, augmentPyrolysis) : FurnaceManager.recipeExists(stack, augmentPyrolysis));
 	}
 
 	/* ISoundSource */

@@ -174,7 +174,7 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("strongbox");
 		ForgeRegistries.BLOCKS.register(this);
@@ -191,7 +191,7 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		strongbox = new ItemStack[5];
 

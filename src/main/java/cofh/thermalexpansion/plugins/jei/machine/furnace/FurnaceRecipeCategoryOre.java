@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.plugins.jei.machine.furnace;
 
-import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.item.ItemAugment;
@@ -32,7 +31,7 @@ public class FurnaceRecipeCategoryOre extends FurnaceRecipeCategory {
 		List<FurnaceRecipeWrapper> recipes = new ArrayList<>();
 
 		for (FurnaceRecipe recipe : FurnaceManager.getRecipeList(false)) {
-			if (ItemHelper.isOre(recipe.getInput())) {
+			if (FurnaceManager.isOre(recipe.getInput())) {
 				recipes.add(new FurnaceRecipeWrapper(guiHelper, recipe, RecipeUidsTE.FURNACE_ORE));
 			}
 		}

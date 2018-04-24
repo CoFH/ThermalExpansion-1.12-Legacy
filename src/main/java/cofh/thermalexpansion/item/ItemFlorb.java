@@ -40,6 +40,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -68,7 +69,6 @@ public class ItemFlorb extends ItemMulti implements IInitializer, IBakeryProvide
 
 		super("thermalexpansion");
 
-		register("florb");
 		setUnlocalizedName("florb");
 		setCreativeTab(ThermalExpansion.tabFlorbs);
 	}
@@ -247,7 +247,10 @@ public class ItemFlorb extends ItemMulti implements IInitializer, IBakeryProvide
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
+
+		ForgeRegistries.ITEMS.register(setRegistryName("florb"));
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		config();
 
@@ -256,13 +259,11 @@ public class ItemFlorb extends ItemMulti implements IInitializer, IBakeryProvide
 
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, new BehaviorFlorbDispense());
 
-		ThermalExpansion.proxy.addIModelRegister(this);
-
 		return true;
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		if (!enable) {
 			return false;

@@ -69,7 +69,6 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 
 		super("thermalexpansion");
 
-		register("morb");
 		setUnlocalizedName("morb");
 		setCreativeTab(ThermalExpansion.tabMorbs);
 	}
@@ -287,7 +286,10 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
+
+		ForgeRegistries.ITEMS.register(setRegistryName("morb"));
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		config();
 
@@ -296,13 +298,11 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 
 		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, new BehaviorMorbDispense());
 
-		ThermalExpansion.proxy.addIModelRegister(this);
-
 		return true;
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		if (!enable) {
 			return false;

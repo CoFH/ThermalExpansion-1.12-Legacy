@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.plugins;
 
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
+import cofh.thermalfoundation.item.ItemFertilizer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -49,8 +49,8 @@ public class PluginExU2 extends PluginTEBase {
 
 		/* INSOLATOR */
 		{
-			InsolatorManager.addDefaultRecipe(240000, 5000, enderLily, new ItemStack(Items.ENDER_PEARL), enderLily, 100, 105, 110, Type.STANDARD);
-			InsolatorManager.addDefaultRecipe(120000, 4000, redOrchid, new ItemStack(Items.REDSTONE), redOrchid, 100, 105, 110, Type.STANDARD);
+			InsolatorManager.addRecipe(120000, 4000, enderLily, ItemFertilizer.fertilizerFlux, new ItemStack(Items.ENDER_PEARL), enderLily, 100);
+			InsolatorManager.addRecipe(120000, 4000, redOrchid, ItemFertilizer.fertilizerFlux, new ItemStack(Items.REDSTONE), redOrchid, 100);
 		}
 
 		/* COMPACTOR */

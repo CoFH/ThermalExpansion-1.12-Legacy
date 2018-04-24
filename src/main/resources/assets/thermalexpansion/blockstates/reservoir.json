@@ -4,30 +4,41 @@
 		"model": "builtin/generated",
 		"textures": {
 			"layer0": "thermalexpansion:items/reservoir/reservoir_0",
-			"layer1": "thermalexpansion:items/reservoir/mode_0_0"
+			"layer1": "thermalexpansion:items/reservoir/mode_0_0",
+			"layer2": "thermalexpansion:items/blank"
 		},
 		"transform": "forge:default-item"
 	},
 	"variants": {
+		"color0": {
+			"0": {
+
+			},
+			"1": {
+				"textures": {
+					"layer2": "thermalexpansion:items/reservoir/reservoir_color_0"
+				}
+			}
+		},
 		"mode": {
 			"0_0": {
 				"textures": {
-					"layer1": "thermalexpansion:items/reservoir/mode_0_0"
+					"layer1": "thermalexpansion:items/reservoir/reservoir_mode_0_0"
 				}
 			},
 			"0_1": {
 				"textures": {
-					"layer1": "thermalexpansion:items/reservoir/mode_0_1"
+					"layer1": "thermalexpansion:items/reservoir/reservoir_mode_0_1"
 				}
 			},
 			"1_0": {
 				"textures": {
-					"layer1": "thermalexpansion:items/reservoir/mode_1_0"
+					"layer1": "thermalexpansion:items/reservoir/reservoir_mode_1_0"
 				}
 			},
 			"1_1": {
 				"textures": {
-					"layer1": "thermalexpansion:items/reservoir/mode_1_1"
+					"layer1": "thermalexpansion:items/reservoir/reservoir_mode_1_1"
 				}
 			}
 		},

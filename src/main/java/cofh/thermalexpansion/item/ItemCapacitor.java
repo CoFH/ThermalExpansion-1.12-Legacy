@@ -41,6 +41,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -61,7 +62,6 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 
 		super("thermalexpansion");
 
-		register("capacitor");
 		setUnlocalizedName("capacitor");
 		setCreativeTab(ThermalExpansion.tabTools);
 
@@ -359,7 +359,10 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
+
+		ForgeRegistries.ITEMS.register(setRegistryName("capacitor"));
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		config();
 
@@ -371,13 +374,11 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 
 		capacitorCreative = addEntryItem(CREATIVE, "creative", SEND_CREATIVE, 0, CAPACITY[4], EnumRarity.EPIC);
 
-		ThermalExpansion.proxy.addIModelRegister(this);
-
 		return true;
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		if (!enable) {
 			return false;

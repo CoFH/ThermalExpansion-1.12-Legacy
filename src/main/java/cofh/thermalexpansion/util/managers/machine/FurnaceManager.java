@@ -68,20 +68,6 @@ public class FurnaceManager {
 		return recipeMap.values().toArray(new FurnaceRecipe[0]);
 	}
 
-	public static boolean isFood(ItemStack input) {
-
-		if (input.isEmpty()) {
-			return false;
-		}
-		ComparableItemStackValidated query = convertInput(input);
-
-		if (foodSet.contains(query)) {
-			return true;
-		}
-		query.metadata = OreDictionary.WILDCARD_VALUE;
-		return foodSet.contains(query);
-	}
-
 	public static void initialize() {
 
 		/* GENERAL SCAN */
@@ -186,6 +172,25 @@ public class FurnaceManager {
 	public static ComparableItemStackValidated convertInput(ItemStack stack) {
 
 		return new ComparableItemStackValidated(stack, oreValidator);
+	}
+
+	public static boolean isFood(ItemStack input) {
+
+		if (input.isEmpty()) {
+			return false;
+		}
+		ComparableItemStackValidated query = convertInput(input);
+
+		if (foodSet.contains(query)) {
+			return true;
+		}
+		query.metadata = OreDictionary.WILDCARD_VALUE;
+		return foodSet.contains(query);
+	}
+
+	public static boolean isOre(ItemStack stack) {
+
+		return ItemHelper.isOre(stack) || ItemHelper.isCluster(stack);
 	}
 
 	/* RECIPE CLASS */

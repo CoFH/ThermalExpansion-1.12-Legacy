@@ -15,6 +15,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -29,7 +30,6 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 
 		super("thermalexpansion");
 
-		register("frame");
 		setUnlocalizedName("frame");
 		setCreativeTab(ThermalExpansion.tabItems);
 	}
@@ -66,7 +66,10 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
+
+		ForgeRegistries.ITEMS.register(setRegistryName("frame"));
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		frameMachine = addItem(MACHINE, "frameMachine");
 		// frameApparatus = addItem(32, "frameApparatus");
@@ -81,13 +84,11 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 		frameCell4Filled = addItem(CELL + 4 + 16, "frameCell4Filled", EnumRarity.RARE);
 		// frameLight = addItem(160, "frameLight");
 
-		ThermalExpansion.proxy.addIModelRegister(this);
-
 		return true;
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		// @formatter:off
 		addShapedRecipe(frameMachine,

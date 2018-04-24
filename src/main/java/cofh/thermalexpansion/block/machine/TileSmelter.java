@@ -146,7 +146,7 @@ public class TileSmelter extends TileMachineBase {
 				return false;
 			}
 		}
-		boolean augmentPyrotheumCheck = augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1]));
+		boolean augmentPyrotheumCheck = augmentPyrotheum && (SmelterManager.isOre(inventory[0]) || SmelterManager.isOre(inventory[1]));
 
 		if (augmentPyrotheumCheck && tank.getFluidAmount() < FLUID_AMOUNT) {
 			return false;
@@ -176,7 +176,7 @@ public class TileSmelter extends TileMachineBase {
 		if (curRecipe == null) {
 			return false;
 		}
-		if (augmentPyrotheum && (ItemHelper.isOre(inventory[1]) || ItemHelper.isOre(inventory[0])) && tank.getFluidAmount() < FLUID_AMOUNT) {
+		if (augmentPyrotheum && (SmelterManager.isOre(inventory[0]) || SmelterManager.isOre(inventory[1])) && tank.getFluidAmount() < FLUID_AMOUNT) {
 			return false;
 		}
 		if (SmelterManager.isRecipeReversed(inventory[0], inventory[1])) {
@@ -218,7 +218,7 @@ public class TileSmelter extends TileMachineBase {
 		ItemStack primaryItem = curRecipe.getPrimaryOutput();
 		ItemStack secondaryItem = curRecipe.getSecondaryOutput();
 
-		boolean augmentPyrotheumCheck = augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() >= FLUID_AMOUNT;
+		boolean augmentPyrotheumCheck = augmentPyrotheum && (SmelterManager.isOre(inventory[0]) || SmelterManager.isOre(inventory[1])) && tank.getFluidAmount() >= FLUID_AMOUNT;
 
 		if (augmentPyrotheumCheck) {
 			if (inventory[2].isEmpty()) {
@@ -408,7 +408,7 @@ public class TileSmelter extends TileMachineBase {
 
 	public boolean fluidArrow() {
 
-		return augmentPyrotheum && tank.getFluidAmount() >= FLUID_AMOUNT && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1]));
+		return augmentPyrotheum && tank.getFluidAmount() >= FLUID_AMOUNT && (SmelterManager.isOre(inventory[0]) || SmelterManager.isOre(inventory[1]));
 	}
 
 	public void setMode(boolean mode) {

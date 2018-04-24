@@ -313,7 +313,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("dynamo");
 		ForgeRegistries.BLOCKS.register(this);
@@ -337,7 +337,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		dynamoSteam = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.STEAM.getMetadata()));
 		dynamoMagmatic = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.MAGMATIC.getMetadata()));

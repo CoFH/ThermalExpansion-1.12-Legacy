@@ -217,7 +217,7 @@ public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryPro
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("cell");
 		ForgeRegistries.BLOCKS.register(this);
@@ -234,7 +234,7 @@ public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryPro
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		cell = new ItemStack[5];
 

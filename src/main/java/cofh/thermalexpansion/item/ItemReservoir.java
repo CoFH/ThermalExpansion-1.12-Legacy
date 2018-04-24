@@ -15,6 +15,7 @@ import cofh.core.util.CoreUtils;
 import cofh.core.util.RayTracer;
 import cofh.core.util.capabilities.FluidContainerItemWrapper;
 import cofh.core.util.core.IInitializer;
+import cofh.core.util.crafting.FluidIngredientFactory.FluidIngredient;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalfoundation.init.TFProps;
@@ -51,6 +52,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -62,7 +64,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.*;
 
 @Optional.Interface (iface = "baubles.api.IBauble", modid = "baubles")
 public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, IColorableItem, IEnchantableItem, IFluidContainerItem, IMultiModeItem {
@@ -71,7 +73,6 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 
 		super("thermalexpansion");
 
-		register("reservoir");
 		setUnlocalizedName("reservoir");
 		setCreativeTab(ThermalExpansion.tabTools);
 
@@ -501,12 +502,14 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("color0=%s,mode=%s_%s,type=%s", ColorHelper.hasColor0(stack) ? 1 : 0, this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
 
 		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
-			for (int active = 0; active < 2; active++) {
-				for (int mode = 0; mode < 2; mode++) {
-					ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", active, mode, entry.getValue().name)));
+			for (int color0 = 0; color0 < 2; color0++) {
+				for (int active = 0; active < 2; active++) {
+					for (int mode = 0; mode < 2; mode++) {
+						ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("color0=%s,mode=%s_%s,type=%s", color0, active, mode, entry.getValue().name)));
+					}
 				}
 			}
 		}
@@ -514,7 +517,10 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
+
+		ForgeRegistries.ITEMS.register(setRegistryName("reservoir"));
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		config();
 
@@ -526,13 +532,11 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 
 		reservoirCreative = addEntryItem(CREATIVE, "creative", CAPACITY[4], EnumRarity.EPIC);
 
-		ThermalExpansion.proxy.addIModelRegister(this);
-
 		return true;
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		if (!enable) {
 			return false;
@@ -548,6 +552,18 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 				'Y', ItemMaterial.redstoneServo
 		);
 		// @formatter:on
+
+		addColorRecipe(reservoirBasic, reservoirBasic, "dye");
+		addColorRecipe(reservoirHardened, reservoirHardened, "dye");
+		addColorRecipe(reservoirReinforced, reservoirReinforced, "dye");
+		addColorRecipe(reservoirSignalum, reservoirSignalum, "dye");
+		addColorRecipe(reservoirResonant, reservoirResonant, "dye");
+
+		addColorRemoveRecipe(reservoirBasic, reservoirBasic, new FluidIngredient("water"));
+		addColorRemoveRecipe(reservoirHardened, reservoirHardened, new FluidIngredient("water"));
+		addColorRemoveRecipe(reservoirReinforced, reservoirReinforced, new FluidIngredient("water"));
+		addColorRemoveRecipe(reservoirSignalum, reservoirSignalum, new FluidIngredient("water"));
+		addColorRemoveRecipe(reservoirResonant, reservoirResonant, new FluidIngredient("water"));
 		return true;
 	}
 

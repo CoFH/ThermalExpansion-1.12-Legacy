@@ -276,7 +276,7 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("tank");
 		ForgeRegistries.BLOCKS.register(this);
@@ -293,7 +293,7 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		tank = new ItemStack[5];
 

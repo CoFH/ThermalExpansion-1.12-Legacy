@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.plugins.jei.machine.smelter;
 
-import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.item.ItemAugment;
@@ -40,7 +39,7 @@ public class SmelterRecipeCategoryPyrotheum extends SmelterRecipeCategory {
 		List<SmelterRecipeWrapper> recipes = new ArrayList<>();
 
 		for (SmelterRecipe recipe : SmelterManager.getRecipeList()) {
-			if (ItemHelper.isOre(recipe.getPrimaryInput()) || ItemHelper.isOre(recipe.getSecondaryInput())) {
+			if (SmelterManager.isOre(recipe.getPrimaryInput())) {
 				recipes.add(new SmelterRecipeWrapper(guiHelper, recipe, RecipeUidsTE.SMELTER_PYROTHEUM));
 			}
 		}

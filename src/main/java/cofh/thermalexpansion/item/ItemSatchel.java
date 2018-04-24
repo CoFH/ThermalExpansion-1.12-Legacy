@@ -44,6 +44,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -78,7 +79,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 
 		super("thermalexpansion");
 
-		register("satchel");
 		setUnlocalizedName("satchel");
 		setCreativeTab(ThermalExpansion.tabTools);
 
@@ -394,7 +394,10 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
+
+		ForgeRegistries.ITEMS.register(setRegistryName("satchel"));
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		config();
 
@@ -407,13 +410,11 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 		satchelVoid = addEntryItem(VOID, "void", 4, EnumRarity.UNCOMMON);
 		satchelCreative = addEntryItem(CREATIVE, "creative", 4, EnumRarity.EPIC);
 
-		ThermalExpansion.proxy.addIModelRegister(this);
-
 		return true;
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		if (!enable) {
 			return false;

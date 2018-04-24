@@ -3,7 +3,6 @@ package cofh.thermalexpansion.gui.container.machine;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotEnergy;
 import cofh.core.gui.slot.SlotValidated;
-import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.machine.TileFurnace;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
@@ -32,7 +31,7 @@ public class ContainerFurnace extends ContainerTEBase implements ISlotValidator 
 		if (myTile.augmentFood() && !FurnaceManager.isFood(stack)) {
 			return false;
 		}
-		if (myTile.augmentOre() && !ItemHelper.isOre(stack)) {
+		if (myTile.augmentOre() && !FurnaceManager.isOre(stack)) {
 			return false;
 		}
 		return FurnaceManager.recipeExists(stack, myTile.augmentPyrolysis());

@@ -295,7 +295,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("device");
 		ForgeRegistries.BLOCKS.register(this);
@@ -325,7 +325,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		deviceWaterGen = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.WATER_GEN.getMetadata()));
 		deviceNullifier = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.NULLIFIER.getMetadata()));

@@ -99,8 +99,6 @@ public class ThermalExpansion {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 
-		TEPlugins.postInit();
-
 		proxy.postInit(event);
 	}
 
@@ -126,6 +124,7 @@ public class ThermalExpansion {
 	@EventHandler
 	public void handleIMC(IMCEvent event) {
 
+		TEPlugins.initialize();
 		managerInitialize();
 
 		IMCHandler.INSTANCE.handleIMC(event.getMessages());

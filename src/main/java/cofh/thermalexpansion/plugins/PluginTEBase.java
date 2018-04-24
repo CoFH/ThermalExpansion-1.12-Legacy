@@ -19,7 +19,7 @@ public abstract class PluginTEBase extends PluginCore {
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		String category = "Plugins";
 		String comment = "If TRUE, support for " + modName + " is enabled.";
@@ -32,7 +32,7 @@ public abstract class PluginTEBase extends PluginCore {
 		return !error;
 	}
 
-	public boolean register() {
+	public boolean initialize() {
 
 		if (!enable) {
 			return false;

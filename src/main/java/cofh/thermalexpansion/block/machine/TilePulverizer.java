@@ -132,7 +132,7 @@ public class TilePulverizer extends TileMachineBase {
 		if (inventory[0].getCount() < curRecipe.getInput().getCount()) {
 			return false;
 		}
-		boolean augmentPetrotheumCheck = augmentPetrotheum && ItemHelper.isOre(inventory[0]);
+		boolean augmentPetrotheumCheck = augmentPetrotheum && PulverizerManager.isOre(inventory[0]);
 
 		if (augmentPetrotheumCheck && tank.getFluidAmount() < FLUID_AMOUNT) {
 			return false;
@@ -162,7 +162,7 @@ public class TilePulverizer extends TileMachineBase {
 		if (curRecipe == null) {
 			return false;
 		}
-		if (augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() < FLUID_AMOUNT) {
+		if (augmentPetrotheum && PulverizerManager.isOre(inventory[0]) && tank.getFluidAmount() < FLUID_AMOUNT) {
 			return false;
 		}
 		return curRecipe.getInput().getCount() <= inventory[0].getCount();
@@ -200,7 +200,7 @@ public class TilePulverizer extends TileMachineBase {
 		ItemStack primaryItem = curRecipe.getPrimaryOutput();
 		ItemStack secondaryItem = curRecipe.getSecondaryOutput();
 
-		boolean augmentPetrotheumCheck = augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() >= FLUID_AMOUNT;
+		boolean augmentPetrotheumCheck = augmentPetrotheum && PulverizerManager.isOre(inventory[0]) && tank.getFluidAmount() >= FLUID_AMOUNT;
 
 		if (augmentPetrotheumCheck) {
 			if (inventory[1].isEmpty()) {
@@ -323,7 +323,7 @@ public class TilePulverizer extends TileMachineBase {
 
 	public boolean fluidArrow() {
 
-		return augmentPetrotheum && tank.getFluidAmount() >= FLUID_AMOUNT && (ItemHelper.isOre(inventory[0]));
+		return augmentPetrotheum && tank.getFluidAmount() >= FLUID_AMOUNT && PulverizerManager.isOre(inventory[0]);
 	}
 
 	/* NBT METHODS */

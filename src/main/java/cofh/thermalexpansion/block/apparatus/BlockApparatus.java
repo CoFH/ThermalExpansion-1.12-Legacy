@@ -209,7 +209,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("apparatus");
 		ForgeRegistries.BLOCKS.register(this);
@@ -228,7 +228,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		return true;
 	}
 
-	public boolean register() {
+	public boolean initialize() {
 
 		apparatusBreaker = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.BREAKER.getMetadata()));
 		apparatusCollector = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.COLLECTOR.getMetadata()));

@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.plugins.jei.machine.pulverizer;
 
-import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.item.ItemAugment;
@@ -40,7 +39,7 @@ public class PulverizerRecipeCategoryPetrotheum extends PulverizerRecipeCategory
 		List<PulverizerRecipeWrapper> recipes = new ArrayList<>();
 
 		for (PulverizerRecipe recipe : PulverizerManager.getRecipeList()) {
-			if (ItemHelper.isOre(recipe.getInput())) {
+			if (PulverizerManager.isOre(recipe.getInput())) {
 				recipes.add(new PulverizerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.PULVERIZER_PETROTHEUM));
 			}
 		}

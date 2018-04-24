@@ -318,7 +318,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("machine");
 		ForgeRegistries.BLOCKS.register(this);
@@ -352,7 +352,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		machineFurnace = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FURNACE.getMetadata()));
 		machinePulverizer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.PULVERIZER.getMetadata()));

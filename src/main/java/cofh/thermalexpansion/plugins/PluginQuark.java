@@ -156,7 +156,7 @@ public class PluginQuark extends PluginTEBase {
 
 		/* INSOLATOR */
 		{
-			ItemStack glowshroom = getItemStack("glowshroom", 1, 0);
+			ItemStack glowshroom = getItemStack("glowshroom");
 
 			InsolatorManager.addDefaultRecipe(glowshroom, ItemHelper.cloneStack(glowshroom, 2), ItemStack.EMPTY, 0);
 		}
@@ -174,7 +174,7 @@ public class PluginQuark extends PluginTEBase {
 
 		/* BREWER */
 		{
-			ItemStack glowshroom = getItemStack("glowshroom", 1, 0);
+			ItemStack glowshroom = getItemStack("glowshroom");
 
 			PotionType danger_sight = getPotionType("danger_sight", "");
 			PotionType danger_sight_long = getPotionType("danger_sight", "long");
