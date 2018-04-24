@@ -19,13 +19,15 @@ public class PluginChisel extends PluginTEBase {
 	@Override
 	public void registerDelegate() {
 
-		ItemStack basalt = getItemStack("basalt2", 1, 7);    //"raw" basalt
-		ItemStack limestone = getItemStack("limestone2", 1, 7); //"raw" limestone
+		ItemStack basalt = getItemStack("basalt2", 1, 7);           //"raw" basalt
+		ItemStack limestone = getItemStack("limestone2", 1, 7);     //"raw" limestone
 
 		/* EXTRUDER */
 		{
-			ExtruderManager.addRecipeIgneous(ExtruderManager.DEFAULT_ENERGY * 2, basalt, new FluidStack(FluidRegistry.LAVA, 500), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
-			ExtruderManager.addRecipeSedimentary(ExtruderManager.DEFAULT_ENERGY * 2, limestone, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 1500));
+			int energy = ExtruderManager.DEFAULT_ENERGY * 2;
+
+			ExtruderManager.addRecipeIgneous(energy, basalt, new FluidStack(FluidRegistry.LAVA, 250), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
+			ExtruderManager.addRecipeSedimentary(energy, limestone, new FluidStack(FluidRegistry.LAVA, 0), new FluidStack(FluidRegistry.WATER, 1500));
 		}
 	}
 

@@ -41,7 +41,7 @@ public class PluginTraverse extends PluginTEBase {
 
 		/* SAWMILL */
 		{
-			int energy = SawmillManager.DEFAULT_ENERGY * 3 / 2;
+			int energy = SawmillManager.DEFAULT_ENERGY;
 
 			SawmillManager.addRecipe(energy, getItemStack("fir_door"), planksFir, ItemMaterial.dustWood, 50);
 			SawmillManager.addRecipe(energy, getItemStack("fir_fence"), planksFir, ItemMaterial.dustWood, 25);

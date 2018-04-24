@@ -46,7 +46,7 @@ public class PluginSpookyTree extends PluginTEBase {
 
 		/* SAWMILL */
 		{
-			int energy = SawmillManager.DEFAULT_ENERGY * 3 / 2;
+			int energy = SawmillManager.DEFAULT_ENERGY;
 
 			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(button, 2), planks, ItemMaterial.dustWood, 25);
 			SawmillManager.addRecipe(energy, pressureplate, planks, ItemMaterial.dustWood, 50);

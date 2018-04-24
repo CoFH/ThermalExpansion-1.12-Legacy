@@ -92,7 +92,7 @@ public class PluginQuark extends PluginTEBase {
 
 		/* SAWMILL */
 		{
-			int energy = SawmillManager.DEFAULT_ENERGY * 3 / 2;
+			int energy = SawmillManager.DEFAULT_ENERGY;
 
 			/* CHESTS */
 			SawmillManager.addRecipe(energy, getItemStack("custom_chest", 1, 0), new ItemStack(Blocks.PLANKS, 4, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));

@@ -86,7 +86,7 @@ public class PluginTerraqueous extends PluginTEBase {
 
 		/* SAWMILL */
 		{
-			int energy = SawmillManager.DEFAULT_ENERGY * 3 / 2;
+			int energy = SawmillManager.DEFAULT_ENERGY;
 
 			for (int i = 0; i < plank.length; i++) {
 				SawmillManager.addRecipe(energy, door[i], plank[i], ItemMaterial.dustWood, 50);

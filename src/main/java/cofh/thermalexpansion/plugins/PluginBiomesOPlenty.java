@@ -143,7 +143,7 @@ public class PluginBiomesOPlenty extends PluginTEBase {
 
 		/* SAWMILL */
 		{
-			int energy = SawmillManager.DEFAULT_ENERGY * 3 / 2;
+			int energy = SawmillManager.DEFAULT_ENERGY;
 
 			/* DOORS */
 			SawmillManager.addRecipe(energy, getItemStack("sacred_oak_door"), getItemStack("planks_0", 1, 0), ItemMaterial.dustWood, 50);

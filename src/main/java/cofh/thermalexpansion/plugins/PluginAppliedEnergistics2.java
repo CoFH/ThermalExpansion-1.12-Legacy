@@ -20,6 +20,15 @@ public class PluginAppliedEnergistics2 extends PluginTEBase {
 	@Override
 	public void registerDelegate() {
 
+		ItemStack oreCertusQuartz = getItemStack("quartz_ore", 1);
+		ItemStack oreCertusQuartzCharged = getItemStack("charged_quartz_ore", 1);
+
+		ItemStack crystalCertusQuartz = getItemStack("material", 1, 0);
+		ItemStack crystalCertusQuartzCharged = getItemStack("material", 1, 1);
+
+		ItemStack dustCertusQuartz = ItemHelper.getOre("dustCertusQuartz");
+		ItemStack dustNetherQuartz = ItemHelper.getOre("dustNetherQuartz");
+
 		/* PULVERIZER */
 		{
 			int energy = PulverizerManager.DEFAULT_ENERGY;
@@ -27,20 +36,21 @@ public class PluginAppliedEnergistics2 extends PluginTEBase {
 			PulverizerManager.addRecipe(energy, new ItemStack(Items.WHEAT), getItemStack("material", 1, 4));
 			PulverizerManager.addRecipe(energy, getItemStack("sky_stone_block"), getItemStack("material", 1, 45));
 
-			PulverizerManager.addRecipe(energy, ItemHelper.getOre("oreCertusQuartz"), ItemHelper.getOre("crystalCertusQuartz", 2), ItemHelper.getOre("dustCertusQuartz"), 10);
-			PulverizerManager.addRecipe(energy, ItemHelper.getOre("crystalCertusQuartz"), ItemHelper.getOre("dustCertusQuartz"));
+			PulverizerManager.addRecipe(energy, oreCertusQuartz, ItemHelper.cloneStack(crystalCertusQuartz, 2), dustCertusQuartz, 10);
+			PulverizerManager.addRecipe(energy, oreCertusQuartzCharged, ItemHelper.cloneStack(crystalCertusQuartzCharged, 2), dustCertusQuartz, 10);
+			PulverizerManager.addRecipe(energy, crystalCertusQuartz, dustCertusQuartz);
 
-			energy = energy * 3 / 4;
+			energy = PulverizerManager.DEFAULT_ENERGY / 2;
 
 			PulverizerManager.addRecipe(energy, new ItemStack(Items.ENDER_PEARL), ItemHelper.getOre("dustEnderPearl"));
 			PulverizerManager.addRecipe(energy, ItemHelper.getOre("crystalFluix"), ItemHelper.getOre("dustFluix"));
-			PulverizerManager.addRecipe(energy, new ItemStack(Items.QUARTZ), ItemHelper.getOre("dustNetherQuartz"));
+			PulverizerManager.addRecipe(energy, new ItemStack(Items.QUARTZ), dustNetherQuartz);
 		}
 
 		/* INSOLATOR */
 		{
-			int energy = 120000;
-			int water = 5000;
+			int energy = 90000;
+			int water = 3000;
 
 			InsolatorManager.addRecipe(energy, water, getItemStack("crystal_seed"), new ItemStack(Items.GLOWSTONE_DUST), getItemStack("material", 1, 10));
 			InsolatorManager.addRecipe(energy, water, getItemStack("crystal_seed", 1, 600), new ItemStack(Items.GLOWSTONE_DUST), getItemStack("material", 1, 11));
@@ -51,8 +61,8 @@ public class PluginAppliedEnergistics2 extends PluginTEBase {
 		{
 			int energy = ChargerManager.DEFAULT_ENERGY;
 
-			ChargerManager.addRecipe(energy, getItemStack("quartz_ore", 1), getItemStack("charged_quartz_ore", 1));
-			ChargerManager.addRecipe(energy, getItemStack("material", 1, 0), getItemStack("material", 1, 1));
+			ChargerManager.addRecipe(energy, oreCertusQuartz, oreCertusQuartzCharged);
+			ChargerManager.addRecipe(energy, crystalCertusQuartz, crystalCertusQuartzCharged);
 		}
 	}
 
