@@ -101,10 +101,10 @@ task srcJar(type: Jar) {
 task signJar(type: SignJar, dependsOn: reobfJar) {
 	onlyIf {
 		//Skip of keystore is missing.
-		project.hasProperty('keyStore')
+		project.hasProperty('cofh_keyStore')
 	}
 
-	if (project.hasProperty('keyStore')) {
+	if (project.hasProperty('cofh_keyStore')) {
 		keyStore = project.cofh_keyStore
 		alias = project.cofh_keyStoreAlias
 		storePass = project.cofh_keyStorePass
