@@ -212,7 +212,6 @@ public class TileSawmill extends TileMachineBase {
 		}
 		if (augmentTapper && TapperManager.mappingExists(inventory[0])) {
 			FluidStack treeFluid = TapperManager.getFluid(inventory[0]).copy();
-			;
 			tank.fill(treeFluid, true);
 		}
 		inventory[0].shrink(curRecipe.getInput().getCount());

@@ -275,11 +275,6 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 	}
 
 	/* HELPERS */
-	public boolean isActive(ItemStack stack) {
-
-		return stack.getTagCompound() != null && stack.getTagCompound().getBoolean(CoreProps.ACTIVE);
-	}
-
 	public boolean setActiveState(ItemStack stack, boolean state) {
 
 		if (getFluid(stack) != null) {

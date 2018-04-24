@@ -250,7 +250,7 @@ public class PluginNatura extends PluginTEBase {
 
 		/* SAWMILL */
 		{
-			int energy = SawmillManager.DEFAULT_ENERGY * 3 / 2;
+			int energy = SawmillManager.DEFAULT_ENERGY;
 
 			/* BOOKSHELVES */
 			SawmillManager.addRecipe(energy, bookshelfMaple, ItemHelper.cloneStack(plankMaple, 4), new ItemStack(Items.BOOK, 3), 25);
@@ -333,20 +333,20 @@ public class PluginNatura extends PluginTEBase {
 			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceFusewood, 2), plankFusewood, ItemMaterial.dustWood, 25);
 
 			/* FENCE GATES */
-			SawmillManager.addRecipe(energy, fenceGateMaple, plankMaple, ItemMaterial.dustWood, 150);
-			SawmillManager.addRecipe(energy, fenceGateSilverbell, plankSilverbell, ItemMaterial.dustWood, 150);
-			SawmillManager.addRecipe(energy, fenceGateAmaranth, plankAmaranth, ItemMaterial.dustWood, 150);
-			SawmillManager.addRecipe(energy, fenceGateTigerwood, plankTigerwood, ItemMaterial.dustWood, 150);
-			SawmillManager.addRecipe(energy, fenceGateWillow, plankWillow, ItemMaterial.dustWood, 150);
-			SawmillManager.addRecipe(energy, fenceGateEucalyptus, plankEucalyptus, ItemMaterial.dustWood, 150);
-			SawmillManager.addRecipe(energy, fenceGateHopseed, plankHopseed, ItemMaterial.dustWood, 150);
-			SawmillManager.addRecipe(energy, fenceGateSakura, plankSakura, ItemMaterial.dustWood, 150);
-			SawmillManager.addRecipe(energy, fenceGateRedwood, plankRedwood, ItemMaterial.dustWood, 150);
+			SawmillManager.addRecipe(energy, fenceGateMaple, plankMaple, ItemMaterial.dustWood, 125);
+			SawmillManager.addRecipe(energy, fenceGateSilverbell, plankSilverbell, ItemMaterial.dustWood, 125);
+			SawmillManager.addRecipe(energy, fenceGateAmaranth, plankAmaranth, ItemMaterial.dustWood, 125);
+			SawmillManager.addRecipe(energy, fenceGateTigerwood, plankTigerwood, ItemMaterial.dustWood, 125);
+			SawmillManager.addRecipe(energy, fenceGateWillow, plankWillow, ItemMaterial.dustWood, 125);
+			SawmillManager.addRecipe(energy, fenceGateEucalyptus, plankEucalyptus, ItemMaterial.dustWood, 125);
+			SawmillManager.addRecipe(energy, fenceGateHopseed, plankHopseed, ItemMaterial.dustWood, 125);
+			SawmillManager.addRecipe(energy, fenceGateSakura, plankSakura, ItemMaterial.dustWood, 125);
+			SawmillManager.addRecipe(energy, fenceGateRedwood, plankRedwood, ItemMaterial.dustWood, 125);
 
-			SawmillManager.addRecipe(energy, fenceGateGhostwood, plankGhostwood, ItemMaterial.dustWood, 150);
-			SawmillManager.addRecipe(energy, fenceGateBloodwood, plankBloodwood, ItemMaterial.dustWood, 150);
-			SawmillManager.addRecipe(energy, fenceGateDarkwood, plankDarkwood, ItemMaterial.dustWood, 150);
-			SawmillManager.addRecipe(energy, fenceGateFusewood, plankFusewood, ItemMaterial.dustWood, 150);
+			SawmillManager.addRecipe(energy, fenceGateGhostwood, plankGhostwood, ItemMaterial.dustWood, 125);
+			SawmillManager.addRecipe(energy, fenceGateBloodwood, plankBloodwood, ItemMaterial.dustWood, 125);
+			SawmillManager.addRecipe(energy, fenceGateDarkwood, plankDarkwood, ItemMaterial.dustWood, 125);
+			SawmillManager.addRecipe(energy, fenceGateFusewood, plankFusewood, ItemMaterial.dustWood, 125);
 
 			/* PRESSURE PLATES */
 			SawmillManager.addRecipe(energy, pressurePlateMaple, plankMaple, ItemMaterial.dustWood, 50);

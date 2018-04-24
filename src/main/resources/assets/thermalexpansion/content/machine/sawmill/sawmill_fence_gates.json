@@ -1,0 +1,88 @@
+{
+	"sawmill": [
+		{
+			"input": {
+				"item": "minecraft:fence_gate"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 0,
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 125
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:spruce_fence_gate"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 1,
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 125
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:birch_fence_gate"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 2,
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 125
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:jungle_fence_gate"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 3,
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 125
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:acacia_fence_gate"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 4,
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 125
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:dark_oak_fence_gate"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 5,
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 125
+			}
+		}
+	]
+}

@@ -185,11 +185,6 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 	}
 
 	/* HELPERS */
-	public boolean isActive(ItemStack stack) {
-
-		return stack.getTagCompound() != null && stack.getTagCompound().getBoolean(CoreProps.ACTIVE);
-	}
-
 	public boolean setActiveState(ItemStack stack, boolean state) {
 
 		if (getEnergyStored(stack) > 0) {

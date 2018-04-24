@@ -8,6 +8,13 @@
 			}
 		},
 		{
+			"name": "sawdust",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 800
+			}
+		},
+		{
 			"name": "rosin",
 			"entry": {
 				"item": "thermalfoundation:material",

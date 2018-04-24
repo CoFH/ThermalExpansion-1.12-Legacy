@@ -63,9 +63,9 @@ public class FurnaceManager {
 	public static FurnaceRecipe[] getRecipeList(boolean pyrolysis) {
 
 		if (pyrolysis) {
-			return recipeMapPyrolysis.values().toArray(new FurnaceRecipe[recipeMapPyrolysis.size()]);
+			return recipeMapPyrolysis.values().toArray(new FurnaceRecipe[0]);
 		}
-		return recipeMap.values().toArray(new FurnaceRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new FurnaceRecipe[0]);
 	}
 
 	public static boolean isFood(ItemStack input) {

@@ -6,13 +6,12 @@ import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalfoundation.init.TFEquipment;
+import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -56,55 +55,67 @@ public class PulverizerManager {
 
 	public static PulverizerRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new PulverizerRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new PulverizerRecipe[0]);
 	}
 
 	public static void initialize() {
 
 		/* RECYCLING */
 		{
-			int energy = DEFAULT_ENERGY * 3 / 2;
 			// Output is 1/2, round down, minimum of 1.
+			/* WOODEN TOOLS / ARMOR */
+			int energy = DEFAULT_ENERGY * 3 / 4;
+			ItemStack output = ItemMaterial.dustWood;
+
+			addRecycleRecipe(energy, new ItemStack(Items.WOODEN_SWORD), output, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.WOODEN_PICKAXE), output, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.WOODEN_AXE), output, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.WOODEN_SHOVEL), output, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.WOODEN_HOE), output, 2);
+
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.WOOD.toolBow, output, 2);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.WOOD.toolFishingRod, output, 2);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.WOOD.toolShears, output, 2);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.WOOD.toolSickle, output, 2);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.WOOD.toolHammer, output, 4);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.WOOD.toolShield, output, 6);
 
 			/* DIAMOND TOOLS / ARMOR */
-			ItemStack diamond = new ItemStack(Items.DIAMOND);
+			energy = DEFAULT_ENERGY * 3 / 2;
+			output = new ItemStack(Items.DIAMOND);
 
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_SWORD), diamond, 1);
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_PICKAXE), diamond, 1);
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_AXE), diamond, 1);
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_SHOVEL), diamond, 1);
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HOE), diamond, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_SWORD), output, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_PICKAXE), output, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_AXE), output, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_SHOVEL), output, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HOE), output, 1);
 
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HELMET), diamond, 2);
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_CHESTPLATE), diamond, 4);
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_LEGGINGS), diamond, 3);
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_BOOTS), diamond, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HELMET), output, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_CHESTPLATE), output, 4);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_LEGGINGS), output, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_BOOTS), output, 2);
 
-			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HORSE_ARMOR), diamond, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HORSE_ARMOR), output, 2);
 
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolBow, diamond, 1);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolFishingRod, diamond, 1);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShears, diamond, 1);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolSickle, diamond, 1);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolHammer, diamond, 2);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShield, diamond, 3);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolBow, output, 1);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolFishingRod, output, 1);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShears, output, 1);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolSickle, output, 1);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolHammer, output, 2);
+			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShield, output, 3);
 		}
 
 		/* GENERAL SCAN */
 		{
-			String[] oreNames = OreDictionary.getOreNames();
 			String oreType;
 
-			for (String oreName : oreNames) {
-				if (oreName.startsWith("ore")) {
+			for (String oreName : OreDictionary.getOreNames()) {
+				if (oreName.startsWith("ore") || oreName.startsWith("gem")) {
 					oreType = oreName.substring(3, oreName.length());
-					addDefaultOreDictionaryRecipe(oreType);
+					addDefaultRecipes(oreType, "");
 				} else if (oreName.startsWith("dust")) {
 					oreType = oreName.substring(4, oreName.length());
-					addDefaultOreDictionaryRecipe(oreType);
-				} else if (oreName.startsWith("gem")) {
-					oreType = oreName.substring(3, oreName.length());
-					addDefaultOreDictionaryRecipeGem(oreType);
+					addDefaultRecipes(oreType, "");
 				}
 			}
 		}
@@ -156,130 +167,45 @@ public class PulverizerManager {
 		return new ComparableItemStackValidated(stack, oreValidator);
 	}
 
-	private static void addDefaultOreDictionaryRecipe(String oreType) {
-
-		addDefaultOreDictionaryRecipe(oreType, "");
-	}
-
-	private static void addDefaultOreDictionaryRecipe(String oreType, String relatedType) {
+	private static void addDefaultRecipes(String oreType, String relatedOre) {
 
 		if (oreType == null || oreType.isEmpty()) {
 			return;
 		}
 		String oreName = "ore" + StringHelper.titleCase(oreType);
+		String gemName = "gem" + StringHelper.titleCase(oreType);
 		String dustName = "dust" + StringHelper.titleCase(oreType);
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
 		String clusterName = "cluster" + StringHelper.titleCase(oreType);
-		String relatedName;
 
-		List<ItemStack> registeredOre = OreDictionary.getOres(oreName, false);
-		List<ItemStack> registeredDust = OreDictionary.getOres(dustName, false);
-		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName, false);
-		List<ItemStack> registeredCluster = OreDictionary.getOres(clusterName, false);
-		List<ItemStack> registeredRelated = new ArrayList<>();
+		ItemStack ore = ItemHelper.getOre(oreName);
+		ItemStack gem = ItemHelper.getOre(gemName);
+		ItemStack dust = ItemHelper.getOre(dustName);
+		ItemStack ingot = ItemHelper.getOre(ingotName);
+		ItemStack cluster = ItemHelper.getOre(clusterName);
+		ItemStack related = relatedOre.isEmpty() ? ItemStack.EMPTY : ItemHelper.getOre(relatedOre);
 
-		if (!relatedType.isEmpty()) {
-			relatedName = "dust" + StringHelper.titleCase(relatedType);
-			registeredRelated = OreDictionary.getOres(relatedName, false);
-		}
-		if (registeredDust.isEmpty()) {
-			return;
-		}
-		ItemStack dust = registeredDust.get(0);
-
-		if (registeredIngot.isEmpty()) {
-			ingotName = null;
-		}
-		if (registeredOre.isEmpty()) {
-			oreName = null;
-		}
-		if (registeredCluster.isEmpty()) {
-			clusterName = null;
-		}
-		ItemStack related = ItemStack.EMPTY;
-		if (related.isEmpty() && !registeredRelated.isEmpty()) {
-			related = registeredRelated.get(0);
-		}
 		int energy = DEFAULT_ENERGY;
 
-		addOreToDustRecipe(energy, oreName, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
-		addOreToDustRecipe(energy * 3 / 4, clusterName, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
-		addIngotToDustRecipe(energy / 2, ingotName, ItemHelper.cloneStack(dust, 1));
-	}
-
-	private static void addDefaultOreDictionaryRecipeGem(String oreType) {
-
-		addDefaultOreDictionaryRecipeGem(oreType, "");
-	}
-
-	private static void addDefaultOreDictionaryRecipeGem(String oreType, String relatedType) {
-
-		if (oreType == null || oreType.isEmpty()) {
-			return;
-		}
-		String oreName = "ore" + StringHelper.titleCase(oreType);
-		String dustName = "dust" + StringHelper.titleCase(oreType);
-		String gemName = "gem" + StringHelper.titleCase(oreType);
-		String relatedName;
-
-		List<ItemStack> registeredOre = OreDictionary.getOres(oreName, false);
-		List<ItemStack> registeredDust = OreDictionary.getOres(dustName, false);
-		List<ItemStack> registeredGem = OreDictionary.getOres(gemName, false);
-		List<ItemStack> registeredRelated = new ArrayList<>();
-
-		String clusterName = "cluster" + StringHelper.titleCase(oreType);
-		List<ItemStack> registeredCluster = OreDictionary.getOres(clusterName, false);
-
-		if (!relatedType.isEmpty()) {
-			relatedName = "dust" + StringHelper.titleCase(relatedType);
-			registeredRelated = OreDictionary.getOres(relatedName, false);
-		}
-		if (registeredGem.isEmpty()) {
-			return;
-		}
-		ItemStack gem = registeredGem.get(0);
-		ItemStack dust = ItemStack.EMPTY;
-
-		if (!registeredDust.isEmpty()) {
-			dust = registeredDust.get(0);
-		}
-		if (registeredOre.isEmpty()) {
-			oreName = null;
-		}
-		if (registeredCluster.isEmpty()) {
-			clusterName = null;
-		}
-		ItemStack related = ItemStack.EMPTY;
-		if (related.isEmpty() && !registeredRelated.isEmpty()) {
-			related = registeredRelated.get(0);
-		}
-		addOreToDustRecipe(DEFAULT_ENERGY, oreName, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
-		addOreToDustRecipe(DEFAULT_ENERGY * 5 / 4, clusterName, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
-		addIngotToDustRecipe(DEFAULT_ENERGY * 3 / 4, gemName, ItemHelper.cloneStack(dust, 1));
-	}
-
-	private static void addOreToDustRecipe(int energy, String oreName, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
-
-		if (primaryOutput.isEmpty() || oreName == null) {
-			return;
-		}
-		List<ItemStack> registeredOres = OreDictionary.getOres(oreName, false);
-
-		if (!registeredOres.isEmpty() && !recipeExists(OreDictionary.getOres(oreName, false).get(0))) {
-			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), ItemHelper.cloneStack(primaryOutput, ORE_MULTIPLIER), secondaryOutput, secondaryChance);
+		if (!gem.isEmpty()) {
+			addOreRecipe(energy, ore, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
+			addOreRecipe(energy * 3 / 4, cluster, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
+			addDustRecipe(energy / 2, gem, ItemHelper.cloneStack(dust, 1));
+		} else {
+			addOreRecipe(energy, ore, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
+			addOreRecipe(energy * 3 / 4, cluster, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
+			addDustRecipe(energy / 2, ingot, ItemHelper.cloneStack(dust, 1));
 		}
 	}
 
-	private static void addIngotToDustRecipe(int energy, String ingotName, ItemStack dust) {
+	private static void addOreRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
-		if (dust.isEmpty() || ingotName == null) {
-			return;
-		}
-		List<ItemStack> registeredOres = OreDictionary.getOres(ingotName, false);
+		addRecipe(energy, input, ItemHelper.cloneStack(primaryOutput, ORE_MULTIPLIER), secondaryOutput, secondaryChance);
+	}
 
-		if (!registeredOres.isEmpty() && !recipeExists(OreDictionary.getOres(ingotName, false).get(0))) {
-			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), dust, ItemStack.EMPTY, 0);
-		}
+	private static void addDustRecipe(int energy, ItemStack input, ItemStack dust) {
+
+		addRecipe(energy, input, dust, ItemStack.EMPTY, 0);
 	}
 
 	public static void addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
@@ -335,7 +261,6 @@ public class PulverizerManager {
 
 			return energy;
 		}
-
 	}
 
 }

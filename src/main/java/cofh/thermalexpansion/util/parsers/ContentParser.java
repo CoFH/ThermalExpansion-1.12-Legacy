@@ -80,26 +80,60 @@ public class ContentParser {
 	public static void parseFiles() {
 
 		ModContainer mod = FMLCommonHandler.instance().findContainerFor(ThermalExpansion.MOD_ID);
-		CraftingHelper.findFiles(mod, "assets/" + ThermalExpansion.MOD_ID + "/content/", null, (root, file) -> {
 
-			String relative = root.relativize(file).toString();
-			if (!"json".equals(FilenameUtils.getExtension(file.toString()))) {
+		parseConstants(mod);
+		parseRecipes(mod);
+	}
+
+	public static void parseConstants(ModContainer mod) {
+
+		CraftingHelper.findFiles(mod, "assets/" + mod.getModId() + "/content/", null, (root, file) -> {
+
+			String fileName = file.getFileName().toString();
+			if (!"json".equals(FilenameUtils.getExtension(fileName)) || !fileName.startsWith("_")) {
 				return true;
 			}
 			BufferedReader reader = null;
 			try {
 				reader = Files.newBufferedReader(file);
 				JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
-
 				for (Entry<String, JsonElement> contentEntry : json.entrySet()) {
 					if (parseEntry(contentEntry.getKey(), contentEntry.getValue())) {
-						ThermalExpansion.LOG.debug("Content entry added from file " + relative + ": \"" + contentEntry.getKey() + "\"");
+						ThermalExpansion.LOG.debug("Content entry added from file " + fileName + ": \"" + contentEntry.getKey() + "\"");
 					} else {
-						ThermalExpansion.LOG.error("Error parsing entry from file " + relative + ": \"" + contentEntry.getKey() + "\" > Please make sure the entry is a valid JSON Array.");
+						ThermalExpansion.LOG.error("Error parsing entry from file " + fileName + ": \"" + contentEntry.getKey() + "\" > Please make sure the entry is a valid JSON Array.");
 					}
 				}
 			} catch (IOException e) {
-				ThermalExpansion.LOG.error("Error parsing content file " + relative + "!", e);
+				ThermalExpansion.LOG.error("Error parsing content file " + fileName + "!", e);
+			} finally {
+				IOUtils.closeQuietly(reader);
+			}
+			return true;
+		}, false, false);
+	}
+
+	public static void parseRecipes(ModContainer mod) {
+
+		CraftingHelper.findFiles(mod, "assets/" + mod.getModId() + "/content/", null, (root, file) -> {
+
+			String fileName = file.getFileName().toString();
+			if (!"json".equals(FilenameUtils.getExtension(fileName)) || fileName.startsWith("_")) {
+				return true;
+			}
+			BufferedReader reader = null;
+			try {
+				reader = Files.newBufferedReader(file);
+				JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
+				for (Entry<String, JsonElement> contentEntry : json.entrySet()) {
+					if (parseEntry(contentEntry.getKey(), contentEntry.getValue())) {
+						ThermalExpansion.LOG.debug("Content entry added from file " + fileName + ": \"" + contentEntry.getKey() + "\"");
+					} else {
+						ThermalExpansion.LOG.error("Error parsing entry from file " + fileName + ": \"" + contentEntry.getKey() + "\" > Please make sure the entry is a valid JSON Array.");
+					}
+				}
+			} catch (IOException e) {
+				ThermalExpansion.LOG.error("Error parsing content file " + fileName + "!", e);
 			} finally {
 				IOUtils.closeQuietly(reader);
 			}
