@@ -161,7 +161,7 @@ public class BrewerManager {
 
 		/* SWAPS */
 		{
-			int max = CoreProps.POTION_MAX;
+			int max = 4;
 
 			addSwapPotionRecipes("leaping", max);
 			addSwapPotionRecipes("swiftness", max);

@@ -59,7 +59,7 @@ public class RefineryManager {
 
 	public static void initialize() {
 
-		int max = CoreProps.POTION_MAX;
+		int max = 4;
 
 		addStrongPotionRecipes("leaping", max);
 		addStrongPotionRecipes("swiftness", max);
@@ -69,8 +69,8 @@ public class RefineryManager {
 		addStrongPotionRecipes("regeneration", max);
 		addStrongPotionRecipes("strength", max);
 
-		addStrongPotionRecipes("haste", 4);
-		addStrongPotionRecipes("resistance", 4);
+		addStrongPotionRecipes("haste", max);
+		addStrongPotionRecipes("resistance", max);
 		addStrongPotionRecipes("absorption", max);
 		addStrongPotionRecipes("luck", max);
 		addStrongPotionRecipes("unluck", max);
@@ -165,7 +165,7 @@ public class RefineryManager {
 		int outputAmount;
 
 		for (int i = maxRank; i > 2; i--) {
-			outputAmount = 2 * baseAmount + baseAmount * (CoreProps.POTION_MAX - i);
+			outputAmount = 2 * baseAmount + baseAmount * (5 - i);
 			inputAmount = outputAmount + baseAmount;
 
 			PotionType inputType = getPotionType(baseName, i - 1, postfix);
