@@ -138,14 +138,31 @@ public class TransposerManager {
 		}
 
 		/* ELEMENTAL */
-		//		{
-		FluidStack expFluid = new FluidStack(TFFluids.fluidExperience, 200);
+		{
+			FluidStack expFluid = new FluidStack(TFFluids.fluidExperience, 200);
 
-		addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustSulfur, 4), new ItemStack(Items.BLAZE_POWDER), expFluid, false);
-		addFillRecipe(16000, ItemHelper.cloneStack(Items.SNOWBALL, 4), ItemMaterial.dustBlizz, expFluid, false);
-		addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustNiter, 4), ItemMaterial.dustBlitz, expFluid, false);
-		addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustObsidian, 4), ItemMaterial.dustBasalz, expFluid, false);
-		//		}
+			addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustSulfur, 2), new ItemStack(Items.BLAZE_POWDER), expFluid, false);
+			addFillRecipe(16000, ItemHelper.cloneStack(Items.SNOWBALL, 2), ItemMaterial.dustBlizz, expFluid, false);
+			addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustNiter, 2), ItemMaterial.dustBlitz, expFluid, false);
+			addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustObsidian, 2), ItemMaterial.dustBasalz, expFluid, false);
+
+			if (FluidRegistry.isFluidRegistered(CoreProps.ESSENCE)) {
+				expFluid = FluidRegistry.getFluidStack(CoreProps.ESSENCE, 200);
+
+				addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustSulfur, 2), new ItemStack(Items.BLAZE_POWDER), expFluid, false);
+				addFillRecipe(16000, ItemHelper.cloneStack(Items.SNOWBALL, 2), ItemMaterial.dustBlizz, expFluid, false);
+				addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustNiter, 2), ItemMaterial.dustBlitz, expFluid, false);
+				addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustObsidian, 2), ItemMaterial.dustBasalz, expFluid, false);
+			}
+			if (FluidRegistry.isFluidRegistered(CoreProps.XPJUICE)) {
+				expFluid = FluidRegistry.getFluidStack(CoreProps.XPJUICE, 200);
+
+				addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustSulfur, 2), new ItemStack(Items.BLAZE_POWDER), expFluid, false);
+				addFillRecipe(16000, ItemHelper.cloneStack(Items.SNOWBALL, 2), ItemMaterial.dustBlizz, expFluid, false);
+				addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustNiter, 2), ItemMaterial.dustBlitz, expFluid, false);
+				addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustObsidian, 2), ItemMaterial.dustBasalz, expFluid, false);
+			}
+		}
 
 		/* CELLS */
 		{
@@ -189,13 +206,13 @@ public class TransposerManager {
 
 		FluidStack cryoStack = new FluidStack(TFFluids.fluidCryotheum, 200);
 
-		addFillRecipe(2000, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(ItemMaterial.crystalCinnabar, 2), cryoStack, false);
+		addFillRecipe(2000, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(ItemMaterial.crystalCinnabar, 4), cryoStack, false);
 
-		if (FluidRegistry.isFluidRegistered("essence")) {
-			addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(FluidRegistry.getFluid("essence"), 250), false);
+		if (FluidRegistry.isFluidRegistered(CoreProps.ESSENCE)) {
+			addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(FluidRegistry.getFluid(CoreProps.ESSENCE), 250), false);
 		}
-		if (FluidRegistry.isFluidRegistered("xpjuice")) {
-			addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(FluidRegistry.getFluid("xpjuice"), 250), false);
+		if (FluidRegistry.isFluidRegistered(CoreProps.XPJUICE)) {
+			addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(FluidRegistry.getFluid(CoreProps.XPJUICE), 250), false);
 		}
 	}
 

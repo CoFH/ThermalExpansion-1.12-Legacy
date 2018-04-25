@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
@@ -460,7 +461,8 @@ public class TileEnchanter extends TileMachineBase {
 				public int fill(FluidStack resource, boolean doFill) {
 
 					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return tank.fill(resource, doFill);
+						FluidStack toFill = TFFluids.getXPFluid(resource);
+						return tank.fill(toFill, doFill);
 					}
 					return 0;
 				}
