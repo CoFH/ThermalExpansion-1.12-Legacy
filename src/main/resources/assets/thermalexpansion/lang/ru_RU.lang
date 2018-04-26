@@ -1,23 +1,21 @@
 #ru_RU
 
+gui.thermalexpansion.device.factorizer.modeCombine=Режим: Объединение
+gui.thermalexpansion.device.factorizer.modeSplit=Режим: Разделение
+
 gui.thermalexpansion.device.item_buffer.decInput=Уменьшение входа на
 gui.thermalexpansion.device.item_buffer.decOutput=Уменьшение выхода на
 gui.thermalexpansion.device.item_buffer.incInput=Увеличение входа на
 gui.thermalexpansion.device.item_buffer.incOutput=Увеличение выхода на
 
+gui.thermalexpansion.device.mob_catcher.modeAll=Захват всех
+gui.thermalexpansion.device.mob_catcher.modeFriendly=Захват только пассивных
+gui.thermalexpansion.device.mob_catcher.modeHostile=Захват только враждебных
+
 gui.thermalexpansion.jei.centrifuge.mobChance=Базовый шанс
 gui.thermalexpansion.jei.centrifuge.mobNotice=До указанного количества может быть произведено.
-gui.thermalexpansion.jei.compactor.modeGear=Механизм
-gui.thermalexpansion.jei.compactor.modeCoin=Чеканка
-gui.thermalexpansion.jei.compactor.modePress=Пресс
-gui.thermalexpansion.jei.compactor.modeStorage=Хранение
 gui.thermalexpansion.jei.transposer.modeEmpty=Пустой
 gui.thermalexpansion.jei.transposer.modeFill=Полный
-
-gui.thermalexpansion.machine.compactor.modeGear=Режим: Механизм
-gui.thermalexpansion.machine.compactor.modeCoin=Режим: Чеканка
-gui.thermalexpansion.machine.compactor.modePress=Режим: Пресс
-gui.thermalexpansion.machine.compactor.modeStorage=Режим: Хранение
 
 gui.thermalexpansion.machine.crafter.clearRecipe=Очистить рецепт
 gui.thermalexpansion.machine.crafter.setRecipe=Установить рецепт
@@ -72,6 +70,7 @@ info.thermalexpansion.augment.dynamoEnervationEnchant.c.0=Предметы ун�
 info.thermalexpansion.augment.dynamoMagmaticCoolant.0=Магматический генератор: Специализация
 info.thermalexpansion.augment.dynamoMagmaticCoolant.a.0=Значительно увеличивает производство электроэнергии и эффективность.
 info.thermalexpansion.augment.dynamoMagmaticCoolant.b.0=Охлаждающая жидкость необходима для работы.
+info.thermalexpansion.augment.dynamoMagmaticCoolant.c.0=Более сильные хладагенты приводят к повышению эффективности.
 
 info.thermalexpansion.augment.dynamoNumismaticGem.0=Нумизматический генератор: Специализация
 info.thermalexpansion.augment.dynamoNumismaticGem.a.0=Позволяет использовать различные драгоценные камни в качестве топлива.
@@ -80,7 +79,6 @@ info.thermalexpansion.augment.dynamoNumismaticGem.b.0=Можно использ�
 
 info.thermalexpansion.augment.dynamoPower.0=Генератор: Увеличение объема производства
 info.thermalexpansion.augment.dynamoPower.a.0=Увеличивает мощность (RF/тик).
-#info.thermalexpansion.augment.dynamoPower.b.0=Меньше энергии (RF) производится из топлива.
 
 info.thermalexpansion.augment.dynamoReactantElemental.0=Реагентный генератор: Специализация
 info.thermalexpansion.augment.dynamoReactantElemental.a.0=Значительно увеличивает производство электроэнергии и эффективность.
@@ -245,12 +243,14 @@ info.thermalexpansion.capacitor.d.2=Зарядка оборудования
 
 info.thermalexpansion.coolant=Охлаждение
 
-info.thermalexpansion.device.diffuser=Spreads potion effects to an area.
+info.thermalexpansion.device.diffuser=Распространяет эффекты зелья на область.
+info.thermalexpansion.device.factorizer=Объединяет и разделяет различные предметы.
 info.thermalexpansion.device.fisher=Ловит рыбу и другую водную жизнь.
 info.thermalexpansion.device.fluid_buffer=Хранит и передает жидкость.
 info.thermalexpansion.device.heat_sink=Повышает скорость соседней машины.
 info.thermalexpansion.device.item_buffer=Хранит и передает предметы.
 info.thermalexpansion.device.lexicon=Трансмутирует предметы между эквивалентными формами.
+info.thermalexpansion.device.mob_catcher=Захватывает близлежащих мобов.
 info.thermalexpansion.device.nullifier=Удаляет вещи из существования.
 info.thermalexpansion.device.tapper=Извлекает жидкость из дерева.
 info.thermalexpansion.device.water_gen=Вытягивает воду из окружающей среды.
@@ -348,7 +348,7 @@ item.thermalexpansion.augment.machineChargerRepair.name=Флаксовый ре�
 item.thermalexpansion.augment.machineChargerThroughput.name=Концентратор связи потоков
 item.thermalexpansion.augment.machineChargerWireless.name=Параболическая флаксовая муфта
 item.thermalexpansion.augment.machineCompactorGear.name=Механическое оружие
-item.thermalexpansion.augment.machineCompactorCoin.name=Нумизматический пресс
+item.thermalexpansion.augment.machineCompactorMint.name=Нумизматический пресс
 item.thermalexpansion.augment.machineCrafterInput.name=Проверка шаблона
 item.thermalexpansion.augment.machineCrafterTank.name=Флюидовое производство
 item.thermalexpansion.augment.machineCrucibleLava.name=Пироконвективная петля
@@ -431,6 +431,10 @@ tab.thermalexpansion.apparatus.collector.2=Скорее всего не буде
 tab.thermalexpansion.device.diffuser.0=Распространяет зелья в близлежащем районе.
 tab.thermalexpansion.device.diffuser.1=Продолжительность зелья снижено по сравнению с употреблением.
 tab.thermalexpansion.device.diffuser.2=Некоторые реагенты усиливают эффект.
+
+tab.thermalexpansion.device.factorizer.0=Объединяет или разъединяет предметы на меньшие или большие формы.
+tab.thermalexpansion.device.factorizer.1=Нажмите кнопку, чтобы изменить режимы.
+tab.thermalexpansion.device.factorizer.2=Реструктуризация вашего хранения!
 tab.thermalexpansion.device.fisher.0=Захватывает разнообразную водную жизнь. Используйте приманку для увеличения производства.
 tab.thermalexpansion.device.fisher.1=Необходимо поместить в водоем.
 tab.thermalexpansion.device.fisher.2=Повесьте свою удочку.
@@ -446,6 +450,9 @@ tab.thermalexpansion.device.item_buffer.2=Удерживайте Shift ил Ctrl
 tab.thermalexpansion.device.lexicon.0=Трансмутирует эквивалентные предметы.
 tab.thermalexpansion.device.lexicon.1=Поместите предпочтительные предметы в матрицу трансмутации.
 tab.thermalexpansion.device.lexicon.2=Предметы могут быть ограничены высшими силами.
+tab.thermalexpansion.device.mob_catcher.0=Захваты близлежащих мобов с помощью морбса.
+tab.thermalexpansion.device.mob_catcher.1=Нажмите кнопку, чтобы изменить настройки захвата.
+tab.thermalexpansion.device.mob_catcher.2=Надо поймать их всех!
 tab.thermalexpansion.device.nullifier.0=Отправляет все вещи в /dev/null!
 tab.thermalexpansion.device.nullifier.1=Это ужасное место; даже жидкости не могут убежать.
 tab.thermalexpansion.device.tapper.0=Извлекает жидкости из соседних деревьев. Используйте удобрения для увеличения производства.
@@ -554,11 +561,13 @@ tile.thermalexpansion.apparatus.breaker.name=Сокрушитель ланшаф
 tile.thermalexpansion.apparatus.collector.name=Приобретающий аппарат
 
 tile.thermalexpansion.device.diffuser.name=Декорирующий рассеиватель
+tile.thermalexpansion.device.factorizer.name=Факторизер
 tile.thermalexpansion.device.fisher.name=Водный крючок
 tile.thermalexpansion.device.fluid_buffer.name=Жидкостный распределитель
 tile.thermalexpansion.device.heat_sink.name=Термальный посредник
 tile.thermalexpansion.device.item_buffer.name=Предметный распределитель
 tile.thermalexpansion.device.lexicon.name=Лексический трансмутатор
+tile.thermalexpansion.device.mob_catcher.name=Инкапсулятор существ
 tile.thermalexpansion.device.nullifier.name=Аннулятор
 tile.thermalexpansion.device.tapper.name=Древесный выжиматель
 tile.thermalexpansion.device.water_gen.name=Генератор воды
