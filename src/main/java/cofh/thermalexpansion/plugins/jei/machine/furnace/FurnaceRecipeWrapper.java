@@ -61,7 +61,7 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 		switch (uId) {
 			case RecipeUidsTE.FURNACE_FOOD:
 			case RecipeUidsTE.FURNACE_ORE:
-				recipeOutputs.add(ItemHelper.cloneStack(recipe.getOutput(), recipe.getOutput().getCount() + 1));
+				recipeOutputs.add(ItemHelper.cloneStack(recipe.getOutput(), recipe.getOutput().getCount() + Math.max(1, recipe.getOutput().getCount() / 2)));
 				outputFluids = Collections.emptyList();
 				energy = recipe.getEnergy() * 3 / 2;
 				break;

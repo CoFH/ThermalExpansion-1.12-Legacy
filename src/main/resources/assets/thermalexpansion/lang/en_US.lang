@@ -120,12 +120,12 @@ info.thermalexpansion.augment.machineChargerWireless.c.0=Cannot exceed charge ra
 info.thermalexpansion.augment.machineCompactorCoin.0=Compactor: Specialization
 info.thermalexpansion.augment.machineCompactorCoin.a.0=Allows for the creation of currency.
 info.thermalexpansion.augment.machineCompactorCoin.a.1=Currency can be exchanged for goods and services.
-info.thermalexpansion.augment.machineCompactorCoin.c.0=Machine must be toggled into "Mint" mode.
+info.thermalexpansion.augment.machineCompactorCoin.c.0=Machine will not manufacture Plates.
 
 info.thermalexpansion.augment.machineCompactorGear.0=Compactor: Specialization
 info.thermalexpansion.augment.machineCompactorGear.a.0=Allows for the efficient creation of Gears.
 info.thermalexpansion.augment.machineCompactorGear.a.1=Gears are used in the construction of numerous things.
-info.thermalexpansion.augment.machineCompactorGear.c.0=Machine must be toggled into "Gear" mode.
+info.thermalexpansion.augment.machineCompactorGear.c.0=Machine will not manufacture Plates.
 
 info.thermalexpansion.augment.machineCrafterInput.0=Sequential Fabricator: Functionality
 info.thermalexpansion.augment.machineCrafterInput.a.0=Adds intelligent auto-input capability.

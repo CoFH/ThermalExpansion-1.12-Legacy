@@ -109,7 +109,6 @@ public class PulverizerManager {
 		/* GENERAL SCAN */
 		{
 			String oreType;
-
 			for (String oreName : OreDictionary.getOreNames()) {
 				if (oreName.startsWith("ore") || oreName.startsWith("gem")) {
 					oreType = oreName.substring(3, oreName.length());
@@ -117,20 +116,6 @@ public class PulverizerManager {
 				} else if (oreName.startsWith("dust")) {
 					oreType = oreName.substring(4, oreName.length());
 					addDefaultRecipes(oreType, "");
-				}
-			}
-		}
-
-		/* NETHER / END SCAN */
-		{
-
-			String oreType;
-
-			for (String oreName : OreDictionary.getOreNames()) {
-				if (oreName.startsWith("oreNether")) {
-					oreType = oreName.substring(9, oreName.length());
-				} else if (oreName.startsWith("oreEnd")) {
-					oreType = oreName.substring(6, oreName.length());
 				}
 			}
 		}

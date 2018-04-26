@@ -196,7 +196,7 @@ public class TileFurnace extends TileMachineBase {
 			tank.fill(new FluidStack(TFFluids.fluidCreosote, curRecipe.getCreosote()), true);
 		} else {
 			if ((augmentFood && FurnaceManager.isFood(inventory[0]) || augmentOre && FurnaceManager.isOre(inventory[0])) && inventory[1].getCount() < inventory[1].getMaxStackSize()) {
-				inventory[1].grow(output.getCount());
+				inventory[1].grow(Math.max(1, output.getCount() / 2));
 			}
 		}
 		inventory[0].shrink(curRecipe.getInput().getCount());

@@ -118,6 +118,7 @@ public class CentrifugeManager {
 			}
 		}
 		addRecipe(energy * 4, ItemHelper.getOre("dustBrass", 4), asList(ItemHelper.cloneStack(ItemMaterial.dustCopper, 3), ItemHelper.getOre("dustZinc")), null);
+		addRecipe(energy * 4, ItemHelper.getOre("dustCupronickel", 4), asList(ItemHelper.cloneStack(ItemMaterial.dustCopper, 3), ItemMaterial.dustNickel), null);
 
 		/* MOBS */
 		loadMobs();
