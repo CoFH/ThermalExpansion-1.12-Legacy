@@ -80,7 +80,6 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 		super(guiHelper);
 
 		localizedName += " - " + StringHelper.localize("gui.thermalexpansion.jei.transposer.modeFill");
-
 		icon = guiHelper.createDrawable(GuiTransposer.TEXTURE, 176, 48, 16, 16);
 	}
 

@@ -29,7 +29,7 @@ public class PluginRustic extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack beeswax = getItemStack("beeswax");
 		ItemStack chiliPepper = getItemStack("chili_pepper");

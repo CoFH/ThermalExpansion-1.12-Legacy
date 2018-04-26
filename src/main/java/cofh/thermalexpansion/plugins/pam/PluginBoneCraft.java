@@ -17,12 +17,12 @@ public class PluginBoneCraft extends PluginTEBase {
 	}
 
 	@Override
-	public void initializeDelegate() {
+	public void preInitDelegate() {
 
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack blockFossil = getItemStack("pamfossil");
 		ItemStack bone = new ItemStack(Items.BONE);

@@ -239,6 +239,7 @@ public class SmelterManager {
 				}
 			}
 		}
+
 	}
 
 	public static void refresh() {

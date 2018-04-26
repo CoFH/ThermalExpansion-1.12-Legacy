@@ -23,7 +23,7 @@ public class PluginTerraqueous extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack[] plank = new ItemStack[10];
 		ItemStack[] sapling = new ItemStack[10];

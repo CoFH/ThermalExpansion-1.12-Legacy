@@ -14,7 +14,7 @@ public class PluginTOP extends PluginTEBase {
 	}
 
 	@Override
-	public void initializeDelegate() {
+	public void preInitDelegate() {
 
 		FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", CompatibilityTOP.class.getName());
 	}

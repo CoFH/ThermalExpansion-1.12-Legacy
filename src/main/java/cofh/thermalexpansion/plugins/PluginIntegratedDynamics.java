@@ -23,7 +23,7 @@ public class PluginIntegratedDynamics extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack blockMenril = getItemStack("crystalized_menril_block", 1, 0);
 		ItemStack blockChorus = getItemStack("crystalized_chorus_block", 1, 0);

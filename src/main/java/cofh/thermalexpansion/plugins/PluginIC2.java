@@ -21,7 +21,7 @@ public class PluginIC2 extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		/* PULVERIZER */
 		{

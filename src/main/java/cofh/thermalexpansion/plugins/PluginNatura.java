@@ -25,7 +25,7 @@ public class PluginNatura extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack seedBarley = getItemStack("overworld_seeds", 1, 0);
 		ItemStack seedCotton = getItemStack("overworld_seeds", 1, 1);

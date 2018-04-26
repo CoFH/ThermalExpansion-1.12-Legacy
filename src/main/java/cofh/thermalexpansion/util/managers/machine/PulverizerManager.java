@@ -120,6 +120,20 @@ public class PulverizerManager {
 				}
 			}
 		}
+
+		/* NETHER / END SCAN */
+		{
+
+			String oreType;
+
+			for (String oreName : OreDictionary.getOreNames()) {
+				if (oreName.startsWith("oreNether")) {
+					oreType = oreName.substring(9, oreName.length());
+				} else if (oreName.startsWith("oreEnd")) {
+					oreType = oreName.substring(6, oreName.length());
+				}
+			}
+		}
 	}
 
 	public static void refresh() {
@@ -173,24 +187,37 @@ public class PulverizerManager {
 		if (oreType == null || oreType.isEmpty()) {
 			return;
 		}
-		String oreName = "ore" + StringHelper.titleCase(oreType);
-		String gemName = "gem" + StringHelper.titleCase(oreType);
-		String dustName = "dust" + StringHelper.titleCase(oreType);
-		String ingotName = "ingot" + StringHelper.titleCase(oreType);
+		String suffix = StringHelper.titleCase(oreType);
+
+		String oreName = "ore" + suffix;
+		String gemName = "gem" + suffix;
+		String dustName = "dust" + suffix;
+		String ingotName = "ingot" + suffix;
+
+		String oreNetherName = "oreNether" + suffix;
+		String oreEndName = "oreEnd" + suffix;
 
 		ItemStack ore = ItemHelper.getOre(oreName);
 		ItemStack gem = ItemHelper.getOre(gemName);
 		ItemStack dust = ItemHelper.getOre(dustName);
 		ItemStack ingot = ItemHelper.getOre(ingotName);
+
+		ItemStack oreNether = ItemHelper.getOre(oreNetherName);
+		ItemStack oreEnd = ItemHelper.getOre(oreEndName);
+
 		ItemStack related = relatedOre.isEmpty() ? ItemStack.EMPTY : ItemHelper.getOre(relatedOre);
 
 		int energy = DEFAULT_ENERGY;
 
 		if (!gem.isEmpty()) {
-			addRecipe(energy, ore, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
+			addRecipe(energy, ore, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 10);
+			addRecipe(energy * 3 / 2, oreNether, ItemHelper.cloneStack(gem, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
+			addRecipe(energy * 3 / 2, oreEnd, ItemHelper.cloneStack(gem, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
 			addRecipe(energy / 2, gem, ItemHelper.cloneStack(dust, 1));
 		} else {
-			addRecipe(energy, ore, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 5);
+			addRecipe(energy, ore, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 10);
+			addRecipe(energy * 3 / 2, oreNether, ItemHelper.cloneStack(dust, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
+			addRecipe(energy * 3 / 2, oreEnd, ItemHelper.cloneStack(dust, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
 			addRecipe(energy / 2, ingot, ItemHelper.cloneStack(dust, 1));
 		}
 	}

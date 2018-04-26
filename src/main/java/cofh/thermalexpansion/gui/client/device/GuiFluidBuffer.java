@@ -3,6 +3,7 @@ package cofh.thermalexpansion.gui.client.device;
 import cofh.core.gui.element.ElementButton;
 import cofh.core.gui.element.ElementFluidTank;
 import cofh.core.gui.element.ElementSimple;
+import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.device.TileFluidBuffer;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
@@ -77,15 +78,23 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		int change2;
 
 		if (GuiScreen.isShiftKeyDown()) {
-			change = 8000;
-			change2 = 4000;
-		} else if (GuiScreen.isCtrlKeyDown()) {
-			change = 500;
+			change = 1000;
 			change2 = 100;
+
+			if (GuiScreen.isCtrlKeyDown()) {
+				change *= 10;
+				change2 *= 10;
+			}
+		} else if (GuiScreen.isCtrlKeyDown()) {
+			change = 5;
+			change2 = 1;
 		} else {
-			change = 2000;
-			change2 = 1000;
+			change = 50;
+			change2 = 10;
 		}
+		change = MathHelper.clamp(change, 1, 8000);
+		change2 = MathHelper.clamp(change2, 1, 8000);
+
 		if (myTile.amountInput > 0) {
 			decInput.setActive();
 			decInput.setToolTip(StringHelper.localize("gui.thermalexpansion.device.item_buffer.decInput") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
@@ -149,27 +158,31 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		float pitch;
 
 		if (GuiScreen.isShiftKeyDown()) {
-			change = 8000;
+			change = 1000;
 			pitch = 0.9F;
 			if (mouseButton == 1) {
-				change = 4000;
+				change = 100;
 				pitch = 0.8F;
 			}
+			if (GuiScreen.isCtrlKeyDown()) {
+				change *= 10;
+			}
 		} else if (GuiScreen.isCtrlKeyDown()) {
-			change = 500;
+			change = 5;
 			pitch = 0.5F;
 			if (mouseButton == 1) {
-				change = 100;
+				change = 1;
 				pitch = 0.4F;
 			}
 		} else {
-			change = 2000;
+			change = 50;
 			pitch = 0.7F;
 			if (mouseButton == 1) {
-				change = 1000;
+				change = 10;
 				pitch = 0.6F;
 			}
 		}
+		change = MathHelper.clamp(change, 1, 8000);
 		int curInput = myTile.amountInput;
 		int curOutput = myTile.amountOutput;
 		boolean[] curLocks = myTile.locks.clone();

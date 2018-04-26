@@ -17,7 +17,7 @@ public class PluginChisel extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack basalt = getItemStack("basalt2", 1, 7);           //"raw" basalt
 		ItemStack limestone = getItemStack("limestone2", 1, 7);     //"raw" limestone

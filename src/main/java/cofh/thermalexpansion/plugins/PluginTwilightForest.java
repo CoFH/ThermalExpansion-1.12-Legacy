@@ -21,7 +21,7 @@ public class PluginTwilightForest extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack plantMossPatch = getItemStack("twilight_plant", 1, 0);
 		ItemStack plantMayapple = getItemStack("twilight_plant", 1, 1);

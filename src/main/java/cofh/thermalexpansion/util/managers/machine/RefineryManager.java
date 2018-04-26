@@ -59,37 +59,39 @@ public class RefineryManager {
 
 	public static void initialize() {
 
+		int min = 2;
 		int max = 4;
 
-		addStrongPotionRecipes("leaping", max);
-		addStrongPotionRecipes("swiftness", max);
-		addStrongPotionRecipes("healing", max);
-		addStrongPotionRecipes("harming", max);
-		addStrongPotionRecipes("poison", max);
-		addStrongPotionRecipes("regeneration", max);
-		addStrongPotionRecipes("strength", max);
+		addStrongPotionRecipes("leaping", min, max);
+		addStrongPotionRecipes("swiftness", min, max);
+		addStrongPotionRecipes("healing", min, max);
+		addStrongPotionRecipes("harming", min, max);
+		addStrongPotionRecipes("poison", min, max);
+		addStrongPotionRecipes("regeneration", min, max);
+		addStrongPotionRecipes("strength", min, max);
 
-		addStrongPotionRecipes("haste", max);
-		addStrongPotionRecipes("resistance", max);
-		addStrongPotionRecipes("absorption", max);
-		addStrongPotionRecipes("luck", max);
-		addStrongPotionRecipes("unluck", max);
-		addStrongPotionRecipes("wither", max);
+		addStrongPotionRecipes("haste", min, max);
+		addStrongPotionRecipes("resistance", min, max);
+		addStrongPotionRecipes("absorption", min, max);
+		addStrongPotionRecipes("luck", min, max);
+		addStrongPotionRecipes("unluck", min, max);
+		addStrongPotionRecipes("wither", min, max);
 
+		min = 1;
 		max = 3;
 
-		addStrongPotionRecipes("leaping", max, "+");
-		addStrongPotionRecipes("swiftness", max, "+");
-		addStrongPotionRecipes("poison", max, "+");
-		addStrongPotionRecipes("regeneration", max, "+");
-		addStrongPotionRecipes("strength", max, "+");
+		addStrongPotionRecipes("leaping", min, max, "+");
+		addStrongPotionRecipes("swiftness", min, max, "+");
+		addStrongPotionRecipes("poison", min, max, "+");
+		addStrongPotionRecipes("regeneration", min, max, "+");
+		addStrongPotionRecipes("strength", min, max, "+");
 
-		addStrongPotionRecipes("haste", max, "+");
-		addStrongPotionRecipes("resistance", max, "+");
-		addStrongPotionRecipes("absorption", max, "+");
-		addStrongPotionRecipes("luck", max, "+");
-		addStrongPotionRecipes("unluck", max, "+");
-		addStrongPotionRecipes("wither", max, "+");
+		addStrongPotionRecipes("haste", min, max, "+");
+		addStrongPotionRecipes("resistance", min, max, "+");
+		addStrongPotionRecipes("absorption", min, max, "+");
+		addStrongPotionRecipes("luck", min, max, "+");
+		addStrongPotionRecipes("unluck", min, max, "+");
+		addStrongPotionRecipes("wither", min, max, "+");
 	}
 
 	public static void refresh() {
@@ -153,19 +155,19 @@ public class RefineryManager {
 		oilFluids.add(fluid.getName());
 	}
 
-	public static void addStrongPotionRecipes(String baseName, int maxRank) {
+	public static void addStrongPotionRecipes(String baseName, int minRank, int maxRank) {
 
-		addStrongPotionRecipes(baseName, maxRank, "");
+		addStrongPotionRecipes(baseName, minRank, maxRank, "");
 	}
 
-	public static void addStrongPotionRecipes(String baseName, int maxRank, String postfix) {
+	public static void addStrongPotionRecipes(String baseName, int minRank, int maxRank, String postfix) {
 
 		int baseAmount = CoreProps.BOTTLE_VOLUME / 5;
 		int inputAmount;
 		int outputAmount;
 
-		for (int i = maxRank; i > 2; i--) {
-			outputAmount = 2 * baseAmount + baseAmount * (5 - i);
+		for (int i = maxRank; i > minRank; i--) {
+			outputAmount = baseAmount * (5 + minRank - i);
 			inputAmount = outputAmount + baseAmount;
 
 			PotionType inputType = getPotionType(baseName, i - 1, postfix);
@@ -193,7 +195,10 @@ public class RefineryManager {
 		PotionType ret;
 		switch (rank) {
 			case 1:
-				ret = PotionType.getPotionTypeForName(baseName);
+				ret = PotionType.getPotionTypeForName("cofhcore:" + baseName + postfix);
+				if (ret == PotionTypes.EMPTY) { // Vanilla Potion
+					ret = PotionType.getPotionTypeForName("long_" + baseName);
+				}
 				break;
 			case 2:
 				ret = PotionType.getPotionTypeForName("cofhcore:" + baseName + 2 + postfix);

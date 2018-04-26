@@ -7,6 +7,7 @@ import cofh.thermalexpansion.block.storage.BlockStrongbox;
 import cofh.thermalexpansion.block.storage.BlockTank;
 import cofh.thermalexpansion.init.TEItems;
 import cofh.thermalexpansion.plugins.jei.device.coolant.CoolantCategory;
+import cofh.thermalexpansion.plugins.jei.device.factorizer.FactorizerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.compression.CompressionFuelCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.enervation.EnervationFuelCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.magmatic.MagmaticFuelCategory;
@@ -90,6 +91,7 @@ public class JEIPluginTE implements IModPlugin {
 		EnervationFuelCategory.register(registry);
 		NumismaticFuelCategory.register(registry);
 
+		FactorizerRecipeCategory.register(registry);
 		CoolantCategory.register(registry);
 	}
 
@@ -123,6 +125,7 @@ public class JEIPluginTE implements IModPlugin {
 		EnervationFuelCategory.initialize(registry);
 		NumismaticFuelCategory.initialize(registry);
 
+		FactorizerRecipeCategory.initialize(registry);
 		CoolantCategory.initialize(registry);
 
 		Descriptions.register(registry);

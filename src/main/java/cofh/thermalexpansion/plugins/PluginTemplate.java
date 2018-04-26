@@ -11,12 +11,12 @@ public class PluginTemplate extends PluginTEBase {
 	}
 
 	@Override
-	public void initializeDelegate() {
+	public void preInitDelegate() {
 
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 	}
 

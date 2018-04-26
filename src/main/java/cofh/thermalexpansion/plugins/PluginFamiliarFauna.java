@@ -15,7 +15,7 @@ public class PluginFamiliarFauna extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		/* CENTRIFUGE */
 		{

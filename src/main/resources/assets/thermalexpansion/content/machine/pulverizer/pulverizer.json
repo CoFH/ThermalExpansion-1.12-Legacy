@@ -86,7 +86,7 @@
 			},
 			"output": {
 				"item": "minecraft:sugar",
-				"data": 2
+				"count": 2
 			},
 			"energy_mod": 50
 		},

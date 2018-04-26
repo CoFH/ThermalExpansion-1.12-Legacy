@@ -22,12 +22,12 @@ public class PluginSpookyTree extends PluginTEBase {
 	}
 
 	@Override
-	public void initializeDelegate() {
+	public void preInitDelegate() {
 
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack sapling = getItemStack("spookytree_sapling");
 		ItemStack log = getItemStack("spookytree_log");

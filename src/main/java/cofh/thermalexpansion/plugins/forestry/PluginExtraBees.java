@@ -25,7 +25,7 @@ public class PluginExtraBees extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack dropHoney = getItemStack(PARENT_ID, "honey_drop", 1, 0);
 		ItemStack wax = getItemStack(PARENT_ID, "beeswax", 1, 0);
@@ -140,7 +140,7 @@ public class PluginExtraBees extends PluginTEBase {
 			CentrifugeManager.addRecipe(energy, combSulfur, asList(ItemMaterial.dustSulfur, dropAcid, wax), asList(75, 50, 80), null);
 			CentrifugeManager.addRecipe(energy, combNiter, asList(ItemMaterial.dustNiter, dropHoney), asList(100, 25), null);
 
-			CentrifugeManager.addRecipe(energy, combMushroom, asList(new ItemStack(Blocks.BROWN_MUSHROOM_BLOCK), new ItemStack(Blocks.RED_MUSHROOM_BLOCK), wax), asList(100, 75, 90), null);
+			CentrifugeManager.addRecipe(energy, combMushroom, asList(new ItemStack(Blocks.BROWN_MUSHROOM), new ItemStack(Blocks.RED_MUSHROOM), wax), asList(100, 75, 90), null);
 			CentrifugeManager.addRecipe(energy, combSlime, asList(new ItemStack(Items.SLIME_BALL), dropHoney, wax), asList(75, 75, 100), null);
 			CentrifugeManager.addRecipe(energy, combBlaze, asList(new ItemStack(Items.BLAZE_POWDER), wax), asList(100, 75), null);
 

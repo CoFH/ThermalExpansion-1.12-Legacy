@@ -117,6 +117,7 @@ public class CentrifugeManager {
 				addRecipe(energy, new ItemStack(Blocks.CONCRETE_POWDER, 2, i), asList(gravel, sand, new ItemStack(TFItems.itemDye, 1, 15 - i)), asList(100, 100, 10), null);
 			}
 		}
+		addRecipe(energy * 4, ItemHelper.getOre("dustBrass", 4), asList(ItemHelper.cloneStack(ItemMaterial.dustCopper, 3), ItemHelper.getOre("dustZinc")), null);
 
 		/* MOBS */
 		loadMobs();

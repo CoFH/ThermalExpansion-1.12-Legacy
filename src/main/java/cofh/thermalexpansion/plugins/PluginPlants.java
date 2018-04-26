@@ -21,7 +21,7 @@ public class PluginPlants extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack seedAmaranthus = getItemStack("amaranthus_h_seeds", 1);
 		ItemStack seedOkra = getItemStack("okra_seeds", 1);

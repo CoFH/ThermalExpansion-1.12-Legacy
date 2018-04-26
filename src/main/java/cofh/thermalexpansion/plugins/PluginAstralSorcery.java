@@ -19,7 +19,7 @@ public class PluginAstralSorcery extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack faintAmaranth = getItemStack("blockcustomflower", 1);
 		ItemStack dustAstralStarmetal = ItemHelper.getOre("dustAstralStarmetal");

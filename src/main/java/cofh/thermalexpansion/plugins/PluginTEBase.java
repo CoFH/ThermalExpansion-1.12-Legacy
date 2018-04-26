@@ -28,7 +28,7 @@ public abstract class PluginTEBase extends PluginCore {
 		if (!enable) {
 			return false;
 		}
-		initializeDelegate();
+		preInitDelegate();
 		return !error;
 	}
 
@@ -38,7 +38,7 @@ public abstract class PluginTEBase extends PluginCore {
 			return false;
 		}
 		try {
-			registerDelegate();
+			initializeDelegate();
 		} catch (Throwable t) {
 			ThermalExpansion.LOG.error("Thermal Expansion: " + modName + " Plugin encountered an error:", t);
 			error = true;
@@ -49,11 +49,11 @@ public abstract class PluginTEBase extends PluginCore {
 		return !error;
 	}
 
-	public void initializeDelegate() {
+	public void preInitDelegate() {
 
 	}
 
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 	}
 

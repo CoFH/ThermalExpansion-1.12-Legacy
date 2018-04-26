@@ -22,7 +22,7 @@ public class PluginTechReborn extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		/* INSOLATOR */
 		{
@@ -45,7 +45,9 @@ public class PluginTechReborn extends PluginTEBase {
 
 			CentrifugeManager.addRecipe(energy * 16, ItemHelper.getOre("dustRedGarnet", 16), asList(ItemHelper.getOre("dustSpessartine", 8), ItemHelper.getOre("dustAlmandine", 5), ItemHelper.getOre("dustPyrope", 3)), null);
 			CentrifugeManager.addRecipe(energy * 16, ItemHelper.getOre("dustYellowGarnet", 16), asList(ItemHelper.getOre("dustGrossular", 8), ItemHelper.getOre("dustAndradite", 5), ItemHelper.getOre("dustUvarovite", 3)), null);
-			CentrifugeManager.addRecipe(energy, ItemHelper.getOre("dustDarkAshes"), singletonList(ItemHelper.getOre("dustAshes")), null);
+			CentrifugeManager.addRecipe(energy * 2, ItemHelper.getOre("dustDarkAshes", 2), singletonList(ItemHelper.getOre("dustAshes")), null);
+			CentrifugeManager.addRecipe(energy, ItemHelper.getOre("dustMarble"), asList(ItemHelper.getOre("dustCalcite", 7), ItemHelper.getOre("dustMagnesium")), null);
+			CentrifugeManager.addRecipe(energy, ItemHelper.getOre("dustBasalt"), asList(ItemHelper.getOre("dustFlint", 8), ItemHelper.getOre("dustDarkAshes", 4), ItemHelper.getOre("dustCalcite", 3), ItemHelper.getOre("dustPeridot")), null);
 		}
 	}
 

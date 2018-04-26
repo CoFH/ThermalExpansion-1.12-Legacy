@@ -14,6 +14,8 @@ gui.thermalexpansion.device.mob_catcher.modeHostile=Capture Only Hostile
 
 gui.thermalexpansion.jei.centrifuge.mobChance=Base Chance
 gui.thermalexpansion.jei.centrifuge.mobNotice=Up to the listed amount may be produced.
+gui.thermalexpansion.jei.factorizer.modeCombine=Combine
+gui.thermalexpansion.jei.factorizer.modeSplit=Split
 gui.thermalexpansion.jei.transposer.modeEmpty=Empty
 gui.thermalexpansion.jei.transposer.modeFill=Fill
 

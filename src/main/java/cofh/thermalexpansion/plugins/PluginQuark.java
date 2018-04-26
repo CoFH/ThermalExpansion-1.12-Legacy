@@ -27,7 +27,7 @@ public class PluginQuark extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		/* PULVERIZER */
 		{

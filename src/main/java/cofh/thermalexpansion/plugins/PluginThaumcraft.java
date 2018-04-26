@@ -20,7 +20,7 @@ public class PluginThaumcraft extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack clusterIron = getItemStack("cluster", 1, 0);
 		ItemStack clusterGold = getItemStack("cluster", 1, 1);

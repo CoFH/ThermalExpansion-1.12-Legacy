@@ -20,7 +20,7 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 	}
 
 	@Override
-	public void initializeDelegate() {
+	public void preInitDelegate() {
 
 		String category = "Plugins." + MOD_NAME;
 		String comment;
@@ -36,7 +36,7 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		// @formatter:off
 		String[] names = {

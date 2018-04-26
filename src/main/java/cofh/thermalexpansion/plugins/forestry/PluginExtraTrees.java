@@ -27,7 +27,7 @@ public class PluginExtraTrees extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack mulch = getItemStack(PARENT_ID, "mulch", 1, 0);
 

@@ -22,7 +22,7 @@ public class PluginTraverse extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack saplingRed = getItemStack("red_autumnal_sapling");
 		ItemStack saplingBrown = getItemStack("brown_autumnal_sapling");

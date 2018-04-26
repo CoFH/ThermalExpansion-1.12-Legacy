@@ -2,6 +2,7 @@ package cofh.thermalexpansion.plugins;
 
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.managers.device.TapperManager;
+import cofh.thermalexpansion.util.managers.machine.EnchanterManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import net.minecraft.block.Block;
@@ -22,10 +23,16 @@ public class PluginEvilCraft extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
-		ItemStack logUndead = getItemStack("undead_log", 1, 0);
-		ItemStack saplingUndead = getItemStack("undead_sapling", 1, 0);
+		ItemStack bloodOrb = getItemStack("blood_orb", 1, 1);
+		ItemStack bloodWaxedCoal = getItemStack("blood_waxed_coal");
+		ItemStack darkGem = getItemStack("dark_gem");
+		ItemStack darkPowerGem = getItemStack("dark_power_gem");
+		ItemStack poisonSac = getItemStack("poison_sac");
+
+		ItemStack logUndead = getItemStack("undead_log");
+		ItemStack saplingUndead = getItemStack("undead_sapling");
 
 		Block blockLogUndead = getBlock("undead_log");
 		Block blockLeavesUndead = getBlock("undead_leaves");
@@ -46,6 +53,15 @@ public class PluginEvilCraft extends PluginTEBase {
 			if (fluidBlood != null) {
 				TransposerManager.addExtractRecipe(energy, logUndead, getItemStack("hardened_blood_shard"), new FluidStack(fluidBlood, 100), 25, false);
 			}
+		}
+
+		/* ENCHANTER */
+		{
+			EnchanterManager.addDefaultEnchantmentRecipe(bloodOrb, MOD_ID + ":life_stealing", 1);
+			EnchanterManager.addDefaultEnchantmentRecipe(poisonSac, MOD_ID + ":poison_tip", 2);
+			EnchanterManager.addDefaultEnchantmentRecipe(bloodWaxedCoal, MOD_ID + ":unusing", 3);
+			//			EnchanterManager.addDefaultEnchantmentRecipe(darkGem, MOD_ID + ":breaking", 1);
+			//			EnchanterManager.addDefaultEnchantmentRecipe(darkPowerGem, MOD_ID + ":vengeance", 1);
 		}
 
 		/* TAPPER */

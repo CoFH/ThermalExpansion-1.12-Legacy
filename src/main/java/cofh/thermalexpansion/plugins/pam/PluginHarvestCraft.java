@@ -24,7 +24,7 @@ public class PluginHarvestCraft extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack beeswax = getItemStack("beeswaxitem");
 		ItemStack honey = getItemStack("honeyitem");

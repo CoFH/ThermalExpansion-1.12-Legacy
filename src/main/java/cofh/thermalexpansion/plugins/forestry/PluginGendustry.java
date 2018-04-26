@@ -18,7 +18,7 @@ public class PluginGendustry extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack dropHoney = getItemStack(PARENT_ID, "honey_drop", 1, 0);
 		ItemStack wax = getItemStack(PARENT_ID, "beeswax", 1, 0);

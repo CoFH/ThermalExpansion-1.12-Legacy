@@ -16,7 +16,7 @@ public class PluginExU2 extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack[] cobblestone = new ItemStack[8];
 		ItemStack[] dirt = new ItemStack[4];

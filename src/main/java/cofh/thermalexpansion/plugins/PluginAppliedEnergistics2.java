@@ -18,7 +18,7 @@ public class PluginAppliedEnergistics2 extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack oreCertusQuartz = getItemStack("quartz_ore", 1);
 		ItemStack oreCertusQuartzCharged = getItemStack("charged_quartz_ore", 1);

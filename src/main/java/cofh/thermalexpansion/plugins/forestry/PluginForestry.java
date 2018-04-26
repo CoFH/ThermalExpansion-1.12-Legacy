@@ -28,7 +28,7 @@ public class PluginForestry extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack woodPile = getItemStack("wood_pile", 1);
 

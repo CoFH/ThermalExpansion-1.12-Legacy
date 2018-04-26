@@ -19,7 +19,7 @@ public class PluginMagicBees extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack honeydew = getItemStack(PARENT_ID, "honeydew", 1, 0);
 		ItemStack dropHoney = getItemStack(PARENT_ID, "honey_drop", 1, 0);

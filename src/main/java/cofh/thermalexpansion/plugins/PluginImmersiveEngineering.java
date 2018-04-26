@@ -18,7 +18,7 @@ public class PluginImmersiveEngineering extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack treatedWood = getItemStack("treated_wood", 1, 0);
 

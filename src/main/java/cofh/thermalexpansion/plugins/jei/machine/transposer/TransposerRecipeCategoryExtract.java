@@ -84,7 +84,6 @@ public class TransposerRecipeCategoryExtract extends TransposerRecipeCategory {
 		super(guiHelper);
 
 		localizedName += " - " + StringHelper.localize("gui.thermalexpansion.jei.transposer.modeEmpty");
-
 		icon = guiHelper.createDrawable(GuiTransposer.TEXTURE, 192, 48, 16, 16);
 	}
 

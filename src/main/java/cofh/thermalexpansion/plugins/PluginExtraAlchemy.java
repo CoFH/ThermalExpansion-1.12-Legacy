@@ -18,7 +18,7 @@ public class PluginExtraAlchemy extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		PotionType fuse = getPotionType("fuse", "normal");
 		PotionType fuseStrong = getPotionType("fuse", "strong");

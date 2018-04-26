@@ -341,7 +341,7 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 							return 0;
 						}
 						for (int j = 0; j < tanks.length && tanks[j].getSpace() > 0; j++) {
-							int toFill = tanks[j].fill(resource, doFill);
+							int toFill = tanks[j].fill(new FluidStack(resource, Math.min(resource.amount, amountInput)), doFill);
 							if (toFill > 0) {
 								return toFill;
 							}
@@ -358,11 +358,11 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 						if (resource == null) {
 							return null;
 						}
-						for (int j = tanks.length - 1; j >= 0 && tanks[j].getFluidAmount() > 0; j--) {
-							FluidStack toDrain = tanks[j].drain(resource, doDrain);
-							if (toDrain != null) {
-								return toDrain;
+						for (int j = tanks.length - 1; j >= 0; j--) {
+							if (tanks[j].getFluidAmount() <= 0) {
+								continue;
 							}
+							return tanks[j].drain(new FluidStack(resource, Math.min(resource.amount, amountOutput)), doDrain);
 						}
 					}
 					return null;
@@ -376,11 +376,11 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 						if (maxDrain <= 0) {
 							return null;
 						}
-						for (int j = tanks.length - 1; j >= 0 && tanks[j].getFluidAmount() > 0; j--) {
-							FluidStack toDrain = tanks[j].drain(maxDrain, doDrain);
-							if (toDrain != null) {
-								return toDrain;
+						for (int j = tanks.length - 1; j >= 0; j--) {
+							if (tanks[j].getFluidAmount() <= 0) {
+								continue;
 							}
+							return tanks[j].drain(Math.min(maxDrain, amountOutput), doDrain);
 						}
 					}
 					return null;

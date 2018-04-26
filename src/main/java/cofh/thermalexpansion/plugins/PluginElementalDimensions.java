@@ -20,7 +20,7 @@ public class PluginElementalDimensions extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		/* PULVERIZER */
 		{

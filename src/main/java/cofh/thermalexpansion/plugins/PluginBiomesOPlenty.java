@@ -24,7 +24,7 @@ public class PluginBiomesOPlenty extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack sandWhite = getItemStack("white_sand", 1, 0);
 		ItemStack driedSand = getItemStack("dried_sand", 1, 0);

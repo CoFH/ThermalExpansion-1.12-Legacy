@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block;
 
-import codechicken.lib.vec.Vector3;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.core.audio.ISoundSource;
 import cofh.core.audio.SoundTile;
@@ -15,6 +14,7 @@ import net.minecraft.client.audio.ISound;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -178,7 +178,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 	@SideOnly (Side.CLIENT)
 	public ISound getSound() {
 
-		return new SoundTile(this, getSoundEvent(), getVolume(), 1.0F, true, 0, Vector3.fromTileCenter(this).vec3());
+		return new SoundTile(this, getSoundEvent(), getVolume(), 1.0F, true, 0, new Vec3d(pos).addVector(0.5, 0.5, 0.5));
 	}
 
 	@Override

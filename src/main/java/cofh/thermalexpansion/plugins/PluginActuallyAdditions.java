@@ -21,7 +21,7 @@ public class PluginActuallyAdditions extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		Fluid canola_oil = FluidRegistry.getFluid("canolaoil");
 		Fluid refined_canola_oil = FluidRegistry.getFluid("refinedcanolaoil");

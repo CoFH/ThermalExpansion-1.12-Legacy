@@ -26,7 +26,7 @@ public class PluginTConstruct extends PluginTEBase {
 	}
 
 	@Override
-	public void registerDelegate() {
+	public void initializeDelegate() {
 
 		ItemStack slimeCongealed = getItemStack("slime_congealed", 1, 0);
 		ItemStack slimeCongealedMagma = getItemStack("slime_congealed", 1, 4);
