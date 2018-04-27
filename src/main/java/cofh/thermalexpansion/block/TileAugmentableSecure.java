@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block;
 
-import codechicken.lib.util.ServerUtils;
 import cofh.api.core.IAugmentable;
 import cofh.api.core.ISecurable;
 import cofh.api.item.IAugmentItem.AugmentType;
@@ -8,14 +7,11 @@ import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.ITransferControl;
 import cofh.api.tileentity.IUpgradeable;
+import cofh.core.gui.GuiHandler;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.network.PacketCore;
 import cofh.core.util.helpers.*;
-import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.gui.GuiHandler;
-import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalfoundation.init.TFProps;
 import com.google.common.base.Strings;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +26,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IWorldNameable;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -127,13 +124,13 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		hasAutoOutput = false;
 		hasRedstoneControl = false;
 
-		if (level >= TEProps.levelAutoOutput) {
-			hasAutoOutput = true;
-		}
-		if (level >= TEProps.levelAutoInput) {
+		if (level >= getLevelAutoInput()) {
 			hasAutoInput = true;
 		}
-		if (level >= TEProps.levelRedstoneControl) {
+		if (level >= getLevelAutoOutput()) {
+			hasAutoOutput = true;
+		}
+		if (level >= getLevelRSControl()) {
 			hasRedstoneControl = true;
 		}
 	}
@@ -168,7 +165,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 		if (canPlayerAccess(player)) {
 			if (hasGui()) {
-				player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(getMod(), GuiHandler.TILE_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			}
 			return hasGui();
 		}
@@ -183,7 +180,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 		if (canPlayerAccess(player)) {
 			if (hasConfigGui()) {
-				player.openGui(ThermalExpansion.instance, GuiHandler.TILE_CONFIG_ID, world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(getMod(), GuiHandler.TILE_CONFIG_ID, world, pos.getX(), pos.getY(), pos.getZ());
 			}
 			return hasConfigGui();
 		}
@@ -427,7 +424,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		if (owner != CoreProps.DEFAULT_OWNER) {
 			return false;
 		}
-		MinecraftServer server = ServerUtils.mc();
+		MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 		if (server == null) {
 			return false;
 		}
@@ -450,7 +447,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		if (SecurityHelper.isDefaultUUID(owner.getId())) {
 			owner = profile;
 			if (!SecurityHelper.isDefaultUUID(owner.getId())) {
-				if (ServerUtils.mc() != null) {
+				if (FMLCommonHandler.instance().getMinecraftServerInstance() != null) {
 					new Thread("CoFH User Loader") {
 
 						@Override
@@ -602,9 +599,9 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 				if (isCreative) {
 					return false;
 				}
-				if (level >= TFProps.LEVEL_MIN) {
+				if (level >= CoreProps.LEVEL_MIN) {
 					isCreative = true;
-					setLevel(TFProps.LEVEL_MAX);
+					setLevel(CoreProps.LEVEL_MAX);
 					break;
 				}
 				return false;

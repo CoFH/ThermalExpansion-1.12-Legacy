@@ -18,7 +18,6 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.BakeryDynamo;
-import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
@@ -108,7 +107,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
 				if (TEProps.creativeTabShowAllBlockLevels) {
-					for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
+					for (int j = 0; j <= CoreProps.LEVEL_MAX; j++) {
 						items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i), j));
 					}
 				} else {

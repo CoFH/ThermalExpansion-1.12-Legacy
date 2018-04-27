@@ -17,7 +17,6 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.BakeryTank;
-import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
@@ -80,7 +79,7 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 
 		if (enable) {
 			if (TEProps.creativeTabShowAllBlockLevels) {
-				for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
+				for (int j = 0; j <= CoreProps.LEVEL_MAX; j++) {
 					items.add(itemBlock.setDefaultTag(new ItemStack(this), j));
 				}
 			} else {

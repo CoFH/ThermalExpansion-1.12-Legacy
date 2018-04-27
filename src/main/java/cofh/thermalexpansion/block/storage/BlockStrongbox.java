@@ -2,12 +2,12 @@ package cofh.thermalexpansion.block.storage;
 
 import codechicken.lib.model.ModelRegistryHelper;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.RenderStrongbox;
-import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -55,7 +55,7 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 
 		if (enable) {
 			if (TEProps.creativeTabShowAllBlockLevels) {
-				for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
+				for (int j = 0; j <= CoreProps.LEVEL_MAX; j++) {
 					items.add(itemBlock.setDefaultTag(new ItemStack(this), j));
 				}
 			} else {

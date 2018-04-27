@@ -116,7 +116,7 @@ public class ThermalExpansion {
 	@EventHandler
 	public void handleIdMappingEvent(FMLModIdMappingEvent event) {
 
-		managerRefresh();
+		refreshManagers();
 
 		proxy.onIdRemap();
 	}
@@ -124,10 +124,17 @@ public class ThermalExpansion {
 	@EventHandler
 	public void handleIMC(IMCEvent event) {
 
-		TEPlugins.initialize();
-		managerInitialize();
+		preInitManagers();
 
 		IMCHandler.INSTANCE.handleIMC(event.getMessages());
+		ContentParser.parseFiles();
+
+		ItemFlorb.parseFlorbs();
+		ItemMorb.parseMorbs();
+
+		TEPlugins.initialize();
+
+		initManagers();
 	}
 
 	/* HELPERS */
@@ -138,14 +145,15 @@ public class ThermalExpansion {
 		PacketTEBase.initialize();
 	}
 
-	private void managerInitialize() {
+	private void preInitManagers() {
 
 		SmelterManager.preInit();
+		InsolatorManager.preInit();
+		TransposerManager.preInit();
+		EnchanterManager.preInit();
+	}
 
-		ContentParser.parseFiles();
-
-		ItemFlorb.parseFlorbs();
-		ItemMorb.parseMorbs();
+	private void initManagers() {
 
 		FurnaceManager.initialize();
 		PulverizerManager.initialize();
@@ -171,7 +179,7 @@ public class ThermalExpansion {
 		FactorizerManager.initialize();
 	}
 
-	private synchronized void managerRefresh() {
+	private void refreshManagers() {
 
 		FurnaceManager.refresh();
 		PulverizerManager.refresh();

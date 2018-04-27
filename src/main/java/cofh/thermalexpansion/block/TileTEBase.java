@@ -3,11 +3,12 @@ package cofh.thermalexpansion.block;
 import cofh.api.core.IPortableData;
 import cofh.core.block.TileCore;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.gui.GuiHandler;
 import cofh.core.network.ITilePacketHandler;
 import cofh.core.network.PacketBase;
 import cofh.core.network.PacketHandler;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.gui.GuiHandler;
+import cofh.thermalexpansion.init.TEProps;
 import mcjty.theoneprobe.api.IProbeInfo;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,6 +43,37 @@ public abstract class TileTEBase extends TileCore implements ITilePacketHandler,
 		return true;
 	}
 
+	/* TO ABSTRACT */
+	protected Object getMod() {
+
+		return ThermalExpansion.instance;
+	}
+
+	protected String getVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	protected boolean enableSounds() {
+
+		return TEProps.enableSounds;
+	}
+
+	protected int getLevelAutoInput() {
+
+		return TEProps.levelAutoInput;
+	}
+
+	protected int getLevelAutoOutput() {
+
+		return TEProps.levelAutoOutput;
+	}
+
+	protected int getLevelRSControl() {
+
+		return TEProps.levelRedstoneControl;
+	}
+
 	/* GUI METHODS */
 	public int getScaledProgress(int scale) {
 
@@ -57,7 +89,7 @@ public abstract class TileTEBase extends TileCore implements ITilePacketHandler,
 	public boolean openGui(EntityPlayer player) {
 
 		if (hasGui()) {
-			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, world, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(getMod(), GuiHandler.TILE_ID, world, pos.getX(), pos.getY(), pos.getZ());
 		}
 		return hasGui();
 	}
@@ -66,7 +98,7 @@ public abstract class TileTEBase extends TileCore implements ITilePacketHandler,
 	public boolean openConfigGui(EntityPlayer player) {
 
 		if (hasConfigGui()) {
-			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_CONFIG_ID, world, pos.getX(), pos.getY(), pos.getZ());
+			player.openGui(getMod(), GuiHandler.TILE_CONFIG_ID, world, pos.getX(), pos.getY(), pos.getZ());
 		}
 		return hasConfigGui();
 	}
@@ -107,7 +139,7 @@ public abstract class TileTEBase extends TileCore implements ITilePacketHandler,
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
-		nbt.setString("Version", ThermalExpansion.VERSION);
+		nbt.setString("Version", getVersion());
 
 		if (!tileName.isEmpty()) {
 			nbt.setString("Name", tileName);

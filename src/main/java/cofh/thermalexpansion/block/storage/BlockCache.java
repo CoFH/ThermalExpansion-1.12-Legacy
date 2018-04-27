@@ -10,6 +10,7 @@ import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.api.block.IConfigGui;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.StateMapper;
 import cofh.core.util.helpers.ItemHelper;
@@ -20,7 +21,6 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.render.BakeryCache;
-import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
@@ -81,7 +81,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 
 		if (enable) {
 			if (TEProps.creativeTabShowAllBlockLevels) {
-				for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
+				for (int j = 0; j <= CoreProps.LEVEL_MAX; j++) {
 					items.add(itemBlock.setDefaultTag(new ItemStack(this), j));
 				}
 			} else {

@@ -16,7 +16,6 @@ import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalfoundation.init.TFProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -101,7 +100,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		ThermalExpansion.CONFIG.getCategory(category).setComment(comment);
 		boolean validScaling = true;
 
-		for (int i = TFProps.LEVEL_MIN + 1; i <= TFProps.LEVEL_MAX; i++) {
+		for (int i = CoreProps.LEVEL_MIN + 1; i <= CoreProps.LEVEL_MAX; i++) {
 			CUSTOM_POWER_SCALING[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, CUSTOM_POWER_SCALING[i], POWER_BASE, POWER_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Machines.");
 		}
 		for (int i = 1; i < CUSTOM_POWER_SCALING.length; i++) {
@@ -125,7 +124,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		ThermalExpansion.CONFIG.getCategory(category).setComment(comment);
 		validScaling = true;
 
-		for (int i = TFProps.LEVEL_MIN + 1; i <= TFProps.LEVEL_MAX; i++) {
+		for (int i = CoreProps.LEVEL_MIN + 1; i <= CoreProps.LEVEL_MAX; i++) {
 			CUSTOM_ENERGY_SCALING[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, CUSTOM_ENERGY_SCALING[i], ENERGY_BASE, ENERGY_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Machines.");
 		}
 		for (int i = 1; i < CUSTOM_ENERGY_SCALING.length; i++) {
@@ -289,12 +288,12 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	/* COMMON METHODS */
 	protected int getBasePower(int level) {
 
-		return ENERGY_CONFIGS[getType()].maxPower * POWER_SCALING[MathHelper.clamp(level, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX)] / POWER_BASE;
+		return ENERGY_CONFIGS[getType()].maxPower * POWER_SCALING[MathHelper.clamp(level, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX)] / POWER_BASE;
 	}
 
 	protected int getBaseEnergy(int level) {
 
-		return ENERGY_SCALING[MathHelper.clamp(level, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX)] / ENERGY_BASE;
+		return ENERGY_SCALING[MathHelper.clamp(level, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX)] / ENERGY_BASE;
 	}
 
 	protected int calcEnergy() {

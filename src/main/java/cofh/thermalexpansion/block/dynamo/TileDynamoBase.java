@@ -22,7 +22,6 @@ import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.init.TFFluids;
-import cofh.thermalfoundation.init.TFProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -96,7 +95,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		ThermalExpansion.CONFIG.getCategory(category).setComment(comment);
 		boolean validScaling = true;
 
-		for (int i = TFProps.LEVEL_MIN + 1; i <= TFProps.LEVEL_MAX; i++) {
+		for (int i = CoreProps.LEVEL_MIN + 1; i <= CoreProps.LEVEL_MAX; i++) {
 			CUSTOM_POWER_SCALING[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, CUSTOM_POWER_SCALING[i], POWER_BASE, POWER_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Dynamos.");
 		}
 		for (int i = 1; i < CUSTOM_POWER_SCALING.length; i++) {
@@ -289,7 +288,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	/* COMMON METHODS */
 	protected int getBasePower(int level) {
 
-		return ENERGY_CONFIGS[getType()].maxPower * POWER_SCALING[MathHelper.clamp(level, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX)] / POWER_BASE;
+		return ENERGY_CONFIGS[getType()].maxPower * POWER_SCALING[MathHelper.clamp(level, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX)] / POWER_BASE;
 	}
 
 	protected int calcEnergy() {

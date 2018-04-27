@@ -90,23 +90,17 @@ public class EnchanterManager {
 		return !input.isEmpty() && lockSet.contains(convertInput(input));
 	}
 
-	public static void initialize() {
-
-		ItemStack book = new ItemStack(Items.BOOK);
+	public static void preInit() {
 
 		/* ARCANA */
 		{
-			addArcana(book);
+			addArcana(new ItemStack(Items.BOOK));
 		}
-
-		addEnchantmentBooks();
-
-		/* LOAD RECIPES */
-		loadRecipes();
 	}
 
-	public static void loadRecipes() {
+	public static void initialize() {
 
+		addEnchantmentBooks();
 	}
 
 	public static void refresh() {

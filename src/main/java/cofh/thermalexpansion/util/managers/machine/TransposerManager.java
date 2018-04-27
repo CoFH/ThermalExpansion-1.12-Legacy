@@ -94,6 +94,17 @@ public class TransposerManager {
 		return !input.isEmpty() && validationSet.contains(convertInput(input));
 	}
 
+	public static void preInit() {
+
+		/* BUCKETS */
+		{
+			addContainerOverride(new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.BUCKET), 100);
+			addContainerOverride(new ItemStack(Items.LAVA_BUCKET), new ItemStack(Items.BUCKET), 100);
+			addContainerOverride(new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BUCKET), 100);
+			addContainerOverride(new ItemStack(ForgeModContainer.getInstance().universalBucket), new ItemStack(Items.BUCKET), 100);
+		}
+	}
+
 	public static void initialize() {
 
 		/* BLOCKS */
@@ -178,11 +189,6 @@ public class TransposerManager {
 		addFillRecipe(2000, ItemFertilizer.fertilizerBasic, ItemFertilizer.fertilizerRich, new FluidStack(TFFluids.fluidSap, 200), false);
 		addFillRecipe(400, new ItemStack(Items.BOWL), new ItemStack(Items.MUSHROOM_STEW), new FluidStack(TFFluids.fluidMushroomStew, 250), true);
 		addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(TFFluids.fluidExperience, 250), false);
-
-		addContainerOverride(new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.BUCKET), 100);
-		addContainerOverride(new ItemStack(Items.LAVA_BUCKET), new ItemStack(Items.BUCKET), 100);
-		addContainerOverride(new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BUCKET), 100);
-		addContainerOverride(new ItemStack(ForgeModContainer.getInstance().universalBucket), new ItemStack(Items.BUCKET), 100);
 
 		/* LOAD POTIONS */
 		loadPotions();

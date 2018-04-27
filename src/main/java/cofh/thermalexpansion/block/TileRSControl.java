@@ -9,7 +9,6 @@ import cofh.core.network.PacketCore;
 import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.helpers.SoundHelper;
-import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -134,7 +133,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 		isActive = payload.getBool();
 
 		if (!curActive && isActive) {
-			if (getSoundEvent() != null && TEProps.enableSounds) {
+			if (getSoundEvent() != null && enableSounds()) {
 				SoundHelper.playSound(getSound());
 			}
 		}

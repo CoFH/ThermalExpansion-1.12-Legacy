@@ -91,7 +91,7 @@ public class InsolatorManager {
 		return !input.isEmpty() && lockSet.contains(convertInput(input));
 	}
 
-	public static void initialize() {
+	public static void preInit() {
 
 		/* FERTILIZER */
 		{
@@ -99,6 +99,9 @@ public class InsolatorManager {
 			addFertilizer(ItemFertilizer.fertilizerRich);
 			addFertilizer(ItemFertilizer.fertilizerFlux);
 		}
+	}
+
+	public static void initialize() {
 
 		/* CROPS */
 		{

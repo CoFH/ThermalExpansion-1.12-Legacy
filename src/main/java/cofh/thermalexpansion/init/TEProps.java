@@ -3,6 +3,7 @@ package cofh.thermalexpansion.init;
 import codechicken.lib.block.property.unlisted.UnlistedGenericTile;
 import cofh.CoFHCore;
 import cofh.core.gui.CreativeTabCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.TimeTracker;
@@ -53,13 +54,13 @@ public class TEProps {
 		category = "Upgrades";
 
 		comment = "This sets the minimum upgradeable block tier for Automatic Input functionality.";
-		levelAutoInput = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelAutoInput", category, levelAutoInput, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX, comment);
+		levelAutoInput = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelAutoInput", category, levelAutoInput, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX, comment);
 
 		comment = "This sets the minimum upgradeable block tier for Automatic Output functionality.";
-		levelAutoOutput = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelAutoOutput", category, levelAutoOutput, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX, comment);
+		levelAutoOutput = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelAutoOutput", category, levelAutoOutput, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX, comment);
 
 		comment = "This sets the minimum upgradeable block tier for Redstone Control functionality.";
-		levelRedstoneControl = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelRedstoneControl", category, levelRedstoneControl, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX, comment);
+		levelRedstoneControl = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelRedstoneControl", category, levelRedstoneControl, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX, comment);
 	}
 
 	private static void configClient() {
@@ -87,7 +88,7 @@ public class TEProps {
 		category = "Interface.CreativeTabs";
 
 		comment = "Set the default level for the Blocks shown in the Creative Tab, if all levels are not shown.";
-		creativeTabLevel = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getInt("DefaultLevel", category, creativeTabLevel, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX, comment);
+		creativeTabLevel = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getInt("DefaultLevel", category, creativeTabLevel, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX, comment);
 
 		comment = "If TRUE, all regular levels for a given Block will show in the Creative Tab.";
 		creativeTabShowAllBlockLevels = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ShowAllBlockLevels", category, creativeTabShowAllBlockLevels, comment);

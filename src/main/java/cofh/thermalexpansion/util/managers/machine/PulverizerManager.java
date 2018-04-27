@@ -196,13 +196,13 @@ public class PulverizerManager {
 
 		if (!gem.isEmpty()) {
 			addRecipe(energy, ore, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 10);
-			addRecipe(energy * 3 / 2, oreNether, ItemHelper.cloneStack(gem, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
-			addRecipe(energy * 3 / 2, oreEnd, ItemHelper.cloneStack(gem, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
+			addRecipe(energy, oreNether, ItemHelper.cloneStack(gem, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
+			addRecipe(energy, oreEnd, ItemHelper.cloneStack(gem, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
 			addRecipe(energy / 2, gem, ItemHelper.cloneStack(dust, 1));
 		} else {
 			addRecipe(energy, ore, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 10);
-			addRecipe(energy * 3 / 2, oreNether, ItemHelper.cloneStack(dust, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
-			addRecipe(energy * 3 / 2, oreEnd, ItemHelper.cloneStack(dust, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
+			addRecipe(energy, oreNether, ItemHelper.cloneStack(dust, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
+			addRecipe(energy, oreEnd, ItemHelper.cloneStack(dust, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
 			addRecipe(energy / 2, ingot, ItemHelper.cloneStack(dust, 1));
 		}
 	}
