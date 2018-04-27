@@ -11,18 +11,17 @@ import net.minecraft.world.World;
  */
 public interface IProbeInfoProvider {
 
-	/**
-	 * Return a unique ID (usually combined with the modid) to identify this provider.
-	 *
-	 * @return
-	 */
-	String getID();
+    /**
+     * Return a unique ID (usually combined with the modid) to identify this provider.
+     * @return
+     */
+    String getID();
 
-	/**
-	 * Add information for the probe info for the given block. This is always called
-	 * server side.
-	 * The given probeInfo object represents a vertical layout. So adding elements to that
-	 * will cause them to be grouped vertically.
-	 */
-	void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data);
+    /**
+     * Add information for the probe info for the given block. This is always called
+     * server side.
+     * The given probeInfo object represents a vertical layout. So adding elements to that
+     * will cause them to be grouped vertically.
+     */
+    void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data);
 }

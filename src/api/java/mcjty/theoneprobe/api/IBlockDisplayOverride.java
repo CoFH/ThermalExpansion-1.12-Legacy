@@ -11,10 +11,10 @@ import net.minecraft.world.World;
  */
 public interface IBlockDisplayOverride {
 
-	/**
-	 * This function returns true if you handled the probe info yourselves and TOP doesn't have to add its
-	 * own info.
-	 */
-	boolean overrideStandardInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data);
+    /**
+     * This function returns true if you handled the probe info yourselves and TOP doesn't have to add its
+     * own info.
+     */
+    boolean overrideStandardInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data);
 
 }

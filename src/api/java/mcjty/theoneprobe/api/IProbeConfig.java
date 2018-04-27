@@ -5,88 +5,79 @@ package mcjty.theoneprobe.api;
  */
 public interface IProbeConfig {
 
-	public static enum ConfigMode {
-		NOT,            // Don't show
-		NORMAL,         // Show
-		EXTENDED        // Show only when sneaking
-	}
+    public static enum ConfigMode {
+        NOT,            // Don't show
+        NORMAL,         // Show
+        EXTENDED        // Show only when sneaking
+    }
 
-	/**
-	 * Control how RF should be shown
-	 *
-	 * @param mode 0 = not, 1 = show as bar, 2 = show as text
-	 */
-	IProbeConfig setRFMode(int mode);
+    /**
+     * Control how RF should be shown
+     * @param mode 0 = not, 1 = show as bar, 2 = show as text
+     */
+    IProbeConfig setRFMode(int mode);
+    int getRFMode();
 
-	int getRFMode();
+    /**
+     * Control how Liquid should be shown
+     * @param mode 0 = not, 1 = show as bar, 2 = show as text
+     */
+    IProbeConfig setTankMode(int mode);
+    int getTankMode();
 
-	/**
-	 * Control how Liquid should be shown
-	 *
-	 * @param mode 0 = not, 1 = show as bar, 2 = show as text
-	 */
-	IProbeConfig setTankMode(int mode);
+    /**
+     * Lever setting is also used for other technical information like the
+     * comparator mode and repeater delay
+     */
+    IProbeConfig showLeverSetting(ConfigMode mode);
+    ConfigMode getShowLeverSetting();
 
-	int getTankMode();
+    IProbeConfig showHorseStatSetting(ConfigMode mode);
+    ConfigMode getHorseStatSetting();
 
-	/**
-	 * Lever setting is also used for other technical information like the
-	 * comparator mode and repeater delay
-	 */
-	IProbeConfig showLeverSetting(ConfigMode mode);
+    IProbeConfig showAnimalOwnerSetting(ConfigMode mode);
+    ConfigMode getAnimalOwnerSetting();
 
-	ConfigMode getShowLeverSetting();
+    IProbeConfig showBrewStandSetting(ConfigMode mode);
+    ConfigMode getShowBrewStandSetting();
 
-	IProbeConfig showHorseStatSetting(ConfigMode mode);
+    IProbeConfig showMobSpawnerSetting(ConfigMode mode);
+    ConfigMode getShowMobSpawnerSetting();
 
-	ConfigMode getHorseStatSetting();
+    IProbeConfig showTankSetting(ConfigMode mode);
+    ConfigMode getShowTankSetting();
 
-	IProbeConfig showAnimalOwnerSetting(ConfigMode mode);
+    IProbeConfig showModName(ConfigMode mode);
+    ConfigMode getShowModName();
 
-	ConfigMode getAnimalOwnerSetting();
+    IProbeConfig showHarvestLevel(ConfigMode mode);
+    ConfigMode getShowHarvestLevel();
 
-	IProbeConfig showBrewStandSetting(ConfigMode mode);
+    IProbeConfig showCanBeHarvested(ConfigMode mode);
+    ConfigMode getShowCanBeHarvested();
 
-	ConfigMode getShowBrewStandSetting();
+    IProbeConfig showCropPercentage(ConfigMode mode);
+    ConfigMode getShowCropPercentage();
 
-	IProbeConfig showTankSetting(ConfigMode mode);
+    IProbeConfig showChestContents(ConfigMode mode);
+    ConfigMode getShowChestContents();
 
-	ConfigMode getShowTankSetting();
+    // This controls when detailed chest info is shown in case the amount of items is below showItemDetailThresshold
+    IProbeConfig showChestContentsDetailed(ConfigMode mode);
+    ConfigMode getShowChestContentsDetailed();
 
-	IProbeConfig showModName(ConfigMode mode);
+    IProbeConfig showRedstone(ConfigMode mode);
+    ConfigMode getShowRedstone();
 
-	ConfigMode getShowModName();
+    IProbeConfig showMobHealth(ConfigMode mode);
+    ConfigMode getShowMobHealth();
 
-	IProbeConfig showHarvestLevel(ConfigMode mode);
+    IProbeConfig showMobGrowth(ConfigMode mode);
+    ConfigMode getShowMobGrowth();
 
-	ConfigMode getShowHarvestLevel();
-
-	IProbeConfig showCanBeHarvested(ConfigMode mode);
-
-	ConfigMode getShowCanBeHarvested();
-
-	IProbeConfig showCropPercentage(ConfigMode mode);
-
-	ConfigMode getShowCropPercentage();
-
-	IProbeConfig showChestContents(ConfigMode mode);
-
-	ConfigMode getShowChestContents();
-
-	// This controls when detailed chest info is shown in case the amount of items is below showItemDetailThresshold
-	IProbeConfig showChestContentsDetailed(ConfigMode mode);
-
-	ConfigMode getShowChestContentsDetailed();
-
-	IProbeConfig showRedstone(ConfigMode mode);
-
-	ConfigMode getShowRedstone();
-
-	IProbeConfig showMobHealth(ConfigMode mode);
-
-	ConfigMode getShowMobHealth();
-
-	IProbeConfig showMobPotionEffects(ConfigMode mode);
-
-	ConfigMode getShowMobPotionEffects();
+    IProbeConfig showMobPotionEffects(ConfigMode mode);
+    ConfigMode getShowMobPotionEffects();
+    
+    IProbeConfig showSilverfish(ConfigMode mode);
+    ConfigMode getShowSilverfish();
 }

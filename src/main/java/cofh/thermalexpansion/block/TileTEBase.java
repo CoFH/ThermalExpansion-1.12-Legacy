@@ -9,13 +9,10 @@ import cofh.core.network.PacketBase;
 import cofh.core.network.PacketHandler;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.init.TEProps;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -196,10 +193,10 @@ public abstract class TileTEBase extends TileCore implements ITilePacketHandler,
 		writePortableTagInternal(player, tag);
 	}
 
-	/* PLUGIN METHODS */
-	public void provideInfo(ProbeMode mode, IProbeInfo info, EnumFacing facing, EntityPlayer player) {
-
-	}
+	//	/* PLUGIN METHODS */
+	//	public void provideInfo(ProbeMode mode, IProbeInfo info, EnumFacing facing, EntityPlayer player) {
+	//
+	//	}
 
 	/* ENERGY CONFIG */
 	public static class EnergyConfig {
