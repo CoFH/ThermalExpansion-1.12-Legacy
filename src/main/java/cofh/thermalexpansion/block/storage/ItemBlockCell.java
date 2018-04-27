@@ -8,7 +8,6 @@ import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.util.EnergyContainerItemWrapper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;

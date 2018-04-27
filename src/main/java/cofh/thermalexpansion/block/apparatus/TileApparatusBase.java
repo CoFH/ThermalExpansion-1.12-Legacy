@@ -3,13 +3,14 @@ package cofh.thermalexpansion.block.apparatus;
 import cofh.api.core.IAccelerable;
 import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.api.tileentity.IInventoryConnection;
+import cofh.core.block.TilePowered;
 import cofh.core.entity.FakePlayerCore;
 import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.InventoryHelper;
 import cofh.core.util.helpers.ServerHelper;
-import cofh.thermalexpansion.block.TilePowered;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.apparatus.BlockApparatus.Type;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
@@ -286,6 +287,43 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 			return TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]];
 		}
 		return TETextures.APPARATUS_SIDE;
+	}
+
+	/* BASE METHODS */
+	@Override
+	protected Object getMod() {
+
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected boolean enableSounds() {
+
+		return TEProps.enableSounds;
+	}
+
+	@Override
+	protected int getLevelAutoInput() {
+
+		return TEProps.levelAutoInput;
+	}
+
+	@Override
+	protected int getLevelAutoOutput() {
+
+		return TEProps.levelAutoOutput;
+	}
+
+	@Override
+	protected int getLevelRSControl() {
+
+		return TEProps.levelRedstoneControl;
 	}
 
 }

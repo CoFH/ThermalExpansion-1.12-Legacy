@@ -4,6 +4,7 @@ import cofh.api.core.IAccelerable;
 import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
+import cofh.core.block.TilePowered;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.TimeTracker;
@@ -12,7 +13,6 @@ import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.redstoneflux.impl.EnergyStorage;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
@@ -624,6 +624,43 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
 
 		return 0xFFFFFFFF;
+	}
+
+	/* BASE METHODS */
+	@Override
+	protected Object getMod() {
+
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected boolean enableSounds() {
+
+		return TEProps.enableSounds;
+	}
+
+	@Override
+	protected int getLevelAutoInput() {
+
+		return TEProps.levelAutoInput;
+	}
+
+	@Override
+	protected int getLevelAutoOutput() {
+
+		return TEProps.levelAutoOutput;
+	}
+
+	@Override
+	protected int getLevelRSControl() {
+
+		return TEProps.levelRedstoneControl;
 	}
 
 }

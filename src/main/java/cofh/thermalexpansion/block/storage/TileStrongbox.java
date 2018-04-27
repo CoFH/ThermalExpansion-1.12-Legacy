@@ -4,13 +4,14 @@ import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
+import cofh.core.block.TileInventory;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.gui.client.storage.GuiStrongbox;
 import cofh.thermalexpansion.gui.container.storage.ContainerStrongbox;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -444,6 +445,43 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	public boolean acceptsDropoff(EntityPlayer player) {
 
 		return player != null && canPlayerAccess(player);
+	}
+
+	/* BASE METHODS */
+	@Override
+	protected Object getMod() {
+
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected boolean enableSounds() {
+
+		return TEProps.enableSounds;
+	}
+
+	@Override
+	protected int getLevelAutoInput() {
+
+		return TEProps.levelAutoInput;
+	}
+
+	@Override
+	protected int getLevelAutoOutput() {
+
+		return TEProps.levelAutoOutput;
+	}
+
+	@Override
+	protected int getLevelRSControl() {
+
+		return TEProps.levelRedstoneControl;
 	}
 
 }

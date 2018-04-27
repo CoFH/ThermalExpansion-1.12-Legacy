@@ -4,15 +4,13 @@ import codechicken.lib.render.particle.CustomParticleHandler;
 import cofh.api.core.IAugmentable;
 import cofh.api.core.ISecurable;
 import cofh.api.tileentity.IRedstoneControl;
-import cofh.core.block.BlockCoreTile;
-import cofh.core.block.TileCore;
+import cofh.core.block.*;
 import cofh.core.init.CoreProps;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.RayTracer;
 import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyHandler;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -59,7 +57,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof TileTEBase) {
-			((TileTEBase) tile).setName(ItemHelper.getNameFromItemStack(stack));
+			((TileTEBase) tile).setTileName(ItemHelper.getNameFromItemStack(stack));
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
@@ -181,8 +179,8 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		TileEntity tile = world.getTileEntity(pos);
 		NBTTagCompound retTag = new NBTTagCompound();
 
-		if (tile instanceof TileTEBase && (!((TileTEBase) tile).tileName.isEmpty())) {
-			retTag = ItemHelper.setItemStackTagName(retTag, ((TileTEBase) tile).tileName);
+		if (tile instanceof TileTEBase && (!((TileTEBase) tile).getTileName().isEmpty())) {
+			retTag = ItemHelper.setItemStackTagName(retTag, ((TileTEBase) tile).getTileName());
 		}
 		if (tile instanceof TileAugmentableSecure) {
 			retTag.setBoolean("Creative", ((TileAugmentableSecure) tile).isCreative);

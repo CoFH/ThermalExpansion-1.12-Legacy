@@ -1,8 +1,9 @@
 package cofh.thermalexpansion.block.device;
 
+import cofh.core.block.TileReconfigurable;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileReconfigurable;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
@@ -150,6 +151,19 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 		return TETextures.DEVICE_SIDE;
 	}
 
+	/* IUpgradeable */
+	@Override
+	public boolean canUpgrade(ItemStack upgrade) {
+
+		return false;
+	}
+
+	@Override
+	public boolean installUpgrade(ItemStack upgrade) {
+
+		return false;
+	}
+
 	/* RENDERING */
 	public boolean hasFluidUnderlay() {
 
@@ -166,17 +180,41 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 		return 0xFFFFFFFF;
 	}
 
-	/* IUpgradeable */
+	/* BASE METHODS */
 	@Override
-	public boolean canUpgrade(ItemStack upgrade) {
+	protected Object getMod() {
 
-		return false;
+		return ThermalExpansion.instance;
 	}
 
 	@Override
-	public boolean installUpgrade(ItemStack upgrade) {
+	protected String getVersion() {
 
-		return false;
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected boolean enableSounds() {
+
+		return TEProps.enableSounds;
+	}
+
+	@Override
+	protected int getLevelAutoInput() {
+
+		return TEProps.levelAutoInput;
+	}
+
+	@Override
+	protected int getLevelAutoOutput() {
+
+		return TEProps.levelAutoOutput;
+	}
+
+	@Override
+	protected int getLevelRSControl() {
+
+		return TEProps.levelRedstoneControl;
 	}
 
 }

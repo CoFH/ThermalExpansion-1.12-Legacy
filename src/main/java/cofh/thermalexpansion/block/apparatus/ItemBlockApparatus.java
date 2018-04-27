@@ -4,7 +4,6 @@ import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.block.apparatus.BlockApparatus.Type;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;

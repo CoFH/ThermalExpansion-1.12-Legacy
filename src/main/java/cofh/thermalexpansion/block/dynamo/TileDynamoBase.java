@@ -7,6 +7,7 @@ import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ISteamInfo;
+import cofh.core.block.TileInventory;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
@@ -18,7 +19,6 @@ import cofh.redstoneflux.api.IEnergyReceiver;
 import cofh.redstoneflux.api.IEnergyStorage;
 import cofh.redstoneflux.impl.EnergyStorage;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.init.TFFluids;
@@ -779,6 +779,43 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 			});
 		}
 		return super.getCapability(capability, from);
+	}
+
+	/* BASE METHODS */
+	@Override
+	protected Object getMod() {
+
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected boolean enableSounds() {
+
+		return TEProps.enableSounds;
+	}
+
+	@Override
+	protected int getLevelAutoInput() {
+
+		return TEProps.levelAutoInput;
+	}
+
+	@Override
+	protected int getLevelAutoOutput() {
+
+		return TEProps.levelAutoOutput;
+	}
+
+	@Override
+	protected int getLevelRSControl() {
+
+		return TEProps.levelRedstoneControl;
 	}
 
 }

@@ -5,7 +5,6 @@ import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;

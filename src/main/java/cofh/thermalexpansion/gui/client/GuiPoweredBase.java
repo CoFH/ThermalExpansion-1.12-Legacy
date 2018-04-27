@@ -1,10 +1,10 @@
 package cofh.thermalexpansion.gui.client;
 
+import cofh.core.block.TilePowered;
 import cofh.core.gui.GuiContainerCore;
 import cofh.core.gui.container.IAugmentableContainer;
 import cofh.core.gui.element.tab.*;
 import cofh.core.util.helpers.SecurityHelper;
-import cofh.thermalexpansion.block.TilePowered;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;

@@ -3,13 +3,14 @@ package cofh.thermalexpansion.block.storage;
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.ITileInfo;
+import cofh.core.block.TileAugmentableSecure;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileAugmentableSecure;
 import cofh.thermalexpansion.gui.client.storage.GuiTank;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -534,6 +535,43 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 			});
 		}
 		return super.getCapability(capability, from);
+	}
+
+	/* BASE METHODS */
+	@Override
+	protected Object getMod() {
+
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected boolean enableSounds() {
+
+		return TEProps.enableSounds;
+	}
+
+	@Override
+	protected int getLevelAutoInput() {
+
+		return TEProps.levelAutoInput;
+	}
+
+	@Override
+	protected int getLevelAutoOutput() {
+
+		return TEProps.levelAutoOutput;
+	}
+
+	@Override
+	protected int getLevelRSControl() {
+
+		return TEProps.levelRedstoneControl;
 	}
 
 }
