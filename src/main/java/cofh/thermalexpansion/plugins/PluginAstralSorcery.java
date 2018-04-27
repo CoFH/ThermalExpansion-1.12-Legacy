@@ -33,7 +33,7 @@ public class PluginAstralSorcery extends PluginTEBase {
 
 		/* INSOLATOR */
 		{
-			InsolatorManager.addRecipe(120000, 4000, faintAmaranth, ItemFertilizer.fertilizerFlux, new ItemStack(Items.ENDER_PEARL), faintAmaranth, 100);
+			InsolatorManager.addRecipe(120000, 4000, faintAmaranth, ItemFertilizer.fertilizerFlux, new ItemStack(Items.GLOWSTONE_DUST), faintAmaranth, 100);
 		}
 
 		/* ENCHANTER */

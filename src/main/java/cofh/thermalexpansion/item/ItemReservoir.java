@@ -28,6 +28,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -168,7 +169,13 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 	}
 
 	@Override
-	public boolean isFull3D() {
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+
+		return !EnumEnchantmentType.BREAKABLE.equals(enchantment.type) && super.canApplyAtEnchantingTable(stack, enchantment);
+	}
+
+	@Override
+	public boolean isDamageable() {
 
 		return true;
 	}
@@ -177,6 +184,12 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 	public boolean isEnchantable(ItemStack stack) {
 
 		return ItemHelper.getItemDamage(stack) != CREATIVE;
+	}
+
+	@Override
+	public boolean isFull3D() {
+
+		return true;
 	}
 
 	@Override

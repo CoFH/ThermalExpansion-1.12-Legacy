@@ -44,6 +44,21 @@
 			"energy": 700000
 		},
 		{
+			"//": "Ender IO"
+		},
+		{
+			"fluid": "fire_water",
+			"energy": 750000
+		},
+		{
+			"fluid": "hootch",
+			"energy": 300000
+		},
+		{
+			"fluid": "rocket_fuel",
+			"energy": 1000000
+		},
+		{
 			"//": "Forestry"
 		},
 		{

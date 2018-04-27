@@ -26,6 +26,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -143,7 +144,13 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 	}
 
 	@Override
-	public boolean isFull3D() {
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+
+		return !EnumEnchantmentType.BREAKABLE.equals(enchantment.type) && super.canApplyAtEnchantingTable(stack, enchantment);
+	}
+
+	@Override
+	public boolean isDamageable() {
 
 		return true;
 	}
@@ -152,6 +159,12 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 	public boolean isEnchantable(ItemStack stack) {
 
 		return !isCreative(stack) && !isVoid(stack);
+	}
+
+	@Override
+	public boolean isFull3D() {
+
+		return true;
 	}
 
 	@Override

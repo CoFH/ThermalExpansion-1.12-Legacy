@@ -231,11 +231,15 @@ public class SmelterManager {
 
 			for (String oreName : oreNames) {
 				if (oreName.startsWith("ore")) {
-					oreType = oreName.substring(3, oreName.length());
-					addDefaultRecipes(oreType, "");
+					if (isStandardOre(oreName)) {
+						oreType = oreName.substring(3, oreName.length());
+						addDefaultRecipes(oreType, "");
+					}
 				} else if (oreName.startsWith("dust")) {
-					oreType = oreName.substring(4, oreName.length());
-					addDefaultRecipes(oreType, "");
+					if (isStandardOre(oreName)) {
+						oreType = oreName.substring(4, oreName.length());
+						addDefaultRecipes(oreType, "");
+					}
 				}
 			}
 		}
