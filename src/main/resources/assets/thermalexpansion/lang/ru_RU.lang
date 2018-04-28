@@ -95,7 +95,7 @@ info.thermalexpansion.augment.machineBrewerReagent.0=Алхимическая з
 info.thermalexpansion.augment.machineBrewerReagent.a.0=Обеспечивает возможность не потреблять реагент.
 info.thermalexpansion.augment.machineBrewerReagent.b.0=За каждую операцию требуется дополнительная энергия.
 
-info.thermalexpansion.augment.machineCentrifugeMobs.0=Центробежный сепаратор: Специализация
+info.thermalexpansion.augment.machineCentrifugeMobs.0=Центробежный разделитель: Специализация
 info.thermalexpansion.augment.machineCentrifugeMobs.a.0=Позволяет "обрабатывать" Морбов.
 info.thermalexpansion.augment.machineCentrifugeMobs.a.1=Морбы предоставят предметы из содержащихся мобов.
 info.thermalexpansion.augment.machineCentrifugeMobs.b.0=Только Морбы могут быть "обработаны."
@@ -130,7 +130,7 @@ info.thermalexpansion.augment.machineCrafterInput.a.0=Добавляет инт�
 info.thermalexpansion.augment.machineCrafterInput.c.0=Два слота предназначены для каждого слота создания.
 
 info.thermalexpansion.augment.machineCrafterTank.0=Секвентальный сборщик: Функциональность
-info.thermalexpansion.augment.machineCrafterTank.a.0=Добавляет жидкий бак к машине.
+info.thermalexpansion.augment.machineCrafterTank.a.0=Добавляет бак для жидкости к машине.
 info.thermalexpansion.augment.machineCrafterTank.a.1=Жидкость в баке может использоваться в рецептах.
 info.thermalexpansion.augment.machineCrafterTank.c.0=Не все рецепты совместимы.
 
@@ -140,10 +140,10 @@ info.thermalexpansion.augment.machineCrucibleAlloy.b.0=Магмовый тиге
 
 info.thermalexpansion.augment.machineCrucibleLava.0=Магмовый тигель: Специализация
 info.thermalexpansion.augment.machineCrucibleLava.a.0=Значительно увеличивает скорость производства лавы.
-info.thermalexpansion.augment.machineCrucibleLava.b.0=Можно создать только лаву.
+info.thermalexpansion.augment.machineCrucibleLava.b.0=Может создавать только лаву.
 
 info.thermalexpansion.augment.machineEnchanterEmpowered.0=Тайный энсорцеллатор: Функциональность
-info.thermalexpansion.augment.machineEnchanterEmpowered.a.0=Фокусирует и выравнивает тайные энергии, чтобы максимизировать силу чары.
+info.thermalexpansion.augment.machineEnchanterEmpowered.a.0=Фокусирует и выравнивает тайные энергии, чтобы максимизировать силу чар.
 info.thermalexpansion.augment.machineEnchanterEmpowered.b.0=Требуются дополнительные ресурсы.
 
 info.thermalexpansion.augment.machineExtruderNoWater.0=Вулканический пресс: Эффективность
@@ -168,11 +168,11 @@ info.thermalexpansion.augment.machineFurnacePyrolysis.b.0=Могут обраб�
 info.thermalexpansion.augment.machineFurnacePyrolysis.b.1=Скорость обработки значительно снижается.
 
 info.thermalexpansion.augment.machineInsolatorFertilizer.0=Фитогенный светильник: Эффективность
-info.thermalexpansion.augment.machineInsolatorFertilizer.a.0=Обеспечивает возможность не употреблять удобрения.
+info.thermalexpansion.augment.machineInsolatorFertilizer.a.0=Добавляет вероятность не потратить удобрение.
 info.thermalexpansion.augment.machineInsolatorFertilizer.b.0=Для каждой операции требуется дополнительная энергия.
 
 info.thermalexpansion.augment.machineInsolatorMonoculture.0=Фитогенный светильник: Специализация
-info.thermalexpansion.augment.machineInsolatorMonoculture.a.0=Входы, не содержащие удобрений, не потребляются, что повышает производительность и автоматизацию.
+info.thermalexpansion.augment.machineInsolatorMonoculture.a.0=Входы, не содержащие удобрений, не потребляются, что обеспечивает автоматизацию.
 info.thermalexpansion.augment.machineInsolatorMonoculture.a.1=Предоставляет небольшой шанс не потреблять удобрения.
 info.thermalexpansion.augment.machineInsolatorMonoculture.b.0=Для каждой операции требуется дополнительная энергия.
 info.thermalexpansion.augment.machineInsolatorMonoculture.b.1=Вероятность вторичного выхода существенно снижается.
@@ -220,7 +220,7 @@ info.thermalexpansion.augment.machineSmelterFlux.a.0=Обеспечивает в
 info.thermalexpansion.augment.machineSmelterFlux.b.0=За каждую операцию требуется дополнительная энергия.
 
 info.thermalexpansion.augment.machineSmelterPyrotheum.0=Индукционная плавильня: Специализация
-info.thermalexpansion.augment.machineSmelterPyrotheum.a.0=Увеличивает урожайность руд.
+info.thermalexpansion.augment.machineSmelterPyrotheum.a.0=Увеличивает выработку руд.
 info.thermalexpansion.augment.machineSmelterPyrotheum.b.0=За каждую операцию требуется дополнительная энергия.
 info.thermalexpansion.augment.machineSmelterPyrotheum.c.0=Пылающий пиротей должен быть поставлен.
 
@@ -245,7 +245,7 @@ info.thermalexpansion.coolant=Охлаждение
 
 info.thermalexpansion.device.diffuser=Распространяет эффекты зелья на область.
 info.thermalexpansion.device.factorizer=Объединяет и разделяет различные предметы.
-info.thermalexpansion.device.fisher=Ловит рыбу и другую водную жизнь.
+info.thermalexpansion.device.fisher=Ловит рыбу и другую водную фауну.
 info.thermalexpansion.device.fluid_buffer=Хранит и передает жидкость.
 info.thermalexpansion.device.heat_sink=Повышает скорость соседней машины.
 info.thermalexpansion.device.item_buffer=Хранит и передает предметы.
@@ -285,7 +285,7 @@ info.thermalexpansion.morb.b.1=Бросьте, чтобы освободить �
 info.thermalexpansion.morb.b.2=Этот Морб имеет общего моба.
 
 info.thermalexpansion.machine.brewer=Варит зелья.
-info.thermalexpansion.machine.centrifuge=Разделяет элементы на составные части.
+info.thermalexpansion.machine.centrifuge=Разделяет предметы на составные части.
 info.thermalexpansion.machine.charger=Заряжает предметы энергией RF.
 info.thermalexpansion.machine.compactor=Сжимает редметы.
 info.thermalexpansion.machine.crafter=Создаёт предметы.
@@ -582,7 +582,7 @@ tile.thermalexpansion.dynamo.steam.name=Паровой генератор
 tile.thermalexpansion.dynamo=Генератор
 
 tile.thermalexpansion.machine.brewer.name=Алхимическая зельеварка
-tile.thermalexpansion.machine.centrifuge.name=Центробежный сепаратор
+tile.thermalexpansion.machine.centrifuge.name=Центробежный разделитель
 tile.thermalexpansion.machine.charger.name=Энергетический зарядник
 tile.thermalexpansion.machine.compactor.name=Компактор
 tile.thermalexpansion.machine.crafter.name=Цикличный сборщик
