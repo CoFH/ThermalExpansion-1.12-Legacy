@@ -471,7 +471,7 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.machineCrucible;
+		return TEProps.enableSounds ? TESounds.machineCrucible : null;
 	}
 
 	/* CAPABILITIES */

@@ -82,7 +82,19 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	}
 
 	@Override
-	public String getTileName() {
+	protected Object getMod() {
+
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getModVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected String getTileName() {
 
 		return "tile.thermalexpansion.apparatus." + Type.byMetadata(getType()).getName() + ".name";
 	}
@@ -287,43 +299,6 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 			return TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]];
 		}
 		return TETextures.APPARATUS_SIDE;
-	}
-
-	/* BASE METHODS */
-	@Override
-	protected Object getMod() {
-
-		return ThermalExpansion.instance;
-	}
-
-	@Override
-	protected String getVersion() {
-
-		return ThermalExpansion.VERSION;
-	}
-
-	@Override
-	protected boolean enableSounds() {
-
-		return TEProps.enableSounds;
-	}
-
-	@Override
-	protected int getLevelAutoInput() {
-
-		return TEProps.levelAutoInput;
-	}
-
-	@Override
-	protected int getLevelAutoOutput() {
-
-		return TEProps.levelAutoOutput;
-	}
-
-	@Override
-	protected int getLevelRSControl() {
-
-		return TEProps.levelRedstoneControl;
 	}
 
 }

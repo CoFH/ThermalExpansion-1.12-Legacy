@@ -169,9 +169,39 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	}
 
 	@Override
-	public String getTileName() {
+	protected Object getMod() {
+
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getModVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected String getTileName() {
 
 		return "tile.thermalexpansion.machine." + Type.byMetadata(getType()).getName() + ".name";
+	}
+
+	@Override
+	protected int getLevelAutoInput() {
+
+		return TEProps.levelAutoInput;
+	}
+
+	@Override
+	protected int getLevelAutoOutput() {
+
+		return TEProps.levelAutoOutput;
+	}
+
+	@Override
+	protected int getLevelRSControl() {
+
+		return TEProps.levelRedstoneControl;
 	}
 
 	@Override
@@ -624,43 +654,6 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
 
 		return 0xFFFFFFFF;
-	}
-
-	/* BASE METHODS */
-	@Override
-	protected Object getMod() {
-
-		return ThermalExpansion.instance;
-	}
-
-	@Override
-	protected String getVersion() {
-
-		return ThermalExpansion.VERSION;
-	}
-
-	@Override
-	protected boolean enableSounds() {
-
-		return TEProps.enableSounds;
-	}
-
-	@Override
-	protected int getLevelAutoInput() {
-
-		return TEProps.levelAutoInput;
-	}
-
-	@Override
-	protected int getLevelAutoOutput() {
-
-		return TEProps.levelAutoOutput;
-	}
-
-	@Override
-	protected int getLevelRSControl() {
-
-		return TEProps.levelRedstoneControl;
 	}
 
 }

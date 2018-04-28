@@ -11,7 +11,6 @@ import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.storage.GuiStrongbox;
 import cofh.thermalexpansion.gui.container.storage.ContainerStrongbox;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -80,7 +79,19 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	}
 
 	@Override
-	public String getTileName() {
+	protected Object getMod() {
+
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getModVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected String getTileName() {
 
 		return "tile.thermalexpansion.storage.strongbox.name";
 	}
@@ -445,43 +456,6 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	public boolean acceptsDropoff(EntityPlayer player) {
 
 		return player != null && canPlayerAccess(player);
-	}
-
-	/* BASE METHODS */
-	@Override
-	protected Object getMod() {
-
-		return ThermalExpansion.instance;
-	}
-
-	@Override
-	protected String getVersion() {
-
-		return ThermalExpansion.VERSION;
-	}
-
-	@Override
-	protected boolean enableSounds() {
-
-		return TEProps.enableSounds;
-	}
-
-	@Override
-	protected int getLevelAutoInput() {
-
-		return TEProps.levelAutoInput;
-	}
-
-	@Override
-	protected int getLevelAutoOutput() {
-
-		return TEProps.levelAutoOutput;
-	}
-
-	@Override
-	protected int getLevelRSControl() {
-
-		return TEProps.levelRedstoneControl;
 	}
 
 }

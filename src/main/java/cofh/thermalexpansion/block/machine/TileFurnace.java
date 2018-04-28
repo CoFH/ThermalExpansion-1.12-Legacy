@@ -441,7 +441,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.machineFurnace;
+		return TEProps.enableSounds ? TESounds.machineFurnace : null;
 	}
 
 	/* CAPABILITIES */

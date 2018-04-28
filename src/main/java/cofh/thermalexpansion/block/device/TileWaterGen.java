@@ -309,7 +309,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.deviceWaterGen;
+		return TEProps.enableSounds ? TESounds.deviceWaterGen : null;
 	}
 
 	/* CAPABILITIES */

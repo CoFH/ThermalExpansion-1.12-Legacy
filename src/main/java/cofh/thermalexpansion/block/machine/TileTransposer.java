@@ -745,7 +745,7 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.machineTransposer;
+		return TEProps.enableSounds ? TESounds.machineTransposer : null;
 	}
 
 	/* CAPABILITIES */

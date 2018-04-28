@@ -147,9 +147,27 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	}
 
 	@Override
-	public String getTileName() {
+	protected Object getMod() {
+
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getModVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected String getTileName() {
 
 		return "tile.thermalexpansion.dynamo." + Type.values()[getType()].getName() + ".name";
+	}
+
+	@Override
+	protected int getLevelRSControl() {
+
+		return TEProps.levelRedstoneControl;
 	}
 
 	@Override
@@ -779,43 +797,6 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 			});
 		}
 		return super.getCapability(capability, from);
-	}
-
-	/* BASE METHODS */
-	@Override
-	protected Object getMod() {
-
-		return ThermalExpansion.instance;
-	}
-
-	@Override
-	protected String getVersion() {
-
-		return ThermalExpansion.VERSION;
-	}
-
-	@Override
-	protected boolean enableSounds() {
-
-		return TEProps.enableSounds;
-	}
-
-	@Override
-	protected int getLevelAutoInput() {
-
-		return TEProps.levelAutoInput;
-	}
-
-	@Override
-	protected int getLevelAutoOutput() {
-
-		return TEProps.levelAutoOutput;
-	}
-
-	@Override
-	protected int getLevelRSControl() {
-
-		return TEProps.levelRedstoneControl;
 	}
 
 }

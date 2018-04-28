@@ -3,7 +3,6 @@ package cofh.thermalexpansion.block.device;
 import cofh.core.block.TileReconfigurable;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
@@ -47,7 +46,19 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 	}
 
 	@Override
-	public String getTileName() {
+	protected Object getMod() {
+
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getModVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected String getTileName() {
 
 		return "tile.thermalexpansion.device." + Type.byMetadata(getType()).getName() + ".name";
 	}
@@ -178,43 +189,6 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
 
 		return 0xFFFFFFFF;
-	}
-
-	/* BASE METHODS */
-	@Override
-	protected Object getMod() {
-
-		return ThermalExpansion.instance;
-	}
-
-	@Override
-	protected String getVersion() {
-
-		return ThermalExpansion.VERSION;
-	}
-
-	@Override
-	protected boolean enableSounds() {
-
-		return TEProps.enableSounds;
-	}
-
-	@Override
-	protected int getLevelAutoInput() {
-
-		return TEProps.levelAutoInput;
-	}
-
-	@Override
-	protected int getLevelAutoOutput() {
-
-		return TEProps.levelAutoOutput;
-	}
-
-	@Override
-	protected int getLevelRSControl() {
-
-		return TEProps.levelRedstoneControl;
 	}
 
 }

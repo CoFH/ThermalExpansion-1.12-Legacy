@@ -57,7 +57,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof TileTEBase) {
-			((TileTEBase) tile).setTileName(ItemHelper.getNameFromItemStack(stack));
+			((TileTEBase) tile).setCustomName(ItemHelper.getNameFromItemStack(stack));
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
@@ -179,8 +179,8 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		TileEntity tile = world.getTileEntity(pos);
 		NBTTagCompound retTag = new NBTTagCompound();
 
-		if (tile instanceof TileTEBase && (!((TileTEBase) tile).getTileName().isEmpty())) {
-			retTag = ItemHelper.setItemStackTagName(retTag, ((TileTEBase) tile).getTileName());
+		if (tile instanceof TileTEBase && (!((TileTEBase) tile).customName.isEmpty())) {
+			retTag = ItemHelper.setItemStackTagName(retTag, ((TileTEBase) tile).customName);
 		}
 		if (tile instanceof TileAugmentableSecure) {
 			retTag.setBoolean("Creative", ((TileAugmentableSecure) tile).isCreative);

@@ -466,7 +466,7 @@ public class TileSawmill extends TileMachineBase {
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.machineSawmill;
+		return TEProps.enableSounds ? TESounds.machineSawmill : null;
 	}
 
 	/* CAPABILITIES */
