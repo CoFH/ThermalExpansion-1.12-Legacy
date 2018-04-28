@@ -77,7 +77,7 @@ public class EnchanterManager {
 
 	public static EnchanterRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new EnchanterRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new EnchanterRecipe[0]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {

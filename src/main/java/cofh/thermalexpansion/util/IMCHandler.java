@@ -52,6 +52,15 @@ public class IMCHandler {
 					case ADD_COMPACTOR_RECIPE:
 						CompactorManager.addRecipe(nbt.getInteger(ENERGY), getItemStack(nbt, INPUT), getItemStack(nbt, OUTPUT), Mode.ALL);
 						continue;
+					case ADD_COMPACTOR_PLATE_RECIPE:
+						CompactorManager.addRecipe(nbt.getInteger(ENERGY), getItemStack(nbt, INPUT), getItemStack(nbt, OUTPUT), Mode.PLATE);
+						continue;
+					case ADD_COMPACTOR_COIN_RECIPE:
+						CompactorManager.addRecipe(nbt.getInteger(ENERGY), getItemStack(nbt, INPUT), getItemStack(nbt, OUTPUT), Mode.COIN);
+						continue;
+					case ADD_COMPACTOR_GEAR_RECIPE:
+						CompactorManager.addRecipe(nbt.getInteger(ENERGY), getItemStack(nbt, INPUT), getItemStack(nbt, OUTPUT), Mode.GEAR);
+						continue;
 					case ADD_CRUCIBLE_RECIPE:
 						CrucibleManager.addRecipe(nbt.getInteger(ENERGY), getItemStack(nbt, INPUT), FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(OUTPUT)));
 						continue;
@@ -114,6 +123,15 @@ public class IMCHandler {
 						continue;
 					case REMOVE_COMPACTOR_RECIPE:
 						CompactorManager.removeRecipe(getItemStack(nbt, INPUT), Mode.ALL);
+						continue;
+					case REMOVE_COMPACTOR_PLATE_RECIPE:
+						CompactorManager.removeRecipe(getItemStack(nbt, INPUT), Mode.PLATE);
+						continue;
+					case REMOVE_COMPACTOR_COIN_RECIPE:
+						CompactorManager.removeRecipe(getItemStack(nbt, INPUT), Mode.COIN);
+						continue;
+					case REMOVE_COMPACTOR_GEAR_RECIPE:
+						CompactorManager.removeRecipe(getItemStack(nbt, INPUT), Mode.GEAR);
 						continue;
 					case REMOVE_CRUCIBLE_RECIPE:
 						CrucibleManager.removeRecipe(getItemStack(nbt, INPUT));
@@ -219,6 +237,9 @@ public class IMCHandler {
 	public static final String ADD_SMELTER_RECIPE = "addsmelterrecipe";
 	public static final String ADD_INSOLATOR_RECIPE = "addinsolatorrecipe";
 	public static final String ADD_COMPACTOR_RECIPE = "addcompactorrecipe";
+	public static final String ADD_COMPACTOR_PLATE_RECIPE = "addcompactorplaterecipe";
+	public static final String ADD_COMPACTOR_COIN_RECIPE = "addcompactorcoinrecipe";
+	public static final String ADD_COMPACTOR_GEAR_RECIPE = "addcompactorgearrecipe";
 	public static final String ADD_CRUCIBLE_RECIPE = "addcruciblerecipe";
 	public static final String ADD_REFINERY_RECIPE = "addrefineryrecipe";
 	public static final String ADD_TRANSPOSER_FILL_RECIPE = "addtransposerfillrecipe";
@@ -233,7 +254,10 @@ public class IMCHandler {
 	public static final String REMOVE_SAWMILL_RECIPE = "removesawmillrecipe";
 	public static final String REMOVE_SMELTER_RECIPE = "removesmelterrecipe";
 	public static final String REMOVE_INSOLATOR_RECIPE = "removeinsolatorrecipe";
-	public static final String REMOVE_COMPACTOR_RECIPE = "removecompactorpressrecipe";
+	public static final String REMOVE_COMPACTOR_RECIPE = "removecompactorrecipe";
+	public static final String REMOVE_COMPACTOR_PLATE_RECIPE = "removecompactorplaterecipe";
+	public static final String REMOVE_COMPACTOR_COIN_RECIPE = "removecompactorcoinrecipe";
+	public static final String REMOVE_COMPACTOR_GEAR_RECIPE = "removecompactorgearrecipe";
 	public static final String REMOVE_CRUCIBLE_RECIPE = "removecruciblerecipe";
 	public static final String REMOVE_REFINERY_RECIPE = "removerefineryrecipe";
 	public static final String REMOVE_TRANSPOSER_FILL_RECIPE = "removetransposerfillrecipe";

@@ -51,7 +51,7 @@ public class BrewerManager {
 
 	public static BrewerRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new BrewerRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new BrewerRecipe[0]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {

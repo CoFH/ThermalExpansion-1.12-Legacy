@@ -37,7 +37,7 @@ public class ChargerManager {
 
 	public static ChargerRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new ChargerRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new ChargerRecipe[0]);
 	}
 
 	public static void initialize() {

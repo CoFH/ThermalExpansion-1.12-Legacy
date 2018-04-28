@@ -23,6 +23,8 @@ public abstract class BaseParser implements IContentParser {
 	public static final String INPUT2 = "input2";
 	public static final String OUTPUT = "output";
 	public static final String OUTPUT2 = "output2";
+	public static final String OUTPUT3 = "output3";
+	public static final String OUTPUT4 = "output4";
 	public static final String FLUID = "fluid";
 	public static final String ENERGY = "energy";
 	public static final String ENERGY_MOD = "energy_mod";

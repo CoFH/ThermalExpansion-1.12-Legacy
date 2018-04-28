@@ -52,7 +52,7 @@ public class SawmillManager {
 
 	public static SawmillRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new SawmillRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new SawmillRecipe[0]);
 	}
 
 	public static void initialize() {

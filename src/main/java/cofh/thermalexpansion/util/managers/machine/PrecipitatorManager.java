@@ -55,7 +55,7 @@ public class PrecipitatorManager {
 
 	public static PrecipitatorRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new PrecipitatorRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new PrecipitatorRecipe[0]);
 	}
 
 	public static void initialize() {

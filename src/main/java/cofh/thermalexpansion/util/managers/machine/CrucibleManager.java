@@ -30,7 +30,7 @@ public class CrucibleManager {
 
 	public static CrucibleRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new CrucibleRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new CrucibleRecipe[0]);
 	}
 
 	public static boolean isLava(ItemStack input) {

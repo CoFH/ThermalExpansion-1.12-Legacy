@@ -188,6 +188,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		ForgeRegistries.ITEMS.register(setRegistryName("augment"));
 		ThermalExpansion.proxy.addIModelRegister(this);
 
+		config();
+
 		/* MACHINES */
 		machinePower = addAugmentItem(128, TEProps.MACHINE_POWER);
 		machineSecondary = addAugmentItem(129, TEProps.MACHINE_SECONDARY);
@@ -264,6 +266,18 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	@Override
 	public boolean initialize() {
+
+		String category = "Item.Augment";
+		String comment;
+
+		comment = "If TRUE, the recipe for the Compactor's Coin Specialization is enabled.";
+		boolean enableAugmentCompactorCoin = ThermalExpansion.CONFIG.getConfiguration().getBoolean("AugmentCompactorCoin", category, true, comment);
+
+		comment = "If TRUE, the recipe for the Compactor's Gear Specialization is enabled.";
+		boolean enableAugmentCompactorGear = ThermalExpansion.CONFIG.getConfiguration().getBoolean("AugmentCompactorGear", category, true, comment);
+
+		comment = "If TRUE, the recipe for the Refinery's Potion Specialization is enabled.";
+		boolean enableAugmentRefineryPotion = ThermalExpansion.CONFIG.getConfiguration().getBoolean("AugmentRefineryPotion", category, true, comment);
 
 		// @formatter:off
 
@@ -394,24 +408,28 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', ItemFertilizer.fertilizerFlux
 		);
 
-		addShapedRecipe(machineCompactorCoin,
-				" G ",
-				"ICI",
-				" X ",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearInvar",
-				'I', "plateElectrum",
-				'X', "gemEmerald"
-		);
-		addShapedRecipe(machineCompactorGear,
-				" G ",
-				"ICI",
-				" X ",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearIron",
-				'I', "plateLead",
-				'X', Blocks.PISTON
-		);
+		if (enableAugmentCompactorCoin) {
+			addShapedRecipe(machineCompactorCoin,
+					" G ",
+					"ICI",
+					" X ",
+					'C', ItemMaterial.redstoneServo,
+					'G', "gearInvar",
+					'I', "plateElectrum",
+					'X', "gemEmerald"
+			);
+		}
+		if (enableAugmentCompactorGear) {
+			addShapedRecipe(machineCompactorGear,
+					" G ",
+						"ICI",
+					" X ",
+					'C', ItemMaterial.redstoneServo,
+					'G', "gearIron",
+					'I', "plateLead",
+					'X', Blocks.PISTON
+			);
+		}
 
 		addShapedRecipe(machineCrucibleLava,
 				" G ",
@@ -441,15 +459,17 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "blockGlassHardened",
 				'X', Items.BLAZE_ROD
 		);
-		addShapedRecipe(machineRefineryPotion,
-				" G ",
-				"ICI",
-				" X ",
-				'C', ItemMaterial.powerCoilElectrum,
-				'G', "gearSignalum",
-				'I', "plateLead",
-				'X', Items.CAULDRON
-		);
+		if (enableAugmentRefineryPotion) {
+			addShapedRecipe(machineRefineryPotion,
+					" G ",
+					"ICI",
+					" X ",
+					'C', ItemMaterial.powerCoilElectrum,
+					'G', "gearSignalum",
+					'I', "plateLead",
+					'X', Items.CAULDRON
+			);
+		}
 
 		addShapedRecipe(machineChargerThroughput,
 				" G ",
@@ -663,7 +683,11 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		return true;
 	}
 
-	/* UPGRADE ENTRY */
+	private static void config() {
+
+	}
+
+	/* ENTRY */
 	public class AugmentEntry {
 
 		public final AugmentType type;

@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Map;
@@ -52,9 +53,9 @@ public class FactorizerManager {
 	public static FactorizerRecipe[] getRecipeList(boolean reverse) {
 
 		if (reverse) {
-			return recipeMapReverse.values().toArray(new FactorizerRecipe[recipeMapReverse.size()]);
+			return recipeMapReverse.values().toArray(new FactorizerRecipe[0]);
 		}
-		return recipeMap.values().toArray(new FactorizerRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new FactorizerRecipe[0]);
 	}
 
 	public static void initialize() {
@@ -113,10 +114,39 @@ public class FactorizerManager {
 
 	public static void loadRecipes() {
 
+		/* GENERAL SCAN */
+		{
+			String oreType;
+			for (String oreName : OreDictionary.getOreNames()) {
+				if (oreName.startsWith("ingot")) {
+					oreType = oreName.substring(5, oreName.length());
+					addDefaultRecipe(ItemHelper.getOre("ingot" + oreType), ItemHelper.getOre("block" + oreType));
+					addDefaultRecipe(ItemHelper.getOre("nugget" + oreType), ItemHelper.getOre("ingot" + oreType));
+				} else if (oreName.startsWith("gem")) {
+					oreType = oreName.substring(3, oreName.length());
+					addDefaultRecipe(ItemHelper.getOre("gem" + oreType), ItemHelper.getOre("block" + oreType));
+					addDefaultRecipe(ItemHelper.getOre("nugget" + oreType), ItemHelper.getOre("gem" + oreType));
+				}
+			}
+		}
+
 		/* STORAGE */
 		for (IRecipe recipe : CraftingManager.REGISTRY) {
 			if (recipe instanceof ShapedRecipes) {
 				ShapedRecipes target = (ShapedRecipes) recipe;
+				if (/*target.recipeItems.size() == 4 ||*/ target.recipeItems.size() == 9) {
+					if (target.recipeItems.get(0).getMatchingStacks().length > 0) {
+						boolean match = true;
+						for (int i = 1; i < target.recipeItems.size(); i++) {
+							match &= target.recipeItems.get(i).getMatchingStacks().length > 0 && ItemHelper.itemsIdentical(target.recipeItems.get(0).getMatchingStacks()[0], target.recipeItems.get(i).getMatchingStacks()[0]);
+						}
+						if (match) {
+							addDefaultRecipe(target.recipeItems.get(0).getMatchingStacks()[0], target.getRecipeOutput(), target.recipeItems.size());
+						}
+					}
+				}
+			} else if (recipe instanceof ShapelessRecipes) {
+				ShapelessRecipes target = (ShapelessRecipes) recipe;
 				if (/*target.recipeItems.size() == 4 ||*/ target.recipeItems.size() == 9) {
 					if (target.recipeItems.get(0).getMatchingStacks().length > 0) {
 						boolean match = true;
@@ -188,6 +218,9 @@ public class FactorizerManager {
 
 	public static void addDefaultRecipe(ItemStack input, ItemStack output, int count) {
 
+		if (input.isEmpty() || output.isEmpty()) {
+			return;
+		}
 		ItemStack inputStack = ItemHelper.cloneStack(input, count);
 
 		if (!recipeExists(inputStack, false)) {

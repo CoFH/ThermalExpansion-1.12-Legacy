@@ -80,12 +80,12 @@ public class CentrifugeManager {
 
 	public static CentrifugeRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new CentrifugeRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new CentrifugeRecipe[0]);
 	}
 
 	public static CentrifugeRecipe[] getRecipeListMobs() {
 
-		return recipeMapMobs.values().toArray(new CentrifugeRecipe[recipeMapMobs.size()]);
+		return recipeMapMobs.values().toArray(new CentrifugeRecipe[0]);
 	}
 
 	public static void initialize() {
