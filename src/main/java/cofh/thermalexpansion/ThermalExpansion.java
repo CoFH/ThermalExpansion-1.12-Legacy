@@ -99,6 +99,15 @@ public class ThermalExpansion {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 
+		ContentParser.parseFiles();
+
+		ItemFlorb.parseFlorbs();
+		ItemMorb.parseMorbs();
+
+		TEPlugins.initialize();
+
+		initManagers();
+
 		proxy.postInit(event);
 	}
 
@@ -127,14 +136,6 @@ public class ThermalExpansion {
 		preInitManagers();
 
 		IMCHandler.INSTANCE.handleIMC(event.getMessages());
-		ContentParser.parseFiles();
-
-		ItemFlorb.parseFlorbs();
-		ItemMorb.parseMorbs();
-
-		TEPlugins.initialize();
-
-		initManagers();
 	}
 
 	/* HELPERS */

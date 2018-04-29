@@ -8,6 +8,7 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
@@ -56,6 +57,19 @@ public class SawmillManager {
 	}
 
 	public static void initialize() {
+
+		/* RECYCLING */
+		{
+			// Output is 1/2, round down, minimum of 1.
+			/* WOODEN TOOLS / ARMOR */
+			int energy = DEFAULT_ENERGY * 3 / 4;
+			ItemStack output = new ItemStack(Items.LEATHER);
+
+			addRecycleRecipe(energy, new ItemStack(Items.LEATHER_HELMET), output, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.LEATHER_CHESTPLATE), output, 4);
+			addRecycleRecipe(energy, new ItemStack(Items.LEATHER_LEGGINGS), output, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.LEATHER_BOOTS), output, 2);
+		}
 
 		/* GENERAL SCAN */
 		{
@@ -137,6 +151,17 @@ public class SawmillManager {
 	public static ComparableItemStackValidated convertInput(ItemStack stack) {
 
 		return new ComparableItemStackValidated(stack, oreValidator);
+	}
+
+	public static void addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
+
+		addRecycleRecipe(energy, input, output, outputSize, true);
+	}
+
+	public static void addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize, boolean wildcard) {
+
+		ItemStack recycleInput = wildcard ? input.copy() : new ItemStack(input.getItem(), 1, OreDictionary.WILDCARD_VALUE);
+		addRecipe(energy, recycleInput, ItemHelper.cloneStack(output, outputSize));
 	}
 
 	/* RECIPE CLASS */

@@ -74,9 +74,10 @@ public class BrewerManager {
 		ItemStack spiderEye = new ItemStack(Items.SPIDER_EYE);
 		ItemStack ghastTear = new ItemStack(Items.GHAST_TEAR);
 		ItemStack blazePowder = new ItemStack(Items.BLAZE_POWDER);
-		ItemStack redstone = ItemHelper.cloneStack(Items.REDSTONE, 1);
-		ItemStack glowstone = ItemHelper.cloneStack(Items.GLOWSTONE_DUST, 1);
-		ItemStack fermentedSpiderEye = ItemHelper.cloneStack(Items.FERMENTED_SPIDER_EYE, 1);
+		ItemStack redstone = new ItemStack(Items.REDSTONE);
+		ItemStack glowstone = new ItemStack(Items.GLOWSTONE_DUST);
+		ItemStack fermentedSpiderEye = new ItemStack(Items.FERMENTED_SPIDER_EYE);
+		ItemStack emerald = new ItemStack(Items.EMERALD);
 
 		/* VANILLA */
 		{
@@ -143,6 +144,8 @@ public class BrewerManager {
 			addDefaultPotionRecipes(PotionTypes.AWKWARD, ItemMaterial.dustObsidian, CorePotions.resistance);
 			addDefaultPotionRecipes(PotionTypes.AWKWARD, ItemMaterial.dustBlitz, CorePotions.levitation);
 			addDefaultPotionRecipes(PotionTypes.AWKWARD, ItemMaterial.dustBlizz, CorePotions.absorption);
+			addDefaultPotionRecipes(PotionTypes.AWKWARD, emerald, CorePotions.luck);
+			addDefaultPotionRecipes(CorePotions.luck, fermentedSpiderEye, CorePotions.unluck);
 			addDefaultPotionRecipes(PotionTypes.REGENERATION, fermentedSpiderEye, CorePotions.wither);
 
 			addDefaultPotionRecipes(CorePotions.haste, redstone, CorePotions.hasteLong);
@@ -150,12 +153,14 @@ public class BrewerManager {
 			addDefaultPotionRecipes(CorePotions.levitation, redstone, CorePotions.levitationLong);
 			addDefaultPotionRecipes(CorePotions.absorption, redstone, CorePotions.absorptionLong);
 			addDefaultPotionRecipes(CorePotions.luck, redstone, CorePotions.luckLong);
+			addDefaultPotionRecipes(CorePotions.unluck, redstone, CorePotions.unluckLong);
 			addDefaultPotionRecipes(CorePotions.wither, redstone, CorePotions.witherLong);
 
 			addDefaultPotionRecipes(CorePotions.haste, glowstone, CorePotions.hasteStrong);
 			addDefaultPotionRecipes(CorePotions.resistance, glowstone, CorePotions.resistanceStrong);
 			addDefaultPotionRecipes(CorePotions.absorption, glowstone, CorePotions.absorptionStrong);
 			addDefaultPotionRecipes(CorePotions.luck, glowstone, CorePotions.luckStrong);
+			addDefaultPotionRecipes(CorePotions.unluck, glowstone, CorePotions.unluckStrong);
 			addDefaultPotionRecipes(CorePotions.wither, glowstone, CorePotions.witherStrong);
 		}
 
