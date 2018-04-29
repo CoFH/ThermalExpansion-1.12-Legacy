@@ -34,6 +34,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
@@ -133,11 +134,11 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	@Override
 	public void update() {
 
+		if (!timeCheckOffset()) {
+			return;
+		}
 		if (ServerHelper.isClientWorld(world)) {
 			if (!enableParticles) {
-				return;
-			}
-			if (!timeCheckOffset()) {
 				return;
 			}
 			if (isActive) {
@@ -145,16 +146,11 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 			}
 			return;
 		}
-		if (!timeCheckOffset()) {
-			return;
-		}
 		transferInput();
-
 		boolean curActive = isActive;
 
 		if (isActive) {
 			diffuse();
-
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
 			}
@@ -186,7 +182,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 		if (renderFluid == null) {
 			return;
 		}
-		int radius = isSplashPotion(renderFluid) ? radiusSplash : isLingeringPotion(renderFluid) ? radiusLingering : radiusPotion;
+		int radius = TFFluids.isSplashPotion(renderFluid) ? radiusSplash : TFFluids.isLingeringPotion(renderFluid) ? radiusLingering : radiusPotion;
 
 		List<PotionEffect> effects = PotionUtils.getEffectsFromTag(renderFluid.tag);
 		int color = PotionUtils.getPotionColorFromEffectList(effects);
@@ -233,7 +229,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 			renderFluid = new FluidStack(potionFluid, 0);
 			sendFluidPacket();
 		}
-		int radius = isSplashPotion(potionFluid) ? radiusSplash : isLingeringPotion(potionFluid) ? radiusLingering : radiusPotion;
+		int radius = TFFluids.isSplashPotion(potionFluid) ? radiusSplash : TFFluids.isLingeringPotion(potionFluid) ? radiusLingering : radiusPotion;
 
 		AxisAlignedBB area = new AxisAlignedBB(pos.add(-radius, 1 - radius, -radius), pos.add(1 + radius, radius, 1 + radius));
 		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, area);
@@ -410,19 +406,9 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	}
 
 	/* HELPERS */
-	protected static boolean isSplashPotion(FluidStack stack) {
-
-		return stack != null && stack.getFluid() == TFFluids.fluidPotionSplash;
-	}
-
-	protected static boolean isLingeringPotion(FluidStack stack) {
-
-		return stack != null && stack.getFluid() == TFFluids.fluidPotionLingering;
-	}
-
 	protected static boolean isValidPotion(FluidStack stack) {
 
-		return stack != null && (stack.getFluid() == TFFluids.fluidPotion || stack.getFluid() == TFFluids.fluidPotionSplash || stack.getFluid() == TFFluids.fluidPotionLingering);
+		return stack != null && (TFFluids.isPotion(stack) || TFFluids.isSplashPotion(stack) || TFFluids.isLingeringPotion(stack));
 	}
 
 	/* IInventory */
