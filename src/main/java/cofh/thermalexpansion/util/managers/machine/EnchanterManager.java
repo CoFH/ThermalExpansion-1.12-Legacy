@@ -3,6 +3,7 @@ package cofh.thermalexpansion.util.managers.machine;
 import cofh.core.inventory.ComparableItemStack;
 import cofh.core.inventory.ComparableItemStackValidatedNBT;
 import cofh.core.inventory.OreValidator;
+import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.enchantment.Enchantment;
@@ -244,7 +245,8 @@ public class EnchanterManager {
 			addDefaultEnchantmentRecipe(new ItemStack(Items.EXPERIENCE_BOTTLE), "cofhcore:insight", 1);
 			addDefaultEnchantmentRecipe(new ItemStack(Items.NETHER_WART), "cofhcore:leech", 1);
 			addDefaultEnchantmentRecipe(new ItemStack(Items.ARROW), "cofhcore:multishot", 2);
-			addDefaultEnchantmentRecipe(new ItemStack(Blocks.FURNACE), "cofhcore:smelting", 1);
+			addDefaultEnchantmentRecipe(ItemMaterial.dustPetrotheum, "cofhcore:smashing", 2);
+			addDefaultEnchantmentRecipe(ItemMaterial.dustPyrotheum, "cofhcore:smelting", 2);
 			addDefaultEnchantmentRecipe(new ItemStack(Blocks.SOUL_SAND), "cofhcore:soulbound", 1);
 			addDefaultEnchantmentRecipe(new ItemStack(Items.SKULL, 1, 1), "cofhcore:vorpal", 3);
 		}

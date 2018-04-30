@@ -9,6 +9,7 @@ import codechicken.lib.model.bakery.generation.IBakery;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IModelRegister;
+import cofh.core.util.crafting.FluidIngredientFactory.FluidIngredient;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ReconfigurableHelper;
@@ -49,6 +50,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static cofh.core.util.helpers.RecipeHelper.addShapedFluidRecipe;
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryProvider, IWorldBlockTextureProvider {
@@ -364,14 +366,14 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 			);
 		}
 		if (enable[Type.NULLIFIER.getMetadata()]) {
-			addShapedRecipe(deviceNullifier,
+			addShapedFluidRecipe(deviceNullifier,
 					" X ",
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameDevice,
 					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', Items.LAVA_BUCKET,
+					'X', new FluidIngredient("lava"),
 					'Y', Blocks.BRICK_BLOCK
 			);
 		}
