@@ -55,8 +55,8 @@ public class CompatibilityTOP implements Function<ITheOneProbe, Void> {
 				public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData data) {
 
 					//					TileEntity tile = world.getTileEntity(data.getPos());
-					//					if (tile instanceof TileTEBase) {
-					//						((TileTEBase) tile).provideInfo(mode, probeInfo, data.getSideHit(), player);
+					//					if (tile instanceof TileNameable) {
+					//						((TileNameable) tile).provideInfo(mode, probeInfo, data.getSideHit(), player);
 					//					}
 				}
 			});

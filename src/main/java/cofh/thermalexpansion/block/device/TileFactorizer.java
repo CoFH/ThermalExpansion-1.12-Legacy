@@ -2,6 +2,8 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
@@ -17,6 +19,8 @@ import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Arrays;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileFactorizer extends TileDeviceBase implements ITickable {
 

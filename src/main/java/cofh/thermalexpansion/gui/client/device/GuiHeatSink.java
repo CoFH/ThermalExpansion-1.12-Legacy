@@ -1,10 +1,10 @@
 package cofh.thermalexpansion.gui.client.device;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.element.ElementBase;
 import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementFluidTank;
 import cofh.thermalexpansion.block.device.TileHeatSink;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
@@ -26,7 +26,7 @@ public class GuiHeatSink extends GuiDeviceBase {
 
 	public GuiHeatSink(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
+		super(new ContainerTileAugmentable(inventory, tile), tile, inventory.player, TEXTURE);
 
 		generateInfo("tab.thermalexpansion.device.heat_sink");
 

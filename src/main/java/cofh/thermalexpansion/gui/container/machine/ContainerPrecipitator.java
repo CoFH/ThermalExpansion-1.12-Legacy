@@ -1,14 +1,14 @@
 package cofh.thermalexpansion.gui.container.machine;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.SlotCustomInventory;
 import cofh.core.gui.slot.SlotEnergy;
 import cofh.core.gui.slot.SlotRemoveOnly;
 import cofh.thermalexpansion.block.machine.TilePrecipitator;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerPrecipitator extends ContainerTEBase {
+public class ContainerPrecipitator extends ContainerTileAugmentable {
 
 	TilePrecipitator myTile;
 

@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.RenderHelper;
@@ -30,6 +32,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileFisher extends TileDeviceBase implements ITickable {
 

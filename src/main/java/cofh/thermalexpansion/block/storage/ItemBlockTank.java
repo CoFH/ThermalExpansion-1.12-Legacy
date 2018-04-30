@@ -137,7 +137,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		if (container.getTagCompound() == null) {
 			setDefaultTag(container);
 		}
-		if (resource == null || isCreative(container)) {
+		if (resource == null || resource.amount <= 0 || isCreative(container)) {
 			return 0;
 		}
 		int capacity = getCapacity(container);

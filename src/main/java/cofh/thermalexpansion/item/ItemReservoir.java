@@ -384,7 +384,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 		if (container.getTagCompound() == null) {
 			container.setTagCompound(new NBTTagCompound());
 		}
-		if (resource == null) {
+		if (resource == null || resource.amount <= 0) {
 			return 0;
 		}
 		int capacity = getCapacity(container);

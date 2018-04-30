@@ -1,12 +1,12 @@
 package cofh.thermalexpansion.gui.container.machine;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.SlotEnergy;
 import cofh.core.gui.slot.SlotFalseCopy;
 import cofh.core.gui.slot.SlotRemoveOnly;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.machine.TileCrafter;
 import cofh.thermalexpansion.block.machine.TileCrafter.CrafterRecipe;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ContainerCrafter extends ContainerTEBase {
+public class ContainerCrafter extends ContainerTileAugmentable {
 
 	TileCrafter myTile;
 	public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);

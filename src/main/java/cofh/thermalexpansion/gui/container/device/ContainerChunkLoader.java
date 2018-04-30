@@ -1,15 +1,15 @@
 package cofh.thermalexpansion.gui.container.device;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.device.TileChunkLoader;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerChunkLoader extends ContainerTEBase implements ISlotValidator {
+public class ContainerChunkLoader extends ContainerTileAugmentable implements ISlotValidator {
 
 	TileChunkLoader myTile;
 

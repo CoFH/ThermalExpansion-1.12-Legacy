@@ -13,6 +13,7 @@ import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.render.TextureHelper;
 import cofh.core.util.TimeTracker;
+import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyProvider;
 import cofh.redstoneflux.api.IEnergyReceiver;

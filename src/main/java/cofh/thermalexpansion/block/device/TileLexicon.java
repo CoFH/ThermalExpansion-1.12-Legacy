@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.init.CoreProps;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -18,6 +20,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Arrays;
 import java.util.Map;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileLexicon extends TileDeviceBase implements ITickable {
 

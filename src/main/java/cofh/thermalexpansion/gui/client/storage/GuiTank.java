@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.gui.client.storage;
 
 import cofh.core.gui.GuiContainerCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.element.ElementButton;
 import cofh.core.gui.element.ElementFluidTank;
 import cofh.core.gui.element.tab.TabBase;
@@ -10,7 +11,6 @@ import cofh.core.gui.element.tab.TabSecurity;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.storage.TileTank;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.EnumRarity;
@@ -36,7 +36,7 @@ public class GuiTank extends GuiContainerCore {
 
 	public GuiTank(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerTEBase(inventory, tile), TEXTURE);
+		super(new ContainerTileAugmentable(inventory, tile), TEXTURE);
 
 		baseTile = (TileTank) tile;
 		name = baseTile.getName();

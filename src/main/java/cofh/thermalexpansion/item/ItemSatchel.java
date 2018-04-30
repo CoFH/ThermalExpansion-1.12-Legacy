@@ -58,7 +58,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
-import static cofh.thermalfoundation.util.TFCrafting.addSecureRecipe;
 
 public class ItemSatchel extends ItemMulti implements IInitializer, IColorableItem, IEnchantableItem, IInventoryContainerItem, IMultiModeItem {
 
@@ -468,11 +467,11 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 		);
 		// @formatter:on
 
-		addSecureRecipe(satchelBasic, satchelBasic, ItemSecurity.lock);
-		addSecureRecipe(satchelHardened, satchelHardened, ItemSecurity.lock);
-		addSecureRecipe(satchelReinforced, satchelReinforced, ItemSecurity.lock);
-		addSecureRecipe(satchelSignalum, satchelSignalum, ItemSecurity.lock);
-		addSecureRecipe(satchelResonant, satchelResonant, ItemSecurity.lock);
+		addShapelessSecureRecipe(satchelBasic, satchelBasic, ItemSecurity.lock);
+		addShapelessSecureRecipe(satchelHardened, satchelHardened, ItemSecurity.lock);
+		addShapelessSecureRecipe(satchelReinforced, satchelReinforced, ItemSecurity.lock);
+		addShapelessSecureRecipe(satchelSignalum, satchelSignalum, ItemSecurity.lock);
+		addShapelessSecureRecipe(satchelResonant, satchelResonant, ItemSecurity.lock);
 
 		addColorRecipe(satchelBasic, satchelBasic, "dye");
 		addColorRecipe(satchelHardened, satchelHardened, "dye");

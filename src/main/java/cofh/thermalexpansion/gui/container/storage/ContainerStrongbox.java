@@ -1,11 +1,11 @@
 package cofh.thermalexpansion.gui.container.storage;
 
 import cofh.api.item.IInventoryContainerItem;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotValidated;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.block.storage.TileStrongbox;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import gnu.trove.map.hash.THashMap;
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ChestContainer.RowSizeCallback;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @ChestContainer ()
-public class ContainerStrongbox extends ContainerTEBase implements ISlotValidator {
+public class ContainerStrongbox extends ContainerTileAugmentable implements ISlotValidator {
 
 	int storageIndex;
 	int rowSize;

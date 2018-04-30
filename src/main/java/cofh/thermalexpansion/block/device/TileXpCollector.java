@@ -3,6 +3,8 @@ package cofh.thermalexpansion.block.device;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -32,6 +34,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileXpCollector extends TileDeviceBase implements ITickable {
 

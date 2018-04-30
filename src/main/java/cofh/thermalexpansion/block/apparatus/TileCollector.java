@@ -1,12 +1,14 @@
 package cofh.thermalexpansion.block.apparatus;
 
 import cofh.api.tileentity.IInventoryConnection;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.util.RegistrySocial;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.apparatus.BlockApparatus.Type;
 import cofh.thermalexpansion.gui.client.apparatus.GuiCollector;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -23,6 +25,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+
+import static cofh.core.util.core.SideConfig.NONE;
+import static cofh.core.util.core.SideConfig.OUTPUT_ALL;
 
 public class TileCollector extends TileApparatusBase implements IInventoryConnection, ITickable {
 
@@ -157,7 +162,7 @@ public class TileCollector extends TileApparatusBase implements IInventoryConnec
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	/* NBT METHODS */

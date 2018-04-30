@@ -1,12 +1,12 @@
 package cofh.thermalexpansion.gui.client.device;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.element.ElementButton;
 import cofh.core.gui.element.ElementFluidTank;
 import cofh.core.gui.element.ElementSimple;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.device.TileFluidBuffer;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -31,7 +31,7 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 
 	public GuiFluidBuffer(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
+		super(new ContainerTileAugmentable(inventory, tile), tile, inventory.player, TEXTURE);
 
 		generateInfo("tab.thermalexpansion.device.fluid_buffer");
 

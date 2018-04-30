@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.gui.client.apparatus;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -14,7 +14,7 @@ public class GuiBreaker extends GuiPoweredBase {
 
 	public GuiBreaker(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
+		super(new ContainerTileAugmentable(inventory, tile), tile, inventory.player, TEXTURE);
 
 		generateInfo("tab.thermalexpansion.apparatus.breaker");
 	}

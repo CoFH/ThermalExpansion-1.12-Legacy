@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.gui.client.storage;
 
 import cofh.core.gui.GuiContainerCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.element.ElementButton;
 import cofh.core.gui.element.ElementEnergyStored;
 import cofh.core.gui.element.ElementSimple;
@@ -8,7 +9,6 @@ import cofh.core.gui.element.tab.*;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.storage.TileCell;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -36,7 +36,7 @@ public class GuiCell extends GuiContainerCore {
 
 	public GuiCell(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerTEBase(inventory, tile), TEXTURE);
+		super(new ContainerTileAugmentable(inventory, tile), TEXTURE);
 
 		baseTile = (TileCell) tile;
 		name = baseTile.getName();
