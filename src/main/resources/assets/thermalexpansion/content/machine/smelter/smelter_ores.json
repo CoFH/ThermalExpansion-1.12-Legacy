@@ -9,7 +9,7 @@
 			},
 			"output": {
 				"ore": "gemLapis",
-				"count": 10
+				"count": 8
 			},
 			"output2": {
 				"constant": "rich_slag",

@@ -45,7 +45,7 @@
 			},
 			"output": {
 				"ore": "gemLapis",
-				"count": 8
+				"count": 10
 			},
 			"output2": {
 				"ore": "dustSulfur",
