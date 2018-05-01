@@ -61,7 +61,8 @@ public class SawmillManager {
 		/* RECYCLING */
 		{
 			// Output is 1/2, round down, minimum of 1.
-			/* WOODEN TOOLS / ARMOR */
+
+			/* LEATHER ARMOR */
 			int energy = DEFAULT_ENERGY * 3 / 4;
 			ItemStack output = new ItemStack(Items.LEATHER);
 

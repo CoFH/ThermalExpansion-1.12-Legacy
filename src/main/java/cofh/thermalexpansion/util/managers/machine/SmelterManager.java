@@ -6,6 +6,7 @@ import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalfoundation.init.TFEquipment.ArmorSet;
+import cofh.thermalfoundation.init.TFEquipment.HorseArmor;
 import cofh.thermalfoundation.init.TFEquipment.ToolSet;
 import cofh.thermalfoundation.init.TFEquipment.ToolSetVanilla;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -153,10 +154,10 @@ public class SmelterManager {
 
 		/* RECYCLING */
 		{
-			int energy = DEFAULT_ENERGY * 3 / 2;
 			// Output is 1/2, round down, minimum of 1.
 
-			/* IRON TOOLS / ARMOR */
+			/* IRON */
+			int energy = DEFAULT_ENERGY * 3 / 2;
 			ItemStack ingot = new ItemStack(Items.IRON_INGOT);
 
 			addRecycleRecipe(energy, new ItemStack(Items.IRON_SWORD), ingot, 1);
@@ -170,9 +171,12 @@ public class SmelterManager {
 			addRecycleRecipe(energy, new ItemStack(Items.IRON_LEGGINGS), ingot, 3);
 			addRecycleRecipe(energy, new ItemStack(Items.IRON_BOOTS), ingot, 2);
 
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_HORSE_ARMOR), ingot, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_HORSE_ARMOR), ingot, 2, false);
 
-			/* GOLD TOOLS / ARMOR */
+			addRecycleRecipe(energy, new ItemStack(Blocks.HOPPER), ingot, 4, false);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_DOOR), ingot, 1, false);
+
+			/* GOLD */
 			ingot = new ItemStack(Items.GOLD_INGOT);
 
 			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_SWORD), ingot, 1);
@@ -186,9 +190,9 @@ public class SmelterManager {
 			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_LEGGINGS), ingot, 3);
 			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_BOOTS), ingot, 2);
 
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HORSE_ARMOR), ingot, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HORSE_ARMOR), ingot, 2, false);
 
-			/* TF TOOLS / ARMOR */
+			/* THERMAL FOUNDATION */
 			for (ToolSetVanilla tool : new ToolSetVanilla[] { ToolSetVanilla.IRON, ToolSetVanilla.GOLD }) {
 				ingot = ItemHelper.getOre(tool.ingot);
 
@@ -221,6 +225,10 @@ public class SmelterManager {
 				addRecycleRecipe(energy, armor.armorChestplate, ingot, 4);
 				addRecycleRecipe(energy, armor.armorLegs, ingot, 3);
 				addRecycleRecipe(energy, armor.armorBoots, ingot, 2);
+			}
+			for (HorseArmor armor : HorseArmor.values()) {
+				ingot = ItemHelper.getOre(armor.ingot);
+				addRecycleRecipe(energy, armor.armor, ingot, 2, false);
 			}
 		}
 

@@ -122,10 +122,6 @@ public class FactorizerManager {
 					oreType = oreName.substring(5, oreName.length());
 					addDefaultRecipe(ItemHelper.getOre("ingot" + oreType), ItemHelper.getOre("block" + oreType));
 					addDefaultRecipe(ItemHelper.getOre("nugget" + oreType), ItemHelper.getOre("ingot" + oreType));
-				} else if (oreName.startsWith("gem")) {
-					oreType = oreName.substring(3, oreName.length());
-					addDefaultRecipe(ItemHelper.getOre("gem" + oreType), ItemHelper.getOre("block" + oreType));
-					addDefaultRecipe(ItemHelper.getOre("nugget" + oreType), ItemHelper.getOre("gem" + oreType));
 				}
 			}
 		}
