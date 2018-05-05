@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.BlockWrapper;
 import cofh.core.util.core.SideConfig;
@@ -400,8 +401,8 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		super.readFromNBT(nbt);
 
 		validTree = nbt.getBoolean("Tree");
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTrackerFluid = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTrackerFluid = nbt.getInteger(CoreProps.TRACK_OUT);
 		tank.readFromNBT(nbt);
 
 		boostMult = nbt.getInteger("BoostMult");
@@ -419,8 +420,8 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		super.writeToNBT(nbt);
 
 		nbt.setBoolean("Tree", validTree);
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTrackerFluid);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTrackerFluid);
 		tank.writeToNBT(nbt);
 
 		nbt.setInteger("BoostMult", boostMult);

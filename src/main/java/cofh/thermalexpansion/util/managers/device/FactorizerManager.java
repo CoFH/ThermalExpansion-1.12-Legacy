@@ -7,6 +7,7 @@ import cofh.thermalfoundation.block.BlockStorageAlloy;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -59,6 +60,13 @@ public class FactorizerManager {
 	}
 
 	public static void initialize() {
+
+		addRecipe(new ItemStack(Blocks.SAND, 4, 0), new ItemStack(Blocks.SANDSTONE), false);
+		addRecipe(new ItemStack(Blocks.SAND, 4, 1), new ItemStack(Blocks.RED_SANDSTONE), false);
+		addRecipe(new ItemStack(Items.GLOWSTONE_DUST, 4, 0), new ItemStack(Blocks.GLOWSTONE), false);
+
+		addDefaultRecipe(new ItemStack(Items.QUARTZ), new ItemStack(Blocks.QUARTZ_BLOCK), 4);
+		addDefaultRecipe(new ItemStack(Items.REDSTONE), new ItemStack(Blocks.REDSTONE_BLOCK));
 
 		addDefaultRecipe(ItemMaterial.ingotIron, new ItemStack(Blocks.IRON_BLOCK));
 		addDefaultRecipe(ItemMaterial.ingotGold, new ItemStack(Blocks.GOLD_BLOCK));

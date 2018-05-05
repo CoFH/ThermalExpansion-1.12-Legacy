@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.core.SideConfig;
@@ -302,7 +303,7 @@ public class TileBrewer extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
 		inputTrackerFluid = nbt.getInteger("TrackInFluid");
 		outputTrackerFluid = nbt.getInteger("TrackOutFluid");
 
@@ -315,7 +316,7 @@ public class TileBrewer extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
 		nbt.setInteger("TrackInFluid", inputTrackerFluid);
 		nbt.setInteger("TrackOutFluid", outputTrackerFluid);
 

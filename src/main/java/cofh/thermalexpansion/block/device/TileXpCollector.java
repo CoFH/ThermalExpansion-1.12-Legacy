@@ -53,7 +53,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false };
 
-		LIGHT_VALUES[TYPE] = 5;
+		LIGHT_VALUES[TYPE] = 2;
 
 		GameRegistry.registerTileEntity(TileXpCollector.class, "thermalexpansion:device_xp_collector");
 
@@ -66,7 +66,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
-	private static final int RADIUS_ORB = 5;
+	private static final int RADIUS = 5;
 	private static final int TIME_CONSTANT = 16;
 
 	private int inputTracker;
@@ -169,7 +169,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 	protected void collectXpOrbs() {
 
-		AxisAlignedBB area = new AxisAlignedBB(pos.add(-RADIUS_ORB, -RADIUS_ORB, -RADIUS_ORB), pos.add(1 + RADIUS_ORB, 1 + RADIUS_ORB, 1 + RADIUS_ORB));
+		AxisAlignedBB area = new AxisAlignedBB(pos.add(-RADIUS, -RADIUS, -RADIUS), pos.add(1 + RADIUS, 1 + RADIUS, 1 + RADIUS));
 		List<EntityXPOrb> xpOrbs = world.getEntitiesWithinAABB(EntityXPOrb.class, area, EntitySelectors.IS_ALIVE);
 
 		for (EntityXPOrb orb : xpOrbs) {
@@ -269,8 +269,8 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 		tank.readFromNBT(nbt);
 
 		boostFactor = nbt.getInteger("BoostFactor");
@@ -287,8 +287,8 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		tank.writeToNBT(nbt);
 
 		nbt.setInteger("BoostFactor", boostFactor);

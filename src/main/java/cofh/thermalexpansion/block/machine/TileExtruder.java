@@ -310,7 +310,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		super.readFromNBT(nbt);
 
-		outputTracker = nbt.getInteger("TrackOut");
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 		augmentSedimentary = nbt.getByte(CoreProps.MODE) == 1;
 
 		if (nbt.hasKey("OutputItem", 10)) {
@@ -328,7 +328,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		nbt.setByte(CoreProps.MODE, augmentSedimentary ? (byte) 1 : 0);
 
 		nbt.setTag("OutputItem", outputItem[0].writeToNBT(new NBTTagCompound()));

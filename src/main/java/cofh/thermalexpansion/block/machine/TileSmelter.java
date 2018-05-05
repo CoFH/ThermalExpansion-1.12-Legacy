@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.core.SideConfig;
@@ -430,10 +431,10 @@ public class TileSmelter extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTrackerPrimary = nbt.getInteger("TrackIn1");
-		inputTrackerSecondary = nbt.getInteger("TrackIn2");
-		outputTrackerPrimary = nbt.getInteger("TrackOut1");
-		outputTrackerSecondary = nbt.getInteger("TrackOut2");
+		inputTrackerPrimary = nbt.getInteger(CoreProps.TRACK_IN);
+		inputTrackerSecondary = nbt.getInteger(CoreProps.TRACK_IN_2);
+		outputTrackerPrimary = nbt.getInteger(CoreProps.TRACK_OUT);
+		outputTrackerSecondary = nbt.getInteger(CoreProps.TRACK_OUT_2);
 		lockPrimary = nbt.getBoolean("SlotLock");
 		tank.readFromNBT(nbt);
 	}
@@ -443,10 +444,10 @@ public class TileSmelter extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn1", inputTrackerPrimary);
-		nbt.setInteger("TrackIn2", inputTrackerSecondary);
-		nbt.setInteger("TrackOut1", outputTrackerPrimary);
-		nbt.setInteger("TrackOut2", outputTrackerSecondary);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTrackerPrimary);
+		nbt.setInteger(CoreProps.TRACK_IN_2, inputTrackerSecondary);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTrackerPrimary);
+		nbt.setInteger(CoreProps.TRACK_OUT_2, outputTrackerSecondary);
 		nbt.setBoolean("SlotLock", lockPrimary);
 		tank.writeToNBT(nbt);
 		return nbt;

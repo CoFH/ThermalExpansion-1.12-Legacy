@@ -32,6 +32,7 @@ public class TEPlugins {
 		pluginRedbudTree = new PluginRedbudTree();
 		pluginSpookyTree = new PluginSpookyTree();
 
+		pluginAbyssalCraft = new PluginAbyssalCraft();
 		pluginActuallyAdditions = new PluginActuallyAdditions();
 		pluginAppliedEnergistics2 = new PluginAppliedEnergistics2();
 		pluginAstralSorcery = new PluginAstralSorcery();
@@ -74,6 +75,7 @@ public class TEPlugins {
 		initList.add(pluginRedbudTree);
 		initList.add(pluginSpookyTree);
 
+		initList.add(pluginAbyssalCraft);
 		initList.add(pluginActuallyAdditions);
 		initList.add(pluginAppliedEnergistics2);
 		initList.add(pluginAstralSorcery);
@@ -131,6 +133,7 @@ public class TEPlugins {
 	public static PluginRedbudTree pluginRedbudTree;
 	public static PluginSpookyTree pluginSpookyTree;
 
+	public static PluginAbyssalCraft pluginAbyssalCraft;
 	public static PluginActuallyAdditions pluginActuallyAdditions;
 	public static PluginAppliedEnergistics2 pluginAppliedEnergistics2;
 	public static PluginAstralSorcery pluginAstralSorcery;

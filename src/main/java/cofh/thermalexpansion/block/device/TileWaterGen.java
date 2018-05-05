@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.gui.container.ContainerTileAugmentable;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.core.SideConfig;
 import cofh.core.util.core.SlotConfig;
@@ -235,7 +236,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		inNether = nbt.getBoolean("Hell");
 		adjacentSources = nbt.getInteger("Sources");
-		outputTracker = nbt.getInteger("TrackOut");
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 		tank.readFromNBT(nbt);
 
 		if (infiniteSource) {
@@ -250,7 +251,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		nbt.setBoolean("Hell", inNether);
 		nbt.setInteger("Sources", adjacentSources);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}

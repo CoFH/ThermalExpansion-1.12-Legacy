@@ -143,6 +143,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 				return new TileFactorizer();
 			case MOB_CATCHER:
 				return new TileMobCatcher();
+			case ITEM_COLLECTOR:
+				return new TileItemCollector();
 			//			case CHUNK_LOADER:                      // TODO
 			//				return null;
 			default:
@@ -320,6 +322,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		TileDiffuser.initialize();
 		TileFactorizer.initialize();
 		TileMobCatcher.initialize();
+		TileItemCollector.initialize();
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -341,6 +344,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		deviceDiffuser = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.DIFFUSER.getMetadata()));
 		deviceFactorizer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FACTORIZER.getMetadata()));
 		deviceMobCatcher = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.MOB_CATCHER.getMetadata()));
+		deviceItemCollector = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ITEM_COLLECTOR.getMetadata()));
 
 		addRecipes();
 
@@ -497,6 +501,18 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'Y', "ingotConstantan"
 			);
 		}
+//		if (enable[Type.ITEM_COLLECTOR.getMetadata()]) {
+//			addShapedRecipe(deviceItemBuffer,
+//					" X ",
+//					"YCY",
+//					"IPI",
+//					'C', ItemFrame.frameDevice,
+//					'I', ironPart,
+//					'P', ItemMaterial.redstoneServo,
+//					'X', "chestWood",
+//					'Y', "ingotTin"
+//			);
+//		}
 		// @formatter:on
 	}
 
@@ -516,7 +532,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		DIFFUSER(9, "diffuser"),
 		FACTORIZER(10, "factorizer"),
 		MOB_CATCHER(11, "mob_catcher"),
-		CHUNK_LOADER(12, "chunk_loader");
+		ITEM_COLLECTOR(12, "item_collector"),
+		CHUNK_LOADER(13, "chunk_loader");
 		// @formatter:on
 
 		private static final Type[] METADATA_LOOKUP = new Type[values().length];
@@ -582,6 +599,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 	public static ItemStack deviceDiffuser;
 	public static ItemStack deviceFactorizer;
 	public static ItemStack deviceMobCatcher;
+	public static ItemStack deviceItemCollector;
 	public static ItemStack deviceChunkLoader;
 
 	public static ItemBlockDevice itemBlock;

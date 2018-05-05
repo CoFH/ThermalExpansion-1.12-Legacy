@@ -314,7 +314,10 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 				InventoryContainerItemWrapper inv = new InventoryContainerItemWrapper(stack);
 				for (int i = 0; i < inv.getSizeInventory(); i++) {
 					ItemStack slot = inv.getStackInSlot(i);
-					if (ItemHandlerHelper.canItemStacksStackRelaxed(eventItem, slot)) {
+					if (slot.isEmpty()) {
+						inv.setInventorySlotContents(i, eventItem.copy());
+						eventItem.setCount(0);
+					} else if (ItemHandlerHelper.canItemStacksStack(eventItem, slot)) {
 						int fill = slot.getMaxStackSize() - slot.getCount();
 						if (fill > eventItem.getCount()) {
 							slot.setCount(slot.getCount() + eventItem.getCount());
@@ -322,9 +325,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 							slot.setCount(slot.getMaxStackSize());
 						}
 						eventItem.splitStack(fill);
-					} else if (slot.isEmpty()) {
-						inv.setInventorySlotContents(i, eventItem.copy());
-						eventItem.setCount(0);
 					}
 					if (eventItem.isEmpty()) {
 						break;

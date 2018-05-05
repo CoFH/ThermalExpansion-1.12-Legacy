@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.gui.container.ICustomInventory;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.core.SideConfig;
@@ -274,7 +275,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		super.readFromNBT(nbt);
 
-		outputTracker = nbt.getInteger("TrackOut");
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 
 		if (nbt.hasKey("OutputItem", 10)) {
 			index = PrecipitatorManager.getIndex(new ItemStack(nbt.getCompoundTag("OutputItem")));
@@ -290,7 +291,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 
 		nbt.setTag("OutputItem", outputItem[0].writeToNBT(new NBTTagCompound()));
 		tank.writeToNBT(nbt);

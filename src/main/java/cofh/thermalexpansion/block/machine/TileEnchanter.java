@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.core.SideConfig;
@@ -323,9 +324,9 @@ public class TileEnchanter extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTrackerPrimary = nbt.getInteger("TrackIn1");
-		inputTrackerSecondary = nbt.getInteger("TrackIn2");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTrackerPrimary = nbt.getInteger(CoreProps.TRACK_IN);
+		inputTrackerSecondary = nbt.getInteger(CoreProps.TRACK_IN_2);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 		lockPrimary = nbt.getBoolean("SlotLock");
 		tank.readFromNBT(nbt);
 	}
@@ -335,9 +336,9 @@ public class TileEnchanter extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn1", inputTrackerPrimary);
-		nbt.setInteger("TrackIn2", inputTrackerSecondary);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTrackerPrimary);
+		nbt.setInteger(CoreProps.TRACK_IN_2, inputTrackerSecondary);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		nbt.setBoolean("SlotLock", lockPrimary);
 		tank.writeToNBT(nbt);
 		return nbt;

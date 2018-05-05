@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.core.SideConfig;
 import cofh.core.util.core.SlotConfig;
@@ -49,16 +50,14 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 5;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 0 }, {}, { 0 } };
-		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, INPUT_PRIMARY, INPUT_SECONDARY, OPEN };
+		SIDE_CONFIGS[TYPE].numConfig = 4;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 0 }, {} };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, INPUT_PRIMARY, INPUT_SECONDARY };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false };
-
-		LIGHT_VALUES[TYPE] = 5;
 
 		GameRegistry.registerTileEntity(TileDiffuser.class, "thermalexpansion:device_diffuser");
 
@@ -313,7 +312,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
 		tank.readFromNBT(nbt);
 
 		boostAmp = nbt.getInteger("BoostAmp");
@@ -326,7 +325,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
 		tank.writeToNBT(nbt);
 
 		nbt.setInteger("BoostAmp", boostAmp);

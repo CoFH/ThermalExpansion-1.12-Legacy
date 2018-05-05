@@ -340,7 +340,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		super.writeToNBT(nbt);
 
 		nbt.setByte("EncHolding", enchantHolding);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		nbt.setInteger("Recv", amountRecv);
 		nbt.setInteger("Send", amountSend);
 		return nbt;

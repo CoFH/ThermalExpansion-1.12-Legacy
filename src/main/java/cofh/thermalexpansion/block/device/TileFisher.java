@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.device;
 
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.core.SideConfig;
 import cofh.core.util.core.SlotConfig;
@@ -321,8 +322,8 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		targetWater = nbt.getInteger("Water");
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 
 		boostMult = nbt.getInteger("BoostMult");
 		boostTime = nbt.getInteger("BoostTime");
@@ -341,8 +342,8 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		nbt.setInteger("Water", targetWater);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 
 		nbt.setInteger("BoostMult", boostMult);
 		nbt.setInteger("BoostTime", boostTime);

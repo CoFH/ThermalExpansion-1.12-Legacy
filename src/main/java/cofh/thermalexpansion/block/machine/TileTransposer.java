@@ -547,9 +547,9 @@ public class TileTransposer extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut1");
-		outputTrackerFluid = nbt.getInteger("TrackOut2");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
+		outputTrackerFluid = nbt.getInteger(CoreProps.TRACK_OUT_2);
 
 		if (!inventory[1].isEmpty() && inventory[1].hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
 			hasFluidHandler = true;
@@ -571,9 +571,9 @@ public class TileTransposer extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut1", outputTracker);
-		nbt.setInteger("TrackOut2", outputTrackerFluid);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT_2, outputTrackerFluid);
 		nbt.setByte(CoreProps.MODE, extractMode ? (byte) 1 : 0);
 		tank.writeToNBT(nbt);
 		return nbt;

@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.core.SideConfig;
@@ -357,9 +358,9 @@ public class TileSawmill extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTrackerPrimary = nbt.getInteger("TrackOut1");
-		outputTrackerSecondary = nbt.getInteger("TrackOut2");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTrackerPrimary = nbt.getInteger(CoreProps.TRACK_OUT);
+		outputTrackerSecondary = nbt.getInteger(CoreProps.TRACK_OUT_2);
 		outputTrackerFluid = nbt.getInteger("TrackOut3");
 		tank.readFromNBT(nbt);
 
@@ -373,9 +374,9 @@ public class TileSawmill extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut1", outputTrackerPrimary);
-		nbt.setInteger("TrackOut2", outputTrackerSecondary);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTrackerPrimary);
+		nbt.setInteger(CoreProps.TRACK_OUT_2, outputTrackerSecondary);
 		nbt.setInteger("Trackout3", outputTrackerFluid);
 		tank.writeToNBT(nbt);
 		return nbt;
