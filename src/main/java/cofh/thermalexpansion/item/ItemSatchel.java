@@ -485,11 +485,11 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 		addColorRecipe(satchelSignalum, satchelSignalum, "dye", "dye");
 		addColorRecipe(satchelResonant, satchelResonant, "dye", "dye");
 
-		addColorRemoveRecipe(satchelBasic, satchelBasic, new FluidIngredient("water"));
-		addColorRemoveRecipe(satchelHardened, satchelHardened, new FluidIngredient("water"));
-		addColorRemoveRecipe(satchelReinforced, satchelReinforced, new FluidIngredient("water"));
-		addColorRemoveRecipe(satchelSignalum, satchelSignalum, new FluidIngredient("water"));
-		addColorRemoveRecipe(satchelResonant, satchelResonant, new FluidIngredient("water"));
+		addColorRemoveRecipe(satchelBasic, satchelBasic);
+		addColorRemoveRecipe(satchelHardened, satchelHardened);
+		addColorRemoveRecipe(satchelReinforced, satchelReinforced);
+		addColorRemoveRecipe(satchelSignalum, satchelSignalum);
+		addColorRemoveRecipe(satchelResonant, satchelResonant);
 		return true;
 	}
 

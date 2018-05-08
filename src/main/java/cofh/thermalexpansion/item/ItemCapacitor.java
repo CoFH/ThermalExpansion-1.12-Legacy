@@ -56,7 +56,7 @@ import java.util.stream.IntStream;
 import static cofh.core.util.helpers.RecipeHelper.*;
 
 @Optional.Interface (iface = "baubles.api.IBauble", modid = "baubles")
-public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble, IEnchantableItem, IEnergyContainerItem, IMultiModeItem {
+public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble {
 
 	public ItemCapacitor() {
 
@@ -89,7 +89,7 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 		}
 		tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
 
-		if (ItemHelper.getItemDamage(stack) == CREATIVE) {
+		if (isCreative(stack)) {
 			tooltip.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
 			tooltip.add(StringHelper.localize("info.cofh.send") + ": " + StringHelper.formatNumber(getSend(stack)) + " RF/t");
 		} else {
@@ -372,7 +372,7 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 		capacitorSignalum = addEntryItem(3, "standard3", EnumRarity.UNCOMMON);
 		capacitorResonant = addEntryItem(4, "standard4", EnumRarity.RARE);
 
-		capacitorCreative = addEntryItem(CREATIVE, "creative", SEND_CREATIVE, 0, CAPACITY[4], EnumRarity.EPIC);
+		capacitorCreative = addEntryItem(CREATIVE, "creative", SEND[4] * 10, 0, CAPACITY[4], EnumRarity.EPIC);
 
 		return true;
 	}
@@ -401,11 +401,11 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 		addColorRecipe(capacitorSignalum, capacitorSignalum, "dye");
 		addColorRecipe(capacitorResonant, capacitorResonant, "dye");
 
-		addColorRemoveRecipe(capacitorBasic, capacitorBasic, new FluidIngredient("water"));
-		addColorRemoveRecipe(capacitorHardened, capacitorHardened, new FluidIngredient("water"));
-		addColorRemoveRecipe(capacitorReinforced, capacitorReinforced, new FluidIngredient("water"));
-		addColorRemoveRecipe(capacitorSignalum, capacitorSignalum, new FluidIngredient("water"));
-		addColorRemoveRecipe(capacitorResonant, capacitorResonant, new FluidIngredient("water"));
+		addColorRemoveRecipe(capacitorBasic, capacitorBasic);
+		addColorRemoveRecipe(capacitorHardened, capacitorHardened);
+		addColorRemoveRecipe(capacitorReinforced, capacitorReinforced);
+		addColorRemoveRecipe(capacitorSignalum, capacitorSignalum);
+		addColorRemoveRecipe(capacitorResonant, capacitorResonant);
 		return true;
 	}
 
@@ -475,12 +475,10 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 
 	public static final int CAPACITY_BASE = 1000000;
 	public static final int XFER_BASE = 1000;
-	public static final int CREATIVE = 32000;
 
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int[] RECV = { 1, 4, 9, 16, 25 };
 	public static final int[] SEND = { 1, 4, 9, 16, 25 };
-	public static final int SEND_CREATIVE = 25 * 10000;
 
 	public static boolean enable = true;
 

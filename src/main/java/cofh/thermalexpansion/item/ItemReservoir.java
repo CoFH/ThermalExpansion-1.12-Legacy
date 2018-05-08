@@ -572,11 +572,11 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 		addColorRecipe(reservoirSignalum, reservoirSignalum, "dye");
 		addColorRecipe(reservoirResonant, reservoirResonant, "dye");
 
-		addColorRemoveRecipe(reservoirBasic, reservoirBasic, new FluidIngredient("water"));
-		addColorRemoveRecipe(reservoirHardened, reservoirHardened, new FluidIngredient("water"));
-		addColorRemoveRecipe(reservoirReinforced, reservoirReinforced, new FluidIngredient("water"));
-		addColorRemoveRecipe(reservoirSignalum, reservoirSignalum, new FluidIngredient("water"));
-		addColorRemoveRecipe(reservoirResonant, reservoirResonant, new FluidIngredient("water"));
+		addColorRemoveRecipe(reservoirBasic, reservoirBasic);
+		addColorRemoveRecipe(reservoirHardened, reservoirHardened);
+		addColorRemoveRecipe(reservoirReinforced, reservoirReinforced);
+		addColorRemoveRecipe(reservoirSignalum, reservoirSignalum);
+		addColorRemoveRecipe(reservoirResonant, reservoirResonant);
 		return true;
 	}
 
