@@ -130,13 +130,13 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble 
 
 		switch (getMode(stack)) {
 			case EQUIPMENT:
-				equipment = Iterables.concat(player.getEquipmentAndArmor(), getBaubles(player));
+				equipment = Iterables.concat(player.getEquipmentAndArmor(), BaublesHelper.getBaubles(player));
 				break;
 			case INVENTORY:
 				equipment = player.inventory.mainInventory;
 				break;
 			default:
-				equipment = Iterables.concat(Arrays.asList(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory, getBaubles(player)));
+				equipment = Iterables.concat(Arrays.asList(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory, BaublesHelper.getBaubles(player)));
 		}
 		for (ItemStack equipmentStack : equipment) {
 			if (equipmentStack.equals(stack)) {
@@ -252,13 +252,13 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble 
 
 		switch (getMode(stack)) {
 			case EQUIPMENT:
-				equipment = Iterables.concat(entity.getEquipmentAndArmor(), getBaubles(entity));
+				equipment = Iterables.concat(entity.getEquipmentAndArmor(), BaublesHelper.getBaubles(entity));
 				break;
 			case INVENTORY:
 				equipment = player.inventory.mainInventory;
 				break;
 			default:
-				equipment = Iterables.concat(Arrays.asList(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory, getBaubles(player)));
+				equipment = Iterables.concat(Arrays.asList(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory, BaublesHelper.getBaubles(player)));
 		}
 		for (ItemStack equipmentStack : equipment) {
 			if (equipmentStack.equals(stack)) {
@@ -320,23 +320,6 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble 
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 
 		return new EnergyContainerItemWrapper(stack, this);
-	}
-
-	/* BAUBLES */
-	@CapabilityInject (IBaublesItemHandler.class)
-	private static Capability<IBaublesItemHandler> CAPABILITY_BAUBLES = null;
-
-	private static Iterable<ItemStack> getBaubles(Entity entity) {
-
-		if (CAPABILITY_BAUBLES == null) {
-			return Collections.emptyList();
-		}
-		IBaublesItemHandler handler = entity.getCapability(CAPABILITY_BAUBLES, null);
-
-		if (handler == null) {
-			return Collections.emptyList();
-		}
-		return IntStream.range(0, handler.getSlots()).mapToObj(handler::getStackInSlot).filter(stack -> !stack.isEmpty()).collect(Collectors.toList());
 	}
 
 	/* IModelRegister */

@@ -153,7 +153,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 		if (ServerHelper.isClientWorld(world) || CoreUtils.isFakePlayer(entity) || !isActive(stack)) {
 			return;
 		}
-		Iterable<ItemStack> equipment = Iterables.concat(entity.getEquipmentAndArmor(), getBaubles(entity));
+		Iterable<ItemStack> equipment = Iterables.concat(entity.getEquipmentAndArmor(), BaublesHelper.getBaubles(entity));
 
 		for (ItemStack equipmentStack : equipment) {
 			if (equipmentStack.equals(stack) || equipmentStack.getItem() == Items.BUCKET) {
@@ -325,7 +325,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 		if (ServerHelper.isClientWorld(world) || !isActive(stack)) {
 			return;
 		}
-		Iterable<ItemStack> equipment = Iterables.concat(player.getEquipmentAndArmor(), getBaubles(player));
+		Iterable<ItemStack> equipment = Iterables.concat(player.getEquipmentAndArmor(), BaublesHelper.getBaubles(player));
 
 		for (ItemStack equipmentStack : equipment) {
 			if (equipmentStack.equals(stack) || equipmentStack.getItem() == Items.BUCKET) {
@@ -491,23 +491,6 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 
 		return new FluidContainerItemWrapper(stack, this);
-	}
-
-	/* BAUBLES */
-	@CapabilityInject (IBaublesItemHandler.class)
-	private static Capability<IBaublesItemHandler> CAPABILITY_BAUBLES = null;
-
-	private static Iterable<ItemStack> getBaubles(Entity entity) {
-
-		if (CAPABILITY_BAUBLES == null) {
-			return Collections.emptyList();
-		}
-		IBaublesItemHandler handler = entity.getCapability(CAPABILITY_BAUBLES, null);
-
-		if (handler == null) {
-			return Collections.emptyList();
-		}
-		return IntStream.range(0, handler.getSlots()).mapToObj(handler::getStackInSlot).filter(stack -> !stack.isEmpty()).collect(Collectors.toList());
 	}
 
 	/* IModelRegister */

@@ -465,11 +465,12 @@ public class TileEnchanter extends TileMachineBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						FluidStack toFill = TFFluids.getXPFluid(resource);
-						return tank.fill(toFill, doFill);
-					}
-					return 0;
+					return tank.fill(TFFluids.getXPFluid(resource), doFill);
+					//					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+					//						FluidStack toFill = TFFluids.getXPFluid(resource);
+					//						return tank.fill(toFill, doFill);
+					//					}
+					//					return 0;
 				}
 
 				@Nullable

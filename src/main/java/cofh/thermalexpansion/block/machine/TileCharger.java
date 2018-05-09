@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import baubles.api.cap.IBaublesItemHandler;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
@@ -17,6 +18,8 @@ import cofh.thermalexpansion.item.ItemCapacitor;
 import cofh.thermalexpansion.util.managers.machine.ChargerManager;
 import cofh.thermalexpansion.util.managers.machine.ChargerManager.ChargerRecipe;
 import cofh.thermalfoundation.init.TFFluids;
+import com.google.common.collect.Iterables;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,6 +27,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,10 +39,9 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static cofh.core.util.core.SideConfig.*;
 
@@ -373,7 +376,9 @@ public class TileCharger extends TileMachineBase {
 
 	private int chargeInventoryItem(InventoryPlayer inventory, boolean simulate) {
 
-		for (ItemStack stack : inventory.mainInventory) {
+		Iterable<ItemStack> equipment = Iterables.concat(Arrays.asList(BaublesHelper.getBaubles(inventory.player), inventory.mainInventory));
+
+		for (ItemStack stack : equipment) {
 			if (energyStorage.getEnergyStored() <= 0) {
 				return 0;
 			}
