@@ -26,6 +26,8 @@ public class PluginAppliedEnergistics2 extends PluginTEBase {
 		ItemStack crystalCertusQuartz = getItemStack("material", 1, 0);
 		ItemStack crystalCertusQuartzCharged = getItemStack("material", 1, 1);
 
+		ItemStack crystalNetherQuartz = new ItemStack(Items.QUARTZ);
+
 		ItemStack dustCertusQuartz = ItemHelper.getOre("dustCertusQuartz");
 		ItemStack dustNetherQuartz = ItemHelper.getOre("dustNetherQuartz");
 
@@ -44,7 +46,25 @@ public class PluginAppliedEnergistics2 extends PluginTEBase {
 
 			PulverizerManager.addRecipe(energy, new ItemStack(Items.ENDER_PEARL), ItemHelper.getOre("dustEnderPearl"));
 			PulverizerManager.addRecipe(energy, ItemHelper.getOre("crystalFluix"), ItemHelper.getOre("dustFluix"));
-			PulverizerManager.addRecipe(energy, new ItemStack(Items.QUARTZ), dustNetherQuartz);
+			PulverizerManager.addRecipe(energy, crystalNetherQuartz, dustNetherQuartz);
+
+			energy = PulverizerManager.DEFAULT_ENERGY * 3 / 2;
+
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("certus_quartz_axe"), crystalCertusQuartz, 1);
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("certus_quartz_hoe"), crystalCertusQuartz, 1);
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("certus_quartz_spade"), crystalCertusQuartz, 1);
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("certus_quartz_pickaxe"), crystalCertusQuartz, 1);
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("certus_quartz_sword"), crystalCertusQuartz, 1);
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("certus_quartz_wrench"), crystalCertusQuartz, 2);
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("certus_quartz_cutting_knife"), crystalCertusQuartz, 1);
+
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("nether_quartz_axe"), crystalNetherQuartz, 1);
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("nether_quartz_hoe"), crystalNetherQuartz, 1);
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("nether_quartz_spade"), crystalNetherQuartz, 1);
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("nether_quartz_pickaxe"), crystalNetherQuartz, 1);
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("nether_quartz_sword"), crystalNetherQuartz, 1);
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("nether_quartz_wrench"), crystalNetherQuartz, 2);
+			PulverizerManager.addRecycleRecipe(energy, getItemStack("nether_quartz_cutting_knife"), crystalNetherQuartz, 1);
 		}
 
 		/* INSOLATOR */

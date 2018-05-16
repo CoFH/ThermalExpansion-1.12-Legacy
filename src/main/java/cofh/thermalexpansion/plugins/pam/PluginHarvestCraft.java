@@ -47,6 +47,7 @@ public class PluginHarvestCraft extends PluginTEBase {
 		ItemStack itemApricot = getItemStack("apricotitem");
 		ItemStack itemAvocado = getItemStack("avocadoitem");
 		ItemStack itemBanana = getItemStack("bananaitem");
+		ItemStack itemBeans = getItemStack("beanitem");
 		ItemStack itemBeet = getItemStack("beetitem");
 		ItemStack itemBlackberry = getItemStack("blackberryitem");
 		ItemStack itemBlueberry = getItemStack("blueberryitem");
@@ -74,13 +75,16 @@ public class PluginHarvestCraft extends PluginTEBase {
 		ItemStack itemPapaya = getItemStack("papayaitem");
 		ItemStack itemPeach = getItemStack("peachitem");
 		ItemStack itemPear = getItemStack("pearitem");
+		ItemStack itemPeas = getItemStack("peasitem");
 		ItemStack itemPecan = getItemStack("pecanitem");
 		ItemStack itemPeppercorn = getItemStack("peppercornitem");
 		ItemStack itemPersimmon = getItemStack("persimmonitem");
 		ItemStack itemPistachio = getItemStack("pistachioitem");
 		ItemStack itemPlum = getItemStack("plumitem");
 		ItemStack itemPomegranate = getItemStack("pomegranateitem");
+		ItemStack itemPotato = new ItemStack(Items.POTATO);
 		ItemStack itemRaspberry = getItemStack("raspberryitem");
+		ItemStack itemSeaweed = getItemStack("seaweeditem");
 		ItemStack itemSilkenTofu = getItemStack("silkentofuitem");
 		ItemStack itemFirmTofu = getItemStack("firmtofuitem");
 		ItemStack itemSoybean = getItemStack("soybeanitem");
@@ -91,6 +95,12 @@ public class PluginHarvestCraft extends PluginTEBase {
 		ItemStack itemVanilla = getItemStack("vanillaitem");
 		ItemStack itemWalnut = getItemStack("walnutitem");
 
+		ItemStack itemBarley = getItemStack("barleyitem");
+		ItemStack itemOats = getItemStack("oatsitem");
+		ItemStack itemRice = getItemStack("riceitem");
+		ItemStack itemRye = getItemStack("ryeitem");
+		ItemStack itemWheat = new ItemStack(Items.WHEAT);
+
 		ItemStack rawBeef = new ItemStack(Items.BEEF);
 		ItemStack rawCalamari = getItemStack("calamarirawitem");
 		ItemStack rawChicken = new ItemStack(Items.CHICKEN);
@@ -100,6 +110,16 @@ public class PluginHarvestCraft extends PluginTEBase {
 		ItemStack rawRabbit = new ItemStack(Items.RABBIT);
 		ItemStack rawTurkey = getItemStack("rawturkeyitem");
 		ItemStack rawVenison = getItemStack("rawvenisonitem");
+
+		ItemStack rawTofuBeef = getItemStack("rawtofeakitem");
+		ItemStack rawTofuChicken = getItemStack("rawtofickenitem");
+		ItemStack rawTofuDuck = getItemStack("rawtofuduckitem");
+		ItemStack rawTofuFish = getItemStack("rawtofishitem");
+		ItemStack rawTofuMutton = getItemStack("rawtofuttonitem");
+		ItemStack rawTofuPork = getItemStack("rawtofaconitem");
+		ItemStack rawTofuRabbit = getItemStack("rawtofabbititem");
+		ItemStack rawTofuTurkey = getItemStack("rawtofurkeyitem");
+		ItemStack rawTofuVenison = getItemStack("rawtofenisonitem");
 
 		ItemStack groundBeef = getItemStack("groundbeefitem");
 		ItemStack groundChicken = getItemStack("groundchickenitem");
@@ -113,6 +133,10 @@ public class PluginHarvestCraft extends PluginTEBase {
 
 		ItemStack groundCinnamon = getItemStack("groundcinnamonitem");
 		ItemStack groundNutmeg = getItemStack("groundnutmegitem");
+
+		ItemStack itemFlour = getItemStack("flouritem");
+		ItemStack itemPepper = getItemStack("blackpepperitem");
+		ItemStack itemSalt = getItemStack("saltitem");
 
 		ItemStack juiceApricot = getItemStack("apricotjuiceitem");
 		ItemStack juiceBlackberry = getItemStack("blackberryjuiceitem");
@@ -211,13 +235,19 @@ public class PluginHarvestCraft extends PluginTEBase {
 
 		/* PULVERIZER */
 		{
+			ItemStack groundFishStack = ItemHelper.cloneStack(groundFish, 2);
+			ItemStack itemFlourStack = ItemHelper.cloneStack(itemFlour, 2);
+
 			int energy = PulverizerManager.DEFAULT_ENERGY / 4;
 
 			PulverizerManager.addRecipe(energy, itemCinnamon, groundCinnamon, baitGrain);
 			PulverizerManager.addRecipe(energy, itemNutmeg, groundNutmeg, baitGrain);
 
+			PulverizerManager.addRecipe(energy, itemPeppercorn, itemPepper, baitVeggie);
+			PulverizerManager.addRecipe(energy, itemSeaweed, itemSalt, baitVeggie);
+
 			PulverizerManager.addRecipe(energy, rawBeef, ItemHelper.cloneStack(groundBeef, 2));
-			PulverizerManager.addRecipe(energy, rawCalamari, ItemHelper.cloneStack(groundFish, 2));
+			PulverizerManager.addRecipe(energy, rawCalamari, groundFishStack);
 			PulverizerManager.addRecipe(energy, rawChicken, ItemHelper.cloneStack(groundChicken, 2));
 			PulverizerManager.addRecipe(energy, rawDuck, ItemHelper.cloneStack(groundDuck, 2));
 			PulverizerManager.addRecipe(energy, rawMutton, ItemHelper.cloneStack(groundMutton, 2));
@@ -226,28 +256,52 @@ public class PluginHarvestCraft extends PluginTEBase {
 			PulverizerManager.addRecipe(energy, rawTurkey, ItemHelper.cloneStack(groundTurkey, 2));
 			PulverizerManager.addRecipe(energy, rawVenison, ItemHelper.cloneStack(groundVenison, 2));
 
-			PulverizerManager.addRecipe(energy, new ItemStack(Items.FISH, 1, 0), ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, new ItemStack(Items.FISH, 1, 1), ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, new ItemStack(Items.FISH, 1, 2), ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, new ItemStack(Items.FISH, 1, 3), ItemHelper.cloneStack(groundFish, 2));
+			PulverizerManager.addRecipe(energy, rawTofuBeef, ItemHelper.cloneStack(groundBeef, 2));
+			PulverizerManager.addRecipe(energy, rawTofuChicken, ItemHelper.cloneStack(groundChicken, 2));
+			PulverizerManager.addRecipe(energy, rawTofuDuck, ItemHelper.cloneStack(groundDuck, 2));
+			PulverizerManager.addRecipe(energy, rawTofuFish, groundFishStack);
+			PulverizerManager.addRecipe(energy, rawTofuMutton, ItemHelper.cloneStack(groundMutton, 2));
+			PulverizerManager.addRecipe(energy, rawTofuPork, ItemHelper.cloneStack(groundPork, 2));
+			PulverizerManager.addRecipe(energy, rawTofuRabbit, ItemHelper.cloneStack(groundRabbit, 2));
+			PulverizerManager.addRecipe(energy, rawTofuTurkey, ItemHelper.cloneStack(groundTurkey, 2));
+			PulverizerManager.addRecipe(energy, rawTofuVenison, ItemHelper.cloneStack(groundVenison, 2));
 
-			PulverizerManager.addRecipe(energy, fishAnchovy, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishBass, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishCarp, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishCatfish, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishCharr, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishGrouper, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishHerring, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishMudfish, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishPerch, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishSnapper, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishTilapia, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishTrout, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishTuna, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishWalleye, ItemHelper.cloneStack(groundFish, 2));
+			PulverizerManager.addRecipe(energy, new ItemStack(Items.FISH, 1, 0), groundFishStack);
+			PulverizerManager.addRecipe(energy, new ItemStack(Items.FISH, 1, 1), groundFishStack);
+			PulverizerManager.addRecipe(energy, new ItemStack(Items.FISH, 1, 2), groundFishStack);
+			PulverizerManager.addRecipe(energy, new ItemStack(Items.FISH, 1, 3), groundFishStack);
 
-			PulverizerManager.addRecipe(energy, fishGreenHeart, ItemHelper.cloneStack(groundFish, 2));
-			PulverizerManager.addRecipe(energy, fishSardine, ItemHelper.cloneStack(groundFish, 2));
+			PulverizerManager.addRecipe(energy, itemAlmond, itemFlourStack);
+			PulverizerManager.addRecipe(energy, itemBanana, itemFlourStack);
+			PulverizerManager.addRecipe(energy, itemBarley, itemFlourStack);
+			PulverizerManager.addRecipe(energy, itemBeans, itemFlourStack);
+			PulverizerManager.addRecipe(energy, itemChestnut, itemFlourStack);
+			PulverizerManager.addRecipe(energy, itemCoconut, itemFlourStack);
+			PulverizerManager.addRecipe(energy, itemOats, itemFlourStack);
+			PulverizerManager.addRecipe(energy, itemPeas, itemFlourStack);
+			PulverizerManager.addRecipe(energy, itemPotato, itemFlourStack);
+			PulverizerManager.addRecipe(energy, itemRice, itemFlourStack);
+			PulverizerManager.addRecipe(energy, itemRye, itemFlourStack);
+			PulverizerManager.addRecipe(energy, itemSoybean, itemFlourStack);
+			PulverizerManager.addRecipe(energy, itemWheat, itemFlourStack);
+
+			PulverizerManager.addRecipe(energy, fishAnchovy, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishBass, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishCarp, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishCatfish, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishCharr, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishGrouper, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishHerring, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishMudfish, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishPerch, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishSnapper, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishTilapia, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishTrout, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishTuna, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishWalleye, groundFishStack);
+
+			PulverizerManager.addRecipe(energy, fishGreenHeart, groundFishStack);
+			PulverizerManager.addRecipe(energy, fishSardine, groundFishStack);
 
 		}
 
