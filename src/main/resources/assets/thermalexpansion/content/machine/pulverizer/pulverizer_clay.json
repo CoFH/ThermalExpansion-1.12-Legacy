@@ -1,0 +1,183 @@
+{
+	"pulverizer": [
+		{
+			"input": {
+				"item": "minecraft:clay"
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:hardened_clay"
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 0
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 1
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 2
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 3
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 4
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 5
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 6
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 7
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 8
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 9
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 10
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 11
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 12
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 13
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 14
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:stained_hardened_clay",
+				"data": 15
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			}
+		}
+	]
+}

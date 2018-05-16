@@ -189,6 +189,23 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		return enableSecurity;
 	}
 
+	// TODO: Weigh balance of this - additional canStart / processStart logic required; also slightly devalues Excitation Augment.
+	//	@Override
+	//	public boolean sendRedstoneUpdates() {
+	//
+	//		return true;
+	//	}
+	//
+	//	@Override
+	//	public void onRedstoneUpdate() {
+	//
+	//		boolean curActive = isActive;
+	//		if (!redstoneControlOrDisable()) {
+	//			isActive = false;
+	//		}
+	//		updateIfChanged(curActive);
+	//	}
+
 	/* IUpgradeable */
 	@Override
 	public boolean canUpgrade(ItemStack upgrade) {

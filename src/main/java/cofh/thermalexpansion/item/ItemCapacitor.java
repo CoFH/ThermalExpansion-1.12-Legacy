@@ -2,16 +2,12 @@ package cofh.thermalexpansion.item;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
-import baubles.api.cap.IBaublesItemHandler;
-import cofh.api.item.IMultiModeItem;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.init.CoreProps;
-import cofh.core.item.IEnchantableItem;
 import cofh.core.item.ItemMultiRF;
 import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.core.IInitializer;
-import cofh.core.util.crafting.FluidIngredientFactory.FluidIngredient;
 import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.util.EnergyContainerItemWrapper;
@@ -36,8 +32,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.Optional;
@@ -47,11 +41,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
 

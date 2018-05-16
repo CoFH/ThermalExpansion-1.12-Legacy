@@ -5,7 +5,6 @@ import cofh.core.util.core.SideConfig;
 import cofh.core.util.core.SlotConfig;
 import cofh.core.util.filter.ItemFilter;
 import cofh.core.util.helpers.MathHelper;
-import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiItemCollector;
@@ -20,7 +19,6 @@ import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -215,7 +213,7 @@ public class TileItemCollector extends TileDeviceBase implements ITickable {
 			} else if (side == 1) {
 				return TETextures.DEVICE_TOP;
 			}
-			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.WATER) : TETextures.DEVICE_FACE[TYPE];
+			return side != facing ? TETextures.DEVICE_SIDE : isActive ? TETextures.PORTAL_UNDERLAY : TETextures.DEVICE_FACE[TYPE];
 		} else if (side < 6) {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}

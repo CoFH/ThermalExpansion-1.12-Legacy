@@ -38,7 +38,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[Type.values().length];
 	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[Type.values().length];
-	public static final HashSet<String>[] VALID_AUGMENTS = new HashSet[Type.values().length];
+	public static final HashSet[] VALID_AUGMENTS = new HashSet[Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[Type.values().length];
 
 	public static final int MIN_BASE_POWER = 10;
@@ -217,6 +217,22 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public boolean enableSecurity() {
 
 		return enableSecurity;
+	}
+
+	@Override
+	public boolean sendRedstoneUpdates() {
+
+		return true;
+	}
+
+	@Override
+	public void onRedstoneUpdate() {
+
+		boolean curActive = isActive;
+		if (!redstoneControlOrDisable()) {
+			isActive = false;
+		}
+		updateIfChanged(curActive);
 	}
 
 	/* IUpgradeable */

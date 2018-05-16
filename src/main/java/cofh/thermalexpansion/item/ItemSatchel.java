@@ -12,7 +12,6 @@ import cofh.core.item.ItemMulti;
 import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.core.IInitializer;
-import cofh.core.util.crafting.FluidIngredientFactory.FluidIngredient;
 import cofh.core.util.filter.ItemFilterWrapper;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;

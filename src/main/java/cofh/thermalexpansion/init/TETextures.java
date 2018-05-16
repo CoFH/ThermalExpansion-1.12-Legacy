@@ -74,7 +74,7 @@ public class TETextures {
 		MACHINE_ACTIVE_PRECIPITATOR =		register(MACHINE_ACTIVE_ + "precipitator");
 		MACHINE_ACTIVE_EXTRUDER =			register(MACHINE_ACTIVE_ + "extruder");
 
-		MACHINE_ACTIVE_EXTRUDER_UNDERLAY =	register(MACHINE_ACTIVE_ + "extruder_underlay");
+		MACHINE_UNDERLAY_EXTRUDER =	        register(MACHINE_ + "underlay_extruder");
 
 		MACHINE_FRAME_TOP =                 register(MACHINE_ + "frame_top");
 		MACHINE_FRAME_BOTTOM =              register(MACHINE_ + "frame_bottom");
@@ -122,6 +122,8 @@ public class TETextures {
 		DEVICE_ACTIVE_FACTORIZER =          register(DEVICE_ACTIVE_ + "factorizer");
 		DEVICE_ACTIVE_MOB_CATCHER =         register(DEVICE_ACTIVE_ + "mob_catcher");
 		DEVICE_ACTIVE_ITEM_COLLECTOR =      register(DEVICE_ACTIVE_ + "item_collector");
+
+		PORTAL_UNDERLAY =    register("blocks/portal");
 
         DEVICE_FRAME_TOP =                  register(DEVICE_ + "frame_top");
 		DEVICE_FRAME_SIDE =                 register(DEVICE_ + "frame_side");
@@ -666,7 +668,7 @@ public class TETextures {
 	public static TextureAtlasSprite MACHINE_ACTIVE_PRECIPITATOR;
 	public static TextureAtlasSprite MACHINE_ACTIVE_EXTRUDER;
 
-	public static TextureAtlasSprite MACHINE_ACTIVE_EXTRUDER_UNDERLAY;
+	public static TextureAtlasSprite MACHINE_UNDERLAY_EXTRUDER;
 
 	public static TextureAtlasSprite MACHINE_FRAME_TOP;
 	public static TextureAtlasSprite MACHINE_FRAME_SIDE;
@@ -893,4 +895,7 @@ public class TETextures {
 
 	public static TextureAtlasSprite RESERVOIR_COLOR_0;
 	public static TextureAtlasSprite RESERVOIR_MASK;
+
+	public static TextureAtlasSprite PORTAL_UNDERLAY;
+
 }

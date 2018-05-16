@@ -127,7 +127,6 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 			isActive = true;
 		}
 		updateIfChanged(curActive);
-
 	}
 
 	protected void transferInput() {

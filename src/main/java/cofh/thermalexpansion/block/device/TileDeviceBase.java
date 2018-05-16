@@ -90,6 +90,16 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 	}
 
 	@Override
+	public void onRedstoneUpdate() {
+
+		boolean curActive = isActive;
+		if (!redstoneControlOrDisable()) {
+			isActive = false;
+		}
+		updateIfChanged(curActive);
+	}
+
+	@Override
 	public void setDefaultSides() {
 
 		sideCache = getDefaultSides();

@@ -495,7 +495,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 			} else if (side == 1) {
 				return TETextures.MACHINE_TOP;
 			}
-			return side != facing ? TETextures.MACHINE_SIDE : isActive ? augmentNoWater ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.MACHINE_ACTIVE_EXTRUDER_UNDERLAY : TETextures.MACHINE_FACE[TYPE];
+			return side != facing ? TETextures.MACHINE_SIDE : isActive ? augmentNoWater ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.MACHINE_UNDERLAY_EXTRUDER : TETextures.MACHINE_FACE[TYPE];
 		} else if (side < 6) {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
 		}
