@@ -27,7 +27,7 @@ public class PacketTEBase extends PacketBase {
 					TEProps.handleConfigSync(this);
 					return;
 				default:
-					ThermalExpansion.LOG.error("Unknown Packet! Internal: TEPH, ID: " + type);
+					ThermalExpansion.LOG.error("Unknown Packet! Internal: " + ThermalExpansion.MOD_ID + "; " + type);
 			}
 		} catch (Exception e) {
 			ThermalExpansion.LOG.error("Packet payload failure! Please check your config files!", e);

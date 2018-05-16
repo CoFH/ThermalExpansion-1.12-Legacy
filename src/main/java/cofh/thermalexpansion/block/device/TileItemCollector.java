@@ -5,10 +5,13 @@ import cofh.core.util.core.SideConfig;
 import cofh.core.util.core.SlotConfig;
 import cofh.core.util.filter.ItemFilter;
 import cofh.core.util.helpers.MathHelper;
+import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiItemCollector;
 import cofh.thermalexpansion.gui.container.device.ContainerItemCollector;
+import cofh.thermalexpansion.init.TETextures;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,7 +20,10 @@ import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import java.util.Arrays;
@@ -32,7 +38,7 @@ public class TileItemCollector extends TileDeviceBase implements ITickable {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 5;
+		SIDE_CONFIGS[TYPE].numConfig = 2;
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, OUTPUT_ALL };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 0, 0, 0, 0 };
@@ -196,6 +202,24 @@ public class TileItemCollector extends TileDeviceBase implements ITickable {
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
 		return filter.matches(stack);
+	}
+
+	/* ISidedTexture */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public TextureAtlasSprite getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			if (side == 0) {
+				return TETextures.DEVICE_BOTTOM;
+			} else if (side == 1) {
+				return TETextures.DEVICE_TOP;
+			}
+			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.WATER) : TETextures.DEVICE_FACE[TYPE];
+		} else if (side < 6) {
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
+		}
+		return TETextures.DEVICE_SIDE;
 	}
 
 }

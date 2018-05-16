@@ -6,8 +6,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -16,8 +15,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -26,8 +24,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -36,8 +33,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -46,8 +42,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -56,8 +51,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -66,8 +60,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -76,8 +69,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -86,8 +78,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -96,8 +87,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -106,8 +96,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -116,8 +105,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -126,8 +114,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -136,8 +123,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -146,8 +132,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -156,8 +141,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		},
 		{
 			"input": {
@@ -166,8 +150,7 @@
 			},
 			"output": {
 				"item": "minecraft:sand"
-			},
-			"energy_mod": 75
+			}
 		}
 	]
 }

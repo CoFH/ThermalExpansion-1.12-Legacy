@@ -272,7 +272,7 @@ public class TEProps {
 
 	public static boolean enableSounds = true;
 
-	/* UPGRADE FEATURES */
+	/* UPGRADE */
 	public static int levelAutoInput = 0;
 	public static int levelAutoOutput = 0;
 	public static int levelRedstoneControl = 0;
@@ -391,7 +391,7 @@ public class TEProps {
 
 	public static final String DYNAMO_NUMISMATIC_GEM = "dynamoNumismaticGem";
 
-	/* AUTOMATA */
+	/* APPARATUS */
 	public static final String APPARATUS_DEPTH = "apparatusDepth";
 	public static final String APPARATUS_RADIUS = "apparatusRadius";
 

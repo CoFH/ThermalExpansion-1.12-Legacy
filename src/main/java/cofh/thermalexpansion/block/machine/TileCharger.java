@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.machine;
 
-import baubles.api.cap.IBaublesItemHandler;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
@@ -19,7 +18,6 @@ import cofh.thermalexpansion.util.managers.machine.ChargerManager;
 import cofh.thermalexpansion.util.managers.machine.ChargerManager.ChargerRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import com.google.common.collect.Iterables;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -27,7 +25,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,8 +37,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static cofh.core.util.core.SideConfig.*;
 

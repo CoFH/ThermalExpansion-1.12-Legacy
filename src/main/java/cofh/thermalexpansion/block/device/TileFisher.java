@@ -402,20 +402,9 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	public boolean hasFluidUnderlay() {
-
-		return true;
-	}
-
-	@Override
-	public FluidStack getRenderFluid() {
-
-		return new FluidStack(FluidRegistry.WATER, 1);
-	}
-
-	@Override
 	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
 
 		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && isActive ? FluidRegistry.WATER.getColor() << 8 | 0xFF : super.getColorMask(layer, side);
 	}
+
 }

@@ -323,22 +323,4 @@ public class TileMobCatcher extends TileDeviceBase implements ITickable {
 		return stack.getItem().equals(TEItems.itemMorb);
 	}
 
-	/* ISidedTexture */
-	@Override
-	@SideOnly (Side.CLIENT)
-	public TextureAtlasSprite getTexture(int side, int pass) {
-
-		if (pass == 0) {
-			if (side == 0) {
-				return TETextures.DEVICE_BOTTOM;
-			} else if (side == 1) {
-				return TETextures.DEVICE_TOP;
-			}
-			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.WATER) : TETextures.DEVICE_FACE[TYPE];
-		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
-		}
-		return TETextures.DEVICE_SIDE;
-	}
-
 }

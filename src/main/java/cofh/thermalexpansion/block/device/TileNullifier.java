@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -78,12 +77,6 @@ public class TileNullifier extends TileDeviceBase {
 	public int getLightValue() {
 
 		return redstoneControlOrDisable() ? FluidHelper.getFluidLuminosity(FluidRegistry.LAVA) : 0;
-	}
-
-	@Override
-	public boolean sendRedstoneUpdates() {
-
-		return true;
 	}
 
 	protected boolean isSideAccessible(EnumFacing side) {
@@ -182,23 +175,23 @@ public class TileNullifier extends TileDeviceBase {
 		return TETextures.DEVICE_SIDE;
 	}
 
-	@Override
-	public boolean hasFluidUnderlay() {
-
-		return true;
-	}
-
-	@Override
-	public FluidStack getRenderFluid() {
-
-		return new FluidStack(FluidRegistry.LAVA, 1);
-	}
-
-	@Override
-	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
-
-		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && redstoneControlOrDisable() ? FluidRegistry.LAVA.getColor() << 8 | 0xFF : super.getColorMask(layer, side);
-	}
+	//	@Override
+	//	public boolean hasFluidUnderlay() {
+	//
+	//		return true;
+	//	}
+	//
+	//	@Override
+	//	public FluidStack getRenderFluid() {
+	//
+	//		return new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
+	//	}
+	//
+	//	@Override
+	//	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+	//
+	//		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && redstoneControlOrDisable() ? FluidRegistry.LAVA.getColor() << 8 | 0xFF : super.getColorMask(layer, side);
+	//	}
 
 	/* ISidedInventory */
 	@Override

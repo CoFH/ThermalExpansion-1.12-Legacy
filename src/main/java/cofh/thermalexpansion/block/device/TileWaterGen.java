@@ -292,17 +292,17 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		return TETextures.DEVICE_SIDE;
 	}
 
-	@Override
-	public boolean hasFluidUnderlay() {
-
-		return true;
-	}
-
-	@Override
-	public FluidStack getRenderFluid() {
-
-		return new FluidStack(FluidRegistry.WATER, 1);
-	}
+	//	@Override
+	//	public boolean hasFluidUnderlay() {
+	//
+	//		return true;
+	//	}
+	//
+	//	@Override
+	//	public FluidStack getRenderFluid() {
+	//
+	//		return new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
+	//	}
 
 	@Override
 	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
