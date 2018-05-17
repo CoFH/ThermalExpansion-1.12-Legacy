@@ -92,7 +92,7 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble 
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		if (isInCreativeTab(tab)) {
+		if (enable && isInCreativeTab(tab)) {
 			for (int metadata : itemList) {
 				if (metadata != CREATIVE) {
 					if (TFProps.showEmptyItems) {
@@ -366,6 +366,42 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble 
 				'R', "dustRedstone",
 				'X', "ingotCopper",
 				'Y', "dustSulfur"
+		);
+		addShapedUpgradeRecipe(capacitorHardened,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotInvar",
+				'R', "dustRedstone",
+				'X', capacitorBasic,
+				'Y', "ingotTin"
+		);
+		addShapedUpgradeRecipe(capacitorReinforced,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotElectrum",
+				'R', "dustRedstone",
+				'X', capacitorHardened,
+				'Y', "blockGlassHardened"
+		);
+		addShapedUpgradeRecipe(capacitorSignalum,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotSignalum",
+				'R', "dustRedstone",
+				'X', capacitorReinforced,
+				'Y', "dustCryotheum"
+		);
+		addShapedUpgradeRecipe(capacitorResonant,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotEnderium",
+				'R', "dustRedstone",
+				'X', capacitorSignalum,
+				'Y', "dustPyrotheum"
 		);
 		// @formatter:on
 

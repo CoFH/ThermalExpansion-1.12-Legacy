@@ -7,7 +7,6 @@ import cofh.core.network.PacketCore;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.filter.ItemFilterWrapperTile;
 import cofh.thermalexpansion.block.device.TileItemBuffer;
-import cofh.thermalexpansion.block.device.TileItemCollector;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 

@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.util.parsers;
 
-import cofh.core.init.CoreProps;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.parsers.dynamo.*;
 import cofh.thermalexpansion.util.parsers.machine.*;
@@ -37,14 +36,14 @@ public class ContentParser {
 
 	public static void initialize() {
 
-		contentFolder = new File(CoreProps.configDir, "/cofh/thermalexpansion/content/");
-		if (!contentFolder.exists()) {
-			try {
-				contentFolder.mkdir();
-			} catch (Throwable t) {
-				// pokemon!
-			}
-		}
+		//		contentFolder = new File(CoreProps.configDir, "/cofh/thermalexpansion/content/");
+		//		if (!contentFolder.exists()) {
+		//			try {
+		//				contentFolder.mkdir();
+		//			} catch (Throwable t) {
+		//				// pokemon!
+		//			}
+		//		}
 		contentParsers.put("oredict", new OreDictParser());
 		contentParsers.put("constants", new ConstantParser());
 

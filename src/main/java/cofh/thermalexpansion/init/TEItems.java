@@ -45,14 +45,20 @@ public class TEItems {
 			init.preInit();
 		}
 		for (int i = 0; i < 5; i++) {
-			ItemStack iconStack = new ItemStack(itemCapacitor, 1, i);
-			TFProps.toolList.add(iconStack.copy());
+			ItemStack iconStack;
 
-			iconStack = new ItemStack(itemReservoir, 1, i);
-			TFProps.toolList.add(iconStack.copy());
-
-			iconStack = new ItemStack(itemSatchel, 1, i);
-			TFProps.toolList.add(iconStack.copy());
+			if (ItemCapacitor.enable) {
+				iconStack = new ItemStack(itemCapacitor, 1, i);
+				TFProps.toolList.add(iconStack.copy());
+			}
+			if (ItemReservoir.enable) {
+				iconStack = new ItemStack(itemReservoir, 1, i);
+				TFProps.toolList.add(iconStack.copy());
+			}
+			if (ItemSatchel.enable) {
+				iconStack = new ItemStack(itemSatchel, 1, i);
+				TFProps.toolList.add(iconStack.copy());
+			}
 		}
 		TFProps.miscList.add(ItemFlorb.florbStandard.copy());
 		TFProps.miscList.add(ItemFlorb.florbMagmatic.copy());

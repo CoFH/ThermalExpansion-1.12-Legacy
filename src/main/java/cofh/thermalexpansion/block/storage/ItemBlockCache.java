@@ -100,7 +100,11 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 	@Override
 	public int getSizeInventory(ItemStack container) {
 
-		return TileCache.getCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
+		// TODO: Cache Size Limiting
+		//		if (container.getTagCompound().hasKey("CapacityLimit")) {
+		//			return container.getTagCompound().getInteger("CapacityLimit");
+		//		}
+		return TileCache.getMaxCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
 	}
 
 	/* IEnchantableItem */

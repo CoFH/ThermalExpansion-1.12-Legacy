@@ -120,7 +120,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		if (isInCreativeTab(tab)) {
+		if (enable && isInCreativeTab(tab)) {
 			for (int metadata : itemList) {
 				if (metadata != CREATIVE) {
 					items.add(setDefaultInventoryTag(new ItemStack(this, 1, metadata)));
@@ -432,37 +432,69 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 		}
 		// @formatter:off
 		addShapedRecipe(satchelBasic,
-				" Y ",
+				" R ",
 				"IXI",
-				"Y Y",
+				"R R",
 				'I', "ingotTin",
-				'X', "blockWool",
-				'Y', Items.LEATHER
+				'R', Items.LEATHER,
+				'X', "blockWool"
 		);
 		addShapedRecipe(satchelBasic,
-				" Y ",
+				" R ",
 				"IXI",
-				"Y Y",
+				"R R",
 				'I', "ingotTin",
-				'X', "blockWool",
-				'Y', "blockRockwool"
+				'R', "blockRockwool",
+				'X', "blockWool"
+		);
+		addShapedUpgradeRecipe(satchelHardened,
+				" R ",
+				"IXI",
+				"R R",
+				'I', "ingotInvar",
+				'R', "nuggetCopper",
+				'X', satchelBasic
+		);
+		addShapedUpgradeRecipe(satchelReinforced,
+				" R ",
+				"IXI",
+				"R R",
+				'I', "ingotElectrum",
+				'R', "nuggetInvar",
+				'X', satchelHardened
+		);
+		addShapedUpgradeRecipe(satchelSignalum,
+				" R ",
+				"IXI",
+				"R R",
+				'I', "ingotSignalum",
+				'R', "nuggetElectrum",
+				'X', satchelReinforced
+		);
+		addShapedUpgradeRecipe(satchelResonant,
+				" R ",
+				"IXI",
+				"R R",
+				'I', "ingotEnderium",
+				'R', "nuggetSignalum",
+				'X', satchelSignalum
 		);
 
 		addShapedRecipe(satchelVoid,
-				" Y ",
+				" R ",
 				"IXI",
-				"Y Y",
+				"R R",
 				'I', "cobblestone",
-				'X', Items.LAVA_BUCKET,
-				'Y', Items.LEATHER
+				'R', Items.LEATHER,
+				'X', Items.LAVA_BUCKET
 		);
 		addShapedRecipe(satchelVoid,
-				" Y ",
+				" R ",
 				"IXI",
-				"Y Y",
+				"R R",
 				'I', "cobblestone",
-				'X', Items.LAVA_BUCKET,
-				'Y', "blockRockwool"
+				'R', "blockRockwool",
+				'X', Items.LAVA_BUCKET
 		);
 		// @formatter:on
 

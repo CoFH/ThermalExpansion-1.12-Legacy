@@ -131,7 +131,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		if (isInCreativeTab(tab)) {
+		if (enable && isInCreativeTab(tab)) {
 			for (int metadata : itemList) {
 				if (metadata != CREATIVE) {
 					items.add(new ItemStack(this, 1, metadata));
@@ -556,6 +556,43 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 				'R', "ingotTin",
 				'X', Items.BUCKET,
 				'Y', ItemMaterial.redstoneServo
+		);
+
+		addShapedUpgradeRecipe(reservoirHardened,
+				" R ",
+				"IXI",
+				" Y ",
+				'I', "ingotInvar",
+				'R', "blockGlass",
+				'X', reservoirBasic,
+				'Y', "ingotCopper"
+		);
+		addShapedUpgradeRecipe(reservoirReinforced,
+				" R ",
+				"IXI",
+				" Y ",
+				'I', "ingotElectrum",
+				'R', "blockGlassHardened",
+				'X', reservoirHardened,
+				'Y', "ingotInvar"
+		);
+		addShapedUpgradeRecipe(reservoirSignalum,
+				" R ",
+				"IXI",
+				" Y ",
+				'I', "ingotSignalum",
+				'R', "dustCryotheum",
+				'X', reservoirReinforced,
+				'Y', "ingotElectrum"
+		);
+		addShapedUpgradeRecipe(reservoirResonant,
+				" R ",
+				"IXI",
+				" Y ",
+				'I', "ingotEnderium",
+				'R', "dustPyrotheum",
+				'X', reservoirSignalum,
+				'Y', "ingotSignalum"
 		);
 		// @formatter:on
 

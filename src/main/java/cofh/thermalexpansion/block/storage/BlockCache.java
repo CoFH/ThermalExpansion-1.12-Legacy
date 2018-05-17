@@ -108,6 +108,9 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 		}
 		TileCache tile = (TileCache) world.getTileEntity(pos);
 
+		if (tile == null || !tile.canPlayerAccess(player)) {
+			return;
+		}
 		int extractAmount = !player.isSneaking() && !player.capabilities.isCreativeMode ? 1 : 64;
 		ItemStack extract = tile.extractItem(extractAmount, true);
 		if (extract.isEmpty()) {
@@ -178,40 +181,40 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 
 		TileCache tile = (TileCache) world.getTileEntity(pos);
 
-		if (tile != null) {
-			if (ItemHelper.isPlayerHoldingNothing(player)) {
-				if (player.isSneaking()) {
-					tile.setLocked(!tile.isLocked());
-					if (tile.isLocked()) {
-						world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.2F, 0.8F);
-					} else {
-						world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
-					}
-					return true;
-				}
-			}
-			boolean playSound = false;
-
-			ItemStack heldItem = player.getHeldItem(hand);
-			ItemStack ret = tile.insertItem(heldItem, false);
-			long time = player.getEntityData().getLong("thermalexpansion:CacheClick"), currentTime = world.getTotalWorldTime();
-			player.getEntityData().setLong("thermalexpansion:CacheClick", currentTime);
-
-			if (!player.capabilities.isCreativeMode) {
-				if (ret != heldItem) {
-					player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
-					playSound = true;
-				}
-				if (!tile.getStoredInstance().isEmpty() && currentTime - time < 15) {
-					playSound &= !insertAllItemsFromPlayer(tile, player);
-				}
-			}
-			if (playSound) {
-				world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.1F, 0.7F);
-			}
-			return true;
+		if (tile == null || !tile.canPlayerAccess(player)) {
+			return false;
 		}
-		return false;
+		if (ItemHelper.isPlayerHoldingNothing(player)) {
+			if (player.isSneaking()) {
+				tile.setLocked(!tile.isLocked());
+				if (tile.isLocked()) {
+					world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.2F, 0.8F);
+				} else {
+					world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
+				}
+				return true;
+			}
+		}
+		boolean playSound = false;
+
+		ItemStack heldItem = player.getHeldItem(hand);
+		ItemStack ret = tile.insertItem(heldItem, false);
+		long time = player.getEntityData().getLong("thermalexpansion:CacheClick"), currentTime = world.getTotalWorldTime();
+		player.getEntityData().setLong("thermalexpansion:CacheClick", currentTime);
+
+		if (!player.capabilities.isCreativeMode) {
+			if (ret != heldItem) {
+				player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
+				playSound = true;
+			}
+			if (!tile.getStoredInstance().isEmpty() && currentTime - time < 15) {
+				playSound &= !insertAllItemsFromPlayer(tile, player);
+			}
+		}
+		if (playSound) {
+			world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.1F, 0.7F);
+		}
+		return true;
 	}
 
 	@Override
