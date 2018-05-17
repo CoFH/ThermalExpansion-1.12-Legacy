@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.init.CoreProps;
+import cofh.core.network.PacketBase;
 import cofh.core.util.core.SideConfig;
 import cofh.core.util.core.SlotConfig;
 import cofh.core.util.filter.ItemFilter;
@@ -8,7 +9,9 @@ import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiItemCollector;
+import cofh.thermalexpansion.gui.client.device.GuiItemCollectorFilter;
 import cofh.thermalexpansion.gui.container.device.ContainerItemCollector;
+import cofh.thermalexpansion.gui.container.device.ContainerItemCollectorFilter;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.item.EntityItem;
@@ -59,9 +62,9 @@ public class TileItemCollector extends TileDeviceBase implements ITickable {
 	private static final int RADIUS = 5;
 	private static final int TIME_CONSTANT = 16;
 
-	private int outputTracker;
-
 	private ItemFilter filter = new ItemFilter(9);
+
+	private int outputTracker;
 
 	private int offset;
 
@@ -161,6 +164,11 @@ public class TileItemCollector extends TileDeviceBase implements ITickable {
 		}
 	}
 
+	public ItemFilter getFilter() {
+
+		return filter;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -172,6 +180,24 @@ public class TileItemCollector extends TileDeviceBase implements ITickable {
 	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerItemCollector(inventory, this);
+	}
+
+	@Override
+	public Object getConfigGuiClient(InventoryPlayer inventory) {
+
+		return new GuiItemCollectorFilter(inventory, this);
+	}
+
+	@Override
+	public Object getConfigGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerItemCollectorFilter(inventory, this);
+	}
+
+	@Override
+	public boolean hasConfigGui() {
+
+		return true;
 	}
 
 	/* NBT METHODS */
@@ -193,6 +219,46 @@ public class TileItemCollector extends TileDeviceBase implements ITickable {
 		nbt.setTag(CoreProps.FILTER, filter.serializeNBT());
 
 		return nbt;
+	}
+
+	/* NETWORK METHODS */
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketBase getGuiPacket() {
+
+		PacketBase payload = super.getGuiPacket();
+
+		payload.addByte(filter.getFlagByte());
+
+		return payload;
+	}
+
+	@Override
+	public PacketBase getTilePacket() {
+
+		PacketBase payload = super.getTilePacket();
+
+		payload.addByte(filter.getFlagByte());
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		filter.setFlagByte(payload.getByte());
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void handleTilePacket(PacketBase payload) {
+
+		super.handleTilePacket(payload);
+
+		filter.setFlagByte(payload.getByte());
 	}
 
 	/* IInventory */

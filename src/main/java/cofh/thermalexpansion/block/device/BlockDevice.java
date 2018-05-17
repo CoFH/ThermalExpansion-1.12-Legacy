@@ -66,6 +66,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		setHardness(15.0F);
 		setResistance(25.0F);
 		setDefaultState(getBlockState().getBaseState().withProperty(VARIANT, Type.WATER_GEN));
+
+		configGui = true;
 	}
 
 	@Override

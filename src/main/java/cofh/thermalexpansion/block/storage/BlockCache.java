@@ -8,7 +8,6 @@ import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
-import cofh.api.block.IConfigGui;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
@@ -48,7 +47,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
 
-public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryProvider, IWorldBlockTextureProvider, IConfigGui {
+public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryProvider, IWorldBlockTextureProvider {
 
 	public BlockCache() {
 

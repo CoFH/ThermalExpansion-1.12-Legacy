@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block;
 
 import codechicken.lib.render.particle.CustomParticleHandler;
+import cofh.api.block.IConfigGui;
 import cofh.core.block.BlockCoreTile;
 import cofh.core.block.TileAugmentableSecure;
 import cofh.core.block.TileNameable;
@@ -32,7 +33,7 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockTEBase extends BlockCoreTile {
+public abstract class BlockTEBase extends BlockCoreTile implements IConfigGui {
 
 	protected boolean standardGui = true;
 	protected boolean configGui = false;
@@ -125,6 +126,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		return false;
 	}
 
+	@Override
 	public boolean openConfigGui(World world, BlockPos pos, EnumFacing side, EntityPlayer player) {
 
 		TileNameable tile = (TileNameable) world.getTileEntity(pos);

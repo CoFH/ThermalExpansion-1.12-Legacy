@@ -47,7 +47,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
 
-public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryProvider, IConfigGui {
+public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryProvider {
 
 	public BlockTank() {
 

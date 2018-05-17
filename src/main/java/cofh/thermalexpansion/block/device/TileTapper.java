@@ -76,7 +76,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
-	private static final int TIME_CONSTANT = 600;
+	private static final int TIME_CONSTANT = 500;
 	private static final int BOOST_TIME = 16;
 	private static final int NUM_LEAVES = 3;
 

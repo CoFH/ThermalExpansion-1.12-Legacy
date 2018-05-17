@@ -89,7 +89,7 @@ public class TapperManager {
 			addStandardMapping(new ItemStack(Blocks.LOG, 1, 2), new FluidStack(resin, 50));
 			addStandardMapping(new ItemStack(Blocks.LOG, 1, 3), new FluidStack(resin, 50));     // rubber
 			addStandardMapping(new ItemStack(Blocks.LOG2, 1, 0), new FluidStack(resin, 50));    // rubber
-			addStandardMapping(new ItemStack(Blocks.LOG2, 1, 1), new FluidStack(sap, 50));
+			addStandardMapping(new ItemStack(Blocks.LOG2, 1, 1), new FluidStack(sap, 100));
 
 			addBlockStateMapping(new ItemStack(Blocks.BROWN_MUSHROOM_BLOCK, 1, 10), new FluidStack(mushroom_stew, 50));
 			addBlockStateMapping(new ItemStack(Blocks.RED_MUSHROOM_BLOCK, 1, 10), new FluidStack(mushroom_stew, 50));

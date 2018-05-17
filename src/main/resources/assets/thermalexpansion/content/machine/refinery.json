@@ -56,8 +56,9 @@
 			},
 			"output2": {
 				"constant": "rosin",
-				"chance": 75
-			}
+				"chance": 25
+			},
+			"energy_mod": 50
 		},
 		{
 			"//": "Immersive Petroleum"

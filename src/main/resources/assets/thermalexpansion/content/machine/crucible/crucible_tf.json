@@ -2,16 +2,6 @@
 	"crucible": [
 		{
 			"input": {
-				"constant": "tar"
-			},
-			"output": {
-				"fluid": "creosote",
-				"amount": 250
-			},
-			"energy": 2000
-		},
-		{
-			"input": {
 				"ore": "dustCoal"
 			},
 			"output": {
