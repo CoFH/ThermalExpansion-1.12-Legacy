@@ -452,7 +452,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 				"IXI",
 				"R R",
 				'I', "ingotInvar",
-				'R', "nuggetCopper",
+				'R', "nuggetTin",
 				'X', satchelBasic
 		);
 		addShapedUpgradeRecipe(satchelReinforced,

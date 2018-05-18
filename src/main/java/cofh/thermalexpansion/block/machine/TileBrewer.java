@@ -387,7 +387,7 @@ public class TileBrewer extends TileMachineBase {
 
 		if (TEProps.MACHINE_BREWER_REAGENT.equals(id)) {
 			reuseChance += 15;
-			energyMod += 10;
+			energyMod += 15;
 		}
 		return super.installAugmentToSlot(slot);
 	}

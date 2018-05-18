@@ -526,7 +526,7 @@ public class TileSmelter extends TileMachineBase {
 
 		if (TEProps.MACHINE_SMELTER_FLUX.equals(id)) {
 			reuseChance += 15;
-			energyMod += 10;
+			energyMod += 15;
 		}
 		if (!augmentPyrotheum && TEProps.MACHINE_SMELTER_PYROTHEUM.equals(id)) {
 			augmentPyrotheum = true;
