@@ -10,8 +10,8 @@ import cofh.thermalfoundation.init.TFEquipment.HorseArmor;
 import cofh.thermalfoundation.init.TFEquipment.ToolSet;
 import cofh.thermalfoundation.init.TFEquipment.ToolSetVanilla;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -26,9 +26,9 @@ import static java.util.Arrays.asList;
 
 public class SmelterManager {
 
-	private static Map<List<ComparableItemStackValidated>, SmelterRecipe> recipeMap = new THashMap<>();
-	private static Set<ComparableItemStackValidated> validationSet = new THashSet<>();
-	private static Set<ComparableItemStackValidated> lockSet = new THashSet<>();
+	private static Map<List<ComparableItemStackValidated>, SmelterRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidated> validationSet = new ObjectOpenHashSet<>();
+	private static Set<ComparableItemStackValidated> lockSet = new ObjectOpenHashSet<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -255,8 +255,8 @@ public class SmelterManager {
 
 	public static void refresh() {
 
-		Map<List<ComparableItemStackValidated>, SmelterRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Set<ComparableItemStackValidated> tempSet = new THashSet<>();
+		Map<List<ComparableItemStackValidated>, SmelterRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Set<ComparableItemStackValidated> tempSet = new ObjectOpenHashSet<>();
 		SmelterRecipe tempRecipe;
 
 		for (Entry<List<ComparableItemStackValidated>, SmelterRecipe> entry : recipeMap.entrySet()) {
@@ -274,7 +274,7 @@ public class SmelterManager {
 		validationSet.clear();
 		validationSet = tempSet;
 
-		Set<ComparableItemStackValidated> tempSet2 = new THashSet<>();
+		Set<ComparableItemStackValidated> tempSet2 = new ObjectOpenHashSet<>();
 		for (ComparableItemStackValidated entry : lockSet) {
 			ComparableItemStackValidated lock = convertInput(new ItemStack(entry.item, entry.stackSize, entry.metadata));
 			tempSet2.add(lock);

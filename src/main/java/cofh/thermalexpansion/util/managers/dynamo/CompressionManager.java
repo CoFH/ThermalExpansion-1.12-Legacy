@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
 import com.google.common.collect.ImmutableSet;
-import gnu.trove.map.hash.TObjectIntHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class CompressionManager {
 
-	private static TObjectIntHashMap<String> fuelMap = new TObjectIntHashMap<>();
+	private static Object2IntOpenHashMap<String> fuelMap = new Object2IntOpenHashMap<>();
 
 	public static int DEFAULT_ENERGY = 100000;
 

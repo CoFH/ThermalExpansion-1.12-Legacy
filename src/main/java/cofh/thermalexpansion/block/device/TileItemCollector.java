@@ -140,6 +140,9 @@ public class TileItemCollector extends TileDeviceBase implements ITickable {
 		List<EntityItem> items = world.getEntitiesWithinAABB(EntityItem.class, area, EntitySelectors.IS_ALIVE);
 
 		for (EntityItem item : items) {
+			if (item.getEntityData().getBoolean(CoreProps.CONVEYOR_COMPAT)) {
+				continue;
+			}
 			ItemStack groundStack = item.getItem();
 			if (filter.matches(groundStack)) {
 				for (int i = 0; i < inventory.length; i++) {

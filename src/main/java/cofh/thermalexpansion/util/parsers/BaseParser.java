@@ -4,7 +4,7 @@ import cofh.core.util.helpers.ItemHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
@@ -16,6 +16,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.Map;
 
 public abstract class BaseParser implements IContentParser {
 
@@ -47,8 +49,8 @@ public abstract class BaseParser implements IContentParser {
 	protected int parseCount = 0;
 	protected int errorCount = 0;
 
-	protected static final THashMap<String, ItemStack> constants = new THashMap<>();
-	protected static final THashMap<String, ItemStack> ores = new THashMap<>();
+	protected static final Map<String, ItemStack> constants = new Object2ObjectOpenHashMap<>();
+	protected static final Map<String, ItemStack> ores = new Object2ObjectOpenHashMap<>();
 
 	@Override
 	public boolean parseContent(JsonElement content) {

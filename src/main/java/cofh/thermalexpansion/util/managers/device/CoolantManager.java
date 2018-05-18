@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.util.managers.device;
 
 import com.google.common.collect.ImmutableSet;
-import gnu.trove.map.hash.TObjectIntHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -13,8 +13,8 @@ public class CoolantManager {
 	/**
 	 * Coolant is stored as RF effectiveness per bucket.
 	 */
-	private static TObjectIntHashMap<String> coolantMap = new TObjectIntHashMap<>();
-	private static TObjectIntHashMap<String> coolantFactorMap = new TObjectIntHashMap<>();
+	private static Object2IntOpenHashMap<String> coolantMap = new Object2IntOpenHashMap<>();
+	private static Object2IntOpenHashMap<String> coolantFactorMap = new Object2IntOpenHashMap<>();
 
 	public static final int WATER_RF = 250000;
 	public static final int WATER_FACTOR = 20;

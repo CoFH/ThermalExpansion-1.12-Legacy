@@ -13,7 +13,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -744,7 +744,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		return addItem(metadata, name, rarity);
 	}
 
-	private TIntObjectHashMap<AugmentEntry> augmentMap = new TIntObjectHashMap<>();
+	private Int2ObjectOpenHashMap<AugmentEntry> augmentMap = new Int2ObjectOpenHashMap<>();
 
 	/* REFERENCES */
 

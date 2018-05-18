@@ -3,8 +3,8 @@ package cofh.thermalexpansion.util.managers.machine;
 import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalfoundation.init.TFFluids;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionType;
@@ -16,9 +16,9 @@ import java.util.Set;
 
 public class RefineryManager {
 
-	private static TIntObjectHashMap<RefineryRecipe> recipeMap = new TIntObjectHashMap<>();
-	private static TIntObjectHashMap<RefineryRecipe> recipeMapPotion = new TIntObjectHashMap<>();
-	private static Set<String> oilFluids = new THashSet<>();
+	private static Int2ObjectOpenHashMap<RefineryRecipe> recipeMap = new Int2ObjectOpenHashMap<>();
+	private static Int2ObjectOpenHashMap<RefineryRecipe> recipeMapPotion = new Int2ObjectOpenHashMap<>();
+	private static Set<String> oilFluids = new ObjectOpenHashSet<>();
 
 	public static final int DEFAULT_ENERGY = 5000;
 
@@ -44,12 +44,12 @@ public class RefineryManager {
 
 	public static RefineryRecipe[] getRecipeList() {
 
-		return recipeMap.values(new RefineryRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new RefineryRecipe[0]);
 	}
 
 	public static RefineryRecipe[] getRecipeListPotion() {
 
-		return recipeMapPotion.values(new RefineryRecipe[recipeMapPotion.size()]);
+		return recipeMapPotion.values().toArray(new RefineryRecipe[0]);
 	}
 
 	public static boolean isFossilFuel(FluidStack fluid) {

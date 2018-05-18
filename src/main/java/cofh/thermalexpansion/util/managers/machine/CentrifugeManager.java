@@ -11,7 +11,7 @@ import cofh.thermalexpansion.item.ItemMorb;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.init.TFItems;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -33,8 +33,8 @@ import static java.util.Collections.singletonList;
 
 public class CentrifugeManager {
 
-	private static Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> recipeMap = new THashMap<>();
-	private static Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> recipeMapMobs = new THashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> recipeMapMobs = new Object2ObjectOpenHashMap<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -180,8 +180,8 @@ public class CentrifugeManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> tempMapMobs = new THashMap<>(recipeMapMobs.size());
+		Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> tempMapMobs = new Object2ObjectOpenHashMap<>(recipeMapMobs.size());
 		CentrifugeRecipe tempRecipe;
 
 		for (Entry<ComparableItemStackValidatedNBT, CentrifugeRecipe> entry : recipeMap.entrySet()) {

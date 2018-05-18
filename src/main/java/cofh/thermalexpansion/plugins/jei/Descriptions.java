@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.plugins.jei;
 
 import cofh.core.util.helpers.StringHelper;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import mezz.jei.api.IModRegistry;
 import net.minecraft.item.ItemStack;
 
@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 
 public class Descriptions {
 
-	public static Map<ItemStack, String> descMap = new THashMap<>();
+	public static Map<ItemStack, String> descMap = new Object2ObjectOpenHashMap<>();
 
 	private Descriptions() {
 

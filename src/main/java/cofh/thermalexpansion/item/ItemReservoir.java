@@ -25,7 +25,7 @@ import cofh.thermalexpansion.render.item.ModelReservoir;
 import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import com.google.common.collect.Iterables;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -649,7 +649,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 		return addItem(metadata, name, rarity);
 	}
 
-	private static TIntObjectHashMap<ItemReservoir.TypeEntry> typeMap = new TIntObjectHashMap<>();
+	private static Int2ObjectOpenHashMap<TypeEntry> typeMap = new Int2ObjectOpenHashMap<>();
 
 	public static final int BUCKET_FILL = 0;
 	public static final int BUCKET_EMPTY = 1;

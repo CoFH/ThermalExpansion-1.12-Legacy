@@ -5,7 +5,7 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.block.BlockStorage;
 import cofh.thermalfoundation.block.BlockStorageAlloy;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -19,8 +19,8 @@ import java.util.Map;
 
 public class FactorizerManager {
 
-	private static Map<ComparableItemStackValidated, FactorizerRecipe> recipeMap = new THashMap<>();
-	private static Map<ComparableItemStackValidated, FactorizerRecipe> recipeMapReverse = new THashMap<>();
+	private static Map<ComparableItemStackValidated, FactorizerRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidated, FactorizerRecipe> recipeMapReverse = new Object2ObjectOpenHashMap<>();
 
 	public static FactorizerRecipe getRecipe(ItemStack input, boolean reverse) {
 
@@ -168,8 +168,8 @@ public class FactorizerManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackValidated, FactorizerRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Map<ComparableItemStackValidated, FactorizerRecipe> tempMapReverse = new THashMap<>(recipeMapReverse.size());
+		Map<ComparableItemStackValidated, FactorizerRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidated, FactorizerRecipe> tempMapReverse = new Object2ObjectOpenHashMap<>(recipeMapReverse.size());
 		FactorizerRecipe tempRecipe;
 
 		for (Map.Entry<ComparableItemStackValidated, FactorizerRecipe> entry : recipeMap.entrySet()) {

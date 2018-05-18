@@ -4,8 +4,8 @@ import cofh.core.inventory.ComparableItemStack;
 import cofh.core.inventory.ComparableItemStackValidatedNBT;
 import cofh.core.inventory.OreValidator;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -23,9 +23,9 @@ import static java.util.Arrays.asList;
 
 public class EnchanterManager {
 
-	private static Map<List<ComparableItemStackValidatedNBT>, EnchanterRecipe> recipeMap = new THashMap<>();
-	private static Set<ComparableItemStackValidatedNBT> validationSet = new THashSet<>();
-	private static Set<ComparableItemStackValidatedNBT> lockSet = new THashSet<>();
+	private static Map<List<ComparableItemStackValidatedNBT>, EnchanterRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidatedNBT> validationSet = new ObjectOpenHashSet<>();
+	private static Set<ComparableItemStackValidatedNBT> lockSet = new ObjectOpenHashSet<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -106,8 +106,8 @@ public class EnchanterManager {
 
 	public static void refresh() {
 
-		Map<List<ComparableItemStackValidatedNBT>, EnchanterRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Set<ComparableItemStackValidatedNBT> tempSet = new THashSet<>();
+		Map<List<ComparableItemStackValidatedNBT>, EnchanterRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Set<ComparableItemStackValidatedNBT> tempSet = new ObjectOpenHashSet<>();
 		EnchanterRecipe tempRecipe;
 
 		for (Entry<List<ComparableItemStackValidatedNBT>, EnchanterRecipe> entry : recipeMap.entrySet()) {
@@ -128,7 +128,7 @@ public class EnchanterManager {
 		validationSet.clear();
 		validationSet = tempSet;
 
-		Set<ComparableItemStackValidatedNBT> tempSet2 = new THashSet<>();
+		Set<ComparableItemStackValidatedNBT> tempSet2 = new ObjectOpenHashSet<>();
 		for (ComparableItemStackValidatedNBT entry : lockSet) {
 			ComparableItemStackValidatedNBT lock = convertInput(new ItemStack(entry.item, entry.stackSize, entry.metadata));
 			tempSet2.add(lock);

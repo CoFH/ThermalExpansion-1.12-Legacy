@@ -10,7 +10,7 @@ import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiLexicon;
 import cofh.thermalexpansion.gui.container.device.ContainerLexicon;
 import cofh.thermalfoundation.util.LexiconManager;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,7 +55,7 @@ public class TileLexicon extends TileDeviceBase implements ITickable {
 	private int inputTracker;
 	private int outputTracker;
 
-	private Map<String, ItemStack> preferredStacks = new THashMap<>();
+	private Map<String, ItemStack> preferredStacks = new Object2ObjectOpenHashMap<>();
 
 	public TileLexicon() {
 

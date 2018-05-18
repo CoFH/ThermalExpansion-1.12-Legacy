@@ -14,7 +14,7 @@ import cofh.redstoneflux.util.EnergyContainerItemWrapper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalfoundation.init.TFProps;
 import com.google.common.collect.Iterables;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
@@ -478,7 +478,7 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble 
 		return addItem(metadata, name, rarity);
 	}
 
-	private static TIntObjectHashMap<TypeEntry> typeMap = new TIntObjectHashMap<>();
+	private static Int2ObjectOpenHashMap<TypeEntry> typeMap = new Int2ObjectOpenHashMap<>();
 
 	public static final int EQUIPMENT = 0;
 	public static final int INVENTORY = 1;

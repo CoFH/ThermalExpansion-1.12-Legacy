@@ -18,7 +18,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemSecurity;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
@@ -554,7 +554,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 		return addItem(metadata, name, rarity);
 	}
 
-	private static TIntObjectHashMap<TypeEntry> typeMap = new TIntObjectHashMap<>();
+	private static Int2ObjectOpenHashMap<TypeEntry> typeMap = new Int2ObjectOpenHashMap<>();
 
 	public static final int VOID = 100;
 

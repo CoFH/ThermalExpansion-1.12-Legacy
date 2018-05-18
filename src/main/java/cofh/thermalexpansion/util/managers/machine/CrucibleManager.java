@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.inventory.ComparableItemStackValidated;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -13,8 +13,8 @@ import java.util.Set;
 
 public class CrucibleManager {
 
-	private static Map<ComparableItemStackValidated, CrucibleRecipe> recipeMap = new THashMap<>();
-	private static Set<ComparableItemStackValidated> lavaSet = new THashSet<>();
+	private static Map<ComparableItemStackValidated, CrucibleRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidated> lavaSet = new ObjectOpenHashSet<>();
 
 	public static final int DEFAULT_ENERGY = 8000;
 
@@ -44,8 +44,8 @@ public class CrucibleManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackValidated, CrucibleRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Set<ComparableItemStackValidated> tempSet = new THashSet<>();
+		Map<ComparableItemStackValidated, CrucibleRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Set<ComparableItemStackValidated> tempSet = new ObjectOpenHashSet<>();
 		CrucibleRecipe tempRecipe;
 
 		for (Entry<ComparableItemStackValidated, CrucibleRecipe> entry : recipeMap.entrySet()) {

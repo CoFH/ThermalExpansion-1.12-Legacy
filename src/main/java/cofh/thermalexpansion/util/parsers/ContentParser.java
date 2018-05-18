@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.util.JsonUtils;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -22,13 +22,14 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
 
 public class ContentParser {
 
 	private static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	private static File contentFolder;
-	private static THashMap<String, IContentParser> contentParsers = new THashMap<>();
+	private static Map<String, IContentParser> contentParsers = new Object2ObjectOpenHashMap<>();
 
 	private ContentParser() {
 

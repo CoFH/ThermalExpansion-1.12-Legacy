@@ -12,8 +12,8 @@ import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
@@ -34,10 +34,10 @@ import static java.util.Arrays.asList;
 
 public class TransposerManager {
 
-	private static Map<List<Integer>, TransposerRecipe> recipeMapFill = new THashMap<>();
-	private static Map<ComparableItemStackValidatedNBT, TransposerRecipe> recipeMapExtract = new THashMap<>();
-	private static Map<ItemWrapper, ContainerOverride> containerOverrides = new THashMap<>();
-	private static Set<ComparableItemStackValidatedNBT> validationSet = new THashSet<>();
+	private static Map<List<Integer>, TransposerRecipe> recipeMapFill = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, TransposerRecipe> recipeMapExtract = new Object2ObjectOpenHashMap<>();
+	private static Map<ItemWrapper, ContainerOverride> containerOverrides = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidatedNBT> validationSet = new ObjectOpenHashSet<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -222,10 +222,10 @@ public class TransposerManager {
 
 	public static void refresh() {
 
-		Map<List<Integer>, TransposerRecipe> tempFill = new THashMap<>(recipeMapFill.size());
-		Map<ComparableItemStackValidatedNBT, TransposerRecipe> tempExtract = new THashMap<>(recipeMapExtract.size());
-		Map<ItemWrapper, ContainerOverride> tempOverrides = new THashMap<>(containerOverrides.size());
-		Set<ComparableItemStackValidatedNBT> tempSet = new THashSet<>();
+		Map<List<Integer>, TransposerRecipe> tempFill = new Object2ObjectOpenHashMap<>(recipeMapFill.size());
+		Map<ComparableItemStackValidatedNBT, TransposerRecipe> tempExtract = new Object2ObjectOpenHashMap<>(recipeMapExtract.size());
+		Map<ItemWrapper, ContainerOverride> tempOverrides = new Object2ObjectOpenHashMap<>(containerOverrides.size());
+		Set<ComparableItemStackValidatedNBT> tempSet = new ObjectOpenHashSet<>();
 		TransposerRecipe tempRecipe;
 		ContainerOverride tempOverride;
 
