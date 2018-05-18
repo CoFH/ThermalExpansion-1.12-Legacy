@@ -18,19 +18,19 @@ public class MagmaticManager {
 		return ImmutableSet.copyOf(fuelMap.keySet());
 	}
 
-	public static boolean isValidFuel(FluidStack fluid) {
+	public static boolean isValidFuel(FluidStack stack) {
 
-		return fluid != null && fuelMap.containsKey(fluid.getFluid().getName());
+		return stack != null && fuelMap.containsKey(stack.getFluid().getName());
 	}
 
-	public static int getFuelEnergy(FluidStack fluid) {
+	public static int getFuelEnergy(FluidStack stack) {
 
-		return fluid == null ? 0 : fuelMap.get(fluid.getFluid().getName());
+		return stack == null ? 0 : fuelMap.get(stack.getFluid().getName());
 	}
 
-	public static int getFuelEnergy100mB(FluidStack fluid) {
+	public static int getFuelEnergy100mB(FluidStack stack) {
 
-		return fluid == null ? 0 : fuelMap.get(fluid.getFluid().getName()) / 10;
+		return stack == null ? 0 : fuelMap.get(stack.getFluid().getName()) / 10;
 	}
 
 	public static void refresh() {

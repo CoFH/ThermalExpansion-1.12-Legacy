@@ -14,11 +14,11 @@
 		},
 		{
 			"fluid": "refined_oil",
-			"energy": 1250000
+			"energy": 1000000
 		},
 		{
 			"fluid": "refined_fuel",
-			"energy": 2000000
+			"energy": 1500000
 		},
 		{
 			"fluid": "tree_oil",

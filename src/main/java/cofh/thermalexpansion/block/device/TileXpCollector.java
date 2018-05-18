@@ -80,6 +80,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
 
 	private int offset;
+	private boolean forcedCycle;
 
 	public TileXpCollector() {
 
@@ -105,11 +106,26 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
+	public void onRedstoneUpdate() {
+
+		boolean curActive = isActive;
+		isActive = redstoneControlOrDisable();
+
+		if (isActive && !curActive && !forcedCycle) {
+			collectXpOrbs();
+			offset = (int) (TIME_CONSTANT - world.getTotalWorldTime() % TIME_CONSTANT);
+			forcedCycle = true;
+		}
+		updateIfChanged(curActive);
+	}
+
+	@Override
 	public void update() {
 
 		if (!timeCheckOffset()) {
 			return;
 		}
+		forcedCycle = false;
 		convertXp();
 		transferOutputFluid();
 		transferInput();

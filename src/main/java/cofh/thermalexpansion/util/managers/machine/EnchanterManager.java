@@ -37,7 +37,7 @@ public class EnchanterManager {
 
 	public static final ItemStack ITEM_BOOK = new ItemStack(Items.BOOK);
 
-	public static final int DEFAULT_ENERGY[] = { 4000, 8000, 12000, 16000, 20000 };
+	public static final int DEFAULT_ENERGY[] = { 4000, 12000, 24000, 40000, 60000 };
 	public static final int DEFAULT_EXPERIENCE[] = { 500, 1500, 3000, 5000, 7500 };
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {

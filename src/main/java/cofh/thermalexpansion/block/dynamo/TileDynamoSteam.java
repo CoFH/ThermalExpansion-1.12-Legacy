@@ -190,9 +190,16 @@ public class TileDynamoSteam extends TileDynamoBase {
 		return tank;
 	}
 
+	@Override
 	public boolean showSteamTab() {
 
 		return augmentBoiler || augmentTurbine;
+	}
+
+	@Override
+	public int getFuelEnergy(ItemStack stack) {
+
+		return (augmentTurbine ? 0 : SteamManager.getFuelEnergy(stack)) * energyMod / ENERGY_BASE;
 	}
 
 	/* NBT METHODS */

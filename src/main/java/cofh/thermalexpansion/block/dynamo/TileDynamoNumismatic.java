@@ -67,6 +67,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		return TYPE;
 	}
 
+	@Override
 	protected boolean canStart() {
 
 		if (augmentGem) {
@@ -75,6 +76,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		return NumismaticManager.getFuelEnergy(inventory[0]) > energyConfig.maxPower;
 	}
 
+	@Override
 	protected void processStart() {
 
 		if (augmentGem) {
@@ -113,6 +115,12 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 			maxFuelRF = Math.max(fuelRF, NumismaticManager.DEFAULT_ENERGY);
 		}
 		return fuelRF * scale / maxFuelRF;
+	}
+
+	@Override
+	public int getFuelEnergy(ItemStack stack) {
+
+		return (augmentGem ? NumismaticManager.getGemFuelEnergy(stack) : NumismaticManager.getFuelEnergy(stack)) * energyMod / ENERGY_BASE;
 	}
 
 	/* NBT METHODS */

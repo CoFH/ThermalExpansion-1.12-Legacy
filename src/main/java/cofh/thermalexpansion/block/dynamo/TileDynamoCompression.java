@@ -6,6 +6,7 @@ import cofh.core.network.PacketBase;
 import cofh.core.render.TextureHelper;
 import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.helpers.AugmentHelper;
+import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
@@ -15,6 +16,7 @@ import cofh.thermalexpansion.util.managers.dynamo.CompressionManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -101,7 +103,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		}
 		if (coolantRF <= 0) {
 			coolantRF += CoolantManager.getCoolantRF100mB(coolantTank.getFluid());
-			coolantFactor = augmentBoiler ? 0 : CoolantManager.getCoolantFactor(coolantTank.getFluid()) / 2;
+			coolantFactor = augmentBoiler ? 0 : CoolantManager.getCoolantFactor(coolantTank.getFluid()) - CoolantManager.WATER_FACTOR;
 			coolantTank.drain(fluidAmount, true);
 		}
 	}
@@ -158,6 +160,17 @@ public class TileDynamoCompression extends TileDynamoBase {
 			return fuelTank;
 		}
 		return coolantTank;
+	}
+
+	@Override
+	public int getFuelEnergy(ItemStack stack) {
+
+		FluidStack fluid = FluidHelper.getFluidForFilledItem(stack);
+
+		if (fluid == null || augmentFuel && !TFFluids.fluidFuel.equals(fluid.getFluid())) {
+			return 0;
+		}
+		return CompressionManager.isValidFuel(fluid) ? CompressionManager.getFuelEnergy(fluid) * (energyMod + coolantFactor) / ENERGY_BASE : 0;
 	}
 
 	/* NBT METHODS */
@@ -225,6 +238,10 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		fuelTank.setFluid(payload.getFluidStack());
 		coolantTank.setFluid(payload.getFluidStack());
+
+		if (!augmentBoiler) {
+			coolantFactor = Math.max(0, CoolantManager.getCoolantFactor(coolantTank.getFluid()) - 20);
+		}
 	}
 
 	@Override

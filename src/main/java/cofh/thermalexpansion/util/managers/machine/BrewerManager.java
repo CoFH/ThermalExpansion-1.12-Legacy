@@ -35,7 +35,7 @@ public class BrewerManager {
 		oreValidator.addPrefix(ComparableItemStack.GEM);
 	}
 
-	public static final int DEFAULT_ENERGY = 2400;
+	public static final int DEFAULT_ENERGY = 4800;
 	public static final int DEFAULT_AMOUNT = CoreProps.BOTTLE_VOLUME * 3;
 
 	public static BrewerRecipe getRecipe(ItemStack input, FluidStack fluid) {

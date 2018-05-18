@@ -79,17 +79,17 @@ public class TileNullifier extends TileDeviceBase {
 		return redstoneControlOrDisable() ? FluidHelper.getFluidLuminosity(FluidRegistry.LAVA) : 0;
 	}
 
-	protected boolean isSideAccessible(EnumFacing side) {
-
-		return side == null || allowInsertion(sideConfig.sideTypes[sideCache[side.ordinal()]]) && redstoneControlOrDisable();
-	}
-
 	@Override
 	public void onRedstoneUpdate() {
 
 		boolean curActive = isActive;
 		isActive = redstoneControlOrDisable();
 		updateIfChanged(curActive);
+	}
+
+	protected boolean isSideAccessible(EnumFacing side) {
+
+		return side == null || allowInsertion(sideConfig.sideTypes[sideCache[side.ordinal()]]) && redstoneControlOrDisable();
 	}
 
 	/* GUI METHODS */

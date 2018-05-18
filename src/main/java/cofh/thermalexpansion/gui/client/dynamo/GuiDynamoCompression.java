@@ -3,7 +3,6 @@ package cofh.thermalexpansion.gui.client.dynamo;
 import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementFluidTank;
-import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -17,7 +16,7 @@ public class GuiDynamoCompression extends GuiDynamoBase {
 
 		super(new ContainerTileAugmentable(inventory, tile), tile, inventory.player, TEXTURE);
 
-		myInfo = StringHelper.localize("tab.thermalexpansion.dynamo.compression.0");
+		generateInfo("tab.thermalexpansion.dynamo.compression");
 	}
 
 	@Override

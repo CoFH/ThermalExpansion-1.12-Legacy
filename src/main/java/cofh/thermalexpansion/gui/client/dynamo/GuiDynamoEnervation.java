@@ -2,7 +2,6 @@ package cofh.thermalexpansion.gui.client.dynamo;
 
 import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementEnergyStored;
-import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,7 +16,7 @@ public class GuiDynamoEnervation extends GuiDynamoBase {
 
 		super(new ContainerDynamoEnervation(inventory, tile), tile, inventory.player, TEXTURE);
 
-		myInfo = StringHelper.localize("tab.thermalexpansion.dynamo.enervation.0");
+		generateInfo("tab.thermalexpansion.dynamo.enervation");
 	}
 
 	@Override

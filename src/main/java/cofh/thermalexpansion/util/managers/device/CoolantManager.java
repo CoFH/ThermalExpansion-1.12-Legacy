@@ -52,12 +52,12 @@ public class CoolantManager {
 	 */
 	public static int getCoolantRF100mB(Fluid fluid) {
 
-		return getCoolantRF(fluid) / 10;
+		return fluid == null ? 0 : getCoolantRF(fluid) / 10;
 	}
 
 	public static int getCoolantRF100mB(FluidStack stack) {
 
-		return getCoolantRF100mB(stack.getFluid());
+		return stack == null ? 0 : getCoolantRF100mB(stack.getFluid());
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class CoolantManager {
 
 	public static int getCoolantFactor(FluidStack stack) {
 
-		return getCoolantFactor(stack.getFluid());
+		return stack == null ? 0 : getCoolantFactor(stack.getFluid());
 	}
 
 	public static void initialize() {

@@ -473,6 +473,11 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		return augmentBoiler;
 	}
 
+	public int getFuelEnergy(ItemStack stack) {
+
+		return 0;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {

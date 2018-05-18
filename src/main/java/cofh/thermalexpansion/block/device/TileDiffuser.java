@@ -106,6 +106,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	private FluidStack renderFluid;
 
 	private int offset;
+	private boolean forcedCycle;
 
 	public TileDiffuser() {
 
@@ -134,11 +135,27 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
+	public void onRedstoneUpdate() {
+
+		boolean curActive = isActive;
+		isActive = redstoneControlOrDisable();
+
+		if (isActive && !curActive && !forcedCycle) {
+			diffuse();
+			offset = (int) (TIME_CONSTANT - world.getTotalWorldTime() % TIME_CONSTANT) - 1;
+			forcedCycle = true;
+		}
+		updateIfChanged(curActive);
+	}
+
+	@Override
 	public void update() {
 
 		if (!timeCheckOffset()) {
 			return;
 		}
+		forcedCycle = false;
+
 		if (ServerHelper.isClientWorld(world)) {
 			if (!enableParticles) {
 				return;

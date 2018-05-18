@@ -16,7 +16,6 @@ import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.dynamo.EnervationManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,13 +27,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Map;
 
 public class TileDynamoEnervation extends TileDynamoBase {
 
 	private static final int TYPE = Type.ENERVATION.getMetadata();
 	public static int basePower = 40;
-	public static final int ENCHANT_RF = 5000;
 
 	public static void initialize() {
 
@@ -74,6 +71,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		return TYPE;
 	}
 
+	@Override
 	protected boolean canStart() {
 
 		if (augmentEnchant) {
@@ -82,17 +80,11 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		return EnervationManager.getFuelEnergy(inventory[0]) > energyConfig.maxPower;
 	}
 
+	@Override
 	protected void processStart() {
 
 		if (augmentEnchant) {
-			Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(inventory[0]);
-			int enchantRF = 0;
-			for (Enchantment enchant : enchants.keySet()) {
-				enchantRF += enchant.getMinEnchantability(enchants.get(enchant));
-			}
-			enchantRF += (enchants.size() * (enchants.size() + 1)) / 2;
-			enchantRF *= ENCHANT_RF;
-			maxFuelRF = enchantRF;
+			maxFuelRF = EnervationManager.getEnchantEnergy(inventory[0]) * energyMod / ENERGY_BASE;
 			fuelRF += maxFuelRF;
 			inventory[0] = ItemStack.EMPTY;
 		} else if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
@@ -135,6 +127,12 @@ public class TileDynamoEnervation extends TileDynamoBase {
 			return scale;
 		}
 		return fuelRF * scale / maxFuelRF;
+	}
+
+	@Override
+	public int getFuelEnergy(ItemStack stack) {
+
+		return (augmentEnchant ? EnervationManager.getEnchantEnergy(stack) : EnervationManager.getFuelEnergy(stack)) * energyMod / ENERGY_BASE;
 	}
 
 	/* NBT METHODS */

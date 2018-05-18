@@ -67,6 +67,7 @@ public class TileItemCollector extends TileDeviceBase implements ITickable {
 	private int outputTracker;
 
 	private int offset;
+	private boolean forcedCycle;
 
 	public TileItemCollector() {
 
@@ -89,11 +90,26 @@ public class TileItemCollector extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
+	public void onRedstoneUpdate() {
+
+		boolean curActive = isActive;
+		isActive = redstoneControlOrDisable();
+
+		if (isActive && !curActive && !forcedCycle) {
+			collectItems();
+			offset = (int) (TIME_CONSTANT - world.getTotalWorldTime() % TIME_CONSTANT);
+			forcedCycle = true;
+		}
+		updateIfChanged(curActive);
+	}
+
+	@Override
 	public void update() {
 
 		if (!timeCheckOffset()) {
 			return;
 		}
+		forcedCycle = false;
 		transferOutput();
 
 		boolean curActive = isActive;

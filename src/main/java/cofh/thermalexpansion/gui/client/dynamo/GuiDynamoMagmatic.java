@@ -4,7 +4,6 @@ import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementFluidTank;
 import cofh.core.gui.element.ElementSimple;
-import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.dynamo.TileDynamoMagmatic;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -25,7 +24,7 @@ public class GuiDynamoMagmatic extends GuiDynamoBase {
 
 		super(new ContainerTileAugmentable(inventory, tile), tile, inventory.player, TEXTURE);
 
-		myInfo = StringHelper.localize("tab.thermalexpansion.dynamo.magmatic.0");
+		generateInfo("tab.thermalexpansion.dynamo.magmatic");
 
 		myTile = (TileDynamoMagmatic) tile;
 	}
