@@ -24,15 +24,9 @@ public class ContainerItemBufferFilter extends ContainerTileAugmentable implemen
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				addSlotToContainer(new SlotFalseCopy(filterWrapper, j + i * 3, 62 + j * 18, 17 + i * 18));
+				addSlotToContainer(new SlotFalseCopy(filterWrapper, j + i * 3, 35 + j * 18, 17 + i * 18));
 			}
 		}
-	}
-
-	@Override
-	protected int getPlayerInventoryVerticalOffset() {
-
-		return 120;
 	}
 
 	/* IFilterable */

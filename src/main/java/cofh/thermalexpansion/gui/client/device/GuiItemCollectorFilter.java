@@ -27,11 +27,10 @@ public class GuiItemCollectorFilter extends GuiDeviceBase {
 
 		super(new ContainerItemCollectorFilter(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.device.item_collector");
+		generateInfo("tab.thermalexpansion.device.item_collector_filter");
 
 		myTile = (TileItemCollector) tile;
 		myFilter = myTile.getFilter();
-		ySize = 202;
 	}
 
 	@Override
@@ -39,10 +38,10 @@ public class GuiItemCollectorFilter extends GuiDeviceBase {
 
 		super.initGui();
 
-		buttonList = new ElementButton(this, 24, ySize - 118, "FilterList", 176, 0, 176, 20, 20, 20, TEX_PATH);
-		buttonOre = new ElementButton(this, 60, ySize - 118, "FilterOre", 216, 0, 216, 20, 20, 20, TEX_PATH);
-		buttonMeta = new ElementButton(this, 96, ySize - 118, "FilterMeta", 176, 60, 176, 80, 20, 20, TEX_PATH);
-		buttonNbt = new ElementButton(this, 132, ySize - 118, "FilterNbt", 216, 60, 216, 80, 20, 20, TEX_PATH);
+		buttonList = new ElementButton(this, 119, 20, "FilterList", 176, 0, 176, 20, 20, 20, TEX_PATH);
+		buttonOre = new ElementButton(this, 145, 20, "FilterOre", 216, 0, 216, 20, 20, 20, TEX_PATH);
+		buttonMeta = new ElementButton(this, 119, 46, "FilterMeta", 176, 60, 176, 80, 20, 20, TEX_PATH);
+		buttonNbt = new ElementButton(this, 145, 46, "FilterNbt", 216, 60, 216, 80, 20, 20, TEX_PATH);
 
 		addElement(buttonList);
 		addElement(buttonOre);
