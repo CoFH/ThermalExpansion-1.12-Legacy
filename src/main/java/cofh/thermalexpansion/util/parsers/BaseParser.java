@@ -32,10 +32,10 @@ public abstract class BaseParser implements IContentParser {
 	public static final String TYPE = "type";
 
 	public static final String COMMENT = "//";
+	public static final String CONSTANT = "constant";
 	public static final String ENTRY = "entry";
 	public static final String ORE = "ore";
 	public static final String NAME = "name";
-	public static final String CONSTANT = "constant";
 
 	public static final String ITEM = "item";
 	public static final String DATA = "data";

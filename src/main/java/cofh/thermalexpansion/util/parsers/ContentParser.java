@@ -1,12 +1,10 @@
 package cofh.thermalexpansion.util.parsers;
 
+import cofh.core.init.CoreProps;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.parsers.dynamo.*;
 import cofh.thermalexpansion.util.parsers.machine.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.util.JsonUtils;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -17,7 +15,6 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,14 +33,14 @@ public class ContentParser {
 
 	public static void initialize() {
 
-		//		contentFolder = new File(CoreProps.configDir, "/cofh/thermalexpansion/content/");
-		//		if (!contentFolder.exists()) {
-		//			try {
-		//				contentFolder.mkdir();
-		//			} catch (Throwable t) {
-		//				// pokemon!
-		//			}
-		//		}
+		contentFolder = new File(CoreProps.configDir, "/cofh/thermalexpansion/content/");
+		if (!contentFolder.exists()) {
+			try {
+				contentFolder.mkdir();
+			} catch (Throwable t) {
+				// pokemon!
+			}
+		}
 		contentParsers.put("oredict", new OreDictParser());
 		contentParsers.put("constants", new ConstantParser());
 
@@ -64,15 +61,27 @@ public class ContentParser {
 		contentParsers.put("dynamo_numismatic", new NumismaticParser());
 	}
 
-	private static void addFiles(ArrayList<File> list, File folder) {
+	private static void copyInternalFiles() {
 
-		File[] fList = folder.listFiles((file, name) -> name != null && (name.toLowerCase(Locale.US).endsWith(".json") || new File(file, name).isDirectory()));
+	}
+
+	private static void addConstantFiles(ArrayList<File> list, File folder) {
+
+		File[] fList = folder.listFiles((file, name) -> name != null && ((name.toLowerCase(Locale.US).endsWith(".json") && name.startsWith("_")) || new File(file, name).isDirectory()));
 
 		if (fList == null || fList.length <= 0) {
-			ThermalExpansion.LOG.info("There are no content files present in " + folder + ".");
 			return;
 		}
-		ThermalExpansion.LOG.info(fList.length + " content files present in " + folder + "/.");
+		list.addAll(Arrays.asList(fList));
+	}
+
+	private static void addContentFiles(ArrayList<File> list, File folder) {
+
+		File[] fList = folder.listFiles((file, name) -> name != null && ((name.toLowerCase(Locale.US).endsWith(".json") && !name.startsWith("_")) || new File(file, name).isDirectory()));
+
+		if (fList == null || fList.length <= 0) {
+			return;
+		}
 		list.addAll(Arrays.asList(fList));
 	}
 
@@ -80,8 +89,73 @@ public class ContentParser {
 
 		ModContainer mod = FMLCommonHandler.instance().findContainerFor(ThermalExpansion.MOD_ID);
 
+		parseCustomConstants();
 		parseConstants(mod);
-		parseRecipes(mod);
+
+		parseCustomContent();
+		parseContent(mod);
+	}
+
+	public static void parseCustomConstants() {
+
+		ArrayList<File> constantList = new ArrayList<>();
+		addConstantFiles(constantList, contentFolder);
+
+		for (int i = 0; i < constantList.size(); ++i) {
+			File file = constantList.get(i);
+			if (file.isDirectory()) {
+				addConstantFiles(constantList, file);
+				continue;
+			}
+			String fileName = file.getName();
+			BufferedReader reader = null;
+			try {
+				reader = Files.newBufferedReader(file.toPath());
+				JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
+				for (Entry<String, JsonElement> contentEntry : json.entrySet()) {
+					if (parseEntry(contentEntry.getKey(), contentEntry.getValue())) {
+						ThermalExpansion.LOG.debug("Content entry added from file " + fileName + ": \"" + contentEntry.getKey() + "\"");
+					} else {
+						ThermalExpansion.LOG.error("Error parsing entry from file " + fileName + ": \"" + contentEntry.getKey() + "\" > Please make sure the entry is a valid JSON Array.");
+					}
+				}
+			} catch (Exception e) {
+				ThermalExpansion.LOG.error("Error parsing content file " + fileName + "!", e);
+			} finally {
+				IOUtils.closeQuietly(reader);
+			}
+		}
+	}
+
+	public static void parseCustomContent() {
+
+		ArrayList<File> contentList = new ArrayList<>();
+		addContentFiles(contentList, contentFolder);
+
+		for (int i = 0; i < contentList.size(); ++i) {
+			File file = contentList.get(i);
+			if (file.isDirectory()) {
+				addContentFiles(contentList, file);
+				continue;
+			}
+			String fileName = file.getName();
+			BufferedReader reader = null;
+			try {
+				reader = Files.newBufferedReader(file.toPath());
+				JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
+				for (Entry<String, JsonElement> contentEntry : json.entrySet()) {
+					if (parseEntry(contentEntry.getKey(), contentEntry.getValue())) {
+						ThermalExpansion.LOG.debug("Content entry added from file " + fileName + ": \"" + contentEntry.getKey() + "\"");
+					} else {
+						ThermalExpansion.LOG.error("Error parsing entry from file " + fileName + ": \"" + contentEntry.getKey() + "\" > Please make sure the entry is a valid JSON Array.");
+					}
+				}
+			} catch (Exception e) {
+				ThermalExpansion.LOG.error("Error parsing content file " + fileName + "!", e);
+			} finally {
+				IOUtils.closeQuietly(reader);
+			}
+		}
 	}
 
 	public static void parseConstants(ModContainer mod) {
@@ -103,7 +177,7 @@ public class ContentParser {
 						ThermalExpansion.LOG.error("Error parsing entry from file " + fileName + ": \"" + contentEntry.getKey() + "\" > Please make sure the entry is a valid JSON Array.");
 					}
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				ThermalExpansion.LOG.error("Error parsing content file " + fileName + "!", e);
 			} finally {
 				IOUtils.closeQuietly(reader);
@@ -112,7 +186,7 @@ public class ContentParser {
 		}, false, false);
 	}
 
-	public static void parseRecipes(ModContainer mod) {
+	public static void parseContent(ModContainer mod) {
 
 		CraftingHelper.findFiles(mod, "assets/" + mod.getModId() + "/content/", null, (root, file) -> {
 
@@ -131,7 +205,7 @@ public class ContentParser {
 						ThermalExpansion.LOG.error("Error parsing entry from file " + fileName + ": \"" + contentEntry.getKey() + "\" > Please make sure the entry is a valid JSON Array.");
 					}
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				ThermalExpansion.LOG.error("Error parsing content file " + fileName + "!", e);
 			} finally {
 				IOUtils.closeQuietly(reader);
