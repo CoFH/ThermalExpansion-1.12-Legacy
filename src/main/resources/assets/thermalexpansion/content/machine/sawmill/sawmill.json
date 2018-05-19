@@ -9,7 +9,7 @@
 				"count": 8
 			},
 			"output2": {
-				"item": "minecraft:melon_seeds",
+				"constant": "biomass",
 				"chance": 10
 			},
 			"energy_mod": 75

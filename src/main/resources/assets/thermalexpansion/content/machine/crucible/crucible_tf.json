@@ -2,6 +2,16 @@
 	"crucible": [
 		{
 			"input": {
+				"constant": "biomass"
+			},
+			"output": {
+				"fluid": "biocrude",
+				"amount": 50
+			},
+			"energy": 4000
+		},
+		{
+			"input": {
 				"ore": "dustCoal"
 			},
 			"output": {

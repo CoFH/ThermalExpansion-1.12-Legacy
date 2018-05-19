@@ -1,10 +1,11 @@
 package cofh.thermalexpansion.plugins;
 
 import cofh.core.util.helpers.ItemHelper;
-import cofh.thermalexpansion.util.managers.machine.*;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import cofh.thermalexpansion.util.managers.machine.RefineryManager;
 import cofh.thermalfoundation.item.ItemMaterial;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -25,11 +26,11 @@ public class PluginIC2 extends PluginTEBase {
 
 		/* PULVERIZER */
 		{
-			ItemStack bioChaff = getItemStack("crafting", 1, 21);
-
-			int energy = PulverizerManager.DEFAULT_ENERGY;
-
-			PulverizerManager.addRecipe(energy, bioChaff, new ItemStack(Blocks.DIRT));
+			//			ItemStack bioChaff = getItemStack("crafting", 1, 21);
+			//
+			//			int energy = PulverizerManager.DEFAULT_ENERGY;
+			//
+			//			PulverizerManager.addRecipe(energy, bioChaff, new ItemStack(Blocks.DIRT));
 		}
 
 		/* INSOLATOR */
@@ -68,14 +69,14 @@ public class PluginIC2 extends PluginTEBase {
 
 		/* BREWER */
 		{
-			ItemStack bioChaff = getItemStack("crafting", 1, 21);
-			Fluid biomass = FluidRegistry.getFluid("ic2biomass");
-
-			int energy = BrewerManager.DEFAULT_ENERGY * 2;
-
-			if (biomass != null) {
-				BrewerManager.addRecipe(energy, bioChaff, new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), new FluidStack(biomass, Fluid.BUCKET_VOLUME));
-			}
+			//			ItemStack bioChaff = getItemStack("crafting", 1, 21);
+			//			Fluid biomass = FluidRegistry.getFluid("ic2biomass");
+			//
+			//			int energy = BrewerManager.DEFAULT_ENERGY * 2;
+			//
+			//			if (biomass != null) {
+			//				BrewerManager.addRecipe(energy, bioChaff, new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), new FluidStack(biomass, Fluid.BUCKET_VOLUME));
+			//			}
 		}
 	}
 

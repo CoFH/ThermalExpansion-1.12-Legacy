@@ -15,6 +15,13 @@
 			}
 		},
 		{
+			"name": "biomass",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 816
+			}
+		},
+		{
 			"name": "rosin",
 			"entry": {
 				"item": "thermalfoundation:material",

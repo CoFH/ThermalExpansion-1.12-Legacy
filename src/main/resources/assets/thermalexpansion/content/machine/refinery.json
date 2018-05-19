@@ -56,7 +56,18 @@
 			},
 			"output2": {
 				"constant": "rosin",
-				"chance": 25
+				"chance": 50
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"fluid": "biocrude",
+				"amount": 100
+			},
+			"output": {
+				"fluid": "refined_biofuel",
+				"amount": 50
 			},
 			"energy_mod": 50
 		},

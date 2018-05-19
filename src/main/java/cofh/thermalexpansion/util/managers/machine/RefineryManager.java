@@ -104,6 +104,9 @@ public class RefineryManager {
 		if (input == null || outputFluid == null || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
+		if (outputItem.isEmpty()) {
+			chance = 0;
+		}
 		RefineryRecipe recipe = new RefineryRecipe(input, outputFluid, outputItem, energy, chance);
 		recipeMap.put(FluidHelper.getFluidHash(input), recipe);
 		return recipe;

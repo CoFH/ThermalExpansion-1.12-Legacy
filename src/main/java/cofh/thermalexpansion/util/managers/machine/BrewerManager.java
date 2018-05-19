@@ -36,7 +36,7 @@ public class BrewerManager {
 	}
 
 	public static final int DEFAULT_ENERGY = 4800;
-	public static final int DEFAULT_AMOUNT = CoreProps.BOTTLE_VOLUME * 3;
+	public static final int DEFAULT_AMOUNT = CoreProps.BOTTLE_VOLUME * 2;
 
 	public static BrewerRecipe getRecipe(ItemStack input, FluidStack fluid) {
 

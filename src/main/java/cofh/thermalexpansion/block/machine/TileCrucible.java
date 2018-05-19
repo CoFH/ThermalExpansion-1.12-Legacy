@@ -46,7 +46,7 @@ import static cofh.core.util.core.SideConfig.*;
 public class TileCrucible extends TileMachineBase {
 
 	private static final int TYPE = Type.CRUCIBLE.getMetadata();
-	public static int basePower = 50;
+	public static int basePower = 40;
 
 	public static final int LAVA_MULTIPLIER = 10;
 	public static final int LAVA_ENERGY_MOD = 0;

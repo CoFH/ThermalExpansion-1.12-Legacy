@@ -1,10 +1,10 @@
 package cofh.thermalexpansion.plugins.jei.machine.refinery;
 
+import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiRefinery;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeCategory;
@@ -119,8 +119,8 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 		guiItemStacks.init(0, false, 105, 23);
-		guiFluidStacks.init(0, true, 34, 8, 16, 30, TEProps.MAX_FLUID_SMALL, false, tankOverlayInput);
-		guiFluidStacks.init(1, false, 141, 1, 16, 60, TEProps.MAX_FLUID_LARGE, false, tankOverlayOutput);
+		guiFluidStacks.init(0, true, 34, 8, 16, 30, CoreProps.BOTTLE_VOLUME, false, tankOverlayInput);
+		guiFluidStacks.init(1, false, 141, 1, 16, 60, CoreProps.BOTTLE_VOLUME, false, tankOverlayOutput);
 
 		guiItemStacks.set(0, outputItems.get(0));
 		guiFluidStacks.set(0, inputFluids.get(0));
