@@ -32,8 +32,8 @@ public class InsolatorManager {
 		oreValidator.addPrefix("crop");
 	}
 
-	public static final int CROP_MULTIPLIER_RICH = 3;
-	public static final int CROP_MULTIPLIER_FLUX = 4;
+	public static final int CROP_MULTIPLIER_RICH = 2;
+	public static final int CROP_MULTIPLIER_FLUX = 3;
 
 	public static final int FLUID_FACTOR = 4;
 

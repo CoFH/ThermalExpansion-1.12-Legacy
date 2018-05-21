@@ -60,11 +60,19 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		String category = "Device.Fisher";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		String comment = "If TRUE, the Aquatic Entangler will REQUIRE Aqua-Chow to operate.";
+		requireBait = ThermalExpansion.CONFIG.get(category, "RequireBait", requireBait, comment);
+
+		comment = "Adjust this value to set the number of cycles Aqua-Chow lasts.";
+		boostCycles = ThermalExpansion.CONFIG.getConfiguration().getInt("BaitDuration", category, boostCycles, 2, 64, comment);
 	}
 
 	private static final int TARGET_WATER[] = { 10, 20, 30 };
 	private static final int TIME_CONSTANT = 7200;
-	private static final int BOOST_TIME = 8;
+
+	private static boolean requireBait = false;
+	private static int boostCycles = 8;
 
 	private int targetWater = -1;
 	private int timeConstant = TIME_CONSTANT;
@@ -145,12 +153,12 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 						for (int i = 0; i < boostMult; i++) {
 							catchFish();
 						}
-						boostTime = BOOST_TIME - 1;
+						boostTime = boostCycles - 1;
 						inventory[0].shrink(1);
 						if (inventory[0].getCount() <= 0) {
 							inventory[0] = ItemStack.EMPTY;
 						}
-					} else {
+					} else if (!requireBait) {
 						catchFish();
 					}
 				}
@@ -259,11 +267,6 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		}
 	}
 
-	protected static boolean isWater(IBlockState state) {
-
-		return (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) && state.getValue(BlockLiquid.LEVEL) == 0;
-	}
-
 	protected boolean timeCheckOffset() {
 
 		return (world.getTotalWorldTime() + offset) % timeConstant == 0;
@@ -286,9 +289,9 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		return constant / (isRaining ? 2 : 1);
 	}
 
-	public int getBoostMult() {
+	protected static boolean isWater(IBlockState state) {
 
-		return boostMult;
+		return (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) && state.getValue(BlockLiquid.LEVEL) == 0;
 	}
 
 	/* GUI METHODS */
@@ -310,7 +313,12 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		if (!isActive) {
 			return 0;
 		}
-		return MathHelper.round(scale * boostTime / BOOST_TIME);
+		return MathHelper.round(scale * boostTime / boostCycles);
+	}
+
+	public int getBoostMult() {
+
+		return boostMult;
 	}
 
 	/* NBT METHODS */
@@ -326,7 +334,6 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		boostMult = nbt.getInteger("BoostMult");
 		boostTime = nbt.getInteger("BoostTime");
-
 		timeConstant = nbt.getInteger("TimeConstant");
 
 		if (timeConstant <= 0) {
@@ -346,7 +353,6 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		nbt.setInteger("BoostMult", boostMult);
 		nbt.setInteger("BoostTime", boostTime);
-
 		nbt.setInteger("TimeConstant", timeConstant);
 
 		return nbt;

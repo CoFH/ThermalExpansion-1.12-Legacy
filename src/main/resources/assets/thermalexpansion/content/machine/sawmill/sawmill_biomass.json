@@ -1,0 +1,136 @@
+{
+	"sawmill": [
+		{
+			"input": {
+				"item": "minecraft:beetroot",
+				"count": 8
+			},
+			"output": {
+				"constant": "biomass"
+			},
+			"output2": {
+				"item": "minecraft:beetroot_seeds",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:cactus",
+				"count": 4
+			},
+			"output": {
+				"constant": "biomass"
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:carrot",
+				"count": 8
+			},
+			"output": {
+				"constant": "biomass"
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:melon_block",
+				"count": 4
+			},
+			"output": {
+				"constant": "biomass"
+			},
+			"output2": {
+				"item": "minecraft:melon_seeds",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:potato",
+				"count": 8
+			},
+			"output": {
+				"constant": "biomass"
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:pumpkin",
+				"count": 4
+			},
+			"output": {
+				"constant": "biomass"
+			},
+			"output2": {
+				"item": "minecraft:pumpkin_seeds",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:reeds",
+				"count": 8
+			},
+			"output": {
+				"constant": "biomass"
+			},
+			"output2": {
+				"item": "minecraft:sugar",
+				"count": 2
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:waterlily",
+				"count": 8
+			},
+			"output": {
+				"constant": "biomass"
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:wheat",
+				"count": 8
+			},
+			"output": {
+				"constant": "biomass"
+			},
+			"output2": {
+				"item": "minecraft:wheat_seeds",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:vine",
+				"count": 8
+			},
+			"output": {
+				"constant": "biomass"
+			}
+		},
+		{
+			"input": {
+				"item": "treeLeaves",
+				"count": 8
+			},
+			"output": {
+				"constant": "biomass"
+			}
+		},
+		{
+			"input": {
+				"ore": "treeSapling",
+				"count": 4
+			},
+			"output": {
+				"constant": "biomass"
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 50
+			}
+		}
+	]
+}

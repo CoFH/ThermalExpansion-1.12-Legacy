@@ -47,8 +47,8 @@ public class TileRefinery extends TileMachineBase {
 	private static final int TYPE = Type.REFINERY.getMetadata();
 	public static int basePower = 20;
 
-	public static final int OIL_ENERGY_MOD = 100;
-	public static final int OIL_FLUID_BOOST = 50;
+	public static final int SPEC_ENERGY_MOD = 100;
+	public static final int SPEC_FLUID_BOOST = 50;
 
 	public static void initialize() {
 
@@ -69,7 +69,7 @@ public class TileRefinery extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
-		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_REFINERY_OIL);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_REFINERY_FOSSIL);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_REFINERY_POTION);
 
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
@@ -101,7 +101,8 @@ public class TileRefinery extends TileMachineBase {
 	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, 0);
 
 	/* AUGMENTS */
-	protected boolean augmentOil;
+	protected boolean augmentFossil;
+	protected boolean augmentBio;
 	protected boolean augmentPotion;
 
 	public TileRefinery() {
@@ -207,8 +208,8 @@ public class TileRefinery extends TileMachineBase {
 			processOff();
 			return;
 		}
-		if (augmentOil && RefineryManager.isFossilFuel(curRecipe.getInput())) {
-			outputTank.fill(new FluidStack(curRecipe.getOutputFluid(), curRecipe.getOutputFluid().amount + OIL_FLUID_BOOST), true);
+		if (augmentFossil && RefineryManager.isFossilFuel(curRecipe.getInput()) || augmentBio && RefineryManager.isBioFuel(curRecipe.getInput())) {
+			outputTank.fill(new FluidStack(curRecipe.getOutputFluid(), curRecipe.getOutputFluid().amount + SPEC_FLUID_BOOST), true);
 		} else {
 			outputTank.fill(curRecipe.getOutputFluid(), true);
 		}
@@ -424,7 +425,8 @@ public class TileRefinery extends TileMachineBase {
 
 		super.preAugmentInstall();
 
-		augmentOil = false;
+		augmentFossil = false;
+		augmentBio = false;
 		augmentPotion = false;
 	}
 
@@ -433,10 +435,16 @@ public class TileRefinery extends TileMachineBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-		if (!augmentOil && TEProps.MACHINE_REFINERY_OIL.equals(id)) {
-			augmentOil = true;
+		if (!augmentFossil && TEProps.MACHINE_REFINERY_FOSSIL.equals(id)) {
+			augmentFossil = true;
 			hasModeAugment = true;
-			energyMod += OIL_ENERGY_MOD;
+			energyMod += SPEC_ENERGY_MOD;
+			return true;
+		}
+		if (!augmentBio && TEProps.MACHINE_REFINERY_BIO.equals(id)) {
+			augmentBio = true;
+			hasModeAugment = true;
+			energyMod += SPEC_ENERGY_MOD;
 			return true;
 		}
 		if (!augmentPotion && TEProps.MACHINE_REFINERY_POTION.equals(id)) {

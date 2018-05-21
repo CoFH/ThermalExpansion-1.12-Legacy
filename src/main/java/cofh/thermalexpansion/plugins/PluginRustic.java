@@ -76,8 +76,6 @@ public class PluginRustic extends PluginTEBase {
 		Fluid juiceWildberry = FluidRegistry.getFluid("wildberryjuice");
 		Fluid oilOlive = FluidRegistry.getFluid("oliveoil");
 
-		Fluid seed_oil = FluidRegistry.getFluid("seed.oil");
-
 		/* INSOLATOR */
 		{
 			InsolatorManager.addDefaultRecipe(seedChiliPepper, ItemHelper.cloneStack(chiliPepper, 2), seedChiliPepper, 100);
@@ -105,14 +103,12 @@ public class PluginRustic extends PluginTEBase {
 
 		/* TRANSPOSER */
 		{
-			int energy = 2400;
+			int energy = 800;
 
-			if (seed_oil != null) {
-				TransposerManager.addExtractRecipe(energy, seedApple, ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
-				TransposerManager.addExtractRecipe(energy, seedChiliPepper, ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
-				TransposerManager.addExtractRecipe(energy, seedGrape, ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
-				TransposerManager.addExtractRecipe(energy, seedTomato, ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
-			}
+			TransposerManager.addExtractRecipe(energy, seedApple, ItemStack.EMPTY, new FluidStack(TFFluids.fluidSeedOil, 50), 0, false);
+			TransposerManager.addExtractRecipe(energy, seedChiliPepper, ItemStack.EMPTY, new FluidStack(TFFluids.fluidSeedOil, 50), 0, false);
+			TransposerManager.addExtractRecipe(energy, seedGrape, ItemStack.EMPTY, new FluidStack(TFFluids.fluidSeedOil, 50), 0, false);
+			TransposerManager.addExtractRecipe(energy, seedTomato, ItemStack.EMPTY, new FluidStack(TFFluids.fluidSeedOil, 50), 0, false);
 		}
 
 		/* CENTRIFUGE */

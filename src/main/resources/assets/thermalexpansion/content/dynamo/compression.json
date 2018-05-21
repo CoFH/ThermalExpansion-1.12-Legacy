@@ -22,15 +22,15 @@
 		},
 		{
 			"fluid": "tree_oil",
-			"energy": 500000
+			"energy": 400000
 		},
 		{
 			"fluid": "seed_oil",
-			"energy": 100000
+			"energy": 80000
 		},
 		{
 			"fluid": "refined_biofuel",
-			"energy": 500000
+			"energy": 800000
 		},
 		{
 			"//": "Actually Additions"

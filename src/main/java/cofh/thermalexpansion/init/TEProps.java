@@ -351,7 +351,8 @@ public class TEProps {
 	public static final String MACHINE_CRUCIBLE_LAVA = "machineCrucibleLava";
 	public static final String MACHINE_CRUCIBLE_ALLOY = "machineCrucibleAlloy";
 
-	public static final String MACHINE_REFINERY_OIL = "machineRefineryOil";
+	public static final String MACHINE_REFINERY_FOSSIL = "machineRefineryFossil";
+	public static final String MACHINE_REFINERY_BIO = "machineRefineryBio";
 	public static final String MACHINE_REFINERY_POTION = "machineRefineryPotion";
 
 	public static final String MACHINE_CHARGER_THROUGHPUT = "machineChargerThroughput";
@@ -384,6 +385,7 @@ public class TEProps {
 
 	public static final String DYNAMO_COMPRESSION_COOLANT = "dynamoCompressionCoolant";
 	public static final String DYNAMO_COMPRESSION_FUEL = "dynamoCompressionFuel";
+	public static final String DYNAMO_COMPRESSION_BIOFUEL = "dynamoCompressionBiofuel";
 
 	public static final String DYNAMO_REACTANT_ELEMENTAL = "dynamoReactantElemental";
 

@@ -1,0 +1,44 @@
+{
+	"crucible": [
+		{
+			"input": {
+				"constant": "biomass"
+			},
+			"output": {
+				"fluid": "biocrude",
+				"amount": 100
+			},
+			"energy": 4000
+		},
+		{
+			"input": {
+				"constant": "rich_biomass"
+			},
+			"output": {
+				"fluid": "biocrude",
+				"amount": 150
+			},
+			"energy": 4000
+		},
+		{
+			"input": {
+				"constant": "bioblend"
+			},
+			"output": {
+				"fluid": "biocrude",
+				"amount": 100
+			},
+			"energy": 4000
+		},
+		{
+			"input": {
+				"constant": "rich_bioblend"
+			},
+			"output": {
+				"fluid": "biocrude",
+				"amount": 150
+			},
+			"energy": 4000
+		}
+	]
+}

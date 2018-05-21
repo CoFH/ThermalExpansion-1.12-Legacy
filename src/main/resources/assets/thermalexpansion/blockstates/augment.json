@@ -99,9 +99,14 @@
 					"layer0": "thermalexpansion:items/augment/placeholder"
 				}
 			},
-			"machinerefineryoil": {
+			"machinerefineryfossil": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/machine_refinery_oil"
+					"layer0": "thermalexpansion:items/augment/machine_refinery_fossil"
+				}
+			},
+			"machinerefinerybio": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_refinery_bio"
 				}
 			},
 			"machinerefinerypotion": {
@@ -202,6 +207,11 @@
 			"dynamocompressionfuel": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/dynamo_compression_fuel"
+				}
+			},
+			"dynamocompressionbiofuel": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_compression_biofuel"
 				}
 			},
 			"dynamoreactantelemental": {

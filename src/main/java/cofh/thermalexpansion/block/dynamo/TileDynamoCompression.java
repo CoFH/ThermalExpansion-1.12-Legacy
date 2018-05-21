@@ -47,6 +47,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_BOILER);
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COMPRESSION_COOLANT);
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COMPRESSION_FUEL);
+		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COMPRESSION_BIOFUEL);
 
 		GameRegistry.registerTileEntity(TileDynamoCompression.class, "thermalexpansion:dynamo_compression");
 
@@ -75,6 +76,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 	/* AUGMENTS */
 	protected boolean augmentCoolant;
 	protected boolean augmentFuel;
+	protected boolean augmentBiofuel;
 
 	@Override
 	public int getType() {
@@ -266,6 +268,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		augmentCoolant = false;
 		augmentFuel = false;
+		augmentBiofuel = false;
 
 		fuelTank.clearLocked();
 		coolantTank.clearLocked();
@@ -276,12 +279,13 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		super.postAugmentInstall();
 
-		if (augmentFuel) {
-			fuelTank.setLock(TFFluids.fluidFuel);
-		}
 		if (augmentBoiler) {
 			coolantTank.setLock(FluidRegistry.WATER);
 			coolantFactor = 0;
+		} else if (augmentFuel) {
+			fuelTank.setLock(TFFluids.fluidFuel);
+		} else if (augmentBiofuel) {
+			fuelTank.setLock(TFFluids.fluidBiofuel);
 		}
 	}
 
@@ -308,6 +312,13 @@ public class TileDynamoCompression extends TileDynamoBase {
 			hasModeAugment = true;
 			energyConfig.setDefaultParams(energyConfig.maxPower + 3 * getBasePower(this.level), smallStorage);
 			energyMod += 50;
+			return true;
+		}
+		if (!augmentFuel && TEProps.DYNAMO_COMPRESSION_BIOFUEL.equals(id)) {
+			augmentBiofuel = true;
+			hasModeAugment = true;
+			energyConfig.setDefaultParams(energyConfig.maxPower + 2 * getBasePower(this.level), smallStorage);
+			energyMod += 25;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

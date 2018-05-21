@@ -4,7 +4,6 @@ import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager.TransposerRecipe;
@@ -102,7 +101,7 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 
 		guiItemStacks.init(0, true, 30, 10);
 		guiItemStacks.init(1, false, 30, 41);
-		guiFluidStacks.init(0, true, 103, 1, 16, 60, TEProps.MAX_FLUID_LARGE, false, tankOverlay);
+		guiFluidStacks.init(0, true, 103, 1, 16, 60, Fluid.BUCKET_VOLUME, false, tankOverlay);
 
 		guiItemStacks.set(0, inputs.get(0));
 		guiItemStacks.set(1, outputs.get(0));

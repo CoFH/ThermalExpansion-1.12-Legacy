@@ -82,16 +82,6 @@
 		},
 		{
 			"input": {
-				"item": "minecraft:reeds"
-			},
-			"output": {
-				"item": "minecraft:sugar",
-				"count": 2
-			},
-			"energy_mod": 50
-		},
-		{
-			"input": {
 				"item": "minecraft:stone"
 			},
 			"output": {

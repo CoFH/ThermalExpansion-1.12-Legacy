@@ -51,6 +51,10 @@ info.thermalexpansion.augment.dynamoBoiler.c.0=Steam is produced instead of RF.
 info.thermalexpansion.augment.dynamoCoilDuct.0=Dynamos: Side Accessibility
 info.thermalexpansion.augment.dynamoCoilDuct.a.0=Allows insertion and extraction through the coil.
 
+info.thermalexpansion.augment.dynamoCompressionBiofuel.0=Compression Dynamo: Specialization
+info.thermalexpansion.augment.dynamoCompressionBiofuel.a.0=Greatly increases power generation and efficiency.
+info.thermalexpansion.augment.dynamoCompressionBiofuel.b.0=Only §2§oGrassoline§r§4 can be utilized.
+
 info.thermalexpansion.augment.dynamoCompressionCoolant.0=Compression Dynamo: Specialization
 info.thermalexpansion.augment.dynamoCompressionCoolant.a.0=Coolant is no longer consumed for operation.
 info.thermalexpansion.augment.dynamoCompressionCoolant.b.0=Some coolant must be present.
@@ -196,10 +200,13 @@ info.thermalexpansion.augment.machinePulverizerPetrotheum.a.0=Increases yield fr
 info.thermalexpansion.augment.machinePulverizerPetrotheum.b.0=Additional energy is required per operation.
 info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=Tectonic Petrotheum must be supplied.
 
-info.thermalexpansion.augment.machineRefineryOil.0=Fractionating Still: Specialization
-info.thermalexpansion.augment.machineRefineryOil.a.0=Greatly increases conversion efficiency for fossil fuels.
-info.thermalexpansion.augment.machineRefineryOil.b.0=Only fossil fuels can be processed.
-info.thermalexpansion.augment.machineRefineryOil.b.1=Additional energy is required per operation.
+info.thermalexpansion.augment.machineRefineryBio.0=Fractionating Still: Specialization
+info.thermalexpansion.augment.machineRefineryBio.a.0=Greatly increases conversion efficiency for biofuels.
+info.thermalexpansion.augment.machineRefineryBio.b.0=Additional energy is required per operation.
+
+info.thermalexpansion.augment.machineRefineryFossil.0=Fractionating Still: Specialization
+info.thermalexpansion.augment.machineRefineryFossil.a.0=Greatly increases conversion efficiency for fossil fuels.
+info.thermalexpansion.augment.machineRefineryFossil.b.0=Additional energy is required per operation.
 
 info.thermalexpansion.augment.machineRefineryPotion.0=Fractionating Still: Specialization
 info.thermalexpansion.augment.machineRefineryPotion.a.0=Allows for Potions to be refined.
@@ -334,6 +341,7 @@ item.thermalexpansion.augment.apparatusRadius.name=WIP
 
 item.thermalexpansion.augment.dynamoBoiler.name=Boiler Conversion
 item.thermalexpansion.augment.dynamoCoilDuct.name=Transmission Coil Ducting
+item.thermalexpansion.augment.dynamoCompressionBiofuel.name=Agitative Manifold
 item.thermalexpansion.augment.dynamoCompressionCoolant.name=Closed-Loop Cooling
 item.thermalexpansion.augment.dynamoCompressionFuel.name=Ignition Plugs
 item.thermalexpansion.augment.dynamoEfficiency.name=Fuel Catalyzer
@@ -367,7 +375,8 @@ item.thermalexpansion.augment.machineInsolatorTree.name=Sapling Infuser
 item.thermalexpansion.augment.machinePower.name=Auxiliary Reception Coil
 item.thermalexpansion.augment.machinePulverizerGeode.name=Geode Tumbler
 item.thermalexpansion.augment.machinePulverizerPetrotheum.name=Tectonic Initiator
-item.thermalexpansion.augment.machineRefineryOil.name=Reflux Column
+item.thermalexpansion.augment.machineRefineryBio.name=Biocatalytic Flue
+item.thermalexpansion.augment.machineRefineryFossil.name=Reflux Column
 item.thermalexpansion.augment.machineRefineryPotion.name=Alchemical Retort
 item.thermalexpansion.augment.machineSawmillTapper.name=Resin Funnel
 item.thermalexpansion.augment.machineSmelterFlux.name=Metallurgical Recovery

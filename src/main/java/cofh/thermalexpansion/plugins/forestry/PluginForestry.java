@@ -11,9 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.List;
 
 import static java.util.Arrays.asList;
 
@@ -115,15 +112,9 @@ public class PluginForestry extends PluginTEBase {
 			}
 
 			if (seed_oil != null) {
-				TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(Items.WHEAT_SEEDS, 1), ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
-				TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(Items.BEETROOT_SEEDS, 1), ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
-				TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(Items.PUMPKIN_SEEDS, 1), ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
-				TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(Items.MELON_SEEDS, 1), ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
 				TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(ItemHelper.getOre("cropCherry"), 1), mulch, new FluidStack(seed_oil, 50), 5, false);
 				TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(ItemHelper.getOre("cropChestnut"), 1), mulch, new FluidStack(seed_oil, 220), 2, false);
 				TransposerManager.addExtractRecipe(energy, ItemHelper.cloneStack(ItemHelper.getOre("cropWalnut"), 1), mulch, new FluidStack(seed_oil, 180), 5, false);
-
-				addSeedOilRecipes();
 			}
 			TransposerManager.addContainerOverride(capsule, wax, 10);
 			TransposerManager.addContainerOverride(capsuleRefactory, waxRefractory, 10);
@@ -148,24 +139,6 @@ public class PluginForestry extends PluginTEBase {
 			CentrifugeManager.addRecipe(energy, combMellow, asList(honeydew, new ItemStack(Items.QUARTZ), wax), asList(60, 30, 20), null);
 
 			CentrifugeManager.addRecipe(energy, propolisSilky, asList(silkWisp, propolis), asList(60, 10), null);
-		}
-	}
-
-	/* HELPERS */
-	protected static void addSeedOilRecipes() {
-
-		Fluid seed_oil = FluidRegistry.getFluid("seed.oil");
-		String[] oreNameList = OreDictionary.getOreNames();
-
-		for (String name : oreNameList) {
-			if (name.startsWith("seed")) {
-				List<ItemStack> seed = OreDictionary.getOres(name, false);
-
-				if (seed.isEmpty()) {
-					continue;
-				}
-				TransposerManager.addExtractRecipe(2400, ItemHelper.cloneStack(seed.get(0), 1), ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
-			}
 		}
 	}
 

@@ -217,7 +217,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		machineCrucibleLava = addAugmentItem(352, TEProps.MACHINE_CRUCIBLE_LAVA, AugmentType.MODE);
 		// machineCrucibleAlloy = addAugmentItem(353, TEProps.MACHINE_CRUCIBLE_ALLOY, AugmentType.MODE);
 
-		machineRefineryOil = addAugmentItem(368, TEProps.MACHINE_REFINERY_OIL, AugmentType.MODE);
+		machineRefineryFossil = addAugmentItem(368, TEProps.MACHINE_REFINERY_FOSSIL, AugmentType.MODE);
+		machineRefineryBio = addAugmentItem(370, TEProps.MACHINE_REFINERY_BIO, AugmentType.MODE);
 		machineRefineryPotion = addAugmentItem(369, TEProps.MACHINE_REFINERY_POTION, AugmentType.MODE);
 
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
@@ -250,6 +251,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		dynamoCompressionCoolant = addAugmentItem(672, TEProps.DYNAMO_COMPRESSION_COOLANT, AugmentType.MODE);
 		dynamoCompressionFuel = addAugmentItem(673, TEProps.DYNAMO_COMPRESSION_FUEL, AugmentType.MODE);
+		dynamoCompressionBiofuel = addAugmentItem(674, TEProps.DYNAMO_COMPRESSION_BIOFUEL, AugmentType.MODE);
 
 		dynamoReactantElemental = addAugmentItem(688, TEProps.DYNAMO_REACTANT_ELEMENTAL, AugmentType.MODE);
 
@@ -450,7 +452,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 //				'X', "dustCryotheum"
 //		);
 
-		addShapedRecipe(machineRefineryOil,
+		addShapedRecipe(machineRefineryFossil,
 				" G ",
 				"ICI",
 				" X ",
@@ -458,6 +460,15 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'G', "gearConstantan",
 				'I', "blockGlassHardened",
 				'X', Items.BLAZE_ROD
+		);
+		addShapedRecipe(machineRefineryBio,
+				" G ",
+				"ICI",
+				" X ",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearBronze",
+				'I', "blockGlassHardened",
+				'X', "rodBlitz"
 		);
 		if (enableAugmentRefineryPotion) {
 			addShapedRecipe(machineRefineryPotion,
@@ -646,6 +657,15 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateCopper",
 				'X', "dustPyrotheum"
 		);
+		addShapedRecipe(dynamoCompressionBiofuel,
+				" G ",
+				"ICI",
+				" X ",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearBronze",
+				'I', "plateConstantan",
+				'X', "dustAerotheum"
+		);
 
 		addShapedRecipe(dynamoReactantElemental,
 				" G ",
@@ -787,7 +807,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineCrucibleLava;
 	public static ItemStack machineCrucibleAlloy;
 
-	public static ItemStack machineRefineryOil;
+	public static ItemStack machineRefineryFossil;
+	public static ItemStack machineRefineryBio;
 	public static ItemStack machineRefineryPotion;
 
 	public static ItemStack machineChargerThroughput;
@@ -820,6 +841,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack dynamoCompressionCoolant;
 	public static ItemStack dynamoCompressionFuel;
+	public static ItemStack dynamoCompressionBiofuel;
 
 	public static ItemStack dynamoReactantElemental;
 

@@ -28,6 +28,9 @@ public class PulverizerManager {
 		oreValidator.addPrefix("plank");
 		oreValidator.addExact("sand");
 		// oreValidator.addBlacklist("oreCertusQuartz");
+
+		oreValidator.addExact("treeSapling");
+		oreValidator.addExact("treeLeaves");
 	}
 
 	static final int ORE_MULTIPLIER = 2;

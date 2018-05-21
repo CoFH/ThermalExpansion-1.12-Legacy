@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.plugins.jei.machine.refinery;
 
-import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
@@ -21,6 +20,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -40,7 +40,8 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipeCategories(new RefineryRecipeCategory(guiHelper));
-		registry.addRecipeCategories(new RefineryRecipeCategoryOil(guiHelper));
+		registry.addRecipeCategories(new RefineryRecipeCategoryFossil(guiHelper));
+		registry.addRecipeCategories(new RefineryRecipeCategoryBio(guiHelper));
 		registry.addRecipeCategories(new RefineryRecipeCategoryPotion(guiHelper));
 	}
 
@@ -53,10 +54,11 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.REFINERY);
-		registry.addRecipeClickArea(GuiRefinery.class, 76, 34, 24, 16, RecipeUidsTE.REFINERY, RecipeUidsTE.REFINERY_OIL, RecipeUidsTE.REFINERY_POTION);
+		registry.addRecipeClickArea(GuiRefinery.class, 76, 34, 24, 16, RecipeUidsTE.REFINERY, RecipeUidsTE.REFINERY_FOSSIL, RecipeUidsTE.REFINERY_BIO, RecipeUidsTE.REFINERY_POTION);
 		registry.addRecipeCatalyst(BlockMachine.machineRefinery, RecipeUidsTE.REFINERY);
 
-		RefineryRecipeCategoryOil.initialize(registry);
+		RefineryRecipeCategoryFossil.initialize(registry);
+		RefineryRecipeCategoryBio.initialize(registry);
 		RefineryRecipeCategoryPotion.initialize(registry);
 	}
 
@@ -119,8 +121,8 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 		guiItemStacks.init(0, false, 105, 23);
-		guiFluidStacks.init(0, true, 34, 8, 16, 30, CoreProps.BOTTLE_VOLUME, false, tankOverlayInput);
-		guiFluidStacks.init(1, false, 141, 1, 16, 60, CoreProps.BOTTLE_VOLUME, false, tankOverlayOutput);
+		guiFluidStacks.init(0, true, 34, 8, 16, 30, Fluid.BUCKET_VOLUME / 2, false, tankOverlayInput);
+		guiFluidStacks.init(1, false, 141, 1, 16, 60, Fluid.BUCKET_VOLUME / 2, false, tankOverlayOutput);
 
 		guiItemStacks.set(0, outputItems.get(0));
 		guiFluidStacks.set(0, inputFluids.get(0));

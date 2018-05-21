@@ -18,7 +18,8 @@ public class RefineryManager {
 
 	private static Int2ObjectOpenHashMap<RefineryRecipe> recipeMap = new Int2ObjectOpenHashMap<>();
 	private static Int2ObjectOpenHashMap<RefineryRecipe> recipeMapPotion = new Int2ObjectOpenHashMap<>();
-	private static Set<String> oilFluids = new ObjectOpenHashSet<>();
+	private static Set<String> bioFluids = new ObjectOpenHashSet<>();
+	private static Set<String> fossilFluids = new ObjectOpenHashSet<>();
 
 	public static final int DEFAULT_ENERGY = 5000;
 
@@ -54,7 +55,12 @@ public class RefineryManager {
 
 	public static boolean isFossilFuel(FluidStack fluid) {
 
-		return fluid != null && oilFluids.contains(fluid.getFluid().getName());
+		return fluid != null && fossilFluids.contains(fluid.getFluid().getName());
+	}
+
+	public static boolean isBioFuel(FluidStack fluid) {
+
+		return fluid != null && bioFluids.contains(fluid.getFluid().getName());
 	}
 
 	public static void initialize() {
@@ -150,12 +156,20 @@ public class RefineryManager {
 	}
 
 	/* HELPERS */
+	public static void addBioFuel(Fluid fluid) {
+
+		if (!FluidRegistry.isFluidRegistered(fluid)) {
+			return;
+		}
+		bioFluids.add(fluid.getName());
+	}
+
 	public static void addFossilFuel(Fluid fluid) {
 
 		if (!FluidRegistry.isFluidRegistered(fluid)) {
 			return;
 		}
-		oilFluids.add(fluid.getName());
+		fossilFluids.add(fluid.getName());
 	}
 
 	public static void addStrongPotionRecipes(String baseName, int minRank, int maxRank) {

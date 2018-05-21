@@ -24,6 +24,7 @@ import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 import java.util.Map;
@@ -183,11 +184,13 @@ public class TransposerManager {
 				addFillRecipe(16000, ItemFrame.frameCell4, ItemFrame.frameCell4Filled, redstoneFluid, false);
 			}
 		}
-
-		addFillRecipe(4000, new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Blocks.SPONGE, 1, 1), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), true);
-		addFillRecipe(2000, ItemFertilizer.fertilizerBasic, ItemFertilizer.fertilizerRich, new FluidStack(TFFluids.fluidSap, 200), false);
+		addFillRecipe(400, new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Blocks.SPONGE, 1, 1), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), true);
 		addFillRecipe(400, new ItemStack(Items.BOWL), new ItemStack(Items.MUSHROOM_STEW), new FluidStack(TFFluids.fluidMushroomStew, 250), true);
 		addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(TFFluids.fluidExperience, 250), false);
+
+		addFillRecipe(1600, ItemFertilizer.fertilizerBasic, ItemFertilizer.fertilizerRich, new FluidStack(TFFluids.fluidSap, 200), false);
+		addFillRecipe(800, ItemMaterial.dustBiomass, ItemMaterial.dustBiomassRich, new FluidStack(TFFluids.fluidSeedOil, 100), false);
+		addFillRecipe(800, ItemMaterial.dustBioblend, ItemMaterial.dustBioblendRich, new FluidStack(TFFluids.fluidSeedOil, 100), false);
 
 		/* LOAD POTIONS */
 		loadPotions();
@@ -218,6 +221,7 @@ public class TransposerManager {
 		if (FluidRegistry.isFluidRegistered(CoreProps.XPJUICE)) {
 			addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(FluidRegistry.getFluid(CoreProps.XPJUICE), 250), false);
 		}
+		addDefaultSeedOilRecipes();
 	}
 
 	public static void refresh() {
@@ -336,6 +340,20 @@ public class TransposerManager {
 		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION, 1), type), TFFluids.getSplashPotion(CoreProps.BOTTLE_VOLUME, type), true);
 		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION, 1), type), TFFluids.getLingeringPotion(CoreProps.BOTTLE_VOLUME, type), true);
 		addFillRecipe(DEFAULT_ENERGY, new ItemStack(Items.ARROW), PotionUtils.addPotionToItemStack(new ItemStack(Items.TIPPED_ARROW), type), TFFluids.getLingeringPotion(CoreProps.BOTTLE_VOLUME / 10, type), false);
+	}
+
+	public static void addDefaultSeedOilRecipes() {
+
+		for (String name : OreDictionary.getOreNames()) {
+			if (name.startsWith("seed") && !name.startsWith("seeds")) {
+				List<ItemStack> seed = OreDictionary.getOres(name, false);
+
+				if (seed.isEmpty()) {
+					continue;
+				}
+				TransposerManager.addExtractRecipe(1600, ItemHelper.cloneStack(seed.get(0), 1), ItemStack.EMPTY, new FluidStack(TFFluids.fluidSeedOil, 50), 0, false);
+			}
+		}
 	}
 
 	/* RECIPE CLASS */
