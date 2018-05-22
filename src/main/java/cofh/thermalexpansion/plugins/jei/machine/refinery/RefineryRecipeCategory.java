@@ -41,7 +41,7 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 
 		registry.addRecipeCategories(new RefineryRecipeCategory(guiHelper));
 		registry.addRecipeCategories(new RefineryRecipeCategoryFossil(guiHelper));
-		registry.addRecipeCategories(new RefineryRecipeCategoryBio(guiHelper));
+		// registry.addRecipeCategories(new RefineryRecipeCategoryBio(guiHelper));
 		registry.addRecipeCategories(new RefineryRecipeCategoryPotion(guiHelper));
 	}
 
@@ -58,7 +58,7 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 		registry.addRecipeCatalyst(BlockMachine.machineRefinery, RecipeUidsTE.REFINERY);
 
 		RefineryRecipeCategoryFossil.initialize(registry);
-		RefineryRecipeCategoryBio.initialize(registry);
+		// RefineryRecipeCategoryBio.initialize(registry);
 		RefineryRecipeCategoryPotion.initialize(registry);
 	}
 
