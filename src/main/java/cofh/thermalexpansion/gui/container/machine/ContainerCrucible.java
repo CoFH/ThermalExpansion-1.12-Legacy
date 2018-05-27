@@ -1,16 +1,16 @@
 package cofh.thermalexpansion.gui.container.machine;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotEnergy;
 import cofh.core.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.machine.TileCrucible;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerCrucible extends ContainerTEBase implements ISlotValidator {
+public class ContainerCrucible extends ContainerTileAugmentable implements ISlotValidator {
 
 	TileCrucible myTile;
 

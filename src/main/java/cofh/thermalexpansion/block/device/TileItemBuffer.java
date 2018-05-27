@@ -1,11 +1,17 @@
 package cofh.thermalexpansion.block.device;
 
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
+import cofh.core.util.filter.ItemFilter;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiItemBuffer;
+import cofh.thermalexpansion.gui.client.device.GuiItemBufferFilter;
 import cofh.thermalexpansion.gui.container.device.ContainerItemBuffer;
+import cofh.thermalexpansion.gui.container.device.ContainerItemBufferFilter;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -17,6 +23,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
@@ -46,6 +54,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		String category = "Device.ItemBuffer";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
+
+	private ItemFilter filter = new ItemFilter(9);
 
 	private int inputTracker;
 	private int outputTracker;
@@ -92,9 +102,10 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		boolean curActive = isActive;
 
 		if (isActive) {
-			transferOutput();
-			transferInput();
-
+			if (world.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF == 0) {
+				transferOutput();
+				transferInput();
+			}
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
 			}
@@ -142,6 +153,11 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		}
 	}
 
+	public ItemFilter getFilter() {
+
+		return filter;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -155,17 +171,37 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		return new ContainerItemBuffer(inventory, this);
 	}
 
+	@Override
+	public Object getConfigGuiClient(InventoryPlayer inventory) {
+
+		return new GuiItemBufferFilter(inventory, this);
+	}
+
+	@Override
+	public Object getConfigGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerItemBufferFilter(inventory, this);
+	}
+
+	@Override
+	public boolean hasConfigGui() {
+
+		return true;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 
 		amountInput = MathHelper.clamp(nbt.getInteger("AmountIn"), 0, 64);
 		amountOutput = MathHelper.clamp(nbt.getInteger("AmountOut"), 0, 64);
+
+		filter.deserializeNBT(nbt.getCompoundTag(CoreProps.FILTER));
 	}
 
 	@Override
@@ -173,11 +209,14 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 
 		nbt.setInteger("AmountIn", amountInput);
 		nbt.setInteger("AmountOut", amountOutput);
+
+		nbt.setTag(CoreProps.FILTER, filter.serializeNBT());
+
 		return nbt;
 	}
 
@@ -213,6 +252,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		payload.addInt(amountInput);
 		payload.addInt(amountOutput);
 
+		payload.addByte(filter.getFlagByte());
+
 		return payload;
 	}
 
@@ -224,6 +265,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		payload.addInt(amountInput);
 		payload.addInt(amountOutput);
 
+		payload.addByte(filter.getFlagByte());
+
 		return payload;
 	}
 
@@ -234,6 +277,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		amountInput = payload.getInt();
 		amountOutput = payload.getInt();
+
+		filter.setFlagByte(payload.getByte());
 	}
 
 	@Override
@@ -244,6 +289,15 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		amountInput = payload.getInt();
 		amountOutput = payload.getInt();
+
+		filter.setFlagByte(payload.getByte());
+	}
+
+	/* IInventory */
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return filter.matches(stack);
 	}
 
 }

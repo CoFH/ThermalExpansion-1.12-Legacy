@@ -10,7 +10,6 @@ import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -246,8 +245,6 @@ public class PluginNatura extends PluginTEBase {
 		Block blockLeavesNether = getBlock("nether_leaves");
 		Block blockLeavesNether2 = getBlock("nether_leaves2");
 
-		Fluid seed_oil = FluidRegistry.getFluid("seed.oil");
-
 		/* SAWMILL */
 		{
 			int energy = SawmillManager.DEFAULT_ENERGY;
@@ -436,10 +433,8 @@ public class PluginNatura extends PluginTEBase {
 
 		/* TRANSPOSER */
 		{
-			if (seed_oil != null) {
-				TransposerManager.addExtractRecipe(2400, seedBarley, ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
-				TransposerManager.addExtractRecipe(2400, seedCotton, ItemStack.EMPTY, new FluidStack(seed_oil, 10), 0, false);
-			}
+			TransposerManager.addExtractRecipe(800, seedBarley, ItemStack.EMPTY, new FluidStack(TFFluids.fluidSeedOil, 50), 0, false);
+			TransposerManager.addExtractRecipe(800, seedCotton, ItemStack.EMPTY, new FluidStack(TFFluids.fluidSeedOil, 50), 0, false);
 		}
 
 		/* TAPPER */

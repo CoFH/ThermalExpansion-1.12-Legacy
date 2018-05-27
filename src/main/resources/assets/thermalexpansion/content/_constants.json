@@ -15,6 +15,34 @@
 			}
 		},
 		{
+			"name": "biomass",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 816
+			}
+		},
+		{
+			"name": "rich_biomass",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 817
+			}
+		},
+		{
+			"name": "bioblend",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 818
+			}
+		},
+		{
+			"name": "rich_bioblend",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 819
+			}
+		},
+		{
 			"name": "rosin",
 			"entry": {
 				"item": "thermalfoundation:material",

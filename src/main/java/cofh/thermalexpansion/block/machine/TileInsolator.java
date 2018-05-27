@@ -2,7 +2,11 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -30,6 +34,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileInsolator extends TileMachineBase {
 
@@ -429,8 +435,8 @@ public class TileInsolator extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTrackerPrimary = nbt.getInteger("TrackIn1");
-		inputTrackerSecondary = nbt.getInteger("TrackIn2");
+		inputTrackerPrimary = nbt.getInteger(CoreProps.TRACK_IN);
+		inputTrackerSecondary = nbt.getInteger(CoreProps.TRACK_IN_2);
 		outputTrackerPrimary = nbt.getInteger("Tracker1");
 		outputTrackerSecondary = nbt.getInteger("Tracker2");
 		lockPrimary = nbt.getBoolean("SlotLock");
@@ -442,8 +448,8 @@ public class TileInsolator extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn1", inputTrackerPrimary);
-		nbt.setInteger("TrackIn2", inputTrackerSecondary);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTrackerPrimary);
+		nbt.setInteger(CoreProps.TRACK_IN_2, inputTrackerSecondary);
 		nbt.setInteger("Tracker1", outputTrackerPrimary);
 		nbt.setInteger("Tracker2", outputTrackerSecondary);
 		nbt.setBoolean("SlotLock", lockPrimary);
@@ -524,7 +530,7 @@ public class TileInsolator extends TileMachineBase {
 
 		if (TEProps.MACHINE_INSOLATOR_FERTILIZER.equals(id)) {
 			reuseChance += 20;
-			energyMod += 5;
+			energyMod += 15;
 		}
 		if (!augmentMonoculture && TEProps.MACHINE_INSOLATOR_MONOCULTURE.equals(id)) {
 			augmentMonoculture = true;

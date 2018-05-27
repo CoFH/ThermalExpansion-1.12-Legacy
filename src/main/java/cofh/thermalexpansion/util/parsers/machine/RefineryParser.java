@@ -10,9 +10,10 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class RefineryParser extends BaseParser {
 
-	public static final String FOSSIL = "fossil";
 	public static final String FOSSILFUEL = "fossil-fuel";
 	public static final String FOSSIL_FUEL = "fossil_fuel";
+	public static final String BIOFUEL = "bio-fuel";
+	public static final String BIO_FUEL = "bio_fuel";
 
 	int defaultEnergy = RefineryManager.DEFAULT_ENERGY;
 
@@ -49,7 +50,10 @@ public class RefineryParser extends BaseParser {
 			/* TYPE */
 			if (content.has(TYPE)) {
 				String type = content.get(TYPE).getAsString();
-				if (FOSSIL.equals(type) || FOSSILFUEL.equals(type) || FOSSIL_FUEL.equals(type)) {
+				if (BIOFUEL.equals(type) || BIO_FUEL.equals(type)) {
+					RefineryManager.addBioFuel(input.getFluid());
+				}
+				if (FOSSILFUEL.equals(type) || FOSSIL_FUEL.equals(type)) {
 					RefineryManager.addFossilFuel(input.getFluid());
 				}
 			}

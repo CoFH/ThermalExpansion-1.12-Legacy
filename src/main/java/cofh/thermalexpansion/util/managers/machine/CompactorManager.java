@@ -3,8 +3,8 @@ package cofh.thermalexpansion.util.managers.machine;
 import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -13,11 +13,11 @@ import java.util.Set;
 
 public class CompactorManager {
 
-	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapAll = new THashMap<>();
-	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapPlate = new THashMap<>();
-	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapCoin = new THashMap<>();
-	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapGear = new THashMap<>();
-	private static Set<ComparableItemStackValidated> validationSet = new THashSet<>();
+	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapAll = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapPlate = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapCoin = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapGear = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidated> validationSet = new ObjectOpenHashSet<>();
 
 	public static final int DEFAULT_ENERGY = 4000;
 
@@ -104,11 +104,11 @@ public class CompactorManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackValidated, CompactorRecipe> tempAll = new THashMap<>(recipeMapAll.size());
-		Map<ComparableItemStackValidated, CompactorRecipe> tempPlate = new THashMap<>(recipeMapPlate.size());
-		Map<ComparableItemStackValidated, CompactorRecipe> tempMint = new THashMap<>(recipeMapCoin.size());
-		Map<ComparableItemStackValidated, CompactorRecipe> tempGear = new THashMap<>(recipeMapGear.size());
-		Set<ComparableItemStackValidated> tempSet = new THashSet<>();
+		Map<ComparableItemStackValidated, CompactorRecipe> tempAll = new Object2ObjectOpenHashMap<>(recipeMapAll.size());
+		Map<ComparableItemStackValidated, CompactorRecipe> tempPlate = new Object2ObjectOpenHashMap<>(recipeMapPlate.size());
+		Map<ComparableItemStackValidated, CompactorRecipe> tempMint = new Object2ObjectOpenHashMap<>(recipeMapCoin.size());
+		Map<ComparableItemStackValidated, CompactorRecipe> tempGear = new Object2ObjectOpenHashMap<>(recipeMapGear.size());
+		Set<ComparableItemStackValidated> tempSet = new ObjectOpenHashSet<>();
 		CompactorRecipe tempRecipe;
 
 		for (Map.Entry<ComparableItemStackValidated, CompactorRecipe> entry : recipeMapAll.entrySet()) {

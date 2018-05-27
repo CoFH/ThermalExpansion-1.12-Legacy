@@ -13,6 +13,7 @@ import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.render.TextureHelper;
 import cofh.core.util.TimeTracker;
+import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyProvider;
 import cofh.redstoneflux.api.IEnergyReceiver;
@@ -187,6 +188,23 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		return enableSecurity;
 	}
+
+	// TODO: Weigh balance of this - additional canStart / processStart logic required; also slightly devalues Excitation Augment.
+	//	@Override
+	//	public boolean sendRedstoneUpdates() {
+	//
+	//		return true;
+	//	}
+	//
+	//	@Override
+	//	public void onRedstoneUpdate() {
+	//
+	//		boolean curActive = isActive;
+	//		if (!redstoneControlOrDisable()) {
+	//			isActive = false;
+	//		}
+	//		updateIfChanged(curActive);
+	//	}
 
 	/* IUpgradeable */
 	@Override
@@ -453,6 +471,11 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	public boolean isSteamProducer() {
 
 		return augmentBoiler;
+	}
+
+	public int getFuelEnergy(ItemStack stack) {
+
+		return 0;
 	}
 
 	/* NBT METHODS */

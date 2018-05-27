@@ -1,17 +1,17 @@
 package cofh.thermalexpansion.gui.container.machine;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotEnergy;
 import cofh.core.gui.slot.SlotRemoveOnly;
 import cofh.core.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.machine.TileCentrifuge;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerCentrifuge extends ContainerTEBase implements ISlotValidator {
+public class ContainerCentrifuge extends ContainerTileAugmentable implements ISlotValidator {
 
 	TileCentrifuge myTile;
 

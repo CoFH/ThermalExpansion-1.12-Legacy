@@ -1,14 +1,17 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiWaterGen;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.init.TETextures;
@@ -36,6 +39,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileWaterGen extends TileDeviceBase implements ITickable {
 
@@ -208,7 +213,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	@Override
@@ -231,7 +236,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		inNether = nbt.getBoolean("Hell");
 		adjacentSources = nbt.getInteger("Sources");
-		outputTracker = nbt.getInteger("TrackOut");
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 		tank.readFromNBT(nbt);
 
 		if (infiniteSource) {
@@ -246,7 +251,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		nbt.setBoolean("Hell", inNether);
 		nbt.setInteger("Sources", adjacentSources);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
@@ -287,17 +292,17 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		return TETextures.DEVICE_SIDE;
 	}
 
-	@Override
-	public boolean hasFluidUnderlay() {
-
-		return true;
-	}
-
-	@Override
-	public FluidStack getRenderFluid() {
-
-		return new FluidStack(FluidRegistry.WATER, 1);
-	}
+	//	@Override
+	//	public boolean hasFluidUnderlay() {
+	//
+	//		return true;
+	//	}
+	//
+	//	@Override
+	//	public FluidStack getRenderFluid() {
+	//
+	//		return new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
+	//	}
 
 	@Override
 	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {

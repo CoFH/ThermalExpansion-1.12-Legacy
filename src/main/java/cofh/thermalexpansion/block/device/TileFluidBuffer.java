@@ -1,13 +1,16 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiFluidBuffer;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,6 +29,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
@@ -99,9 +104,10 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 		boolean curActive = isActive;
 
 		if (isActive) {
-			transferOutput();
-			transferInput();
-
+			if (world.getTotalWorldTime() % CoreProps.TIME_CONSTANT_QUARTER == 0) {
+				transferOutput();
+				transferInput();
+			}
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
 			}
@@ -174,7 +180,7 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	public FluidTankCore getTank(int tankIndex) {
@@ -188,8 +194,8 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 
 		amountInput = MathHelper.clamp(nbt.getInteger("AmountIn"), 0, 8000);
 		amountOutput = MathHelper.clamp(nbt.getInteger("AmountOut"), 0, 8000);
@@ -205,8 +211,8 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 
 		nbt.setInteger("AmountIn", amountInput);
 		nbt.setInteger("AmountOut", amountOutput);

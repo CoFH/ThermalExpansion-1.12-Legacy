@@ -1,7 +1,10 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.ServerHelper;
@@ -38,6 +41,8 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 	private static final int TYPE = Type.DIFFUSER.getMetadata();
@@ -45,16 +50,14 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 5;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 0 }, {}, { 0 } };
-		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, INPUT_PRIMARY, INPUT_SECONDARY, OPEN };
+		SIDE_CONFIGS[TYPE].numConfig = 4;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 0 }, {} };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, INPUT_PRIMARY, INPUT_SECONDARY };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false };
-
-		LIGHT_VALUES[TYPE] = 5;
 
 		GameRegistry.registerTileEntity(TileDiffuser.class, "thermalexpansion:device_diffuser");
 
@@ -103,6 +106,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	private FluidStack renderFluid;
 
 	private int offset;
+	private boolean forcedCycle;
 
 	public TileDiffuser() {
 
@@ -131,13 +135,29 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
+	public void onRedstoneUpdate() {
+
+		boolean curActive = isActive;
+		isActive = redstoneControlOrDisable();
+
+		if (isActive && !curActive && !forcedCycle) {
+			diffuse();
+			offset = (int) (TIME_CONSTANT - world.getTotalWorldTime() % TIME_CONSTANT) - 1;
+			forcedCycle = true;
+		}
+		updateIfChanged(curActive);
+	}
+
+	@Override
 	public void update() {
+
+		if (!timeCheckOffset()) {
+			return;
+		}
+		forcedCycle = false;
 
 		if (ServerHelper.isClientWorld(world)) {
 			if (!enableParticles) {
-				return;
-			}
-			if (!timeCheckOffset()) {
 				return;
 			}
 			if (isActive) {
@@ -145,16 +165,11 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 			}
 			return;
 		}
-		if (!timeCheckOffset()) {
-			return;
-		}
 		transferInput();
-
 		boolean curActive = isActive;
 
 		if (isActive) {
 			diffuse();
-
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
 			}
@@ -186,7 +201,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 		if (renderFluid == null) {
 			return;
 		}
-		int radius = isSplashPotion(renderFluid) ? radiusSplash : isLingeringPotion(renderFluid) ? radiusLingering : radiusPotion;
+		int radius = TFFluids.isSplashPotion(renderFluid) ? radiusSplash : TFFluids.isLingeringPotion(renderFluid) ? radiusLingering : radiusPotion;
 
 		List<PotionEffect> effects = PotionUtils.getEffectsFromTag(renderFluid.tag);
 		int color = PotionUtils.getPotionColorFromEffectList(effects);
@@ -233,7 +248,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 			renderFluid = new FluidStack(potionFluid, 0);
 			sendFluidPacket();
 		}
-		int radius = isSplashPotion(potionFluid) ? radiusSplash : isLingeringPotion(potionFluid) ? radiusLingering : radiusPotion;
+		int radius = TFFluids.isSplashPotion(potionFluid) ? radiusSplash : TFFluids.isLingeringPotion(potionFluid) ? radiusLingering : radiusPotion;
 
 		AxisAlignedBB area = new AxisAlignedBB(pos.add(-radius, 1 - radius, -radius), pos.add(1 + radius, radius, 1 + radius));
 		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, area);
@@ -314,7 +329,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
 		tank.readFromNBT(nbt);
 
 		boostAmp = nbt.getInteger("BoostAmp");
@@ -327,7 +342,7 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
 		tank.writeToNBT(nbt);
 
 		nbt.setInteger("BoostAmp", boostAmp);
@@ -410,19 +425,9 @@ public class TileDiffuser extends TileDeviceBase implements ITickable {
 	}
 
 	/* HELPERS */
-	protected static boolean isSplashPotion(FluidStack stack) {
-
-		return stack != null && stack.getFluid() == TFFluids.fluidPotionSplash;
-	}
-
-	protected static boolean isLingeringPotion(FluidStack stack) {
-
-		return stack != null && stack.getFluid() == TFFluids.fluidPotionLingering;
-	}
-
 	protected static boolean isValidPotion(FluidStack stack) {
 
-		return stack != null && (stack.getFluid() == TFFluids.fluidPotion || stack.getFluid() == TFFluids.fluidPotionSplash || stack.getFluid() == TFFluids.fluidPotionLingering);
+		return stack != null && (TFFluids.isPotion(stack) || TFFluids.isSplashPotion(stack) || TFFluids.isLingeringPotion(stack));
 	}
 
 	/* IInventory */

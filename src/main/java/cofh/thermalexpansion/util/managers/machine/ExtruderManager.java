@@ -2,7 +2,7 @@ package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.util.ItemWrapper;
 import cofh.core.util.helpers.ItemHelper;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -16,8 +16,8 @@ import java.util.Map.Entry;
 
 public class ExtruderManager {
 
-	private static Map<ItemWrapper, ExtruderRecipe> recipeMapIgneous = new THashMap<>();
-	private static Map<ItemWrapper, ExtruderRecipe> recipeMapSedimentary = new THashMap<>();
+	private static Map<ItemWrapper, ExtruderRecipe> recipeMapIgneous = new Object2ObjectOpenHashMap<>();
+	private static Map<ItemWrapper, ExtruderRecipe> recipeMapSedimentary = new Object2ObjectOpenHashMap<>();
 	private static List<ItemStack> outputListIgneous = new ArrayList<>();
 	private static List<ItemStack> outputListSedimentary = new ArrayList<>();
 
@@ -99,8 +99,8 @@ public class ExtruderManager {
 
 	public static void refresh() {
 
-		Map<ItemWrapper, ExtruderRecipe> tempMapIgneous = new THashMap<>(recipeMapIgneous.size());
-		Map<ItemWrapper, ExtruderRecipe> tempMapSedimentary = new THashMap<>(recipeMapSedimentary.size());
+		Map<ItemWrapper, ExtruderRecipe> tempMapIgneous = new Object2ObjectOpenHashMap<>(recipeMapIgneous.size());
+		Map<ItemWrapper, ExtruderRecipe> tempMapSedimentary = new Object2ObjectOpenHashMap<>(recipeMapSedimentary.size());
 		ExtruderRecipe tempRecipe;
 
 		for (Entry<ItemWrapper, ExtruderRecipe> entry : recipeMapIgneous.entrySet()) {

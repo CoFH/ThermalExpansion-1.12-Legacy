@@ -2,6 +2,8 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
@@ -17,6 +19,8 @@ import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Arrays;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileFactorizer extends TileDeviceBase implements ITickable {
 
@@ -186,8 +190,8 @@ public class TileFactorizer extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 		recipeMode = nbt.getBoolean(CoreProps.MODE);
 	}
 
@@ -196,8 +200,8 @@ public class TileFactorizer extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		nbt.setBoolean(CoreProps.MODE, recipeMode);
 		return nbt;
 	}

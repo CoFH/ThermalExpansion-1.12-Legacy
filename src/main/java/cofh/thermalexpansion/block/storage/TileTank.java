@@ -5,11 +5,11 @@ import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.block.TileAugmentableSecure;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.storage.GuiTank;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -84,7 +84,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	boolean cached = false;
 	boolean adjacentTanks[] = new boolean[2];
 
-	private FluidTankCore tank = new FluidTankCore(getCapacity(0, 0));
+	private FluidTankCore tank = new FluidTankCore(getMaxCapacity(0, 0));
 
 	@Override
 	protected Object getMod() {
@@ -233,7 +233,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	protected boolean setLevel(int level) {
 
 		if (super.setLevel(level)) {
-			tank.setCapacity(getCapacity(level, enchantHolding));
+			tank.setCapacity(getMaxCapacity(level, enchantHolding));
 
 			if (isCreative && getTankFluidAmount() > 0) {
 				tank.getFluid().amount = tank.getCapacity();
@@ -250,7 +250,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	}
 
 	/* COMMON METHODS */
-	public static int getCapacity(int level, int enchant) {
+	public static int getMaxCapacity(int level, int enchant) {
 
 		return CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * enchant) / 2;
 	}
@@ -318,7 +318,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		boolean sendUpdate = false;
 
 		if (tank.getFluidAmount() > 0) {
-			int curDisplayLevel = (int) Math.max(1, (tank.getFluidAmount() / (float) getCapacity(level, enchantHolding) * (RENDER_LEVELS - 1)));
+			int curDisplayLevel = (int) Math.max(1, (tank.getFluidAmount() / (float) getMaxCapacity(level, enchantHolding) * (RENDER_LEVELS - 1)));
 			if (lastDisplayLevel != curDisplayLevel) {
 				lastDisplayLevel = curDisplayLevel;
 				sendUpdate = true;
@@ -343,7 +343,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	@Override
 	public Object getConfigGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	@Override
@@ -495,7 +495,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 						if (resource.isFluidEqual(tank.getFluid())) {
 							return 0;
 						}
-						tank.setFluid(new FluidStack(resource, getCapacity(level, enchantHolding)));
+						tank.setFluid(new FluidStack(resource, getMaxCapacity(level, enchantHolding)));
 						sendTilePacket(Side.CLIENT);
 						updateRender();
 						return 0;

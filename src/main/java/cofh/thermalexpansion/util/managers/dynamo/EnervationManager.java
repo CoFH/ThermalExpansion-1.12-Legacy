@@ -6,8 +6,11 @@ import cofh.redstoneflux.api.IEnergyContainerItem;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 
+import java.util.Map;
 import java.util.Set;
 
 public class EnervationManager {
@@ -15,10 +18,25 @@ public class EnervationManager {
 	private static TObjectIntHashMap<ComparableItemStack> fuelMap = new TObjectIntHashMap<>();
 
 	public static int DEFAULT_ENERGY = 64000;
+	public static final int ENCHANT_ENERGY = 5000;
 
 	public static Set<ComparableItemStack> getFuels() {
 
 		return ImmutableSet.copyOf(fuelMap.keySet());
+	}
+
+	public static int getEnchantEnergy(ItemStack stack) {
+
+		Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(stack);
+		int enchantRF = 0;
+
+		for (Enchantment enchant : enchants.keySet()) {
+			enchantRF += enchant.getMinEnchantability(enchants.get(enchant));
+		}
+		enchantRF += (enchants.size() * (enchants.size() + 1)) / 2;
+		enchantRF *= ENCHANT_ENERGY;
+
+		return enchantRF;
 	}
 
 	public static int getFuelEnergy(ItemStack stack) {

@@ -190,10 +190,10 @@ info.thermalexpansion.augment.machinePulverizerPetrotheum.a.0=Aumenta o rediment
 info.thermalexpansion.augment.machinePulverizerPetrotheum.b.0=Energia adicional será necessária para cada operação.
 info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=Deve ser suprido com Petroteum Tectônico.
 
-info.thermalexpansion.augment.machineRefineryOil.0=Refinaria: Especialização
-info.thermalexpansion.augment.machineRefineryOil.a.0=Aumenta grandemente a eficiência para combustíveis fósseis.
-info.thermalexpansion.augment.machineRefineryOil.b.0=Porém, apenas combustíveis fósseis podem ser processados.
-info.thermalexpansion.augment.machineRefineryOil.b.1=Energia adicional será necessária para cada operação.
+info.thermalexpansion.augment.machineRefineryFossil.0=Refinaria: Especialização
+info.thermalexpansion.augment.machineRefineryFossil.a.0=Aumenta grandemente a eficiência para combustíveis fósseis.
+info.thermalexpansion.augment.machineRefineryFossil.b.0=Porém, apenas combustíveis fósseis podem ser processados.
+info.thermalexpansion.augment.machineRefineryFossil.b.1=Energia adicional será necessária para cada operação.
 
 info.thermalexpansion.augment.machineRefineryPotion.0=Refinaria: Especialização
 info.thermalexpansion.augment.machineRefineryPotion.a.0=Permite que poções sejam refinadas.
@@ -360,7 +360,7 @@ item.thermalexpansion.augment.machineInsolatorTree.name=Infusão de Mudas
 item.thermalexpansion.augment.machinePower.name=Bobina Receptora Auxiliar
 item.thermalexpansion.augment.machinePulverizerGeode.name=Formação Geóide
 item.thermalexpansion.augment.machinePulverizerPetrotheum.name=Iniciador Tectônico
-item.thermalexpansion.augment.machineRefineryOil.name=Destilaria
+item.thermalexpansion.augment.machineRefineryFossil.name=Destilaria
 item.thermalexpansion.augment.machineRefineryPotion.name=Retorta Alquímica
 item.thermalexpansion.augment.machineSawmillTapper.name=Funil de Resina
 item.thermalexpansion.augment.machineSmelterFlux.name=Economia Metalúrgica

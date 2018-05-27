@@ -7,7 +7,7 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalfoundation.init.TFEquipment;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -17,7 +17,7 @@ import java.util.Map.Entry;
 
 public class PulverizerManager {
 
-	private static Map<ComparableItemStackValidated, PulverizerRecipe> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackValidated, PulverizerRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -28,6 +28,9 @@ public class PulverizerManager {
 		oreValidator.addPrefix("plank");
 		oreValidator.addExact("sand");
 		// oreValidator.addBlacklist("oreCertusQuartz");
+
+		oreValidator.addExact("treeSapling");
+		oreValidator.addExact("treeLeaves");
 	}
 
 	static final int ORE_MULTIPLIER = 2;
@@ -64,6 +67,7 @@ public class PulverizerManager {
 		/* RECYCLING */
 		{
 			// Output is 1/2, round down, minimum of 1.
+
 			/* WOODEN TOOLS / ARMOR */
 			int energy = DEFAULT_ENERGY * 3 / 4;
 			ItemStack output = ItemMaterial.dustWood;
@@ -123,7 +127,7 @@ public class PulverizerManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackValidated, PulverizerRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidated, PulverizerRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
 		PulverizerRecipe tempRecipe;
 
 		for (Entry<ComparableItemStackValidated, PulverizerRecipe> entry : recipeMap.entrySet()) {

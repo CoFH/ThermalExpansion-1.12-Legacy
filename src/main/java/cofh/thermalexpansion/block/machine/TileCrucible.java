@@ -1,7 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.RenderHelper;
@@ -37,10 +41,12 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileCrucible extends TileMachineBase {
 
 	private static final int TYPE = Type.CRUCIBLE.getMetadata();
-	public static int basePower = 50;
+	public static int basePower = 40;
 
 	public static final int LAVA_MULTIPLIER = 10;
 	public static final int LAVA_ENERGY_MOD = 0;
@@ -297,8 +303,8 @@ public class TileCrucible extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTrackerFluid = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTrackerFluid = nbt.getInteger(CoreProps.TRACK_OUT);
 		tank.readFromNBT(nbt);
 
 		getRecipe();
@@ -314,8 +320,8 @@ public class TileCrucible extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTrackerFluid);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTrackerFluid);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}

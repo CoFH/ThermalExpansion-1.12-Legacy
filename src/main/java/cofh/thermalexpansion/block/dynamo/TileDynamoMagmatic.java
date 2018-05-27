@@ -1,18 +1,21 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.network.PacketBase;
 import cofh.core.render.TextureHelper;
+import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.helpers.AugmentHelper;
+import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.device.CoolantManager;
 import cofh.thermalexpansion.util.managers.dynamo.MagmaticManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -106,17 +109,17 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 		if (augmentBoiler || augmentCoolant) {
 			if (fuelRF <= 0) {
-				fuelRF += MagmaticManager.getFuelEnergy100mB(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
+				fuelRF += MagmaticManager.getFuelEnergy100mB(fuelTank.getFluid()) * (energyMod + coolantFactor) / ENERGY_BASE;
 				fuelTank.drain(fluidAmount, true);
 			}
 			if (coolantRF <= 0) {
 				coolantRF += CoolantManager.getCoolantRF100mB(coolantTank.getFluid());
-				coolantFactor = augmentBoiler ? 0 : CoolantManager.getCoolantFactor(coolantTank.getFluid()) / 2;
+				coolantFactor = augmentBoiler ? 0 : CoolantManager.getCoolantFactor(coolantTank.getFluid()) - CoolantManager.WATER_FACTOR;
 				coolantTank.drain(fluidAmount, true);
 			}
 			return;
 		}
-		fuelRF += MagmaticManager.getFuelEnergy100mB(fuelTank.getFluid()) * (energyMod + coolantFactor) / ENERGY_BASE;
+		fuelRF += MagmaticManager.getFuelEnergy100mB(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
 		fuelTank.drain(fluidAmount, true);
 	}
 
@@ -161,7 +164,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	@Override
@@ -171,6 +174,13 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 			return fuelTank;
 		}
 		return coolantTank;
+	}
+
+	@Override
+	public int getFuelEnergy(ItemStack stack) {
+
+		FluidStack fluid = FluidHelper.getFluidForFilledItem(stack);
+		return MagmaticManager.isValidFuel(fluid) ? MagmaticManager.getFuelEnergy(fluid) * (energyMod + coolantFactor) / ENERGY_BASE : 0;
 	}
 
 	public boolean showCoolantTank() {
@@ -246,6 +256,10 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		flagTank = augmentBoiler || augmentCoolant;
 		fuelTank.setFluid(payload.getFluidStack());
 		coolantTank.setFluid(payload.getFluidStack());
+
+		if (augmentCoolant) {
+			coolantFactor = Math.max(0, CoolantManager.getCoolantFactor(coolantTank.getFluid()) - 20);
+		}
 	}
 
 	@Override
@@ -296,7 +310,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 			hasModeAugment = true;
 			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level), smallStorage);
 			energyStorage.setEnergyStored(0);
-			energyMod -= 30;
+			energyMod -= 40;
 			return true;
 		}
 		if (!augmentCoolant && TEProps.DYNAMO_MAGMATIC_COOLANT.equals(id)) {

@@ -1,7 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
@@ -29,6 +33,8 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileCentrifuge extends TileMachineBase {
 
@@ -310,9 +316,9 @@ public class TileCentrifuge extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut1");
-		outputTrackerFluid = nbt.getInteger("TrackOut2");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
+		outputTrackerFluid = nbt.getInteger(CoreProps.TRACK_OUT_2);
 		tank.readFromNBT(nbt);
 	}
 
@@ -321,9 +327,9 @@ public class TileCentrifuge extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut1", outputTracker);
-		nbt.setInteger("TrackOut2", outputTrackerFluid);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT_2, outputTrackerFluid);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}

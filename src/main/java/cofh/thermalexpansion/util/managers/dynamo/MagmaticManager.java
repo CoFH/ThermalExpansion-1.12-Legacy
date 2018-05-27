@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
 import com.google.common.collect.ImmutableSet;
-import gnu.trove.map.hash.TObjectIntHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class MagmaticManager {
 
-	private static TObjectIntHashMap<String> fuelMap = new TObjectIntHashMap<>();
+	private static Object2IntOpenHashMap<String> fuelMap = new Object2IntOpenHashMap<>();
 
 	public static int DEFAULT_ENERGY = 100000;
 
@@ -18,19 +18,19 @@ public class MagmaticManager {
 		return ImmutableSet.copyOf(fuelMap.keySet());
 	}
 
-	public static boolean isValidFuel(FluidStack fluid) {
+	public static boolean isValidFuel(FluidStack stack) {
 
-		return fluid != null && fuelMap.containsKey(fluid.getFluid().getName());
+		return stack != null && fuelMap.containsKey(stack.getFluid().getName());
 	}
 
-	public static int getFuelEnergy(FluidStack fluid) {
+	public static int getFuelEnergy(FluidStack stack) {
 
-		return fluid == null ? 0 : fuelMap.get(fluid.getFluid().getName());
+		return stack == null ? 0 : fuelMap.get(stack.getFluid().getName());
 	}
 
-	public static int getFuelEnergy100mB(FluidStack fluid) {
+	public static int getFuelEnergy100mB(FluidStack stack) {
 
-		return fluid == null ? 0 : fuelMap.get(fluid.getFluid().getName()) / 10;
+		return stack == null ? 0 : fuelMap.get(stack.getFluid().getName()) / 10;
 	}
 
 	public static void refresh() {

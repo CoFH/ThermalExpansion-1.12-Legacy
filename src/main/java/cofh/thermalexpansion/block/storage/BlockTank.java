@@ -6,7 +6,6 @@ import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
-import cofh.api.block.IConfigGui;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
@@ -47,7 +46,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
 
-public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryProvider, IConfigGui {
+public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryProvider {
 
 	public BlockTank() {
 

@@ -6,7 +6,7 @@ import cofh.core.inventory.InventoryCraftingFalse;
 import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -18,7 +18,7 @@ import java.util.Map.Entry;
 
 public class SawmillManager {
 
-	private static Map<ComparableItemStackValidated, SawmillRecipe> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackValidated, SawmillRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -61,7 +61,8 @@ public class SawmillManager {
 		/* RECYCLING */
 		{
 			// Output is 1/2, round down, minimum of 1.
-			/* WOODEN TOOLS / ARMOR */
+
+			/* LEATHER ARMOR */
 			int energy = DEFAULT_ENERGY * 3 / 4;
 			ItemStack output = new ItemStack(Items.LEATHER);
 
@@ -109,7 +110,7 @@ public class SawmillManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackValidated, SawmillRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidated, SawmillRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
 		SawmillRecipe tempRecipe;
 
 		for (Entry<ComparableItemStackValidated, SawmillRecipe> entry : recipeMap.entrySet()) {

@@ -1,12 +1,12 @@
 package cofh.thermalexpansion.gui.container.device;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.thermalexpansion.block.device.TileNullifier;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerNullifier extends ContainerTEBase {
+public class ContainerNullifier extends ContainerTileAugmentable {
 
 	TileNullifier myTile;
 

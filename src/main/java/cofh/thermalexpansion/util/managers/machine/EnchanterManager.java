@@ -3,8 +3,9 @@ package cofh.thermalexpansion.util.managers.machine;
 import cofh.core.inventory.ComparableItemStack;
 import cofh.core.inventory.ComparableItemStackValidatedNBT;
 import cofh.core.inventory.OreValidator;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
+import cofh.thermalfoundation.item.ItemMaterial;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -22,9 +23,9 @@ import static java.util.Arrays.asList;
 
 public class EnchanterManager {
 
-	private static Map<List<ComparableItemStackValidatedNBT>, EnchanterRecipe> recipeMap = new THashMap<>();
-	private static Set<ComparableItemStackValidatedNBT> validationSet = new THashSet<>();
-	private static Set<ComparableItemStackValidatedNBT> lockSet = new THashSet<>();
+	private static Map<List<ComparableItemStackValidatedNBT>, EnchanterRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidatedNBT> validationSet = new ObjectOpenHashSet<>();
+	private static Set<ComparableItemStackValidatedNBT> lockSet = new ObjectOpenHashSet<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -36,7 +37,7 @@ public class EnchanterManager {
 
 	public static final ItemStack ITEM_BOOK = new ItemStack(Items.BOOK);
 
-	public static final int DEFAULT_ENERGY[] = { 4000, 8000, 12000, 16000, 20000 };
+	public static final int DEFAULT_ENERGY[] = { 4000, 12000, 24000, 40000, 60000 };
 	public static final int DEFAULT_EXPERIENCE[] = { 500, 1500, 3000, 5000, 7500 };
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
@@ -105,8 +106,8 @@ public class EnchanterManager {
 
 	public static void refresh() {
 
-		Map<List<ComparableItemStackValidatedNBT>, EnchanterRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Set<ComparableItemStackValidatedNBT> tempSet = new THashSet<>();
+		Map<List<ComparableItemStackValidatedNBT>, EnchanterRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Set<ComparableItemStackValidatedNBT> tempSet = new ObjectOpenHashSet<>();
 		EnchanterRecipe tempRecipe;
 
 		for (Entry<List<ComparableItemStackValidatedNBT>, EnchanterRecipe> entry : recipeMap.entrySet()) {
@@ -127,7 +128,7 @@ public class EnchanterManager {
 		validationSet.clear();
 		validationSet = tempSet;
 
-		Set<ComparableItemStackValidatedNBT> tempSet2 = new THashSet<>();
+		Set<ComparableItemStackValidatedNBT> tempSet2 = new ObjectOpenHashSet<>();
 		for (ComparableItemStackValidatedNBT entry : lockSet) {
 			ComparableItemStackValidatedNBT lock = convertInput(new ItemStack(entry.item, entry.stackSize, entry.metadata));
 			tempSet2.add(lock);
@@ -244,7 +245,8 @@ public class EnchanterManager {
 			addDefaultEnchantmentRecipe(new ItemStack(Items.EXPERIENCE_BOTTLE), "cofhcore:insight", 1);
 			addDefaultEnchantmentRecipe(new ItemStack(Items.NETHER_WART), "cofhcore:leech", 1);
 			addDefaultEnchantmentRecipe(new ItemStack(Items.ARROW), "cofhcore:multishot", 2);
-			addDefaultEnchantmentRecipe(new ItemStack(Blocks.FURNACE), "cofhcore:smelting", 1);
+			addDefaultEnchantmentRecipe(ItemMaterial.dustPetrotheum, "cofhcore:smashing", 2);
+			addDefaultEnchantmentRecipe(ItemMaterial.dustPyrotheum, "cofhcore:smelting", 2);
 			addDefaultEnchantmentRecipe(new ItemStack(Blocks.SOUL_SAND), "cofhcore:soulbound", 1);
 			addDefaultEnchantmentRecipe(new ItemStack(Items.SKULL, 1, 1), "cofhcore:vorpal", 3);
 		}

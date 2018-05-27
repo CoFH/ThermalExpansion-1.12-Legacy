@@ -1,17 +1,17 @@
 package cofh.thermalexpansion.gui.container.machine;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotEnergy;
 import cofh.core.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.machine.TileFurnace;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerFurnace extends ContainerTEBase implements ISlotValidator {
+public class ContainerFurnace extends ContainerTileAugmentable implements ISlotValidator {
 
 	TileFurnace myTile;
 

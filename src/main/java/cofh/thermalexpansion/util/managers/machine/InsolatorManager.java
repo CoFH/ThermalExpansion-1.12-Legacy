@@ -5,8 +5,8 @@ import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalfoundation.item.ItemFertilizer;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -22,9 +22,9 @@ import static java.util.Arrays.asList;
 
 public class InsolatorManager {
 
-	private static Map<List<ComparableItemStackValidated>, InsolatorRecipe> recipeMap = new THashMap<>();
-	private static Set<ComparableItemStackValidated> validationSet = new THashSet<>();
-	private static Set<ComparableItemStackValidated> lockSet = new THashSet<>();
+	private static Map<List<ComparableItemStackValidated>, InsolatorRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidated> validationSet = new ObjectOpenHashSet<>();
+	private static Set<ComparableItemStackValidated> lockSet = new ObjectOpenHashSet<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -32,12 +32,12 @@ public class InsolatorManager {
 		oreValidator.addPrefix("crop");
 	}
 
-	public static final int CROP_MULTIPLIER_RICH = 3;
-	public static final int CROP_MULTIPLIER_FLUX = 4;
+	public static final int CROP_MULTIPLIER_RICH = 2;
+	public static final int CROP_MULTIPLIER_FLUX = 3;
 
 	public static final int FLUID_FACTOR = 4;
 
-	public static final int DEFAULT_ENERGY = 2400;
+	public static final int DEFAULT_ENERGY = 4800;
 	public static final int DEFAULT_FLUID = DEFAULT_ENERGY / FLUID_FACTOR;
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
@@ -195,8 +195,8 @@ public class InsolatorManager {
 
 	public static void refresh() {
 
-		Map<List<ComparableItemStackValidated>, InsolatorRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Set<ComparableItemStackValidated> tempSet = new THashSet<>();
+		Map<List<ComparableItemStackValidated>, InsolatorRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Set<ComparableItemStackValidated> tempSet = new ObjectOpenHashSet<>();
 		InsolatorRecipe tempRecipe;
 
 		for (Entry<List<ComparableItemStackValidated>, InsolatorRecipe> entry : recipeMap.entrySet()) {
@@ -214,7 +214,7 @@ public class InsolatorManager {
 		validationSet.clear();
 		validationSet = tempSet;
 
-		Set<ComparableItemStackValidated> tempSet2 = new THashSet<>();
+		Set<ComparableItemStackValidated> tempSet2 = new ObjectOpenHashSet<>();
 		for (ComparableItemStackValidated entry : lockSet) {
 			ComparableItemStackValidated lock = convertInput(new ItemStack(entry.item, entry.stackSize, entry.metadata));
 			tempSet2.add(lock);
@@ -339,12 +339,12 @@ public class InsolatorManager {
 
 		if (!secondaryOutput.isEmpty()) {
 			addRecipe(energy, water, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, secondaryOutput, secondaryChance, type);
-			addRecipe(energy * 5 / 4, water * 5 / 4, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), secondaryOutput, secondaryChanceRich, type);
-			addRecipe(energy * 3 / 2, water * 3 / 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), secondaryOutput, secondaryChanceFlux, type);
+			addRecipe(energy * 3 / 2, water * 3 / 2, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), secondaryOutput, secondaryChanceRich, type);
+			addRecipe(energy * 2, water * 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), secondaryOutput, secondaryChanceFlux, type);
 		} else {
 			addRecipe(energy, water, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, ItemStack.EMPTY, 0, type);
-			addRecipe(energy * 5 / 4, water * 5 / 4, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), ItemStack.EMPTY, 0, type);
-			addRecipe(energy * 3 / 2, water * 3 / 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), ItemStack.EMPTY, 0, type);
+			addRecipe(energy * 3 / 2, water * 3 / 2, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), ItemStack.EMPTY, 0, type);
+			addRecipe(energy * 2, water * 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), ItemStack.EMPTY, 0, type);
 		}
 	}
 
@@ -357,12 +357,12 @@ public class InsolatorManager {
 
 		if (!secondaryOutput.isEmpty()) {
 			addRecipe(energy * 2, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, secondaryOutput, secondaryChance, Type.TREE);
-			addRecipe(energy * 5 / 4 * 2, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), secondaryOutput, Math.min(secondaryChance * CROP_MULTIPLIER_RICH, 125), Type.TREE);
-			addRecipe(energy * 3 / 2 * 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), secondaryOutput, Math.min(secondaryChance * CROP_MULTIPLIER_FLUX, 150), Type.TREE);
+			addRecipe(energy * 2 * 3 / 2, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), secondaryOutput, Math.min(secondaryChance * CROP_MULTIPLIER_RICH, 125), Type.TREE);
+			addRecipe(energy * 2 * 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), secondaryOutput, Math.min(secondaryChance * CROP_MULTIPLIER_FLUX, 150), Type.TREE);
 		} else {
 			addRecipe(energy * 2, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, ItemStack.EMPTY, 0, Type.TREE);
-			addRecipe(energy * 5 / 4 * 2, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), ItemStack.EMPTY, 0, Type.TREE);
-			addRecipe(energy * 3 / 2 * 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), ItemStack.EMPTY, 0, Type.TREE);
+			addRecipe(energy * 2 * 3 / 2, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_RICH), ItemStack.EMPTY, 0, Type.TREE);
+			addRecipe(energy * 2 * 2, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.getCount() * CROP_MULTIPLIER_FLUX), ItemStack.EMPTY, 0, Type.TREE);
 		}
 	}
 

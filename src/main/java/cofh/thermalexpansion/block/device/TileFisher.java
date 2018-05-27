@@ -1,6 +1,9 @@
 package cofh.thermalexpansion.block.device;
 
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.RenderHelper;
@@ -24,12 +27,13 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileFisher extends TileDeviceBase implements ITickable {
 
@@ -56,11 +60,19 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		String category = "Device.Fisher";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		String comment = "If TRUE, the Aquatic Entangler will REQUIRE Aqua-Chow to operate.";
+		requireBait = ThermalExpansion.CONFIG.get(category, "RequireBait", requireBait, comment);
+
+		comment = "Adjust this value to set the number of cycles Aqua-Chow lasts.";
+		boostCycles = ThermalExpansion.CONFIG.getConfiguration().getInt("BaitDuration", category, boostCycles, 2, 64, comment);
 	}
 
 	private static final int TARGET_WATER[] = { 10, 20, 30 };
 	private static final int TIME_CONSTANT = 7200;
-	private static final int BOOST_TIME = 8;
+
+	private static boolean requireBait = false;
+	private static int boostCycles = 8;
 
 	private int targetWater = -1;
 	private int timeConstant = TIME_CONSTANT;
@@ -141,12 +153,12 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 						for (int i = 0; i < boostMult; i++) {
 							catchFish();
 						}
-						boostTime = BOOST_TIME - 1;
+						boostTime = boostCycles - 1;
 						inventory[0].shrink(1);
 						if (inventory[0].getCount() <= 0) {
 							inventory[0] = ItemStack.EMPTY;
 						}
-					} else {
+					} else if (!requireBait) {
 						catchFish();
 					}
 				}
@@ -255,11 +267,6 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		}
 	}
 
-	protected static boolean isWater(IBlockState state) {
-
-		return (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) && state.getValue(BlockLiquid.LEVEL) == 0;
-	}
-
 	protected boolean timeCheckOffset() {
 
 		return (world.getTotalWorldTime() + offset) % timeConstant == 0;
@@ -282,9 +289,9 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		return constant / (isRaining ? 2 : 1);
 	}
 
-	public int getBoostMult() {
+	protected static boolean isWater(IBlockState state) {
 
-		return boostMult;
+		return (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) && state.getValue(BlockLiquid.LEVEL) == 0;
 	}
 
 	/* GUI METHODS */
@@ -306,7 +313,12 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		if (!isActive) {
 			return 0;
 		}
-		return MathHelper.round(scale * boostTime / BOOST_TIME);
+		return MathHelper.round(scale * boostTime / boostCycles);
+	}
+
+	public int getBoostMult() {
+
+		return boostMult;
 	}
 
 	/* NBT METHODS */
@@ -317,12 +329,11 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		targetWater = nbt.getInteger("Water");
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 
 		boostMult = nbt.getInteger("BoostMult");
 		boostTime = nbt.getInteger("BoostTime");
-
 		timeConstant = nbt.getInteger("TimeConstant");
 
 		if (timeConstant <= 0) {
@@ -337,12 +348,11 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		nbt.setInteger("Water", targetWater);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 
 		nbt.setInteger("BoostMult", boostMult);
 		nbt.setInteger("BoostTime", boostTime);
-
 		nbt.setInteger("TimeConstant", timeConstant);
 
 		return nbt;
@@ -397,20 +407,9 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	public boolean hasFluidUnderlay() {
-
-		return true;
-	}
-
-	@Override
-	public FluidStack getRenderFluid() {
-
-		return new FluidStack(FluidRegistry.WATER, 1);
-	}
-
-	@Override
 	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
 
 		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && isActive ? FluidRegistry.WATER.getColor() << 8 | 0xFF : super.getColorMask(layer, side);
 	}
+
 }

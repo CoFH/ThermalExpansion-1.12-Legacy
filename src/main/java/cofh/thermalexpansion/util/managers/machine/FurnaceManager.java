@@ -5,8 +5,8 @@ import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.parsers.ConstantParser;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -18,9 +18,9 @@ import java.util.Set;
 
 public class FurnaceManager {
 
-	private static Map<ComparableItemStackValidated, FurnaceRecipe> recipeMap = new THashMap<>();
-	private static Map<ComparableItemStackValidated, FurnaceRecipe> recipeMapPyrolysis = new THashMap<>();
-	private static Set<ComparableItemStackValidated> foodSet = new THashSet<>();
+	private static Map<ComparableItemStackValidated, FurnaceRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidated, FurnaceRecipe> recipeMapPyrolysis = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidated> foodSet = new ObjectOpenHashSet<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -109,9 +109,9 @@ public class FurnaceManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackValidated, FurnaceRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Map<ComparableItemStackValidated, FurnaceRecipe> tempMapPyrolysis = new THashMap<>(recipeMapPyrolysis.size());
-		Set<ComparableItemStackValidated> tempFood = new THashSet<>();
+		Map<ComparableItemStackValidated, FurnaceRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidated, FurnaceRecipe> tempMapPyrolysis = new Object2ObjectOpenHashMap<>(recipeMapPyrolysis.size());
+		Set<ComparableItemStackValidated> tempFood = new ObjectOpenHashSet<>();
 		FurnaceRecipe tempRecipe;
 
 		for (Entry<ComparableItemStackValidated, FurnaceRecipe> entry : recipeMap.entrySet()) {

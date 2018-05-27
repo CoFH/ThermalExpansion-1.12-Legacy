@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.storage;
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.core.block.TilePowered;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.AugmentHelper;
@@ -12,7 +13,6 @@ import cofh.redstoneflux.api.IEnergyProvider;
 import cofh.redstoneflux.impl.EnergyStorage;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.storage.GuiCell;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -98,7 +98,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		super();
 
-		energyStorage = new EnergyStorage(getCapacity(0, 0));
+		energyStorage = new EnergyStorage(getMaxCapacity(0, 0));
 		setDefaultSides();
 		enableAutoOutput = true;
 	}
@@ -205,7 +205,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		int curLevel = this.level;
 
 		if (super.setLevel(level)) {
-			energyStorage.setCapacity(getCapacity(level, enchantHolding));
+			energyStorage.setCapacity(getMaxCapacity(level, enchantHolding));
 			amountRecv = amountRecv * XFER_SCALE[level] / XFER_SCALE[curLevel];
 			amountSend = amountSend * XFER_SCALE[level] / XFER_SCALE[curLevel];
 
@@ -256,14 +256,14 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	}
 
 	/* COMMON METHODS */
-	public static int getCapacity(int level, int enchant) {
+	public static int getMaxCapacity(int level, int enchant) {
 
 		return CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * enchant) / 2;
 	}
 
 	public int getScaledEnergyStored(int scale) {
 
-		return MathHelper.round((long) energyStorage.getEnergyStored() * scale / getCapacity(level, enchantHolding));
+		return MathHelper.round((long) energyStorage.getEnergyStored() * scale / getMaxCapacity(level, enchantHolding));
 	}
 
 	protected void transferEnergy() {
@@ -315,7 +315,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	/* NBT METHODS */
@@ -330,7 +330,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		amountRecv = nbt.getInteger("Recv");
 		amountSend = nbt.getInteger("Send");
 
-		energyStorage = new EnergyStorage(getCapacity(level, enchantHolding));
+		energyStorage = new EnergyStorage(getMaxCapacity(level, enchantHolding));
 		energyStorage.readFromNBT(nbt);
 	}
 
@@ -340,7 +340,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		super.writeToNBT(nbt);
 
 		nbt.setByte("EncHolding", enchantHolding);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		nbt.setInteger("Recv", amountRecv);
 		nbt.setInteger("Send", amountSend);
 		return nbt;

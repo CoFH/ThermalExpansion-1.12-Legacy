@@ -11,7 +11,7 @@ import cofh.thermalexpansion.item.ItemMorb;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.init.TFItems;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -33,8 +33,8 @@ import static java.util.Collections.singletonList;
 
 public class CentrifugeManager {
 
-	private static Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> recipeMap = new THashMap<>();
-	private static Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> recipeMapMobs = new THashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> recipeMapMobs = new Object2ObjectOpenHashMap<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -167,7 +167,7 @@ public class CentrifugeManager {
 		addDefaultMobRecipe("minecraft:villager", singletonList(new ItemStack(Items.EMERALD)), singletonList(2), 0);
 		addDefaultMobRecipe("minecraft:vindication_illager", singletonList(new ItemStack(Items.EMERALD)), singletonList(50), 5);
 		addDefaultMobRecipe("minecraft:witch", asList(new ItemStack(Items.GLOWSTONE_DUST, 2), new ItemStack(Items.GUNPOWDER, 2), new ItemStack(Items.REDSTONE, 2)), asList(40, 40, 40), 5);
-		addDefaultMobRecipe("minecraft:wither_skeleton", asList(new ItemStack(Items.COAL, 1), new ItemStack(Items.BONE, 2)), asList(25, 50), 5);
+		addDefaultMobRecipe("minecraft:wither_skeleton", asList(new ItemStack(Items.COAL, 1), new ItemStack(Items.BONE, 2), new ItemStack(Items.SKULL, 1, 1)), asList(25, 50, 2), 5);
 		addDefaultMobRecipe("minecraft:zombie", asList(new ItemStack(Items.ROTTEN_FLESH, 2), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.POTATO)), asList(50, 2, 2), 5);
 		addDefaultMobRecipe("minecraft:zombie_pigman", asList(new ItemStack(Items.ROTTEN_FLESH), new ItemStack(Items.GOLD_NUGGET), new ItemStack(Items.GOLD_INGOT)), asList(50, 50, 2), 5);
 		addDefaultMobRecipe("minecraft:zombie_villager", asList(new ItemStack(Items.ROTTEN_FLESH, 2), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.POTATO)), asList(50, 2, 2), 5);
@@ -180,8 +180,8 @@ public class CentrifugeManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> tempMapMobs = new THashMap<>(recipeMapMobs.size());
+		Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidatedNBT, CentrifugeRecipe> tempMapMobs = new Object2ObjectOpenHashMap<>(recipeMapMobs.size());
 		CentrifugeRecipe tempRecipe;
 
 		for (Entry<ComparableItemStackValidatedNBT, CentrifugeRecipe> entry : recipeMap.entrySet()) {
@@ -261,8 +261,8 @@ public class CentrifugeManager {
 		outputStandard.add(ItemHelper.cloneStack(ItemMorb.morbStandard));
 		outputReusable.add(ItemHelper.cloneStack(ItemMorb.morbReusable));
 
-		chanceStandard.add(ItemMorb.REUSE_CHANCE - 5);
-		chanceReusable.add(80);
+		chanceStandard.add(ItemMorb.REUSE_CHANCE);
+		chanceReusable.add(100);
 
 		addRecipeMob(DEFAULT_ENERGY * 2, ItemMorb.setTag(ItemHelper.cloneStack(ItemMorb.morbStandard), entityId, false), outputStandard, chanceStandard, new FluidStack(TFFluids.fluidExperience, xp * CoreProps.MB_PER_XP));
 		addRecipeMob(DEFAULT_ENERGY * 2, ItemMorb.setTag(ItemHelper.cloneStack(ItemMorb.morbReusable), entityId, false), outputReusable, chanceReusable, new FluidStack(TFFluids.fluidExperience, xp * CoreProps.MB_PER_XP));

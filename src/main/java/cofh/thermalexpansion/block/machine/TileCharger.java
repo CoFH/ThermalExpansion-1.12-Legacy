@@ -3,6 +3,9 @@ package cofh.thermalexpansion.block.machine;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -14,6 +17,7 @@ import cofh.thermalexpansion.item.ItemCapacitor;
 import cofh.thermalexpansion.util.managers.machine.ChargerManager;
 import cofh.thermalexpansion.util.managers.machine.ChargerManager.ChargerRecipe;
 import cofh.thermalfoundation.init.TFFluids;
+import com.google.common.collect.Iterables;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -37,11 +41,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileCharger extends TileMachineBase {
 
 	private static final int TYPE = Type.CHARGER.getMetadata();
 	private static final int ENERGY_TRANSFER[] = new int[] { 1, 4, 9, 16, 25 };
-	public static int basePower = 50;
+	public static int basePower = 40;
 
 	public static int repairEnergy = 500;
 	public static int repairFluid = CoreProps.MB_PER_XP / 4;
@@ -368,7 +374,9 @@ public class TileCharger extends TileMachineBase {
 
 	private int chargeInventoryItem(InventoryPlayer inventory, boolean simulate) {
 
-		for (ItemStack stack : inventory.mainInventory) {
+		Iterable<ItemStack> equipment = Iterables.concat(Arrays.asList(BaublesHelper.getBaubles(inventory.player), inventory.mainInventory));
+
+		for (ItemStack stack : equipment) {
 			if (energyStorage.getEnergyStored() <= 0) {
 				return 0;
 			}
@@ -696,8 +704,8 @@ public class TileCharger extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 
 		if (augmentRepair && inventory[1].isItemStackDamageable()) {
 			hasRepairItem = true;
@@ -722,8 +730,8 @@ public class TileCharger extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}

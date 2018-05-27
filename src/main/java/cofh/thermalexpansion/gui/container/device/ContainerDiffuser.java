@@ -1,15 +1,15 @@
 package cofh.thermalexpansion.gui.container.device;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.device.TileDiffuser;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.managers.device.DiffuserManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerDiffuser extends ContainerTEBase implements ISlotValidator {
+public class ContainerDiffuser extends ContainerTileAugmentable implements ISlotValidator {
 
 	TileDiffuser myTile;
 

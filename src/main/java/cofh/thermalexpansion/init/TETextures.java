@@ -74,7 +74,7 @@ public class TETextures {
 		MACHINE_ACTIVE_PRECIPITATOR =		register(MACHINE_ACTIVE_ + "precipitator");
 		MACHINE_ACTIVE_EXTRUDER =			register(MACHINE_ACTIVE_ + "extruder");
 
-		MACHINE_ACTIVE_EXTRUDER_UNDERLAY =	register(MACHINE_ACTIVE_ + "extruder_underlay");
+		MACHINE_UNDERLAY_EXTRUDER =	        register(MACHINE_ + "underlay_extruder");
 
 		MACHINE_FRAME_TOP =                 register(MACHINE_ + "frame_top");
 		MACHINE_FRAME_BOTTOM =              register(MACHINE_ + "frame_bottom");
@@ -107,6 +107,7 @@ public class TETextures {
 		DEVICE_FACE_DIFFUSER =    	    	register(DEVICE_FACE_ + "diffuser");
 		DEVICE_FACE_FACTORIZER =            register(DEVICE_FACE_ + "factorizer");
 		DEVICE_FACE_MOB_CATCHER =           register(DEVICE_FACE_ + "mob_catcher");
+		DEVICE_FACE_ITEM_COLLECTOR =        register(DEVICE_FACE_ + "item_collector");
 
 		DEVICE_ACTIVE_WATER_GEN =			register(DEVICE_ACTIVE_ + "water_gen");
 		DEVICE_ACTIVE_NULLIFIER =			register(DEVICE_ACTIVE_ + "nullifier");
@@ -120,6 +121,9 @@ public class TETextures {
 		DEVICE_ACTIVE_DIFFUSER =        	register(DEVICE_ACTIVE_ + "diffuser");
 		DEVICE_ACTIVE_FACTORIZER =          register(DEVICE_ACTIVE_ + "factorizer");
 		DEVICE_ACTIVE_MOB_CATCHER =         register(DEVICE_ACTIVE_ + "mob_catcher");
+		DEVICE_ACTIVE_ITEM_COLLECTOR =      register(DEVICE_ACTIVE_ + "item_collector");
+
+		PORTAL_UNDERLAY =    register("blocks/portal");
 
         DEVICE_FRAME_TOP =                  register(DEVICE_ + "frame_top");
 		DEVICE_FRAME_SIDE =                 register(DEVICE_ + "frame_side");
@@ -265,6 +269,21 @@ public class TETextures {
 		FLORB_MAGMATIC =                    register(ITEMS_ + "florb/florb_magmatic");
 		FLORB_MASK =                        register(ITEMS_ + "florb/florb_mask");
 
+		RESERVOIR_0 =                       register(ITEMS_ + "reservoir/reservoir_0");
+		RESERVOIR_1 =                       register(ITEMS_ + "reservoir/reservoir_1");
+		RESERVOIR_2 =                       register(ITEMS_ + "reservoir/reservoir_2");
+		RESERVOIR_3 =                       register(ITEMS_ + "reservoir/reservoir_3");
+		RESERVOIR_4 =                       register(ITEMS_ + "reservoir/reservoir_4");
+		RESERVOIR_C =                       register(ITEMS_ + "reservoir/reservoir_c");
+
+		RESERVOIR_MODE_0_0 =                register(ITEMS_ + "reservoir/reservoir_mode_0_0");
+		RESERVOIR_MODE_0_1 =                register(ITEMS_ + "reservoir/reservoir_mode_0_1");
+		RESERVOIR_MODE_1_0 =                register(ITEMS_ + "reservoir/reservoir_mode_1_0");
+		RESERVOIR_MODE_1_1 =                register(ITEMS_ + "reservoir/reservoir_mode_1_1");
+
+		RESERVOIR_COLOR_0 =                 register(ITEMS_ + "reservoir/reservoir_color_0");
+		RESERVOIR_MASK =                    register(ITEMS_ + "reservoir/reservoir_mask");
+
 		/* ARRAYS */
 		CONFIG = new TextureAtlasSprite[] {
 				CONFIG_NONE,
@@ -345,7 +364,8 @@ public class TETextures {
 				DEVICE_FACE_XP_COLLECTOR,
 				DEVICE_FACE_DIFFUSER,
 				DEVICE_FACE_FACTORIZER,
-				DEVICE_FACE_MOB_CATCHER
+				DEVICE_FACE_MOB_CATCHER,
+				DEVICE_FACE_ITEM_COLLECTOR
 		};
 
 		DEVICE_ACTIVE = new TextureAtlasSprite[] {
@@ -360,7 +380,8 @@ public class TETextures {
 				DEVICE_ACTIVE_XP_COLLECTOR,
 				DEVICE_ACTIVE_DIFFUSER,
 				DEVICE_ACTIVE_FACTORIZER,
-				DEVICE_ACTIVE_MOB_CATCHER
+				DEVICE_ACTIVE_MOB_CATCHER,
+				DEVICE_ACTIVE_ITEM_COLLECTOR
 		};
 
 		DYNAMO_COIL = new TextureAtlasSprite[] {
@@ -520,6 +541,22 @@ public class TETextures {
 				STRONGBOX_TOP_4,
 				STRONGBOX_TOP_C
 		};
+
+		RESERVOIR = new TextureAtlasSprite[] {
+				RESERVOIR_0,
+				RESERVOIR_1,
+				RESERVOIR_2,
+				RESERVOIR_3,
+				RESERVOIR_4,
+				RESERVOIR_C
+		};
+
+		RESERVOIR_MODE = new TextureAtlasSprite[4];
+		RESERVOIR_MODE[0b00] = RESERVOIR_MODE_0_0;
+		RESERVOIR_MODE[0b01] = RESERVOIR_MODE_0_1;
+		RESERVOIR_MODE[0b10] = RESERVOIR_MODE_1_0;
+		RESERVOIR_MODE[0b11] = RESERVOIR_MODE_1_1;
+
 		// @formatter:on
 		CustomParticleHandler.addIgnoredSprite(CONFIG_NONE);
 	}
@@ -631,7 +668,7 @@ public class TETextures {
 	public static TextureAtlasSprite MACHINE_ACTIVE_PRECIPITATOR;
 	public static TextureAtlasSprite MACHINE_ACTIVE_EXTRUDER;
 
-	public static TextureAtlasSprite MACHINE_ACTIVE_EXTRUDER_UNDERLAY;
+	public static TextureAtlasSprite MACHINE_UNDERLAY_EXTRUDER;
 
 	public static TextureAtlasSprite MACHINE_FRAME_TOP;
 	public static TextureAtlasSprite MACHINE_FRAME_SIDE;
@@ -665,6 +702,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_FACE_DIFFUSER;
 	public static TextureAtlasSprite DEVICE_FACE_FACTORIZER;
 	public static TextureAtlasSprite DEVICE_FACE_MOB_CATCHER;
+	public static TextureAtlasSprite DEVICE_FACE_ITEM_COLLECTOR;
 
 	public static TextureAtlasSprite[] DEVICE_ACTIVE;
 	public static TextureAtlasSprite DEVICE_ACTIVE_WATER_GEN;
@@ -679,6 +717,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_ACTIVE_DIFFUSER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_FACTORIZER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_MOB_CATCHER;
+	public static TextureAtlasSprite DEVICE_ACTIVE_ITEM_COLLECTOR;
 
 	public static TextureAtlasSprite DEVICE_FRAME_TOP;
 	public static TextureAtlasSprite DEVICE_FRAME_SIDE;
@@ -839,5 +878,24 @@ public class TETextures {
 	public static TextureAtlasSprite FLORB_STANDARD;
 	public static TextureAtlasSprite FLORB_MAGMATIC;
 	public static TextureAtlasSprite FLORB_MASK;
+
+	public static TextureAtlasSprite[] RESERVOIR;
+	public static TextureAtlasSprite RESERVOIR_0;
+	public static TextureAtlasSprite RESERVOIR_1;
+	public static TextureAtlasSprite RESERVOIR_2;
+	public static TextureAtlasSprite RESERVOIR_3;
+	public static TextureAtlasSprite RESERVOIR_4;
+	public static TextureAtlasSprite RESERVOIR_C;
+
+	public static TextureAtlasSprite[] RESERVOIR_MODE;
+	public static TextureAtlasSprite RESERVOIR_MODE_0_0;
+	public static TextureAtlasSprite RESERVOIR_MODE_0_1;
+	public static TextureAtlasSprite RESERVOIR_MODE_1_0;
+	public static TextureAtlasSprite RESERVOIR_MODE_1_1;
+
+	public static TextureAtlasSprite RESERVOIR_COLOR_0;
+	public static TextureAtlasSprite RESERVOIR_MASK;
+
+	public static TextureAtlasSprite PORTAL_UNDERLAY;
 
 }

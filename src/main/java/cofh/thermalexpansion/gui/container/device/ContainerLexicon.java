@@ -1,17 +1,17 @@
 package cofh.thermalexpansion.gui.container.device;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotRemoveOnly;
 import cofh.core.gui.slot.SlotValidated;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.device.TileLexicon;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.slot.SlotLexicon;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerLexicon extends ContainerTEBase implements ISlotValidator {
+public class ContainerLexicon extends ContainerTileAugmentable implements ISlotValidator {
 
 	TileLexicon myTile;
 

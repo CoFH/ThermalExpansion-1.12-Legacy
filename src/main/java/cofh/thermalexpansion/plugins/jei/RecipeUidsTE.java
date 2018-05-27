@@ -27,7 +27,8 @@ public class RecipeUidsTE {
 	public static final String CRUCIBLE_LAVA = "thermalexpansion.crucible_lava";
 
 	public static final String REFINERY = "thermalexpansion.refinery";
-	public static final String REFINERY_OIL = "thermalexpansion.refinery_oil";
+	public static final String REFINERY_FOSSIL = "thermalexpansion.refinery_fossil";
+	public static final String REFINERY_BIO = "thermalexpansion.refinery_bio";
 	public static final String REFINERY_POTION = "thermalexpansion.refinery_potion";
 
 	public static final String TRANSPOSER_FILL = "thermalexpansion.transposer_fill";

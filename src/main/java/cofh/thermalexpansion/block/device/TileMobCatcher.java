@@ -2,17 +2,16 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.MathHelper;
-import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiMobCatcher;
 import cofh.thermalexpansion.gui.container.device.ContainerMobCatcher;
 import cofh.thermalexpansion.init.TEItems;
-import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemMorb;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.IMob;
@@ -27,14 +26,13 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileMobCatcher extends TileDeviceBase implements ITickable {
 
@@ -253,8 +251,8 @@ public class TileMobCatcher extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 		mode = nbt.getByte(CoreProps.MODE);
 	}
 
@@ -263,8 +261,8 @@ public class TileMobCatcher extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		nbt.setByte(CoreProps.MODE, mode);
 
 		return nbt;
@@ -317,24 +315,6 @@ public class TileMobCatcher extends TileDeviceBase implements ITickable {
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
 		return stack.getItem().equals(TEItems.itemMorb);
-	}
-
-	/* ISidedTexture */
-	@Override
-	@SideOnly (Side.CLIENT)
-	public TextureAtlasSprite getTexture(int side, int pass) {
-
-		if (pass == 0) {
-			if (side == 0) {
-				return TETextures.DEVICE_BOTTOM;
-			} else if (side == 1) {
-				return TETextures.DEVICE_TOP;
-			}
-			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.WATER) : TETextures.DEVICE_FACE[TYPE];
-		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
-		}
-		return TETextures.DEVICE_SIDE;
 	}
 
 }

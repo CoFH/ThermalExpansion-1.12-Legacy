@@ -2,7 +2,11 @@ package cofh.thermalexpansion.item;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
-import baubles.api.cap.IBaublesItemHandler;
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.IBakeryProvider;
+import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.generation.IBakery;
 import cofh.api.fluid.IFluidContainerItem;
 import cofh.api.item.IColorableItem;
 import cofh.api.item.IMultiModeItem;
@@ -15,14 +19,13 @@ import cofh.core.util.CoreUtils;
 import cofh.core.util.RayTracer;
 import cofh.core.util.capabilities.FluidContainerItemWrapper;
 import cofh.core.util.core.IInitializer;
-import cofh.core.util.crafting.FluidIngredientFactory.FluidIngredient;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.render.item.ModelReservoir;
 import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import com.google.common.collect.Iterables;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import net.minecraft.client.renderer.block.model.ModelBakery;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -44,8 +47,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidActionResult;
@@ -59,16 +60,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
 
 @Optional.Interface (iface = "baubles.api.IBauble", modid = "baubles")
-public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, IColorableItem, IEnchantableItem, IFluidContainerItem, IMultiModeItem {
+public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, IColorableItem, IEnchantableItem, IFluidContainerItem, IMultiModeItem, IBakeryProvider {
 
 	public ItemReservoir() {
 
@@ -134,7 +131,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		if (isInCreativeTab(tab)) {
+		if (enable && isInCreativeTab(tab)) {
 			for (int metadata : itemList) {
 				if (metadata != CREATIVE) {
 					items.add(new ItemStack(this, 1, metadata));
@@ -153,7 +150,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 		if (ServerHelper.isClientWorld(world) || CoreUtils.isFakePlayer(entity) || !isActive(stack)) {
 			return;
 		}
-		Iterable<ItemStack> equipment = Iterables.concat(entity.getEquipmentAndArmor(), getBaubles(entity));
+		Iterable<ItemStack> equipment = Iterables.concat(entity.getEquipmentAndArmor(), BaublesHelper.getBaubles(entity));
 
 		for (ItemStack equipmentStack : equipment) {
 			if (equipmentStack.equals(stack) || equipmentStack.getItem() == Items.BUCKET) {
@@ -325,7 +322,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 		if (ServerHelper.isClientWorld(world) || !isActive(stack)) {
 			return;
 		}
-		Iterable<ItemStack> equipment = Iterables.concat(player.getEquipmentAndArmor(), getBaubles(player));
+		Iterable<ItemStack> equipment = Iterables.concat(player.getEquipmentAndArmor(), BaublesHelper.getBaubles(player));
 
 		for (ItemStack equipmentStack : equipment) {
 			if (equipmentStack.equals(stack) || equipmentStack.getItem() == Items.BUCKET) {
@@ -384,7 +381,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 		if (container.getTagCompound() == null) {
 			container.setTagCompound(new NBTTagCompound());
 		}
-		if (resource == null) {
+		if (resource == null || resource.amount <= 0) {
 			return 0;
 		}
 		int capacity = getCapacity(container);
@@ -493,39 +490,35 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 		return new FluidContainerItemWrapper(stack, this);
 	}
 
-	/* BAUBLES */
-	@CapabilityInject (IBaublesItemHandler.class)
-	private static Capability<IBaublesItemHandler> CAPABILITY_BAUBLES = null;
-
-	private static Iterable<ItemStack> getBaubles(Entity entity) {
-
-		if (CAPABILITY_BAUBLES == null) {
-			return Collections.emptyList();
-		}
-		IBaublesItemHandler handler = entity.getCapability(CAPABILITY_BAUBLES, null);
-
-		if (handler == null) {
-			return Collections.emptyList();
-		}
-		return IntStream.range(0, handler.getSlots()).mapToObj(handler::getStackInSlot).filter(stack -> !stack.isEmpty()).collect(Collectors.toList());
-	}
-
 	/* IModelRegister */
 	@Override
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("color0=%s,mode=%s_%s,type=%s", ColorHelper.hasColor0(stack) ? 1 : 0, this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
-
-		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
-			for (int color0 = 0; color0 < 2; color0++) {
-				for (int active = 0; active < 2; active++) {
-					for (int mode = 0; mode < 2; mode++) {
-						ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("color0=%s,mode=%s_%s,type=%s", color0, active, mode, entry.getValue().name)));
-					}
+		ModelResourceLocation loc = new ModelResourceLocation(getRegistryName(), "inventory");
+		ModelLoader.setCustomMeshDefinition(this, stack -> loc);
+		ModelRegistryHelper.register(loc, new CCBakeryModel());
+		ModelBakery.registerItemKeyGenerator(this, stack -> {
+			int colour = ColorHelper.hasColor0(stack) ? 1 : 0;
+			int active = isActive(stack) ? 1 : 0;
+			int mode = getMode(stack);
+			String fluid_hash = "none";
+			if (stack.hasTagCompound() && stack.getTagCompound().hasKey(CoreProps.FLUID)) {
+				FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag(CoreProps.FLUID));
+				if (fluid != null) {
+					fluid_hash = Integer.toString(FluidHelper.getFluidHash(fluid));
 				}
 			}
-		}
+
+			return String.format("%s|%s,color0=%s,mode=%s_%s,fluid=%s", getRegistryName(), stack.getMetadata(), colour, active, mode, fluid_hash);
+		});
+	}
+
+	/* IBakeryProvider */
+	@Override
+	public IBakery getBakery() {
+
+		return ModelReservoir.INSTANCE;
 	}
 
 	/* IInitializer */
@@ -564,6 +557,43 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 				'X', Items.BUCKET,
 				'Y', ItemMaterial.redstoneServo
 		);
+
+		addShapedUpgradeRecipe(reservoirHardened,
+				" R ",
+				"IXI",
+				" Y ",
+				'I', "ingotInvar",
+				'R', "blockGlass",
+				'X', reservoirBasic,
+				'Y', "ingotCopper"
+		);
+		addShapedUpgradeRecipe(reservoirReinforced,
+				" R ",
+				"IXI",
+				" Y ",
+				'I', "ingotElectrum",
+				'R', "blockGlassHardened",
+				'X', reservoirHardened,
+				'Y', "ingotInvar"
+		);
+		addShapedUpgradeRecipe(reservoirSignalum,
+				" R ",
+				"IXI",
+				" Y ",
+				'I', "ingotSignalum",
+				'R', "dustCryotheum",
+				'X', reservoirReinforced,
+				'Y', "ingotElectrum"
+		);
+		addShapedUpgradeRecipe(reservoirResonant,
+				" R ",
+				"IXI",
+				" Y ",
+				'I', "ingotEnderium",
+				'R', "dustPyrotheum",
+				'X', reservoirSignalum,
+				'Y', "ingotSignalum"
+		);
 		// @formatter:on
 
 		addColorRecipe(reservoirBasic, reservoirBasic, "dye");
@@ -572,11 +602,11 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 		addColorRecipe(reservoirSignalum, reservoirSignalum, "dye");
 		addColorRecipe(reservoirResonant, reservoirResonant, "dye");
 
-		addColorRemoveRecipe(reservoirBasic, reservoirBasic, new FluidIngredient("water"));
-		addColorRemoveRecipe(reservoirHardened, reservoirHardened, new FluidIngredient("water"));
-		addColorRemoveRecipe(reservoirReinforced, reservoirReinforced, new FluidIngredient("water"));
-		addColorRemoveRecipe(reservoirSignalum, reservoirSignalum, new FluidIngredient("water"));
-		addColorRemoveRecipe(reservoirResonant, reservoirResonant, new FluidIngredient("water"));
+		addColorRemoveRecipe(reservoirBasic, reservoirBasic);
+		addColorRemoveRecipe(reservoirHardened, reservoirHardened);
+		addColorRemoveRecipe(reservoirReinforced, reservoirReinforced);
+		addColorRemoveRecipe(reservoirSignalum, reservoirSignalum);
+		addColorRemoveRecipe(reservoirResonant, reservoirResonant);
 		return true;
 	}
 
@@ -619,7 +649,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 		return addItem(metadata, name, rarity);
 	}
 
-	private static TIntObjectHashMap<ItemReservoir.TypeEntry> typeMap = new TIntObjectHashMap<>();
+	private static Int2ObjectOpenHashMap<TypeEntry> typeMap = new Int2ObjectOpenHashMap<>();
 
 	public static final int BUCKET_FILL = 0;
 	public static final int BUCKET_EMPTY = 1;

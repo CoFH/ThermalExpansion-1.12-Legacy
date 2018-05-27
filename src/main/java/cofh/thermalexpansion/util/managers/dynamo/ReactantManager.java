@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
 import cofh.core.inventory.ComparableItemStack;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,12 +16,12 @@ import static java.util.Arrays.asList;
 
 public class ReactantManager {
 
-	private static Map<List<Integer>, Reaction> reactionMap = new THashMap<>();
-	private static Set<ComparableItemStack> validReactants = new THashSet<>();
-	private static Set<String> validFluids = new THashSet<>();
+	private static Map<List<Integer>, Reaction> reactionMap = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStack> validReactants = new ObjectOpenHashSet<>();
+	private static Set<String> validFluids = new ObjectOpenHashSet<>();
 
-	private static Set<ComparableItemStack> validReactantsElemental = new THashSet<>();
-	private static Set<String> validFluidsElemental = new THashSet<>();
+	private static Set<ComparableItemStack> validReactantsElemental = new ObjectOpenHashSet<>();
+	private static Set<String> validFluidsElemental = new ObjectOpenHashSet<>();
 
 	public static int DEFAULT_ENERGY = 100000;
 
@@ -82,9 +82,9 @@ public class ReactantManager {
 
 	public static void refresh() {
 
-		Map<List<Integer>, Reaction> tempReactionMap = new THashMap<>(reactionMap.size());
-		Set<ComparableItemStack> tempSet = new THashSet<>();
-		Set<ComparableItemStack> tempSet2 = new THashSet<>();
+		Map<List<Integer>, Reaction> tempReactionMap = new Object2ObjectOpenHashMap<>(reactionMap.size());
+		Set<ComparableItemStack> tempSet = new ObjectOpenHashSet<>();
+		Set<ComparableItemStack> tempSet2 = new ObjectOpenHashSet<>();
 		Reaction tempReaction;
 
 		for (Entry<List<Integer>, Reaction> entry : reactionMap.entrySet()) {

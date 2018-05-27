@@ -1,8 +1,11 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.BlockWrapper;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.RenderHelper;
@@ -42,6 +45,8 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Set;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileTapper extends TileDeviceBase implements ITickable {
 
 	private static final int TYPE = Type.TAPPER.getMetadata();
@@ -58,8 +63,6 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false };
 
-		LIGHT_VALUES[TYPE] = 3;
-
 		GameRegistry.registerTileEntity(TileTapper.class, "thermalexpansion:device_tapper");
 
 		config();
@@ -69,11 +72,21 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 		String category = "Device.Tapper";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		String comment = "If TRUE, the Arboreal Extractor will REQUIRE Phyto-Gro to operate.";
+		requireFertilizer = ThermalExpansion.CONFIG.get(category, "RequireFertilizer", requireFertilizer, comment);
+
+		comment = "Adjust this value to set the number of cycles Phyto-Gro lasts.";
+		boostCycles = ThermalExpansion.CONFIG.getConfiguration().getInt("FertilizerDuration", category, boostCycles, 2, 64, comment);
 	}
 
-	private static final int TIME_CONSTANT = 600;
-	private static final int BOOST_TIME = 16;
 	private static final int NUM_LEAVES = 3;
+	private static final int TIME_CONSTANT = 500;
+
+	private static boolean requireFertilizer = false;
+	private static int boostCycles = 8;
+
+	private int timeConstant = TIME_CONSTANT;
 
 	private FluidStack genFluid = new FluidStack(TFFluids.fluidResin, 50);
 
@@ -159,12 +172,12 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 					boostMult = TapperManager.getFertilizerMultiplier(inventory[0]);
 					if (boostMult > 0) {
 						tank.fill(new FluidStack(genFluid, genFluid.amount * boostMult), true);
-						boostTime = BOOST_TIME - 1;
+						boostTime = boostCycles - 1;
 						inventory[0].shrink(1);
 						if (inventory[0].getCount() <= 0) {
 							inventory[0] = ItemStack.EMPTY;
 						}
-					} else {
+					} else if (!requireFertilizer) {
 						tank.fill(genFluid, true);
 					}
 				}
@@ -229,6 +242,8 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
+		timeConstant = getTimeConstant();
+
 		if (validTree) {
 			if (isTrunkBase(trunkPos)) {
 				Set<BlockWrapper> leafSet = TapperManager.getLeaf(world.getBlockState(trunkPos));
@@ -336,10 +351,23 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 	protected boolean timeCheckOffset() {
 
-		return (world.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
+		return (world.getTotalWorldTime() + offset) % timeConstant == 0;
 	}
 
-	private boolean isTrunkBase(BlockPos checkPos) {
+	protected int getTimeConstant() {
+
+		int constant = TIME_CONSTANT / 2;
+		Iterable<BlockPos.MutableBlockPos> area = BlockPos.getAllInBoxMutable(pos.add(-1, 0, -1), pos.add(1, 0, 1));
+
+		for (BlockPos scan : area) {
+			if (isTapper(world.getBlockState(scan))) {
+				constant += TIME_CONSTANT / 2;
+			}
+		}
+		return MathHelper.clamp(constant, TIME_CONSTANT, TIME_CONSTANT * 2);
+	}
+
+	protected boolean isTrunkBase(BlockPos checkPos) {
 
 		IBlockState state = world.getBlockState(checkPos.down());
 		Material material = state.getMaterial();
@@ -348,6 +376,11 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			return false;
 		}
 		return TapperManager.mappingExists(world.getBlockState(checkPos)) && TapperManager.mappingExists(world.getBlockState(checkPos.up())) && TapperManager.mappingExists(world.getBlockState(checkPos.up(2)));
+	}
+
+	protected static boolean isTapper(IBlockState state) {
+
+		return state.getBlock() == TEBlocks.blockDevice && state.getValue(BlockDevice.VARIANT) == Type.TAPPER;
 	}
 
 	/* GUI METHODS */
@@ -369,7 +402,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		if (!isActive) {
 			return 0;
 		}
-		return MathHelper.round(scale * boostTime / BOOST_TIME);
+		return MathHelper.round(scale * boostTime / boostCycles);
 	}
 
 	@Override
@@ -396,13 +429,17 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		super.readFromNBT(nbt);
 
 		validTree = nbt.getBoolean("Tree");
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTrackerFluid = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTrackerFluid = nbt.getInteger(CoreProps.TRACK_OUT);
 		tank.readFromNBT(nbt);
 
 		boostMult = nbt.getInteger("BoostMult");
 		boostTime = nbt.getInteger("BoostTime");
+		timeConstant = nbt.getInteger("TimeConstant");
 
+		if (timeConstant <= 0) {
+			timeConstant = TIME_CONSTANT;
+		}
 		for (int i = 0; i < NUM_LEAVES; i++) {
 			leafPos[i] = new BlockPos(nbt.getInteger("LeafX" + i), nbt.getInteger("LeafY" + i), nbt.getInteger("LeafZ" + i));
 		}
@@ -415,12 +452,13 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		super.writeToNBT(nbt);
 
 		nbt.setBoolean("Tree", validTree);
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTrackerFluid);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTrackerFluid);
 		tank.writeToNBT(nbt);
 
 		nbt.setInteger("BoostMult", boostMult);
 		nbt.setInteger("BoostTime", boostTime);
+		nbt.setInteger("TimeConstant", timeConstant);
 
 		for (int i = 0; i < NUM_LEAVES; i++) {
 			nbt.setInteger("LeafX" + i, leafPos[i].getX());

@@ -1,7 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -30,6 +34,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TilePulverizer extends TileMachineBase {
 
@@ -332,9 +338,9 @@ public class TilePulverizer extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTrackerPrimary = nbt.getInteger("TrackOut1");
-		outputTrackerSecondary = nbt.getInteger("TrackOut2");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTrackerPrimary = nbt.getInteger(CoreProps.TRACK_OUT);
+		outputTrackerSecondary = nbt.getInteger(CoreProps.TRACK_OUT_2);
 		tank.readFromNBT(nbt);
 	}
 
@@ -343,9 +349,9 @@ public class TilePulverizer extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut1", outputTrackerPrimary);
-		nbt.setInteger("TrackOut2", outputTrackerSecondary);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTrackerPrimary);
+		nbt.setInteger(CoreProps.TRACK_OUT_2, outputTrackerSecondary);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}

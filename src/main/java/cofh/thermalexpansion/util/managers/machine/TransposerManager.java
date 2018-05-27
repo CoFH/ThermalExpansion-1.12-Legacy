@@ -12,9 +12,8 @@ import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import cofh.thermalfoundation.item.ItemMaterial;
-import cofh.thermalfoundation.util.helpers.FluidPotionHelper;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
@@ -25,6 +24,7 @@ import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 import java.util.Map;
@@ -35,13 +35,18 @@ import static java.util.Arrays.asList;
 
 public class TransposerManager {
 
-	private static Map<List<Integer>, TransposerRecipe> recipeMapFill = new THashMap<>();
-	private static Map<ComparableItemStackValidatedNBT, TransposerRecipe> recipeMapExtract = new THashMap<>();
-	private static Map<ItemWrapper, ContainerOverride> containerOverrides = new THashMap<>();
-	private static Set<ComparableItemStackValidatedNBT> validationSet = new THashSet<>();
+	private static Map<List<Integer>, TransposerRecipe> recipeMapFill = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, TransposerRecipe> recipeMapExtract = new Object2ObjectOpenHashMap<>();
+	private static Map<ItemWrapper, ContainerOverride> containerOverrides = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidatedNBT> validationSet = new ObjectOpenHashSet<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
+		oreValidator.addPrefix(ComparableItemStack.BLOCK);
+		oreValidator.addPrefix(ComparableItemStack.ORE);
+		oreValidator.addPrefix(ComparableItemStack.DUST);
+		oreValidator.addPrefix(ComparableItemStack.INGOT);
+		oreValidator.addPrefix(ComparableItemStack.NUGGET);
 		oreValidator.addPrefix(ComparableItemStack.GEM);
 		oreValidator.addPrefix("seed");
 		oreValidator.addPrefix("crop");
@@ -184,11 +189,13 @@ public class TransposerManager {
 				addFillRecipe(16000, ItemFrame.frameCell4, ItemFrame.frameCell4Filled, redstoneFluid, false);
 			}
 		}
-
-		addFillRecipe(4000, new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Blocks.SPONGE, 1, 1), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), true);
-		addFillRecipe(2000, ItemFertilizer.fertilizerBasic, ItemFertilizer.fertilizerRich, new FluidStack(TFFluids.fluidSap, 200), false);
+		addFillRecipe(400, new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Blocks.SPONGE, 1, 1), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), true);
 		addFillRecipe(400, new ItemStack(Items.BOWL), new ItemStack(Items.MUSHROOM_STEW), new FluidStack(TFFluids.fluidMushroomStew, 250), true);
 		addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(TFFluids.fluidExperience, 250), false);
+
+		addFillRecipe(1600, ItemFertilizer.fertilizerBasic, ItemFertilizer.fertilizerRich, new FluidStack(TFFluids.fluidSap, 200), false);
+		addFillRecipe(800, ItemMaterial.dustBiomass, ItemMaterial.dustBiomassRich, new FluidStack(TFFluids.fluidSeedOil, 100), false);
+		addFillRecipe(800, ItemMaterial.dustBioblend, ItemMaterial.dustBioblendRich, new FluidStack(TFFluids.fluidSeedOil, 100), false);
 
 		/* LOAD POTIONS */
 		loadPotions();
@@ -219,14 +226,15 @@ public class TransposerManager {
 		if (FluidRegistry.isFluidRegistered(CoreProps.XPJUICE)) {
 			addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(FluidRegistry.getFluid(CoreProps.XPJUICE), 250), false);
 		}
+		addDefaultSeedOilRecipes();
 	}
 
 	public static void refresh() {
 
-		Map<List<Integer>, TransposerRecipe> tempFill = new THashMap<>(recipeMapFill.size());
-		Map<ComparableItemStackValidatedNBT, TransposerRecipe> tempExtract = new THashMap<>(recipeMapExtract.size());
-		Map<ItemWrapper, ContainerOverride> tempOverrides = new THashMap<>(containerOverrides.size());
-		Set<ComparableItemStackValidatedNBT> tempSet = new THashSet<>();
+		Map<List<Integer>, TransposerRecipe> tempFill = new Object2ObjectOpenHashMap<>(recipeMapFill.size());
+		Map<ComparableItemStackValidatedNBT, TransposerRecipe> tempExtract = new Object2ObjectOpenHashMap<>(recipeMapExtract.size());
+		Map<ItemWrapper, ContainerOverride> tempOverrides = new Object2ObjectOpenHashMap<>(containerOverrides.size());
+		Set<ComparableItemStackValidatedNBT> tempSet = new ObjectOpenHashSet<>();
 		TransposerRecipe tempRecipe;
 		ContainerOverride tempOverride;
 
@@ -333,10 +341,24 @@ public class TransposerManager {
 
 	public static void addDefaultPotionRecipes(PotionType type) {
 
-		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM, 1), type), FluidPotionHelper.getPotion(CoreProps.BOTTLE_VOLUME, type), true);
-		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION, 1), type), FluidPotionHelper.getSplashPotion(CoreProps.BOTTLE_VOLUME, type), true);
-		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION, 1), type), FluidPotionHelper.getLingeringPotion(CoreProps.BOTTLE_VOLUME, type), true);
-		addFillRecipe(DEFAULT_ENERGY, new ItemStack(Items.ARROW), PotionUtils.addPotionToItemStack(new ItemStack(Items.TIPPED_ARROW), type), FluidPotionHelper.getLingeringPotion(CoreProps.BOTTLE_VOLUME / 10, type), false);
+		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM, 1), type), TFFluids.getPotion(CoreProps.BOTTLE_VOLUME, type), true);
+		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION, 1), type), TFFluids.getSplashPotion(CoreProps.BOTTLE_VOLUME, type), true);
+		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION, 1), type), TFFluids.getLingeringPotion(CoreProps.BOTTLE_VOLUME, type), true);
+		addFillRecipe(DEFAULT_ENERGY, new ItemStack(Items.ARROW), PotionUtils.addPotionToItemStack(new ItemStack(Items.TIPPED_ARROW), type), TFFluids.getLingeringPotion(CoreProps.BOTTLE_VOLUME / 10, type), false);
+	}
+
+	public static void addDefaultSeedOilRecipes() {
+
+		for (String name : OreDictionary.getOreNames()) {
+			if (name.startsWith("seed") && !name.startsWith("seeds")) {
+				List<ItemStack> seed = OreDictionary.getOres(name, false);
+
+				if (seed.isEmpty()) {
+					continue;
+				}
+				TransposerManager.addExtractRecipe(1600, ItemHelper.cloneStack(seed.get(0), 1), ItemStack.EMPTY, new FluidStack(TFFluids.fluidSeedOil, 50), 0, false);
+			}
+		}
 	}
 
 	/* RECIPE CLASS */

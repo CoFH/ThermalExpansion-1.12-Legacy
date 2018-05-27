@@ -53,8 +53,9 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 		comment = "If TRUE, Caches may be turned into Creative versions using a Creative Conversion Kit.";
 		BlockCache.enableCreative = ThermalExpansion.CONFIG.get(category, "Creative", BlockCache.enableCreative, comment);
 
-		comment = "If TRUE, Caches are securable.";
-		BlockCache.enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", BlockCache.enableSecurity, comment);
+		// TODO: Cache Size Limiting
+		//		comment = "If TRUE, Caches are securable.";
+		//		BlockCache.enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", BlockCache.enableSecurity, comment);
 
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockCache.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockCache.enableClassicRecipes, comment);
@@ -83,7 +84,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 
 	public TileCache() {
 
-		handler = new CacheItemHandler(this, getCapacity(0, 0));
+		handler = new CacheItemHandler(this, getMaxCapacity(0, 0));
 	}
 
 	@Override
@@ -158,8 +159,13 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 	@Override
 	protected boolean setLevel(int level) {
 
+		int curLevel = this.level;
+
 		if (super.setLevel(level)) {
-			handler.setCapacity(getCapacity(level, enchantHolding));
+			handler.setCapacity(getMaxCapacity(level, enchantHolding));
+
+			// TODO: Cache Size Limiting
+			// handler.setCapacity(MathHelper.round((long) handler.getCapacity() * getMaxCapacity(level, enchantHolding) / getMaxCapacity(curLevel, enchantHolding)));
 			return true;
 		}
 		return false;
@@ -172,7 +178,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 	}
 
 	/* COMMON METHODS */
-	public static int getCapacity(int level, int enchant) {
+	public static int getMaxCapacity(int level, int enchant) {
 
 		return CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * enchant) / 2;
 	}
@@ -218,7 +224,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 
 	public int getScaledItemsStored(int scale) {
 
-		return MathHelper.round((long) getStoredCount() * scale / getCapacity(level, enchantHolding));
+		return MathHelper.round((long) getStoredCount() * scale / handler.getCapacity());
 	}
 
 	public int getStoredCount() {
@@ -257,6 +263,9 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 	public boolean hasConfigGui() {
 
 		return false;
+
+		// TODO: Cache Size Limiting
+		// return true;
 	}
 
 	// This is ONLY used in GUIs.
@@ -317,7 +326,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 		PacketBase payload = super.getGuiPacket();
 
 		payload.addBool(lock);
-		payload.addInt(handler.capacity);
+		payload.addInt(handler.getCapacity());
 
 		return payload;
 	}
@@ -332,6 +341,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 		payload.addBool(lock);
 		payload.addItemStack(ItemHelper.cloneStack(getStoredInstance()));
 		payload.addInt(handler.getCount());
+		payload.addInt(handler.getCapacity());
 
 		return payload;
 	}
@@ -355,6 +365,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 		facing = payload.getByte();
 		lock = payload.getBool();
 		handler.setItem(payload.getItemStack(), payload.getInt());
+		handler.setCapacity(payload.getInt());
 
 		callBlockUpdate();
 	}
@@ -426,7 +437,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 		}
 		if (!getStoredInstance().isEmpty()) {
 			info.add(new TextComponentTranslation("info.cofh.item").appendText(": " + StringHelper.getItemName(getStoredInstance())));
-			info.add(new TextComponentTranslation("info.cofh.amount").appendText(": " + StringHelper.formatNumber(getStoredCount()) + "/" + StringHelper.formatNumber(getCapacity(level, enchantHolding))));
+			info.add(new TextComponentTranslation("info.cofh.amount").appendText(": " + StringHelper.formatNumber(getStoredCount()) + "/" + StringHelper.formatNumber(handler.capacity)));
 			info.add(new TextComponentTranslation(lock ? "info.cofh.locked" : "info.cofh.unlocked"));
 		} else {
 			info.add(new TextComponentTranslation("info.cofh.item").appendText(": ").appendSibling(new TextComponentTranslation("info.cofh.empty")));
@@ -569,6 +580,11 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 		public boolean isLocked() {
 
 			return locked;
+		}
+
+		public int getCapacity() {
+
+			return capacity;
 		}
 
 		public int getCount() {

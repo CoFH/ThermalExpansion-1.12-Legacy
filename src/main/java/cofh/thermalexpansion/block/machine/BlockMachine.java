@@ -381,7 +381,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 	private void addRecipes() {
 
 		String copperPart = "gearCopper";
-		String invarPart = "gearInvar";
 		String constantanPart = "gearConstantan";
 
 		// @formatter:off
@@ -429,8 +428,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'C', ItemFrame.frameMachine,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', Items.BUCKET,
-					'Y', "ingotInvar"
+					'X', "gearInvar",
+					'Y', "sand"
 			);
 		}
 		if (enable[Type.INSOLATOR.getMetadata()]) {
@@ -465,7 +464,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'C', ItemFrame.frameMachine,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', ItemMaterial.powerCoilElectrum,
+					'X', "blockGlassHardened",
 					'Y', Blocks.NETHER_BRICK
 			);
 		}
@@ -501,7 +500,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'C', ItemFrame.frameMachine,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', ItemMaterial.powerCoilElectrum,
+					'X', "gearLead",
 					'Y', ItemMaterial.powerCoilSilver
 			);
 		}

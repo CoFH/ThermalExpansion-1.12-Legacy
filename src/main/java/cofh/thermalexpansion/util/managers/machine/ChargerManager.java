@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.inventory.ComparableItemStackValidated;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 
 public class ChargerManager {
 
-	private static Map<ComparableItemStackValidated, ChargerRecipe> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackValidated, ChargerRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
 
 	public static final int DEFAULT_ENERGY = 8000;
 
@@ -46,7 +46,7 @@ public class ChargerManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackValidated, ChargerRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidated, ChargerRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
 		ChargerRecipe tempRecipe;
 
 		for (Entry<ComparableItemStackValidated, ChargerRecipe> entry : recipeMap.entrySet()) {

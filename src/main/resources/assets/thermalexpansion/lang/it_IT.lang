@@ -191,10 +191,10 @@ info.thermalexpansion.augment.machinePulverizerPetrotheum.a.0=Aumenta la resa de
 info.thermalexpansion.augment.machinePulverizerPetrotheum.b.0=Richiede energia addizionale per le operazioni.
 info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=Dev'essere fornito di Petroteo Tettonico.
 
-info.thermalexpansion.augment.machineRefineryOil.0=Distillatore Frazionante: Specializzazione
-info.thermalexpansion.augment.machineRefineryOil.a.0=Aumenta notevolmente l'efficienza di conversione per i combustibili fossili.
-info.thermalexpansion.augment.machineRefineryOil.b.0=Solo combustibili fossili possono essere processati.
-info.thermalexpansion.augment.machineRefineryOil.b.1=Richiede energia addizionale per le operazioni.
+info.thermalexpansion.augment.machineRefineryFossil.0=Distillatore Frazionante: Specializzazione
+info.thermalexpansion.augment.machineRefineryFossil.a.0=Aumenta notevolmente l'efficienza di conversione per i combustibili fossili.
+info.thermalexpansion.augment.machineRefineryFossil.b.0=Solo combustibili fossili possono essere processati.
+info.thermalexpansion.augment.machineRefineryFossil.b.1=Richiede energia addizionale per le operazioni.
 
 info.thermalexpansion.augment.machineRefineryPotion.0=Distillatore Frazionante: Specializzazione
 info.thermalexpansion.augment.machineRefineryPotion.a.0=Permette alle Pozioni di essere raffinate.
@@ -361,7 +361,7 @@ item.thermalexpansion.augment.machineInsolatorTree.name=Infusore di Arboscelli
 item.thermalexpansion.augment.machinePower.name=Bobina di Ricezione Ausiliare
 item.thermalexpansion.augment.machinePulverizerGeode.name=Acrobata di Geodi
 item.thermalexpansion.augment.machinePulverizerPetrotheum.name=Iniziatore Tettonico
-item.thermalexpansion.augment.machineRefineryOil.name=Colonna di Riflusso
+item.thermalexpansion.augment.machineRefineryFossil.name=Colonna di Riflusso
 item.thermalexpansion.augment.machineRefineryPotion.name=Distorsione Alchemica
 item.thermalexpansion.augment.machineSawmillTapper.name=Imbuto di Resina
 item.thermalexpansion.augment.machineSmelterFlux.name=Recupero Metallurgico

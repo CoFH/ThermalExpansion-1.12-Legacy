@@ -1,19 +1,22 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.network.PacketBase;
 import cofh.core.render.TextureHelper;
+import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.helpers.AugmentHelper;
+import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.device.CoolantManager;
 import cofh.thermalexpansion.util.managers.dynamo.CompressionManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -44,6 +47,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_BOILER);
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COMPRESSION_COOLANT);
 		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COMPRESSION_FUEL);
+		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COMPRESSION_BIOFUEL);
 
 		GameRegistry.registerTileEntity(TileDynamoCompression.class, "thermalexpansion:dynamo_compression");
 
@@ -72,6 +76,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 	/* AUGMENTS */
 	protected boolean augmentCoolant;
 	protected boolean augmentFuel;
+	protected boolean augmentBiofuel;
 
 	@Override
 	public int getType() {
@@ -100,7 +105,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		}
 		if (coolantRF <= 0) {
 			coolantRF += CoolantManager.getCoolantRF100mB(coolantTank.getFluid());
-			coolantFactor = augmentBoiler ? 0 : CoolantManager.getCoolantFactor(coolantTank.getFluid()) / 2;
+			coolantFactor = augmentBoiler ? 0 : CoolantManager.getCoolantFactor(coolantTank.getFluid()) - CoolantManager.WATER_FACTOR;
 			coolantTank.drain(fluidAmount, true);
 		}
 	}
@@ -147,7 +152,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	@Override
@@ -157,6 +162,17 @@ public class TileDynamoCompression extends TileDynamoBase {
 			return fuelTank;
 		}
 		return coolantTank;
+	}
+
+	@Override
+	public int getFuelEnergy(ItemStack stack) {
+
+		FluidStack fluid = FluidHelper.getFluidForFilledItem(stack);
+
+		if (fluid == null || augmentFuel && !TFFluids.fluidFuel.equals(fluid.getFluid())) {
+			return 0;
+		}
+		return CompressionManager.isValidFuel(fluid) ? CompressionManager.getFuelEnergy(fluid) * (energyMod + coolantFactor) / ENERGY_BASE : 0;
 	}
 
 	/* NBT METHODS */
@@ -224,6 +240,10 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		fuelTank.setFluid(payload.getFluidStack());
 		coolantTank.setFluid(payload.getFluidStack());
+
+		if (!augmentBoiler) {
+			coolantFactor = Math.max(0, CoolantManager.getCoolantFactor(coolantTank.getFluid()) - 20);
+		}
 	}
 
 	@Override
@@ -248,6 +268,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		augmentCoolant = false;
 		augmentFuel = false;
+		augmentBiofuel = false;
 
 		fuelTank.clearLocked();
 		coolantTank.clearLocked();
@@ -258,12 +279,13 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		super.postAugmentInstall();
 
-		if (augmentFuel) {
-			fuelTank.setLock(TFFluids.fluidFuel);
-		}
 		if (augmentBoiler) {
 			coolantTank.setLock(FluidRegistry.WATER);
 			coolantFactor = 0;
+		} else if (augmentFuel) {
+			fuelTank.setLock(TFFluids.fluidFuel);
+		} else if (augmentBiofuel) {
+			fuelTank.setLock(TFFluids.fluidBiofuel);
 		}
 	}
 
@@ -290,6 +312,13 @@ public class TileDynamoCompression extends TileDynamoBase {
 			hasModeAugment = true;
 			energyConfig.setDefaultParams(energyConfig.maxPower + 3 * getBasePower(this.level), smallStorage);
 			energyMod += 50;
+			return true;
+		}
+		if (!augmentFuel && TEProps.DYNAMO_COMPRESSION_BIOFUEL.equals(id)) {
+			augmentBiofuel = true;
+			hasModeAugment = true;
+			energyConfig.setDefaultParams(energyConfig.maxPower + 2 * getBasePower(this.level), smallStorage);
+			energyMod += 25;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

@@ -64,7 +64,7 @@
 			},
 			"output2": {
 				"ore": "dustSaltpeter",
-				"chance": 30
+				"chance": 40
 			},
 			"energy_mod": 75
 		},
@@ -79,7 +79,7 @@
 			},
 			"output2": {
 				"ore": "dustSaltpeter",
-				"chance": 30
+				"chance": 40
 			},
 			"energy_mod": 75
 		},
@@ -94,7 +94,7 @@
 			},
 			"output2": {
 				"ore": "dustSaltpeter",
-				"chance": 30
+				"chance": 40
 			},
 			"energy_mod": 75
 		},
@@ -109,7 +109,7 @@
 			},
 			"output2": {
 				"ore": "dustSaltpeter",
-				"chance": 30
+				"chance": 40
 			},
 			"energy_mod": 75
 		},
@@ -124,7 +124,7 @@
 			},
 			"output2": {
 				"ore": "dustSaltpeter",
-				"chance": 30
+				"chance": 40
 			},
 			"energy_mod": 75
 		},
@@ -139,7 +139,7 @@
 			},
 			"output2": {
 				"ore": "dustSaltpeter",
-				"chance": 30
+				"chance": 40
 			},
 			"energy_mod": 75
 		}

@@ -1,17 +1,17 @@
 package cofh.thermalexpansion.gui.container.machine;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotEnergy;
 import cofh.core.gui.slot.SlotRemoveOnly;
 import cofh.core.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.machine.TileSawmill;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerSawmill extends ContainerTEBase implements ISlotValidator {
+public class ContainerSawmill extends ContainerTileAugmentable implements ISlotValidator {
 
 	TileSawmill myTile;
 

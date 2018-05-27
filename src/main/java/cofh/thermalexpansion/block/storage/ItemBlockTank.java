@@ -128,7 +128,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	@Override
 	public int getCapacity(ItemStack container) {
 
-		return TileTank.getCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
+		return TileTank.getMaxCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		if (container.getTagCompound() == null) {
 			setDefaultTag(container);
 		}
-		if (resource == null || isCreative(container)) {
+		if (resource == null || resource.amount <= 0 || isCreative(container)) {
 			return 0;
 		}
 		int capacity = getCapacity(container);

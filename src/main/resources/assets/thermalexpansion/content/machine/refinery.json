@@ -46,17 +46,29 @@
 			}
 		},
 		{
+			"type": "bio_fuel",
 			"input": {
 				"fluid": "resin",
-				"amount": 100
+				"amount": 200
 			},
 			"output": {
 				"fluid": "tree_oil",
-				"amount": 50
+				"amount": 100
 			},
 			"output2": {
 				"constant": "rosin",
-				"chance": 75
+				"chance": 50
+			}
+		},
+		{
+			"type": "bio_fuel",
+			"input": {
+				"fluid": "biocrude",
+				"amount": 200
+			},
+			"output": {
+				"fluid": "refined_biofuel",
+				"amount": 100
 			}
 		},
 		{

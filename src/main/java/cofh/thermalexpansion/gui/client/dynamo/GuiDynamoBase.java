@@ -12,6 +12,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.UUID;
 
@@ -64,6 +67,14 @@ public abstract class GuiDynamoBase extends GuiContainerCore {
 		if (!myInfo.isEmpty()) {
 			addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.0")));
 		}
+		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	@Override
+	public void onGuiClosed() {
+
+		MinecraftForge.EVENT_BUS.unregister(this);
+		super.onGuiClosed();
 	}
 
 	@Override
@@ -87,6 +98,18 @@ public abstract class GuiDynamoBase extends GuiContainerCore {
 		super.updateElementInformation();
 
 		duration.setQuantity(baseTile.getScaledDuration(SPEED));
+	}
+
+	@SubscribeEvent
+	public void handleItemTooltipEvent(ItemTooltipEvent event) {
+
+		if (baseTile.isSteamProducer()) {
+			return;
+		}
+		int energy = baseTile.getFuelEnergy(event.getItemStack());
+		if (energy > 0) {
+			event.getToolTip().add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.cofh.energy") + ": " + StringHelper.getScaledNumber(energy) + " RF" + StringHelper.END);
+		}
 	}
 
 }

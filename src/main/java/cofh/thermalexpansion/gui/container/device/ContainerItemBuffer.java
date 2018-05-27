@@ -1,12 +1,12 @@
 package cofh.thermalexpansion.gui.container.device;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.thermalexpansion.block.device.TileItemBuffer;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerItemBuffer extends ContainerTEBase {
+public class ContainerItemBuffer extends ContainerTileAugmentable {
 
 	TileItemBuffer myTile;
 

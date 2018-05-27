@@ -196,10 +196,10 @@ info.thermalexpansion.augment.machinePulverizerPetrotheum.a.0=生成物の歩留
 info.thermalexpansion.augment.machinePulverizerPetrotheum.b.0=1回の作業毎に要求されるエネルギーが増加します。
 info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=地動のペトロジウムが必要になります。
 
-info.thermalexpansion.augment.machineRefineryOil.0=精製蒸留機：特化
-info.thermalexpansion.augment.machineRefineryOil.a.0=化石燃料の精製効率が大幅に増加します。
-info.thermalexpansion.augment.machineRefineryOil.b.0=化石燃料のみを取り扱うようになります。
-info.thermalexpansion.augment.machineRefineryOil.b.1=1回の作業毎に要求されるエネルギーが増加します。
+info.thermalexpansion.augment.machineRefineryFossil.0=精製蒸留機：特化
+info.thermalexpansion.augment.machineRefineryFossil.a.0=化石燃料の精製効率が大幅に増加します。
+info.thermalexpansion.augment.machineRefineryFossil.b.0=化石燃料のみを取り扱うようになります。
+info.thermalexpansion.augment.machineRefineryFossil.b.1=1回の作業毎に要求されるエネルギーが増加します。
 
 info.thermalexpansion.augment.machineRefineryPotion.0=精製蒸留機：特化
 info.thermalexpansion.augment.machineRefineryPotion.a.0=ポーションの効果を高めることができるようになります。
@@ -366,7 +366,7 @@ item.thermalexpansion.augment.machineInsolatorTree.name=苗木点滴
 item.thermalexpansion.augment.machinePower.name=補助受信コイル
 item.thermalexpansion.augment.machinePulverizerGeode.name=晶洞タンブラー
 item.thermalexpansion.augment.machinePulverizerPetrotheum.name=地動イニシエータ
-item.thermalexpansion.augment.machineRefineryOil.name=還流塔
+item.thermalexpansion.augment.machineRefineryFossil.name=還流塔
 item.thermalexpansion.augment.machineRefineryPotion.name=錬金的洗練
 item.thermalexpansion.augment.machineSawmillTapper.name=樹脂漏斗
 item.thermalexpansion.augment.machineSmelterFlux.name=融剤回収

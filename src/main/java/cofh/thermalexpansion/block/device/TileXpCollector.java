@@ -3,6 +3,8 @@ package cofh.thermalexpansion.block.device;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -33,6 +35,8 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 	private static final int TYPE = Type.XP_COLLECTOR.getMetadata();
@@ -49,7 +53,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false };
 
-		LIGHT_VALUES[TYPE] = 5;
+		LIGHT_VALUES[TYPE] = 2;
 
 		GameRegistry.registerTileEntity(TileXpCollector.class, "thermalexpansion:device_xp_collector");
 
@@ -62,7 +66,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
-	private static final int RADIUS_ORB = 5;
+	private static final int RADIUS = 5;
 	private static final int TIME_CONSTANT = 16;
 
 	private int inputTracker;
@@ -76,6 +80,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
 
 	private int offset;
+	private boolean forcedCycle;
 
 	public TileXpCollector() {
 
@@ -101,11 +106,26 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
+	public void onRedstoneUpdate() {
+
+		boolean curActive = isActive;
+		isActive = redstoneControlOrDisable();
+
+		if (isActive && !curActive && !forcedCycle) {
+			collectXpOrbs();
+			offset = (int) (TIME_CONSTANT - world.getTotalWorldTime() % TIME_CONSTANT);
+			forcedCycle = true;
+		}
+		updateIfChanged(curActive);
+	}
+
+	@Override
 	public void update() {
 
 		if (!timeCheckOffset()) {
 			return;
 		}
+		forcedCycle = false;
 		convertXp();
 		transferOutputFluid();
 		transferInput();
@@ -123,7 +143,6 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 			isActive = true;
 		}
 		updateIfChanged(curActive);
-
 	}
 
 	protected void transferInput() {
@@ -165,7 +184,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 	protected void collectXpOrbs() {
 
-		AxisAlignedBB area = new AxisAlignedBB(pos.add(-RADIUS_ORB, -RADIUS_ORB, -RADIUS_ORB), pos.add(1 + RADIUS_ORB, 1 + RADIUS_ORB, 1 + RADIUS_ORB));
+		AxisAlignedBB area = new AxisAlignedBB(pos.add(-RADIUS, -RADIUS, -RADIUS), pos.add(1 + RADIUS, 1 + RADIUS, 1 + RADIUS));
 		List<EntityXPOrb> xpOrbs = world.getEntitiesWithinAABB(EntityXPOrb.class, area, EntitySelectors.IS_ALIVE);
 
 		for (EntityXPOrb orb : xpOrbs) {
@@ -265,8 +284,8 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 		tank.readFromNBT(nbt);
 
 		boostFactor = nbt.getInteger("BoostFactor");
@@ -283,8 +302,8 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		tank.writeToNBT(nbt);
 
 		nbt.setInteger("BoostFactor", boostFactor);

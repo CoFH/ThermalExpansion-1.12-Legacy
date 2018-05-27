@@ -3,8 +3,8 @@ package cofh.thermalexpansion.util.managers.machine;
 import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalfoundation.init.TFFluids;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionType;
@@ -16,9 +16,10 @@ import java.util.Set;
 
 public class RefineryManager {
 
-	private static TIntObjectHashMap<RefineryRecipe> recipeMap = new TIntObjectHashMap<>();
-	private static TIntObjectHashMap<RefineryRecipe> recipeMapPotion = new TIntObjectHashMap<>();
-	private static Set<String> oilFluids = new THashSet<>();
+	private static Int2ObjectOpenHashMap<RefineryRecipe> recipeMap = new Int2ObjectOpenHashMap<>();
+	private static Int2ObjectOpenHashMap<RefineryRecipe> recipeMapPotion = new Int2ObjectOpenHashMap<>();
+	private static Set<String> bioFluids = new ObjectOpenHashSet<>();
+	private static Set<String> fossilFluids = new ObjectOpenHashSet<>();
 
 	public static final int DEFAULT_ENERGY = 5000;
 
@@ -44,17 +45,22 @@ public class RefineryManager {
 
 	public static RefineryRecipe[] getRecipeList() {
 
-		return recipeMap.values(new RefineryRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new RefineryRecipe[0]);
 	}
 
 	public static RefineryRecipe[] getRecipeListPotion() {
 
-		return recipeMapPotion.values(new RefineryRecipe[recipeMapPotion.size()]);
+		return recipeMapPotion.values().toArray(new RefineryRecipe[0]);
 	}
 
 	public static boolean isFossilFuel(FluidStack fluid) {
 
-		return fluid != null && oilFluids.contains(fluid.getFluid().getName());
+		return fluid != null && fossilFluids.contains(fluid.getFluid().getName());
+	}
+
+	public static boolean isBioFuel(FluidStack fluid) {
+
+		return fluid != null && bioFluids.contains(fluid.getFluid().getName());
 	}
 
 	public static void initialize() {
@@ -104,6 +110,9 @@ public class RefineryManager {
 		if (input == null || outputFluid == null || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
+		if (outputItem.isEmpty()) {
+			chance = 0;
+		}
 		RefineryRecipe recipe = new RefineryRecipe(input, outputFluid, outputItem, energy, chance);
 		recipeMap.put(FluidHelper.getFluidHash(input), recipe);
 		return recipe;
@@ -147,12 +156,20 @@ public class RefineryManager {
 	}
 
 	/* HELPERS */
+	public static void addBioFuel(Fluid fluid) {
+
+		if (!FluidRegistry.isFluidRegistered(fluid)) {
+			return;
+		}
+		bioFluids.add(fluid.getName());
+	}
+
 	public static void addFossilFuel(Fluid fluid) {
 
 		if (!FluidRegistry.isFluidRegistered(fluid)) {
 			return;
 		}
-		oilFluids.add(fluid.getName());
+		fossilFluids.add(fluid.getName());
 	}
 
 	public static void addStrongPotionRecipes(String baseName, int minRank, int maxRank) {

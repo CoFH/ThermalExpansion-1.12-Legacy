@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.block.TileReconfigurable;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.init.TETextures;
@@ -85,6 +87,16 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 	public boolean sendRedstoneUpdates() {
 
 		return true;
+	}
+
+	@Override
+	public void onRedstoneUpdate() {
+
+		boolean curActive = isActive;
+		if (!redstoneControlOrDisable()) {
+			isActive = false;
+		}
+		updateIfChanged(curActive);
 	}
 
 	@Override

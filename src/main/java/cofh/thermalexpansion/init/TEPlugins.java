@@ -32,9 +32,11 @@ public class TEPlugins {
 		pluginRedbudTree = new PluginRedbudTree();
 		pluginSpookyTree = new PluginSpookyTree();
 
+		pluginAbyssalCraft = new PluginAbyssalCraft();
 		pluginActuallyAdditions = new PluginActuallyAdditions();
 		pluginAppliedEnergistics2 = new PluginAppliedEnergistics2();
 		pluginAstralSorcery = new PluginAstralSorcery();
+		pluginBetweenlands = new PluginBetweenlands();
 		pluginBiomesOPlenty = new PluginBiomesOPlenty();
 		pluginChisel = new PluginChisel();
 		pluginElementalDimensions = new PluginElementalDimensions();
@@ -73,9 +75,11 @@ public class TEPlugins {
 		initList.add(pluginRedbudTree);
 		initList.add(pluginSpookyTree);
 
+		initList.add(pluginAbyssalCraft);
 		initList.add(pluginActuallyAdditions);
 		initList.add(pluginAppliedEnergistics2);
 		initList.add(pluginAstralSorcery);
+		initList.add(pluginBetweenlands);
 		initList.add(pluginBiomesOPlenty);
 		initList.add(pluginChisel);
 		initList.add(pluginElementalDimensions);
@@ -129,9 +133,11 @@ public class TEPlugins {
 	public static PluginRedbudTree pluginRedbudTree;
 	public static PluginSpookyTree pluginSpookyTree;
 
+	public static PluginAbyssalCraft pluginAbyssalCraft;
 	public static PluginActuallyAdditions pluginActuallyAdditions;
 	public static PluginAppliedEnergistics2 pluginAppliedEnergistics2;
 	public static PluginAstralSorcery pluginAstralSorcery;
+	public static PluginBetweenlands pluginBetweenlands;
 	public static PluginBiomesOPlenty pluginBiomesOPlenty;
 	public static PluginChisel pluginChisel;
 	public static PluginElementalDimensions pluginElementalDimensions;

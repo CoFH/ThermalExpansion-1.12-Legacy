@@ -14,11 +14,11 @@ import cofh.thermalexpansion.gui.slot.SlotSatchelCreative;
 import cofh.thermalexpansion.gui.slot.SlotSatchelVoid;
 import cofh.thermalexpansion.item.ItemSatchel;
 import com.mojang.authlib.GameProfile;
-import gnu.trove.map.hash.THashMap;
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ChestContainer.RowSizeCallback;
 import invtweaks.api.container.ContainerSection;
 import invtweaks.api.container.ContainerSectionCallback;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -178,7 +178,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	@Optional.Method (modid = "inventorytweaks")
 	public Map<ContainerSection, List<Slot>> getContainerSections() {
 
-		Map<ContainerSection, List<Slot>> slotRefs = new THashMap<>();
+		Map<ContainerSection, List<Slot>> slotRefs = new Object2ObjectOpenHashMap<>();
 
 		slotRefs.put(ContainerSection.INVENTORY, inventorySlots.subList(0, 36));
 		slotRefs.put(ContainerSection.INVENTORY_NOT_HOTBAR, inventorySlots.subList(0, 27));

@@ -15,7 +15,7 @@ import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.BehaviorMorbDispense;
 import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -336,7 +336,7 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 	public static final int TINT_INDEX_2 = 2;
 
 	public static ArrayList<ItemStack> morbList = new ArrayList<>();
-	public static Set<String> validMobs = new THashSet<>();
+	public static Set<String> validMobs = new ObjectOpenHashSet<>();
 
 	public static String[] blacklist = new String[] {};
 	public static boolean enable = true;

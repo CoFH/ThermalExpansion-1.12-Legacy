@@ -1,7 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -28,6 +32,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileBrewer extends TileMachineBase {
 
@@ -297,7 +303,7 @@ public class TileBrewer extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
 		inputTrackerFluid = nbt.getInteger("TrackInFluid");
 		outputTrackerFluid = nbt.getInteger("TrackOutFluid");
 
@@ -310,7 +316,7 @@ public class TileBrewer extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
 		nbt.setInteger("TrackInFluid", inputTrackerFluid);
 		nbt.setInteger("TrackOutFluid", outputTrackerFluid);
 
@@ -381,7 +387,7 @@ public class TileBrewer extends TileMachineBase {
 
 		if (TEProps.MACHINE_BREWER_REAGENT.equals(id)) {
 			reuseChance += 15;
-			energyMod += 10;
+			energyMod += 15;
 		}
 		return super.installAugmentToSlot(slot);
 	}

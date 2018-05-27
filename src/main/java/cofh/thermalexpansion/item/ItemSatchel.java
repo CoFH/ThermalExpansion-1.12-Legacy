@@ -12,14 +12,13 @@ import cofh.core.item.ItemMulti;
 import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.core.IInitializer;
-import cofh.core.util.crafting.FluidIngredientFactory.FluidIngredient;
 import cofh.core.util.filter.ItemFilterWrapper;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemSecurity;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
@@ -58,7 +57,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
-import static cofh.thermalfoundation.util.TFCrafting.addSecureRecipe;
 
 public class ItemSatchel extends ItemMulti implements IInitializer, IColorableItem, IEnchantableItem, IInventoryContainerItem, IMultiModeItem {
 
@@ -122,7 +120,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		if (isInCreativeTab(tab)) {
+		if (enable && isInCreativeTab(tab)) {
 			for (int metadata : itemList) {
 				if (metadata != CREATIVE) {
 					items.add(setDefaultInventoryTag(new ItemStack(this, 1, metadata)));
@@ -315,7 +313,10 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 				InventoryContainerItemWrapper inv = new InventoryContainerItemWrapper(stack);
 				for (int i = 0; i < inv.getSizeInventory(); i++) {
 					ItemStack slot = inv.getStackInSlot(i);
-					if (ItemHandlerHelper.canItemStacksStackRelaxed(eventItem, slot)) {
+					if (slot.isEmpty()) {
+						inv.setInventorySlotContents(i, eventItem.copy());
+						eventItem.setCount(0);
+					} else if (ItemHandlerHelper.canItemStacksStack(eventItem, slot)) {
 						int fill = slot.getMaxStackSize() - slot.getCount();
 						if (fill > eventItem.getCount()) {
 							slot.setCount(slot.getCount() + eventItem.getCount());
@@ -323,9 +324,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 							slot.setCount(slot.getMaxStackSize());
 						}
 						eventItem.splitStack(fill);
-					} else if (slot.isEmpty()) {
-						inv.setInventorySlotContents(i, eventItem.copy());
-						eventItem.setCount(0);
 					}
 					if (eventItem.isEmpty()) {
 						break;
@@ -434,45 +432,77 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 		}
 		// @formatter:off
 		addShapedRecipe(satchelBasic,
-				" Y ",
+				" R ",
 				"IXI",
-				"Y Y",
+				"R R",
 				'I', "ingotTin",
-				'X', "blockWool",
-				'Y', Items.LEATHER
+				'R', Items.LEATHER,
+				'X', "blockWool"
 		);
 		addShapedRecipe(satchelBasic,
-				" Y ",
+				" R ",
 				"IXI",
-				"Y Y",
+				"R R",
 				'I', "ingotTin",
-				'X', "blockWool",
-				'Y', "blockRockwool"
+				'R', "blockRockwool",
+				'X', "blockWool"
+		);
+		addShapedUpgradeRecipe(satchelHardened,
+				" R ",
+				"IXI",
+				"R R",
+				'I', "ingotInvar",
+				'R', "nuggetTin",
+				'X', satchelBasic
+		);
+		addShapedUpgradeRecipe(satchelReinforced,
+				" R ",
+				"IXI",
+				"R R",
+				'I', "ingotElectrum",
+				'R', "nuggetInvar",
+				'X', satchelHardened
+		);
+		addShapedUpgradeRecipe(satchelSignalum,
+				" R ",
+				"IXI",
+				"R R",
+				'I', "ingotSignalum",
+				'R', "nuggetElectrum",
+				'X', satchelReinforced
+		);
+		addShapedUpgradeRecipe(satchelResonant,
+				" R ",
+				"IXI",
+				"R R",
+				'I', "ingotEnderium",
+				'R', "nuggetSignalum",
+				'X', satchelSignalum
 		);
 
 		addShapedRecipe(satchelVoid,
-				" Y ",
+				" R ",
 				"IXI",
-				"Y Y",
+				"R R",
 				'I', "cobblestone",
-				'X', Items.LAVA_BUCKET,
-				'Y', Items.LEATHER
+				'R', Items.LEATHER,
+				'X', Items.LAVA_BUCKET
 		);
 		addShapedRecipe(satchelVoid,
-				" Y ",
+				" R ",
 				"IXI",
-				"Y Y",
+				"R R",
 				'I', "cobblestone",
-				'X', Items.LAVA_BUCKET,
-				'Y', "blockRockwool"
+				'R', "blockRockwool",
+				'X', Items.LAVA_BUCKET
 		);
 		// @formatter:on
 
-		addSecureRecipe(satchelBasic, satchelBasic, ItemSecurity.lock);
-		addSecureRecipe(satchelHardened, satchelHardened, ItemSecurity.lock);
-		addSecureRecipe(satchelReinforced, satchelReinforced, ItemSecurity.lock);
-		addSecureRecipe(satchelSignalum, satchelSignalum, ItemSecurity.lock);
-		addSecureRecipe(satchelResonant, satchelResonant, ItemSecurity.lock);
+		addShapelessSecureRecipe(satchelBasic, satchelBasic, ItemSecurity.lock);
+		addShapelessSecureRecipe(satchelHardened, satchelHardened, ItemSecurity.lock);
+		addShapelessSecureRecipe(satchelReinforced, satchelReinforced, ItemSecurity.lock);
+		addShapelessSecureRecipe(satchelSignalum, satchelSignalum, ItemSecurity.lock);
+		addShapelessSecureRecipe(satchelResonant, satchelResonant, ItemSecurity.lock);
 
 		addColorRecipe(satchelBasic, satchelBasic, "dye");
 		addColorRecipe(satchelHardened, satchelHardened, "dye");
@@ -486,11 +516,11 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 		addColorRecipe(satchelSignalum, satchelSignalum, "dye", "dye");
 		addColorRecipe(satchelResonant, satchelResonant, "dye", "dye");
 
-		addColorRemoveRecipe(satchelBasic, satchelBasic, new FluidIngredient("water"));
-		addColorRemoveRecipe(satchelHardened, satchelHardened, new FluidIngredient("water"));
-		addColorRemoveRecipe(satchelReinforced, satchelReinforced, new FluidIngredient("water"));
-		addColorRemoveRecipe(satchelSignalum, satchelSignalum, new FluidIngredient("water"));
-		addColorRemoveRecipe(satchelResonant, satchelResonant, new FluidIngredient("water"));
+		addColorRemoveRecipe(satchelBasic, satchelBasic);
+		addColorRemoveRecipe(satchelHardened, satchelHardened);
+		addColorRemoveRecipe(satchelReinforced, satchelReinforced);
+		addColorRemoveRecipe(satchelSignalum, satchelSignalum);
+		addColorRemoveRecipe(satchelResonant, satchelResonant);
 		return true;
 	}
 
@@ -524,7 +554,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 		return addItem(metadata, name, rarity);
 	}
 
-	private static TIntObjectHashMap<TypeEntry> typeMap = new TIntObjectHashMap<>();
+	private static Int2ObjectOpenHashMap<TypeEntry> typeMap = new Int2ObjectOpenHashMap<>();
 
 	public static final int VOID = 100;
 

@@ -194,10 +194,10 @@ info.thermalexpansion.augment.machinePulverizerPetrotheum.a.0=Увеличива
 info.thermalexpansion.augment.machinePulverizerPetrotheum.b.0=За каждую операцию требуется дополнительная энергия.
 info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=Тектонический петротеум должен быть поставлен.
 
-info.thermalexpansion.augment.machineRefineryOil.0=Фракционный очиститель: Специализация
-info.thermalexpansion.augment.machineRefineryOil.a.0=Значительно повышает эффективность конверсии ископаемых видов топлива.
-info.thermalexpansion.augment.machineRefineryOil.b.0=Только ископаемое топливо может быть обработано.
-info.thermalexpansion.augment.machineRefineryOil.b.1=За каждую операцию требуется дополнительная энергия.
+info.thermalexpansion.augment.machineRefineryFossil.0=Фракционный очиститель: Специализация
+info.thermalexpansion.augment.machineRefineryFossil.a.0=Значительно повышает эффективность конверсии ископаемых видов топлива.
+info.thermalexpansion.augment.machineRefineryFossil.b.0=Только ископаемое топливо может быть обработано.
+info.thermalexpansion.augment.machineRefineryFossil.b.1=За каждую операцию требуется дополнительная энергия.
 
 info.thermalexpansion.augment.machineRefineryPotion.0=Фракционный очиститель: Специализация
 info.thermalexpansion.augment.machineRefineryPotion.a.0=Позволяет очищать зелья.
@@ -364,7 +364,7 @@ item.thermalexpansion.augment.machineInsolatorTree.name=Саженец инфу�
 item.thermalexpansion.augment.machinePower.name=Вспомогательная катушка приема
 item.thermalexpansion.augment.machinePulverizerGeode.name=Тумблер жеоды
 item.thermalexpansion.augment.machinePulverizerPetrotheum.name=Тектонический инициатор
-item.thermalexpansion.augment.machineRefineryOil.name=Рефлаксовый столб
+item.thermalexpansion.augment.machineRefineryFossil.name=Рефлаксовый столб
 item.thermalexpansion.augment.machineRefineryPotion.name=Алхимическая реторта
 item.thermalexpansion.augment.machineSawmillTapper.name=Воронка для смолы
 item.thermalexpansion.augment.machineSmelterFlux.name=Металлургический восстановитель

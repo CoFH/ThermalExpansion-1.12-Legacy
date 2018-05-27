@@ -6,11 +6,10 @@ import cofh.core.inventory.ComparableItemStack;
 import cofh.core.inventory.ComparableItemStackValidatedNBT;
 import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.FluidHelper;
-import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
@@ -26,9 +25,9 @@ import static java.util.Arrays.asList;
 
 public class BrewerManager {
 
-	private static Map<List<Integer>, BrewerRecipe> recipeMap = new THashMap<>();
-	private static Set<ComparableItemStackValidatedNBT> validationSet = new THashSet<>();
-	private static Set<String> validationFluids = new THashSet<>();
+	private static Map<List<Integer>, BrewerRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidatedNBT> validationSet = new ObjectOpenHashSet<>();
+	private static Set<String> validationFluids = new ObjectOpenHashSet<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -36,8 +35,8 @@ public class BrewerManager {
 		oreValidator.addPrefix(ComparableItemStack.GEM);
 	}
 
-	public static final int DEFAULT_ENERGY = 2400;
-	public static final int DEFAULT_AMOUNT = CoreProps.BOTTLE_VOLUME * 3;
+	public static final int DEFAULT_ENERGY = 4800;
+	public static final int DEFAULT_AMOUNT = CoreProps.BOTTLE_VOLUME * 2;
 
 	public static BrewerRecipe getRecipe(ItemStack input, FluidStack fluid) {
 
@@ -202,8 +201,8 @@ public class BrewerManager {
 
 	public static void refresh() {
 
-		Map<List<Integer>, BrewerRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Set<ComparableItemStackValidatedNBT> tempSet = new THashSet<>();
+		Map<List<Integer>, BrewerRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Set<ComparableItemStackValidatedNBT> tempSet = new ObjectOpenHashSet<>();
 		BrewerRecipe tempRecipe;
 
 		for (Entry<List<Integer>, BrewerRecipe> entry : recipeMap.entrySet()) {

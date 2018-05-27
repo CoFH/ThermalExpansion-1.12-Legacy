@@ -5,8 +5,9 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalfoundation.block.BlockStorage;
 import cofh.thermalfoundation.block.BlockStorageAlloy;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -18,8 +19,8 @@ import java.util.Map;
 
 public class FactorizerManager {
 
-	private static Map<ComparableItemStackValidated, FactorizerRecipe> recipeMap = new THashMap<>();
-	private static Map<ComparableItemStackValidated, FactorizerRecipe> recipeMapReverse = new THashMap<>();
+	private static Map<ComparableItemStackValidated, FactorizerRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidated, FactorizerRecipe> recipeMapReverse = new Object2ObjectOpenHashMap<>();
 
 	public static FactorizerRecipe getRecipe(ItemStack input, boolean reverse) {
 
@@ -59,6 +60,13 @@ public class FactorizerManager {
 	}
 
 	public static void initialize() {
+
+		addRecipe(new ItemStack(Blocks.SAND, 4, 0), new ItemStack(Blocks.SANDSTONE), false);
+		addRecipe(new ItemStack(Blocks.SAND, 4, 1), new ItemStack(Blocks.RED_SANDSTONE), false);
+		addRecipe(new ItemStack(Items.GLOWSTONE_DUST, 4, 0), new ItemStack(Blocks.GLOWSTONE), false);
+
+		addDefaultRecipe(new ItemStack(Items.QUARTZ), new ItemStack(Blocks.QUARTZ_BLOCK), 4);
+		addDefaultRecipe(new ItemStack(Items.REDSTONE), new ItemStack(Blocks.REDSTONE_BLOCK));
 
 		addDefaultRecipe(ItemMaterial.ingotIron, new ItemStack(Blocks.IRON_BLOCK));
 		addDefaultRecipe(ItemMaterial.ingotGold, new ItemStack(Blocks.GOLD_BLOCK));
@@ -122,10 +130,6 @@ public class FactorizerManager {
 					oreType = oreName.substring(5, oreName.length());
 					addDefaultRecipe(ItemHelper.getOre("ingot" + oreType), ItemHelper.getOre("block" + oreType));
 					addDefaultRecipe(ItemHelper.getOre("nugget" + oreType), ItemHelper.getOre("ingot" + oreType));
-				} else if (oreName.startsWith("gem")) {
-					oreType = oreName.substring(3, oreName.length());
-					addDefaultRecipe(ItemHelper.getOre("gem" + oreType), ItemHelper.getOre("block" + oreType));
-					addDefaultRecipe(ItemHelper.getOre("nugget" + oreType), ItemHelper.getOre("gem" + oreType));
 				}
 			}
 		}
@@ -164,8 +168,8 @@ public class FactorizerManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackValidated, FactorizerRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Map<ComparableItemStackValidated, FactorizerRecipe> tempMapReverse = new THashMap<>(recipeMapReverse.size());
+		Map<ComparableItemStackValidated, FactorizerRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidated, FactorizerRecipe> tempMapReverse = new Object2ObjectOpenHashMap<>(recipeMapReverse.size());
 		FactorizerRecipe tempRecipe;
 
 		for (Map.Entry<ComparableItemStackValidated, FactorizerRecipe> entry : recipeMap.entrySet()) {

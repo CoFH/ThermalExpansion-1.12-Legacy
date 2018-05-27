@@ -1,11 +1,11 @@
 package cofh.thermalexpansion.gui.container.storage;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.thermalexpansion.block.storage.TileCache;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerCache extends ContainerTEBase {
+public class ContainerCache extends ContainerTileAugmentable {
 
 	TileCache myTile;
 

@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.dynamo;
 
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
-import cofh.core.render.TextureHelper;
+import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -10,8 +10,8 @@ import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoNumismatic;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoNumismatic;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.managers.dynamo.NumismaticManager;
-import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -67,6 +67,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		return TYPE;
 	}
 
+	@Override
 	protected boolean canStart() {
 
 		if (augmentGem) {
@@ -75,6 +76,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		return NumismaticManager.getFuelEnergy(inventory[0]) > energyConfig.maxPower;
 	}
 
+	@Override
 	protected void processStart() {
 
 		if (augmentGem) {
@@ -90,7 +92,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getBaseUnderlayTexture() {
 
-		return TextureHelper.getTexture(TFFluids.fluidMana.getStill());
+		return TETextures.PORTAL_UNDERLAY;
 	}
 
 	/* GUI METHODS */
@@ -113,6 +115,12 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 			maxFuelRF = Math.max(fuelRF, NumismaticManager.DEFAULT_ENERGY);
 		}
 		return fuelRF * scale / maxFuelRF;
+	}
+
+	@Override
+	public int getFuelEnergy(ItemStack stack) {
+
+		return (augmentGem ? NumismaticManager.getGemFuelEnergy(stack) : NumismaticManager.getFuelEnergy(stack)) * energyMod / ENERGY_BASE;
 	}
 
 	/* NBT METHODS */

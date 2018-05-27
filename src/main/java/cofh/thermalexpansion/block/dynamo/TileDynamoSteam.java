@@ -4,6 +4,7 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.render.TextureHelper;
+import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -189,9 +190,16 @@ public class TileDynamoSteam extends TileDynamoBase {
 		return tank;
 	}
 
+	@Override
 	public boolean showSteamTab() {
 
 		return augmentBoiler || augmentTurbine;
+	}
+
+	@Override
+	public int getFuelEnergy(ItemStack stack) {
+
+		return (augmentTurbine ? 0 : SteamManager.getFuelEnergy(stack)) * energyMod / ENERGY_BASE;
 	}
 
 	/* NBT METHODS */

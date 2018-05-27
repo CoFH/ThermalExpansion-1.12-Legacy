@@ -2,23 +2,19 @@ package cofh.thermalexpansion.item;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
-import baubles.api.cap.IBaublesItemHandler;
-import cofh.api.item.IMultiModeItem;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.init.CoreProps;
-import cofh.core.item.IEnchantableItem;
 import cofh.core.item.ItemMultiRF;
 import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.core.IInitializer;
-import cofh.core.util.crafting.FluidIngredientFactory.FluidIngredient;
 import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.util.EnergyContainerItemWrapper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalfoundation.init.TFProps;
 import com.google.common.collect.Iterables;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
@@ -36,8 +32,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.Optional;
@@ -47,16 +41,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
 
 @Optional.Interface (iface = "baubles.api.IBauble", modid = "baubles")
-public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble, IEnchantableItem, IEnergyContainerItem, IMultiModeItem {
+public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble {
 
 	public ItemCapacitor() {
 
@@ -89,7 +80,7 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 		}
 		tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
 
-		if (ItemHelper.getItemDamage(stack) == CREATIVE) {
+		if (isCreative(stack)) {
 			tooltip.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
 			tooltip.add(StringHelper.localize("info.cofh.send") + ": " + StringHelper.formatNumber(getSend(stack)) + " RF/t");
 		} else {
@@ -101,7 +92,7 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		if (isInCreativeTab(tab)) {
+		if (enable && isInCreativeTab(tab)) {
 			for (int metadata : itemList) {
 				if (metadata != CREATIVE) {
 					if (TFProps.showEmptyItems) {
@@ -130,13 +121,13 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 
 		switch (getMode(stack)) {
 			case EQUIPMENT:
-				equipment = Iterables.concat(player.getEquipmentAndArmor(), getBaubles(player));
+				equipment = Iterables.concat(player.getEquipmentAndArmor(), BaublesHelper.getBaubles(player));
 				break;
 			case INVENTORY:
 				equipment = player.inventory.mainInventory;
 				break;
 			default:
-				equipment = Iterables.concat(Arrays.asList(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory, getBaubles(player)));
+				equipment = Iterables.concat(Arrays.asList(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory, BaublesHelper.getBaubles(player)));
 		}
 		for (ItemStack equipmentStack : equipment) {
 			if (equipmentStack.equals(stack)) {
@@ -252,13 +243,13 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 
 		switch (getMode(stack)) {
 			case EQUIPMENT:
-				equipment = Iterables.concat(entity.getEquipmentAndArmor(), getBaubles(entity));
+				equipment = Iterables.concat(entity.getEquipmentAndArmor(), BaublesHelper.getBaubles(entity));
 				break;
 			case INVENTORY:
 				equipment = player.inventory.mainInventory;
 				break;
 			default:
-				equipment = Iterables.concat(Arrays.asList(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory, getBaubles(player)));
+				equipment = Iterables.concat(Arrays.asList(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory, BaublesHelper.getBaubles(player)));
 		}
 		for (ItemStack equipmentStack : equipment) {
 			if (equipmentStack.equals(stack)) {
@@ -322,23 +313,6 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 		return new EnergyContainerItemWrapper(stack, this);
 	}
 
-	/* BAUBLES */
-	@CapabilityInject (IBaublesItemHandler.class)
-	private static Capability<IBaublesItemHandler> CAPABILITY_BAUBLES = null;
-
-	private static Iterable<ItemStack> getBaubles(Entity entity) {
-
-		if (CAPABILITY_BAUBLES == null) {
-			return Collections.emptyList();
-		}
-		IBaublesItemHandler handler = entity.getCapability(CAPABILITY_BAUBLES, null);
-
-		if (handler == null) {
-			return Collections.emptyList();
-		}
-		return IntStream.range(0, handler.getSlots()).mapToObj(handler::getStackInSlot).filter(stack -> !stack.isEmpty()).collect(Collectors.toList());
-	}
-
 	/* IModelRegister */
 	@Override
 	@SideOnly (Side.CLIENT)
@@ -372,7 +346,7 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 		capacitorSignalum = addEntryItem(3, "standard3", EnumRarity.UNCOMMON);
 		capacitorResonant = addEntryItem(4, "standard4", EnumRarity.RARE);
 
-		capacitorCreative = addEntryItem(CREATIVE, "creative", SEND_CREATIVE, 0, CAPACITY[4], EnumRarity.EPIC);
+		capacitorCreative = addEntryItem(CREATIVE, "creative", SEND[4] * 10, 0, CAPACITY[4], EnumRarity.EPIC);
 
 		return true;
 	}
@@ -393,6 +367,42 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 				'X', "ingotCopper",
 				'Y', "dustSulfur"
 		);
+		addShapedUpgradeRecipe(capacitorHardened,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotInvar",
+				'R', "dustRedstone",
+				'X', capacitorBasic,
+				'Y', "ingotTin"
+		);
+		addShapedUpgradeRecipe(capacitorReinforced,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotElectrum",
+				'R', "dustRedstone",
+				'X', capacitorHardened,
+				'Y', "blockGlassHardened"
+		);
+		addShapedUpgradeRecipe(capacitorSignalum,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotSignalum",
+				'R', "dustRedstone",
+				'X', capacitorReinforced,
+				'Y', "dustCryotheum"
+		);
+		addShapedUpgradeRecipe(capacitorResonant,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotEnderium",
+				'R', "dustRedstone",
+				'X', capacitorSignalum,
+				'Y', "dustPyrotheum"
+		);
 		// @formatter:on
 
 		addColorRecipe(capacitorBasic, capacitorBasic, "dye");
@@ -401,11 +411,11 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 		addColorRecipe(capacitorSignalum, capacitorSignalum, "dye");
 		addColorRecipe(capacitorResonant, capacitorResonant, "dye");
 
-		addColorRemoveRecipe(capacitorBasic, capacitorBasic, new FluidIngredient("water"));
-		addColorRemoveRecipe(capacitorHardened, capacitorHardened, new FluidIngredient("water"));
-		addColorRemoveRecipe(capacitorReinforced, capacitorReinforced, new FluidIngredient("water"));
-		addColorRemoveRecipe(capacitorSignalum, capacitorSignalum, new FluidIngredient("water"));
-		addColorRemoveRecipe(capacitorResonant, capacitorResonant, new FluidIngredient("water"));
+		addColorRemoveRecipe(capacitorBasic, capacitorBasic);
+		addColorRemoveRecipe(capacitorHardened, capacitorHardened);
+		addColorRemoveRecipe(capacitorReinforced, capacitorReinforced);
+		addColorRemoveRecipe(capacitorSignalum, capacitorSignalum);
+		addColorRemoveRecipe(capacitorResonant, capacitorResonant);
 		return true;
 	}
 
@@ -468,19 +478,17 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble,
 		return addItem(metadata, name, rarity);
 	}
 
-	private static TIntObjectHashMap<TypeEntry> typeMap = new TIntObjectHashMap<>();
+	private static Int2ObjectOpenHashMap<TypeEntry> typeMap = new Int2ObjectOpenHashMap<>();
 
 	public static final int EQUIPMENT = 0;
 	public static final int INVENTORY = 1;
 
 	public static final int CAPACITY_BASE = 1000000;
 	public static final int XFER_BASE = 1000;
-	public static final int CREATIVE = 32000;
 
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int[] RECV = { 1, 4, 9, 16, 25 };
 	public static final int[] SEND = { 1, 4, 9, 16, 25 };
-	public static final int SEND_CREATIVE = 25 * 10000;
 
 	public static boolean enable = true;
 

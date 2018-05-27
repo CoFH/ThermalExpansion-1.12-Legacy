@@ -8,6 +8,9 @@ import cofh.core.block.TilePowered;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.TimeTracker;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.ServerHelper;
@@ -214,6 +217,22 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public boolean enableSecurity() {
 
 		return enableSecurity;
+	}
+
+	@Override
+	public boolean sendRedstoneUpdates() {
+
+		return true;
+	}
+
+	@Override
+	public void onRedstoneUpdate() {
+
+		boolean curActive = isActive;
+		if (!redstoneControlOrDisable()) {
+			isActive = false;
+		}
+		updateIfChanged(curActive);
 	}
 
 	/* IUpgradeable */

@@ -1,6 +1,0 @@
-{
-	"recipes": {
-		"secure_shapeless": "cofh.core.util.crafting.ShapelessSecureRecipeFactory",
-		"upgrade_shaped": "cofh.core.util.crafting.ShapedUpgradeRecipeFactory"
-	}
-}

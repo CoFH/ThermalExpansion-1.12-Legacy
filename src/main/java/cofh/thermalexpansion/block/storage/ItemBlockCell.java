@@ -174,7 +174,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	@Override
 	public int getMaxEnergyStored(ItemStack container) {
 
-		return TileCell.getCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
+		return TileCell.getMaxCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
 	}
 
 	/* IEnchantableItem */

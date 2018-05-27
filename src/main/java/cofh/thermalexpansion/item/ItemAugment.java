@@ -13,7 +13,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -217,7 +217,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		machineCrucibleLava = addAugmentItem(352, TEProps.MACHINE_CRUCIBLE_LAVA, AugmentType.MODE);
 		// machineCrucibleAlloy = addAugmentItem(353, TEProps.MACHINE_CRUCIBLE_ALLOY, AugmentType.MODE);
 
-		machineRefineryOil = addAugmentItem(368, TEProps.MACHINE_REFINERY_OIL, AugmentType.MODE);
+		machineRefineryFossil = addAugmentItem(368, TEProps.MACHINE_REFINERY_FOSSIL, AugmentType.MODE);
+		// machineRefineryBio = addAugmentItem(370, TEProps.MACHINE_REFINERY_BIO, AugmentType.MODE);
 		machineRefineryPotion = addAugmentItem(369, TEProps.MACHINE_REFINERY_POTION, AugmentType.MODE);
 
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
@@ -250,6 +251,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		dynamoCompressionCoolant = addAugmentItem(672, TEProps.DYNAMO_COMPRESSION_COOLANT, AugmentType.MODE);
 		dynamoCompressionFuel = addAugmentItem(673, TEProps.DYNAMO_COMPRESSION_FUEL, AugmentType.MODE);
+		dynamoCompressionBiofuel = addAugmentItem(674, TEProps.DYNAMO_COMPRESSION_BIOFUEL, AugmentType.MODE);
 
 		dynamoReactantElemental = addAugmentItem(688, TEProps.DYNAMO_REACTANT_ELEMENTAL, AugmentType.MODE);
 
@@ -270,6 +272,21 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		String category = "Item.Augment";
 		String comment;
 
+		comment = "If TRUE, the recipe for the Furnace's Food Specialization is enabled.";
+		boolean enableAugmentFurnaceFood = ThermalExpansion.CONFIG.getConfiguration().getBoolean("AugmentFurnaceFood", category, true, comment);
+
+		comment = "If TRUE, the recipe for the Furnace's Ore Specialization is enabled.";
+		boolean enableAugmentFurnaceOre = ThermalExpansion.CONFIG.getConfiguration().getBoolean("AugmentFurnaceOre", category, true, comment);
+
+		comment = "If TRUE, the recipe for the Furnace's Pyrolysis Specialization is enabled.";
+		boolean enableAugmentFurnacePyrolysis = ThermalExpansion.CONFIG.getConfiguration().getBoolean("AugmentFurnacePyrolysis", category, true, comment);
+
+		comment = "If TRUE, the recipe for the Pulverizer's Petrotheum Specialization is enabled.";
+		boolean enableAugmentPulverizerPetrotheum = ThermalExpansion.CONFIG.getConfiguration().getBoolean("AugmentPulverizerPetrotheum", category, true, comment);
+
+		comment = "If TRUE, the recipe for the Smelter's Pyrotheum Specialization is enabled.";
+		boolean enableAugmentSmelterPyrotheum = ThermalExpansion.CONFIG.getConfiguration().getBoolean("AugmentSmelterPyrotheum", category, true, comment);
+
 		comment = "If TRUE, the recipe for the Compactor's Coin Specialization is enabled.";
 		boolean enableAugmentCompactorCoin = ThermalExpansion.CONFIG.getConfiguration().getBoolean("AugmentCompactorCoin", category, true, comment);
 
@@ -278,6 +295,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		comment = "If TRUE, the recipe for the Refinery's Potion Specialization is enabled.";
 		boolean enableAugmentRefineryPotion = ThermalExpansion.CONFIG.getConfiguration().getBoolean("AugmentRefineryPotion", category, true, comment);
+
+		comment = "If TRUE, the recipe for the Extruder's Sedimentary Specialization is enabled.";
+		boolean enableAugmentExtruderSedimentary = ThermalExpansion.CONFIG.getConfiguration().getBoolean("AugmentExtruderSedimentary", category, true, comment);
 
 		// @formatter:off
 
@@ -304,33 +324,39 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "nuggetInvar"
 		);
 
-		addShapedRecipe(machineFurnaceFood,
-				" G ",
-				"ICI",
-				" X ",
-				'C', ItemMaterial.powerCoilElectrum,
-				'G', "gearCopper",
-				'I', "plateSilver",
-				'X', Blocks.BRICK_BLOCK
-		);
-		addShapedRecipe(machineFurnaceOre,
-				" G ",
-				"ICI",
-				" X ",
-				'C', ItemMaterial.powerCoilElectrum,
-				'G', "gearBronze",
-				'I', "plateInvar",
-				'X', "dustPyrotheum"
-		);
-		addShapedRecipe(machineFurnacePyrolysis,
-				" G ",
-				"ICI",
-				" X ",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearInvar",
-				'I', "plateCopper",
-				'X', Blocks.NETHER_BRICK
-		);
+		if (enableAugmentFurnaceFood) {
+			addShapedRecipe(machineFurnaceFood,
+					" G ",
+					"ICI",
+					" X ",
+					'C', ItemMaterial.powerCoilElectrum,
+					'G', "gearCopper",
+					'I', "plateSilver",
+					'X', Blocks.BRICK_BLOCK
+			);
+		}
+		if (enableAugmentFurnaceOre) {
+			addShapedRecipe(machineFurnaceOre,
+					" G ",
+					"ICI",
+					" X ",
+					'C', ItemMaterial.powerCoilElectrum,
+					'G', "gearBronze",
+					'I', "plateInvar",
+					'X', "dustPyrotheum"
+			);
+		}
+		if (enableAugmentFurnacePyrolysis) {
+			addShapedRecipe(machineFurnacePyrolysis,
+					" G ",
+					"ICI",
+					" X ",
+					'C', ItemMaterial.redstoneServo,
+					'G', "gearInvar",
+					'I', "plateCopper",
+					'X', Blocks.NETHER_BRICK
+			);
+		}
 
 //		addShapedRecipe(machinePulverizerGeode,
 //				" G ",
@@ -341,15 +367,17 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 //				'I', "plateBronze",
 //				'X', "gemDiamond",
 //		);
-		addShapedRecipe(machinePulverizerPetrotheum,
-				" G ",
-				"ICI",
-				" X ",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearSignalum",
-				'I', "plateBronze",
-				'X', "dustPetrotheum"
-		);
+		if (enableAugmentPulverizerPetrotheum) {
+			addShapedRecipe(machinePulverizerPetrotheum,
+					" G ",
+					"ICI",
+					" X ",
+					'C', ItemMaterial.redstoneServo,
+					'G', "gearSignalum",
+					'I', "plateBronze",
+					'X', "dustPetrotheum"
+			);
+		}
 
 		addShapedRecipe(machineSawmillTapper,
 				" G ",
@@ -370,15 +398,17 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', ItemMaterial.crystalSlagRich,
 				'X', "blockGlassHardened"
 		);
-		addShapedRecipe(machineSmelterPyrotheum,
-				" G ",
-				"ICI",
-				" X ",
-				'C', ItemMaterial.powerCoilElectrum,
-				'G', "gearSignalum",
-				'I', "plateNickel",
-				'X', "dustPyrotheum"
-		);
+		if (enableAugmentSmelterPyrotheum) {
+			addShapedRecipe(machineSmelterPyrotheum,
+					" G ",
+					"ICI",
+					" X ",
+					'C', ItemMaterial.powerCoilElectrum,
+					'G', "gearSignalum",
+					'I', "plateNickel",
+					'X', "dustPyrotheum"
+			);
+		}
 
 		addShapedRecipe(machineInsolatorFertilizer,
 				" G ",
@@ -450,7 +480,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 //				'X', "dustCryotheum"
 //		);
 
-		addShapedRecipe(machineRefineryOil,
+		addShapedRecipe(machineRefineryFossil,
 				" G ",
 				"ICI",
 				" X ",
@@ -459,6 +489,15 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "blockGlassHardened",
 				'X', Items.BLAZE_ROD
 		);
+//		addShapedRecipe(machineRefineryBio,
+//				" G ",
+//				"ICI",
+//				" X ",
+//				'C', ItemMaterial.powerCoilElectrum,
+//				'G', "gearBronze",
+//				'I', "blockGlassHardened",
+//				'X', "rodBlitz"
+//		);
 		if (enableAugmentRefineryPotion) {
 			addShapedRecipe(machineRefineryPotion,
 					" G ",
@@ -558,15 +597,17 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateInvar",
 				'X', "dustCryotheum"
 		);
-		addShapedRecipe(machineExtruderSedimentary,
-				" G ",
-				"ICI",
-				" X ",
-				'C', ItemMaterial.powerCoilElectrum,
-				'G', "gearNickel",
-				'I', "plateLead",
-				'X', "dustAerotheum"
-		);
+		if (enableAugmentExtruderSedimentary) {
+			addShapedRecipe(machineExtruderSedimentary,
+					" G ",
+					"ICI",
+					" X ",
+					'C', ItemMaterial.powerCoilElectrum,
+					'G', "gearNickel",
+					'I', "plateLead",
+					'X', "dustAerotheum"
+			);
+		}
 
 		/* DYNAMO */
 		addShapedRecipe(dynamoPower,
@@ -645,6 +686,15 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'G', "gearSignalum",
 				'I', "plateCopper",
 				'X', "dustPyrotheum"
+		);
+		addShapedRecipe(dynamoCompressionBiofuel,
+				" G ",
+				"ICI",
+				" X ",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearBronze",
+				'I', "plateConstantan",
+				'X', "dustAerotheum"
 		);
 
 		addShapedRecipe(dynamoReactantElemental,
@@ -744,7 +794,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		return addItem(metadata, name, rarity);
 	}
 
-	private TIntObjectHashMap<AugmentEntry> augmentMap = new TIntObjectHashMap<>();
+	private Int2ObjectOpenHashMap<AugmentEntry> augmentMap = new Int2ObjectOpenHashMap<>();
 
 	/* REFERENCES */
 
@@ -787,7 +837,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineCrucibleLava;
 	public static ItemStack machineCrucibleAlloy;
 
-	public static ItemStack machineRefineryOil;
+	public static ItemStack machineRefineryFossil;
+	public static ItemStack machineRefineryBio;
 	public static ItemStack machineRefineryPotion;
 
 	public static ItemStack machineChargerThroughput;
@@ -820,6 +871,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack dynamoCompressionCoolant;
 	public static ItemStack dynamoCompressionFuel;
+	public static ItemStack dynamoCompressionBiofuel;
 
 	public static ItemStack dynamoReactantElemental;
 

@@ -14,16 +14,16 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RefineryRecipeCategoryOil extends RefineryRecipeCategory {
+public class RefineryRecipeCategoryBio extends RefineryRecipeCategory {
 
 	public static void initialize(IModRegistry registry) {
 
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.REFINERY_OIL);
-		registry.addRecipeCatalyst(ItemAugment.machineRefineryOil, RecipeUidsTE.REFINERY_OIL);
-		registry.addRecipeCatalyst(BlockMachine.machineRefinery, RecipeUidsTE.REFINERY_OIL);
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.REFINERY_BIO);
+		registry.addRecipeCatalyst(ItemAugment.machineRefineryBio, RecipeUidsTE.REFINERY_BIO);
+		registry.addRecipeCatalyst(BlockMachine.machineRefinery, RecipeUidsTE.REFINERY_BIO);
 	}
 
 	public static List<RefineryRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
@@ -31,25 +31,25 @@ public class RefineryRecipeCategoryOil extends RefineryRecipeCategory {
 		List<RefineryRecipeWrapper> recipes = new ArrayList<>();
 
 		for (RefineryRecipe recipe : RefineryManager.getRecipeList()) {
-			if (RefineryManager.isFossilFuel(recipe.getInput())) {
-				recipes.add(new RefineryRecipeWrapper(guiHelper, recipe, RecipeUidsTE.REFINERY_OIL));
+			if (RefineryManager.isBioFuel(recipe.getInput())) {
+				recipes.add(new RefineryRecipeWrapper(guiHelper, recipe, RecipeUidsTE.REFINERY_BIO));
 			}
 		}
 		return recipes;
 	}
 
-	public RefineryRecipeCategoryOil(IGuiHelper guiHelper) {
+	public RefineryRecipeCategoryBio(IGuiHelper guiHelper) {
 
 		super(guiHelper);
 
-		localizedName = StringHelper.localize("item.thermalexpansion.augment.machineRefineryOil.name");
+		localizedName = StringHelper.localize("item.thermalexpansion.augment.machineRefineryBio.name");
 	}
 
 	@Nonnull
 	@Override
 	public String getUid() {
 
-		return RecipeUidsTE.REFINERY_OIL;
+		return RecipeUidsTE.REFINERY_BIO;
 	}
 
 }
