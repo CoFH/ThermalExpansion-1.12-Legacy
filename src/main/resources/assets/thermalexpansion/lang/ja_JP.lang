@@ -314,7 +314,7 @@ info.thermalexpansion.reservoir.d.1=モード：排出
 info.thermalexpansion.reservoir.d.2=装備品へ充填します。
 
 info.thermalexpansion.satchel.a.0=アイテムを集め保管します。アクセス制限を設定できます。
-info.thermalexpansion.satchel.a.1=インベントリ上で使用するとアイテムを移動できます
+info.thermalexpansion.satchel.a.1=チェストなどに対してスニークしながら使うと、中のアイテムを移動できます。
 info.thermalexpansion.satchel.a.2=スニーク中に使用することで設定を変更できます。
 info.thermalexpansion.satchel.a.c=1つのアイテムを無限に保管できます。アクセス制限を設定できます。
 info.thermalexpansion.satchel.a.v=アイテムの存在を抹消します。アクセス制限を設定できます。
