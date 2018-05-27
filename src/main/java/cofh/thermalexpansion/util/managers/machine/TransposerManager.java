@@ -42,6 +42,11 @@ public class TransposerManager {
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
+		oreValidator.addPrefix(ComparableItemStack.BLOCK);
+		oreValidator.addPrefix(ComparableItemStack.ORE);
+		oreValidator.addPrefix(ComparableItemStack.DUST);
+		oreValidator.addPrefix(ComparableItemStack.INGOT);
+		oreValidator.addPrefix(ComparableItemStack.NUGGET);
 		oreValidator.addPrefix(ComparableItemStack.GEM);
 		oreValidator.addPrefix("seed");
 		oreValidator.addPrefix("crop");
