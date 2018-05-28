@@ -230,9 +230,12 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 	@Override
 	public boolean onBlockActivatedDelegate(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-		TileEntity tile = world.getTileEntity(pos);
+		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
 
-		if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+		if (tile == null || !tile.canPlayerAccess(player)) {
+			return false;
+		}
+		if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 			ItemStack heldItem = player.getHeldItem(hand);
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 

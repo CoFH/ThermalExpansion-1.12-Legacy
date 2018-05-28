@@ -84,10 +84,12 @@ public abstract class BlockTEBase extends BlockCoreTile implements IConfigGui {
 			return false;
 		}
 		if (WrenchHelper.isHoldingUsableWrench(player, traceResult)) {
-			if (ServerHelper.isServerWorld(world)) {
-				tile.onWrench(player, side);
+			if (tile.canPlayerAccess(player)) {
+				if (ServerHelper.isServerWorld(world)) {
+					tile.onWrench(player, side);
+				}
+				WrenchHelper.usedWrench(player, traceResult);
 			}
-			WrenchHelper.usedWrench(player, traceResult);
 			return true;
 		}
 		if (onBlockActivatedDelegate(world, pos, state, player, hand, side, hitX, hitY, hitZ)) {

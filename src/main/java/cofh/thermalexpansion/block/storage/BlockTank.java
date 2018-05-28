@@ -152,25 +152,26 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 
 		TileTank tile = (TileTank) world.getTileEntity(pos);
 
-		if (tile != null) {
-			if (ItemHelper.isPlayerHoldingNothing(player)) {
-				if (player.isSneaking()) {
-					tile.setLocked(!tile.isLocked());
-					if (tile.isLocked()) {
-						world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.2F, 0.8F);
-					} else {
-						world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
-					}
-					return true;
+		if (tile == null || !tile.canPlayerAccess(player)) {
+			return false;
+		}
+		if (ItemHelper.isPlayerHoldingNothing(player)) {
+			if (player.isSneaking()) {
+				tile.setLocked(!tile.isLocked());
+				if (tile.isLocked()) {
+					world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.2F, 0.8F);
+				} else {
+					world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
 				}
-			}
-			ItemStack heldItem = player.getHeldItem(hand);
-			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-
-			if (FluidHelper.isFluidHandler(heldItem)) {
-				FluidHelper.interactWithHandler(heldItem, handler, player, hand);
 				return true;
 			}
+		}
+		ItemStack heldItem = player.getHeldItem(hand);
+		IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+
+		if (FluidHelper.isFluidHandler(heldItem)) {
+			FluidHelper.interactWithHandler(heldItem, handler, player, hand);
+			return true;
 		}
 		return false;
 	}
