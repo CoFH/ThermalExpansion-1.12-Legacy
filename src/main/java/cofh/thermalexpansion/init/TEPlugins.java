@@ -39,6 +39,7 @@ public class TEPlugins {
 		pluginBetweenlands = new PluginBetweenlands();
 		pluginBiomesOPlenty = new PluginBiomesOPlenty();
 		pluginChisel = new PluginChisel();
+		pluginComputronics = new PluginComputronics();
 		pluginElementalDimensions = new PluginElementalDimensions();
 		pluginEnderIO = new PluginEnderIO();
 		pluginEvilCraft = new PluginEvilCraft();
@@ -82,6 +83,7 @@ public class TEPlugins {
 		initList.add(pluginBetweenlands);
 		initList.add(pluginBiomesOPlenty);
 		initList.add(pluginChisel);
+		initList.add(pluginComputronics);
 		initList.add(pluginElementalDimensions);
 		initList.add(pluginEnderIO);
 		initList.add(pluginEvilCraft);
@@ -140,6 +142,7 @@ public class TEPlugins {
 	public static PluginBetweenlands pluginBetweenlands;
 	public static PluginBiomesOPlenty pluginBiomesOPlenty;
 	public static PluginChisel pluginChisel;
+	public static PluginComputronics pluginComputronics;
 	public static PluginElementalDimensions pluginElementalDimensions;
 	public static PluginEnderIO pluginEnderIO;
 	public static PluginEvilCraft pluginEvilCraft;
