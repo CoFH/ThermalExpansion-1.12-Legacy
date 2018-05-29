@@ -8,6 +8,7 @@ import cofh.core.util.core.SideConfig;
 import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiSmelter;
@@ -242,6 +243,7 @@ public class TileSmelter extends TileMachineBase {
 		}
 		if (!secondaryItem.isEmpty()) {
 			int modifiedChance = augmentPyrotheumCheck ? secondaryChance - PYROTHEUM_SECONDARY_MOD : secondaryChance;
+			modifiedChance = MathHelper.clamp(modifiedChance, SECONDARY_MIN, SECONDARY_BASE);
 
 			int recipeChance = curRecipe.getSecondaryOutputChance();
 			if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {

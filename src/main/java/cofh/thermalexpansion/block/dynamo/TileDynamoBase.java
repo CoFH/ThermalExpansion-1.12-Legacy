@@ -40,6 +40,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IReconfigurableFacing, ISidedInventory, IEnergyInfo, ISteamInfo {
@@ -50,11 +51,13 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	public static final int MIN_BASE_POWER = 10;
 	public static final int MAX_BASE_POWER = 200;
 	public static int[] POWER_SCALING = { 100, 150, 200, 250, 300 };
-	public static int[] CUSTOM_POWER_SCALING = { 100, 150, 250, 400, 600 };
+	public static byte[] NUM_AUGMENTS = { 0, 1, 2, 3, 4 };
 
 	protected static boolean enableCreative = false;
 	protected static boolean enableSecurity = true;
-	protected static boolean customScaling = false;
+	protected static boolean enableUpgrades = true;
+	protected static boolean customAugmentScaling = false;
+	protected static boolean customPowerScaling = false;
 	public static boolean smallStorage = false;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
@@ -77,41 +80,72 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		String comment = "If TRUE, Dynamos are securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", enableSecurity, comment);
 
+		comment = "If TRUE, Dynamos are upgradable. If disabled, be sure and change the Augment Progression.";
+		enableUpgrades = ThermalExpansion.CONFIG.get(category, "Upgradable", enableUpgrades, comment);
+
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockDynamo.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockDynamo.enableClassicRecipes, comment);
 
 		comment = "If TRUE, Dynamos can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockDynamo.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockDynamo.enableUpgradeKitCrafting, comment);
 
+		comment = "If TRUE, Dynamo Augment Slot scaling will use a custom set of values rather than default behavior (1/level).";
+		customAugmentScaling = ThermalExpansion.CONFIG.get(category, "CustomAugmentScaling", customAugmentScaling, comment);
+
 		comment = "If TRUE, Dynamo RF/t (POWER) scaling will use a custom set of values rather than default behavior. The default custom configuration provides a reasonable alternate progression.";
-		customScaling = ThermalExpansion.CONFIG.get(category, "CustomPowerScaling", customScaling, comment);
+		customPowerScaling = ThermalExpansion.CONFIG.get(category, "CustomPowerScaling", customPowerScaling, comment);
 
 		comment = "If TRUE, Dynamos will have much smaller internal energy (RF) storage. Generation speed will no longer scale with internal energy.";
 		smallStorage = ThermalExpansion.CONFIG.get(category, "SmallStorage", smallStorage, comment);
 
 		/* CUSTOM SCALING */
-		category = "Dynamo.CustomPowerScaling";
-		comment = "ADVANCED FEATURE - ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING.\nValues are expressed as a percentage of Base Power; Base Scale Factor is 100 percent.\nValues will be checked for validity and rounded down to the nearest 10.";
+		boolean validScaling;
+		byte[] customAugments = { 0, 1, 2, 3, 4 };
+		int[] customPowerScale = { 100, 150, 250, 400, 600 };
+		int[] customEnergyScale = { 100, 105, 110, 115, 120 };
 
+		category = "Dynamo.AugmentSlots";
+		comment = "Adjust the number of augments that Dynamos have at any given Level.\nProgression will be checked for validity - upgrading a block cannot result in fewer slots.";
 		ThermalExpansion.CONFIG.getCategory(category).setComment(comment);
-		boolean validScaling = true;
+		validScaling = true;
 
-		for (int i = CoreProps.LEVEL_MIN + 1; i <= CoreProps.LEVEL_MAX; i++) {
-			CUSTOM_POWER_SCALING[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, CUSTOM_POWER_SCALING[i], POWER_BASE, POWER_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Dynamos.");
+		for (int i = CoreProps.LEVEL_MIN; i <= CoreProps.LEVEL_MAX; i++) {
+			customAugments[i] = (byte) ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, customAugments[i], CoreProps.AUGMENT_MIN, CoreProps.AUGMENT_MAX, "Augment Slots for Level " + i + " Dynamos.");
 		}
-		for (int i = 1; i < CUSTOM_POWER_SCALING.length; i++) {
-			CUSTOM_POWER_SCALING[i] /= 10;
-			CUSTOM_POWER_SCALING[i] *= 10;
+		for (int i = 1; i < customAugments.length; i++) {
 
-			if (CUSTOM_POWER_SCALING[i] <= CUSTOM_POWER_SCALING[i - 1]) {
+			if (customAugments[i] < customAugments[i - 1]) {
 				validScaling = false;
 			}
 		}
-		if (customScaling) {
+		if (customAugmentScaling) {
 			if (!validScaling) {
 				ThermalExpansion.LOG.error(category + " settings are invalid. They will not be used.");
 			} else {
-				System.arraycopy(CUSTOM_POWER_SCALING, 0, POWER_SCALING, 0, POWER_SCALING.length);
+				System.arraycopy(customAugments, 0, NUM_AUGMENTS, 0, NUM_AUGMENTS.length);
+			}
+		}
+		category = "Dynamo.CustomPowerScaling";
+		comment = "ADVANCED FEATURE - ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING.\nValues are expressed as a percentage of Base Power; Base Scale Factor is 100 percent.\nValues will be checked for validity and rounded down to the nearest 10.";
+		ThermalExpansion.CONFIG.getCategory(category).setComment(comment);
+		validScaling = true;
+
+		for (int i = CoreProps.LEVEL_MIN + 1; i <= CoreProps.LEVEL_MAX; i++) {
+			customPowerScale[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, customPowerScale[i], POWER_BASE, POWER_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Dynamos.");
+		}
+		for (int i = 1; i < customPowerScale.length; i++) {
+			customPowerScale[i] /= 10;
+			customPowerScale[i] *= 10;
+
+			if (customPowerScale[i] < customPowerScale[i - 1]) {
+				validScaling = false;
+			}
+		}
+		if (customPowerScaling) {
+			if (!validScaling) {
+				ThermalExpansion.LOG.error(category + " settings are invalid. They will not be used.");
+			} else {
+				System.arraycopy(customPowerScale, 0, POWER_SCALING, 0, POWER_SCALING.length);
 			}
 		}
 	}
@@ -145,6 +179,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		energyConfig = ENERGY_CONFIGS[this.getType()].copy();
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 2);
+		Arrays.fill(augments, ItemStack.EMPTY);
 	}
 
 	@Override
@@ -210,7 +245,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public boolean canUpgrade(ItemStack upgrade) {
 
-		if (!AugmentHelper.isUpgradeItem(upgrade)) {
+		if (!AugmentHelper.isUpgradeItem(upgrade) || !enableUpgrades) {
 			return false;
 		}
 		UpgradeType uType = ((IUpgradeItem) upgrade.getItem()).getUpgradeType(upgrade);
@@ -247,6 +282,12 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	protected int getNumAugmentSlots(int level) {
+
+		return NUM_AUGMENTS[MathHelper.clamp(level, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX)];
 	}
 
 	@Override
