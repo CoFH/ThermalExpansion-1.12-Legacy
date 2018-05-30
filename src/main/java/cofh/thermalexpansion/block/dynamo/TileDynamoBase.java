@@ -20,7 +20,6 @@ import cofh.redstoneflux.api.IEnergyReceiver;
 import cofh.redstoneflux.api.IEnergyStorage;
 import cofh.redstoneflux.impl.EnergyStorage;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -45,20 +44,20 @@ import java.util.HashSet;
 
 public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IReconfigurableFacing, ISidedInventory, IEnergyInfo, ISteamInfo {
 
-	protected static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[Type.values().length];
-	protected static final HashSet<String>[] VALID_AUGMENTS = new HashSet[Type.values().length];
-
-	public static final int MIN_BASE_POWER = 10;
-	public static final int MAX_BASE_POWER = 200;
-	public static int[] POWER_SCALING = { 100, 150, 200, 250, 300 };
-	public static byte[] NUM_AUGMENTS = { 0, 1, 2, 3, 4 };
+	protected static final int MIN_BASE_POWER = 10;
+	protected static final int MAX_BASE_POWER = 200;
+	protected static int[] POWER_SCALING = { 100, 150, 200, 250, 300 };
 
 	protected static boolean enableCreative = false;
 	protected static boolean enableSecurity = true;
 	protected static boolean enableUpgrades = true;
 	protected static boolean customAugmentScaling = false;
 	protected static boolean customPowerScaling = false;
+
+	public static boolean enableClassicRecipes = false;
+	public static boolean enableUpgradeKitCrafting = false;
 	public static boolean smallStorage = false;
+	public static byte[] numAugments = { 0, 1, 2, 3, 4 };
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 	protected static final int ENERGY_BASE = 100;
@@ -84,10 +83,10 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		enableUpgrades = ThermalExpansion.CONFIG.get(category, "Upgradable", enableUpgrades, comment);
 
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
-		BlockDynamo.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockDynamo.enableClassicRecipes, comment);
+		enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", enableClassicRecipes, comment);
 
 		comment = "If TRUE, Dynamos can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
-		BlockDynamo.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockDynamo.enableUpgradeKitCrafting, comment);
+		enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", enableUpgradeKitCrafting, comment);
 
 		comment = "If TRUE, Dynamo Augment Slot scaling will use a custom set of values rather than default behavior (1/level).";
 		customAugmentScaling = ThermalExpansion.CONFIG.get(category, "CustomAugmentScaling", customAugmentScaling, comment);
@@ -122,7 +121,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 			if (!validScaling) {
 				ThermalExpansion.LOG.error(category + " settings are invalid. They will not be used.");
 			} else {
-				System.arraycopy(customAugments, 0, NUM_AUGMENTS, 0, NUM_AUGMENTS.length);
+				System.arraycopy(customAugments, 0, numAugments, 0, numAugments.length);
 			}
 		}
 		category = "Dynamo.CustomPowerScaling";
@@ -177,7 +176,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	public TileDynamoBase() {
 
-		energyConfig = ENERGY_CONFIGS[this.getType()].copy();
+		energyConfig = getEnergyConfig().copy();
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 2);
 		Arrays.fill(augments, ItemStack.EMPTY);
 	}
@@ -192,12 +191,6 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	protected String getModVersion() {
 
 		return ThermalExpansion.VERSION;
-	}
-
-	@Override
-	protected String getTileName() {
-
-		return "tile.thermalexpansion.dynamo." + Type.values()[getType()].getName() + ".name";
 	}
 
 	@Override
@@ -254,12 +247,12 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		switch (uType) {
 			case INCREMENTAL:
 				if (uLevel == level + 1) {
-					return !BlockDynamo.enableClassicRecipes;
+					return !enableClassicRecipes;
 				}
 				break;
 			case FULL:
 				if (uLevel > level) {
-					return !BlockDynamo.enableClassicRecipes;
+					return !enableClassicRecipes;
 				}
 				break;
 			case CREATIVE:
@@ -287,7 +280,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	protected int getNumAugmentSlots(int level) {
 
-		return NUM_AUGMENTS[MathHelper.clamp(level, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX)];
+		return numAugments[MathHelper.clamp(level, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX)];
 	}
 
 	@Override
@@ -363,9 +356,13 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	}
 
 	/* COMMON METHODS */
+	protected abstract EnergyConfig getEnergyConfig();
+
+	protected abstract HashSet<String> getValidAugments();
+
 	protected int getBasePower(int level) {
 
-		return ENERGY_CONFIGS[getType()].maxPower * POWER_SCALING[MathHelper.clamp(level, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX)] / POWER_BASE;
+		return getEnergyConfig().maxPower * POWER_SCALING[MathHelper.clamp(level, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX)] / POWER_BASE;
 	}
 
 	protected int calcEnergy() {
@@ -486,7 +483,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	/* GUI METHODS */
 	public int getScaledDuration(int scale) {
 
-		return 0;
+		return isActive ? scale : 0;
 	}
 
 	public IEnergyStorage getEnergyStorage() {
@@ -644,7 +641,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (augmentThrottle && TEProps.DYNAMO_THROTTLE.equals(id)) {
 			return false;
 		}
-		return VALID_AUGMENTS_BASE.contains(id) || VALID_AUGMENTS[getType()].contains(id) || super.isValidAugment(type, id);
+		return VALID_AUGMENTS_BASE.contains(id) || getValidAugments().contains(id) || super.isValidAugment(type, id);
 	}
 
 	@Override

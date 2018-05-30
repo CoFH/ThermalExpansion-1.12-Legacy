@@ -8,7 +8,6 @@ import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.device.CoolantManager;
@@ -36,15 +35,17 @@ import java.util.HashSet;
 
 public class TileDynamoMagmatic extends TileDynamoBase {
 
-	private static final int TYPE = Type.MAGMATIC.getMetadata();
+	protected static final EnergyConfig ENERGY_CONFIG = new EnergyConfig();
+	protected static final HashSet<String> VALID_AUGMENTS = new HashSet<>();
+
+	public static boolean enable = true;
 	public static int basePower = 40;
 	public static int fluidAmount = 100;
 
 	public static void initialize() {
 
-		VALID_AUGMENTS[TYPE] = new HashSet<>();
-		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_BOILER);
-		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_MAGMATIC_COOLANT);
+		VALID_AUGMENTS.add(TEProps.DYNAMO_BOILER);
+		VALID_AUGMENTS.add(TEProps.DYNAMO_MAGMATIC_COOLANT);
 
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion:dynamo_magmatic");
 
@@ -54,13 +55,11 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	public static void config() {
 
 		String category = "Dynamo.Magmatic";
-		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+		enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		String comment = "Adjust this value to change the Energy generation (in RF/t) for a Magmatic Dynamo. This base value will scale with block level and Augments.";
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
-
-		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
+		ENERGY_CONFIG.setDefaultParams(basePower, smallStorage);
 	}
 
 	private FluidTankCore fuelTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
@@ -75,9 +74,21 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	protected boolean flagTank;
 
 	@Override
-	public int getType() {
+	protected String getTileName() {
 
-		return TYPE;
+		return "tile.thermalexpansion.dynamo.magmatic.name";
+	}
+
+	@Override
+	protected EnergyConfig getEnergyConfig() {
+
+		return ENERGY_CONFIG;
+	}
+
+	@Override
+	protected HashSet<String> getValidAugments() {
+
+		return VALID_AUGMENTS;
 	}
 
 	@Override
@@ -149,12 +160,6 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	}
 
 	/* GUI METHODS */
-	@Override
-	public int getScaledDuration(int scale) {
-
-		return isActive ? scale : 0;
-	}
-
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 

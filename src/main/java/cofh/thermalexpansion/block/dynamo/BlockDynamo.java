@@ -342,6 +342,13 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
+		enable[0] = TileDynamoSteam.enable;
+		enable[1] = TileDynamoMagmatic.enable;
+		enable[2] = TileDynamoCompression.enable;
+		enable[3] = TileDynamoReactant.enable;
+		enable[4] = TileDynamoEnervation.enable;
+		enable[5] = TileDynamoNumismatic.enable;
+
 		return true;
 	}
 
@@ -443,7 +450,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 	private void addUpgradeRecipes() {
 
-		if (!enableUpgradeKitCrafting) {
+		if (!TileDynamoBase.enableUpgradeKitCrafting) {
 			return;
 		}
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
@@ -467,7 +474,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 	private void addClassicRecipes() {
 
-		if (!enableClassicRecipes) {
+		if (!TileDynamoBase.enableClassicRecipes) {
 			return;
 		}
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
@@ -558,8 +565,6 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 	}
 
 	public static boolean[] enable = new boolean[Type.values().length];
-	public static boolean enableClassicRecipes = false;
-	public static boolean enableUpgradeKitCrafting = false;
 
 	/* REFERENCES */
 	public static ItemStack dynamoSteam;

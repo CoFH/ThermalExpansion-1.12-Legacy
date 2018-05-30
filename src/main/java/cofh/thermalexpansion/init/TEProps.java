@@ -243,7 +243,7 @@ public class TEProps {
 		payload.addBool(TileDeviceBase.disableAutoOutput);
 
 		payload.addBool(TileDynamoBase.smallStorage);
-		payload.addByteArray(TileDynamoBase.NUM_AUGMENTS);
+		payload.addByteArray(TileDynamoBase.numAugments);
 
 		return payload;
 	}
@@ -259,7 +259,7 @@ public class TEProps {
 		TileDeviceBase.disableAutoOutput = payload.getBool();
 
 		TileDynamoBase.smallStorage = payload.getBool();
-		payload.getByteArray(TileDynamoBase.NUM_AUGMENTS);
+		payload.getByteArray(TileDynamoBase.numAugments);
 	}
 
 	/* GENERAL */
