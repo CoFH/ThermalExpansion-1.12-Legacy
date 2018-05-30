@@ -1,11 +1,11 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
+import cofh.core.block.BlockCore;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.init.TEProps;
-import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ItemBlockDynamo extends ItemBlockTEBase {
 
-	public ItemBlockDynamo(Block block) {
+	public ItemBlockDynamo(BlockCore block) {
 
 		super(block);
 	}
@@ -29,12 +29,6 @@ public class ItemBlockDynamo extends ItemBlockTEBase {
 		stack.getTagCompound().setByte("Level", (byte) level);
 
 		return stack;
-	}
-
-	@Override
-	public String getUnlocalizedName(ItemStack stack) {
-
-		return "tile.thermalexpansion.dynamo." + Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
 	}
 
 	@Override

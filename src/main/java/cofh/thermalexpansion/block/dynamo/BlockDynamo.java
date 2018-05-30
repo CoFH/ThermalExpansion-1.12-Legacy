@@ -14,6 +14,7 @@ import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.FluidHelper;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
@@ -121,6 +122,12 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 	}
 
 	/* TYPE METHODS */
+	@Override
+	public String getUnlocalizedName(ItemStack stack) {
+
+		return "tile.thermalexpansion.dynamo." + Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
+	}
+
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 

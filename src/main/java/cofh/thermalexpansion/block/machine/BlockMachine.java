@@ -12,6 +12,7 @@ import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.FluidHelper;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.ReconfigurableHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
@@ -100,6 +101,12 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 	}
 
 	/* TYPE METHODS */
+	@Override
+	public String getUnlocalizedName(ItemStack stack) {
+
+		return "tile.thermalexpansion.machine." + Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
+	}
+
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 

@@ -1,10 +1,10 @@
 package cofh.thermalexpansion.block.apparatus;
 
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
+import cofh.core.block.BlockCore;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.block.apparatus.BlockApparatus.Type;
-import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ItemBlockApparatus extends ItemBlockTEBase {
 
-	public ItemBlockApparatus(Block block) {
+	public ItemBlockApparatus(BlockCore block) {
 
 		super(block);
 	}

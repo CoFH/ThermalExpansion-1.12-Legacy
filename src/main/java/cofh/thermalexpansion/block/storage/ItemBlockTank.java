@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.fluid.IFluidContainerItem;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
+import cofh.core.block.BlockCore;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
@@ -10,7 +11,6 @@ import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
-import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -26,7 +26,7 @@ import java.util.List;
 
 public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerItem, IEnchantableItem {
 
-	public ItemBlockTank(Block block) {
+	public ItemBlockTank(BlockCore block) {
 
 		super(block);
 		setMaxStackSize(1);

@@ -2,16 +2,16 @@ package cofh.thermalexpansion.block;
 
 import cofh.api.item.ICreativeItem;
 import cofh.api.item.INBTCopyIngredient;
+import cofh.core.block.BlockCore;
 import cofh.core.block.ItemBlockCore;
 import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.StringHelper;
-import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
 public abstract class ItemBlockTEBase extends ItemBlockCore implements ICreativeItem, INBTCopyIngredient {
 
-	public ItemBlockTEBase(Block block) {
+	public ItemBlockTEBase(BlockCore block) {
 
 		super(block);
 	}

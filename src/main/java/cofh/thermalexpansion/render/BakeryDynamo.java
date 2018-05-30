@@ -144,13 +144,12 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 
 	/**
 	 * Used to get the overlay texture for the given side.
-	 * This should specifically relate to the level of the machine and not it's state.
+	 * This should specifically relate to the level of the dynamo and not its state.
 	 *
-	 * @param face  The face.
 	 * @param level The level.
 	 * @return The texture, Null if there is no texture for the face.
 	 */
-	private static TextureAtlasSprite getOverlaySprite(EnumFacing face, int level) {
+	private static TextureAtlasSprite getOverlaySprite(int level) {
 
 		if (level == 0) {
 			return null;
@@ -191,7 +190,7 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 			renderBase(ccrs, 1, false, stack.getMetadata());
 
 			if (TEProps.renderDynamoOverlay && level > 0) {
-				renderBaseOverlay(ccrs, 1, false, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(face, level));
+				renderBaseOverlay(ccrs, 1, false, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(level));
 			}
 			buffer.finishDrawing();
 			return buffer.bake();
@@ -227,7 +226,7 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 				renderBase(ccrs, facing, active, type);
 
 				if (TEProps.renderDynamoOverlay && level > 0) {
-					renderBaseOverlay(ccrs, facing, active, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(face, level));
+					renderBaseOverlay(ccrs, facing, active, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(level));
 				}
 			} else if (TileDynamoBase.COIL_UNDERLAY[coil]) {
 				renderCoilAnimation(ccrs, facing, active, coilUnderlay);

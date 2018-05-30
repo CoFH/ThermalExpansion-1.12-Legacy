@@ -7,24 +7,25 @@ import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager.TransposerRecipe;
+import cofh.thermalfoundation.init.TFFluids;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
+import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredientRegistry;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TransposerRecipeCategoryExtract extends TransposerRecipeCategory {
 
@@ -42,40 +43,23 @@ public class TransposerRecipeCategoryExtract extends TransposerRecipeCategory {
 		List<TransposerRecipeWrapper> recipes = new ArrayList<>();
 
 		for (TransposerRecipe recipe : TransposerManager.getExtractRecipeList()) {
+			if (TFFluids.isPotion(recipe.getFluid()) || TFFluids.isSplashPotion(recipe.getFluid()) || TFFluids.isLingeringPotion(recipe.getFluid())) {
+				// Ignore Potions
+				continue;
+			}
 			recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_EXTRACT));
 		}
 		List<ItemStack> ingredients = ingredientRegistry.getIngredients(ItemStack.class);
-
 		for (ItemStack ingredient : ingredients) {
 			if (ingredient.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-				for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
-					addExtractRecipe(ingredient, fluid, recipes, guiHelper);
+				TransposerRecipeWrapperContainer wrapper = new TransposerRecipeWrapperContainer(guiHelper, ingredient, RecipeUidsTE.TRANSPOSER_EXTRACT);
+				if (wrapper.inputs.get(0).isEmpty() || wrapper.outputFluids.get(0).isEmpty()) {
+					continue;
 				}
-				//				TransposerRecipeWrapperContainer wrapper = new TransposerRecipeWrapperContainer(guiHelper, ingredient, RecipeUidsTE.TRANSPOSER_EXTRACT);
-				//				if (!wrapper.inputs.isEmpty() && !wrapper.outputFluids.isEmpty()) {
-				//					recipes.add(wrapper);
-				//				}
+				recipes.add(wrapper);
 			}
 		}
 		return recipes;
-	}
-
-	private static void addExtractRecipe(ItemStack baseStack, Fluid fluid, List<TransposerRecipeWrapper> recipes, IGuiHelper guiHelper) {
-
-		ItemStack filledStack = baseStack.copy();
-		IFluidHandlerItem handler = filledStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-		int fill = handler.fill(new FluidStack(fluid, Fluid.BUCKET_VOLUME), true);
-
-		if (fill > 0) {
-			filledStack = handler.getContainer().copy();
-			FluidStack drainedFluid = handler.drain(Fluid.BUCKET_VOLUME, true);
-
-			if (drainedFluid != null) {
-				ItemStack drainedStack = handler.getContainer();
-				TransposerRecipe recipe = new TransposerRecipe(filledStack, drainedStack, drainedFluid, TransposerManager.DEFAULT_ENERGY, drainedStack.getCount() <= 0 ? 0 : 100);
-				recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_EXTRACT));
-			}
-		}
 	}
 
 	public TransposerRecipeCategoryExtract(IGuiHelper guiHelper) {
@@ -102,6 +86,9 @@ public class TransposerRecipeCategoryExtract extends TransposerRecipeCategory {
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
+
+		Map<Integer, ? extends IGuiIngredient<FluidStack>> fluidIngredients = guiFluidStacks.getGuiIngredients();
+		recipeWrapper.setGuiFluids(fluidIngredients);
 
 		guiItemStacks.init(0, true, 30, 10);
 		guiItemStacks.init(1, false, 30, 41);
