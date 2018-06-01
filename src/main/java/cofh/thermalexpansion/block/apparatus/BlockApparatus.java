@@ -71,7 +71,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i)));
 			}
@@ -82,7 +82,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
-		return this.getDefaultState().withProperty(VARIANT, Type.byMetadata(meta));
+		return this.getDefaultState().withProperty(VARIANT, Type.values()[meta]);
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		if (metadata >= Type.values().length) {
 			return null;
 		}
-		switch (Type.byMetadata(metadata)) {
+		switch (Type.values()[metadata]) {
 			case BREAKER:
 				return new TileBreaker();
 			case COLLECTOR:
@@ -251,16 +251,13 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		COLLECTOR(1, "collector");
 		// @formatter:on
 
-		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
-		private final int light;
 
 		Type(int metadata, String name, int light) {
 
 			this.metadata = metadata;
 			this.name = name;
-			this.light = light;
 		}
 
 		Type(int metadata, String name) {
@@ -277,25 +274,6 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		public String getName() {
 
 			return this.name;
-		}
-
-		public int getLight() {
-
-			return light;
-		}
-
-		public static Type byMetadata(int metadata) {
-
-			if (metadata < 0 || metadata >= METADATA_LOOKUP.length) {
-				metadata = 0;
-			}
-			return METADATA_LOOKUP[metadata];
-		}
-
-		static {
-			for (Type type : values()) {
-				METADATA_LOOKUP[type.getMetadata()] = type;
-			}
 		}
 	}
 

@@ -105,7 +105,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				if (TEProps.creativeTabShowAllBlockLevels) {
 					for (int j = 0; j <= CoreProps.LEVEL_MAX; j++) {
@@ -125,13 +125,13 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.dynamo." + Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
+		return "tile.thermalexpansion.dynamo." + Type.values()[ItemHelper.getItemDamage(stack)].getName() + ".name";
 	}
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
-		return this.getDefaultState().withProperty(VARIANT, Type.byMetadata(meta));
+		return this.getDefaultState().withProperty(VARIANT, Type.values()[meta]);
 	}
 
 	@Override
@@ -453,7 +453,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 		if (!TileDynamoBase.enableUpgradeKitCrafting) {
 			return;
 		}
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				ItemStack[] block = new ItemStack[5];
 
@@ -477,7 +477,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 		if (!TileDynamoBase.enableClassicRecipes) {
 			return;
 		}
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				ItemStack[] dynamo = new ItemStack[5];
 
@@ -528,7 +528,6 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 		NUMISMATIC(5, "numismatic");
 		// @formatter:on
 
-		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
 
@@ -547,20 +546,6 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 		public String getName() {
 
 			return this.name;
-		}
-
-		public static Type byMetadata(int metadata) {
-
-			if (metadata < 0 || metadata >= METADATA_LOOKUP.length) {
-				metadata = 0;
-			}
-			return METADATA_LOOKUP[metadata];
-		}
-
-		static {
-			for (Type type : values()) {
-				METADATA_LOOKUP[type.getMetadata()] = type;
-			}
 		}
 	}
 

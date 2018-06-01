@@ -105,12 +105,6 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	}
 
 	@Override
-	public int getType() {
-
-		return 0;
-	}
-
-	@Override
 	public void blockPlaced() {
 
 		super.blockPlaced();

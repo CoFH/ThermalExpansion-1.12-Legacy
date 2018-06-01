@@ -44,7 +44,7 @@ public class ItemBlockDynamo extends ItemBlockTEBase {
 		SecurityHelper.addAccessInformation(stack, tooltip);
 
 		tooltip.add(StringHelper.localize("info.thermalexpansion.dynamo.0"));
-		String name = Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		String name = Type.values()[ItemHelper.getItemDamage(stack)].getName();
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + name));
 
 		if (getLevel(stack) >= TEProps.levelRedstoneControl) {

@@ -44,7 +44,7 @@ public class ItemBlockMachine extends ItemBlockTEBase {
 		}
 		SecurityHelper.addAccessInformation(stack, tooltip);
 
-		String name = Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		String name = Type.values()[ItemHelper.getItemDamage(stack)].getName();
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.machine." + name));
 
 		if (getLevel(stack) >= TEProps.levelRedstoneControl) {

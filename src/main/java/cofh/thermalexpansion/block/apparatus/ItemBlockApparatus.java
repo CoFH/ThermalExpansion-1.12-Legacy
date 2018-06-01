@@ -34,7 +34,7 @@ public class ItemBlockApparatus extends ItemBlockTEBase {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.apparatus." + Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
+		return "tile.thermalexpansion.apparatus." + Type.values()[ItemHelper.getItemDamage(stack)].getName() + ".name";
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class ItemBlockApparatus extends ItemBlockTEBase {
 		}
 		SecurityHelper.addAccessInformation(stack, tooltip);
 
-		String name = Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		String name = Type.values()[ItemHelper.getItemDamage(stack)].getName();
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.apparatus." + name));
 
 		RedstoneControlHelper.addRSControlInformation(stack, tooltip);

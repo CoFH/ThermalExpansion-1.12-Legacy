@@ -106,12 +106,6 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 	}
 
 	@Override
-	public int getType() {
-
-		return 0;
-	}
-
-	@Override
 	public boolean onWrench(EntityPlayer player, EnumFacing side) {
 
 		return rotateBlock();

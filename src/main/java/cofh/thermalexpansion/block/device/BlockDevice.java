@@ -85,7 +85,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i)));
 			}
@@ -96,7 +96,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
-		return this.getDefaultState().withProperty(VARIANT, Type.byMetadata(meta));
+		return this.getDefaultState().withProperty(VARIANT, Type.values()[meta]);
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		if (metadata >= Type.values().length) {
 			return null;
 		}
-		switch (Type.byMetadata(metadata)) {
+		switch (Type.values()[metadata]) {
 			case WATER_GEN:
 				return new TileWaterGen();
 			case NULLIFIER:
@@ -537,16 +537,13 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		CHUNK_LOADER(13, "chunk_loader");
 		// @formatter:on
 
-		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
-		private final int light;
 
 		Type(int metadata, String name, int light) {
 
 			this.metadata = metadata;
 			this.name = name;
-			this.light = light;
 		}
 
 		Type(int metadata, String name) {
@@ -563,25 +560,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		public String getName() {
 
 			return this.name;
-		}
-
-		public int getLight() {
-
-			return light;
-		}
-
-		public static Type byMetadata(int metadata) {
-
-			if (metadata < 0 || metadata >= METADATA_LOOKUP.length) {
-				metadata = 0;
-			}
-			return METADATA_LOOKUP[metadata];
-		}
-
-		static {
-			for (Type type : values()) {
-				METADATA_LOOKUP[type.getMetadata()] = type;
-			}
 		}
 	}
 

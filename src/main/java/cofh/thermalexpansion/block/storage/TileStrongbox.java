@@ -97,12 +97,6 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	}
 
 	@Override
-	public int getType() {
-
-		return 0;
-	}
-
-	@Override
 	public int getComparatorInputOverride() {
 
 		return getAccess().isPublic() ? Container.calcRedstoneFromInventory(this) : 0;
