@@ -43,8 +43,16 @@ public class PluginMagicBees extends PluginTEBase {
 		ItemStack combFirey = getItemStack("beecomb", 1, 12);
 		ItemStack combWatery = getItemStack("beecomb", 1, 13);
 		ItemStack combEarthy = getItemStack("beecomb", 1, 14);
+		ItemStack combDestabilized = getItemStack("beecomb", 1, 15);
+		ItemStack combCarbon = getItemStack("beecomb", 1, 16);
+		ItemStack combLux = getItemStack("beecomb", 1, 17);
+		ItemStack combEndearing = getItemStack("beecomb", 1, 18);
 
 		ItemStack dropIntellect = getItemStack("drop", 1, 1);
+		ItemStack dropDestabilized = getItemStack("drop", 1, 2);
+		ItemStack dropCarbon = getItemStack("drop", 1, 3);
+		ItemStack dropLux = getItemStack("drop", 1, 4);
+		ItemStack dropEndearing = getItemStack("drop", 1, 5);
 
 		ItemStack pollenPhased = getItemStack("pollen", 1, 1);
 
@@ -73,6 +81,10 @@ public class PluginMagicBees extends PluginTEBase {
 			CentrifugeManager.addRecipe(energy, combFirey, asList(waxMagic, new ItemStack(Items.BLAZE_POWDER)), asList(100, 60), null);
 			CentrifugeManager.addRecipe(energy, combWatery, asList(waxMagic, new ItemStack(Items.DYE, 1, 0)), asList(100, 60), null);
 			CentrifugeManager.addRecipe(energy, combEarthy, asList(waxMagic, new ItemStack(Items.CLAY_BALL)), asList(100, 60), null);
+			CentrifugeManager.addRecipe(energy, combDestabilized, asList(waxMagic, dropDestabilized), asList(55, 22), null);
+			CentrifugeManager.addRecipe(energy, combCarbon, asList(waxMagic, dropCarbon), asList(55, 22), null);
+			CentrifugeManager.addRecipe(energy, combLux, asList(waxMagic, dropLux), asList(55, 22), null);
+			CentrifugeManager.addRecipe(energy, combEndearing, asList(waxMagic, dropEndearing), asList(55, 22), null);
 		}
 	}
 
