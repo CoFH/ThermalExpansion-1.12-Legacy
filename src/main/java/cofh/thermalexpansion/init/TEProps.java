@@ -397,6 +397,8 @@ public class TEProps {
 
 	public static final String DYNAMO_NUMISMATIC_GEM = "dynamoNumismaticGem";
 
+	public static final String DYNAMO_GOURMAND_PALEO = "dynamoGourmandPaleo";
+
 	/* APPARATUS */
 	public static final String APPARATUS_DEPTH = "apparatusDepth";
 	public static final String APPARATUS_RADIUS = "apparatusRadius";

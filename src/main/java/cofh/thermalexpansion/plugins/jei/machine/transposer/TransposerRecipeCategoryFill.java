@@ -18,6 +18,7 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredientRegistry;
 import mezz.jei.api.ingredients.IIngredients;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -43,17 +44,41 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 
 		List<TransposerRecipeWrapper> recipes = new ArrayList<>();
 
+		List<TransposerRecipe> potionRecipes = new ArrayList<>();
+		List<TransposerRecipe> splashPotionRecipes = new ArrayList<>();
+		List<TransposerRecipe> lingeringPotionRecipes = new ArrayList<>();
+		List<TransposerRecipe> arrowRecipes = new ArrayList<>();
+		List<TransposerRecipe> florbRecipes = new ArrayList<>();
+
 		for (TransposerRecipe recipe : TransposerManager.getFillRecipeList()) {
-			if (TFFluids.isPotion(recipe.getFluid()) || TFFluids.isSplashPotion(recipe.getFluid()) || TFFluids.isLingeringPotion(recipe.getFluid())) {
-				// Ignore Potions
+			if (TFFluids.isPotion(recipe.getFluid())) {
+				potionRecipes.add(recipe);
+				continue;
+			}
+			if (TFFluids.isSplashPotion(recipe.getFluid())) {
+				splashPotionRecipes.add(recipe);
+				continue;
+			}
+			if (TFFluids.isLingeringPotion(recipe.getFluid())) {
+				if (recipe.getInput().getItem().equals(Items.ARROW)) {
+					arrowRecipes.add(recipe);
+				} else {
+					lingeringPotionRecipes.add(recipe);
+				}
 				continue;
 			}
 			if (ItemFlorb.florbStandard.equals(recipe.getInput()) || ItemFlorb.florbMagmatic.equals(recipe.getInput())) {
-				// Ignore Florbs
+				florbRecipes.add(recipe);
 				continue;
 			}
 			recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_FILL));
 		}
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, potionRecipes, RecipeUidsTE.TRANSPOSER_FILL));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, splashPotionRecipes, RecipeUidsTE.TRANSPOSER_FILL));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, lingeringPotionRecipes, RecipeUidsTE.TRANSPOSER_FILL));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, arrowRecipes, RecipeUidsTE.TRANSPOSER_FILL));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, florbRecipes, RecipeUidsTE.TRANSPOSER_FILL));
+
 		List<ItemStack> ingredients = ingredientRegistry.getIngredients(ItemStack.class);
 		for (ItemStack ingredient : ingredients) {
 			if (ingredient.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {

@@ -1,20 +1,19 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
-import cofh.core.init.CoreProps;
 import cofh.core.inventory.ComparableItemStack;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
 
 import java.util.Set;
 
-public class SteamManager {
+public class GourmandManager {
 
 	private static TObjectIntHashMap<ComparableItemStack> fuelMap = new TObjectIntHashMap<>();
 
-	public static int DEFAULT_ENERGY = 16000;
+	public static int DEFAULT_ENERGY = 2000;
 
 	public static Set<ComparableItemStack> getFuels() {
 
@@ -34,12 +33,19 @@ public class SteamManager {
 		if (energy > 0) {
 			return energy;
 		}
-		energy = TileEntityFurnace.getItemBurnTime(stack) * CoreProps.RF_PER_MJ;
-
-		if (energy >= 300 * CoreProps.RF_PER_MJ) {
-			return energy;
+		if (stack.getItem() instanceof ItemFood) {
+			ItemFood food = (ItemFood) stack.getItem();
+			int foodEnergy = food.getHealAmount(stack) * DEFAULT_ENERGY;
+			int satEnergy = (int) (food.getSaturationModifier(stack) * foodEnergy * 2);
+			return foodEnergy + satEnergy;
 		}
 		return 0;
+	}
+
+	// TODO: Implement.
+	public static int getPaleoFuelEnergy(ItemStack stack) {
+
+		return getFuelEnergy(stack);
 	}
 
 	public static void refresh() {

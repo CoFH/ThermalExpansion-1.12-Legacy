@@ -1,20 +1,18 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
-import cofh.core.init.CoreProps;
 import cofh.core.inventory.ComparableItemStack;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
 
 import java.util.Set;
 
-public class SteamManager {
+public class NuclearManager {
 
 	private static TObjectIntHashMap<ComparableItemStack> fuelMap = new TObjectIntHashMap<>();
 
-	public static int DEFAULT_ENERGY = 16000;
+	public static int DEFAULT_ENERGY = 512000;
 
 	public static Set<ComparableItemStack> getFuels() {
 
@@ -26,20 +24,7 @@ public class SteamManager {
 		if (stack.isEmpty()) {
 			return 0;
 		}
-		if (stack.getItem().hasContainerItem(stack)) {
-			return 0;
-		}
-		int energy = fuelMap.get(new ComparableItemStack(stack));
-
-		if (energy > 0) {
-			return energy;
-		}
-		energy = TileEntityFurnace.getItemBurnTime(stack) * CoreProps.RF_PER_MJ;
-
-		if (energy >= 300 * CoreProps.RF_PER_MJ) {
-			return energy;
-		}
-		return 0;
+		return fuelMap.get(new ComparableItemStack(stack));
 	}
 
 	public static void refresh() {

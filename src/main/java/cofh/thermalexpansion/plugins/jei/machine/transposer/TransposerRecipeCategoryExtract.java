@@ -42,13 +42,29 @@ public class TransposerRecipeCategoryExtract extends TransposerRecipeCategory {
 
 		List<TransposerRecipeWrapper> recipes = new ArrayList<>();
 
+		List<TransposerRecipe> potionRecipes = new ArrayList<>();
+		List<TransposerRecipe> splashPotionRecipes = new ArrayList<>();
+		List<TransposerRecipe> lingeringPotionRecipes = new ArrayList<>();
+
 		for (TransposerRecipe recipe : TransposerManager.getExtractRecipeList()) {
-			if (TFFluids.isPotion(recipe.getFluid()) || TFFluids.isSplashPotion(recipe.getFluid()) || TFFluids.isLingeringPotion(recipe.getFluid())) {
-				// Ignore Potions
+			if (TFFluids.isPotion(recipe.getFluid())) {
+				potionRecipes.add(recipe);
+				continue;
+			}
+			if (TFFluids.isSplashPotion(recipe.getFluid())) {
+				splashPotionRecipes.add(recipe);
+				continue;
+			}
+			if (TFFluids.isLingeringPotion(recipe.getFluid())) {
+				lingeringPotionRecipes.add(recipe);
 				continue;
 			}
 			recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_EXTRACT));
 		}
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, potionRecipes, RecipeUidsTE.TRANSPOSER_EXTRACT));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, splashPotionRecipes, RecipeUidsTE.TRANSPOSER_EXTRACT));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, lingeringPotionRecipes, RecipeUidsTE.TRANSPOSER_EXTRACT));
+
 		List<ItemStack> ingredients = ingredientRegistry.getIngredients(ItemStack.class);
 		for (ItemStack ingredient : ingredients) {
 			if (ingredient.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {

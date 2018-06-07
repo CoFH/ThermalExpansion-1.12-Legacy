@@ -113,12 +113,12 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 
 	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 
-		if (metadata >= Type.values().length) {
+		if (meta >= Type.values().length) {
 			return null;
 		}
-		switch (Type.values()[metadata]) {
+		switch (Type.values()[meta]) {
 			case WATER_GEN:
 				return new TileWaterGen();
 			case NULLIFIER:
@@ -540,15 +540,10 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		private final int metadata;
 		private final String name;
 
-		Type(int metadata, String name, int light) {
+		Type(int metadata, String name) {
 
 			this.metadata = metadata;
 			this.name = name;
-		}
-
-		Type(int metadata, String name) {
-
-			this(metadata, name, 0);
 		}
 
 		public int getMetadata() {

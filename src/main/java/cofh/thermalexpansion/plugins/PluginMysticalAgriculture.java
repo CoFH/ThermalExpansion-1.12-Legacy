@@ -117,6 +117,7 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 				"signalum",
 				"lumium",
 				"enderium",
+
 				"fluxed_electrum",
 
 				"aluminum_brass",
@@ -125,6 +126,7 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 				"cobalt",
 				"manyullyn",
 
+				"grains_of_infinity",
 				"electrical_steel",
 				"redstone_alloy",
 				"conductive_iron",
@@ -133,11 +135,16 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 				"pulsating_iron",
 				"energetic_alloy",
 				"vibrant_alloy",
+				"end_steel",
 
 				"mystical_flower",
 				"manasteel",
 				"elementium",
 				"terrasteel",
+
+				"quicksilver",
+				"thaumium",
+				"void_metal",
 
 				"dawnstone",
 
@@ -159,6 +166,10 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 
 				"apatite",
 
+				"electrotine",
+
+				"alumite",
+
 				"steeleaf",
 				"ironwood",
 				"knightmetal",
@@ -166,6 +177,10 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 
 				"meteoric_iron",
 				"desh",
+
+				"coralium",
+				"abyssalnite",
+				"dreadium",
 
 				"black_quartz",
 
@@ -184,6 +199,10 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 				"ender_biotite",
 
 				"slate",
+
+				"dark_gem",
+
+				"compressed_iron",
 
 				"ender_amethyst",
 
