@@ -180,6 +180,7 @@ public class TETextures {
 		CELL_CENTER_0 =                     register("blocks/redstone_block");
 		CELL_CENTER_1 =                     register("thermalfoundation:blocks/fluid/redstone_still");
 
+		/* TANKS */
 		TANK_BOTTOM_0_0 =                   register(TANK_ + "bottom_0_0");
 		TANK_BOTTOM_0_1 =                   register(TANK_ + "bottom_0_1");
 		TANK_BOTTOM_0_2 =                   register(TANK_ + "bottom_0_2");
@@ -217,6 +218,7 @@ public class TETextures {
 
 		TANK_SIDE_LOCK =                    register(TANK_ + "side_lock");
 
+		/* CACHES */
 		CACHE_BOTTOM_0 =                    register(CACHE_ + "bottom_0");
 		CACHE_BOTTOM_1 =                    register(CACHE_ + "bottom_1");
 		CACHE_BOTTOM_2 =                    register(CACHE_ + "bottom_2");
@@ -256,6 +258,7 @@ public class TETextures {
 		CACHE_METER_8 =                     register(CACHE_ + "meter_8");
 		CACHE_METER_C =                     register(CACHE_ + "meter_c");
 
+		/* STRONGBOXES */
 		STRONGBOX_TOP_0 =                   register(STRONGBOX_ + "top_0");
 		STRONGBOX_TOP_1 =                   register(STRONGBOX_ + "top_1");
 		STRONGBOX_TOP_2 =                   register(STRONGBOX_ + "top_2");
@@ -263,6 +266,7 @@ public class TETextures {
 		STRONGBOX_TOP_4 =                   register(STRONGBOX_ + "top_4");
 		STRONGBOX_TOP_C =                   register(STRONGBOX_ + "top_c");
 
+		/* LIGHTS */
 		ILLUMINATOR_FRAME =                 register(BLOCKS_ + "light/illuminator_frame");
 
 		FLORB_STANDARD =                    register(ITEMS_ + "florb/florb_standard");

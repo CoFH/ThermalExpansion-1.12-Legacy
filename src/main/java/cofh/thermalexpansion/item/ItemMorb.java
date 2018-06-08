@@ -13,7 +13,6 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.entity.projectile.EntityMorb;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.BehaviorMorbDispense;
-import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.block.BlockDispenser;

@@ -12,6 +12,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.apparatus.TileApparatusBase;
 import cofh.thermalexpansion.block.device.TileDeviceBase;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
+import cofh.thermalexpansion.block.light.TileLightBase;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.TileMachineBase;
 import cofh.thermalexpansion.block.storage.TileCache;
@@ -316,13 +317,14 @@ public class TEProps {
 	public static boolean renderMachineOverlay = true;
 
 	/* BLOCKSTATE PROPERTIES */
-	public static final UnlistedGenericTile<TileApparatusBase> TILE_APPARATUS = new UnlistedGenericTile<>("tile_apparatus", TileApparatusBase.class);
 	public static final UnlistedGenericTile<TileMachineBase> TILE_MACHINE = new UnlistedGenericTile<>("tile_machine", TileMachineBase.class);
+	public static final UnlistedGenericTile<TileApparatusBase> TILE_APPARATUS = new UnlistedGenericTile<>("tile_apparatus", TileApparatusBase.class);
 	public static final UnlistedGenericTile<TileDynamoBase> TILE_DYNAMO = new UnlistedGenericTile<>("tile_dynamo", TileDynamoBase.class);
 	public static final UnlistedGenericTile<TileTank> TILE_TANK = new UnlistedGenericTile<>("tile_tank", TileTank.class);
 	public static final UnlistedGenericTile<TileCell> TILE_CELL = new UnlistedGenericTile<>("tile_cell", TileCell.class);
 	public static final UnlistedGenericTile<TileCache> TILE_CACHE = new UnlistedGenericTile<>("tile_cache", TileCache.class);
 	public static final UnlistedGenericTile<TileDeviceBase> TILE_DEVICE = new UnlistedGenericTile<>("tile_device", TileDeviceBase.class);
+	public static final UnlistedGenericTile<TileLightBase> TILE_LIGHT = new UnlistedGenericTile<>("tile_light", TileLightBase.class);
 	public static final UnlistedGenericProperty<IBlockAccess> BAKERY_WORLD = new UnlistedGenericProperty<>("bakery_world", IBlockAccess.class);
 
 	/* AUGMENT IDENTIFIERS */

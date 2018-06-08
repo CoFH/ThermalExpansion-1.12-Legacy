@@ -6,6 +6,7 @@ import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -132,6 +133,70 @@ public class TileLightBase extends TileNameable implements ITileInfo {
 		return true;
 	}
 
+	//	/* NETWORK METHODS */
+	//	@Override
+	//	public PacketBase getPacket() {
+	//
+	//		PacketBase payload = super.getPacket();
+	//
+	//		payload.addBool(modified);
+	//		if (modified) {
+	//			payload.addInt(color);
+	//		}
+	//		payload.addByte(mode);
+	//		payload.addBool(dim);
+	//		payload.addByte(style);
+	//		if (style != 0) {
+	//			payload.addByte(alignment);
+	//		}
+	//		if (ServerHelper.isServerWorld(worldObj)) {
+	//			payload.addByte(getInternalLight());
+	//		}
+	//		return payload;
+	//	}
+	//
+	//	@Override
+	//	public PacketBase getModePacket() {
+	//
+	//		PacketBase payload = super.getModePacket();
+	//
+	//		resetColor();
+	//
+	//		return payload;
+	//	}
+	//
+	//	@Override
+	//	protected void handleModePacket(PacketBase payload) {
+	//
+	//		super.handleModePacket(payload);
+	//
+	//		resetColor();
+	//	}
+	//
+	//	/* ITilePacketHandler */
+	//	@Override
+	//	public void handleTilePacket(PacketBase payload, boolean isServer) {
+	//
+	//		super.handleTilePacket(payload, isServer);
+	//
+	//		modified = payload.getBool();
+	//
+	//		if (modified) {
+	//			setColor(payload.getInt());
+	//		}
+	//		mode = payload.getByte();
+	//		dim = payload.getBool();
+	//		style = payload.getByte();
+	//		if (style != 0) {
+	//			alignment = payload.getByte();
+	//		}
+	//		if (!isServer) {
+	//			lightValue = payload.getByte();
+	//			setRenderColor();
+	//		}
+	//		updateLighting();
+	//	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -162,6 +227,7 @@ public class TileLightBase extends TileNameable implements ITileInfo {
 		return nbt;
 	}
 
+	/* IPortableData */
 	@Override
 	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
@@ -185,6 +251,12 @@ public class TileLightBase extends TileNameable implements ITileInfo {
 	@Override
 	public void getTileInfo(List<ITextComponent> info, EnumFacing side, EntityPlayer player, boolean debug) {
 
+	}
+
+	/* RENDERING */
+	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+
+		return renderColor;
 	}
 
 }

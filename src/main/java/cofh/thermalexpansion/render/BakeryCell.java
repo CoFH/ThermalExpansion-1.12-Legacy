@@ -44,7 +44,7 @@ public class BakeryCell implements ILayeredBlockBakery {
 
 		Cuboid6 box = new Cuboid6(0, 0, 0, 1, 1, 1);
 		double inset = 0.1875;
-		modelFrame = CCModel.quadModel(48).generateBlock(0, box);
+		modelFrame.generateBlock(0, box);
 		CCModel.generateBackface(modelFrame, 0, modelFrame, 24, 24);
 		modelFrame.computeNormals();
 		for (int i = 24; i < 48; i++) {

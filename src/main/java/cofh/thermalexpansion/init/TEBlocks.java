@@ -4,6 +4,7 @@ import cofh.core.util.core.IInitializer;
 import cofh.thermalexpansion.block.apparatus.BlockApparatus;
 import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
+import cofh.thermalexpansion.block.light.BlockLight;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.storage.BlockCache;
 import cofh.thermalexpansion.block.storage.BlockCell;
@@ -73,5 +74,7 @@ public class TEBlocks {
 	public static BlockTank blockTank;
 	public static BlockCache blockCache;
 	public static BlockStrongbox blockStrongbox;
+
+	public static BlockLight blockLight;
 
 }
