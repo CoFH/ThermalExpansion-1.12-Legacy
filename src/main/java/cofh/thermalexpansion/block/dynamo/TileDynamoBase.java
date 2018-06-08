@@ -524,7 +524,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		energyStorage.readFromNBT(nbt);
 
-		facing = (byte) (nbt.getByte("Facing") % 6);
+		facing = (byte) (nbt.getByte(CoreProps.FACING) % 6);
 		fuelRF = nbt.getInteger("Fuel");
 	}
 
@@ -535,7 +535,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		energyStorage.writeToNBT(nbt);
 
-		nbt.setByte("Facing", facing);
+		nbt.setByte(CoreProps.FACING, facing);
 		nbt.setInteger("Fuel", fuelRF);
 		return nbt;
 	}

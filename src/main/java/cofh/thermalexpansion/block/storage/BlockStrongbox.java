@@ -167,7 +167,7 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 	public void registerModels() {
 
 		ModelResourceLocation location = new ModelResourceLocation(getRegistryName(), "normal");
-		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, location);//Suppresses model loading errors for #inventory.
+		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, location); // Suppresses model loading errors for #inventory.
 		ModelLoader.setCustomMeshDefinition(itemBlock, (stack) -> location);
 		ModelRegistryHelper.register(location, RenderStrongbox.INSTANCE);
 	}

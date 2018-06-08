@@ -7,7 +7,8 @@ import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
 import cofh.core.render.IModelRegister;
-import cofh.core.util.StateMapper;
+import cofh.core.util.helpers.ItemHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.BakeryLight;
@@ -16,7 +17,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -28,6 +32,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -35,7 +40,7 @@ public class BlockLight extends BlockTEBase implements IModelRegister, IBakeryPr
 
 	public static final PropertyEnum<Type> VARIANT = PropertyEnum.create("type", Type.class);
 
-	protected BlockLight() {
+	public BlockLight() {
 
 		super(Material.REDSTONE_LIGHT);
 
@@ -67,13 +72,19 @@ public class BlockLight extends BlockTEBase implements IModelRegister, IBakeryPr
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
 		for (int i = 0; i < Type.values().length; i++) {
-			if (enable[i]) {
-				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i)));
-			}
+			//if (enable[i]) {
+			items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i)));
+			//}
 		}
 	}
 
 	/* TYPE METHODS */
+	@Override
+	public String getUnlocalizedName(ItemStack stack) {
+
+		return "tile.thermalexpansion.light." + Type.values()[ItemHelper.getItemDamage(stack)].getName() + ".name";
+	}
+
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
@@ -154,38 +165,50 @@ public class BlockLight extends BlockTEBase implements IModelRegister, IBakeryPr
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
-		StateMapper mapper = new StateMapper("thermalexpansion", "light", "light");
-		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, mapper.location);
-		ModelLoader.setCustomStateMapper(this, mapper);
-		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
-		ModelRegistryHelper.register(mapper.location, new CCBakeryModel());
+		//		StateMapper mapper = new StateMapper("thermalexpansion", "light", "light");
+		//		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, mapper.location);
+		//		ModelLoader.setCustomStateMapper(this, mapper);
+		//		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
+		//		ModelRegistryHelper.register(mapper.location, new CCBakeryModel());
+
+		StateMap.Builder stateMap = new StateMap.Builder();
+		stateMap.ignore(VARIANT);
+		ModelLoader.setCustomStateMapper(this, stateMap.build());
+
+		ModelResourceLocation location = new ModelResourceLocation(getRegistryName(), "normal");
+		for (Type type : Type.values()) {
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), type.getMetadata(), location);
+		}
+		ModelRegistryHelper.register(location, new CCBakeryModel());
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString() + "|" + state.getBlock().getMetaFromState(state));
 			TileLightBase tile = state.getValue(TEProps.TILE_LIGHT);
+			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString() + "|" + state.getBlock().getMetaFromState(state));
 			builder.append(",color=").append(tile.color);
 			builder.append(",light=").append(tile.getInternalLight());
 			return builder.toString();
 		});
 
-		ModelBakery.registerItemKeyGenerator(itemBlock, ModelBakery.defaultItemKeyGenerator);
+		ModelBakery.registerItemKeyGenerator(itemBlock, stack -> ModelBakery.defaultItemKeyGenerator.generateKey(stack));
 	}
 
 	/* IInitializer */
 	@Override
 	public boolean preInit() {
 
-		//		this.setRegistryName("light");
-		//		ForgeRegistries.BLOCKS.register(this);
+		this.setRegistryName("light");
+		ForgeRegistries.BLOCKS.register(this);
+
+		itemBlock = new ItemBlockLight(this);
+		itemBlock.setRegistryName(this.getRegistryName());
+		ForgeRegistries.ITEMS.register(itemBlock);
+
+		//				TileLightBase.config();
 		//
-		//		itemBlock = new ItemBlockLight(this);
-		//		itemBlock.setRegistryName(this.getRegistryName());
-		//		ForgeRegistries.ITEMS.register(itemBlock);
-		//
-		//		TileLightBase.config();
-		//
-		//		TileIlluminator.initialize();
+		//				TileIlluminator.initialize();
+
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		return true;
 	}
@@ -193,12 +216,21 @@ public class BlockLight extends BlockTEBase implements IModelRegister, IBakeryPr
 	@Override
 	public boolean initialize() {
 
+		lightIlluminator = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ILLUMINATOR.getMetadata()));
+		lightLumiumLamp = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.LUMIUM_LAMP.getMetadata()));
+		lightRadiantLamp = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.RADIANT_LAMP.getMetadata()));
+
+		addRecipes();
+
 		return true;
 	}
 
 	/* HELPERS */
 	private void addRecipes() {
 
+		// @formatter:off
+
+		// @formatter:on
 	}
 
 	/* TYPE */
@@ -207,7 +239,7 @@ public class BlockLight extends BlockTEBase implements IModelRegister, IBakeryPr
 		// @formatter:off
 		ILLUMINATOR(0, "illuminator"),
 		LUMIUM_LAMP(1, "lumium_lamp"),
-		RADIANT_LAMP(2, "radiant_lumium_lamp");;
+		RADIANT_LAMP(2, "radiant_lamp");;
 		// @formatter:on
 
 		private final int metadata;
@@ -236,8 +268,12 @@ public class BlockLight extends BlockTEBase implements IModelRegister, IBakeryPr
 	/* REFERENCES */
 	public static ItemStack lightIlluminator;
 	public static ItemStack lightLumiumLamp;
-	public static ItemStack lightRadiantLumiumLamp;
+	public static ItemStack lightRadiantLamp;
 
 	public static ItemBlockLight itemBlock;
+
+	public static final int ILLUMINATOR = 0;
+	public static final int LUMIUM_LAMP = 1;
+	public static final int RADIANT_LAMP = 2;
 
 }

@@ -267,7 +267,10 @@ public class TETextures {
 		STRONGBOX_TOP_C =                   register(STRONGBOX_ + "top_c");
 
 		/* LIGHTS */
+		ILLUMINATOR_CENTER =                register(BLOCKS_ + "light/illuminator_effect");
 		ILLUMINATOR_FRAME =                 register(BLOCKS_ + "light/illuminator_frame");
+		LAMP_CENTER =                       register(BLOCKS_ + "light/lamp_effect");
+		LAMP_HALO =                         register(BLOCKS_ + "light/lamp_halo");
 
 		FLORB_STANDARD =                    register(ITEMS_ + "florb/florb_standard");
 		FLORB_MAGMATIC =                    register(ITEMS_ + "florb/florb_magmatic");
@@ -877,7 +880,10 @@ public class TETextures {
 	public static TextureAtlasSprite STRONGBOX_TOP_4;
 	public static TextureAtlasSprite STRONGBOX_TOP_C;
 
+	public static TextureAtlasSprite ILLUMINATOR_CENTER;
 	public static TextureAtlasSprite ILLUMINATOR_FRAME;
+	public static TextureAtlasSprite LAMP_CENTER;
+	public static TextureAtlasSprite LAMP_HALO;
 
 	public static TextureAtlasSprite FLORB_STANDARD;
 	public static TextureAtlasSprite FLORB_MAGMATIC;

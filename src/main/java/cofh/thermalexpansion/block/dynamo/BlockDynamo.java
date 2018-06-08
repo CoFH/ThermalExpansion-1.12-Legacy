@@ -305,8 +305,8 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
 			TileDynamoBase dynamo = state.getValue(TEProps.TILE_DYNAMO);
+			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
 			builder.append(",creative=").append(dynamo.isCreative);
 			builder.append(",level=").append(dynamo.getLevel());
 			builder.append(",facing=").append(dynamo.getFacing());

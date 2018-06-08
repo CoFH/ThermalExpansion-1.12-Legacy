@@ -177,6 +177,8 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
 
+		List<BakedQuad> quads = new ArrayList<>();
+
 		if (face == null && !stack.isEmpty()) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);
@@ -193,14 +195,16 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 				renderBaseOverlay(ccrs, 1, false, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(level));
 			}
 			buffer.finishDrawing();
-			return buffer.bake();
+			quads.addAll(buffer.bake());
 		}
-		return new ArrayList<>();
+		return quads;
 	}
 
 	/* ILayeredBlockBakery */
 	@Override
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
+
+		List<BakedQuad> quads = new ArrayList<>();
 
 		if (face == null && state != null) {
 			TileDynamoBase dynamo = state.getValue(TEProps.TILE_DYNAMO);
@@ -232,9 +236,9 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 				renderCoilAnimation(ccrs, facing, active, coilUnderlay);
 			}
 			buffer.finishDrawing();
-			return buffer.bake();
+			quads.addAll(buffer.bake());
 		}
-		return new ArrayList<>();
+		return quads;
 	}
 
 }

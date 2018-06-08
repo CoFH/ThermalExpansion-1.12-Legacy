@@ -137,6 +137,8 @@ public class BakeryTank implements ILayeredBlockBakery {
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
 
+		List<BakedQuad> quads = new ArrayList<>();
+
 		if (face == null && !stack.isEmpty()) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);
@@ -155,14 +157,16 @@ public class BakeryTank implements ILayeredBlockBakery {
 			renderFluid(ccrs, creative, level, holding, fluid);
 
 			buffer.finishDrawing();
-			return buffer.bake();
+			quads.addAll(buffer.bake());
 		}
-		return new ArrayList<>();
+		return quads;
 	}
 
 	/* ILayeredBlockBakery */
 	@Override
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
+
+		List<BakedQuad> quads = new ArrayList<>();
 
 		if (face == null && state != null) {
 			TileTank tank = state.getValue(TEProps.TILE_TANK);
@@ -188,9 +192,9 @@ public class BakeryTank implements ILayeredBlockBakery {
 				renderFluid(ccrs, creative, level, holding, fluidStack);
 			}
 			buffer.finishDrawing();
-			return buffer.bake();
+			quads.addAll(buffer.bake());
 		}
-		return new ArrayList<>();
+		return quads;
 	}
 
 }

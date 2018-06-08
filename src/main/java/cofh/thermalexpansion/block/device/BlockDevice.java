@@ -281,8 +281,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString() + "|" + state.getBlock().getMetaFromState(state));
 			TileDeviceBase tile = state.getValue(TEProps.TILE_DEVICE);
+			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString() + "|" + state.getBlock().getMetaFromState(state));
 			builder.append("facing=").append(tile.getFacing());
 			builder.append(",active=").append(tile.isActive);
 			builder.append(",side_config={");

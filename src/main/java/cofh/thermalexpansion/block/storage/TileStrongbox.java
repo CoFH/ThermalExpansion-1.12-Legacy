@@ -279,7 +279,7 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 		super.readFromNBT(nbt);
 
-		facing = nbt.getByte("Facing");
+		facing = nbt.getByte(CoreProps.FACING);
 	}
 
 	@Override
@@ -287,7 +287,7 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 		super.writeToNBT(nbt);
 
-		nbt.setByte("Facing", facing);
+		nbt.setByte(CoreProps.FACING, facing);
 		nbt.setByte("EncHolding", enchantHolding);
 		return nbt;
 	}
