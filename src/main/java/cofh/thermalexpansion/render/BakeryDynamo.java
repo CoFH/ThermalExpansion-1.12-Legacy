@@ -115,28 +115,28 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 		}
 	}
 
-	protected void renderBaseOverlay(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite sprite) {
+	protected void renderBaseOverlay(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite texture) {
 
-		if (sprite != null) {
+		if (texture != null) {
 			if (active) {
-				modelBaseOverlay[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(sprite));
+				modelBaseOverlay[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(texture));
 			} else {
-				modelBaseOverlay[1][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(sprite));
+				modelBaseOverlay[1][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(texture));
 			}
 		}
 	}
 
-	protected void renderCoilAnimation(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite icon) {
+	protected void renderCoilAnimation(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite texture) {
 
 		if (active) {
-			modelCoilAnimation[facing].render(ccrs, new IconTransformation(icon));
+			modelCoilAnimation[facing].render(ccrs, new IconTransformation(texture));
 		}
 	}
 
-	protected void renderBaseAnimation(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite icon) {
+	protected void renderBaseAnimation(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite texture) {
 
 		if (active) {
-			modelBaseAnimation[facing].render(ccrs, new IconTransformation(icon));
+			modelBaseAnimation[facing].render(ccrs, new IconTransformation(texture));
 		}
 	}
 

@@ -4,7 +4,6 @@ import cofh.core.util.core.IInitializer;
 import cofh.thermalexpansion.block.apparatus.BlockApparatus;
 import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
-import cofh.thermalexpansion.block.light.BlockLight;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.storage.BlockCache;
 import cofh.thermalexpansion.block.storage.BlockCell;
@@ -37,7 +36,7 @@ public class TEBlocks {
 		blockCache = new BlockCache();
 		blockStrongbox = new BlockStrongbox();
 
-		blockLight = new BlockLight();
+		// blockLight = new BlockLight();
 
 		initList.add(blockMachine);
 		initList.add(blockApparatus);
@@ -49,7 +48,7 @@ public class TEBlocks {
 		initList.add(blockCache);
 		initList.add(blockStrongbox);
 
-		initList.add(blockLight);
+		// initList.add(blockLight);
 
 		for (IInitializer init : initList) {
 			init.preInit();
@@ -79,6 +78,6 @@ public class TEBlocks {
 	public static BlockCache blockCache;
 	public static BlockStrongbox blockStrongbox;
 
-	public static BlockLight blockLight;
+	// public static BlockLight blockLight;
 
 }

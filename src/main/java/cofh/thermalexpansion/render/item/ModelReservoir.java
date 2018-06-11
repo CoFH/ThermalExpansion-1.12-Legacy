@@ -43,9 +43,9 @@ public class ModelReservoir implements IItemBakery {
 			boolean active = TEItems.itemReservoir.isActive(stack);
 			int mode = TEItems.itemReservoir.getMode(stack);
 
-			//Insertion order matters, index is used for the quad's tint index.
+			// Insertion order matters, index is used for the quad's tint index.
 			List<TextureAtlasSprite> sprites = new LinkedList<>();
-			//Safe guard metadata from the item, could cause weird crashes.
+			// Safe guard metadata from the item, could cause weird crashes.
 			sprites.add(index >= TETextures.RESERVOIR.length ? TextureUtils.getMissingSprite() : TETextures.RESERVOIR[index]);
 			sprites.add(TETextures.RESERVOIR_MODE[((active ? 1 : 0) << 1) | mode]);
 			if (hasColor) {

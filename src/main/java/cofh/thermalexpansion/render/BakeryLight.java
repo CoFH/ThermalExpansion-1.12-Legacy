@@ -8,12 +8,12 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.block.light.BlockLight;
 import cofh.thermalexpansion.block.light.TileLightBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -45,30 +45,36 @@ public class BakeryLight implements ILayeredBlockBakery {
 		modelFrame.computeNormals();
 		modelFrame.shrinkUVs(RenderHelper.RENDER_OFFSET);
 
-		modelHalo.generateBlock(0, Cuboid6.full.expand(.0625F));
+		modelHalo.generateBlock(0, Cuboid6.full.expand(0.125F));
 		modelHalo.computeNormals();
 		modelHalo.shrinkUVs(RenderHelper.RENDER_OFFSET);
 	}
 
 	/* RENDER */
-	public void renderCenter(CCRenderState ccrs, TextureAtlasSprite texture) {
+	public void renderCenter(CCRenderState ccrs, int color, TextureAtlasSprite texture) {
 
 		if (texture != null) {
+			modelCenter.setColour(color);
 			modelCenter.render(ccrs, new IconTransformation(texture));
+			modelCenter.setColour(0xFFFFFFFF);
 		}
 	}
 
-	public void renderFrame(CCRenderState ccrs, TextureAtlasSprite texture) {
+	public void renderFrame(CCRenderState ccrs, int color, TextureAtlasSprite texture) {
 
 		if (texture != null) {
+			modelFrame.setColour(color);
 			modelFrame.render(ccrs, new IconTransformation(texture));
+			modelFrame.setColour(0xFFFFFFFF);
 		}
 	}
 
-	public void renderHalo(CCRenderState ccrs, TextureAtlasSprite texture) {
+	public void renderHalo(CCRenderState ccrs, int color, TextureAtlasSprite texture) {
 
 		if (texture != null) {
+			modelHalo.setColour(color & ~0x80);
 			modelHalo.render(ccrs, new IconTransformation(texture));
+			modelHalo.setColour(0xFFFFFFFF);
 		}
 	}
 
@@ -85,7 +91,6 @@ public class BakeryLight implements ILayeredBlockBakery {
 		}
 		state = state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.OK);
 		state = state.withProperty(TEProps.TILE_LIGHT, (TileLightBase) tile);
-		state = state.withProperty(TEProps.BAKERY_WORLD, world);
 		return state;
 	}
 
@@ -96,15 +101,28 @@ public class BakeryLight implements ILayeredBlockBakery {
 		List<BakedQuad> quads = new ArrayList<>();
 
 		if (face != null && !stack.isEmpty()) {
+			int color = 0xFFFFFFFF;
+			boolean modified = false;
+
+			if (stack.hasTagCompound()) {
+				if (stack.getTagCompound().hasKey("Color")) {
+					int stackColor = stack.getTagCompound().getInteger("Color");
+					if (stackColor != -1) {
+						color = (stackColor << 8) + 0xFF;
+						modified = true;
+					}
+				}
+			}
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			CCRenderState ccrs = CCRenderState.instance();
 			buffer.begin(0x07, DefaultVertexFormats.ITEM);
 			ccrs.reset();
 			ccrs.bind(buffer);
 
-			renderCenter(ccrs, getCenterTexture(stack));
-			renderFrame(ccrs, getFrameTexture(stack));
-			// renderHalo(ccrs, getHaloTexture(stack));
+			int metadata = ItemHelper.getItemDamage(stack);
+
+			renderCenter(ccrs, color, getCenterTexture(metadata, modified));
+			renderFrame(ccrs, color, getFrameTexture(metadata));
 
 			buffer.finishDrawing();
 			quads.addAll(buffer.bake());
@@ -119,36 +137,36 @@ public class BakeryLight implements ILayeredBlockBakery {
 		List<BakedQuad> quads = new ArrayList<>();
 
 		if (face != null && state != null) {
-			Block block = state.getBlock();
-			TileLightBase tile = state.getValue(TEProps.TILE_LIGHT);
-		}
+			TileLightBase light = state.getValue(TEProps.TILE_LIGHT);
+			boolean modified = false; // light.isModified();
+			int color = 0xFFFFFFFF; // light.color;
+			int type = state.getValue(BlockLight.VARIANT).getMetadata();
 
-		//		if (face != null && state != null) {
-		//			Block block = state.getBlock();
-		//			IWorldBlockTextureProvider provider = (IWorldBlockTextureProvider) block;
-		//			TileLightBase tile = state.getValue(TEProps.TILE_LIGHT);
-		//			IBlockAccess world = state.getValue(TEProps.BAKERY_WORLD);
-		//
-		//			BakingVertexBuffer buffer = BakingVertexBuffer.create();
-		//			buffer.begin(0x07, DefaultVertexFormats.ITEM);
-		//			CCRenderState ccrs = CCRenderState.instance();
-		//			ccrs.reset();
-		//			ccrs.bind(buffer);
-		//
-		//			renderFace(ccrs, face, provider.getTexture(face, state, layer, world, tile.getPos()), tile.getColorMask(layer, face));
-		//
-		//			buffer.finishDrawing();
-		//			quads.addAll(buffer.bake());
-		//		}
+			BakingVertexBuffer buffer = BakingVertexBuffer.create();
+			buffer.begin(0x07, DefaultVertexFormats.ITEM);
+			CCRenderState ccrs = CCRenderState.instance();
+			ccrs.reset();
+			ccrs.bind(buffer);
+
+			if (layer == BlockRenderLayer.SOLID) {
+				renderCenter(ccrs, color, getCenterTexture(type, modified));
+			} else if (layer == BlockRenderLayer.CUTOUT) {
+				renderFrame(ccrs, color, getFrameTexture(type));
+			} else if (layer == BlockRenderLayer.TRANSLUCENT) {
+				renderHalo(ccrs, color, getHaloTexture(type));
+			}
+			buffer.finishDrawing();
+			quads.addAll(buffer.bake());
+		}
 		return quads;
 	}
 
 	/* HELPERS */
-	private TextureAtlasSprite getCenterTexture(ItemStack stack) {
+	private TextureAtlasSprite getCenterTexture(int metadata, boolean modified) {
 
-		switch (stack.getMetadata()) {
+		switch (metadata) {
 			case BlockLight.ILLUMINATOR:
-				return TETextures.ILLUMINATOR_CENTER;
+				return modified ? TETextures.ILLUMINATOR_CENTER_1 : TETextures.ILLUMINATOR_CENTER_0;
 			case BlockLight.LUMIUM_LAMP:
 			case BlockLight.RADIANT_LAMP:
 				return null;
@@ -156,9 +174,9 @@ public class BakeryLight implements ILayeredBlockBakery {
 		return null;
 	}
 
-	private TextureAtlasSprite getFrameTexture(ItemStack stack) {
+	private TextureAtlasSprite getFrameTexture(int metadata) {
 
-		switch (stack.getMetadata()) {
+		switch (metadata) {
 			case BlockLight.ILLUMINATOR:
 				return TETextures.ILLUMINATOR_FRAME;
 			case BlockLight.LUMIUM_LAMP:
@@ -168,16 +186,16 @@ public class BakeryLight implements ILayeredBlockBakery {
 		return null;
 	}
 
-	//	private TextureAtlasSprite getHaloTexture(ItemStack stack) {
-	//
-	//		switch (stack.getMetadata()) {
-	//			case BlockLight.ILLUMINATOR:
-	//			case BlockLight.LUMIUM_LAMP:
-	//				return null;
-	//			case BlockLight.RADIANT_LAMP:
-	//				return TETextures.LAMP_HALO;
-	//		}
-	//		return null;
-	//	}
+	private TextureAtlasSprite getHaloTexture(int metadata) {
+
+		switch (metadata) {
+			case BlockLight.ILLUMINATOR:
+			case BlockLight.LUMIUM_LAMP:
+				return null;
+			case BlockLight.RADIANT_LAMP:
+				return TETextures.LAMP_HALO;
+		}
+		return null;
+	}
 
 }

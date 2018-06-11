@@ -255,23 +255,6 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		return enableSecurity;
 	}
 
-	// TODO: Weigh utility of this - instant shutdown behavior doesn't seem all that useful.
-	//	@Override
-	//	public boolean sendRedstoneUpdates() {
-	//
-	//		return true;
-	//	}
-	//
-	//	@Override
-	//	public void onRedstoneUpdate() {
-	//
-	//		boolean curActive = isActive;
-	//		if (!redstoneControlOrDisable()) {
-	//			isActive = false;
-	//		}
-	//		updateIfChanged(curActive);
-	//	}
-
 	/* IUpgradeable */
 	@Override
 	public boolean canUpgrade(ItemStack upgrade) {

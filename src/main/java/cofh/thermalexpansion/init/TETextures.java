@@ -267,7 +267,8 @@ public class TETextures {
 		STRONGBOX_TOP_C =                   register(STRONGBOX_ + "top_c");
 
 		/* LIGHTS */
-		ILLUMINATOR_CENTER =                register(BLOCKS_ + "light/illuminator_effect");
+		ILLUMINATOR_CENTER_0 =              register("thermalfoundation:blocks/fluid/glowstone_still");
+		ILLUMINATOR_CENTER_1 =              register(BLOCKS_ + "light/illuminator_effect");
 		ILLUMINATOR_FRAME =                 register(BLOCKS_ + "light/illuminator_frame");
 		LAMP_CENTER =                       register(BLOCKS_ + "light/lamp_effect");
 		LAMP_HALO =                         register(BLOCKS_ + "light/lamp_halo");
@@ -880,7 +881,8 @@ public class TETextures {
 	public static TextureAtlasSprite STRONGBOX_TOP_4;
 	public static TextureAtlasSprite STRONGBOX_TOP_C;
 
-	public static TextureAtlasSprite ILLUMINATOR_CENTER;
+	public static TextureAtlasSprite ILLUMINATOR_CENTER_0;
+	public static TextureAtlasSprite ILLUMINATOR_CENTER_1;
 	public static TextureAtlasSprite ILLUMINATOR_FRAME;
 	public static TextureAtlasSprite LAMP_CENTER;
 	public static TextureAtlasSprite LAMP_HALO;

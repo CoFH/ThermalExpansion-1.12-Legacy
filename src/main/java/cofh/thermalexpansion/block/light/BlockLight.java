@@ -63,7 +63,6 @@ public class BlockLight extends BlockTEBase implements IModelRegister, IBakeryPr
 		// UnListed
 		builder.add(ModelErrorStateProperty.ERROR_STATE);
 		builder.add(TEProps.TILE_LIGHT);
-		builder.add(TEProps.BAKERY_WORLD);
 
 		return builder.build();
 	}
@@ -110,7 +109,7 @@ public class BlockLight extends BlockTEBase implements IModelRegister, IBakeryPr
 		if (meta >= Type.values().length) {
 			return null;
 		}
-		return null;
+		return new TileLightBase();
 	}
 
 	/* BLOCK METHODS */
@@ -118,12 +117,6 @@ public class BlockLight extends BlockTEBase implements IModelRegister, IBakeryPr
 	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 
 		return false;
-	}
-
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-
-		return true;
 	}
 
 	@Override
