@@ -50,6 +50,7 @@ public class TEPlugins {
 		pluginIceAndFire = new PluginIceAndFire();
 		pluginImmersiveEngineering = new PluginImmersiveEngineering();
 		pluginIntegratedDynamics = new PluginIntegratedDynamics();
+		pluginMowziesMobs = new PluginMowziesMobs();
 		pluginMysticalAgriculture = new PluginMysticalAgriculture();
 		pluginNatura = new PluginNatura();
 		pluginPlants = new PluginPlants();
@@ -94,6 +95,7 @@ public class TEPlugins {
 		initList.add(pluginIceAndFire);
 		initList.add(pluginImmersiveEngineering);
 		initList.add(pluginIntegratedDynamics);
+		initList.add(pluginMowziesMobs);
 		initList.add(pluginMysticalAgriculture);
 		initList.add(pluginNatura);
 		initList.add(pluginPlants);
@@ -153,6 +155,7 @@ public class TEPlugins {
 	public static PluginIceAndFire pluginIceAndFire;
 	public static PluginImmersiveEngineering pluginImmersiveEngineering;
 	public static PluginIntegratedDynamics pluginIntegratedDynamics;
+	public static PluginMowziesMobs pluginMowziesMobs;
 	public static PluginMysticalAgriculture pluginMysticalAgriculture;
 	public static PluginNatura pluginNatura;
 	public static PluginPlants pluginPlants;

@@ -12,6 +12,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.apparatus.TileApparatusBase;
 import cofh.thermalexpansion.block.device.TileDeviceBase;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
+import cofh.thermalexpansion.block.light.TileLightBase;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.TileMachineBase;
 import cofh.thermalexpansion.block.storage.TileCache;
@@ -243,7 +244,7 @@ public class TEProps {
 		payload.addBool(TileDeviceBase.disableAutoOutput);
 
 		payload.addBool(TileDynamoBase.smallStorage);
-		payload.addByteArray(TileDynamoBase.NUM_AUGMENTS);
+		payload.addByteArray(TileDynamoBase.numAugments);
 
 		return payload;
 	}
@@ -259,7 +260,7 @@ public class TEProps {
 		TileDeviceBase.disableAutoOutput = payload.getBool();
 
 		TileDynamoBase.smallStorage = payload.getBool();
-		payload.getByteArray(TileDynamoBase.NUM_AUGMENTS);
+		payload.getByteArray(TileDynamoBase.numAugments);
 	}
 
 	/* GENERAL */
@@ -316,13 +317,14 @@ public class TEProps {
 	public static boolean renderMachineOverlay = true;
 
 	/* BLOCKSTATE PROPERTIES */
-	public static final UnlistedGenericTile<TileApparatusBase> TILE_APPARATUS = new UnlistedGenericTile<>("tile_apparatus", TileApparatusBase.class);
 	public static final UnlistedGenericTile<TileMachineBase> TILE_MACHINE = new UnlistedGenericTile<>("tile_machine", TileMachineBase.class);
+	public static final UnlistedGenericTile<TileApparatusBase> TILE_APPARATUS = new UnlistedGenericTile<>("tile_apparatus", TileApparatusBase.class);
 	public static final UnlistedGenericTile<TileDynamoBase> TILE_DYNAMO = new UnlistedGenericTile<>("tile_dynamo", TileDynamoBase.class);
 	public static final UnlistedGenericTile<TileTank> TILE_TANK = new UnlistedGenericTile<>("tile_tank", TileTank.class);
 	public static final UnlistedGenericTile<TileCell> TILE_CELL = new UnlistedGenericTile<>("tile_cell", TileCell.class);
 	public static final UnlistedGenericTile<TileCache> TILE_CACHE = new UnlistedGenericTile<>("tile_cache", TileCache.class);
 	public static final UnlistedGenericTile<TileDeviceBase> TILE_DEVICE = new UnlistedGenericTile<>("tile_device", TileDeviceBase.class);
+	public static final UnlistedGenericTile<TileLightBase> TILE_LIGHT = new UnlistedGenericTile<>("tile_light", TileLightBase.class);
 	public static final UnlistedGenericProperty<IBlockAccess> BAKERY_WORLD = new UnlistedGenericProperty<>("bakery_world", IBlockAccess.class);
 
 	/* AUGMENT IDENTIFIERS */
@@ -396,6 +398,8 @@ public class TEProps {
 	public static final String DYNAMO_ENERVATION_ENCHANT = "dynamoEnervationEnchant";
 
 	public static final String DYNAMO_NUMISMATIC_GEM = "dynamoNumismaticGem";
+
+	public static final String DYNAMO_GOURMAND_PALEO = "dynamoGourmandPaleo";
 
 	/* APPARATUS */
 	public static final String APPARATUS_DEPTH = "apparatusDepth";

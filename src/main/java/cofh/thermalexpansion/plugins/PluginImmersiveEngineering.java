@@ -26,6 +26,11 @@ public class PluginImmersiveEngineering extends PluginTEBase {
 		Fluid creosote = FluidRegistry.getFluid("creosote");
 		Fluid plant_oil = FluidRegistry.getFluid("plantoil");
 
+		/* INSOLATOR */
+		{
+
+		}
+
 		/* TRANSPOSER */
 		{
 			int energy = 400;

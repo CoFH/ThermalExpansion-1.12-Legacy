@@ -3,6 +3,7 @@ package cofh.thermalexpansion.plugins;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.managers.device.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
@@ -108,11 +109,47 @@ public class PluginPlants extends PluginTEBase {
 		ItemStack logCrystal = getItemStack("crystal_log", 1, 0);
 		ItemStack logDarkCrystal = getItemStack("crystal_log", 1, 1);
 
+		ItemStack plankBlackKauri = getItemStack("planks", 1, 2);
+		ItemStack plankBrazilianPine = getItemStack("planks", 1, 3);
+		ItemStack plankIncenseCedar = getItemStack("planks", 1, 4);
+		ItemStack plankMurrayPine = getItemStack("planks", 1, 5);
+
+		ItemStack plankAshen = getItemStack("planks", 1, 0);
+		ItemStack plankBlazing = getItemStack("planks", 1, 1);
+
+		ItemStack plankCrystal = getItemStack("crystal_planks", 1, 0);
+		ItemStack plankDarkCrystal = getItemStack("crystal_planks", 1, 1);
+
+		ItemStack stairsBlackKauri = getItemStack("black_kauri_stairs");
+		ItemStack stairsBrazilianPine = getItemStack("brazillian_pine_stairs");
+		ItemStack stairsIncenseCedar = getItemStack("incense_cedar_stairs");
+		ItemStack stairsMurrayPine = getItemStack("murray_pine_stairs");
+
+		ItemStack stairsAshen = getItemStack("ash_stairs");
+		ItemStack stairsBlazing = getItemStack("blaze_stairs");
+
+		ItemStack stairsCrystal = getItemStack("crystal_stairs");
+		ItemStack stairsDarkCrystal = getItemStack("dark_crystal_stairs");
+
 		Block blockLog = getBlock("log_0");
 		Block blockLogNether = getBlock("nether_log");
 
 		Block blockLeaves = getBlock("leaves_0");
 		Block blockLeavesNether = getBlock("nether_leaves");
+
+		/* SAWMILL */
+		{
+			SawmillManager.addStairsRecipe(stairsBlackKauri, plankBlackKauri);
+			SawmillManager.addStairsRecipe(stairsBrazilianPine, plankBrazilianPine);
+			SawmillManager.addStairsRecipe(stairsIncenseCedar, plankIncenseCedar);
+			SawmillManager.addStairsRecipe(stairsMurrayPine, plankMurrayPine);
+
+			SawmillManager.addStairsRecipe(stairsAshen, plankAshen);
+			SawmillManager.addStairsRecipe(stairsBlazing, plankBlazing);
+
+			SawmillManager.addStairsRecipe(stairsCrystal, plankCrystal);
+			SawmillManager.addStairsRecipe(stairsDarkCrystal, plankDarkCrystal);
+		}
 
 		/* INSOLATOR */
 		{

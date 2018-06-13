@@ -6,9 +6,7 @@ import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalfoundation.init.TFFluids;
-import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.Block;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -247,151 +245,149 @@ public class PluginNatura extends PluginTEBase {
 
 		/* SAWMILL */
 		{
-			int energy = SawmillManager.DEFAULT_ENERGY;
-
 			/* BOOKSHELVES */
-			SawmillManager.addRecipe(energy, bookshelfMaple, ItemHelper.cloneStack(plankMaple, 4), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, bookshelfSilverbell, ItemHelper.cloneStack(plankSilverbell, 4), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, bookshelfAmaranth, ItemHelper.cloneStack(plankAmaranth, 4), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, bookshelfTigerwood, ItemHelper.cloneStack(plankTigerwood, 4), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, bookshelfWillow, ItemHelper.cloneStack(plankWillow, 4), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, bookshelfEucalyptus, ItemHelper.cloneStack(plankEucalyptus, 4), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, bookshelfHopseed, ItemHelper.cloneStack(plankHopseed, 4), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, bookshelfSakura, ItemHelper.cloneStack(plankSakura, 4), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, bookshelfRedwood, ItemHelper.cloneStack(plankRedwood, 4), new ItemStack(Items.BOOK, 3), 25);
+			SawmillManager.addBookshelfRecipe(bookshelfMaple, plankMaple);
+			SawmillManager.addBookshelfRecipe(bookshelfSilverbell, plankSilverbell);
+			SawmillManager.addBookshelfRecipe(bookshelfAmaranth, plankAmaranth);
+			SawmillManager.addBookshelfRecipe(bookshelfTigerwood, plankTigerwood);
+			SawmillManager.addBookshelfRecipe(bookshelfWillow, plankWillow);
+			SawmillManager.addBookshelfRecipe(bookshelfEucalyptus, plankEucalyptus);
+			SawmillManager.addBookshelfRecipe(bookshelfHopseed, plankHopseed);
+			SawmillManager.addBookshelfRecipe(bookshelfSakura, plankSakura);
+			SawmillManager.addBookshelfRecipe(bookshelfRedwood, plankRedwood);
 
-			SawmillManager.addRecipe(energy, bookshelfGhostwood, ItemHelper.cloneStack(plankGhostwood, 4), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, bookshelfBloodwood, ItemHelper.cloneStack(plankBloodwood, 4), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, bookshelfDarkwood, ItemHelper.cloneStack(plankDarkwood, 4), new ItemStack(Items.BOOK, 3), 25);
-			SawmillManager.addRecipe(energy, bookshelfFusewood, ItemHelper.cloneStack(plankFusewood, 4), new ItemStack(Items.BOOK, 3), 25);
-
-			/* WORKBENCHES */
-			SawmillManager.addRecipe(energy, workbenchMaple, ItemHelper.cloneStack(plankMaple, 2), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, workbenchSilverbell, ItemHelper.cloneStack(plankSilverbell, 2), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, workbenchAmaranth, ItemHelper.cloneStack(plankAmaranth, 2), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, workbenchTigerwood, ItemHelper.cloneStack(plankTigerwood, 2), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, workbenchWillow, ItemHelper.cloneStack(plankWillow, 2), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, workbenchEucalyptus, ItemHelper.cloneStack(plankEucalyptus, 2), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, workbenchHopseed, ItemHelper.cloneStack(plankHopseed, 2), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, workbenchSakura, ItemHelper.cloneStack(plankSakura, 2), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, workbenchRedwood, ItemHelper.cloneStack(plankRedwood, 2), ItemMaterial.dustWood);
-
-			SawmillManager.addRecipe(energy, workbenchGhostwood, ItemHelper.cloneStack(plankGhostwood, 2), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, workbenchBloodwood, ItemHelper.cloneStack(plankBloodwood, 2), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, workbenchDarkwood, ItemHelper.cloneStack(plankDarkwood, 2), ItemMaterial.dustWood);
-			SawmillManager.addRecipe(energy, workbenchFusewood, ItemHelper.cloneStack(plankFusewood, 2), ItemMaterial.dustWood);
+			SawmillManager.addBookshelfRecipe(bookshelfGhostwood, plankGhostwood);
+			SawmillManager.addBookshelfRecipe(bookshelfBloodwood, plankBloodwood);
+			SawmillManager.addBookshelfRecipe(bookshelfDarkwood, plankDarkwood);
+			SawmillManager.addBookshelfRecipe(bookshelfFusewood, plankFusewood);
 
 			/* BOWLS */
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(bowlGhostwood, 2), plankGhostwood, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(bowlBloodwood, 2), plankBloodwood, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(bowlDarkwood, 2), plankDarkwood, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(bowlFusewood, 2), plankFusewood, ItemMaterial.dustWood, 25);
+			SawmillManager.addButtonRecipe(bowlGhostwood, plankGhostwood);
+			SawmillManager.addButtonRecipe(bowlBloodwood, plankBloodwood);
+			SawmillManager.addButtonRecipe(bowlDarkwood, plankDarkwood);
+			SawmillManager.addButtonRecipe(bowlFusewood, plankFusewood);
 
 			/* BUTTONS */
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(buttonMaple, 2), plankMaple, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(buttonSilverbell, 2), plankSilverbell, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(buttonAmaranth, 2), plankAmaranth, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(buttonTigerwood, 2), plankTigerwood, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(buttonWillow, 2), plankWillow, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(buttonEucalyptus, 2), plankEucalyptus, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(buttonHopseed, 2), plankHopseed, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(buttonSakura, 2), plankSakura, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(buttonRedwood, 2), plankRedwood, ItemMaterial.dustWood, 25);
+			SawmillManager.addButtonRecipe(buttonMaple, plankMaple);
+			SawmillManager.addButtonRecipe(buttonSilverbell, plankSilverbell);
+			SawmillManager.addButtonRecipe(buttonAmaranth, plankAmaranth);
+			SawmillManager.addButtonRecipe(buttonTigerwood, plankTigerwood);
+			SawmillManager.addButtonRecipe(buttonWillow, plankWillow);
+			SawmillManager.addButtonRecipe(buttonEucalyptus, plankEucalyptus);
+			SawmillManager.addButtonRecipe(buttonHopseed, plankHopseed);
+			SawmillManager.addButtonRecipe(buttonSakura, plankSakura);
+			SawmillManager.addButtonRecipe(buttonRedwood, plankRedwood);
 
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(buttonGhostwood, 2), plankGhostwood, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(buttonBloodwood, 2), plankBloodwood, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(buttonDarkwood, 2), plankDarkwood, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(buttonFusewood, 2), plankFusewood, ItemMaterial.dustWood, 25);
+			SawmillManager.addButtonRecipe(buttonGhostwood, plankGhostwood);
+			SawmillManager.addButtonRecipe(buttonBloodwood, plankBloodwood);
+			SawmillManager.addButtonRecipe(buttonDarkwood, plankDarkwood);
+			SawmillManager.addButtonRecipe(buttonFusewood, plankFusewood);
 
 			/* DOORS */
-			SawmillManager.addRecipe(energy, doorEucalyptus, plankEucalyptus, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, doorHopseed, plankHopseed, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, doorSakura, plankSakura, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, doorRedwood, plankRedwood, ItemMaterial.dustWood, 50);
-			// SawmillManager.addRecipe(energy, doorRedwoodBark, plankEucalyptus, ItemMaterial.dustWood, 50);
+			SawmillManager.addDoorRecipe(doorEucalyptus, plankEucalyptus);
+			SawmillManager.addDoorRecipe(doorHopseed, plankHopseed);
+			SawmillManager.addDoorRecipe(doorSakura, plankSakura);
+			SawmillManager.addDoorRecipe(doorRedwood, plankRedwood);
+			// SawmillManager.addDoorRecipe( doorRedwoodBark, plankEucalyptus);
 
-			SawmillManager.addRecipe(energy, doorGhostwood, plankGhostwood, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, doorBloodwood, plankBloodwood, ItemMaterial.dustWood, 50);
+			SawmillManager.addDoorRecipe(doorGhostwood, plankGhostwood);
+			SawmillManager.addDoorRecipe(doorBloodwood, plankBloodwood);
 
 			/* FENCES */
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceMaple, 2), plankMaple, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceSilverbell, 2), plankSilverbell, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceAmaranth, 2), plankAmaranth, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceTigerwood, 2), plankTigerwood, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceWillow, 2), plankWillow, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceEucalyptus, 2), plankEucalyptus, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceHopseed, 2), plankHopseed, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceSakura, 2), plankSakura, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceRedwood, 2), plankRedwood, ItemMaterial.dustWood, 25);
+			SawmillManager.addFenceRecipe(fenceMaple, plankMaple);
+			SawmillManager.addFenceRecipe(fenceSilverbell, plankSilverbell);
+			SawmillManager.addFenceRecipe(fenceAmaranth, plankAmaranth);
+			SawmillManager.addFenceRecipe(fenceTigerwood, plankTigerwood);
+			SawmillManager.addFenceRecipe(fenceWillow, plankWillow);
+			SawmillManager.addFenceRecipe(fenceEucalyptus, plankEucalyptus);
+			SawmillManager.addFenceRecipe(fenceHopseed, plankHopseed);
+			SawmillManager.addFenceRecipe(fenceSakura, plankSakura);
+			SawmillManager.addFenceRecipe(fenceRedwood, plankRedwood);
 
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceGhostwood, 2), plankGhostwood, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceBloodwood, 2), plankBloodwood, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceDarkwood, 2), plankDarkwood, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fenceFusewood, 2), plankFusewood, ItemMaterial.dustWood, 25);
+			SawmillManager.addFenceRecipe(fenceGhostwood, plankGhostwood);
+			SawmillManager.addFenceRecipe(fenceBloodwood, plankBloodwood);
+			SawmillManager.addFenceRecipe(fenceDarkwood, plankDarkwood);
+			SawmillManager.addFenceRecipe(fenceFusewood, plankFusewood);
 
 			/* FENCE GATES */
-			SawmillManager.addRecipe(energy, fenceGateMaple, plankMaple, ItemMaterial.dustWood, 125);
-			SawmillManager.addRecipe(energy, fenceGateSilverbell, plankSilverbell, ItemMaterial.dustWood, 125);
-			SawmillManager.addRecipe(energy, fenceGateAmaranth, plankAmaranth, ItemMaterial.dustWood, 125);
-			SawmillManager.addRecipe(energy, fenceGateTigerwood, plankTigerwood, ItemMaterial.dustWood, 125);
-			SawmillManager.addRecipe(energy, fenceGateWillow, plankWillow, ItemMaterial.dustWood, 125);
-			SawmillManager.addRecipe(energy, fenceGateEucalyptus, plankEucalyptus, ItemMaterial.dustWood, 125);
-			SawmillManager.addRecipe(energy, fenceGateHopseed, plankHopseed, ItemMaterial.dustWood, 125);
-			SawmillManager.addRecipe(energy, fenceGateSakura, plankSakura, ItemMaterial.dustWood, 125);
-			SawmillManager.addRecipe(energy, fenceGateRedwood, plankRedwood, ItemMaterial.dustWood, 125);
+			SawmillManager.addFenceGateRecipe(fenceGateMaple, plankMaple);
+			SawmillManager.addFenceGateRecipe(fenceGateSilverbell, plankSilverbell);
+			SawmillManager.addFenceGateRecipe(fenceGateAmaranth, plankAmaranth);
+			SawmillManager.addFenceGateRecipe(fenceGateTigerwood, plankTigerwood);
+			SawmillManager.addFenceGateRecipe(fenceGateWillow, plankWillow);
+			SawmillManager.addFenceGateRecipe(fenceGateEucalyptus, plankEucalyptus);
+			SawmillManager.addFenceGateRecipe(fenceGateHopseed, plankHopseed);
+			SawmillManager.addFenceGateRecipe(fenceGateSakura, plankSakura);
+			SawmillManager.addFenceGateRecipe(fenceGateRedwood, plankRedwood);
 
-			SawmillManager.addRecipe(energy, fenceGateGhostwood, plankGhostwood, ItemMaterial.dustWood, 125);
-			SawmillManager.addRecipe(energy, fenceGateBloodwood, plankBloodwood, ItemMaterial.dustWood, 125);
-			SawmillManager.addRecipe(energy, fenceGateDarkwood, plankDarkwood, ItemMaterial.dustWood, 125);
-			SawmillManager.addRecipe(energy, fenceGateFusewood, plankFusewood, ItemMaterial.dustWood, 125);
+			SawmillManager.addFenceGateRecipe(fenceGateGhostwood, plankGhostwood);
+			SawmillManager.addFenceGateRecipe(fenceGateBloodwood, plankBloodwood);
+			SawmillManager.addFenceGateRecipe(fenceGateDarkwood, plankDarkwood);
+			SawmillManager.addFenceGateRecipe(fenceGateFusewood, plankFusewood);
 
 			/* PRESSURE PLATES */
-			SawmillManager.addRecipe(energy, pressurePlateMaple, plankMaple, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, pressurePlateSilverbell, plankSilverbell, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, pressurePlateAmaranth, plankAmaranth, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, pressurePlateTigerwood, plankTigerwood, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, pressurePlateWillow, plankWillow, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, pressurePlateEucalyptus, plankEucalyptus, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, pressurePlateHopseed, plankHopseed, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, pressurePlateSakura, plankSakura, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, pressurePlateRedwood, plankRedwood, ItemMaterial.dustWood, 50);
+			SawmillManager.addPressurePlateRecipe(pressurePlateMaple, plankMaple);
+			SawmillManager.addPressurePlateRecipe(pressurePlateSilverbell, plankSilverbell);
+			SawmillManager.addPressurePlateRecipe(pressurePlateAmaranth, plankAmaranth);
+			SawmillManager.addPressurePlateRecipe(pressurePlateTigerwood, plankTigerwood);
+			SawmillManager.addPressurePlateRecipe(pressurePlateWillow, plankWillow);
+			SawmillManager.addPressurePlateRecipe(pressurePlateEucalyptus, plankEucalyptus);
+			SawmillManager.addPressurePlateRecipe(pressurePlateHopseed, plankHopseed);
+			SawmillManager.addPressurePlateRecipe(pressurePlateSakura, plankSakura);
+			SawmillManager.addPressurePlateRecipe(pressurePlateRedwood, plankRedwood);
 
-			SawmillManager.addRecipe(energy, pressurePlateGhostwood, plankGhostwood, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, pressurePlateBloodwood, plankBloodwood, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, pressurePlateDarkwood, plankDarkwood, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, pressurePlateFusewood, plankFusewood, ItemMaterial.dustWood, 50);
+			SawmillManager.addPressurePlateRecipe(pressurePlateGhostwood, plankGhostwood);
+			SawmillManager.addPressurePlateRecipe(pressurePlateBloodwood, plankBloodwood);
+			SawmillManager.addPressurePlateRecipe(pressurePlateDarkwood, plankDarkwood);
+			SawmillManager.addPressurePlateRecipe(pressurePlateFusewood, plankFusewood);
 
 			/* STAIRS */
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairsMaple, 2), plankMaple, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairsSilverbell, 2), plankSilverbell, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairsAmaranth, 2), plankAmaranth, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairsTigerwood, 2), plankTigerwood, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairsWillow, 2), plankWillow, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairsEucalyptus, 2), plankEucalyptus, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairsHopseed, 2), plankHopseed, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairsSakura, 2), plankSakura, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairsRedwood, 2), plankRedwood, ItemMaterial.dustWood, 50);
+			SawmillManager.addStairsRecipe(stairsMaple, plankMaple);
+			SawmillManager.addStairsRecipe(stairsSilverbell, plankSilverbell);
+			SawmillManager.addStairsRecipe(stairsAmaranth, plankAmaranth);
+			SawmillManager.addStairsRecipe(stairsTigerwood, plankTigerwood);
+			SawmillManager.addStairsRecipe(stairsWillow, plankWillow);
+			SawmillManager.addStairsRecipe(stairsEucalyptus, plankEucalyptus);
+			SawmillManager.addStairsRecipe(stairsHopseed, plankHopseed);
+			SawmillManager.addStairsRecipe(stairsSakura, plankSakura);
+			SawmillManager.addStairsRecipe(stairsRedwood, plankRedwood);
 
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairsGhostwood, 2), plankGhostwood, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairsBloodwood, 2), plankBloodwood, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairsDarkwood, 2), plankDarkwood, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairsFusewood, 2), plankFusewood, ItemMaterial.dustWood, 50);
+			SawmillManager.addStairsRecipe(stairsGhostwood, plankGhostwood);
+			SawmillManager.addStairsRecipe(stairsBloodwood, plankBloodwood);
+			SawmillManager.addStairsRecipe(stairsDarkwood, plankDarkwood);
+			SawmillManager.addStairsRecipe(stairsFusewood, plankFusewood);
 
 			/* TRAPDOORS */
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapDoorMaple, 2), plankMaple, ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapDoorSilverbell, 2), plankSilverbell, ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapDoorAmaranth, 2), plankAmaranth, ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapDoorTigerwood, 2), plankTigerwood, ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapDoorWillow, 2), plankWillow, ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapDoorEucalyptus, 2), plankEucalyptus, ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapDoorHopseed, 2), plankHopseed, ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapDoorSakura, 2), plankSakura, ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapDoorRedwood, 2), plankRedwood, ItemMaterial.dustWood, 75);
+			SawmillManager.addTrapdoorRecipe(trapDoorMaple, plankMaple);
+			SawmillManager.addTrapdoorRecipe(trapDoorSilverbell, plankSilverbell);
+			SawmillManager.addTrapdoorRecipe(trapDoorAmaranth, plankAmaranth);
+			SawmillManager.addTrapdoorRecipe(trapDoorTigerwood, plankTigerwood);
+			SawmillManager.addTrapdoorRecipe(trapDoorWillow, plankWillow);
+			SawmillManager.addTrapdoorRecipe(trapDoorEucalyptus, plankEucalyptus);
+			SawmillManager.addTrapdoorRecipe(trapDoorHopseed, plankHopseed);
+			SawmillManager.addTrapdoorRecipe(trapDoorSakura, plankSakura);
+			SawmillManager.addTrapdoorRecipe(trapDoorRedwood, plankRedwood);
 
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapDoorGhostwood, 2), plankGhostwood, ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapDoorBloodwood, 2), plankBloodwood, ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapDoorDarkwood, 2), plankDarkwood, ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapDoorFusewood, 2), plankFusewood, ItemMaterial.dustWood, 75);
+			SawmillManager.addTrapdoorRecipe(trapDoorGhostwood, plankGhostwood);
+			SawmillManager.addTrapdoorRecipe(trapDoorBloodwood, plankBloodwood);
+			SawmillManager.addTrapdoorRecipe(trapDoorDarkwood, plankDarkwood);
+			SawmillManager.addTrapdoorRecipe(trapDoorFusewood, plankFusewood);
+
+			/* WORKBENCHES */
+			SawmillManager.addWorkbenchRecipe(workbenchMaple, plankMaple);
+			SawmillManager.addWorkbenchRecipe(workbenchSilverbell, plankSilverbell);
+			SawmillManager.addWorkbenchRecipe(workbenchAmaranth, plankAmaranth);
+			SawmillManager.addWorkbenchRecipe(workbenchTigerwood, plankTigerwood);
+			SawmillManager.addWorkbenchRecipe(workbenchWillow, plankWillow);
+			SawmillManager.addWorkbenchRecipe(workbenchEucalyptus, plankEucalyptus);
+			SawmillManager.addWorkbenchRecipe(workbenchHopseed, plankHopseed);
+			SawmillManager.addWorkbenchRecipe(workbenchSakura, plankSakura);
+			SawmillManager.addWorkbenchRecipe(workbenchRedwood, plankRedwood);
+
+			SawmillManager.addWorkbenchRecipe(workbenchGhostwood, plankGhostwood);
+			SawmillManager.addWorkbenchRecipe(workbenchBloodwood, plankBloodwood);
+			SawmillManager.addWorkbenchRecipe(workbenchDarkwood, plankDarkwood);
+			SawmillManager.addWorkbenchRecipe(workbenchFusewood, plankFusewood);
 		}
 
 		/* INSOLATOR */

@@ -97,12 +97,6 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	}
 
 	@Override
-	public int getType() {
-
-		return 0;
-	}
-
-	@Override
 	public int getComparatorInputOverride() {
 
 		return getAccess().isPublic() ? Container.calcRedstoneFromInventory(this) : 0;
@@ -285,7 +279,7 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 		super.readFromNBT(nbt);
 
-		facing = nbt.getByte("Facing");
+		facing = nbt.getByte(CoreProps.FACING);
 	}
 
 	@Override
@@ -293,7 +287,7 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 		super.writeToNBT(nbt);
 
-		nbt.setByte("Facing", facing);
+		nbt.setByte(CoreProps.FACING, facing);
 		nbt.setByte("EncHolding", enchantHolding);
 		return nbt;
 	}

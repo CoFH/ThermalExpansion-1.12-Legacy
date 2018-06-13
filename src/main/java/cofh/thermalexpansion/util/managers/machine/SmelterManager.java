@@ -173,9 +173,6 @@ public class SmelterManager {
 
 			addRecycleRecipe(energy, new ItemStack(Items.IRON_HORSE_ARMOR), ingot, 2, false);
 
-			addRecycleRecipe(energy, new ItemStack(Blocks.HOPPER), ingot, 4, false);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_DOOR), ingot, 1, false);
-
 			/* GOLD */
 			ingot = new ItemStack(Items.GOLD_INGOT);
 

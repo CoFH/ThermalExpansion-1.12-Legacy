@@ -244,8 +244,8 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(ModelBakery.defaultBlockKeyGenerator.generateKey(state));
 			TileTank tank = state.getValue(TEProps.TILE_TANK);
+			StringBuilder builder = new StringBuilder(ModelBakery.defaultBlockKeyGenerator.generateKey(state));
 			builder.append(",creative=").append(tank.isCreative);
 			builder.append(",level=").append(tank.getLevel());
 			builder.append(",holding=").append(tank.enchantHolding);

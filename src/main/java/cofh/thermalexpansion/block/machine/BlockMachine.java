@@ -12,6 +12,7 @@ import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.FluidHelper;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.ReconfigurableHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
@@ -83,7 +84,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				if (TEProps.creativeTabShowAllBlockLevels) {
 					for (int j = 0; j <= CoreProps.LEVEL_MAX; j++) {
@@ -101,9 +102,15 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 
 	/* TYPE METHODS */
 	@Override
+	public String getUnlocalizedName(ItemStack stack) {
+
+		return "tile.thermalexpansion.machine." + Type.values()[ItemHelper.getItemDamage(stack)].getName() + ".name";
+	}
+
+	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
-		return this.getDefaultState().withProperty(VARIANT, Type.byMetadata(meta));
+		return this.getDefaultState().withProperty(VARIANT, Type.values()[meta]);
 	}
 
 	@Override
@@ -125,7 +132,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		if (metadata >= Type.values().length) {
 			return null;
 		}
-		switch (Type.byMetadata(metadata)) {
+		switch (Type.values()[metadata]) {
 			case FURNACE:
 				return new TileFurnace();
 			case PULVERIZER:
@@ -587,7 +594,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		if (!enableUpgradeKitCrafting) {
 			return;
 		}
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				ItemStack[] block = new ItemStack[5];
 
@@ -611,7 +618,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		if (!enableClassicRecipes) {
 			return;
 		}
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				ItemStack[] machine = new ItemStack[5];
 
@@ -672,7 +679,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		EXTRUDER(15, "extruder");
 		// @formatter:on
 
-		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
 
@@ -691,20 +697,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		public String getName() {
 
 			return this.name;
-		}
-
-		public static Type byMetadata(int metadata) {
-
-			if (metadata < 0 || metadata >= METADATA_LOOKUP.length) {
-				metadata = 0;
-			}
-			return METADATA_LOOKUP[metadata];
-		}
-
-		static {
-			for (Type type : values()) {
-				METADATA_LOOKUP[type.getMetadata()] = type;
-			}
 		}
 	}
 

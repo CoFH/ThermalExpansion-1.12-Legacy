@@ -62,7 +62,7 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 	@Override
 	protected String getTileName() {
 
-		return "tile.thermalexpansion.device." + Type.byMetadata(getType()).getName() + ".name";
+		return "tile.thermalexpansion.device." + Type.values()[getType()].getName() + ".name";
 	}
 
 	@Override

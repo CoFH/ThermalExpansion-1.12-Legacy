@@ -117,7 +117,9 @@ public class EnchanterManager {
 
 			if (!tempRecipe.enchantName.isEmpty() && tempRecipe.output.getItem() == Items.ENCHANTED_BOOK) {
 				Enchantment enchant = Enchantment.getEnchantmentByLocation(tempRecipe.enchantName);
-				tempRecipe = new EnchanterRecipe(tempRecipe.primaryInput, tempRecipe.secondaryInput, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, 1)), tempRecipe.experience, tempRecipe.energy, tempRecipe.type);
+				if (enchant != null) {
+					tempRecipe = new EnchanterRecipe(tempRecipe.primaryInput, tempRecipe.secondaryInput, ItemEnchantedBook.getEnchantedItemStack(new EnchantmentData(enchant, 1)), tempRecipe.experience, tempRecipe.energy, tempRecipe.type);
+				}
 			}
 			tempMap.put(asList(primary, secondary), tempRecipe);
 			tempSet.add(primary);

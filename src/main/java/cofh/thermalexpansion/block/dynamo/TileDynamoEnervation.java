@@ -9,7 +9,6 @@ import cofh.core.util.helpers.EnergyHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 import cofh.thermalexpansion.init.TEProps;
@@ -30,13 +29,17 @@ import java.util.HashSet;
 
 public class TileDynamoEnervation extends TileDynamoBase {
 
-	private static final int TYPE = Type.ENERVATION.getMetadata();
+	protected static final EnergyConfig ENERGY_CONFIG = new EnergyConfig();
+	protected static final HashSet<String> VALID_AUGMENTS = new HashSet<>();
+
+	public static boolean enable = true;
 	public static int basePower = 40;
 
 	public static void initialize() {
 
-		VALID_AUGMENTS[TYPE] = new HashSet<>();
-		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_ENERVATION_ENCHANT);
+		VALID_AUGMENTS.addAll(VALID_AUGMENTS_BASE);
+
+		VALID_AUGMENTS.add(TEProps.DYNAMO_ENERVATION_ENCHANT);
 
 		GameRegistry.registerTileEntity(TileDynamoEnervation.class, "thermalexpansion:dynamo_enervation");
 
@@ -46,13 +49,11 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	public static void config() {
 
 		String category = "Dynamo.Enervation";
-		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+		enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		String comment = "Adjust this value to change the Energy generation (in RF/t) for an Enervation Dynamo. This base value will scale with block level and Augments.";
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
-
-		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
+		ENERGY_CONFIG.setDefaultParams(basePower, smallStorage);
 	}
 
 	/* AUGMENTS */
@@ -66,9 +67,21 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	}
 
 	@Override
-	public int getType() {
+	protected String getTileName() {
 
-		return TYPE;
+		return "tile.thermalexpansion.dynamo.enervation.name";
+	}
+
+	@Override
+	protected EnergyConfig getEnergyConfig() {
+
+		return ENERGY_CONFIG;
+	}
+
+	@Override
+	protected HashSet<String> getValidAugments() {
+
+		return VALID_AUGMENTS;
 	}
 
 	@Override
@@ -77,7 +90,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		if (augmentEnchant) {
 			return !EnchantmentHelper.getEnchantments(inventory[0]).isEmpty();
 		}
-		return EnervationManager.getFuelEnergy(inventory[0]) > energyConfig.maxPower;
+		return EnervationManager.getFuelEnergy(inventory[0]) > 0;
 	}
 
 	@Override

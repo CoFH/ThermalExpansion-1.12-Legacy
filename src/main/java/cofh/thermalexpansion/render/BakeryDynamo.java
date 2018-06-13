@@ -115,28 +115,28 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 		}
 	}
 
-	protected void renderBaseOverlay(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite sprite) {
+	protected void renderBaseOverlay(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite texture) {
 
-		if (sprite != null) {
+		if (texture != null) {
 			if (active) {
-				modelBaseOverlay[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(sprite));
+				modelBaseOverlay[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(texture));
 			} else {
-				modelBaseOverlay[1][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(sprite));
+				modelBaseOverlay[1][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(texture));
 			}
 		}
 	}
 
-	protected void renderCoilAnimation(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite icon) {
+	protected void renderCoilAnimation(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite texture) {
 
 		if (active) {
-			modelCoilAnimation[facing].render(ccrs, new IconTransformation(icon));
+			modelCoilAnimation[facing].render(ccrs, new IconTransformation(texture));
 		}
 	}
 
-	protected void renderBaseAnimation(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite icon) {
+	protected void renderBaseAnimation(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite texture) {
 
 		if (active) {
-			modelBaseAnimation[facing].render(ccrs, new IconTransformation(icon));
+			modelBaseAnimation[facing].render(ccrs, new IconTransformation(texture));
 		}
 	}
 
@@ -144,13 +144,12 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 
 	/**
 	 * Used to get the overlay texture for the given side.
-	 * This should specifically relate to the level of the machine and not it's state.
+	 * This should specifically relate to the level of the dynamo and not its state.
 	 *
-	 * @param face  The face.
 	 * @param level The level.
 	 * @return The texture, Null if there is no texture for the face.
 	 */
-	private static TextureAtlasSprite getOverlaySprite(EnumFacing face, int level) {
+	private static TextureAtlasSprite getOverlaySprite(int level) {
 
 		if (level == 0) {
 			return null;
@@ -178,6 +177,8 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
 
+		List<BakedQuad> quads = new ArrayList<>();
+
 		if (face == null && !stack.isEmpty()) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);
@@ -191,17 +192,19 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 			renderBase(ccrs, 1, false, stack.getMetadata());
 
 			if (TEProps.renderDynamoOverlay && level > 0) {
-				renderBaseOverlay(ccrs, 1, false, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(face, level));
+				renderBaseOverlay(ccrs, 1, false, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(level));
 			}
 			buffer.finishDrawing();
-			return buffer.bake();
+			quads.addAll(buffer.bake());
 		}
-		return new ArrayList<>();
+		return quads;
 	}
 
 	/* ILayeredBlockBakery */
 	@Override
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
+
+		List<BakedQuad> quads = new ArrayList<>();
 
 		if (face == null && state != null) {
 			TileDynamoBase dynamo = state.getValue(TEProps.TILE_DYNAMO);
@@ -227,15 +230,15 @@ public class BakeryDynamo implements ILayeredBlockBakery {
 				renderBase(ccrs, facing, active, type);
 
 				if (TEProps.renderDynamoOverlay && level > 0) {
-					renderBaseOverlay(ccrs, facing, active, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(face, level));
+					renderBaseOverlay(ccrs, facing, active, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(level));
 				}
 			} else if (TileDynamoBase.COIL_UNDERLAY[coil]) {
 				renderCoilAnimation(ccrs, facing, active, coilUnderlay);
 			}
 			buffer.finishDrawing();
-			return buffer.bake();
+			quads.addAll(buffer.bake());
 		}
-		return new ArrayList<>();
+		return quads;
 	}
 
 }

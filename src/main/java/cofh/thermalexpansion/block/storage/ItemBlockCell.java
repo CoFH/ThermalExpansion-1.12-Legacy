@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.storage;
 
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
+import cofh.core.block.BlockCore;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
@@ -8,7 +9,6 @@ import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.util.EnergyContainerItemWrapper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
-import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerItem, IEnchantableItem {
 
-	public ItemBlockCell(Block block) {
+	public ItemBlockCell(BlockCore block) {
 
 		super(block);
 		setMaxStackSize(1);

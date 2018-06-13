@@ -4,27 +4,30 @@ import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
+import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager.TransposerRecipe;
+import cofh.thermalfoundation.init.TFFluids;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
+import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredientRegistry;
 import mezz.jei.api.ingredients.IIngredients;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 
@@ -41,37 +44,52 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 
 		List<TransposerRecipeWrapper> recipes = new ArrayList<>();
 
+		List<TransposerRecipe> potionRecipes = new ArrayList<>();
+		List<TransposerRecipe> splashPotionRecipes = new ArrayList<>();
+		List<TransposerRecipe> lingeringPotionRecipes = new ArrayList<>();
+		List<TransposerRecipe> arrowRecipes = new ArrayList<>();
+		List<TransposerRecipe> florbRecipes = new ArrayList<>();
+
 		for (TransposerRecipe recipe : TransposerManager.getFillRecipeList()) {
+			if (TFFluids.isPotion(recipe.getFluid())) {
+				potionRecipes.add(recipe);
+				continue;
+			}
+			if (TFFluids.isSplashPotion(recipe.getFluid())) {
+				splashPotionRecipes.add(recipe);
+				continue;
+			}
+			if (TFFluids.isLingeringPotion(recipe.getFluid())) {
+				if (recipe.getInput().getItem().equals(Items.ARROW)) {
+					arrowRecipes.add(recipe);
+				} else {
+					lingeringPotionRecipes.add(recipe);
+				}
+				continue;
+			}
+			if (ItemFlorb.florbStandard.equals(recipe.getInput()) || ItemFlorb.florbMagmatic.equals(recipe.getInput())) {
+				florbRecipes.add(recipe);
+				continue;
+			}
 			recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_FILL));
 		}
-		List<ItemStack> ingredients = ingredientRegistry.getIngredients(ItemStack.class);
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, potionRecipes, RecipeUidsTE.TRANSPOSER_FILL));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, splashPotionRecipes, RecipeUidsTE.TRANSPOSER_FILL));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, lingeringPotionRecipes, RecipeUidsTE.TRANSPOSER_FILL));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, arrowRecipes, RecipeUidsTE.TRANSPOSER_FILL));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, florbRecipes, RecipeUidsTE.TRANSPOSER_FILL));
 
+		List<ItemStack> ingredients = ingredientRegistry.getIngredients(ItemStack.class);
 		for (ItemStack ingredient : ingredients) {
 			if (ingredient.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-				for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
-					addFillRecipe(ingredient, fluid, recipes, guiHelper);
+				TransposerRecipeWrapperContainer wrapper = new TransposerRecipeWrapperContainer(guiHelper, ingredient, RecipeUidsTE.TRANSPOSER_FILL);
+				if (wrapper.inputs.get(0).isEmpty() || wrapper.outputs.get(0).isEmpty() || wrapper.inputFluids.get(0).isEmpty()) {
+					continue;
 				}
-				//				TransposerRecipeWrapperContainer wrapper = new TransposerRecipeWrapperContainer(guiHelper, ingredient, RecipeUidsTE.TRANSPOSER_FILL);
-				//				if (!wrapper.inputs.isEmpty() && !wrapper.outputs.isEmpty() && !wrapper.inputFluids.isEmpty()) {
-				//					recipes.add(wrapper);
-				//				}
+				recipes.add(wrapper);
 			}
 		}
 		return recipes;
-	}
-
-	private static void addFillRecipe(ItemStack baseStack, Fluid fluid, List<TransposerRecipeWrapper> recipes, IGuiHelper guiHelper) {
-
-		ItemStack filledStack = baseStack.copy();
-		IFluidHandlerItem handler = filledStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-		int fill = handler.fill(new FluidStack(fluid, Fluid.BUCKET_VOLUME), true);
-
-		if (fill > 0) {
-			FluidStack filledFluid = new FluidStack(fluid, fill);
-			filledStack = handler.getContainer();
-			TransposerRecipe recipe = new TransposerRecipe(baseStack, filledStack, filledFluid, TransposerManager.DEFAULT_ENERGY, 100);
-			recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_FILL));
-		}
 	}
 
 	public TransposerRecipeCategoryFill(IGuiHelper guiHelper) {
@@ -98,6 +116,9 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
+
+		Map<Integer, ? extends IGuiIngredient<FluidStack>> fluidIngredients = guiFluidStacks.getGuiIngredients();
+		recipeWrapper.setGuiFluids(fluidIngredients);
 
 		guiItemStacks.init(0, true, 30, 10);
 		guiItemStacks.init(1, false, 30, 41);

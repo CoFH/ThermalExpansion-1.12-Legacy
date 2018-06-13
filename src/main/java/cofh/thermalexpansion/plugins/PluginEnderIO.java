@@ -35,6 +35,7 @@ public class PluginEnderIO extends PluginTEBase {
 		ItemStack dustObsidian = ItemHelper.getOre("dustObsidian", 4);
 		ItemStack dustRedstone = ItemHelper.getOre("dustRedstone");
 		ItemStack dustSteel = ItemHelper.getOre("dustSteel");
+		ItemStack dustEnergeticAlloy = ItemHelper.getOre("dustEnergeticAlloy");
 
 		ItemStack ingotGold = ItemHelper.getOre("ingotGold");
 		ItemStack ingotIron = ItemHelper.getOre("ingotIron");
@@ -53,23 +54,23 @@ public class PluginEnderIO extends PluginTEBase {
 			SmelterManager.addRecipe(3600, simpleChassi, dyeMachine, machineChassi);
 			SmelterManager.addRecipe(3600, simpleChassi, dyeSoulMachine, soulChassi);
 
-			SmelterManager.addRecipe(3800, dustIron, dustRedstone, ingotConductiveIron);
-			SmelterManager.addRecipe(4200, ingotIron, dustRedstone, ingotConductiveIron);
+			SmelterManager.addRecipe(4400, dustIron, dustRedstone, ingotConductiveIron);
+			SmelterManager.addRecipe(4800, ingotIron, dustRedstone, ingotConductiveIron);
 
-			SmelterManager.addRecipe(6800, dustIron, enderpearl, ingotPulsatingIron);
-			SmelterManager.addRecipe(7200, ingotIron, enderpearl, ingotPulsatingIron);
+			SmelterManager.addRecipe(8400, dustIron, enderpearl, ingotPulsatingIron);
+			SmelterManager.addRecipe(9600, ingotIron, enderpearl, ingotPulsatingIron);
 
-			SmelterManager.addRecipe(6800, dustGold, soulsand, ingotSoularium);
-			SmelterManager.addRecipe(7200, ingotGold, soulsand, ingotSoularium);
+			SmelterManager.addRecipe(8400, dustGold, soulsand, ingotSoularium);
+			SmelterManager.addRecipe(9600, ingotGold, soulsand, ingotSoularium);
 
-			SmelterManager.addRecipe(6800, ItemHelper.getOre("dustEnergeticAlloy"), enderpearl, ingotVibrantAlloy);
-			SmelterManager.addRecipe(7200, ingotEnergeticAlloy, enderpearl, ingotVibrantAlloy);
+			SmelterManager.addRecipe(8400, dustEnergeticAlloy, enderpearl, ingotVibrantAlloy);
+			SmelterManager.addRecipe(9600, ingotEnergeticAlloy, enderpearl, ingotVibrantAlloy);
 
-			SmelterManager.addRecipe(6800, dustSteel, silicon, ingotElectricalSteel);
-			SmelterManager.addRecipe(7200, ingotSteel, silicon, ingotElectricalSteel);
+			SmelterManager.addRecipe(8400, dustSteel, silicon, ingotElectricalSteel);
+			SmelterManager.addRecipe(9600, ingotSteel, silicon, ingotElectricalSteel);
 
-			SmelterManager.addRecipe(13600, dustSteel, dustObsidian, ingotDarkSteel);
-			SmelterManager.addRecipe(14400, ingotSteel, dustObsidian, ingotDarkSteel);
+			SmelterManager.addRecipe(16800, dustSteel, dustObsidian, ingotDarkSteel);
+			SmelterManager.addRecipe(19200, ingotSteel, dustObsidian, ingotDarkSteel);
 		}
 	}
 

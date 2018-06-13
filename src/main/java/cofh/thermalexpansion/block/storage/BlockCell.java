@@ -196,8 +196,8 @@ public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryPro
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(ModelBakery.defaultBlockKeyGenerator.generateKey(state));
 			TileCell cell = state.getValue(TEProps.TILE_CELL);
+			StringBuilder builder = new StringBuilder(ModelBakery.defaultBlockKeyGenerator.generateKey(state));
 			builder.append(",creative=").append(cell.isCreative);
 			builder.append(",level=").append(cell.getLevel());
 			builder.append(",holding=").append(cell.enchantHolding);

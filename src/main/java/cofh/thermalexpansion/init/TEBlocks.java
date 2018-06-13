@@ -36,6 +36,8 @@ public class TEBlocks {
 		blockCache = new BlockCache();
 		blockStrongbox = new BlockStrongbox();
 
+		// blockLight = new BlockLight();
+
 		initList.add(blockMachine);
 		initList.add(blockApparatus);
 		initList.add(blockDevice);
@@ -45,6 +47,8 @@ public class TEBlocks {
 		initList.add(blockTank);
 		initList.add(blockCache);
 		initList.add(blockStrongbox);
+
+		// initList.add(blockLight);
 
 		for (IInitializer init : initList) {
 			init.preInit();
@@ -73,5 +77,7 @@ public class TEBlocks {
 	public static BlockTank blockTank;
 	public static BlockCache blockCache;
 	public static BlockStrongbox blockStrongbox;
+
+	// public static BlockLight blockLight;
 
 }

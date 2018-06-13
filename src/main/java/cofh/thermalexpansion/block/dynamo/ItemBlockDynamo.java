@@ -1,11 +1,11 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
+import cofh.core.block.BlockCore;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.init.TEProps;
-import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ItemBlockDynamo extends ItemBlockTEBase {
 
-	public ItemBlockDynamo(Block block) {
+	public ItemBlockDynamo(BlockCore block) {
 
 		super(block);
 	}
@@ -32,12 +32,6 @@ public class ItemBlockDynamo extends ItemBlockTEBase {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack stack) {
-
-		return "tile.thermalexpansion.dynamo." + Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
-	}
-
-	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 
 		SecurityHelper.addOwnerInformation(stack, tooltip);
@@ -50,7 +44,7 @@ public class ItemBlockDynamo extends ItemBlockTEBase {
 		SecurityHelper.addAccessInformation(stack, tooltip);
 
 		tooltip.add(StringHelper.localize("info.thermalexpansion.dynamo.0"));
-		String name = Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		String name = Type.values()[ItemHelper.getItemDamage(stack)].getName();
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + name));
 
 		if (getLevel(stack) >= TEProps.levelRedstoneControl) {

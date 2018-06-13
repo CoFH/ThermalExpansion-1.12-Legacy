@@ -222,7 +222,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	@Override
 	protected String getTileName() {
 
-		return "tile.thermalexpansion.machine." + Type.byMetadata(getType()).getName() + ".name";
+		return "tile.thermalexpansion.machine." + Type.values()[getType()].getName() + ".name";
 	}
 
 	@Override
@@ -253,22 +253,6 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public boolean enableSecurity() {
 
 		return enableSecurity;
-	}
-
-	@Override
-	public boolean sendRedstoneUpdates() {
-
-		return true;
-	}
-
-	@Override
-	public void onRedstoneUpdate() {
-
-		boolean curActive = isActive;
-		if (!redstoneControlOrDisable()) {
-			isActive = false;
-		}
-		updateIfChanged(curActive);
 	}
 
 	/* IUpgradeable */

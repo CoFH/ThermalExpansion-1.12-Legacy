@@ -99,7 +99,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	@Override
 	protected String getTileName() {
 
-		return "tile.thermalexpansion.apparatus." + Type.byMetadata(getType()).getName() + ".name";
+		return "tile.thermalexpansion.apparatus." + Type.values()[getType()].getName() + ".name";
 	}
 
 	@Override

@@ -71,7 +71,7 @@ public class EnervationManager {
 	/* ADD FUELS */
 	public static boolean addFuel(ItemStack stack, int energy) {
 
-		if (stack.isEmpty() || energy < 1000 || energy > 200000000) {
+		if (stack.isEmpty() || energy < 2000 || energy > 200000000) {
 			return false;
 		}
 		fuelMap.put(new ComparableItemStack(stack), energy);

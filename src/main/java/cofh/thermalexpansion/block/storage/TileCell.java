@@ -122,12 +122,6 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	}
 
 	@Override
-	public int getType() {
-
-		return 0;
-	}
-
-	@Override
 	protected int getLevelRSControl() {
 
 		return TEProps.levelRedstoneControl;

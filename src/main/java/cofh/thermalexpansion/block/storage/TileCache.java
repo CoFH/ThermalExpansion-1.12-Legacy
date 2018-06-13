@@ -6,6 +6,7 @@ import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.block.TileAugmentableSecure;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.render.ISidedTexture;
 import cofh.core.util.helpers.*;
@@ -103,12 +104,6 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 	protected String getTileName() {
 
 		return "tile.thermalexpansion.storage.cache.name";
-	}
-
-	@Override
-	public int getType() {
-
-		return 0;
 	}
 
 	@Override
@@ -282,7 +277,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 
 		super.readFromNBT(nbt);
 
-		facing = nbt.getByte("Facing");
+		facing = nbt.getByte(CoreProps.FACING);
 		handler.readFromNBT(nbt);
 		lock = handler.isLocked();
 	}
@@ -293,7 +288,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 		super.writeToNBT(nbt);
 
 		nbt.setByte("EncHolding", enchantHolding);
-		nbt.setByte("Facing", facing);
+		nbt.setByte(CoreProps.FACING, facing);
 		handler.writeToNBT(nbt);
 		return nbt;
 	}

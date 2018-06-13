@@ -7,21 +7,24 @@ import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BakeryFrame implements IItemBakery {
 
 	public static final BakeryFrame INSTANCE = new BakeryFrame();
 
+	/* IItemBakery */
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing dir, ItemStack stack) {
+
+		List<BakedQuad> quads = new ArrayList<>();
 
 		if (dir == null) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
@@ -42,9 +45,9 @@ public class BakeryFrame implements IItemBakery {
 				BakeryCell.modelCenter.render(ccrs, new IconTransformation(center));
 			}
 			buffer.finishDrawing();
-			return buffer.bake();
+			quads.addAll(buffer.bake());
 		}
-		return ImmutableList.of();
+		return quads;
 	}
 
 	@Override
@@ -53,6 +56,7 @@ public class BakeryFrame implements IItemBakery {
 		return PerspectiveProperties.DEFAULT_BLOCK;
 	}
 
+	/* HELPERS */
 	private TextureAtlasSprite getFrameTexture(EnumFacing face, ItemStack stack) {
 
 		switch (stack.getMetadata()) {

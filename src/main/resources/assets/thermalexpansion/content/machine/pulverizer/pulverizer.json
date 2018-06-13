@@ -28,10 +28,10 @@
 				"item": "minecraft:cobblestone"
 			},
 			"output": {
-				"item": "minecraft:sand"
+				"item": "minecraft:gravel"
 			},
 			"output2": {
-				"item": "minecraft:gravel",
+				"item": "minecraft:sand",
 				"chance": 15
 			}
 		},
@@ -51,10 +51,10 @@
 				"item": "minecraft:gravel"
 			},
 			"output": {
-				"item": "minecraft:flint"
+				"item": "minecraft:sand"
 			},
 			"output2": {
-				"item": "minecraft:sand",
+				"item": "minecraft:flint",
 				"chance": 15
 			}
 		},
@@ -85,12 +85,9 @@
 				"item": "minecraft:stone"
 			},
 			"output": {
-				"item": "minecraft:gravel"
+				"item": "minecraft:cobblestone"
 			},
-			"output2": {
-				"item": "minecraft:sand",
-				"chance": 15
-			}
+			"energy_mod": 25
 		},
 		{
 			"input": {

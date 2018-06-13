@@ -14,6 +14,7 @@ import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.FluidHelper;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
@@ -104,7 +105,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				if (TEProps.creativeTabShowAllBlockLevels) {
 					for (int j = 0; j <= CoreProps.LEVEL_MAX; j++) {
@@ -122,9 +123,15 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 	/* TYPE METHODS */
 	@Override
+	public String getUnlocalizedName(ItemStack stack) {
+
+		return "tile.thermalexpansion.dynamo." + Type.values()[ItemHelper.getItemDamage(stack)].getName() + ".name";
+	}
+
+	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
-		return this.getDefaultState().withProperty(VARIANT, Type.byMetadata(meta));
+		return this.getDefaultState().withProperty(VARIANT, Type.values()[meta]);
 	}
 
 	@Override
@@ -298,8 +305,8 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
 			TileDynamoBase dynamo = state.getValue(TEProps.TILE_DYNAMO);
+			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
 			builder.append(",creative=").append(dynamo.isCreative);
 			builder.append(",level=").append(dynamo.getLevel());
 			builder.append(",facing=").append(dynamo.getFacing());
@@ -334,6 +341,13 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 		TileDynamoNumismatic.initialize();
 
 		ThermalExpansion.proxy.addIModelRegister(this);
+
+		enable[0] = TileDynamoSteam.enable;
+		enable[1] = TileDynamoMagmatic.enable;
+		enable[2] = TileDynamoCompression.enable;
+		enable[3] = TileDynamoReactant.enable;
+		enable[4] = TileDynamoEnervation.enable;
+		enable[5] = TileDynamoNumismatic.enable;
 
 		return true;
 	}
@@ -436,10 +450,10 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 	private void addUpgradeRecipes() {
 
-		if (!enableUpgradeKitCrafting) {
+		if (!TileDynamoBase.enableUpgradeKitCrafting) {
 			return;
 		}
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				ItemStack[] block = new ItemStack[5];
 
@@ -460,10 +474,10 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 	private void addClassicRecipes() {
 
-		if (!enableClassicRecipes) {
+		if (!TileDynamoBase.enableClassicRecipes) {
 			return;
 		}
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				ItemStack[] dynamo = new ItemStack[5];
 
@@ -514,7 +528,6 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 		NUMISMATIC(5, "numismatic");
 		// @formatter:on
 
-		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
 
@@ -534,25 +547,9 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 			return this.name;
 		}
-
-		public static Type byMetadata(int metadata) {
-
-			if (metadata < 0 || metadata >= METADATA_LOOKUP.length) {
-				metadata = 0;
-			}
-			return METADATA_LOOKUP[metadata];
-		}
-
-		static {
-			for (Type type : values()) {
-				METADATA_LOOKUP[type.getMetadata()] = type;
-			}
-		}
 	}
 
 	public static boolean[] enable = new boolean[Type.values().length];
-	public static boolean enableClassicRecipes = false;
-	public static boolean enableUpgradeKitCrafting = false;
 
 	/* REFERENCES */
 	public static ItemStack dynamoSteam;

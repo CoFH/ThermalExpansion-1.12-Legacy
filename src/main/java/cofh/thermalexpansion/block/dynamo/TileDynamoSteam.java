@@ -8,7 +8,6 @@ import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
 import cofh.thermalexpansion.init.TEProps;
@@ -37,15 +36,19 @@ import java.util.HashSet;
 
 public class TileDynamoSteam extends TileDynamoBase {
 
-	private static final int TYPE = Type.STEAM.getMetadata();
+	protected static final EnergyConfig ENERGY_CONFIG = new EnergyConfig();
+	protected static final HashSet<String> VALID_AUGMENTS = new HashSet<>();
+
+	public static boolean enable = true;
 	public static int basePower = 40;
 	public static int fluidAmount = 100;
 
 	public static void initialize() {
 
-		VALID_AUGMENTS[TYPE] = new HashSet<>();
-		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_BOILER);
-		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_STEAM_TURBINE);
+		VALID_AUGMENTS.addAll(VALID_AUGMENTS_BASE);
+
+		VALID_AUGMENTS.add(TEProps.DYNAMO_BOILER);
+		VALID_AUGMENTS.add(TEProps.DYNAMO_STEAM_TURBINE);
 
 		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion:dynamo_steam");
 
@@ -55,13 +58,11 @@ public class TileDynamoSteam extends TileDynamoBase {
 	public static void config() {
 
 		String category = "Dynamo.Steam";
-		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+		enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		String comment = "Adjust this value to change the Energy generation (in RF/t) for a Steam Dynamo. This base value will scale with block level and Augments.";
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
-
-		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
+		ENERGY_CONFIG.setDefaultParams(basePower, smallStorage);
 	}
 
 	public static final int STEAM_RF = 25000;
@@ -83,9 +84,21 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	@Override
-	public int getType() {
+	protected String getTileName() {
 
-		return TYPE;
+		return "tile.thermalexpansion.dynamo.steam.name";
+	}
+
+	@Override
+	protected EnergyConfig getEnergyConfig() {
+
+		return ENERGY_CONFIG;
+	}
+
+	@Override
+	protected HashSet<String> getValidAugments() {
+
+		return VALID_AUGMENTS;
 	}
 
 	@Override

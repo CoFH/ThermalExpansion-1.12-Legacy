@@ -337,8 +337,8 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString() + "|" + state.getBlock().getMetaFromState(state));
 			TileCache tile = state.getValue(TEProps.TILE_CACHE);
+			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString() + "|" + state.getBlock().getMetaFromState(state));
 			builder.append(",creative=").append(tile.isCreative);
 			builder.append(",level=").append(tile.getLevel());
 			builder.append(",holding=").append(tile.enchantHolding);

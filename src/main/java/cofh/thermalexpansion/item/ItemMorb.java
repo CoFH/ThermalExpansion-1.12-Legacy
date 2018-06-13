@@ -13,7 +13,6 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.entity.projectile.EntityMorb;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.BehaviorMorbDispense;
-import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.block.BlockDispenser;
@@ -153,8 +152,9 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 	}
 
 	/* HELPERS */
-	public static void addMorb(ItemStack morb, String entityId) {
+	public static void addMorb(String entityId) {
 
+		ItemStack morb = ItemHelper.cloneStack(morbStandard);
 		setTag(morb, entityId, true);
 		morbList.add(morb);
 		validMobs.add(entityId);
@@ -232,10 +232,7 @@ public class ItemMorb extends ItemMulti implements IInitializer, IModelRegister 
 			if (list.contains(name.toString()) || !EntityList.ENTITY_EGGS.containsKey(name)) {
 				continue;
 			}
-			addMorb(ItemHelper.cloneStack(morbStandard), name.toString());
-		}
-		if (TFProps.useUnifiedTabs) {
-			TFProps.miscList.addAll(morbList);
+			addMorb(name.toString());
 		}
 		CONFIG_MORBS.cleanUp(false, true);
 	}

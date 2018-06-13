@@ -12,6 +12,7 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
+import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -21,6 +22,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Collections.singletonList;
 
@@ -28,9 +30,9 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
 	protected List<List<ItemStack>> inputs;
-	protected List<FluidStack> inputFluids;
-	protected List<ItemStack> outputs;
-	protected List<FluidStack> outputFluids;
+	protected List<List<FluidStack>> inputFluids;
+	protected List<List<ItemStack>> outputs;
+	protected List<List<FluidStack>> outputFluids;
 
 	protected int chance;
 
@@ -39,6 +41,8 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 	protected IDrawableAnimated fluid;
 	protected IDrawableAnimated progress;
 	protected IDrawableAnimated speed;
+
+	protected Map<Integer, ? extends IGuiIngredient<FluidStack>> guiFluids;
 
 	public TransposerRecipeWrapper() {
 
@@ -65,14 +69,14 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 		recipeFluids.add(recipe.getFluid());
 
 		inputs = singletonList(recipeInputs);
-		outputs = recipeOutputs;
+		outputs = singletonList(recipeOutputs);
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
-			inputFluids = recipeFluids;
+			inputFluids = singletonList(recipeFluids);
 			outputFluids = Collections.emptyList();
 		} else {
 			inputFluids = Collections.emptyList();
-			outputFluids = recipeFluids;
+			outputFluids = singletonList(recipeFluids);
 		}
 		energy = recipe.getEnergy();
 		chance = recipe.getChance();
@@ -101,29 +105,34 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}
 
+	public void setGuiFluids(Map<Integer, ? extends IGuiIngredient<FluidStack>> fluids) {
+
+		guiFluids = fluids;
+	}
+
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 
 		ingredients.setInputLists(ItemStack.class, inputs);
-		ingredients.setOutputs(ItemStack.class, outputs);
+		ingredients.setOutputLists(ItemStack.class, outputs);
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
-			ingredients.setInputs(FluidStack.class, inputFluids);
+			ingredients.setInputLists(FluidStack.class, inputFluids);
 		} else {
-			ingredients.setOutputs(FluidStack.class, outputFluids);
+			ingredients.setOutputLists(FluidStack.class, outputFluids);
 		}
 	}
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
+		if (guiFluids == null) {
+			return;
+		}
 		progressBack.draw(minecraft, 63, 11);
 
-		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
-			JEIPluginTE.drawFluid(63, 11, inputFluids.get(0), 24, 16);
-		} else {
-			JEIPluginTE.drawFluid(63, 11, outputFluids.get(0), 24, 16);
-		}
+		JEIPluginTE.drawFluid(63, 11, guiFluids.get(0).getDisplayedIngredient(), 24, 16);
+
 		fluid.draw(minecraft, 63, 11);
 		progress.draw(minecraft, 63, 11);
 		speed.draw(minecraft, 68, 41);
