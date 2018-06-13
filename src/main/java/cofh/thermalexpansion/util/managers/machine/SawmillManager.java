@@ -165,6 +165,57 @@ public class SawmillManager {
 		addRecipe(energy, recycleInput, ItemHelper.cloneStack(output, outputSize));
 	}
 
+	public static void addBookshelfRecipe(ItemStack bookshelf, ItemStack planks) {
+
+		addRecipe(DEFAULT_ENERGY, bookshelf, ItemHelper.cloneStack(planks, 4), ItemHelper.cloneStack(Items.BOOK, 2), 25);
+	}
+
+	// Also used for Bowls
+	public static void addButtonRecipe(ItemStack button, ItemStack planks) {
+
+		addRecipe(DEFAULT_ENERGY / 2, ItemHelper.cloneStack(button, 2), planks, ItemMaterial.dustWood, 25);
+	}
+
+	public static void addChestRecipe(ItemStack chest, ItemStack planks) {
+
+		addRecipe(DEFAULT_ENERGY, chest, ItemHelper.cloneStack(planks, 4), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+	}
+
+	public static void addDoorRecipe(ItemStack door, ItemStack planks) {
+
+		addRecipe(DEFAULT_ENERGY, door, planks, ItemMaterial.dustWood, 50);
+	}
+
+	public static void addFenceRecipe(ItemStack fence, ItemStack planks) {
+
+		addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(fence, 2), planks, ItemMaterial.dustWood, 25);
+	}
+
+	public static void addFenceGateRecipe(ItemStack fenceGate, ItemStack planks) {
+
+		addRecipe(DEFAULT_ENERGY, fenceGate, planks, ItemMaterial.dustWood, 125);
+	}
+
+	public static void addPressurePlateRecipe(ItemStack pressurePlate, ItemStack planks) {
+
+		addRecipe(DEFAULT_ENERGY, pressurePlate, planks, ItemMaterial.dustWood, 50);
+	}
+
+	public static void addStairsRecipe(ItemStack stairs, ItemStack planks) {
+
+		addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(stairs, 2), planks, ItemMaterial.dustWood, 50);
+	}
+
+	public static void addTrapdoorRecipe(ItemStack trapdoor, ItemStack planks) {
+
+		addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(trapdoor, 2), planks, ItemMaterial.dustWood, 75);
+	}
+
+	public static void addWorkbenchRecipe(ItemStack workbench, ItemStack planks) {
+
+		addRecipe(DEFAULT_ENERGY, workbench, ItemHelper.cloneStack(planks, 3), ItemMaterial.dustWood);
+	}
+
 	/* RECIPE CLASS */
 	public static class SawmillRecipe {
 

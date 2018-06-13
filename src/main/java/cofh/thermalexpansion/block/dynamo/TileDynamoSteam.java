@@ -45,6 +45,8 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 	public static void initialize() {
 
+		VALID_AUGMENTS.addAll(VALID_AUGMENTS_BASE);
+
 		VALID_AUGMENTS.add(TEProps.DYNAMO_BOILER);
 		VALID_AUGMENTS.add(TEProps.DYNAMO_STEAM_TURBINE);
 

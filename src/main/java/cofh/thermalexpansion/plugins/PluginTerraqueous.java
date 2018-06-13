@@ -6,7 +6,6 @@ import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalfoundation.init.TFFluids;
-import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -89,11 +88,11 @@ public class PluginTerraqueous extends PluginTEBase {
 			int energy = SawmillManager.DEFAULT_ENERGY;
 
 			for (int i = 0; i < plank.length; i++) {
-				SawmillManager.addRecipe(energy, door[i], plank[i], ItemMaterial.dustWood, 50);
-				SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapdoor[i], 2), plank[i], ItemMaterial.dustWood, 75);
-				SawmillManager.addRecipe(energy, gate[i], plank[i], ItemMaterial.dustWood, 150);
-				SawmillManager.addRecipe(energy, ItemHelper.cloneStack(fence[i], 2), plank[i], ItemMaterial.dustWood, 25);
-				SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairs[i], 2), plank[i], ItemMaterial.dustWood, 25);
+				SawmillManager.addDoorRecipe(door[i], plank[i]);
+				SawmillManager.addTrapdoorRecipe(trapdoor[i], plank[i]);
+				SawmillManager.addFenceGateRecipe(gate[i], plank[i]);
+				SawmillManager.addFenceRecipe(fence[i], plank[i]);
+				SawmillManager.addStairsRecipe(stairs[i], plank[i]);
 			}
 		}
 

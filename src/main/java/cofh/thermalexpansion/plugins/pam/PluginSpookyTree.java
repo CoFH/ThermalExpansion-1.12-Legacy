@@ -6,7 +6,6 @@ import cofh.thermalexpansion.util.managers.device.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalfoundation.init.TFFluids;
-import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,25 +34,23 @@ public class PluginSpookyTree extends PluginTEBase {
 		// ItemStack halfslab = getItemStack("spookytree_halfslab");
 		// ItemStack doubleslab = getItemStack("spookytree_doubleslab");
 		ItemStack button = getItemStack("spookytree_button");
-		ItemStack pressureplate = getItemStack("spookytree_pressureplate");
-		ItemStack trapdoor = getItemStack("spookytree_trapdoor");
 		ItemStack fence = getItemStack("spookytree_fence");
 		ItemStack fencegate = getItemStack("spookytree_fencegate");
+		ItemStack pressureplate = getItemStack("spookytree_pressureplate");
 		ItemStack stairs = getItemStack("spookytree_stairs");
+		ItemStack trapdoor = getItemStack("spookytree_trapdoor");
 
 		Block blockLog = getBlock("spookytree_log");
 		Block blockLeaves = getBlock("spookytree_leaves");
 
 		/* SAWMILL */
 		{
-			int energy = SawmillManager.DEFAULT_ENERGY;
-
-			SawmillManager.addRecipe(energy / 2, ItemHelper.cloneStack(button, 2), planks, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, pressureplate, planks, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(trapdoor, 2), planks, ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, fence, planks, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, fencegate, planks, ItemMaterial.dustWood, 150);
-			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(stairs, 2), planks, ItemMaterial.dustWood, 25);
+			SawmillManager.addButtonRecipe(button, planks);
+			SawmillManager.addFenceRecipe(fence, planks);
+			SawmillManager.addFenceGateRecipe(fencegate, planks);
+			SawmillManager.addPressurePlateRecipe(pressureplate, planks);
+			SawmillManager.addStairsRecipe(stairs, planks);
+			SawmillManager.addTrapdoorRecipe(trapdoor, planks);
 		}
 
 		/* INSOLATOR */

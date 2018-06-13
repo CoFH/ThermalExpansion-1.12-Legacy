@@ -1,8 +1,10 @@
 package cofh.thermalexpansion.plugins;
 
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
+import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import net.minecraft.item.ItemStack;
 
 public class PluginMysticalAgriculture extends PluginTEBase {
@@ -217,6 +219,22 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 				"quartz_enriched_iron"
 		};
 		// @formatter:on
+
+		ItemStack essenceInferium = getItemStack("crafting", 1, 0);
+		ItemStack shardProsperity = getItemStack("crafting", 1, 5);
+
+		/* PULVERIZER */
+		{
+			int energy = PulverizerManager.DEFAULT_ENERGY;
+
+			PulverizerManager.addRecipe(energy, ItemHelper.getOre("oreInferium"), ItemHelper.cloneStack(essenceInferium, 4));
+			PulverizerManager.addRecipe(energy, ItemHelper.getOre("oreNetherInferium"), ItemHelper.cloneStack(essenceInferium, 5));
+			PulverizerManager.addRecipe(energy, ItemHelper.getOre("oreEndInferium"), ItemHelper.cloneStack(essenceInferium, 6));
+
+			PulverizerManager.addRecipe(energy, ItemHelper.getOre("oreProsperity"), ItemHelper.cloneStack(shardProsperity, 4));
+			PulverizerManager.addRecipe(energy, ItemHelper.getOre("oreNetherProsperity"), ItemHelper.cloneStack(shardProsperity, 5));
+			PulverizerManager.addRecipe(energy, ItemHelper.getOre("oreEndProsperity"), ItemHelper.cloneStack(shardProsperity, 6));
+		}
 
 		/* INSOLATOR */
 		{

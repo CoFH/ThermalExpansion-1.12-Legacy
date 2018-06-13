@@ -5,7 +5,6 @@ import cofh.thermalexpansion.util.managers.device.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalfoundation.init.TFFluids;
-import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -41,12 +40,10 @@ public class PluginTraverse extends PluginTEBase {
 
 		/* SAWMILL */
 		{
-			int energy = SawmillManager.DEFAULT_ENERGY;
-
-			SawmillManager.addRecipe(energy, getItemStack("fir_door"), planksFir, ItemMaterial.dustWood, 50);
-			SawmillManager.addRecipe(energy, getItemStack("fir_fence"), planksFir, ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("fir_fence_gate"), planksFir, ItemMaterial.dustWood, 150);
-			SawmillManager.addRecipe(energy, getItemStack("fir_stairs", 2), planksFir, ItemMaterial.dustWood, 50);
+			SawmillManager.addDoorRecipe(getItemStack("fir_door"), planksFir);
+			SawmillManager.addFenceRecipe(getItemStack("fir_fence"), planksFir);
+			SawmillManager.addFenceGateRecipe(getItemStack("fir_fence_gate"), planksFir);
+			SawmillManager.addStairsRecipe(getItemStack("fir_stairs"), planksFir);
 		}
 
 		/* INSOLATOR */

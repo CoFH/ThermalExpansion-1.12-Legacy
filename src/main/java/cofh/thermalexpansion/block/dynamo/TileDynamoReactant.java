@@ -46,6 +46,8 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 	public static void initialize() {
 
+		VALID_AUGMENTS.addAll(VALID_AUGMENTS_BASE);
+
 		VALID_AUGMENTS.add(TEProps.DYNAMO_REACTANT_ELEMENTAL);
 
 		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion:dynamo_reactant");

@@ -92,55 +92,53 @@ public class PluginQuark extends PluginTEBase {
 
 		/* SAWMILL */
 		{
-			int energy = SawmillManager.DEFAULT_ENERGY;
+			/* BOOKSHELVES */
+			SawmillManager.addBookshelfRecipe(getItemStack("custom_bookshelf", 1, 0), new ItemStack(Blocks.PLANKS, 1, 1));
+			SawmillManager.addBookshelfRecipe(getItemStack("custom_bookshelf", 1, 1), new ItemStack(Blocks.PLANKS, 1, 2));
+			SawmillManager.addBookshelfRecipe(getItemStack("custom_bookshelf", 1, 2), new ItemStack(Blocks.PLANKS, 1, 3));
+			SawmillManager.addBookshelfRecipe(getItemStack("custom_bookshelf", 1, 3), new ItemStack(Blocks.PLANKS, 1, 4));
+			SawmillManager.addBookshelfRecipe(getItemStack("custom_bookshelf", 1, 4), new ItemStack(Blocks.PLANKS, 1, 5));
 
 			/* CHESTS */
-			SawmillManager.addRecipe(energy, getItemStack("custom_chest", 1, 0), new ItemStack(Blocks.PLANKS, 4, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-			SawmillManager.addRecipe(energy, getItemStack("custom_chest", 1, 1), new ItemStack(Blocks.PLANKS, 4, 2), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-			SawmillManager.addRecipe(energy, getItemStack("custom_chest", 1, 2), new ItemStack(Blocks.PLANKS, 4, 3), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-			SawmillManager.addRecipe(energy, getItemStack("custom_chest", 1, 3), new ItemStack(Blocks.PLANKS, 4, 4), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-			SawmillManager.addRecipe(energy, getItemStack("custom_chest", 1, 4), new ItemStack(Blocks.PLANKS, 4, 5), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+			SawmillManager.addChestRecipe(getItemStack("custom_chest", 1, 0), new ItemStack(Blocks.PLANKS, 1, 1));
+			SawmillManager.addChestRecipe(getItemStack("custom_chest", 1, 1), new ItemStack(Blocks.PLANKS, 1, 2));
+			SawmillManager.addChestRecipe(getItemStack("custom_chest", 1, 2), new ItemStack(Blocks.PLANKS, 1, 3));
+			SawmillManager.addChestRecipe(getItemStack("custom_chest", 1, 3), new ItemStack(Blocks.PLANKS, 1, 4));
+			SawmillManager.addChestRecipe(getItemStack("custom_chest", 1, 4), new ItemStack(Blocks.PLANKS, 1, 5));
 
 			/* TRAPPED CHESTS */
-			SawmillManager.addRecipe(energy, getItemStack("custom_chest_trap", 1, 0), new ItemStack(Blocks.PLANKS, 4, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-			SawmillManager.addRecipe(energy, getItemStack("custom_chest_trap", 1, 1), new ItemStack(Blocks.PLANKS, 4, 2), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-			SawmillManager.addRecipe(energy, getItemStack("custom_chest_trap", 1, 2), new ItemStack(Blocks.PLANKS, 4, 3), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-			SawmillManager.addRecipe(energy, getItemStack("custom_chest_trap", 1, 3), new ItemStack(Blocks.PLANKS, 4, 4), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-			SawmillManager.addRecipe(energy, getItemStack("custom_chest_trap", 1, 4), new ItemStack(Blocks.PLANKS, 4, 5), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-
-			/* BOOKSHELVES */
-			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 0), new ItemStack(Blocks.PLANKS, 4, 1), new ItemStack(Items.BOOK, 2), 25);
-			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 1), new ItemStack(Blocks.PLANKS, 4, 2), new ItemStack(Items.BOOK, 2), 25);
-			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 2), new ItemStack(Blocks.PLANKS, 4, 3), new ItemStack(Items.BOOK, 2), 25);
-			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 3), new ItemStack(Blocks.PLANKS, 4, 4), new ItemStack(Items.BOOK, 2), 25);
-			SawmillManager.addRecipe(energy, getItemStack("custom_bookshelf", 1, 4), new ItemStack(Blocks.PLANKS, 4, 5), new ItemStack(Items.BOOK, 2), 25);
-
-			/* TRAPDOORS */
-			SawmillManager.addRecipe(energy, getItemStack("spruce_trapdoor", 2), new ItemStack(Blocks.PLANKS, 1, 1), ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, getItemStack("birch_trapdoor", 2), new ItemStack(Blocks.PLANKS, 1, 2), ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, getItemStack("jungle_trapdoor", 2), new ItemStack(Blocks.PLANKS, 1, 3), ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, getItemStack("acacia_trapdoor", 2), new ItemStack(Blocks.PLANKS, 1, 4), ItemMaterial.dustWood, 75);
-			SawmillManager.addRecipe(energy, getItemStack("dark_oak_trapdoor", 2), new ItemStack(Blocks.PLANKS, 1, 5), ItemMaterial.dustWood, 75);
+			SawmillManager.addChestRecipe(getItemStack("custom_chest_trap", 1, 0), new ItemStack(Blocks.PLANKS, 1, 1));
+			SawmillManager.addChestRecipe(getItemStack("custom_chest_trap", 1, 1), new ItemStack(Blocks.PLANKS, 1, 2));
+			SawmillManager.addChestRecipe(getItemStack("custom_chest_trap", 1, 2), new ItemStack(Blocks.PLANKS, 1, 3));
+			SawmillManager.addChestRecipe(getItemStack("custom_chest_trap", 1, 3), new ItemStack(Blocks.PLANKS, 1, 4));
+			SawmillManager.addChestRecipe(getItemStack("custom_chest_trap", 1, 4), new ItemStack(Blocks.PLANKS, 1, 5));
 
 			/* STAIRS */
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_white_stairs", 2), getItemStack("stained_planks", 1, 0), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_orange_stairs", 2), getItemStack("stained_planks", 1, 1), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_magenta_stairs", 2), getItemStack("stained_planks", 1, 2), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_light_blue_stairs", 2), getItemStack("stained_planks", 1, 3), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_yellow_stairs", 2), getItemStack("stained_planks", 1, 4), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_lime_stairs", 2), getItemStack("stained_planks", 1, 5), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_pink_stairs", 2), getItemStack("stained_planks", 1, 6), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_gray_stairs", 2), getItemStack("stained_planks", 1, 7), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_silver_stairs", 2), getItemStack("stained_planks", 1, 8), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_cyan_stairs", 2), getItemStack("stained_planks", 1, 9), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_purple_stairs", 2), getItemStack("stained_planks", 1, 10), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_blue_stairs", 2), getItemStack("stained_planks", 1, 11), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_brown_stairs", 2), getItemStack("stained_planks", 1, 12), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_green_stairs", 2), getItemStack("stained_planks", 1, 13), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_red_stairs", 2), getItemStack("stained_planks", 1, 14), ItemMaterial.dustWood, 25);
-			SawmillManager.addRecipe(energy, getItemStack("stained_planks_black_stairs", 2), getItemStack("stained_planks", 1, 15), ItemMaterial.dustWood, 25);
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_white_stairs"), getItemStack("stained_planks", 1, 0));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_orange_stairs"), getItemStack("stained_planks", 1, 1));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_magenta_stairs"), getItemStack("stained_planks", 1, 2));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_light_blue_stairs"), getItemStack("stained_planks", 1, 3));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_yellow_stairs"), getItemStack("stained_planks", 1, 4));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_lime_stairs"), getItemStack("stained_planks", 1, 5));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_pink_stairs"), getItemStack("stained_planks", 1, 6));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_gray_stairs"), getItemStack("stained_planks", 1, 7));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_silver_stairs"), getItemStack("stained_planks", 1, 8));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_cyan_stairs"), getItemStack("stained_planks", 1, 9));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_purple_stairs"), getItemStack("stained_planks", 1, 10));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_blue_stairs"), getItemStack("stained_planks", 1, 11));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_brown_stairs"), getItemStack("stained_planks", 1, 12));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_green_stairs"), getItemStack("stained_planks", 1, 13));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_red_stairs"), getItemStack("stained_planks", 1, 14));
+			SawmillManager.addStairsRecipe(getItemStack("stained_planks_black_stairs"), getItemStack("stained_planks", 1, 15));
 
-			energy = SawmillManager.DEFAULT_ENERGY * 3 / 4;
+			/* TRAPDOORS */
+			SawmillManager.addTrapdoorRecipe(getItemStack("spruce_trapdoor"), new ItemStack(Blocks.PLANKS, 1, 1));
+			SawmillManager.addTrapdoorRecipe(getItemStack("birch_trapdoor"), new ItemStack(Blocks.PLANKS, 1, 2));
+			SawmillManager.addTrapdoorRecipe(getItemStack("jungle_trapdoor"), new ItemStack(Blocks.PLANKS, 1, 3));
+			SawmillManager.addTrapdoorRecipe(getItemStack("acacia_trapdoor"), new ItemStack(Blocks.PLANKS, 1, 4));
+			SawmillManager.addTrapdoorRecipe(getItemStack("dark_oak_trapdoor"), new ItemStack(Blocks.PLANKS, 1, 5));
+
+			int energy = SawmillManager.DEFAULT_ENERGY * 3 / 4;
 
 			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
 				SawmillManager.addRecipe(energy, getItemStack("colored_item_frame", 1, i), new ItemStack(Items.LEATHER), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));

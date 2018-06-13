@@ -45,6 +45,13 @@ public abstract class BlockTEBase extends BlockCoreTile implements IConfigGui {
 		setCreativeTab(ThermalExpansion.tabCommon);
 	}
 
+	protected BlockTEBase(Material material, String modName) {
+
+		super(material, modName);
+		setSoundType(SoundType.STONE);
+		setCreativeTab(ThermalExpansion.tabCommon);
+	}
+
 	/* BLOCK METHODS */
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {

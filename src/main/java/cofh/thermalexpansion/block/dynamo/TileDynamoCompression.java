@@ -45,6 +45,8 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 	public static void initialize() {
 
+		VALID_AUGMENTS.addAll(VALID_AUGMENTS_BASE);
+
 		VALID_AUGMENTS.add(TEProps.DYNAMO_BOILER);
 		VALID_AUGMENTS.add(TEProps.DYNAMO_COMPRESSION_COOLANT);
 		VALID_AUGMENTS.add(TEProps.DYNAMO_COMPRESSION_FUEL);

@@ -149,19 +149,19 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		}
 	}
 
-	byte facing = 1;
-	int fuelRF;
-	int maxFuelRF;
-	boolean hasModeAugment;
+	public byte facing = 1;
+	protected int fuelRF;
+	protected int maxFuelRF;
+	protected boolean hasModeAugment;
 
-	int compareTracker;
-	boolean cached = false;
-	IEnergyReceiver adjacentReceiver = null;
-	boolean adjacentHandler = false;
+	protected int compareTracker;
+	protected boolean cached = false;
+	protected IEnergyReceiver adjacentReceiver = null;
+	protected boolean adjacentHandler = false;
 
-	EnergyStorage energyStorage;
-	EnergyConfig energyConfig;
-	TimeTracker tracker = new TimeTracker();
+	protected EnergyStorage energyStorage;
+	protected EnergyConfig energyConfig;
+	protected TimeTracker tracker = new TimeTracker();
 
 	/* AUGMENTS */
 	protected boolean augmentCoilDuct;
@@ -172,7 +172,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	protected int renderCoil = 0;
 	protected int lastEnergy;
 
-	int energyMod = ENERGY_BASE;
+	protected int energyMod = ENERGY_BASE;
 
 	public TileDynamoBase() {
 
@@ -250,7 +250,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	}
 
 	@Override
-	protected boolean setLevel(int level) {
+	public boolean setLevel(int level) {
 
 		if (super.setLevel(level)) {
 			energyConfig.setDefaultParams(getBasePower(this.level), smallStorage);
@@ -624,7 +624,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (augmentThrottle && TEProps.DYNAMO_THROTTLE.equals(id)) {
 			return false;
 		}
-		return VALID_AUGMENTS_BASE.contains(id) || getValidAugments().contains(id) || super.isValidAugment(type, id);
+		return getValidAugments().contains(id) || super.isValidAugment(type, id);
 	}
 
 	@Override

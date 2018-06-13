@@ -37,6 +37,8 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 	public static void initialize() {
 
+		VALID_AUGMENTS.addAll(VALID_AUGMENTS_BASE);
+
 		VALID_AUGMENTS.add(TEProps.DYNAMO_ENERVATION_ENCHANT);
 
 		GameRegistry.registerTileEntity(TileDynamoEnervation.class, "thermalexpansion:dynamo_enervation");
@@ -88,7 +90,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		if (augmentEnchant) {
 			return !EnchantmentHelper.getEnchantments(inventory[0]).isEmpty();
 		}
-		return EnervationManager.getFuelEnergy(inventory[0]) > energyConfig.maxPower;
+		return EnervationManager.getFuelEnergy(inventory[0]) > 0;
 	}
 
 	@Override

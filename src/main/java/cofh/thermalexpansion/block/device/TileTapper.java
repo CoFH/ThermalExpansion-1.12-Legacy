@@ -357,7 +357,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	protected int getTimeConstant() {
 
 		int constant = TIME_CONSTANT / 2;
-		Iterable<BlockPos.MutableBlockPos> area = BlockPos.getAllInBoxMutable(pos.add(-1, 0, -1), pos.add(1, 0, 1));
+		Iterable<BlockPos.MutableBlockPos> area = BlockPos.getAllInBoxMutable(trunkPos.add(-1, 0, -1), trunkPos.add(1, 0, 1));
 
 		for (BlockPos scan : area) {
 			if (isTapper(world.getBlockState(scan))) {

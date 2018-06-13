@@ -33,6 +33,8 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 
 	public static void initialize() {
 
+		VALID_AUGMENTS.addAll(VALID_AUGMENTS_BASE);
+
 		VALID_AUGMENTS.add(TEProps.DYNAMO_NUMISMATIC_GEM);
 
 		GameRegistry.registerTileEntity(TileDynamoNumismatic.class, "thermalexpansion:dynamo_numismatic");
@@ -82,9 +84,9 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	protected boolean canStart() {
 
 		if (augmentGem) {
-			return NumismaticManager.getGemFuelEnergy(inventory[0]) > energyConfig.maxPower;
+			return NumismaticManager.getGemFuelEnergy(inventory[0]) > 0;
 		}
-		return NumismaticManager.getFuelEnergy(inventory[0]) > energyConfig.maxPower;
+		return NumismaticManager.getFuelEnergy(inventory[0]) > 0;
 	}
 
 	@Override

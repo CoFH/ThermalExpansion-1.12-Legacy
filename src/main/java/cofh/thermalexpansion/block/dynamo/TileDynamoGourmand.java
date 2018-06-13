@@ -33,6 +33,8 @@ public class TileDynamoGourmand extends TileDynamoBase {
 
 	public static void initialize() {
 
+		VALID_AUGMENTS.addAll(VALID_AUGMENTS_BASE);
+
 		VALID_AUGMENTS.add(TEProps.DYNAMO_GOURMAND_PALEO);
 
 		GameRegistry.registerTileEntity(TileDynamoGourmand.class, "thermalexpansion:dynamo_gourmand");
@@ -82,9 +84,9 @@ public class TileDynamoGourmand extends TileDynamoBase {
 	protected boolean canStart() {
 
 		if (augmentPaleo) {
-			return GourmandManager.getPaleoFuelEnergy(inventory[0]) > energyConfig.maxPower;
+			return GourmandManager.getPaleoFuelEnergy(inventory[0]) > 0;
 		}
-		return GourmandManager.getFuelEnergy(inventory[0]) > energyConfig.maxPower;
+		return GourmandManager.getFuelEnergy(inventory[0]) > 0;
 	}
 
 	@Override
