@@ -54,6 +54,7 @@ public class TEPlugins {
 		pluginMysticalAgriculture = new PluginMysticalAgriculture();
 		pluginNatura = new PluginNatura();
 		pluginPlants = new PluginPlants();
+		pluginPrimalCore = new PluginPrimalCore();
 		pluginQuark = new PluginQuark();
 		pluginRustic = new PluginRustic();
 		pluginTConstruct = new PluginTConstruct();
@@ -99,6 +100,7 @@ public class TEPlugins {
 		initList.add(pluginMysticalAgriculture);
 		initList.add(pluginNatura);
 		initList.add(pluginPlants);
+		initList.add(pluginPrimalCore);
 		initList.add(pluginQuark);
 		initList.add(pluginRustic);
 		initList.add(pluginTConstruct);
@@ -124,49 +126,50 @@ public class TEPlugins {
 	private static ArrayList<IInitializer> initList = new ArrayList<>();
 
 	/* REFERENCES */
-	public static PluginTOP pluginTOP;
+	private static PluginTOP pluginTOP;
 
-	public static PluginForestry pluginForestry;
-	public static PluginExtraBees pluginExtraBees;
-	public static PluginExtraTrees pluginExtraTrees;
-	public static PluginGendustry pluginGendustry;
-	public static PluginMagicBees pluginMagicBees;
+	private static PluginForestry pluginForestry;
+	private static PluginExtraBees pluginExtraBees;
+	private static PluginExtraTrees pluginExtraTrees;
+	private static PluginGendustry pluginGendustry;
+	private static PluginMagicBees pluginMagicBees;
 
-	public static PluginHarvestCraft pluginHarvestCraft;
-	public static PluginBoneCraft pluginBoneCraft;
-	public static PluginRedbudTree pluginRedbudTree;
-	public static PluginSpookyTree pluginSpookyTree;
+	private static PluginHarvestCraft pluginHarvestCraft;
+	private static PluginBoneCraft pluginBoneCraft;
+	private static PluginRedbudTree pluginRedbudTree;
+	private static PluginSpookyTree pluginSpookyTree;
 
-	public static PluginAbyssalCraft pluginAbyssalCraft;
-	public static PluginActuallyAdditions pluginActuallyAdditions;
-	public static PluginAppliedEnergistics2 pluginAppliedEnergistics2;
-	public static PluginAstralSorcery pluginAstralSorcery;
-	public static PluginBetweenlands pluginBetweenlands;
-	public static PluginBiomesOPlenty pluginBiomesOPlenty;
-	public static PluginChisel pluginChisel;
-	public static PluginComputronics pluginComputronics;
-	public static PluginElementalDimensions pluginElementalDimensions;
-	public static PluginEnderIO pluginEnderIO;
-	public static PluginEvilCraft pluginEvilCraft;
-	public static PluginExtraAlchemy pluginExtraAlchemy;
-	public static PluginExU2 pluginExU2;
-	public static PluginFamiliarFauna pluginFamiliarFauna;
-	public static PluginIC2 pluginIC2;
-	public static PluginIceAndFire pluginIceAndFire;
-	public static PluginImmersiveEngineering pluginImmersiveEngineering;
-	public static PluginIntegratedDynamics pluginIntegratedDynamics;
-	public static PluginMowziesMobs pluginMowziesMobs;
-	public static PluginMysticalAgriculture pluginMysticalAgriculture;
-	public static PluginNatura pluginNatura;
-	public static PluginPlants pluginPlants;
-	public static PluginQuark pluginQuark;
-	public static PluginRustic pluginRustic;
-	public static PluginTConstruct pluginTConstruct;
-	public static PluginTechReborn pluginTechReborn;
-	public static PluginTerraqueous pluginTerraqueous;
-	public static PluginThaumcraft pluginThaumcraft;
-	public static PluginTraverse pluginTraverse;
-	public static PluginTropicraft pluginTropicraft;
-	public static PluginTwilightForest pluginTwilightForest;
+	private static PluginAbyssalCraft pluginAbyssalCraft;
+	private static PluginActuallyAdditions pluginActuallyAdditions;
+	private static PluginAppliedEnergistics2 pluginAppliedEnergistics2;
+	private static PluginAstralSorcery pluginAstralSorcery;
+	private static PluginBetweenlands pluginBetweenlands;
+	private static PluginBiomesOPlenty pluginBiomesOPlenty;
+	private static PluginChisel pluginChisel;
+	private static PluginComputronics pluginComputronics;
+	private static PluginElementalDimensions pluginElementalDimensions;
+	private static PluginEnderIO pluginEnderIO;
+	private static PluginEvilCraft pluginEvilCraft;
+	private static PluginExtraAlchemy pluginExtraAlchemy;
+	private static PluginExU2 pluginExU2;
+	private static PluginFamiliarFauna pluginFamiliarFauna;
+	private static PluginIC2 pluginIC2;
+	private static PluginIceAndFire pluginIceAndFire;
+	private static PluginImmersiveEngineering pluginImmersiveEngineering;
+	private static PluginIntegratedDynamics pluginIntegratedDynamics;
+	private static PluginMowziesMobs pluginMowziesMobs;
+	private static PluginMysticalAgriculture pluginMysticalAgriculture;
+	private static PluginNatura pluginNatura;
+	private static PluginPlants pluginPlants;
+	private static PluginPrimalCore pluginPrimalCore;
+	private static PluginQuark pluginQuark;
+	private static PluginRustic pluginRustic;
+	private static PluginTConstruct pluginTConstruct;
+	private static PluginTechReborn pluginTechReborn;
+	private static PluginTerraqueous pluginTerraqueous;
+	private static PluginThaumcraft pluginThaumcraft;
+	private static PluginTraverse pluginTraverse;
+	private static PluginTropicraft pluginTropicraft;
+	private static PluginTwilightForest pluginTwilightForest;
 
 }

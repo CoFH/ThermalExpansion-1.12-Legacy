@@ -84,6 +84,23 @@ public class PluginBiomesOPlenty extends PluginTEBase {
 		ItemStack saplingEbony = getItemStack("sapling_2", 1, 6);
 		ItemStack saplingEucalyptus = getItemStack("sapling_2", 1, 7);
 
+		ItemStack plankSacredOak = getItemStack("planks_0", 1, 0);
+		ItemStack plankCherry = getItemStack("planks_0", 1, 1);
+		ItemStack plankUmbran = getItemStack("planks_0", 1, 2);
+		ItemStack plankFir = getItemStack("planks_0", 1, 3);
+		ItemStack plankEthereal = getItemStack("planks_0", 1, 4);
+		ItemStack plankMagic = getItemStack("planks_0", 1, 5);
+		ItemStack plankMangrove = getItemStack("planks_0", 1, 6);
+		ItemStack plankPalm = getItemStack("planks_0", 1, 7);
+		ItemStack plankRedwood = getItemStack("planks_0", 1, 8);
+		ItemStack plankWillow = getItemStack("planks_0", 1, 9);
+		ItemStack plankPine = getItemStack("planks_0", 1, 10);
+		ItemStack plankHellbark = getItemStack("planks_0", 1, 11);
+		ItemStack plankJacaranda = getItemStack("planks_0", 1, 12);
+		ItemStack plankMahogany = getItemStack("planks_0", 1, 13);
+		ItemStack plankEbony = getItemStack("planks_0", 1, 14);
+		ItemStack plankEucalyptus = getItemStack("planks_0", 1, 15);
+
 		Block bamboo = getBlock("bamboo");
 		Block blockLog0 = getBlock("log_0");
 		Block blockLog1 = getBlock("log_1");
@@ -143,77 +160,95 @@ public class PluginBiomesOPlenty extends PluginTEBase {
 
 		/* SAWMILL */
 		{
+			/* BOATS */
+			SawmillManager.addBoatRecipe(getItemStack("boat_sacred_oak"), plankSacredOak);
+			SawmillManager.addBoatRecipe(getItemStack("boat_cherry"), plankCherry);
+			SawmillManager.addBoatRecipe(getItemStack("boat_umbran"), plankUmbran);
+			SawmillManager.addBoatRecipe(getItemStack("boat_fir"), plankFir);
+			SawmillManager.addBoatRecipe(getItemStack("boat_ethereal"), plankEthereal);
+			SawmillManager.addBoatRecipe(getItemStack("boat_magic"), plankMagic);
+			SawmillManager.addBoatRecipe(getItemStack("boat_mangrove"), plankMangrove);
+			SawmillManager.addBoatRecipe(getItemStack("boat_palm"), plankPalm);
+			SawmillManager.addBoatRecipe(getItemStack("boat_redwood"), plankRedwood);
+			SawmillManager.addBoatRecipe(getItemStack("boat_willow"), plankWillow);
+			SawmillManager.addBoatRecipe(getItemStack("boat_pine"), plankPine);
+			SawmillManager.addBoatRecipe(getItemStack("boat_hellbark"), plankHellbark);
+			SawmillManager.addBoatRecipe(getItemStack("boat_jacaranda"), plankJacaranda);
+			SawmillManager.addBoatRecipe(getItemStack("boat_mahogany"), plankMahogany);
+			SawmillManager.addBoatRecipe(getItemStack("boat_ebony"), plankEbony);
+			SawmillManager.addBoatRecipe(getItemStack("boat_eucalyptus"), plankEucalyptus);
+
 			/* DOORS */
-			SawmillManager.addDoorRecipe(getItemStack("sacred_oak_door"), getItemStack("planks_0", 1, 0));
-			SawmillManager.addDoorRecipe(getItemStack("cherry_door"), getItemStack("planks_0", 1, 1));
-			SawmillManager.addDoorRecipe(getItemStack("umbran_door"), getItemStack("planks_0", 1, 2));
-			SawmillManager.addDoorRecipe(getItemStack("fir_door"), getItemStack("planks_0", 1, 3));
-			SawmillManager.addDoorRecipe(getItemStack("ethereal_door"), getItemStack("planks_0", 1, 4));
-			SawmillManager.addDoorRecipe(getItemStack("magic_door"), getItemStack("planks_0", 1, 5));
-			SawmillManager.addDoorRecipe(getItemStack("mangrove_door"), getItemStack("planks_0", 1, 6));
-			SawmillManager.addDoorRecipe(getItemStack("palm_door"), getItemStack("planks_0", 1, 7));
-			SawmillManager.addDoorRecipe(getItemStack("redwood_door"), getItemStack("planks_0", 1, 8));
-			SawmillManager.addDoorRecipe(getItemStack("willow_door"), getItemStack("planks_0", 1, 9));
-			SawmillManager.addDoorRecipe(getItemStack("pine_door"), getItemStack("planks_0", 1, 10));
-			SawmillManager.addDoorRecipe(getItemStack("hellbark_door"), getItemStack("planks_0", 1, 11));
-			SawmillManager.addDoorRecipe(getItemStack("jacaranda_door"), getItemStack("planks_0", 1, 12));
-			SawmillManager.addDoorRecipe(getItemStack("mahogany_door"), getItemStack("planks_0", 1, 13));
-			SawmillManager.addDoorRecipe(getItemStack("ebony_door"), getItemStack("planks_0", 1, 14));
-			SawmillManager.addDoorRecipe(getItemStack("eucalyptus_door"), getItemStack("planks_0", 1, 15));
+			SawmillManager.addDoorRecipe(getItemStack("sacred_oak_door"), plankSacredOak);
+			SawmillManager.addDoorRecipe(getItemStack("cherry_door"), plankCherry);
+			SawmillManager.addDoorRecipe(getItemStack("umbran_door"), plankUmbran);
+			SawmillManager.addDoorRecipe(getItemStack("fir_door"), plankFir);
+			SawmillManager.addDoorRecipe(getItemStack("ethereal_door"), plankEthereal);
+			SawmillManager.addDoorRecipe(getItemStack("magic_door"), plankMagic);
+			SawmillManager.addDoorRecipe(getItemStack("mangrove_door"), plankMangrove);
+			SawmillManager.addDoorRecipe(getItemStack("palm_door"), plankPalm);
+			SawmillManager.addDoorRecipe(getItemStack("redwood_door"), plankRedwood);
+			SawmillManager.addDoorRecipe(getItemStack("willow_door"), plankWillow);
+			SawmillManager.addDoorRecipe(getItemStack("pine_door"), plankPine);
+			SawmillManager.addDoorRecipe(getItemStack("hellbark_door"), plankHellbark);
+			SawmillManager.addDoorRecipe(getItemStack("jacaranda_door"), plankJacaranda);
+			SawmillManager.addDoorRecipe(getItemStack("mahogany_door"), plankMahogany);
+			SawmillManager.addDoorRecipe(getItemStack("ebony_door"), plankEbony);
+			SawmillManager.addDoorRecipe(getItemStack("eucalyptus_door"), plankEucalyptus);
 
 			/* FENCES */
-			SawmillManager.addFenceRecipe(getItemStack("sacred_oak_fence"), getItemStack("planks_0", 1, 0));
-			SawmillManager.addFenceRecipe(getItemStack("cherry_fence"), getItemStack("planks_0", 1, 1));
-			SawmillManager.addFenceRecipe(getItemStack("umbran_fence"), getItemStack("planks_0", 1, 2));
-			SawmillManager.addFenceRecipe(getItemStack("fir_fence"), getItemStack("planks_0", 1, 3));
-			SawmillManager.addFenceRecipe(getItemStack("ethereal_fence"), getItemStack("planks_0", 1, 4));
-			SawmillManager.addFenceRecipe(getItemStack("magic_fence"), getItemStack("planks_0", 1, 5));
-			SawmillManager.addFenceRecipe(getItemStack("mangrove_fence"), getItemStack("planks_0", 1, 6));
-			SawmillManager.addFenceRecipe(getItemStack("palm_fence"), getItemStack("planks_0", 1, 7));
-			SawmillManager.addFenceRecipe(getItemStack("redwood_fence"), getItemStack("planks_0", 1, 8));
-			SawmillManager.addFenceRecipe(getItemStack("willow_fence"), getItemStack("planks_0", 1, 9));
-			SawmillManager.addFenceRecipe(getItemStack("pine_fence"), getItemStack("planks_0", 1, 10));
-			SawmillManager.addFenceRecipe(getItemStack("hellbark_fence"), getItemStack("planks_0", 1, 11));
-			SawmillManager.addFenceRecipe(getItemStack("jacaranda_fence"), getItemStack("planks_0", 1, 12));
-			SawmillManager.addFenceRecipe(getItemStack("mahogany_fence"), getItemStack("planks_0", 1, 13));
-			SawmillManager.addFenceRecipe(getItemStack("ebony_fence"), getItemStack("planks_0", 1, 14));
-			SawmillManager.addFenceRecipe(getItemStack("eucalyptus_fence"), getItemStack("planks_0", 1, 15));
+			SawmillManager.addFenceRecipe(getItemStack("sacred_oak_fence"), plankSacredOak);
+			SawmillManager.addFenceRecipe(getItemStack("cherry_fence"), plankCherry);
+			SawmillManager.addFenceRecipe(getItemStack("umbran_fence"), plankUmbran);
+			SawmillManager.addFenceRecipe(getItemStack("fir_fence"), plankFir);
+			SawmillManager.addFenceRecipe(getItemStack("ethereal_fence"), plankEthereal);
+			SawmillManager.addFenceRecipe(getItemStack("magic_fence"), plankMagic);
+			SawmillManager.addFenceRecipe(getItemStack("mangrove_fence"), plankMangrove);
+			SawmillManager.addFenceRecipe(getItemStack("palm_fence"), plankPalm);
+			SawmillManager.addFenceRecipe(getItemStack("redwood_fence"), plankRedwood);
+			SawmillManager.addFenceRecipe(getItemStack("willow_fence"), plankWillow);
+			SawmillManager.addFenceRecipe(getItemStack("pine_fence"), plankPine);
+			SawmillManager.addFenceRecipe(getItemStack("hellbark_fence"), plankHellbark);
+			SawmillManager.addFenceRecipe(getItemStack("jacaranda_fence"), plankJacaranda);
+			SawmillManager.addFenceRecipe(getItemStack("mahogany_fence"), plankMahogany);
+			SawmillManager.addFenceRecipe(getItemStack("ebony_fence"), plankEbony);
+			SawmillManager.addFenceRecipe(getItemStack("eucalyptus_fence"), plankEucalyptus);
 
 			/* FENCE GATES */
-			SawmillManager.addFenceGateRecipe(getItemStack("sacred_oak_fence_gate"), getItemStack("planks_0", 1, 0));
-			SawmillManager.addFenceGateRecipe(getItemStack("cherry_fence_gate"), getItemStack("planks_0", 1, 1));
-			SawmillManager.addFenceGateRecipe(getItemStack("umbran_fence_gate"), getItemStack("planks_0", 1, 2));
-			SawmillManager.addFenceGateRecipe(getItemStack("fir_fence_gate"), getItemStack("planks_0", 1, 3));
-			SawmillManager.addFenceGateRecipe(getItemStack("ethereal_fence_gate"), getItemStack("planks_0", 1, 4));
-			SawmillManager.addFenceGateRecipe(getItemStack("magic_fence_gate"), getItemStack("planks_0", 1, 5));
-			SawmillManager.addFenceGateRecipe(getItemStack("mangrove_fence_gate"), getItemStack("planks_0", 1, 6));
-			SawmillManager.addFenceGateRecipe(getItemStack("palm_fence_gate"), getItemStack("planks_0", 1, 7));
-			SawmillManager.addFenceGateRecipe(getItemStack("redwood_fence_gate"), getItemStack("planks_0", 1, 8));
-			SawmillManager.addFenceGateRecipe(getItemStack("willow_fence_gate"), getItemStack("planks_0", 1, 9));
-			SawmillManager.addFenceGateRecipe(getItemStack("pine_fence_gate"), getItemStack("planks_0", 1, 10));
-			SawmillManager.addFenceGateRecipe(getItemStack("hellbark_fence_gate"), getItemStack("planks_0", 1, 11));
-			SawmillManager.addFenceGateRecipe(getItemStack("jacaranda_fence_gate"), getItemStack("planks_0", 1, 12));
-			SawmillManager.addFenceGateRecipe(getItemStack("mahogany_fence_gate"), getItemStack("planks_0", 1, 13));
-			SawmillManager.addFenceGateRecipe(getItemStack("ebony_fence_gate"), getItemStack("planks_0", 1, 14));
-			SawmillManager.addFenceGateRecipe(getItemStack("eucalyptus_fence_gate"), getItemStack("planks_0", 1, 15));
+			SawmillManager.addFenceGateRecipe(getItemStack("sacred_oak_fence_gate"), plankSacredOak);
+			SawmillManager.addFenceGateRecipe(getItemStack("cherry_fence_gate"), plankCherry);
+			SawmillManager.addFenceGateRecipe(getItemStack("umbran_fence_gate"), plankUmbran);
+			SawmillManager.addFenceGateRecipe(getItemStack("fir_fence_gate"), plankFir);
+			SawmillManager.addFenceGateRecipe(getItemStack("ethereal_fence_gate"), plankEthereal);
+			SawmillManager.addFenceGateRecipe(getItemStack("magic_fence_gate"), plankMagic);
+			SawmillManager.addFenceGateRecipe(getItemStack("mangrove_fence_gate"), plankMangrove);
+			SawmillManager.addFenceGateRecipe(getItemStack("palm_fence_gate"), plankPalm);
+			SawmillManager.addFenceGateRecipe(getItemStack("redwood_fence_gate"), plankRedwood);
+			SawmillManager.addFenceGateRecipe(getItemStack("willow_fence_gate"), plankWillow);
+			SawmillManager.addFenceGateRecipe(getItemStack("pine_fence_gate"), plankPine);
+			SawmillManager.addFenceGateRecipe(getItemStack("hellbark_fence_gate"), plankHellbark);
+			SawmillManager.addFenceGateRecipe(getItemStack("jacaranda_fence_gate"), plankJacaranda);
+			SawmillManager.addFenceGateRecipe(getItemStack("mahogany_fence_gate"), plankMahogany);
+			SawmillManager.addFenceGateRecipe(getItemStack("ebony_fence_gate"), plankEbony);
+			SawmillManager.addFenceGateRecipe(getItemStack("eucalyptus_fence_gate"), plankEucalyptus);
 
 			/* STAIRS */
-			SawmillManager.addStairsRecipe(getItemStack("sacred_oak_stairs"), getItemStack("planks_0", 1, 0));
-			SawmillManager.addStairsRecipe(getItemStack("cherry_stairs"), getItemStack("planks_0", 1, 1));
-			SawmillManager.addStairsRecipe(getItemStack("umbran_stairs"), getItemStack("planks_0", 1, 2));
-			SawmillManager.addStairsRecipe(getItemStack("fir_stairs"), getItemStack("planks_0", 1, 3));
-			SawmillManager.addStairsRecipe(getItemStack("ethereal_stairs"), getItemStack("planks_0", 1, 4));
-			SawmillManager.addStairsRecipe(getItemStack("magic_stairs"), getItemStack("planks_0", 1, 5));
-			SawmillManager.addStairsRecipe(getItemStack("mangrove_stairs"), getItemStack("planks_0", 1, 6));
-			SawmillManager.addStairsRecipe(getItemStack("palm_stairs"), getItemStack("planks_0", 1, 7));
-			SawmillManager.addStairsRecipe(getItemStack("redwood_stairs"), getItemStack("planks_0", 1, 8));
-			SawmillManager.addStairsRecipe(getItemStack("willow_stairs"), getItemStack("planks_0", 1, 9));
-			SawmillManager.addStairsRecipe(getItemStack("pine_stairs"), getItemStack("planks_0", 1, 10));
-			SawmillManager.addStairsRecipe(getItemStack("hellbark_stairs"), getItemStack("planks_0", 1, 11));
-			SawmillManager.addStairsRecipe(getItemStack("jacaranda_stairs"), getItemStack("planks_0", 1, 12));
-			SawmillManager.addStairsRecipe(getItemStack("mahogany_stairs"), getItemStack("planks_0", 1, 13));
-			SawmillManager.addStairsRecipe(getItemStack("ebony_stairs"), getItemStack("planks_0", 1, 14));
-			SawmillManager.addStairsRecipe(getItemStack("eucalyptus_stairs"), getItemStack("planks_0", 1, 15));
+			SawmillManager.addStairsRecipe(getItemStack("sacred_oak_stairs"), plankSacredOak);
+			SawmillManager.addStairsRecipe(getItemStack("cherry_stairs"), plankCherry);
+			SawmillManager.addStairsRecipe(getItemStack("umbran_stairs"), plankUmbran);
+			SawmillManager.addStairsRecipe(getItemStack("fir_stairs"), plankFir);
+			SawmillManager.addStairsRecipe(getItemStack("ethereal_stairs"), plankEthereal);
+			SawmillManager.addStairsRecipe(getItemStack("magic_stairs"), plankMagic);
+			SawmillManager.addStairsRecipe(getItemStack("mangrove_stairs"), plankMangrove);
+			SawmillManager.addStairsRecipe(getItemStack("palm_stairs"), plankPalm);
+			SawmillManager.addStairsRecipe(getItemStack("redwood_stairs"), plankRedwood);
+			SawmillManager.addStairsRecipe(getItemStack("willow_stairs"), plankWillow);
+			SawmillManager.addStairsRecipe(getItemStack("pine_stairs"), plankPine);
+			SawmillManager.addStairsRecipe(getItemStack("hellbark_stairs"), plankHellbark);
+			SawmillManager.addStairsRecipe(getItemStack("jacaranda_stairs"), plankJacaranda);
+			SawmillManager.addStairsRecipe(getItemStack("mahogany_stairs"), plankMahogany);
+			SawmillManager.addStairsRecipe(getItemStack("ebony_stairs"), plankEbony);
+			SawmillManager.addStairsRecipe(getItemStack("eucalyptus_stairs"), plankEucalyptus);
 		}
 
 		/* INSOLATOR */

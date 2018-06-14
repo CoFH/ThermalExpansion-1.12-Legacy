@@ -139,7 +139,7 @@ public class PluginNatura extends PluginTEBase {
 		ItemStack buttonMaple = getItemStack("maple_button");
 		ItemStack buttonSilverbell = getItemStack("silverbell_button");
 		ItemStack buttonAmaranth = getItemStack("amaranth_button");
-		ItemStack buttonTigerwood = getItemStack("tigerwood_button");
+		ItemStack buttonTigerwood = getItemStack("tiger_button");
 		ItemStack buttonWillow = getItemStack("willow_button");
 		ItemStack buttonEucalyptus = getItemStack("eucalyptus_button");
 		ItemStack buttonHopseed = getItemStack("hopseed_button");
@@ -162,7 +162,7 @@ public class PluginNatura extends PluginTEBase {
 		ItemStack fenceMaple = getItemStack("maple_fence");
 		ItemStack fenceSilverbell = getItemStack("silverbell_fence");
 		ItemStack fenceAmaranth = getItemStack("amaranth_fence");
-		ItemStack fenceTigerwood = getItemStack("tigerwood_fence");
+		ItemStack fenceTigerwood = getItemStack("tiger_fence");
 		ItemStack fenceWillow = getItemStack("willow_fence");
 		ItemStack fenceEucalyptus = getItemStack("eucalyptus_fence");
 		ItemStack fenceHopseed = getItemStack("hopseed_fence");
@@ -177,7 +177,7 @@ public class PluginNatura extends PluginTEBase {
 		ItemStack fenceGateMaple = getItemStack("maple_fence_gate");
 		ItemStack fenceGateSilverbell = getItemStack("silverbell_fence_gate");
 		ItemStack fenceGateAmaranth = getItemStack("amaranth_fence_gate");
-		ItemStack fenceGateTigerwood = getItemStack("tigerwood_fence_gate");
+		ItemStack fenceGateTigerwood = getItemStack("tiger_fence_gate");
 		ItemStack fenceGateWillow = getItemStack("willow_fence_gate");
 		ItemStack fenceGateEucalyptus = getItemStack("eucalyptus_fence_gate");
 		ItemStack fenceGateHopseed = getItemStack("hopseed_fence_gate");
@@ -192,7 +192,7 @@ public class PluginNatura extends PluginTEBase {
 		ItemStack pressurePlateMaple = getItemStack("maple_pressure_plate");
 		ItemStack pressurePlateSilverbell = getItemStack("silverbell_pressure_plate");
 		ItemStack pressurePlateAmaranth = getItemStack("amaranth_pressure_plate");
-		ItemStack pressurePlateTigerwood = getItemStack("tigerwood_pressure_plate");
+		ItemStack pressurePlateTigerwood = getItemStack("tiger_pressure_plate");
 		ItemStack pressurePlateWillow = getItemStack("willow_pressure_plate");
 		ItemStack pressurePlateEucalyptus = getItemStack("eucalyptus_pressure_plate");
 		ItemStack pressurePlateHopseed = getItemStack("hopseed_pressure_plate");
@@ -207,7 +207,7 @@ public class PluginNatura extends PluginTEBase {
 		ItemStack stairsMaple = getItemStack("overworld_stairs_maple");
 		ItemStack stairsSilverbell = getItemStack("overworld_stairs_silverbell");
 		ItemStack stairsAmaranth = getItemStack("overworld_stairs_amaranth");
-		ItemStack stairsTigerwood = getItemStack("overworld_stairs_tigerwood");
+		ItemStack stairsTigerwood = getItemStack("overworld_stairs_tiger");
 		ItemStack stairsWillow = getItemStack("overworld_stairs_willow");
 		ItemStack stairsEucalyptus = getItemStack("overworld_stairs_eucalyptus");
 		ItemStack stairsHopseed = getItemStack("overworld_stairs_hopseed");
@@ -222,7 +222,7 @@ public class PluginNatura extends PluginTEBase {
 		ItemStack trapDoorMaple = getItemStack("maple_trap_door");
 		ItemStack trapDoorSilverbell = getItemStack("silverbell_trap_door");
 		ItemStack trapDoorAmaranth = getItemStack("amaranth_trap_door");
-		ItemStack trapDoorTigerwood = getItemStack("tigerwood_trap_door");
+		ItemStack trapDoorTigerwood = getItemStack("tiger_trap_door");
 		ItemStack trapDoorWillow = getItemStack("willow_trap_door");
 		ItemStack trapDoorEucalyptus = getItemStack("eucalyptus_trap_door");
 		ItemStack trapDoorHopseed = getItemStack("hopseed_trap_door");

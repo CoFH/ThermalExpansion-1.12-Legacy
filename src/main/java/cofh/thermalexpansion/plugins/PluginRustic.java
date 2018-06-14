@@ -4,6 +4,7 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.managers.device.TapperManager;
 import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.block.Block;
@@ -61,6 +62,9 @@ public class PluginRustic extends PluginTEBase {
 		ItemStack logOlive = getItemStack("log", 1, 0);
 		ItemStack logIronwood = getItemStack("log", 1, 1);
 
+		ItemStack plankOlive = getItemStack("planks", 1, 0);
+		ItemStack plankIronwood = getItemStack("planks", 1, 1);
+
 		ItemStack saplingOlive = getItemStack("sapling", 1, 0);
 		ItemStack saplingIronwood = getItemStack("sapling", 1, 1);
 		ItemStack saplingApple = getItemStack("sapling_apple", 1, 0);
@@ -75,6 +79,21 @@ public class PluginRustic extends PluginTEBase {
 		Fluid juiceIronberry = FluidRegistry.getFluid("ironberryjuice");
 		Fluid juiceWildberry = FluidRegistry.getFluid("wildberryjuice");
 		Fluid oilOlive = FluidRegistry.getFluid("oliveoil");
+
+		/* SAWMILL */
+		{
+			SawmillManager.addDoorRecipe(getItemStack("olive_door"), plankOlive);
+			SawmillManager.addDoorRecipe(getItemStack("ironwood_door"), plankIronwood);
+
+			SawmillManager.addFenceRecipe(getItemStack("fence_olive"), plankOlive);
+			SawmillManager.addFenceRecipe(getItemStack("fence_ironwood"), plankIronwood);
+
+			SawmillManager.addFenceGateRecipe(getItemStack("fence_gate_olive"), plankOlive);
+			SawmillManager.addFenceGateRecipe(getItemStack("fence_gate_ironwood"), plankIronwood);
+
+			SawmillManager.addStairsRecipe(getItemStack("stairs_olive"), plankOlive);
+			SawmillManager.addStairsRecipe(getItemStack("stairs_ironwood"), plankIronwood);
+		}
 
 		/* INSOLATOR */
 		{

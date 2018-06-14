@@ -25,6 +25,11 @@ public class SawmillManager {
 		oreValidator.addPrefix(ComparableItemStack.ORE);
 		oreValidator.addPrefix(ComparableItemStack.INGOT);
 		oreValidator.addPrefix(ComparableItemStack.NUGGET);
+
+		oreValidator.addPrefix("crop");
+
+		oreValidator.addExact("treeLeaves");
+		oreValidator.addExact("treeSapling");
 	}
 
 	static final float LOG_MULTIPLIER = 1.5F;
@@ -165,6 +170,11 @@ public class SawmillManager {
 		addRecipe(energy, recycleInput, ItemHelper.cloneStack(output, outputSize));
 	}
 
+	public static void addBoatRecipe(ItemStack boat, ItemStack planks) {
+
+		addRecipe(DEFAULT_ENERGY, boat, ItemHelper.cloneStack(planks, 4), ItemMaterial.dustWood, 125);
+	}
+
 	public static void addBookshelfRecipe(ItemStack bookshelf, ItemStack planks) {
 
 		addRecipe(DEFAULT_ENERGY, bookshelf, ItemHelper.cloneStack(planks, 4), ItemHelper.cloneStack(Items.BOOK, 2), 25);
@@ -194,6 +204,11 @@ public class SawmillManager {
 	public static void addFenceGateRecipe(ItemStack fenceGate, ItemStack planks) {
 
 		addRecipe(DEFAULT_ENERGY, fenceGate, planks, ItemMaterial.dustWood, 125);
+	}
+
+	public static void addLogRecipe(ItemStack log, ItemStack planks) {
+
+		addRecipe(DEFAULT_ENERGY, log, ItemHelper.cloneStack(planks, (int) (4 * LOG_MULTIPLIER)), ItemHelper.cloneStack(ItemMaterial.dustWood));
 	}
 
 	public static void addPressurePlateRecipe(ItemStack pressurePlate, ItemStack planks) {
