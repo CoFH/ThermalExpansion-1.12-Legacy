@@ -6,6 +6,8 @@ import cofh.thermalexpansion.util.managers.device.FisherManager;
 import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
+import cofh.thermalexpansion.util.managers.machine.SawmillManager;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -100,6 +102,11 @@ public class PluginHarvestCraft extends PluginTEBase {
 		ItemStack itemRice = getItemStack("riceitem");
 		ItemStack itemRye = getItemStack("ryeitem");
 		ItemStack itemWheat = new ItemStack(Items.WHEAT);
+
+		ItemStack seedBarley = getItemStack("barleyseeditem");
+		ItemStack seedOats = getItemStack("oatsseeditem");
+		ItemStack seedRice = getItemStack("riceseeditem");
+		ItemStack seedRye = getItemStack("ryeseeditem");
 
 		ItemStack rawBeef = new ItemStack(Items.BEEF);
 		ItemStack rawCalamari = getItemStack("calamarirawitem");
@@ -302,7 +309,16 @@ public class PluginHarvestCraft extends PluginTEBase {
 
 			PulverizerManager.addRecipe(energy, fishGreenHeart, groundFishStack);
 			PulverizerManager.addRecipe(energy, fishSardine, groundFishStack);
+		}
 
+		/* SAWMILL */
+		{
+			int energy = SawmillManager.DEFAULT_ENERGY;
+
+			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(itemBarley, 8), ItemMaterial.dustBiomass, seedBarley, 50);
+			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(itemOats, 8), ItemMaterial.dustBiomass, seedOats, 50);
+			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(itemRice, 8), ItemMaterial.dustBiomass, seedRice, 50);
+			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(itemRye, 8), ItemMaterial.dustBiomass, seedRye, 50);
 		}
 
 		/* INSOLATOR */

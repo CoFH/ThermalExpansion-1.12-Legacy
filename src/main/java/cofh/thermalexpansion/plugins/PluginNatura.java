@@ -2,11 +2,14 @@ package cofh.thermalexpansion.plugins;
 
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.managers.device.TapperManager;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalfoundation.init.TFFluids;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -26,6 +29,8 @@ public class PluginNatura extends PluginTEBase {
 
 		ItemStack seedBarley = getItemStack("overworld_seeds", 1, 0);
 		ItemStack seedCotton = getItemStack("overworld_seeds", 1, 1);
+
+		ItemStack cropBarley = getItemStack("materials", 1, 0);
 
 		ItemStack cropRaspberry = getItemStack("edibles", 1, 2);
 		ItemStack cropBlueberry = getItemStack("edibles", 1, 3);
@@ -243,8 +248,17 @@ public class PluginNatura extends PluginTEBase {
 		Block blockLeavesNether = getBlock("nether_leaves");
 		Block blockLeavesNether2 = getBlock("nether_leaves2");
 
+		/* FURNACE */
+		{
+			int energy = FurnaceManager.DEFAULT_ENERGY;
+
+			FurnaceManager.addRecipePyrolysis(energy, ItemHelper.cloneStack(saguaroCactus, 4), new ItemStack(Items.COAL, 1, 1), 50);
+		}
+
 		/* SAWMILL */
 		{
+			int energy = SawmillManager.DEFAULT_ENERGY;
+
 			/* BOOKSHELVES */
 			SawmillManager.addBookshelfRecipe(bookshelfMaple, plankMaple);
 			SawmillManager.addBookshelfRecipe(bookshelfSilverbell, plankSilverbell);
@@ -388,6 +402,10 @@ public class PluginNatura extends PluginTEBase {
 			SawmillManager.addWorkbenchRecipe(workbenchBloodwood, plankBloodwood);
 			SawmillManager.addWorkbenchRecipe(workbenchDarkwood, plankDarkwood);
 			SawmillManager.addWorkbenchRecipe(workbenchFusewood, plankFusewood);
+
+			/* BIOMASS */
+			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(cropBarley, 8), ItemMaterial.dustBiomass, seedBarley, 50);
+			SawmillManager.addRecipe(energy, ItemHelper.cloneStack(saguaroCactus, 4), ItemMaterial.dustBiomass);
 		}
 
 		/* INSOLATOR */
@@ -403,7 +421,7 @@ public class PluginNatura extends PluginTEBase {
 			InsolatorManager.addDefaultRecipe(bushStingberry, ItemHelper.cloneStack(cropStingberry, 2), bushStingberry, 100);
 
 			InsolatorManager.addDefaultRecipe(saguaroFruit, saguaroCactusBaby, ItemStack.EMPTY, 0);
-			InsolatorManager.addDefaultRecipe(saguaroCactusBaby, ItemHelper.cloneStack(saguaroFruit, 2), saguaroCactus, 0);
+			InsolatorManager.addDefaultRecipe(saguaroCactusBaby, ItemHelper.cloneStack(saguaroFruit, 2), saguaroCactus, 100);
 
 			InsolatorManager.addDefaultRecipe(plantThornvine, ItemHelper.cloneStack(plantThornvine, 2), ItemStack.EMPTY, 0);
 

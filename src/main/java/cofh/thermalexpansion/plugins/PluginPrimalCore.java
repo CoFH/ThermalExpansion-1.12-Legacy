@@ -29,6 +29,21 @@ public class PluginPrimalCore extends PluginTEBase {
 			SawmillManager.addBoatRecipe(getItemStack("boat_lacquer"), plankLacquer);
 			SawmillManager.addBoatRecipe(getItemStack("boat_corypha"), plankCorphyry);
 
+			SawmillManager.addDoorRecipe(getItemStack("door_ironwood"), plankIronwood);
+			SawmillManager.addDoorRecipe(getItemStack("door_yew"), plankYew);
+			// SawmillManager.addDoorRecipe(getItemStack("door_lacquer"), plankLacquer);
+			SawmillManager.addDoorRecipe(getItemStack("door_corypha"), plankCorphyry);
+
+			SawmillManager.addFenceRecipe(getItemStack("fence", 1, 0), plankIronwood);
+			SawmillManager.addFenceRecipe(getItemStack("fence", 1, 1), plankYew);
+			SawmillManager.addFenceRecipe(getItemStack("fence", 1, 2), plankLacquer);
+			SawmillManager.addFenceRecipe(getItemStack("fence", 1, 3), plankCorphyry);
+
+			SawmillManager.addFenceGateRecipe(getItemStack("gate_ironwood"), plankIronwood);
+			SawmillManager.addFenceGateRecipe(getItemStack("gate_yew"), plankYew);
+			// SawmillManager.addFenceGateRecipe(getItemStack("gate_lacquer"), plankLacquer);
+			SawmillManager.addFenceGateRecipe(getItemStack("gate_corypha"), plankCorphyry);
+
 			SawmillManager.addLogRecipe(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.PLANKS, 1, 0));
 			SawmillManager.addLogRecipe(new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.PLANKS, 1, 1));
 			SawmillManager.addLogRecipe(new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.PLANKS, 1, 2));
@@ -45,6 +60,11 @@ public class PluginPrimalCore extends PluginTEBase {
 			SawmillManager.addLogRecipe(getItemStack("logs_stripped", 1, 6), plankIronwood);
 			SawmillManager.addLogRecipe(getItemStack("logs_stripped", 1, 7), plankYew);
 
+			SawmillManager.addStairsRecipe(getItemStack("stairs_ironwood"), plankIronwood);
+			// SawmillManager.addStairsRecipe(getItemStack("stairs_yew"), plankYew);
+			SawmillManager.addStairsRecipe(getItemStack("stairs_lacquer"), plankLacquer);
+			SawmillManager.addStairsRecipe(getItemStack("stairs_corypha"), plankCorphyry);
+
 			SawmillManager.addWorkbenchRecipe(getItemStack("worktable_shelf", 1, 0), new ItemStack(Blocks.PLANKS, 1, 0));
 			SawmillManager.addWorkbenchRecipe(getItemStack("worktable_shelf", 1, 1), new ItemStack(Blocks.PLANKS, 1, 1));
 			SawmillManager.addWorkbenchRecipe(getItemStack("worktable_shelf", 1, 2), new ItemStack(Blocks.PLANKS, 1, 2));
@@ -54,6 +74,11 @@ public class PluginPrimalCore extends PluginTEBase {
 			SawmillManager.addWorkbenchRecipe(getItemStack("worktable_shelf", 1, 6), plankIronwood);
 			SawmillManager.addWorkbenchRecipe(getItemStack("worktable_shelf", 1, 7), plankYew);
 			SawmillManager.addWorkbenchRecipe(getItemStack("worktable_shelf", 1, 9), plankCorphyry);
+		}
+
+		/* FISHER */
+		{
+
 		}
 	}
 
