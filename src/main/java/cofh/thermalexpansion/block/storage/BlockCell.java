@@ -11,6 +11,7 @@ import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.StateMapper;
 import cofh.core.util.helpers.BlockHelper;
+import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.ReconfigurableHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
@@ -99,7 +100,7 @@ public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryPro
 			TileCell tile = (TileCell) world.getTileEntity(pos);
 
 			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
-			tile.enchantHolding = (byte) EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
+			tile.enchantHolding = (byte) MathHelper.clamp(EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack), 0, CoreEnchantments.holding.getMaxLevel());
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 			tile.amountRecv = stack.getTagCompound().getInteger("Recv");
 			tile.amountSend = stack.getTagCompound().getInteger("Send");

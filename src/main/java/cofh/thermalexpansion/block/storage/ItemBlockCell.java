@@ -122,7 +122,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		if (stack.getTagCompound() == null) {
 			setDefaultTag(stack);
 		}
-		return 1D - ((double) stack.getTagCompound().getInteger(CoreProps.ENERGY) / (double) getMaxEnergyStored(stack));
+		return MathHelper.clamp(1.0D - ((double) stack.getTagCompound().getInteger(CoreProps.ENERGY) / (double) getMaxEnergyStored(stack)), 0.0D, 1.0D);
 	}
 
 	/* IEnergyContainerItem */
