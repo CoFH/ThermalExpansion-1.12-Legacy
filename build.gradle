@@ -49,11 +49,11 @@ repositories {
 }
 
 dependencies {
-	compile "cofh:RedstoneFlux:${config.rf_mc_version}-${config.rf_version}:deobf"
-	compile "cofh:CoFHCore:${config.mc_version}-${config.cofh_core_version}:deobf"
-	compile "cofh:ThermalFoundation:${config.mc_version}-${config.tf_version}:deobf"
+	deobfCompile "cofh:RedstoneFlux:${config.rf_mc_version}-${config.rf_version}:universal"
+    deobfCompile "cofh:CoFHCore:${config.mc_version}-${config.cofh_core_version}:universal"
+    deobfCompile "cofh:ThermalFoundation:${config.mc_version}-${config.tf_version}:universal"
 
-	compile "codechicken:CodeChickenLib:${config.ccl_mc_version}-${config.ccl_version}:deobf"
+    deobfCompile "codechicken:CodeChickenLib:${config.ccl_mc_version}-${config.ccl_version}:universal"
 	compile "mezz.jei:jei_${config.jei_mc_version}:${config.jei_version}"
 }
 
