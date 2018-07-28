@@ -117,9 +117,11 @@ public class IMCHandler {
 						continue;
 					case REMOVE_SMELTER_RECIPE:
 						SmelterManager.removeRecipe(getItemStack(nbt, INPUT), getItemStack(nbt, INPUT_2));
+						SmelterManager.removeRecipe(getItemStack(nbt, INPUT_2), getItemStack(nbt, INPUT));
 						continue;
 					case REMOVE_INSOLATOR_RECIPE:
 						InsolatorManager.removeRecipe(getItemStack(nbt, INPUT), getItemStack(nbt, INPUT_2));
+						InsolatorManager.removeRecipe(getItemStack(nbt, INPUT_2), getItemStack(nbt, INPUT));
 						continue;
 					case REMOVE_COMPACTOR_RECIPE:
 						CompactorManager.removeRecipe(getItemStack(nbt, INPUT), Mode.ALL);

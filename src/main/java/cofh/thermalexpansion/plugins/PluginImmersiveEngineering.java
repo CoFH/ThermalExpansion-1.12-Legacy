@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.plugins;
 
-import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.item.ItemStack;
@@ -33,11 +32,11 @@ public class PluginImmersiveEngineering extends PluginTEBase {
 
 		/* TRANSPOSER */
 		{
-			int energy = 400;
-
-			if (creosote != null) {
-				TransposerManager.addFillRecipe(energy, ItemHelper.getOre("logWood"), ItemHelper.cloneStack(treatedWood), new FluidStack(creosote, Fluid.BUCKET_VOLUME / 8), false);
-			}
+			//			int energy = 400;
+			//
+			//			if (creosote != null) {
+			//				TransposerManager.addFillRecipe(energy, ItemHelper.getOre("plankWood"), ItemHelper.cloneStack(treatedWood), new FluidStack(creosote, Fluid.BUCKET_VOLUME / 8), false);
+			//			}
 			if (plant_oil != null) {
 				TransposerManager.addFillRecipe(800, ItemMaterial.dustBiomass, ItemMaterial.dustBiomassRich, new FluidStack(plant_oil, 160), false);
 				TransposerManager.addFillRecipe(800, ItemMaterial.dustBioblend, ItemMaterial.dustBioblendRich, new FluidStack(plant_oil, 160), false);

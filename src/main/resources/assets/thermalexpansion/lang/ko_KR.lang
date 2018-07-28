@@ -619,6 +619,10 @@ tile.thermalexpansion.machine.sawmill.name=제재기
 tile.thermalexpansion.machine.smelter.name=유도 용광로
 tile.thermalexpansion.machine.transposer.name=유체 수송기
 
+tile.thermalexpansion.light.lumium_lamp.name=루미움 램프
+tile.thermalexpansion.light.illuminator.name=발광석 조명기
+tile.thermalexpansion.light.radiant_lamp.name=빛나는 루미움 램프
+
 tile.thermalexpansion.storage.cache.name=캐시
 tile.thermalexpansion.storage.cell.name=에너지 셀
 tile.thermalexpansion.storage.strongbox.name=강력 상자
