@@ -212,12 +212,12 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 		int toConvert;
 
 		if (xpBuffer * conversion <= tank.getSpace()) {
-			tank.modifyFluidStored(xpBuffer * conversion);
 			toConvert = xpBuffer;
+			tank.modifyFluidStored(xpBuffer * conversion);
 			xpBuffer = 0;
 		} else {
-			tank.modifyFluidStored(tank.getSpace());
 			toConvert = tank.getSpace() / conversion;
+			tank.modifyFluidStored(tank.getSpace());
 			xpBuffer -= toConvert;
 		}
 		boostXp -= toConvert * boostFactor / 100;
