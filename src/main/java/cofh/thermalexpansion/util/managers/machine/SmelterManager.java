@@ -60,16 +60,48 @@ public class SmelterManager {
 
 	public static final int DEFAULT_ENERGY = 4000;
 
+	private static SmelterRecipe getRecipeFwd(ItemStack primaryInput, ItemStack secondaryInput) {
+
+		ComparableItemStackValidated query = convertInput(primaryInput);
+		ComparableItemStackValidated querySecondary = convertInput(secondaryInput);
+
+		SmelterRecipe recipe = recipeMap.get(asList(query, querySecondary));
+
+		if (recipe == null) {
+			if (isItemFlux(primaryInput)) {
+				querySecondary.metadata = OreDictionary.WILDCARD_VALUE;
+			} else {
+				query.metadata = OreDictionary.WILDCARD_VALUE;
+			}
+			recipe = recipeMap.get(asList(query, querySecondary));
+		}
+		return recipe;
+	}
+
+	//	private static SmelterRecipe getRecipeRev(ItemStack primaryInput, ItemStack secondaryInput) {
+	//
+	//		ComparableItemStackValidated query = convertInput(primaryInput);
+	//		ComparableItemStackValidated querySecondary = convertInput(secondaryInput);
+	//
+	//		SmelterRecipe recipe = recipeMap.get(asList(querySecondary, query));
+	//
+	//		if (recipe == null) {
+	//			if (isItemFlux(primaryInput)) {
+	//				querySecondary.metadata = OreDictionary.WILDCARD_VALUE;
+	//			} else {
+	//				query.metadata = OreDictionary.WILDCARD_VALUE;
+	//			}
+	//			recipe = recipeMap.get(asList(querySecondary, query));
+	//		}
+	//		return recipe;
+	//	}
+
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
 
 		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return false;
 		}
-		ComparableItemStackValidated query = convertInput(primaryInput);
-		ComparableItemStackValidated querySecondary = convertInput(secondaryInput);
-
-		SmelterRecipe recipe = recipeMap.get(asList(query, querySecondary));
-		return recipe == null && recipeMap.get(asList(querySecondary, query)) != null;
+		return getRecipeFwd(primaryInput, secondaryInput) == null;
 	}
 
 	public static SmelterRecipe getRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
@@ -84,6 +116,17 @@ public class SmelterManager {
 
 		if (recipe == null) {
 			recipe = recipeMap.get(asList(querySecondary, query));
+		}
+		if (recipe == null) {
+			if (isItemFlux(primaryInput)) {
+				querySecondary.metadata = OreDictionary.WILDCARD_VALUE;
+			} else {
+				query.metadata = OreDictionary.WILDCARD_VALUE;
+			}
+			recipe = recipeMap.get(asList(query, querySecondary));
+			if (recipe == null) {
+				recipe = recipeMap.get(asList(querySecondary, query));
+			}
 		}
 		if (recipe == null) {
 			return null;
@@ -103,7 +146,15 @@ public class SmelterManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return !input.isEmpty() && validationSet.contains(convertInput(input));
+		if (input.isEmpty()) {
+			return false;
+		}
+		ComparableItemStackValidated query = convertInput(input);
+		if (validationSet.contains(query)) {
+			return true;
+		}
+		query.metadata = OreDictionary.WILDCARD_VALUE;
+		return validationSet.contains(query);
 	}
 
 	public static boolean isItemFlux(ItemStack input) {
@@ -409,7 +460,7 @@ public class SmelterManager {
 
 	public static void addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize, boolean wildcard) {
 
-		ItemStack recycleInput = wildcard ? input.copy() : new ItemStack(input.getItem(), 1, OreDictionary.WILDCARD_VALUE);
+		ItemStack recycleInput = wildcard ? new ItemStack(input.getItem(), 1, OreDictionary.WILDCARD_VALUE) : input.copy();
 		addBasicRecipe(energy, recycleInput, ItemHelper.cloneStack(output, outputSize), Math.min(50, outputSize * 5 + 5));
 	}
 

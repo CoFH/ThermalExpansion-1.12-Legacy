@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.inventory.InventoryCraftingFalse;
@@ -423,6 +424,18 @@ public class TileCrafter extends TileMachineBase {
 
 		augmentInput = false;
 		augmentTank = false;
+	}
+
+	@Override
+	protected boolean isValidAugment(AugmentType type, String id) {
+
+		if (augmentInput && TEProps.MACHINE_CRAFTER_INPUT.equals(id)) {
+			return false;
+		}
+		if (augmentTank && TEProps.MACHINE_CRAFTER_TANK.equals(id)) {
+			return false;
+		}
+		return super.isValidAugment(type, id);
 	}
 
 	@Override

@@ -218,7 +218,7 @@ public class PulverizerManager {
 
 	public static void addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize, boolean wildcard) {
 
-		ItemStack recycleInput = wildcard ? input.copy() : new ItemStack(input.getItem(), 1, OreDictionary.WILDCARD_VALUE);
+		ItemStack recycleInput = wildcard ? new ItemStack(input.getItem(), 1, OreDictionary.WILDCARD_VALUE) : input.copy();
 		addRecipe(energy, recycleInput, ItemHelper.cloneStack(output, outputSize));
 	}
 
