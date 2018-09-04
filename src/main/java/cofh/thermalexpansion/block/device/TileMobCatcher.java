@@ -170,8 +170,9 @@ public class TileMobCatcher extends TileDeviceBase implements ITickable {
 			return;
 		}
 		AxisAlignedBB area = new AxisAlignedBB(pos.add(-radius, 1 - radius, -radius), pos.add(1 + radius, radius, 1 + radius));
-		List<EntityLiving> mobs = world.getEntitiesWithinAABB(EntityLiving.class, area, EntitySelectors.IS_STANDALONE);
+		List<EntityLiving> mobs = world.getEntitiesWithinAABB(EntityLiving.class, area, EntitySelectors.IS_ALIVE);
 		mobs.removeIf(mob -> mob instanceof EntityTameable && ((EntityTameable) mob).isTamed());
+		mobs.removeIf(mob -> !mob.getPassengers().isEmpty());
 
 		if (mode == MODE_HOSTILE) {
 			mobs.removeIf(mob -> !(mob instanceof IMob));
