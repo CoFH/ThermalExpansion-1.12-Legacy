@@ -92,6 +92,7 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 				"brass",
 				"silver",
 				"lead",
+				"graphite",
 				"steel",
 				"nickel",
 				"constantan",
@@ -121,6 +122,8 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 				"enderium",
 
 				"fluxed_electrum",
+
+				"hop_graphite",
 
 				"aluminum_brass",
 				"knightslime",
@@ -184,6 +187,16 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 				"abyssalnite",
 				"dreadium",
 
+				"slimy_bone",
+				"syrmorite",
+				"octine",
+				"valonite",
+
+				"thorium",
+				"boron",
+				"lithium",
+				"magnesium",
+
 				"black_quartz",
 
 				"menril",
@@ -215,6 +228,7 @@ public class PluginMysticalAgriculture extends PluginTEBase {
 				"sky_stone",
 				"certus_quartz",
 				"fluix",
+				"press",
 
 				"quartz_enriched_iron"
 		};

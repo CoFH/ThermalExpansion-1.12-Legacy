@@ -111,9 +111,10 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		return state.getValue(VARIANT).getMetadata();
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
+
+		int meta = state.getBlock().getMetaFromState(state);
 
 		if (meta >= Type.values().length) {
 			return null;

@@ -85,9 +85,8 @@ public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryPro
 		}
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 
 		return new TileCell();
 	}

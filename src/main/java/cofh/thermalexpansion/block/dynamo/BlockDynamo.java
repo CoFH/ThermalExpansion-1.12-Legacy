@@ -146,14 +146,15 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 		return state.getValue(VARIANT).getMetadata();
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 
-		if (metadata >= Type.values().length) {
+		int meta = state.getBlock().getMetaFromState(state);
+
+		if (meta >= Type.values().length) {
 			return null;
 		}
-		switch (Type.values()[metadata]) {
+		switch (Type.values()[meta]) {
 			case STEAM:
 				return new TileDynamoSteam();
 			case MAGMATIC:

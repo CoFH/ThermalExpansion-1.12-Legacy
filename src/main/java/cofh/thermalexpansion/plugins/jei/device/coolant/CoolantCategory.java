@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.device.coolant;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.device.GuiHeatSink;
@@ -31,6 +32,9 @@ public class CoolantCategory extends BaseFuelCategory<CoolantWrapper> {
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get("Coolant", category, enable);
 
 		if (!enable) {
 			return;

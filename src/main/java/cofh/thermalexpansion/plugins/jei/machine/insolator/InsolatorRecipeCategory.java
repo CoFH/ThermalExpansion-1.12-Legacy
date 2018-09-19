@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.machine.insolator;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
 import cofh.thermalexpansion.init.TEProps;
@@ -32,6 +33,9 @@ public class InsolatorRecipeCategory extends BaseRecipeCategory<InsolatorRecipeW
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Insolator", enable);
 
 		if (!enable) {
 			return;

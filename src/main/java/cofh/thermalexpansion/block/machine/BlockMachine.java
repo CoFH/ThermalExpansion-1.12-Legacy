@@ -125,14 +125,15 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		return state.getValue(VARIANT).getMetadata();
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 
-		if (metadata >= Type.values().length) {
+		int meta = state.getBlock().getMetaFromState(state);
+
+		if (meta >= Type.values().length) {
 			return null;
 		}
-		switch (Type.values()[metadata]) {
+		switch (Type.values()[meta]) {
 			case FURNACE:
 				return new TileFurnace();
 			case PULVERIZER:

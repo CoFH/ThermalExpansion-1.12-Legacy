@@ -92,9 +92,8 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 		}
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 
 		return new TileCache();
 	}

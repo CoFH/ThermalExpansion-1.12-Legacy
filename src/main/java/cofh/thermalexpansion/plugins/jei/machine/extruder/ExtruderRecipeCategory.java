@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.machine.extruder;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.init.TEProps;
@@ -31,6 +32,9 @@ public class ExtruderRecipeCategory extends BaseRecipeCategory<ExtruderRecipeWra
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Extruder", enable);
 
 		if (!enable) {
 			return;

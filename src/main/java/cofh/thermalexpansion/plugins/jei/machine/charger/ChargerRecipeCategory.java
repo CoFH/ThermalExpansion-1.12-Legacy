@@ -36,6 +36,9 @@ public class ChargerRecipeCategory extends BaseRecipeCategory<ChargerRecipeWrapp
 
 	public static void register(IRecipeCategoryRegistration registry) {
 
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Charger", enable);
+
 		if (!enable) {
 			return;
 		}

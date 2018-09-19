@@ -33,6 +33,9 @@ public class EnervationFuelCategory extends BaseFuelCategory<EnervationFuelWrapp
 
 	public static void register(IRecipeCategoryRegistration registry) {
 
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Dynamo.Enervation", enable);
+
 		if (!enable) {
 			return;
 		}

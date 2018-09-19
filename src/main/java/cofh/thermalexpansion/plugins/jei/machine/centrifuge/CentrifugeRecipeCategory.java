@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.machine.centrifuge;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiCentrifuge;
 import cofh.thermalexpansion.init.TEProps;
@@ -31,6 +32,9 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Centrifuge", enable);
 
 		if (!enable) {
 			return;

@@ -2,6 +2,7 @@ package cofh.thermalexpansion.plugins.jei.machine.crucible;
 
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
 import cofh.thermalexpansion.init.TEProps;
@@ -32,6 +33,9 @@ public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWra
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Crucible", enable);
 
 		if (!enable) {
 			return;

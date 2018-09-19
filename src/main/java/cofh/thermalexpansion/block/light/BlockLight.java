@@ -102,11 +102,10 @@ public class BlockLight extends BlockTEBase implements IModelRegister, IBakeryPr
 		return state.getValue(VARIANT).getMetadata();
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 
-		if (meta >= Type.values().length) {
+		if (state.getBlock().getMetaFromState(state) >= Type.values().length) {
 			return null;
 		}
 		return new TileLightBase();

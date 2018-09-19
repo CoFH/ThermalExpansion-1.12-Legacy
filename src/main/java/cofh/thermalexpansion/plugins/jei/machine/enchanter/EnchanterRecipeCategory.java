@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.machine.enchanter;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiEnchanter;
 import cofh.thermalexpansion.init.TEProps;
@@ -37,6 +38,9 @@ public class EnchanterRecipeCategory extends BaseRecipeCategory<EnchanterRecipeW
 	public static EnchanterRecipeCategoryEmpowered categoryEmpowered;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Enchanter", enable);
 
 		if (!enable) {
 			return;

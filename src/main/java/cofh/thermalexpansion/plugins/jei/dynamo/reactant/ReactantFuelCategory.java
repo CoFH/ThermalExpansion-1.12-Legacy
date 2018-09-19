@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.dynamo.reactant;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.plugins.jei.Drawables;
@@ -30,6 +31,9 @@ public class ReactantFuelCategory extends BaseFuelCategory<ReactantFuelWrapper> 
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Dynamo.Reactant", enable);
 
 		if (!enable) {
 			return;

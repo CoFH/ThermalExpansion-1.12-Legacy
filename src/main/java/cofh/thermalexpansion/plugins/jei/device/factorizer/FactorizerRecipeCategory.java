@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.device.factorizer;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiFactorizer;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeCategory;
@@ -20,6 +21,9 @@ public abstract class FactorizerRecipeCategory extends BaseRecipeCategory<Factor
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Device.Factorizer", enable);
 
 		if (!enable) {
 			return;

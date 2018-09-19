@@ -2,6 +2,7 @@ package cofh.thermalexpansion.plugins.jei.machine.brewer;
 
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiBrewer;
 import cofh.thermalexpansion.plugins.jei.Drawables;
@@ -32,6 +33,9 @@ public class BrewerRecipeCategory extends BaseRecipeCategory<BrewerRecipeWrapper
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Brewer", enable);
 
 		if (!enable) {
 			return;
