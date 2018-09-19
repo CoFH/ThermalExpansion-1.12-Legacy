@@ -67,6 +67,9 @@ public class NumismaticManager {
 		if (stack.isEmpty() || energy < 2000 || energy > 200000000) {
 			return false;
 		}
+		if (fuelMap.containsKey(new ComparableItemStack(stack))) {
+			return false;
+		}
 		fuelMap.put(new ComparableItemStack(stack), energy);
 		return true;
 	}
@@ -74,6 +77,9 @@ public class NumismaticManager {
 	public static boolean addGemFuel(ItemStack stack, int energy) {
 
 		if (stack.isEmpty() || energy < 2000 || energy > 200000000) {
+			return false;
+		}
+		if (gemFuelMap.containsKey(new ComparableItemStack(stack))) {
 			return false;
 		}
 		gemFuelMap.put(new ComparableItemStack(stack), energy);

@@ -43,6 +43,9 @@ public class MagmaticManager {
 		if (!FluidRegistry.isFluidRegistered(fluidName) || energy < 10000 || energy > 200000000) {
 			return false;
 		}
+		if (fuelMap.containsKey(fluidName)) {
+			return false;
+		}
 		fuelMap.put(fluidName, energy);
 		return true;
 	}

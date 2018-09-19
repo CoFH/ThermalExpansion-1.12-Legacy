@@ -74,6 +74,9 @@ public class EnervationManager {
 		if (stack.isEmpty() || energy < 2000 || energy > 200000000) {
 			return false;
 		}
+		if (fuelMap.containsKey(new ComparableItemStack(stack))) {
+			return false;
+		}
 		fuelMap.put(new ComparableItemStack(stack), energy);
 		return true;
 	}
