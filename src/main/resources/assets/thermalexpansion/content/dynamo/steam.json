@@ -14,6 +14,17 @@
 		},
 		{
 			"input": {
+				"ore": "dustCoal"
+			},
+			"energy": 24000
+		},
+		{
+			"input": {
+				"ore": "dustCharcoal"
+			}
+		},
+		{
+			"input": {
 				"ore": "blockCoal"
 			},
 			"energy": 240000

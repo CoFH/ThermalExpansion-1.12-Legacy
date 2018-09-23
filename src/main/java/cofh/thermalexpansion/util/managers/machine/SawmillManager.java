@@ -75,6 +75,8 @@ public class SawmillManager {
 			addRecycleRecipe(energy, new ItemStack(Items.LEATHER_CHESTPLATE), output, 4);
 			addRecycleRecipe(energy, new ItemStack(Items.LEATHER_LEGGINGS), output, 3);
 			addRecycleRecipe(energy, new ItemStack(Items.LEATHER_BOOTS), output, 2);
+
+			addRecycleRecipe(energy, new ItemStack(Items.SADDLE), output, 3);
 		}
 
 		/* GENERAL SCAN */

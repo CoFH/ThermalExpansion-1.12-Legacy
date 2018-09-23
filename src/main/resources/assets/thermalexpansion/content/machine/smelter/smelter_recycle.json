@@ -148,6 +148,22 @@
 		},
 		{
 			"input": {
+				"item": "minecraft:iron_bars"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "nuggetIron",
+				"count": 3
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 5
+			}
+		},
+		{
+			"input": {
 				"item": "minecraft:iron_door"
 			},
 			"input2": {
@@ -164,6 +180,22 @@
 		},
 		{
 			"input": {
+				"item": "minecraft:iron_trapdoor"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 3
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 5
+			}
+		},
+		{
+			"input": {
 				"item": "minecraft:light_weighted_pressure_plate"
 			},
 			"input2": {
@@ -172,6 +204,118 @@
 			"output": {
 				"ore": "ingotGold",
 				"count": 2
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:minecart"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 4
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 20
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:minecart"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 4
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 20
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:minecart_chest"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 4
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 20
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:minecart_furnace"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 4
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 30
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:minecart_hopper"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "ingotIron",
+				"count": 4
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 20
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:rail"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "nuggetIron",
+				"count": 3
+			},
+			"output2": {
+				"constant": "slag",
+				"chance": 5
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:golden_rail"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "nuggetGold",
+				"count": 6
 			},
 			"output2": {
 				"constant": "slag",
