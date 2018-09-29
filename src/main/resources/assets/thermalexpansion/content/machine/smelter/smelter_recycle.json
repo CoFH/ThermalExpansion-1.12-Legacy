@@ -228,22 +228,6 @@
 		},
 		{
 			"input": {
-				"item": "minecraft:minecart"
-			},
-			"input2": {
-				"ore": "sand"
-			},
-			"output": {
-				"ore": "ingotIron",
-				"count": 4
-			},
-			"output2": {
-				"constant": "slag",
-				"chance": 20
-			}
-		},
-		{
-			"input": {
 				"item": "minecraft:minecart_chest"
 			},
 			"input2": {
