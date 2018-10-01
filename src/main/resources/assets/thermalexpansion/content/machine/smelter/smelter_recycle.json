@@ -267,7 +267,7 @@
 			},
 			"output": {
 				"ore": "ingotIron",
-				"count": 4
+				"count": 8
 			},
 			"output2": {
 				"constant": "slag",
