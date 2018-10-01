@@ -5,8 +5,11 @@ import cofh.thermalexpansion.util.parsers.BaseParser;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.Set;
 
 public class CrucibleParser extends BaseParser {
 
@@ -28,6 +31,12 @@ public class CrucibleParser extends BaseParser {
 			/* INPUT */
 			input = parseItemStack(content.get(INPUT));
 
+			/* REMOVAL */
+			if (content.has(REMOVE) && content.get(REMOVE).getAsBoolean()) {
+				removeQueue.add(input);
+				continue;
+			}
+
 			/* OUTPUT */
 			output = parseFluidStack(content.get(OUTPUT));
 
@@ -37,6 +46,7 @@ public class CrucibleParser extends BaseParser {
 			} else if (content.has(ENERGY_MOD)) {
 				energy = content.get(ENERGY_MOD).getAsInt() * defaultEnergy / 100;
 			}
+
 			if (CrucibleManager.addRecipe(energy, input, output) != null) {
 				parseCount++;
 			} else {
@@ -44,5 +54,15 @@ public class CrucibleParser extends BaseParser {
 			}
 		}
 	}
+
+	@Override
+	public void postProcess() {
+
+		for (ItemStack stack : removeQueue) {
+			CrucibleManager.removeRecipe(stack);
+		}
+	}
+
+	Set<ItemStack> removeQueue = new ObjectOpenHashSet<>();
 
 }

@@ -5,7 +5,10 @@ import cofh.thermalexpansion.util.parsers.BaseParser;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.item.ItemStack;
+
+import java.util.Set;
 
 public class PulverizerParser extends BaseParser {
 
@@ -29,6 +32,12 @@ public class PulverizerParser extends BaseParser {
 			/* INPUT */
 			input = parseItemStack(content.get(INPUT));
 
+			/* REMOVAL */
+			if (content.has(REMOVE) && content.get(REMOVE).getAsBoolean()) {
+				removeQueue.add(input);
+				continue;
+			}
+
 			/* OUTPUT */
 			output = parseItemStack(content.get(OUTPUT));
 
@@ -37,12 +46,14 @@ public class PulverizerParser extends BaseParser {
 				output2 = parseItemStack(outputElement);
 				chance = getChance(outputElement);
 			}
+
 			/* ENERGY */
 			if (content.has(ENERGY)) {
 				energy = content.get(ENERGY).getAsInt();
 			} else if (content.has(ENERGY_MOD)) {
 				energy = content.get(ENERGY_MOD).getAsInt() * defaultEnergy / 100;
 			}
+
 			if (PulverizerManager.addRecipe(energy, input, output, output2, chance) != null) {
 				parseCount++;
 			} else {
@@ -50,5 +61,15 @@ public class PulverizerParser extends BaseParser {
 			}
 		}
 	}
+
+	@Override
+	public void postProcess() {
+
+		for (ItemStack stack : removeQueue) {
+			PulverizerManager.removeRecipe(stack);
+		}
+	}
+
+	Set<ItemStack> removeQueue = new ObjectOpenHashSet<>();
 
 }

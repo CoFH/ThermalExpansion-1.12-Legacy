@@ -38,6 +38,7 @@ public abstract class BaseParser implements IContentParser {
 	public static final String ENTRY = "entry";
 	public static final String ORE = "ore";
 	public static final String NAME = "name";
+	public static final String REMOVE = "remove";
 
 	public static final String ITEM = "item";
 	public static final String DATA = "data";
@@ -49,8 +50,8 @@ public abstract class BaseParser implements IContentParser {
 	protected int parseCount = 0;
 	protected int errorCount = 0;
 
-	protected static final Map<String, ItemStack> constants = new Object2ObjectOpenHashMap<>();
-	protected static final Map<String, ItemStack> ores = new Object2ObjectOpenHashMap<>();
+	protected static final Map<String, ItemStack> CONSTANTS = new Object2ObjectOpenHashMap<>();
+	protected static final Map<String, ItemStack> ORES = new Object2ObjectOpenHashMap<>();
 
 	@Override
 	public boolean parseContent(JsonElement content) {
@@ -65,16 +66,21 @@ public abstract class BaseParser implements IContentParser {
 		return false;
 	}
 
+	@Override
+	public void postProcess() {
+
+	}
+
 	public abstract void parseArray(JsonArray contentArray);
 
 	public static boolean hasOre(String oreName) {
 
-		return ores.containsKey(oreName);
+		return ORES.containsKey(oreName);
 	}
 
 	public static ItemStack getOre(String oreName) {
 
-		return ores.get(oreName);
+		return ORES.get(oreName);
 	}
 
 	/* HELPERS */
@@ -108,8 +114,8 @@ public abstract class BaseParser implements IContentParser {
 			/* CONSTANT */
 			if (itemObject.has(CONSTANT)) {
 				ore = itemObject.get(CONSTANT).getAsString();
-				if (constants.containsKey(ore)) {
-					return ItemHelper.cloneStack(constants.get(ore), count);
+				if (CONSTANTS.containsKey(ore)) {
+					return ItemHelper.cloneStack(CONSTANTS.get(ore), count);
 				} else {
 					ore = "";
 				}
@@ -119,8 +125,8 @@ public abstract class BaseParser implements IContentParser {
 				ore = itemObject.get(ORE).getAsString();
 			}
 			if (ItemHelper.oreNameExists(ore)) {
-				if (ores.containsKey(ore)) {
-					return ItemHelper.cloneStack(ores.get(ore), count);
+				if (ORES.containsKey(ore)) {
+					return ItemHelper.cloneStack(ORES.get(ore), count);
 				}
 				NonNullList<ItemStack> ores = OreDictionary.getOres(ore, false);
 				if (!ores.isEmpty()) {

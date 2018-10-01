@@ -6,4 +6,5 @@ public interface IContentParser {
 
 	boolean parseContent(JsonElement content);
 
+	void postProcess();
 }

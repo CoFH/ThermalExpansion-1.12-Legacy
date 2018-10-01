@@ -77,7 +77,6 @@ public class ItemFlorb extends ItemMulti implements IInitializer, IBakeryProvide
 
 		if (stack.getTagCompound() != null) {
 			Fluid fluid = FluidRegistry.getFluid(stack.getTagCompound().getString(CoreProps.FLUID));
-
 			if (fluid == null || fluid.getDensity() >= 0) {
 				return;
 			}
@@ -151,9 +150,9 @@ public class ItemFlorb extends ItemMulti implements IInitializer, IBakeryProvide
 		if (fluid == null) {
 			return new ActionResult<>(EnumActionResult.PASS, stack);
 		}
-		//if (!player.capabilities.isCreativeMode) {
-		stack.shrink(1);
-		//}
+		if (!player.capabilities.isCreativeMode) {
+			stack.shrink(1);
+		}
 		world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
 		if (ServerHelper.isServerWorld(world)) {

@@ -39,6 +39,7 @@ public class ReactantParser extends BaseParser {
 			} else if (content.has(ENERGY_MOD)) {
 				energy = content.get(ENERGY_MOD).getAsInt() * defaultEnergy / 100;
 			}
+
 			/* TYPE */
 			if (content.has(TYPE)) {
 				if (ELEMENTAL.equals(content.get(TYPE).getAsString())) {

@@ -25,7 +25,7 @@ public class ConstantParser extends BaseParser {
 			/* OUTPUT */
 			entry = parseItemStack(content.get(ENTRY));
 
-			if (constants.put(name, entry) == null) {
+			if (CONSTANTS.put(name, entry) == null) {
 				parseCount++;
 			} else {
 				errorCount++;

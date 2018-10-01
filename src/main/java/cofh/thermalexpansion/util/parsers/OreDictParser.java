@@ -25,7 +25,7 @@ public class OreDictParser extends BaseParser {
 			/* OUTPUT */
 			entry = parseItemStack(content.get(ENTRY));
 
-			if (ores.put(ore, entry) == null) {
+			if (ORES.put(ore, entry) == null) {
 				parseCount++;
 			} else {
 				errorCount++;

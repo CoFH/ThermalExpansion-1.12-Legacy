@@ -25,12 +25,12 @@ public class MagmaticManager {
 
 	public static int getFuelEnergy(FluidStack stack) {
 
-		return stack == null ? 0 : fuelMap.get(stack.getFluid().getName());
+		return stack == null ? 0 : fuelMap.getInt(stack.getFluid().getName());
 	}
 
 	public static int getFuelEnergy100mB(FluidStack stack) {
 
-		return stack == null ? 0 : fuelMap.get(stack.getFluid().getName()) / 10;
+		return stack == null ? 0 : fuelMap.getInt(stack.getFluid().getName()) / 10;
 	}
 
 	public static void refresh() {
@@ -56,7 +56,7 @@ public class MagmaticManager {
 		if (!FluidRegistry.isFluidRegistered(fluidName)) {
 			return false;
 		}
-		fuelMap.remove(fluidName);
+		fuelMap.removeInt(fluidName);
 		return true;
 	}
 

@@ -108,6 +108,8 @@ public class ThermalExpansion {
 
 		initManagers();
 
+		ContentParser.postProcess();
+
 		proxy.postInit(event);
 	}
 

@@ -218,6 +218,13 @@ public class ContentParser {
 		}, false, false);
 	}
 
+	public static void postProcess() {
+
+		for (IContentParser parser : contentParsers.values()) {
+			parser.postProcess();
+		}
+	}
+
 	private static boolean parseEntry(String type, JsonElement content) {
 
 		if (contentParsers.containsKey(type)) {
