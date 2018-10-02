@@ -6,7 +6,6 @@ import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.generation.IBakery;
 import cofh.core.item.ItemMulti;
 import cofh.core.util.core.IInitializer;
-import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.storage.BlockCell;
 import cofh.thermalexpansion.render.BakeryFrame;
@@ -83,7 +82,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 		frameCell2Filled = addItem(CELL + 2 + 16, "frameCell2Filled", EnumRarity.UNCOMMON);
 		frameCell3Filled = addItem(CELL + 3 + 16, "frameCell3Filled", EnumRarity.UNCOMMON);
 		frameCell4Filled = addItem(CELL + 4 + 16, "frameCell4Filled", EnumRarity.RARE);
-		frameLight = addItem(160, "frameLight");
+		// frameLight = addItem(160, "frameLight");
 
 		return true;
 	}
@@ -171,14 +170,14 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryProvide
 			);
 		}
 
-		addShapedRecipe(ItemHelper.cloneStack(frameLight, 2),
-				" Q ",
-				"G G",
-				" I ",
-				'G', "blockGlassHardened",
-				'I', "ingotSignalum",
-				'Q', "gemQuartz"
-		);
+//		addShapedRecipe(ItemHelper.cloneStack(frameLight, 2),
+//				" Q ",
+//				"G G",
+//				" I ",
+//				'G', "blockGlassHardened",
+//				'I', "ingotSignalum",
+//				'Q', "gemQuartz"
+//		);
 		// @formatter:on
 		return true;
 	}
