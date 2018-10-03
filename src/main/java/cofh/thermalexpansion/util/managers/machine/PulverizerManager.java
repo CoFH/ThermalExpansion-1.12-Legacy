@@ -5,7 +5,7 @@ import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
-import cofh.thermalfoundation.init.TFEquipment;
+import cofh.thermalfoundation.init.TFEquipment.ToolSetVanilla;
 import cofh.thermalfoundation.item.ItemMaterial;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.init.Items;
@@ -78,12 +78,13 @@ public class PulverizerManager {
 			addRecycleRecipe(energy, new ItemStack(Items.WOODEN_SHOVEL), output, 2);
 			addRecycleRecipe(energy, new ItemStack(Items.WOODEN_HOE), output, 2);
 
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.WOOD.toolBow, output, 2);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.WOOD.toolFishingRod, output, 2);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.WOOD.toolShears, output, 2);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.WOOD.toolSickle, output, 2);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.WOOD.toolHammer, output, 4);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.WOOD.toolShield, output, 6);
+			addRecycleRecipe(energy, ToolSetVanilla.WOOD.toolBow, output, 2);
+			addRecycleRecipe(energy, ToolSetVanilla.WOOD.toolFishingRod, output, 2);
+			addRecycleRecipe(energy, ToolSetVanilla.WOOD.toolShears, output, 2);
+			addRecycleRecipe(energy, ToolSetVanilla.WOOD.toolSickle, output, 2);
+			addRecycleRecipe(energy, ToolSetVanilla.WOOD.toolHammer, output, 4);
+			addRecycleRecipe(energy, ToolSetVanilla.WOOD.toolExcavator, output, 2);
+			addRecycleRecipe(energy, ToolSetVanilla.WOOD.toolShield, output, 6);
 
 			/* DIAMOND TOOLS / ARMOR */
 			energy = DEFAULT_ENERGY * 3 / 2;
@@ -102,12 +103,13 @@ public class PulverizerManager {
 
 			addRecycleRecipe(energy, new ItemStack(Items.DIAMOND_HORSE_ARMOR), output, 2);
 
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolBow, output, 1);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolFishingRod, output, 1);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShears, output, 1);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolSickle, output, 1);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolHammer, output, 2);
-			addRecycleRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShield, output, 3);
+			addRecycleRecipe(energy, ToolSetVanilla.DIAMOND.toolBow, output, 1);
+			addRecycleRecipe(energy, ToolSetVanilla.DIAMOND.toolFishingRod, output, 1);
+			addRecycleRecipe(energy, ToolSetVanilla.DIAMOND.toolShears, output, 1);
+			addRecycleRecipe(energy, ToolSetVanilla.DIAMOND.toolSickle, output, 1);
+			addRecycleRecipe(energy, ToolSetVanilla.DIAMOND.toolHammer, output, 2);
+			addRecycleRecipe(energy, ToolSetVanilla.DIAMOND.toolExcavator, output, 1);
+			addRecycleRecipe(energy, ToolSetVanilla.DIAMOND.toolShield, output, 3);
 		}
 
 		/* GENERAL SCAN */

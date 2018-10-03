@@ -249,6 +249,7 @@ public class SmelterManager {
 				addRecycleRecipe(energy, tool.toolShears, ingot, 1);
 				addRecycleRecipe(energy, tool.toolSickle, ingot, 1);
 				addRecycleRecipe(energy, tool.toolHammer, ingot, 2);
+				addRecycleRecipe(energy, tool.toolExcavator, ingot, 1);
 				addRecycleRecipe(energy, tool.toolShield, ingot, 3);
 			}
 			for (ToolSet tool : ToolSet.values()) {
@@ -264,6 +265,7 @@ public class SmelterManager {
 				addRecycleRecipe(energy, tool.toolShears, ingot, 1);
 				addRecycleRecipe(energy, tool.toolSickle, ingot, 1);
 				addRecycleRecipe(energy, tool.toolHammer, ingot, 2);
+				addRecycleRecipe(energy, tool.toolExcavator, ingot, 1);
 				addRecycleRecipe(energy, tool.toolShield, ingot, 3);
 			}
 			for (ArmorSet armor : ArmorSet.values()) {
