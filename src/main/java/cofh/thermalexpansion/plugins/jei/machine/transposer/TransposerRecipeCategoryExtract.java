@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.singletonList;
 import static mezz.jei.api.recipe.IFocus.Mode.INPUT;
 import static mezz.jei.api.recipe.IFocus.Mode.OUTPUT;
 
@@ -105,13 +106,33 @@ public class TransposerRecipeCategoryExtract extends TransposerRecipeCategory {
 		List<List<FluidStack>> fluids = ingredients.getOutputs(FluidStack.class);
 
 		IFocus<?> focus = recipeLayout.getFocus();
-
 		if (focus != null) {
 			if (focus.getMode() == INPUT && focus.getValue() instanceof ItemStack) {
+				List<FluidStack> focusFluids = new ArrayList<>();
 				ItemStack input = (ItemStack) focus.getValue();
-
+				FluidStack contained = FluidHelper.getFluidStackFromHandler(input);
+				if (contained != null) {
+					for (FluidStack fluid : fluids.get(0)) {
+						if (FluidHelper.isFluidEqual(contained, fluid)) {
+							focusFluids.add(fluid);
+						}
+					}
+					if (focusFluids.size() != fluids.get(0).size()) {
+						fluids = singletonList(focusFluids);
+					}
+				}
 			} else if (focus.getMode() == OUTPUT && focus.getValue() instanceof FluidStack) {
+				List<ItemStack> focusInputs = new ArrayList<>();
 				FluidStack fluid = (FluidStack) focus.getValue();
+				for (ItemStack stack : inputs.get(0)) {
+					FluidStack contained = FluidHelper.getFluidStackFromHandler(stack);
+					if (contained == null || FluidHelper.isFluidEqual(fluid, contained)) {
+						focusInputs.add(stack);
+					}
+				}
+				if (focusInputs.size() != inputs.get(0).size()) {
+					inputs = singletonList(focusInputs);
+				}
 			}
 		}
 

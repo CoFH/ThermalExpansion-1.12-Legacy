@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.util.parsers.machine;
 
 import cofh.thermalexpansion.util.managers.machine.RefineryManager;
-import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalexpansion.util.parsers.BaseParser;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

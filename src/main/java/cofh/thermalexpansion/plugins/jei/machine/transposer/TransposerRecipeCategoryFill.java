@@ -18,6 +18,7 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredientRegistry;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocus;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -28,6 +29,10 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.Collections.singletonList;
+import static mezz.jei.api.recipe.IFocus.Mode.INPUT;
+import static mezz.jei.api.recipe.IFocus.Mode.OUTPUT;
 
 public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 
@@ -113,6 +118,37 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 		List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
 		List<List<ItemStack>> outputs = ingredients.getOutputs(ItemStack.class);
 		List<List<FluidStack>> fluids = ingredients.getInputs(FluidStack.class);
+
+		IFocus<?> focus = recipeLayout.getFocus();
+		if (focus != null) {
+			if (focus.getMode() == OUTPUT && focus.getValue() instanceof ItemStack) {
+				List<FluidStack> focusFluids = new ArrayList<>();
+				ItemStack output = (ItemStack) focus.getValue();
+				FluidStack contained = FluidHelper.getFluidStackFromHandler(output);
+				if (contained != null) {
+					for (FluidStack fluid : fluids.get(0)) {
+						if (FluidHelper.isFluidEqual(contained, fluid)) {
+							focusFluids.add(fluid);
+						}
+					}
+					if (focusFluids.size() != fluids.get(0).size()) {
+						fluids = singletonList(focusFluids);
+					}
+				}
+			} else if (focus.getMode() == INPUT && focus.getValue() instanceof FluidStack) {
+				List<ItemStack> focusOutputs = new ArrayList<>();
+				FluidStack fluid = (FluidStack) focus.getValue();
+				for (ItemStack stack : outputs.get(0)) {
+					FluidStack contained = FluidHelper.getFluidStackFromHandler(stack);
+					if (contained == null || FluidHelper.isFluidEqual(fluid, contained)) {
+						focusOutputs.add(stack);
+					}
+				}
+				if (focusOutputs.size() != inputs.get(0).size()) {
+					outputs = singletonList(focusOutputs);
+				}
+			}
+		}
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();

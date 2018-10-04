@@ -1,13 +1,11 @@
 package cofh.thermalexpansion.util.parsers.dynamo;
 
 import cofh.thermalexpansion.util.managers.dynamo.MagmaticManager;
-import cofh.thermalexpansion.util.managers.machine.RefineryManager;
 import cofh.thermalexpansion.util.parsers.BaseParser;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Set;
 

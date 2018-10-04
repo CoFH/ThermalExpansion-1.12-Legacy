@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.util.parsers.dynamo;
 
 import cofh.thermalexpansion.util.managers.dynamo.SteamManager;
-import cofh.thermalexpansion.util.managers.machine.CentrifugeManager;
 import cofh.thermalexpansion.util.parsers.BaseParser;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

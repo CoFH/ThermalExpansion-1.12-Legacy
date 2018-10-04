@@ -8,8 +8,6 @@ import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 public class FurnaceParser extends BaseParser {

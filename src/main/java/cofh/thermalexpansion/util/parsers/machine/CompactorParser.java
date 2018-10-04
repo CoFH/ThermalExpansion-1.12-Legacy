@@ -2,7 +2,6 @@ package cofh.thermalexpansion.util.parsers.machine;
 
 import cofh.thermalexpansion.util.managers.machine.CompactorManager;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
-import cofh.thermalexpansion.util.managers.machine.SmelterManager;
 import cofh.thermalexpansion.util.parsers.BaseParser;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
