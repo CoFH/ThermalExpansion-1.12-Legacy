@@ -127,7 +127,7 @@ public class PluginTConstruct extends PluginTEBase {
 		if (!nugget.isEmpty()) {
 			CrucibleManager.addRecipe(energy / 8, nugget, new FluidStack(fluid, fluidIngot / 9));
 		}
-		if (ingot.isEmpty()) {
+		if (!ingot.isEmpty()) {
 			CrucibleManager.addRecipe(energy, ingot, new FluidStack(fluid, fluidIngot));
 		}
 		if (!ore.isEmpty()) {
