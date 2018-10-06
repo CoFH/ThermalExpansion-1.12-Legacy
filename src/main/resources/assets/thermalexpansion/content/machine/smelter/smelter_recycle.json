@@ -228,7 +228,7 @@
 		},
 		{
 			"input": {
-				"item": "minecraft:minecart_chest"
+				"item": "minecraft:chest_minecart"
 			},
 			"input2": {
 				"ore": "sand"
@@ -244,7 +244,7 @@
 		},
 		{
 			"input": {
-				"item": "minecraft:minecart_furnace"
+				"item": "minecraft:furnace_minecart"
 			},
 			"input2": {
 				"ore": "sand"
@@ -260,7 +260,7 @@
 		},
 		{
 			"input": {
-				"item": "minecraft:minecart_hopper"
+				"item": "minecraft:hopper_minecart"
 			},
 			"input2": {
 				"ore": "sand"

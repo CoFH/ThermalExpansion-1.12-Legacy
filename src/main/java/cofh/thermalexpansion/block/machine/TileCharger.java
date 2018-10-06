@@ -838,7 +838,7 @@ public class TileCharger extends TileMachineBase {
 		if (tank.getFluidAmount() < repairFluid) {
 			return 0;
 		}
-		return Math.max(calcEnergy(), repairEnergy);
+		return Math.min(calcEnergy(), repairEnergy);
 	}
 
 	private int calcEnergyWireless() {
