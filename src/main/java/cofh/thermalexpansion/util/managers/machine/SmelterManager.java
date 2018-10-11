@@ -358,8 +358,32 @@ public class SmelterManager {
 
 	/* REMOVE RECIPES */
 	public static SmelterRecipe removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
+		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
+			return null;
+		}
+		ComparableItemStackValidated query = convertInput(primaryInput);
+		ComparableItemStackValidated querySecondary = convertInput(secondaryInput);
 
-		return recipeMap.remove(asList(convertInput(primaryInput), convertInput(secondaryInput)));
+		SmelterRecipe recipe = recipeMap.remove(asList(query, querySecondary));
+
+		if (recipe == null) {
+			recipe = recipeMap.remove(asList(querySecondary, query));
+		}
+		if (recipe == null) {
+			if (isItemFlux(primaryInput)) {
+				querySecondary.metadata = OreDictionary.WILDCARD_VALUE;
+			} else {
+				query.metadata = OreDictionary.WILDCARD_VALUE;
+			}
+			recipe = recipeMap.remove(asList(query, querySecondary));
+			if (recipe == null) {
+				recipe = recipeMap.remove(asList(querySecondary, query));
+			}
+		}
+		if (recipe == null) {
+			return null;
+		}
+		return recipe;
 	}
 
 	/* HELPERS */
