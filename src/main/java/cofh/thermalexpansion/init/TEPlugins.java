@@ -52,6 +52,7 @@ public class TEPlugins {
 		pluginIntegratedDynamics = new PluginIntegratedDynamics();
 		pluginMowziesMobs = new PluginMowziesMobs();
 		pluginMysticalAgriculture = new PluginMysticalAgriculture();
+		pluginMysticalWildlife = new PluginMysticalWildlife();
 		pluginNatura = new PluginNatura();
 		pluginPlants = new PluginPlants();
 		pluginPrimalCore = new PluginPrimalCore();
@@ -98,6 +99,7 @@ public class TEPlugins {
 		initList.add(pluginIntegratedDynamics);
 		initList.add(pluginMowziesMobs);
 		initList.add(pluginMysticalAgriculture);
+		initList.add(pluginMysticalWildlife);
 		initList.add(pluginNatura);
 		initList.add(pluginPlants);
 		initList.add(pluginPrimalCore);
@@ -159,6 +161,7 @@ public class TEPlugins {
 	private static PluginIntegratedDynamics pluginIntegratedDynamics;
 	private static PluginMowziesMobs pluginMowziesMobs;
 	private static PluginMysticalAgriculture pluginMysticalAgriculture;
+	private static PluginMysticalWildlife pluginMysticalWildlife;
 	private static PluginNatura pluginNatura;
 	private static PluginPlants pluginPlants;
 	private static PluginPrimalCore pluginPrimalCore;

@@ -400,7 +400,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	protected void transferSteam() {
 
-		FluidHelper.insertFluidIntoAdjacentFluidHandler(world, pos, EnumFacing.values()[facing], new FluidStack(TFFluids.fluidSteam, energyConfig.maxPower), true);
+		FluidHelper.insertFluidIntoAdjacentFluidHandler(world, pos, EnumFacing.VALUES[facing], new FluidStack(TFFluids.fluidSteam, energyConfig.maxPower), true);
 	}
 
 	protected void transferEnergy() {

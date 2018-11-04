@@ -150,6 +150,8 @@ public class ThermalExpansion {
 
 	private void preInitManagers() {
 
+		PulverizerManager.preInit();
+		SawmillManager.preInit();
 		SmelterManager.preInit();
 		InsolatorManager.preInit();
 		TransposerManager.preInit();

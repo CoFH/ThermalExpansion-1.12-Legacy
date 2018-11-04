@@ -64,9 +64,12 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 		String category = "Device.XpCollector";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		String comment = "Adjust this value to change the capture radius for the Insightful Condenser.";
+		radius = ThermalExpansion.CONFIG.getConfiguration().getInt("Radius", category, radius, 2, 16, comment);
 	}
 
-	private static final int RADIUS = 5;
+	private static int radius = 5;
 	private static final int TIME_CONSTANT = 16;
 
 	private int inputTracker;
@@ -184,7 +187,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 	protected void collectXpOrbs() {
 
-		AxisAlignedBB area = new AxisAlignedBB(pos.add(-RADIUS, -RADIUS, -RADIUS), pos.add(1 + RADIUS, 1 + RADIUS, 1 + RADIUS));
+		AxisAlignedBB area = new AxisAlignedBB(pos.add(-radius, -radius, -radius), pos.add(1 + radius, 1 + radius, 1 + radius));
 		List<EntityXPOrb> xpOrbs = world.getEntitiesWithinAABB(EntityXPOrb.class, area, EntitySelectors.IS_ALIVE);
 
 		for (EntityXPOrb orb : xpOrbs) {

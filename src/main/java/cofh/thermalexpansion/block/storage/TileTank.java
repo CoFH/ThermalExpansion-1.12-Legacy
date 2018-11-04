@@ -520,8 +520,11 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 						}
 						return resource.copy();
 					}
-					renderFlag = true;
-					return tank.drain(resource, doDrain);
+					FluidStack retStack = tank.drain(resource, doDrain);
+					if (retStack != null) {
+						renderFlag = true;
+					}
+					return retStack;
 				}
 
 				@Nullable
@@ -534,8 +537,11 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 						}
 						return new FluidStack(tank.getFluid(), maxDrain);
 					}
-					renderFlag = true;
-					return tank.drain(maxDrain, doDrain);
+					FluidStack retStack = tank.drain(maxDrain, doDrain);
+					if (retStack != null) {
+						renderFlag = true;
+					}
+					return retStack;
 				}
 			});
 		}

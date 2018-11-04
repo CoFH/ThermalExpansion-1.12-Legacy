@@ -73,6 +73,9 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		comment = "If TRUE, the Aqueous Accumulator will produce water very slowly even without adjacent source blocks.";
 		passiveGen = ThermalExpansion.CONFIG.get(category, "PassiveGeneration", passiveGen, comment);
+
+		//		comment = "If TRUE, the Aqueous Accumulator will only function in Rivers and Oceans.";
+		//		biomeRestriction = ThermalExpansion.CONFIG.get(category, "BiomeRestriction", biomeRestriction, comment);
 	}
 
 	private static final int TIME_CONSTANT = 40;
@@ -80,10 +83,12 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	private static int genRatePassive = 2 * TIME_CONSTANT;
 	private static boolean infiniteSource = false;
 	private static boolean passiveGen = false;
+	private static boolean biomeRestriction = false;
 
-	private int adjacentSources = -1;
+	private int targetWater = -1;
 	private int outputTracker;
 	private boolean inNether;
+	private boolean inBiome;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
 
@@ -126,8 +131,8 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		if (isActive) {
 			if (!infiniteSource) {
-				if (adjacentSources >= 2) {
-					tank.modifyFluidStored(genRate * (adjacentSources - 1));
+				if (targetWater >= 2) {
+					tank.modifyFluidStored(genRate * (targetWater - 1));
 				} else if (world.isRaining() && world.canSeeSky(getPos())) {
 					tank.modifyFluidStored(genRate);
 				} else if (passiveGen) {
@@ -140,7 +145,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		} else if (redstoneControlOrDisable() && !inNether) {
 			isActive = true;
 		}
-		if (adjacentSources < 0) {
+		if (targetWater < 0) {
 			updateValidity();
 		}
 		transferOutput();
@@ -151,25 +156,25 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	protected void updateValidity() {
 
 		inNether = BiomeDictionary.hasType(world.getBiome(pos), BiomeDictionary.Type.NETHER) && !infiniteSource;
-		adjacentSources = 0;
+		targetWater = 0;
 
 		if (isWater(world.getBlockState(pos.down()))) {
-			adjacentSources++;
+			targetWater++;
 		}
 		if (isWater(world.getBlockState(pos.up()))) {
-			adjacentSources++;
+			targetWater++;
 		}
 		if (isWater(world.getBlockState(pos.west()))) {
-			adjacentSources++;
+			targetWater++;
 		}
 		if (isWater(world.getBlockState(pos.east()))) {
-			adjacentSources++;
+			targetWater++;
 		}
 		if (isWater(world.getBlockState(pos.north()))) {
-			adjacentSources++;
+			targetWater++;
 		}
 		if (isWater(world.getBlockState(pos.south()))) {
-			adjacentSources++;
+			targetWater++;
 		}
 	}
 
@@ -235,7 +240,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		super.readFromNBT(nbt);
 
 		inNether = nbt.getBoolean("Hell");
-		adjacentSources = nbt.getInteger("Sources");
+		targetWater = nbt.getInteger("Sources");
 		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 		tank.readFromNBT(nbt);
 
@@ -250,7 +255,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		super.writeToNBT(nbt);
 
 		nbt.setBoolean("Hell", inNether);
-		nbt.setInteger("Sources", adjacentSources);
+		nbt.setInteger("Sources", targetWater);
 		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		tank.writeToNBT(nbt);
 		return nbt;

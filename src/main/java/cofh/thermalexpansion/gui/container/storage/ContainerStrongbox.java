@@ -55,22 +55,6 @@ public class ContainerStrongbox extends ContainerTileAugmentable implements ISlo
 	}
 
 	@Override
-	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
-
-		int xOffset = getPlayerInventoryHorizontalOffset();
-		int yOffset = getPlayerInventoryVerticalOffset();
-
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, xOffset + j * 18, yOffset + i * 18));
-			}
-		}
-		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventoryPlayer, i, xOffset + i * 18, yOffset + 58));
-		}
-	}
-
-	@Override
 	protected int getPlayerInventoryVerticalOffset() {
 
 		return 30 + 18 * MathHelper.clamp(storageIndex, 2, 9);

@@ -275,7 +275,8 @@ public class InsolatorManager {
 	/* REMOVE RECIPES */
 	public static InsolatorRecipe removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
-		return recipeMap.remove(asList(convertInput(primaryInput), convertInput(secondaryInput)));
+		InsolatorRecipe recipe = recipeMap.remove(asList(convertInput(primaryInput), convertInput(secondaryInput)));
+		return recipe != null ? recipe : recipeMap.remove(asList(convertInput(secondaryInput), convertInput(primaryInput)));
 	}
 
 	/* HELPERS */

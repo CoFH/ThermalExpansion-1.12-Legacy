@@ -244,37 +244,83 @@ public class SmelterManager {
 			for (ToolSetVanilla tool : new ToolSetVanilla[] { ToolSetVanilla.IRON, ToolSetVanilla.GOLD }) {
 				ingot = ItemHelper.getOre(tool.ingot);
 
-				addRecycleRecipe(energy, tool.toolBow, ingot, 1);
-				addRecycleRecipe(energy, tool.toolFishingRod, ingot, 1);
-				addRecycleRecipe(energy, tool.toolShears, ingot, 1);
-				addRecycleRecipe(energy, tool.toolSickle, ingot, 1);
-				addRecycleRecipe(energy, tool.toolHammer, ingot, 2);
-				addRecycleRecipe(energy, tool.toolExcavator, ingot, 1);
-				addRecycleRecipe(energy, tool.toolShield, ingot, 3);
+				if (tool.enable[0]) {
+					addRecycleRecipe(energy, tool.toolBow, ingot, 1);
+				}
+				if (tool.enable[1]) {
+					addRecycleRecipe(energy, tool.toolFishingRod, ingot, 1);
+				}
+				if (tool.enable[2]) {
+					addRecycleRecipe(energy, tool.toolShears, ingot, 1);
+				}
+				if (tool.enable[3]) {
+					addRecycleRecipe(energy, tool.toolSickle, ingot, 1);
+				}
+				if (tool.enable[4]) {
+					addRecycleRecipe(energy, tool.toolHammer, ingot, 2);
+				}
+				if (tool.enable[5]) {
+					addRecycleRecipe(energy, tool.toolExcavator, ingot, 1);
+				}
+				if (tool.enable[6]) {
+					addRecycleRecipe(energy, tool.toolShield, ingot, 3);
+				}
 			}
 			for (ToolSet tool : ToolSet.values()) {
 				ingot = ItemHelper.getOre(tool.ingot);
 
-				addRecycleRecipe(energy, tool.toolSword, ingot, 1);
-				addRecycleRecipe(energy, tool.toolPickaxe, ingot, 1);
-				addRecycleRecipe(energy, tool.toolAxe, ingot, 1);
-				addRecycleRecipe(energy, tool.toolShovel, ingot, 1);
-				addRecycleRecipe(energy, tool.toolHoe, ingot, 1);
-				addRecycleRecipe(energy, tool.toolBow, ingot, 1);
-				addRecycleRecipe(energy, tool.toolFishingRod, ingot, 1);
-				addRecycleRecipe(energy, tool.toolShears, ingot, 1);
-				addRecycleRecipe(energy, tool.toolSickle, ingot, 1);
-				addRecycleRecipe(energy, tool.toolHammer, ingot, 2);
-				addRecycleRecipe(energy, tool.toolExcavator, ingot, 1);
-				addRecycleRecipe(energy, tool.toolShield, ingot, 3);
+				if (tool.enable[0]) {
+					addRecycleRecipe(energy, tool.toolSword, ingot, 1);
+				}
+				if (tool.enable[1]) {
+					addRecycleRecipe(energy, tool.toolPickaxe, ingot, 1);
+				}
+				if (tool.enable[2]) {
+					addRecycleRecipe(energy, tool.toolAxe, ingot, 1);
+				}
+				if (tool.enable[3]) {
+					addRecycleRecipe(energy, tool.toolShovel, ingot, 1);
+				}
+				if (tool.enable[4]) {
+					addRecycleRecipe(energy, tool.toolHoe, ingot, 1);
+				}
+				if (tool.enable[5]) {
+					addRecycleRecipe(energy, tool.toolBow, ingot, 1);
+				}
+				if (tool.enable[6]) {
+					addRecycleRecipe(energy, tool.toolFishingRod, ingot, 1);
+				}
+				if (tool.enable[7]) {
+					addRecycleRecipe(energy, tool.toolShears, ingot, 1);
+				}
+				if (tool.enable[8]) {
+					addRecycleRecipe(energy, tool.toolSickle, ingot, 1);
+				}
+				if (tool.enable[9]) {
+					addRecycleRecipe(energy, tool.toolHammer, ingot, 2);
+				}
+				if (tool.enable[10]) {
+					addRecycleRecipe(energy, tool.toolExcavator, ingot, 1);
+				}
+				if (tool.enable[11]) {
+					addRecycleRecipe(energy, tool.toolShield, ingot, 3);
+				}
 			}
 			for (ArmorSet armor : ArmorSet.values()) {
 				ingot = ItemHelper.getOre(armor.ingot);
 
-				addRecycleRecipe(energy, armor.armorHelmet, ingot, 2);
-				addRecycleRecipe(energy, armor.armorChestplate, ingot, 4);
-				addRecycleRecipe(energy, armor.armorLegs, ingot, 3);
-				addRecycleRecipe(energy, armor.armorBoots, ingot, 2);
+				if (armor.enable[0]) {
+					addRecycleRecipe(energy, armor.armorHelmet, ingot, 2);
+				}
+				if (armor.enable[1]) {
+					addRecycleRecipe(energy, armor.armorChestplate, ingot, 4);
+				}
+				if (armor.enable[2]) {
+					addRecycleRecipe(energy, armor.armorLegs, ingot, 3);
+				}
+				if (armor.enable[3]) {
+					addRecycleRecipe(energy, armor.armorBoots, ingot, 2);
+				}
 			}
 			for (HorseArmor armor : HorseArmor.values()) {
 				ingot = ItemHelper.getOre(armor.ingot);
@@ -290,12 +336,12 @@ public class SmelterManager {
 			for (String oreName : oreNames) {
 				if (oreName.startsWith("ore")) {
 					if (isStandardOre(oreName)) {
-						oreType = oreName.substring(3, oreName.length());
+						oreType = oreName.substring(3);
 						addDefaultRecipes(oreType, "");
 					}
 				} else if (oreName.startsWith("dust")) {
 					if (isStandardOre(oreName)) {
-						oreType = oreName.substring(4, oreName.length());
+						oreType = oreName.substring(4);
 						addDefaultRecipes(oreType, "");
 					}
 				}
@@ -359,7 +405,8 @@ public class SmelterManager {
 	/* REMOVE RECIPES */
 	public static SmelterRecipe removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
-		return recipeMap.remove(asList(convertInput(primaryInput), convertInput(secondaryInput)));
+		SmelterRecipe recipe = recipeMap.remove(asList(convertInput(primaryInput), convertInput(secondaryInput)));
+		return recipe != null ? recipe : recipeMap.remove(asList(convertInput(secondaryInput), convertInput(primaryInput)));
 	}
 
 	/* HELPERS */

@@ -5,6 +5,7 @@ import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalfoundation.init.TFEquipment.ToolSetVanilla;
 import cofh.thermalfoundation.item.ItemMaterial;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -33,7 +34,7 @@ public class PulverizerManager {
 		oreValidator.addExact("treeLeaves");
 	}
 
-	static final int ORE_MULTIPLIER = 2;
+	static int oreMultiplier = 2;
 	public static final int DEFAULT_ENERGY = 4000;
 
 	public static PulverizerRecipe getRecipe(ItemStack input) {
@@ -60,6 +61,13 @@ public class PulverizerManager {
 	public static PulverizerRecipe[] getRecipeList() {
 
 		return recipeMap.values().toArray(new PulverizerRecipe[0]);
+	}
+
+	public static void preInit() {
+
+		String category = "Machine.Pulverizer";
+		String comment = "Adjust this value to change the default Ore -> Dust Multiplier for this machine.";
+		oreMultiplier = ThermalExpansion.CONFIG.getConfiguration().getInt("Ore -> Dust Multiplier", category, oreMultiplier, 1, 8, comment);
 	}
 
 	public static void initialize() {
@@ -201,14 +209,14 @@ public class PulverizerManager {
 		int energy = DEFAULT_ENERGY;
 
 		if (!gem.isEmpty()) {
-			addRecipe(energy, ore, ItemHelper.cloneStack(gem, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 10);
-			addRecipe(energy, oreNether, ItemHelper.cloneStack(gem, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
-			addRecipe(energy, oreEnd, ItemHelper.cloneStack(gem, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
+			addRecipe(energy, ore, ItemHelper.cloneStack(gem, oreMultiplier), related, related.isEmpty() ? 0 : 10);
+			addRecipe(energy, oreNether, ItemHelper.cloneStack(gem, oreMultiplier * 2), related, related.isEmpty() ? 0 : 20);
+			addRecipe(energy, oreEnd, ItemHelper.cloneStack(gem, oreMultiplier * 2), related, related.isEmpty() ? 0 : 20);
 			addRecipe(energy / 2, gem, ItemHelper.cloneStack(dust, 1));
 		} else {
-			addRecipe(energy, ore, ItemHelper.cloneStack(dust, ORE_MULTIPLIER), related, related.isEmpty() ? 0 : 10);
-			addRecipe(energy, oreNether, ItemHelper.cloneStack(dust, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
-			addRecipe(energy, oreEnd, ItemHelper.cloneStack(dust, ORE_MULTIPLIER * 2), related, related.isEmpty() ? 0 : 20);
+			addRecipe(energy, ore, ItemHelper.cloneStack(dust, oreMultiplier), related, related.isEmpty() ? 0 : 10);
+			addRecipe(energy, oreNether, ItemHelper.cloneStack(dust, oreMultiplier * 2), related, related.isEmpty() ? 0 : 20);
+			addRecipe(energy, oreEnd, ItemHelper.cloneStack(dust, oreMultiplier * 2), related, related.isEmpty() ? 0 : 20);
 			addRecipe(energy / 2, ingot, ItemHelper.cloneStack(dust, 1));
 		}
 	}

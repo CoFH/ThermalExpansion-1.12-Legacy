@@ -64,7 +64,7 @@ public class TileMobCatcher extends TileDeviceBase implements ITickable {
 		radius = ThermalExpansion.CONFIG.getConfiguration().getInt("Radius", category, radius, 2, 16, comment);
 	}
 
-	public static int radius = 4;
+	public static int radius = 5;
 
 	private static final byte MODE_ALL = 0;
 	private static final byte MODE_HOSTILE = 1;
@@ -169,7 +169,7 @@ public class TileMobCatcher extends TileDeviceBase implements ITickable {
 		if (inventory[0].isEmpty() || !inventory[0].getItem().equals(TEItems.itemMorb)) {
 			return;
 		}
-		AxisAlignedBB area = new AxisAlignedBB(pos.add(-radius, 1 - radius, -radius), pos.add(1 + radius, radius, 1 + radius));
+		AxisAlignedBB area = new AxisAlignedBB(pos.add(-radius, -radius, -radius), pos.add(1 + radius, 1 + radius, 1 + radius));
 		List<EntityLiving> mobs = world.getEntitiesWithinAABB(EntityLiving.class, area, EntitySelectors.IS_ALIVE);
 		mobs.removeIf(mob -> mob instanceof EntityTameable && ((EntityTameable) mob).isTamed());
 		mobs.removeIf(mob -> !mob.getPassengers().isEmpty());

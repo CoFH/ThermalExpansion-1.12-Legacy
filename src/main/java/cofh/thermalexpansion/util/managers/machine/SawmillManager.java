@@ -5,6 +5,7 @@ import cofh.core.inventory.ComparableItemStackValidated;
 import cofh.core.inventory.InventoryCraftingFalse;
 import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalfoundation.item.ItemMaterial;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.block.Block;
@@ -32,7 +33,7 @@ public class SawmillManager {
 		oreValidator.addExact("treeSapling");
 	}
 
-	static final float LOG_MULTIPLIER = 1.5F;
+	static float logMultiplier = 1.5F;
 	public static final int DEFAULT_ENERGY = 2000;
 
 	public static SawmillRecipe getRecipe(ItemStack input) {
@@ -59,6 +60,13 @@ public class SawmillManager {
 	public static SawmillRecipe[] getRecipeList() {
 
 		return recipeMap.values().toArray(new SawmillRecipe[0]);
+	}
+
+	public static void preInit() {
+
+		String category = "Machine.Sawmill";
+		String comment = "Adjust this value to change the default Log -> Plank Multiplier for this machine.";
+		logMultiplier = ThermalExpansion.CONFIG.getConfiguration().getFloat("Log -> Plank Multiplier", category, logMultiplier, 1.0F, 8.0F, comment);
 	}
 
 	public static void initialize() {
@@ -96,7 +104,7 @@ public class SawmillManager {
 
 						if (!resultEntry.isEmpty()) {
 							ItemStack result = resultEntry.copy();
-							result.setCount((int) (result.getCount() * LOG_MULTIPLIER));
+							result.setCount((int) (result.getCount() * SawmillManager.logMultiplier));
 							addRecipe(DEFAULT_ENERGY / 2, log, result, ItemMaterial.dustWood);
 						}
 					}
@@ -107,7 +115,7 @@ public class SawmillManager {
 
 					if (!resultEntry.isEmpty()) {
 						ItemStack result = resultEntry.copy();
-						result.setCount((int) (result.getCount() * LOG_MULTIPLIER));
+						result.setCount((int) (result.getCount() * SawmillManager.logMultiplier));
 						addRecipe(DEFAULT_ENERGY / 2, log, result, ItemMaterial.dustWood);
 					}
 				}
@@ -210,7 +218,7 @@ public class SawmillManager {
 
 	public static void addLogRecipe(ItemStack log, ItemStack planks) {
 
-		addRecipe(DEFAULT_ENERGY, log, ItemHelper.cloneStack(planks, (int) (4 * LOG_MULTIPLIER)), ItemHelper.cloneStack(ItemMaterial.dustWood));
+		addRecipe(DEFAULT_ENERGY, log, ItemHelper.cloneStack(planks, (int) (4 * SawmillManager.logMultiplier)), ItemHelper.cloneStack(ItemMaterial.dustWood));
 	}
 
 	public static void addPressurePlateRecipe(ItemStack pressurePlate, ItemStack planks) {
