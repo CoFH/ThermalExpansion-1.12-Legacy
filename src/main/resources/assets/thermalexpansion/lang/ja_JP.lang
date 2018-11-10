@@ -246,7 +246,7 @@ info.thermalexpansion.plate.charge.playersOnly=プレイヤーのみ
 info.thermalexpansion.plate.charge.anything=プレイヤーとアイテム
 
 #Info: Rock wools
-info.thermalexpansion.rockwool.default=鉱滓を焼いてできます。
+info.thermalexpansion.rockwool.default=スラグを焼いてできます。
 info.thermalexpansion.rockwool.dyed=他の岩綿を染色して作られます。
 
 #Info: Workbenches
@@ -328,8 +328,8 @@ item.thermalexpansion.material.lock.name=シグナルム安全錠
 
 item.thermalexpansion.material.dustWood.name=おがくず
 item.thermalexpansion.material.dustWoodCompressed.name=圧縮したおがくず
-item.thermalexpansion.material.slag.name=鉱滓
-item.thermalexpansion.material.slagRich.name=上質な鉱滓
+item.thermalexpansion.material.slag.name=スラグ
+item.thermalexpansion.material.slagRich.name=上質なスラグ
 item.thermalexpansion.material.fertilizer.name=§2フィトグロ§r
 item.thermalexpansion.material.fertilizerRich.name=§6§l§n§oリッチ§r §aフィトグロ§r
 
@@ -420,7 +420,7 @@ tab.thermalexpansion.machine.extruder.1=十分な量の水と溶岩があれば�
 tab.thermalexpansion.machine.extruder.2=マイクラ力学は面白い
 tab.thermalexpansion.machine.accumulator.0=周囲から水を集めます。
 tab.thermalexpansion.machine.accumulator.1=水源で囲むと効率が上がります。
-tab.thermalexpansion.machine.accumulator.2=溺るな
+tab.thermalexpansion.machine.accumulator.2=溺れないように注意してください。
 tab.thermalexpansion.machine.assembler.0=設計図を元にクラフトします。
 tab.thermalexpansion.machine.assembler.1=1アイテムをクラフトする毎に20RF消費します。
 tab.thermalexpansion.machine.assembler.2=あれは作らん
@@ -515,7 +515,7 @@ tile.thermalexpansion.machine.transposer.name=液体転置機
 tile.thermalexpansion.machine.precipitator.name=氷温凝結器
 tile.thermalexpansion.machine.extruder.name=火成成形機
 tile.thermalexpansion.machine.accumulator.name=水蒐集機
-tile.thermalexpansion.machine.assembler.name=循環組み立て記
+tile.thermalexpansion.machine.assembler.name=循環組み立て機
 tile.thermalexpansion.machine.charger.name=エネルギー充填機
 tile.thermalexpansion.machine.insolator.name=日光照射成長促進機
 
