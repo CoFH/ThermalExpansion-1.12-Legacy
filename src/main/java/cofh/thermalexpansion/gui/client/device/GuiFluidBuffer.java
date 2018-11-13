@@ -10,7 +10,6 @@ import cofh.thermalexpansion.block.device.TileFluidBuffer;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -131,15 +130,8 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 				lock[i].setActive();
 			}
 			if (myTile.locks[i]) {
-				String color = StringHelper.WHITE;
 				FluidStack fluid = myTile.getTank(i).getFluid();
-				if (fluid.getFluid().getRarity() == EnumRarity.UNCOMMON) {
-					color = StringHelper.YELLOW;
-				} else if (fluid.getFluid().getRarity() == EnumRarity.RARE) {
-					color = StringHelper.BRIGHT_BLUE;
-				} else if (fluid.getFluid().getRarity() == EnumRarity.EPIC) {
-					color = StringHelper.PINK;
-				}
+				String color = fluid.getFluid().getRarity().rarityColor.toString();
 				lock[i].setToolTip(StringHelper.localize("info.cofh.locked") + ": " + color + StringHelper.localize(fluid.getFluid().getLocalizedName(fluid)) + StringHelper.END);
 				lock[i].setSheetX(176);
 				lock[i].setHoverX(176);

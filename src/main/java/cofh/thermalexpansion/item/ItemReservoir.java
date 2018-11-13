@@ -101,17 +101,8 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, I
 
 		FluidStack fluid = getFluid(stack);
 		if (fluid != null) {
-			String color = StringHelper.LIGHT_GRAY;
-
-			if (fluid.getFluid().getRarity() == EnumRarity.UNCOMMON) {
-				color = StringHelper.YELLOW;
-			} else if (fluid.getFluid().getRarity() == EnumRarity.RARE) {
-				color = StringHelper.BRIGHT_BLUE;
-			} else if (fluid.getFluid().getRarity() == EnumRarity.EPIC) {
-				color = StringHelper.PINK;
-			}
+			String color = fluid.getFluid().getRarity().rarityColor.toString();
 			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName(fluid) + StringHelper.LIGHT_GRAY);
-
 			if (isCreative(stack)) {
 				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));
 			} else {

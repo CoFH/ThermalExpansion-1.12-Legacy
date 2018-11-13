@@ -31,6 +31,12 @@ public class ItemBlockDevice extends ItemBlockTEBase {
 	}
 
 	@Override
+	public String getItemStackDisplayName(ItemStack stack) {
+
+		return StringHelper.localize(getUnlocalizedName(stack));
+	}
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
 		return "tile.thermalexpansion.device." + Type.values()[ItemHelper.getItemDamage(stack)].getName() + ".name";
