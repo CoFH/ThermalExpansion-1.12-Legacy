@@ -58,12 +58,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 
-		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			tooltip.add(StringHelper.shiftForDetails());
-		}
-		if (!StringHelper.isShiftKeyDown()) {
-			return;
-		}
 		AugmentType type = getAugmentType(stack);
 		String id = getAugmentIdentifier(stack);
 
@@ -77,6 +71,14 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 			i++;
 			line = "info.thermalexpansion.augment." + id + "." + i;
 		}
+
+		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
+			tooltip.add(StringHelper.shiftForDetails());
+		}
+		if (!StringHelper.isShiftKeyDown()) {
+			return;
+		}
+
 		i = 0;
 		line = "info.thermalexpansion.augment." + id + ".a." + i;
 		while (StringHelper.canLocalize(line)) {

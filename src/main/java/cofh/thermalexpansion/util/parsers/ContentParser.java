@@ -56,6 +56,7 @@ public class ContentParser {
 		contentParsers.put("crucible", new CrucibleParser());
 		contentParsers.put("refinery", new RefineryParser());
 		contentParsers.put("charger", new ChargerParser());
+		contentParsers.put("centrifuge", new CentrifugeParser());
 
 		contentParsers.put("dynamo_steam", new SteamParser());
 		contentParsers.put("dynamo_magmatic", new MagmaticParser());
