@@ -19,16 +19,16 @@ public class RecipeUidsTE {
 	public static final String INSOLATOR = "thermalexpansion.insolator";
 	public static final String INSOLATOR_TREE = "thermalexpansion.insolator_tree";
 
-	public static final String COMPACTOR_PRESS = "thermalexpansion.compactor_press";
-	public static final String COMPACTOR_STORAGE = "thermalexpansion.compactor_storage";
-	public static final String COMPACTOR_MINT = "thermalexpansion.compactor_mint";
+	public static final String COMPACTOR = "thermalexpansion.compactor";
+	public static final String COMPACTOR_COIN = "thermalexpansion.compactor_mint";
 	public static final String COMPACTOR_GEAR = "thermalexpansion.compactor_gear";
 
 	public static final String CRUCIBLE = "thermalexpansion.crucible";
 	public static final String CRUCIBLE_LAVA = "thermalexpansion.crucible_lava";
 
 	public static final String REFINERY = "thermalexpansion.refinery";
-	public static final String REFINERY_OIL = "thermalexpansion.refinery_oil";
+	public static final String REFINERY_FOSSIL = "thermalexpansion.refinery_fossil";
+	public static final String REFINERY_BIO = "thermalexpansion.refinery_bio";
 	public static final String REFINERY_POTION = "thermalexpansion.refinery_potion";
 
 	public static final String TRANSPOSER_FILL = "thermalexpansion.transposer_fill";
@@ -37,6 +37,7 @@ public class RecipeUidsTE {
 	public static final String CHARGER = "thermalexpansion.charger";
 
 	public static final String CENTRIFUGE = "thermalexpansion.centrifuge";
+	public static final String CENTRIFUGE_MOBS = "thermalexpansion.centrifuge_mobs";
 
 	public static final String BREWER = "thermalexpansion.brewer";
 
@@ -45,15 +46,20 @@ public class RecipeUidsTE {
 
 	public static final String PRECIPITATOR = "thermalexpansion.precipitator";
 	public static final String EXTRUDER = "thermalexpansion.extruder";
+	public static final String EXTRUDER_SEDIMENTARY = "thermalexpansion.extruder_sedimentary";
 
 	public static final String DYNAMO_STEAM = "thermalexpansion.steam";
 	public static final String DYNAMO_MAGMATIC = "thermalexpansion.magmatic";
 	public static final String DYNAMO_COMPRESSION = "thermalexpansion.compression";
 	public static final String DYNAMO_REACTANT = "thermalexpansion.reactant";
+	public static final String DYNAMO_REACTANT_ELEMENTAL = "thermalexpansion.reactant_elemental";
 	public static final String DYNAMO_ENERVATION = "thermalexpansion.enervation";
 	public static final String DYNAMO_NUMISMATIC = "thermalexpansion.numismatic";
 	public static final String DYNAMO_NUMISMATIC_GEM = "thermalexpansion.numismatic_gem";
 
+	public static final String FACTORIZER = "thermalexpansion.factorizer";
+	public static final String FACTORIZER_COMBINE = "thermalexpansion.factorizer_combine";
+	public static final String FACTORIZER_SPLIT = "thermalexpansion.factorizer_split";
 	public static final String COOLANT = "thermalexpansion.coolant";
 
 }

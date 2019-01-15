@@ -2,6 +2,7 @@ package cofh.thermalexpansion.proxy;
 
 import cofh.core.render.IModelRegister;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
+import cofh.thermalexpansion.entity.projectile.EntityMorb;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -25,10 +26,15 @@ public class Proxy {
 
 	}
 
+	public void onIdRemap() {
+
+	}
+
 	/* REGISTRATION */
 	public void registerEntities() {
 
 		EntityFlorb.initialize(0);
+		EntityMorb.initialize(1);
 	}
 
 	/* HELPERS */

@@ -1,8 +1,7 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
-import cofh.core.init.CoreProps;
 import com.google.common.collect.ImmutableSet;
-import gnu.trove.map.hash.TObjectIntHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -10,7 +9,7 @@ import java.util.Set;
 
 public class MagmaticManager {
 
-	private static TObjectIntHashMap<String> fuelMap = new TObjectIntHashMap<>();
+	private static Object2IntOpenHashMap<String> fuelMap = new Object2IntOpenHashMap<>();
 
 	public static int DEFAULT_ENERGY = 100000;
 
@@ -19,36 +18,19 @@ public class MagmaticManager {
 		return ImmutableSet.copyOf(fuelMap.keySet());
 	}
 
-	public static boolean isValidFuel(FluidStack fluid) {
+	public static boolean isValidFuel(FluidStack stack) {
 
-		return fluid != null && fuelMap.containsKey(fluid.getFluid().getName());
+		return stack != null && fuelMap.containsKey(stack.getFluid().getName());
 	}
 
-	public static int getFuelEnergy(FluidStack fluid) {
+	public static int getFuelEnergy(FluidStack stack) {
 
-		return fluid == null ? 0 : fuelMap.get(fluid.getFluid().getName());
+		return stack == null ? 0 : fuelMap.getInt(stack.getFluid().getName());
 	}
 
-	public static int getFuelEnergy100mB(FluidStack fluid) {
+	public static int getFuelEnergy100mB(FluidStack stack) {
 
-		return fluid == null ? 0 : fuelMap.get(fluid.getFluid().getName()) / 10;
-	}
-
-	public static void initialize() {
-
-		addFuel("lava", CoreProps.LAVA_RF * 60 / 100);
-		addFuel("pyrotheum", 2000000);
-
-		loadFuels();
-	}
-
-	public static void loadFuels() {
-
-		/* INDUSTRIALCRAFT 2 */
-		{
-			addFuel("ic2pahoehoe_lava", CoreProps.LAVA_RF * 40 / 100);
-			addFuel("ic2hot_coolant", 40000);
-		}
+		return stack == null ? 0 : fuelMap.getInt(stack.getFluid().getName()) / 10;
 	}
 
 	public static void refresh() {
@@ -61,6 +43,9 @@ public class MagmaticManager {
 		if (!FluidRegistry.isFluidRegistered(fluidName) || energy < 10000 || energy > 200000000) {
 			return false;
 		}
+		if (fuelMap.containsKey(fluidName)) {
+			return false;
+		}
 		fuelMap.put(fluidName, energy);
 		return true;
 	}
@@ -71,7 +56,7 @@ public class MagmaticManager {
 		if (!FluidRegistry.isFluidRegistered(fluidName)) {
 			return false;
 		}
-		fuelMap.remove(fluidName);
+		fuelMap.removeInt(fluidName);
 		return true;
 	}
 

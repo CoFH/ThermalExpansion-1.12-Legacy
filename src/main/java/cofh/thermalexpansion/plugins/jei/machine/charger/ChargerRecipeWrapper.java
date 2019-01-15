@@ -40,7 +40,7 @@ public class ChargerRecipeWrapper extends BaseRecipeWrapper {
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLUX);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileCharger.basePower, StartDirection.BOTTOM, false);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, Math.max(1, energy / TileCharger.basePower), StartDirection.BOTTOM, false);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}
 

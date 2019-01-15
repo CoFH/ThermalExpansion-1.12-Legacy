@@ -1,16 +1,9 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.init.CoreProps;
-import cofh.core.inventory.ComparableItemStackSafeNBT;
-import cofh.thermalfoundation.block.BlockOreFluid;
-import cofh.thermalfoundation.init.TFFluids;
-import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import cofh.core.inventory.ComparableItemStackValidatedNBT;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -20,14 +13,14 @@ import java.util.Set;
 
 public class CrucibleManager {
 
-	private static Map<ComparableItemStackCrucible, CrucibleRecipe> recipeMap = new THashMap<>();
-	private static Set<ComparableItemStackCrucible> lavaSet = new THashSet<>();
+	private static Map<ComparableItemStackValidatedNBT, CrucibleRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidatedNBT> lavaSet = new ObjectOpenHashSet<>();
 
 	public static final int DEFAULT_ENERGY = 8000;
 
 	public static CrucibleRecipe getRecipe(ItemStack input) {
 
-		return input.isEmpty() ? null : recipeMap.get(new ComparableItemStackCrucible(input));
+		return input.isEmpty() ? null : recipeMap.get(new ComparableItemStackValidatedNBT(input));
 	}
 
 	public static boolean recipeExists(ItemStack input) {
@@ -37,87 +30,27 @@ public class CrucibleManager {
 
 	public static CrucibleRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new CrucibleRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new CrucibleRecipe[0]);
 	}
 
 	public static boolean isLava(ItemStack input) {
 
-		return !input.isEmpty() && lavaSet.contains(new ComparableItemStackCrucible(input));
+		return !input.isEmpty() && lavaSet.contains(new ComparableItemStackValidatedNBT(input));
 	}
 
 	public static void initialize() {
-
-		/* LAVA */
-		{
-			int netherrack_RF = CoreProps.LAVA_RF * 30 / 100;
-			int magma_RF = CoreProps.LAVA_RF * 20 / 100;
-			int rock_RF = CoreProps.LAVA_RF * 150 / 100;
-
-			addRecipe(netherrack_RF, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-			addRecipe(magma_RF, new ItemStack(Blocks.MAGMA), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-			addRecipe(rock_RF, new ItemStack(Blocks.COBBLESTONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-			addRecipe(rock_RF, new ItemStack(Blocks.STONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-			addRecipe(rock_RF, new ItemStack(Blocks.STONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-			addRecipe(rock_RF, new ItemStack(Blocks.STONE, 1, 5), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-			addRecipe(rock_RF, new ItemStack(Blocks.STONE, 1, 6), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-			addRecipe(rock_RF, new ItemStack(Blocks.OBSIDIAN), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-		}
-
-		/* VANILLA */
-		{
-			addRecipe(200, new ItemStack(Items.SNOWBALL), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME / 8));
-			addRecipe(800, new ItemStack(Blocks.SNOW), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME / 2));
-			addRecipe(1600, new ItemStack(Blocks.ICE), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
-
-			addRecipe(8000, new ItemStack(Items.REDSTONE), new FluidStack(TFFluids.fluidRedstone, 100));
-			addRecipe(8000 * 9, new ItemStack(Blocks.REDSTONE_BLOCK), new FluidStack(TFFluids.fluidRedstone, 100 * 9));
-			addRecipe(20000, new ItemStack(Items.GLOWSTONE_DUST), new FluidStack(TFFluids.fluidGlowstone, 250));
-			addRecipe(20000 * 4, new ItemStack(Blocks.GLOWSTONE), new FluidStack(TFFluids.fluidGlowstone, Fluid.BUCKET_VOLUME));
-			addRecipe(20000, new ItemStack(Items.ENDER_PEARL), new FluidStack(TFFluids.fluidEnder, 250));
-		}
-
-		/* TF MATERIALS */
-		{
-			addRecipe(2000, ItemMaterial.globTar, new FluidStack(TFFluids.fluidCreosote, 100));
-			addRecipe(4000, ItemMaterial.dustCoal, new FluidStack(TFFluids.fluidCoal, 100));
-
-			addRecipe(2000, ItemMaterial.crystalCrudeOil, new FluidStack(TFFluids.fluidCrudeOil, 250));
-			addRecipe(2000, ItemMaterial.crystalRedstone, new FluidStack(TFFluids.fluidRedstone, 250));
-			addRecipe(2000, ItemMaterial.crystalGlowstone, new FluidStack(TFFluids.fluidGlowstone, 250));
-			addRecipe(2000, ItemMaterial.crystalEnder, new FluidStack(TFFluids.fluidEnder, 250));
-
-			addRecipe(8000, ItemMaterial.dustPyrotheum, new FluidStack(TFFluids.fluidPyrotheum, 250));
-			addRecipe(8000, ItemMaterial.dustCryotheum, new FluidStack(TFFluids.fluidCryotheum, 250));
-			addRecipe(8000, ItemMaterial.dustAerotheum, new FluidStack(TFFluids.fluidAerotheum, 250));
-			addRecipe(8000, ItemMaterial.dustPetrotheum, new FluidStack(TFFluids.fluidPetrotheum, 250));
-		}
-
-		/* TF FLUID ORES */
-		{
-			addRecipe(4000, BlockOreFluid.oreFluidCrudeOilSand, new FluidStack(TFFluids.fluidCrudeOil, Fluid.BUCKET_VOLUME));
-			addRecipe(4000, BlockOreFluid.oreFluidCrudeOilGravel, new FluidStack(TFFluids.fluidCrudeOil, Fluid.BUCKET_VOLUME));
-			addRecipe(4000, BlockOreFluid.oreFluidRedstone, new FluidStack(TFFluids.fluidRedstone, Fluid.BUCKET_VOLUME));
-			addRecipe(4000, BlockOreFluid.oreFluidGlowstone, new FluidStack(TFFluids.fluidGlowstone, Fluid.BUCKET_VOLUME));
-			addRecipe(4000, BlockOreFluid.oreFluidEnder, new FluidStack(TFFluids.fluidEnder, Fluid.BUCKET_VOLUME));
-		}
-
-		/* LOAD RECIPES */
-		loadRecipes();
-	}
-
-	public static void loadRecipes() {
 
 	}
 
 	public static void refresh() {
 
-		Map<ComparableItemStackCrucible, CrucibleRecipe> tempMap = new THashMap<>(recipeMap.size());
-		Set<ComparableItemStackCrucible> tempSet = new THashSet<>();
+		Map<ComparableItemStackValidatedNBT, CrucibleRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Set<ComparableItemStackValidatedNBT> tempSet = new ObjectOpenHashSet<>();
 		CrucibleRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackCrucible, CrucibleRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackValidatedNBT, CrucibleRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackCrucible input = new ComparableItemStackCrucible(tempRecipe.input);
+			ComparableItemStackValidatedNBT input = new ComparableItemStackValidatedNBT(tempRecipe.input);
 			tempMap.put(input, tempRecipe);
 
 			if (FluidRegistry.LAVA.equals(tempRecipe.getOutput().getFluid())) {
@@ -137,7 +70,7 @@ public class CrucibleManager {
 		if (input.isEmpty() || output == null || output.amount <= 0 || energy <= 0 || recipeExists(input)) {
 			return null;
 		}
-		ComparableItemStackCrucible inputCrucible = new ComparableItemStackCrucible(input);
+		ComparableItemStackValidatedNBT inputCrucible = new ComparableItemStackValidatedNBT(input);
 
 		CrucibleRecipe recipe = new CrucibleRecipe(input, output, energy);
 		recipeMap.put(inputCrucible, recipe);
@@ -151,9 +84,15 @@ public class CrucibleManager {
 	/* REMOVE RECIPES */
 	public static CrucibleRecipe removeRecipe(ItemStack input) {
 
-		ComparableItemStackCrucible inputCrucible = new ComparableItemStackCrucible(input);
+		ComparableItemStackValidatedNBT inputCrucible = new ComparableItemStackValidatedNBT(input);
 		lavaSet.remove(inputCrucible);
 		return recipeMap.remove(inputCrucible);
+	}
+
+	/* HELPERS */
+	public static ComparableItemStackValidatedNBT convertInput(ItemStack stack) {
+
+		return new ComparableItemStackValidatedNBT(stack);
 	}
 
 	/* RECIPE CLASS */
@@ -183,23 +122,6 @@ public class CrucibleManager {
 		public int getEnergy() {
 
 			return energy;
-		}
-	}
-
-	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackCrucible extends ComparableItemStackSafeNBT {
-
-		public static final String PLATE = "plate";
-
-		@Override
-		public boolean safeOreType(String oreName) {
-
-			return oreName.startsWith(INGOT) || oreName.startsWith(ORE) || oreName.startsWith(NUGGET) || oreName.startsWith(BLOCK) || oreName.startsWith(DUST) || oreName.equals(PLATE);
-		}
-
-		public ComparableItemStackCrucible(ItemStack stack) {
-
-			super(stack);
 		}
 	}
 

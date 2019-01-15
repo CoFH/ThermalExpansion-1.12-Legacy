@@ -1,0 +1,171 @@
+{
+	"pulverizer": [
+		{
+			"input": {
+				"item": "minecraft:red_flower",
+				"data": 0
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 1,
+				"count": 4
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:red_flower",
+				"data": 1
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 12,
+				"count": 4
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:red_flower",
+				"data": 2
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 13,
+				"count": 4
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:red_flower",
+				"data": 3
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 7,
+				"count": 4
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:red_flower",
+				"data": 4
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 1,
+				"count": 4
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:red_flower",
+				"data": 5
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 14,
+				"count": 4
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:red_flower",
+				"data": 6
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 7,
+				"count": 4
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:red_flower",
+				"data": 7
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 9,
+				"count": 4
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:red_flower",
+				"data": 8
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 7,
+				"count": 4
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:yellow_flower"
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 11,
+				"count": 4
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:double_plant",
+				"data": 0
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 11,
+				"count": 4
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:double_plant",
+				"data": 1
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 13,
+				"count": 4
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:double_plant",
+				"data": 4
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 1,
+				"count": 4
+			},
+			"energy_mod": 50
+		},
+		{
+			"input": {
+				"item": "minecraft:double_plant",
+				"data": 5
+			},
+			"output": {
+				"item": "minecraft:dye",
+				"data": 9,
+				"count": 4
+			},
+			"energy_mod": 50
+		}
+	]
+}

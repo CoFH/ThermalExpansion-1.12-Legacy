@@ -3,17 +3,20 @@ package cofh.thermalexpansion.block.apparatus;
 import cofh.api.core.IAccelerable;
 import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.api.tileentity.IInventoryConnection;
-import cofh.core.entity.CoFHFakePlayer;
+import cofh.core.block.TilePowered;
+import cofh.core.entity.FakePlayerCore;
 import cofh.core.init.CoreProps;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.InventoryHelper;
 import cofh.core.util.helpers.ServerHelper;
-import cofh.thermalexpansion.block.TilePowered;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.apparatus.BlockApparatus.Type;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.util.Utils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +26,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -35,7 +39,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	public static final HashSet[] VALID_AUGMENTS = new HashSet[Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[Type.values().length];
 
-	private static boolean enableSecurity = true;
+	protected static boolean enableSecurity = true;
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 
@@ -54,7 +58,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	int processRem;
 	boolean hasModeAugment;
 
-	CoFHFakePlayer fakePlayer;
+	FakePlayerCore fakePlayer;
 	LinkedList<ItemStack> stuffedItems = new LinkedList<>();
 
 	EnergyConfig energyConfig;
@@ -68,7 +72,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	public void onLoad() {
 
 		if (ServerHelper.isServerWorld(world)) {
-			fakePlayer = new CoFHFakePlayer((WorldServer) world);
+			fakePlayer = new FakePlayerCore((WorldServer) world);
 		}
 	}
 
@@ -81,9 +85,21 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	}
 
 	@Override
-	public String getTileName() {
+	protected Object getMod() {
 
-		return "tile.thermalexpansion.apparatus." + Type.byMetadata(getType()).getName() + ".name";
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getModVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected String getTileName() {
+
+		return "tile.thermalexpansion.apparatus." + Type.values()[getType()].getName() + ".name";
 	}
 
 	@Override
@@ -131,13 +147,13 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 
 	protected boolean outputBuffer() {
 
-		if (enableAutoOutput) {
+		if (getTransferOut()) {
 			for (int i = 0; i < 6; i++) {
 				if (sideCache[i] == 1) {
 					EnumFacing side = EnumFacing.VALUES[i];
 					TileEntity curTile = BlockHelper.getAdjacentTileEntity(this, side);
 					/* Add to Adjacent Inventory */
-					if (Utils.isAccessibleOutput(curTile, side)) {
+					if (InventoryHelper.isAccessibleOutput(curTile, side)) {
 						LinkedList<ItemStack> newStuffed = new LinkedList<>();
 						for (ItemStack curItem : stuffedItems) {
 							if (curItem.isEmpty()) {
@@ -277,6 +293,7 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {

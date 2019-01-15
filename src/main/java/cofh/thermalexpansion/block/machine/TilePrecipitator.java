@@ -2,7 +2,11 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.gui.container.ICustomInventory;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -31,6 +35,8 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TilePrecipitator extends TileMachineBase implements ICustomInventory {
 
 	private static final int TYPE = Type.PRECIPITATOR.getMetadata();
@@ -43,6 +49,12 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 }, { 0 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, OUTPUT_ALL, OPEN, OMNI };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+
+		ALT_SIDE_CONFIGS[TYPE] = new SideConfig();
+		ALT_SIDE_CONFIGS[TYPE].numConfig = 2;
+		ALT_SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 }, { 0 } };
+		ALT_SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, OPEN };
+		ALT_SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { false, false };
@@ -159,7 +171,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		if (inventory[0].isEmpty()) {
@@ -263,7 +275,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		super.readFromNBT(nbt);
 
-		outputTracker = nbt.getInteger("TrackOut");
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 
 		if (nbt.hasKey("OutputItem", 10)) {
 			index = PrecipitatorManager.getIndex(new ItemStack(nbt.getCompoundTag("OutputItem")));
@@ -279,7 +291,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 
 		nbt.setTag("OutputItem", outputItem[0].writeToNBT(new NBTTagCompound()));
 		tank.writeToNBT(nbt);
@@ -371,19 +383,22 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return 0;
+					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.fill(resource, doFill);
 					}
-					if (resource.getFluid() != FluidRegistry.WATER) {
-						return 0;
-					}
-					return tank.fill(resource, doFill);
+					return 0;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
+					if (isActive) {
+						return null;
+					}
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(resource, doDrain);
+					}
 					return null;
 				}
 
@@ -391,6 +406,12 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
+					if (isActive) {
+						return null;
+					}
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(maxDrain, doDrain);
+					}
 					return null;
 				}
 			});

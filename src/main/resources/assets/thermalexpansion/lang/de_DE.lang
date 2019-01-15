@@ -25,15 +25,8 @@ achievement.thermalexpansion.welcome=Die Welt dehnt sich aus
 
 gui.thermalexpansion.jei.category.dynamo.reactant.fluid=Reaktordynamo (Brennstoff)
 gui.thermalexpansion.jei.category.dynamo.reactant.solid=Reaktordynamo (Reaktant)
-gui.thermalexpansion.jei.compactor.modeMint=Prägen
-gui.thermalexpansion.jei.compactor.modePress=Pressen
-gui.thermalexpansion.jei.compactor.modeStorage=Lagern
 gui.thermalexpansion.jei.transposer.modeEmpty=Leeren
 gui.thermalexpansion.jei.transposer.modeFill=Füllen
-
-gui.thermalexpansion.machine.compactor.modeMint=Modus: Prägen
-gui.thermalexpansion.machine.compactor.modePress=Modus: Pressen
-gui.thermalexpansion.machine.compactor.modeStorage=Modus: Lagern
 
 gui.thermalexpansion.machine.insolator.modeLocked=Dünger-Slot Gesperrt
 gui.thermalexpansion.machine.insolator.modeUnlocked=Dünger-Slot Entsperrt
@@ -101,7 +94,7 @@ item.thermalexpansion.augment.dynamoSteamTurbine.name=Turbinenwandelmodul
 item.thermalexpansion.augment.dynamoThrottle.name=Exzitationsfelddrossel
 
 item.thermalexpansion.augment.machineChargerThroughput.name=Fluxlinkkonzentrator
-item.thermalexpansion.augment.machineCompactorMint.name=Numismatische Presse
+item.thermalexpansion.augment.machineCompactorCoin.name=Numismatische Presse
 item.thermalexpansion.augment.machineFurnaceFood.name=Trivektionskammer
 item.thermalexpansion.augment.machineFurnaceOre.name=Fluxanodisator
 item.thermalexpansion.augment.machineExtruderAndesite.name=Andesitische Subduktion
@@ -120,8 +113,8 @@ item.thermalexpansion.augment.machineSmelterPyrotheum.name=Pyrokonzentrator
 item.thermalexpansion.augment.machineSecondary.name=Sekundärsieb
 item.thermalexpansion.augment.machineSecondaryNull.name=Nullifikationskammer
 
-item.thermalexpansion.florb.florb.name=Florb
-item.thermalexpansion.florb.florbMagmatic.name=Magmatischer Florb
+item.thermalexpansion.florb.standard.name=Florb
+item.thermalexpansion.florb.magmatic.name=Magmatischer Florb
 
 item.thermalexpansion.frame.frameApparatus.name=Apparatusrahmen
 item.thermalexpansion.frame.frameCell.name=Energiezellenrahmen

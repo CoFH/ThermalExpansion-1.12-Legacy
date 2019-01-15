@@ -9,8 +9,8 @@ import cofh.thermalfoundation.item.ItemFertilizer;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import gnu.trove.iterator.TObjectIntIterator;
-import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.block.*;
 import net.minecraft.block.BlockHugeMushroom.EnumType;
 import net.minecraft.block.properties.PropertyEnum;
@@ -26,8 +26,8 @@ import java.util.Set;
 
 public class TapperManager {
 
-	private static Map<BlockWrapper, FluidStack> blockMap = new THashMap<>();
-	private static Map<ItemWrapper, FluidStack> itemMap = new THashMap<>();
+	private static Map<BlockWrapper, FluidStack> blockMap = new Object2ObjectOpenHashMap<>();
+	private static Map<ItemWrapper, FluidStack> itemMap = new Object2ObjectOpenHashMap<>();
 	private static SetMultimap<BlockWrapper, BlockWrapper> leafMap = HashMultimap.create();
 	private static TObjectIntHashMap<ComparableItemStack> fertilizerMap = new TObjectIntHashMap<>();
 
@@ -89,7 +89,7 @@ public class TapperManager {
 			addStandardMapping(new ItemStack(Blocks.LOG, 1, 2), new FluidStack(resin, 50));
 			addStandardMapping(new ItemStack(Blocks.LOG, 1, 3), new FluidStack(resin, 50));     // rubber
 			addStandardMapping(new ItemStack(Blocks.LOG2, 1, 0), new FluidStack(resin, 50));    // rubber
-			addStandardMapping(new ItemStack(Blocks.LOG2, 1, 1), new FluidStack(sap, 50));
+			addStandardMapping(new ItemStack(Blocks.LOG2, 1, 1), new FluidStack(sap, 100));
 
 			addBlockStateMapping(new ItemStack(Blocks.BROWN_MUSHROOM_BLOCK, 1, 10), new FluidStack(mushroom_stew, 50));
 			addBlockStateMapping(new ItemStack(Blocks.RED_MUSHROOM_BLOCK, 1, 10), new FluidStack(mushroom_stew, 50));
@@ -170,8 +170,8 @@ public class TapperManager {
 
 	public static void refresh() {
 
-		Map<BlockWrapper, FluidStack> tempBlockMap = new THashMap<>(blockMap.size());
-		Map<ItemWrapper, FluidStack> tempItemMap = new THashMap<>(itemMap.size());
+		Map<BlockWrapper, FluidStack> tempBlockMap = new Object2ObjectOpenHashMap<>(blockMap.size());
+		Map<ItemWrapper, FluidStack> tempItemMap = new Object2ObjectOpenHashMap<>(itemMap.size());
 		HashMultimap<BlockWrapper, BlockWrapper> tempLeafMap = HashMultimap.create(leafMap.keySet().size(), leafMap.size() / leafMap.keySet().size());
 		TObjectIntHashMap<ComparableItemStack> tempFertilizerMap = new TObjectIntHashMap<>(fertilizerMap.size());
 

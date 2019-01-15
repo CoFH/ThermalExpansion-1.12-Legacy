@@ -2,13 +2,9 @@ package cofh.thermalexpansion.util.managers.dynamo;
 
 import cofh.core.init.CoreProps;
 import cofh.core.inventory.ComparableItemStack;
-import cofh.core.util.helpers.ItemHelper;
-import cofh.thermalfoundation.item.ItemMaterial;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 
@@ -46,20 +42,6 @@ public class SteamManager {
 		return 0;
 	}
 
-	public static void initialize() {
-
-		addFuel(new ItemStack(Items.COAL, 1, 0), 24000);
-		addFuel(new ItemStack(Blocks.COAL_BLOCK), 24000 * 10);
-		addFuel(new ItemStack(Items.COAL, 1, 1), 16000);
-		addFuel(ItemHelper.cloneStack(ItemMaterial.fuelCoke, 1), 40000);
-
-		loadFuels();
-	}
-
-	public static void loadFuels() {
-
-	}
-
 	public static void refresh() {
 
 		TObjectIntHashMap<ComparableItemStack> tempMap = new TObjectIntHashMap<>(fuelMap.size());
@@ -75,7 +57,10 @@ public class SteamManager {
 	/* ADD FUELS */
 	public static boolean addFuel(ItemStack stack, int energy) {
 
-		if (stack.isEmpty() || energy < 1000 || energy > 200000000) {
+		if (stack.isEmpty() || energy < 2000 || energy > 200000000) {
+			return false;
+		}
+		if (fuelMap.containsKey(new ComparableItemStack(stack))) {
 			return false;
 		}
 		fuelMap.put(new ComparableItemStack(stack), energy);

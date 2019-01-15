@@ -2,6 +2,7 @@ package cofh.thermalexpansion.plugins.jei.dynamo.numismatic;
 
 import cofh.core.inventory.ComparableItemStack;
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoNumismatic;
 import cofh.thermalexpansion.plugins.jei.Drawables;
@@ -26,6 +27,9 @@ public class NumismaticFuelCategory extends BaseFuelCategory<NumismaticFuelWrapp
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Dynamo.Numismatic", enable);
 
 		if (!enable) {
 			return;

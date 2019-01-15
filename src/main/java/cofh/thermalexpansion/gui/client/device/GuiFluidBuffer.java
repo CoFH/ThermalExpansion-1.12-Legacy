@@ -1,15 +1,15 @@
 package cofh.thermalexpansion.gui.client.device;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.element.ElementButton;
 import cofh.core.gui.element.ElementFluidTank;
 import cofh.core.gui.element.ElementSimple;
+import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.device.TileFluidBuffer;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -30,7 +30,7 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 
 	public GuiFluidBuffer(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
+		super(new ContainerTileAugmentable(inventory, tile), tile, inventory.player, TEXTURE);
 
 		generateInfo("tab.thermalexpansion.device.fluid_buffer");
 
@@ -77,15 +77,23 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		int change2;
 
 		if (GuiScreen.isShiftKeyDown()) {
-			change = 8000;
-			change2 = 4000;
-		} else if (GuiScreen.isCtrlKeyDown()) {
-			change = 500;
+			change = 1000;
 			change2 = 100;
+
+			if (GuiScreen.isCtrlKeyDown()) {
+				change *= 10;
+				change2 *= 10;
+			}
+		} else if (GuiScreen.isCtrlKeyDown()) {
+			change = 5;
+			change2 = 1;
 		} else {
-			change = 2000;
-			change2 = 1000;
+			change = 50;
+			change2 = 10;
 		}
+		change = MathHelper.clamp(change, 1, 8000);
+		change2 = MathHelper.clamp(change2, 1, 8000);
+
 		if (myTile.amountInput > 0) {
 			decInput.setActive();
 			decInput.setToolTip(StringHelper.localize("gui.thermalexpansion.device.item_buffer.decInput") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
@@ -122,15 +130,8 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 				lock[i].setActive();
 			}
 			if (myTile.locks[i]) {
-				String color = StringHelper.WHITE;
 				FluidStack fluid = myTile.getTank(i).getFluid();
-				if (fluid.getFluid().getRarity() == EnumRarity.UNCOMMON) {
-					color = StringHelper.YELLOW;
-				} else if (fluid.getFluid().getRarity() == EnumRarity.RARE) {
-					color = StringHelper.BRIGHT_BLUE;
-				} else if (fluid.getFluid().getRarity() == EnumRarity.EPIC) {
-					color = StringHelper.PINK;
-				}
+				String color = fluid.getFluid().getRarity().rarityColor.toString();
 				lock[i].setToolTip(StringHelper.localize("info.cofh.locked") + ": " + color + StringHelper.localize(fluid.getFluid().getLocalizedName(fluid)) + StringHelper.END);
 				lock[i].setSheetX(176);
 				lock[i].setHoverX(176);
@@ -149,27 +150,31 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 		float pitch;
 
 		if (GuiScreen.isShiftKeyDown()) {
-			change = 8000;
+			change = 1000;
 			pitch = 0.9F;
 			if (mouseButton == 1) {
-				change = 4000;
+				change = 100;
 				pitch = 0.8F;
 			}
+			if (GuiScreen.isCtrlKeyDown()) {
+				change *= 10;
+			}
 		} else if (GuiScreen.isCtrlKeyDown()) {
-			change = 500;
+			change = 5;
 			pitch = 0.5F;
 			if (mouseButton == 1) {
-				change = 100;
+				change = 1;
 				pitch = 0.4F;
 			}
 		} else {
-			change = 2000;
+			change = 50;
 			pitch = 0.7F;
 			if (mouseButton == 1) {
-				change = 1000;
+				change = 10;
 				pitch = 0.6F;
 			}
 		}
+		change = MathHelper.clamp(change, 1, 8000);
 		int curInput = myTile.amountInput;
 		int curOutput = myTile.amountOutput;
 		boolean[] curLocks = myTile.locks.clone();
@@ -192,12 +197,12 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 				pitch += 0.1F;
 				break;
 			case "Lock0":
-				myTile.locks[2] = !myTile.locks[2];
-				pitch = myTile.locks[2] ? 0.8F : 0.4F;
+				myTile.locks[0] = !myTile.locks[0];
+				pitch = myTile.locks[0] ? 0.8F : 0.4F;
 				break;
 			case "Lock1":
-				myTile.locks[2] = !myTile.locks[2];
-				pitch = myTile.locks[2] ? 0.8F : 0.4F;
+				myTile.locks[1] = !myTile.locks[1];
+				pitch = myTile.locks[1] ? 0.8F : 0.4F;
 				break;
 			case "Lock2":
 				myTile.locks[2] = !myTile.locks[2];

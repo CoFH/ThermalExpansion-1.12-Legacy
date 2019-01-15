@@ -1,7 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.RenderHelper;
@@ -28,10 +32,14 @@ import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileEnchanter extends TileMachineBase {
 
@@ -45,6 +53,12 @@ public class TileEnchanter extends TileMachineBase {
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 0 }, { 1 }, { 0, 1, 2 }, { 0, 1, 2 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, OUTPUT_ALL, INPUT_PRIMARY, INPUT_SECONDARY, OPEN, OMNI };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+
+		ALT_SIDE_CONFIGS[TYPE] = new SideConfig();
+		ALT_SIDE_CONFIGS[TYPE].numConfig = 2;
+		ALT_SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 0 }, { 1 }, { 0, 1, 2 }, { 0, 1, 2 } };
+		ALT_SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, OPEN };
+		ALT_SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false };
@@ -72,6 +86,7 @@ public class TileEnchanter extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private EnchanterRecipe curRecipe;
 	private int inputTrackerPrimary;
 	private int inputTrackerSecondary;
 	private int outputTracker;
@@ -110,24 +125,27 @@ public class TileEnchanter extends TileMachineBase {
 		if (inventory[0].isEmpty() || inventory[1].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[1], inventory[0]);
+		getRecipe();
 
-		if (recipe == null || tank.getFluidAmount() < recipe.getExperience()) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (recipe.getType() == EnchanterManager.Type.EMPOWERED && !augmentEmpowered) {
+		if (tank.getFluidAmount() < curRecipe.getExperience()) {
+			return false;
+		}
+		if (curRecipe.getType() == EnchanterManager.Type.EMPOWERED && !augmentEmpowered) {
 			return false;
 		}
 		if (EnchanterManager.isRecipeReversed(inventory[0], inventory[1])) {
-			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
+			if (curRecipe.getPrimaryInput().getCount() > inventory[1].getCount() || curRecipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
 				return false;
 			}
 		} else {
-			if (recipe.getPrimaryInput().getCount() > inventory[0].getCount() || recipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
+			if (curRecipe.getPrimaryInput().getCount() > inventory[0].getCount() || curRecipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
 				return false;
 			}
 		}
-		ItemStack output = recipe.getOutput();
+		ItemStack output = curRecipe.getOutput();
 
 		return inventory[2].isEmpty() || inventory[2].isItemEqual(output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
 	}
@@ -135,52 +153,61 @@ public class TileEnchanter extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[1], inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			return false;
 		}
 		if (EnchanterManager.isRecipeReversed(inventory[0], inventory[1])) {
-			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
-				return false;
-			}
+			return curRecipe.getPrimaryInput().getCount() <= inventory[1].getCount() && curRecipe.getSecondaryInput().getCount() <= inventory[0].getCount();
 		} else {
-			if (recipe.getPrimaryInput().getCount() > inventory[0].getCount() || recipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
-				return false;
-			}
+			return curRecipe.getPrimaryInput().getCount() <= inventory[0].getCount() && curRecipe.getSecondaryInput().getCount() <= inventory[1].getCount();
 		}
-		return true;
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = EnchanterManager.getRecipe(inventory[1], inventory[0]);
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = EnchanterManager.getRecipe(inventory[1], inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		EnchanterRecipe recipe = EnchanterManager.getRecipe(inventory[1], inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		tank.drain(recipe.getExperience(), true);
-		ItemStack primaryItem = recipe.getOutput();
+		tank.drain(curRecipe.getExperience(), true);
+		ItemStack primaryItem = curRecipe.getOutput();
 		if (inventory[2].isEmpty()) {
 			inventory[2] = ItemHelper.cloneStack(primaryItem);
 		} else {
 			inventory[2].grow(primaryItem.getCount());
 		}
 		if (EnchanterManager.isRecipeReversed(inventory[0], inventory[1])) {
-			inventory[1].shrink(recipe.getPrimaryInput().getCount());
-			inventory[0].shrink(recipe.getSecondaryInput().getCount());
+			inventory[1].shrink(curRecipe.getPrimaryInput().getCount());
+			inventory[0].shrink(curRecipe.getSecondaryInput().getCount());
 		} else {
-			inventory[0].shrink(recipe.getPrimaryInput().getCount());
-			inventory[1].shrink(recipe.getSecondaryInput().getCount());
+			inventory[0].shrink(curRecipe.getPrimaryInput().getCount());
+			inventory[1].shrink(curRecipe.getSecondaryInput().getCount());
 		}
 		if (inventory[0].getCount() <= 0) {
 			inventory[0] = ItemStack.EMPTY;
@@ -193,7 +220,7 @@ public class TileEnchanter extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -220,7 +247,7 @@ public class TileEnchanter extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		if (inventory[2].isEmpty()) {
@@ -297,9 +324,9 @@ public class TileEnchanter extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTrackerPrimary = nbt.getInteger("TrackIn1");
-		inputTrackerSecondary = nbt.getInteger("TrackIn2");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTrackerPrimary = nbt.getInteger(CoreProps.TRACK_IN);
+		inputTrackerSecondary = nbt.getInteger(CoreProps.TRACK_IN_2);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 		lockPrimary = nbt.getBoolean("SlotLock");
 		tank.readFromNBT(nbt);
 	}
@@ -309,9 +336,9 @@ public class TileEnchanter extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn1", inputTrackerPrimary);
-		nbt.setInteger("TrackIn2", inputTrackerSecondary);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTrackerPrimary);
+		nbt.setInteger(CoreProps.TRACK_IN_2, inputTrackerSecondary);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		nbt.setBoolean("SlotLock", lockPrimary);
 		tank.writeToNBT(nbt);
 		return nbt;
@@ -399,6 +426,7 @@ public class TileEnchanter extends TileMachineBase {
 
 	/* ISidedTexture */
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
@@ -437,10 +465,12 @@ public class TileEnchanter extends TileMachineBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return 0;
-					}
-					return tank.fill(resource, doFill);
+					return tank.fill(TFFluids.getXPFluid(resource), doFill);
+					//					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+					//						FluidStack toFill = TFFluids.getXPFluid(resource);
+					//						return tank.fill(toFill, doFill);
+					//					}
+					//					return 0;
 				}
 
 				@Nullable
@@ -450,7 +480,10 @@ public class TileEnchanter extends TileMachineBase {
 					if (isActive) {
 						return null;
 					}
-					return tank.drain(resource, doDrain);
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(resource, doDrain);
+					}
+					return null;
 				}
 
 				@Nullable
@@ -460,7 +493,10 @@ public class TileEnchanter extends TileMachineBase {
 					if (isActive) {
 						return null;
 					}
-					return tank.drain(maxDrain, doDrain);
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(maxDrain, doDrain);
+					}
+					return null;
 				}
 			});
 		}

@@ -1,17 +1,26 @@
 package cofh.thermalexpansion.plugins.jei;
 
 import cofh.core.util.helpers.RenderHelper;
+import cofh.thermalexpansion.block.storage.BlockCache;
+import cofh.thermalexpansion.block.storage.BlockCell;
+import cofh.thermalexpansion.block.storage.BlockStrongbox;
+import cofh.thermalexpansion.block.storage.BlockTank;
+import cofh.thermalexpansion.init.TEItems;
 import cofh.thermalexpansion.plugins.jei.device.coolant.CoolantCategory;
+import cofh.thermalexpansion.plugins.jei.device.factorizer.FactorizerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.compression.CompressionFuelCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.enervation.EnervationFuelCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.magmatic.MagmaticFuelCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.numismatic.NumismaticFuelCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.reactant.ReactantFuelCategory;
 import cofh.thermalexpansion.plugins.jei.dynamo.steam.SteamFuelCategory;
+import cofh.thermalexpansion.plugins.jei.item.FlorbSubtypeInterpreter;
+import cofh.thermalexpansion.plugins.jei.item.MorbSubtypeInterpreter;
 import cofh.thermalexpansion.plugins.jei.machine.brewer.BrewerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.centrifuge.CentrifugeRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.compactor.CompactorRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.machine.crafter.CrafterRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.crucible.CrucibleRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.enchanter.EnchanterRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.extruder.ExtruderRecipeCategory;
@@ -23,9 +32,7 @@ import cofh.thermalexpansion.plugins.jei.machine.refinery.RefineryRecipeCategory
 import cofh.thermalexpansion.plugins.jei.machine.sawmill.SawmillRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.smelter.SmelterRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.machine.transposer.TransposerRecipeCategory;
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.IModRegistry;
-import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.*;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -38,8 +45,27 @@ import org.lwjgl.opengl.GL11;
 @JEIPlugin
 public class JEIPluginTE implements IModPlugin {
 
+	public static IJeiHelpers jeiHelpers;
+	public static IGuiHelper guiHelper;
+	public static IJeiRuntime jeiRuntime;
+
+	@Override
+	public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+
+		subtypeRegistry.useNbtForSubtypes(BlockCell.itemBlock);
+		subtypeRegistry.useNbtForSubtypes(BlockTank.itemBlock);
+		subtypeRegistry.useNbtForSubtypes(BlockCache.itemBlock);
+		subtypeRegistry.useNbtForSubtypes(BlockStrongbox.itemBlock);
+
+		subtypeRegistry.registerSubtypeInterpreter(TEItems.itemFlorb, FlorbSubtypeInterpreter.INSTANCE);
+		subtypeRegistry.registerSubtypeInterpreter(TEItems.itemMorb, MorbSubtypeInterpreter.INSTANCE);
+	}
+
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registry) {
+
+		jeiHelpers = registry.getJeiHelpers();
+		guiHelper = jeiHelpers.getGuiHelper();
 
 		FurnaceRecipeCategory.register(registry);
 		PulverizerRecipeCategory.register(registry);
@@ -52,6 +78,7 @@ public class JEIPluginTE implements IModPlugin {
 		TransposerRecipeCategory.register(registry);
 		ChargerRecipeCategory.register(registry);
 		CentrifugeRecipeCategory.register(registry);
+		CrafterRecipeCategory.register(registry);
 		BrewerRecipeCategory.register(registry);
 		EnchanterRecipeCategory.register(registry);
 		PrecipitatorRecipeCategory.register(registry);
@@ -64,11 +91,15 @@ public class JEIPluginTE implements IModPlugin {
 		EnervationFuelCategory.register(registry);
 		NumismaticFuelCategory.register(registry);
 
+		FactorizerRecipeCategory.register(registry);
 		CoolantCategory.register(registry);
 	}
 
 	@Override
 	public void register(IModRegistry registry) {
+
+		jeiHelpers = registry.getJeiHelpers();
+		guiHelper = jeiHelpers.getGuiHelper();
 
 		FurnaceRecipeCategory.initialize(registry);
 		PulverizerRecipeCategory.initialize(registry);
@@ -81,6 +112,7 @@ public class JEIPluginTE implements IModPlugin {
 		TransposerRecipeCategory.initialize(registry);
 		ChargerRecipeCategory.initialize(registry);
 		CentrifugeRecipeCategory.initialize(registry);
+		CrafterRecipeCategory.initialize(registry);
 		BrewerRecipeCategory.initialize(registry);
 		EnchanterRecipeCategory.initialize(registry);
 		PrecipitatorRecipeCategory.initialize(registry);
@@ -93,9 +125,16 @@ public class JEIPluginTE implements IModPlugin {
 		EnervationFuelCategory.initialize(registry);
 		NumismaticFuelCategory.initialize(registry);
 
+		FactorizerRecipeCategory.initialize(registry);
 		CoolantCategory.initialize(registry);
 
 		Descriptions.register(registry);
+	}
+
+	@Override
+	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+
+		JEIPluginTE.jeiRuntime = jeiRuntime;
 	}
 
 	/* HELPERS */

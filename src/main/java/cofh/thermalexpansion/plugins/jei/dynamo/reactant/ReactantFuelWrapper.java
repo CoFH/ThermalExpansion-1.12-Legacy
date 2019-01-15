@@ -3,6 +3,7 @@ package cofh.thermalexpansion.plugins.jei.dynamo.reactant;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.dynamo.TileDynamoReactant;
 import cofh.thermalexpansion.plugins.jei.Drawables;
+import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.dynamo.BaseFuelWrapper;
 import cofh.thermalexpansion.util.managers.dynamo.ReactantManager.Reaction;
 import mezz.jei.api.IGuiHelper;
@@ -23,6 +24,13 @@ public class ReactantFuelWrapper extends BaseFuelWrapper {
 	protected List<FluidStack> inputFluids;
 
 	public ReactantFuelWrapper(IGuiHelper guiHelper, Reaction reaction) {
+
+		this(guiHelper, reaction, RecipeUidsTE.DYNAMO_REACTANT);
+	}
+
+	public ReactantFuelWrapper(IGuiHelper guiHelper, Reaction reaction, String uIdIn) {
+
+		uId = uIdIn;
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 		recipeInputs.add(reaction.getReactant());

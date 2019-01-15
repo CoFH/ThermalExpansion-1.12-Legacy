@@ -1,10 +1,12 @@
 package cofh.thermalexpansion.plugins.jei.machine.enchanter;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiEnchanter;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.plugins.jei.Drawables;
+import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeCategory;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager;
@@ -13,6 +15,7 @@ import cofh.thermalexpansion.util.managers.machine.EnchanterManager.Type;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
+import mezz.jei.api.IRecipeRegistry;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -31,7 +34,13 @@ public class EnchanterRecipeCategory extends BaseRecipeCategory<EnchanterRecipeW
 
 	public static boolean enable = true;
 
+	public static EnchanterRecipeCategory categoryStandard;
+	public static EnchanterRecipeCategoryEmpowered categoryEmpowered;
+
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Enchanter", enable);
 
 		if (!enable) {
 			return;
@@ -39,8 +48,11 @@ public class EnchanterRecipeCategory extends BaseRecipeCategory<EnchanterRecipeW
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new EnchanterRecipeCategory(guiHelper));
-		registry.addRecipeCategories(new EnchanterRecipeCategoryEmpowered(guiHelper));
+		categoryStandard = new EnchanterRecipeCategory(guiHelper);
+		categoryEmpowered = new EnchanterRecipeCategoryEmpowered(guiHelper);
+
+		registry.addRecipeCategories(categoryStandard);
+		registry.addRecipeCategories(categoryEmpowered);
 	}
 
 	public static void initialize(IModRegistry registry) {
@@ -56,6 +68,30 @@ public class EnchanterRecipeCategory extends BaseRecipeCategory<EnchanterRecipeW
 		registry.addRecipeCatalyst(BlockMachine.machineEnchanter, RecipeUidsTE.ENCHANTER);
 
 		// EnchanterRecipeCategoryEmpowered.initialize(registry);
+	}
+
+	public static void refresh() {
+
+		if (!enable) {
+			return;
+		}
+		IRecipeRegistry recipeRegistry = JEIPluginTE.jeiRuntime.getRecipeRegistry();
+
+		List<EnchanterRecipeWrapper> enchanterRecipeWrappers = recipeRegistry.getRecipeWrappers(categoryStandard);
+		for (EnchanterRecipeWrapper wrapper : enchanterRecipeWrappers) {
+			recipeRegistry.removeRecipe(wrapper, RecipeUidsTE.ENCHANTER);
+		}
+		enchanterRecipeWrappers.clear();
+
+		for (EnchanterRecipe recipe : EnchanterManager.getRecipeList()) {
+			if (recipe.getType() == Type.STANDARD) {
+				enchanterRecipeWrappers.add(new EnchanterRecipeWrapper(JEIPluginTE.guiHelper, recipe));
+			}
+		}
+		for (EnchanterRecipeWrapper wrapper : enchanterRecipeWrappers) {
+			recipeRegistry.addRecipe(wrapper, RecipeUidsTE.ENCHANTER);
+		}
+		// EnchanterRecipeCategoryEmpowered.refresh(registry);
 	}
 
 	public static List<EnchanterRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
@@ -124,6 +160,11 @@ public class EnchanterRecipeCategory extends BaseRecipeCategory<EnchanterRecipeW
 		guiItemStacks.set(2, outputs.get(0));
 
 		guiFluidStacks.set(0, inputFluids.get(0));
+
+		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+			tooltip.add(StringHelper.LIGHT_BLUE + StringHelper.localize("info.cofh.input"));
+		});
 	}
 
 }

@@ -1,0 +1,182 @@
+{
+	"pulverizer": [
+		{
+			"input": {
+				"ore": "oreCopper"
+			},
+			"output": {
+				"ore": "dustCopper",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustGold",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"ore": "oreTin"
+			},
+			"output": {
+				"ore": "dustTin",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustIron",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"ore": "oreSilver"
+			},
+			"output": {
+				"ore": "dustSilver",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustLead",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"ore": "oreLead"
+			},
+			"output": {
+				"ore": "dustLead",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustSilver",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"ore": "oreAluminum"
+			},
+			"output": {
+				"ore": "dustAluminum",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustIron",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"ore": "oreNickel"
+			},
+			"output": {
+				"ore": "dustNickel",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustPlatinum",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"ore": "orePlatinum"
+			},
+			"output": {
+				"ore": "dustPlatinum",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustIridium",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"ore": "oreIridium"
+			},
+			"output": {
+				"ore": "dustIridium",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustPlatinum",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"ore": "oreMithril"
+			},
+			"output": {
+				"ore": "dustMithril",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustGold",
+				"chance": 10
+			}
+		},
+		{
+			"input": {
+				"ore": "oreClathrateOilSand"
+			},
+			"output": {
+				"ore": "clathrateOil",
+				"count": 3
+			},
+			"output2": {
+				"constant": "tar",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"ore": "oreClathrateOilShale"
+			},
+			"output": {
+				"ore": "clathrateOil",
+				"count": 3
+			},
+			"output2": {
+				"item": "minecraft:flint",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"ore": "oreClathrateRedstone"
+			},
+			"output": {
+				"ore": "clathrateRedstone",
+				"count": 3
+			},
+			"output2": {
+				"constant": "cinnabar",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"ore": "oreClathrateGlowstone"
+			},
+			"output": {
+				"ore": "clathrateGlowstone",
+				"count": 3
+			},
+			"output2": {
+				"ore": "dustSulfur",
+				"chance": 30
+			}
+		},
+		{
+			"input": {
+				"ore": "oreClathrateEnder"
+			},
+			"output": {
+				"ore": "clathrateEnder",
+				"count": 3
+			}
+		}
+	]
+}

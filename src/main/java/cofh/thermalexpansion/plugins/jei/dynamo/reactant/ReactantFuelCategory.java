@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.dynamo.reactant;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.plugins.jei.Drawables;
@@ -18,6 +19,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -30,6 +32,9 @@ public class ReactantFuelCategory extends BaseFuelCategory<ReactantFuelWrapper> 
 
 	public static void register(IRecipeCategoryRegistration registry) {
 
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Dynamo.Reactant", enable);
+
 		if (!enable) {
 			return;
 		}
@@ -37,6 +42,7 @@ public class ReactantFuelCategory extends BaseFuelCategory<ReactantFuelWrapper> 
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipeCategories(new ReactantFuelCategory(guiHelper));
+		registry.addRecipeCategories(new ReactantFuelCategoryElemental(guiHelper));
 	}
 
 	public static void initialize(IModRegistry registry) {
@@ -48,8 +54,10 @@ public class ReactantFuelCategory extends BaseFuelCategory<ReactantFuelWrapper> 
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.DYNAMO_REACTANT);
-		registry.addRecipeClickArea(GuiDynamoReactant.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_REACTANT);
+		registry.addRecipeClickArea(GuiDynamoReactant.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_REACTANT, RecipeUidsTE.DYNAMO_REACTANT_ELEMENTAL);
 		registry.addRecipeCatalyst(BlockDynamo.dynamoReactant, RecipeUidsTE.DYNAMO_REACTANT);
+
+		ReactantFuelCategoryElemental.initialize(registry);
 	}
 
 	public static List<ReactantFuelWrapper> getRecipes(IGuiHelper guiHelper) {
@@ -102,7 +110,7 @@ public class ReactantFuelCategory extends BaseFuelCategory<ReactantFuelWrapper> 
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 		guiItemStacks.init(0, true, 33, 23);
-		guiFluidStacks.init(0, true, 10, 10, 16, 30, 1000, false, tankOverlayInput);
+		guiFluidStacks.init(0, true, 10, 10, 16, 30, Fluid.BUCKET_VOLUME, false, tankOverlayInput);
 
 		guiItemStacks.set(0, inputs.get(0));
 		guiFluidStacks.set(0, inputFluids.get(0));

@@ -3,6 +3,8 @@ package cofh.thermalexpansion.block.device;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -33,6 +35,8 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 	private static final int TYPE = Type.XP_COLLECTOR.getMetadata();
@@ -49,7 +53,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false };
 
-		LIGHT_VALUES[TYPE] = 5;
+		LIGHT_VALUES[TYPE] = 2;
 
 		GameRegistry.registerTileEntity(TileXpCollector.class, "thermalexpansion:device_xp_collector");
 
@@ -60,9 +64,12 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 		String category = "Device.XpCollector";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		String comment = "Adjust this value to change the capture radius for the Insightful Condenser.";
+		radius = ThermalExpansion.CONFIG.getConfiguration().getInt("Radius", category, radius, 2, 16, comment);
 	}
 
-	private static final int RADIUS_ORB = 5;
+	private static int radius = 5;
 	private static final int TIME_CONSTANT = 16;
 
 	private int inputTracker;
@@ -76,6 +83,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
 
 	private int offset;
+	private boolean forcedCycle;
 
 	public TileXpCollector() {
 
@@ -101,11 +109,26 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
+	public void onRedstoneUpdate() {
+
+		boolean curActive = isActive;
+		isActive = redstoneControlOrDisable();
+
+		if (isActive && !curActive && !forcedCycle) {
+			collectXpOrbs();
+			offset = (int) (TIME_CONSTANT - world.getTotalWorldTime() % TIME_CONSTANT);
+			forcedCycle = true;
+		}
+		updateIfChanged(curActive);
+	}
+
+	@Override
 	public void update() {
 
 		if (!timeCheckOffset()) {
 			return;
 		}
+		forcedCycle = false;
 		convertXp();
 		transferOutputFluid();
 		transferInput();
@@ -123,12 +146,11 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 			isActive = true;
 		}
 		updateIfChanged(curActive);
-
 	}
 
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -145,7 +167,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 	protected void transferOutputFluid() {
 
-		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
+		if (!getTransferOut() || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
@@ -165,7 +187,7 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 	protected void collectXpOrbs() {
 
-		AxisAlignedBB area = new AxisAlignedBB(pos.add(-RADIUS_ORB, -RADIUS_ORB, -RADIUS_ORB), pos.add(1 + RADIUS_ORB, 1 + RADIUS_ORB, 1 + RADIUS_ORB));
+		AxisAlignedBB area = new AxisAlignedBB(pos.add(-radius, -radius, -radius), pos.add(1 + radius, 1 + radius, 1 + radius));
 		List<EntityXPOrb> xpOrbs = world.getEntitiesWithinAABB(EntityXPOrb.class, area, EntitySelectors.IS_ALIVE);
 
 		for (EntityXPOrb orb : xpOrbs) {
@@ -193,12 +215,12 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 		int toConvert;
 
 		if (xpBuffer * conversion <= tank.getSpace()) {
-			tank.modifyFluidStored(xpBuffer * conversion);
 			toConvert = xpBuffer;
+			tank.modifyFluidStored(xpBuffer * conversion);
 			xpBuffer = 0;
 		} else {
-			tank.modifyFluidStored(tank.getSpace());
 			toConvert = tank.getSpace() / conversion;
+			tank.modifyFluidStored(tank.getSpace());
 			xpBuffer -= toConvert;
 		}
 		boostXp -= toConvert * boostFactor / 100;
@@ -265,8 +287,8 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 		tank.readFromNBT(nbt);
 
 		boostFactor = nbt.getInteger("BoostFactor");
@@ -283,8 +305,8 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		tank.writeToNBT(nbt);
 
 		nbt.setInteger("BoostFactor", boostFactor);
@@ -354,20 +376,20 @@ public class TileXpCollector extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(resource, doDrain);
 					}
-					return tank.drain(resource, doDrain);
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(maxDrain, doDrain);
 					}
-					return tank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}

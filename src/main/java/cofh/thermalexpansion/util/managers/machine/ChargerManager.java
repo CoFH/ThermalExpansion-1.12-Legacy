@@ -1,10 +1,7 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStackSafe;
-import cofh.core.util.helpers.ItemHelper;
-import cofh.thermalfoundation.item.ItemBait;
-import cofh.thermalfoundation.item.ItemFertilizer;
-import gnu.trove.map.hash.THashMap;
+import cofh.core.inventory.ComparableItemStackValidated;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -13,7 +10,7 @@ import java.util.Map.Entry;
 
 public class ChargerManager {
 
-	private static Map<ComparableItemStackSafe, ChargerRecipe> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackValidated, ChargerRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
 
 	public static final int DEFAULT_ENERGY = 8000;
 
@@ -22,7 +19,7 @@ public class ChargerManager {
 		if (input.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackSafe query = new ComparableItemStackSafe(input);
+		ComparableItemStackValidated query = new ComparableItemStackValidated(input);
 
 		ChargerRecipe recipe = recipeMap.get(query);
 
@@ -40,30 +37,21 @@ public class ChargerManager {
 
 	public static ChargerRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new ChargerRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new ChargerRecipe[0]);
 	}
 
 	public static void initialize() {
-
-		addRecipe(DEFAULT_ENERGY, ItemFertilizer.fertilizerRich, ItemFertilizer.fertilizerFlux);
-		addRecipe(DEFAULT_ENERGY, ItemBait.baitRich, ItemBait.baitFlux);
-
-		/* LOAD RECIPES */
-		loadRecipes();
-	}
-
-	public static void loadRecipes() {
 
 	}
 
 	public static void refresh() {
 
-		Map<ComparableItemStackSafe, ChargerRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidated, ChargerRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
 		ChargerRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackSafe, ChargerRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackValidated, ChargerRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			tempMap.put(new ComparableItemStackSafe(tempRecipe.input), tempRecipe);
+			tempMap.put(new ComparableItemStackValidated(tempRecipe.input), tempRecipe);
 		}
 		recipeMap.clear();
 		recipeMap = tempMap;
@@ -76,27 +64,14 @@ public class ChargerManager {
 			return null;
 		}
 		ChargerRecipe recipe = new ChargerRecipe(input, output, energy);
-		recipeMap.put(new ComparableItemStackSafe(input), recipe);
+		recipeMap.put(new ComparableItemStackValidated(input), recipe);
 		return recipe;
 	}
 
 	/* REMOVE RECIPES */
 	public static ChargerRecipe removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackSafe(input));
-	}
-
-	/* HELPERS */
-	private static void addOreDictRecipe(String oreName, ItemStack output) {
-
-		addOreDictRecipe(DEFAULT_ENERGY, oreName, output);
-	}
-
-	private static void addOreDictRecipe(int energy, String oreName, ItemStack output) {
-
-		if (ItemHelper.oreNameExists(oreName) && !recipeExists(OreDictionary.getOres(oreName, false).get(0))) {
-			addRecipe(energy, ItemHelper.cloneStack(OreDictionary.getOres(oreName, false).get(0), 1), output);
-		}
+		return recipeMap.remove(new ComparableItemStackValidated(input));
 	}
 
 	/* RECIPE CLASS */

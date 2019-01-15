@@ -1,12 +1,12 @@
 package cofh.thermalexpansion.gui.container.machine;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.SlotEnergy;
 import cofh.core.gui.slot.SlotFalseCopy;
-import cofh.core.gui.slot.SlotHidden;
 import cofh.core.gui.slot.SlotRemoveOnly;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.machine.TileCrafter;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.block.machine.TileCrafter.CrafterRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -22,12 +22,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ContainerCrafter extends ContainerTEBase {
+public class ContainerCrafter extends ContainerTileAugmentable {
 
 	TileCrafter myTile;
-	InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
-	InventoryCraftResult craftResult = new InventoryCraftResult();
+	public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
+	public InventoryCraftResult craftResult = new InventoryCraftResult();
 	EntityPlayer player;
+
+	boolean initialized = false;
 
 	public ContainerCrafter(InventoryPlayer inventory, TileEntity tile) {
 
@@ -48,10 +50,9 @@ public class ContainerCrafter extends ContainerTEBase {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				addSlotToContainer(new SlotFalseCopy(craftMatrix, j + i * 3, 35 + j * 18, 17 + i * 18));
-				addSlotToContainer(new SlotHidden(myTile, TileCrafter.SLOT_CRAFTING_START + j + i * 3, 35 + j * 18, 17 + i * 18));
 			}
 		}
-		addSlotToContainer(new SlotCrafting(player, craftMatrix, craftResult, 0, 98, 53) {
+		addSlotToContainer(new SlotCrafting(player, craftMatrix, craftResult, 0, 125, 48) {
 
 			@Override
 			public boolean canTakeStack(EntityPlayer player) {
@@ -59,6 +60,21 @@ public class ContainerCrafter extends ContainerTEBase {
 				return false;
 			}
 		});
+
+		if (ServerHelper.isServerWorld(myTile.getWorld())) {
+			for (int i = 0; i < 9; i++) {
+				craftMatrix.setInventorySlotContents(i, myTile.inventory[TileCrafter.SLOT_CRAFTING_START + i]);
+			}
+			ItemStack stack = ItemStack.EMPTY;
+			IRecipe recipe = CraftingManager.findMatchingRecipe(craftMatrix, myTile.getWorld());
+
+			if (recipe != null) {
+				craftResult.setRecipeUsed(recipe);
+				stack = recipe.getCraftingResult(craftMatrix);
+			}
+			craftResult.setInventorySlotContents(0, stack);
+		}
+		initialized = true;
 	}
 
 	@Override
@@ -68,34 +84,34 @@ public class ContainerCrafter extends ContainerTEBase {
 	}
 
 	@Override
+	public void onContainerClosed(EntityPlayer playerIn) {
+
+		super.onContainerClosed(playerIn);
+		myTile.clearRecipeChanges();
+	}
+
+	@Override
 	public void onCraftMatrixChanged(IInventory inventoryIn) {
 
 		super.onCraftMatrixChanged(inventoryIn);
 		slotChangedCraftingGrid();
 	}
 
-	@SideOnly (Side.CLIENT)
 	@Override
+	@SideOnly (Side.CLIENT)
 	public void setAll(List<ItemStack> stacks) {
 
 		for (int i = 0; i < stacks.size(); ++i) {
 			putStackInSlot(i, stacks.get(i));
 		}
-		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
-			craftMatrix.setInventorySlotContents(i, myTile.inventory[TileCrafter.SLOT_CRAFTING_START + i]);
-		}
-		ItemStack stack = ItemStack.EMPTY;
-		IRecipe recipe = CraftingManager.findMatchingRecipe(craftMatrix, myTile.getWorld());
-
-		if (recipe != null) {
-			craftResult.setRecipeUsed(recipe);
-			stack = recipe.getCraftingResult(craftMatrix);
-		}
-		craftResult.setInventorySlotContents(0, stack);
+		calcCraftingGridClient();
 	}
 
 	public void slotChangedCraftingGrid() {
 
+		if (!initialized) {
+			return;
+		}
 		World world = myTile.getWorld();
 
 		if (ServerHelper.isServerWorld(world)) {
@@ -103,22 +119,36 @@ public class ContainerCrafter extends ContainerTEBase {
 			ItemStack stack = ItemStack.EMPTY;
 			IRecipe recipe = CraftingManager.findMatchingRecipe(craftMatrix, world);
 
-			if (recipe != null) {
+			if (recipe != null && CrafterRecipe.validRecipe(recipe)) {
 				craftResult.setRecipeUsed(recipe);
 				stack = recipe.getCraftingResult(craftMatrix);
 			}
+			myTile.markRecipeChanges();
 			craftResult.setInventorySlotContents(0, stack);
 			playerMP.connection.sendPacket(new SPacketSetSlot(this.windowId, inventorySlots.size() - 1, stack));
+		} else {
+			calcCraftingGridClient();
 		}
 	}
 
 	public void setRecipe() {
 
 		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
-			myTile.inventory[TileCrafter.SLOT_CRAFTING_START + i] = craftMatrix.getStackInSlot(i).copy();
 			myTile.setInventorySlotContents(TileCrafter.SLOT_CRAFTING_START + i, craftMatrix.getStackInSlot(i));
 		}
 		myTile.sendModePacket();
+	}
+
+	public void calcCraftingGridClient() {
+
+		ItemStack stack = ItemStack.EMPTY;
+		IRecipe recipe = CraftingManager.findMatchingRecipe(craftMatrix, myTile.getWorld());
+
+		if (recipe != null && CrafterRecipe.validRecipe(recipe)) {
+			craftResult.setRecipeUsed(recipe);
+			stack = recipe.getCraftingResult(craftMatrix);
+		}
+		craftResult.setInventorySlotContents(0, stack);
 	}
 
 }

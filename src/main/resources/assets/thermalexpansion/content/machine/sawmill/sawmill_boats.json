@@ -1,0 +1,88 @@
+{
+	"sawmill": [
+		{
+			"input": {
+				"item": "minecraft:boat"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 0,
+				"count": 4
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 125
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:spruce_boat"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 1,
+				"count": 4
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 125
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:birch_boat"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 2,
+				"count": 4
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 125
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:jungle_boat"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 3,
+				"count": 4
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 125
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:acacia_boat"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 4,
+				"count": 4
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 125
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:dark_oak_boat"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 5,
+				"count": 4
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 125
+			}
+		}
+	]
+}

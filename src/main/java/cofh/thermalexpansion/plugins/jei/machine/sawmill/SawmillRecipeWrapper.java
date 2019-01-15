@@ -8,7 +8,7 @@ import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.device.TapperManager;
-import cofh.thermalexpansion.util.managers.machine.SawmillManager.ComparableItemStackSawmill;
+import cofh.thermalexpansion.util.managers.machine.SawmillManager;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager.SawmillRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -16,7 +16,6 @@ import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -25,10 +24,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
+
 public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
-	protected List<ItemStack> inputs;
+	protected List<List<ItemStack>> inputs;
 	protected List<ItemStack> outputs;
 	protected List<FluidStack> outputFluids;
 
@@ -52,8 +53,7 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 		List<FluidStack> recipeOutputFluids = new ArrayList<>();
 
-		ComparableItemStackSawmill instance = new ComparableItemStackSawmill(new ItemStack(Items.DIAMOND));
-		int oreID = instance.getOreID(recipe.getInput());
+		int oreID = SawmillManager.convertInput(recipe.getInput()).oreID;
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));
@@ -75,7 +75,7 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 			outputFluids = Collections.emptyList();
 			energy = recipe.getEnergy();
 		}
-		inputs = recipeInputs;
+		inputs = singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		chance = recipe.getSecondaryOutputChance();
@@ -94,7 +94,7 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 
-		ingredients.setInputs(ItemStack.class, inputs);
+		ingredients.setInputLists(ItemStack.class, inputs);
 		ingredients.setOutputs(ItemStack.class, outputs);
 		ingredients.setOutputs(FluidStack.class, outputFluids);
 	}

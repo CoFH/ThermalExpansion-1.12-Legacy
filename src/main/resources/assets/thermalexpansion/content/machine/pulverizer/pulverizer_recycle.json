@@ -1,0 +1,83 @@
+{
+	"pulverizer": [
+		{
+			"input": {
+				"item": "minecraft:clay"
+			},
+			"output": {
+				"item": "minecraft:clay_ball",
+				"count": 4
+			},
+			"energy_mod": 75
+		},
+		{
+			"input": {
+				"item": "minecraft:flower_pot"
+			},
+			"output": {
+				"item": "minecraft:brick",
+				"count": 3
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:glass"
+			},
+			"output": {
+				"item": "minecraft:sand"
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:glass_bottle"
+			},
+			"output": {
+				"item": "minecraft:sand"
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:glowstone"
+			},
+			"output": {
+				"ore": "dustGlowstone",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:jukebox"
+			},
+			"output": {
+				"ore": "gemDiamond",
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:magma"
+			},
+			"output": {
+				"item": "minecraft:magma_cream",
+				"count": 4
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:noteblock"
+			},
+			"output": {
+				"ore": "dustRedstone",
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"count": 4
+			}
+		}
+	]
+}

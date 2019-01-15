@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.dynamo.magmatic;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
 import cofh.thermalexpansion.plugins.jei.Drawables;
@@ -29,6 +30,9 @@ public class MagmaticFuelCategory extends BaseFuelCategory<MagmaticFuelWrapper> 
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Dynamo.Magmatic", enable);
 
 		if (!enable) {
 			return;
@@ -97,7 +101,7 @@ public class MagmaticFuelCategory extends BaseFuelCategory<MagmaticFuelWrapper> 
 
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-		guiFluidStacks.init(0, true, 34, 8, 16, 30, 1000, false, null);
+		guiFluidStacks.init(0, true, 34, 8, 16, 30, Fluid.BUCKET_VOLUME, false, null);
 
 		guiFluidStacks.set(0, inputs.get(0));
 	}

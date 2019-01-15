@@ -34,8 +34,8 @@ item.thermalexpansion.augment.dynamoThrottle.name=節流閥裝置
 
 item.thermalexpansion.augment.machineFurnaceFood.name=微波爐腔室
 
-item.thermalexpansion.florb.florb.name=流體球
-item.thermalexpansion.florb.florbMagmatic.name=岩漿流體球
+item.thermalexpansion.florb.standard.name=流體球
+item.thermalexpansion.florb.magmatic.name=岩漿流體球
 
 itemGroup.thermalexpansion.creativeTab=精煉機械
 itemGroup.thermalexpansion.creativeTabFlorbs=精煉機械|流體球

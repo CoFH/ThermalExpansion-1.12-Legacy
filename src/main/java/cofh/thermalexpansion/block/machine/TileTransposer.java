@@ -1,7 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.RenderHelper;
@@ -37,6 +41,8 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileTransposer extends TileMachineBase {
 
 	private static final int TYPE = Type.TRANSPOSER.getMetadata();
@@ -49,6 +55,12 @@ public class TileTransposer extends TileMachineBase {
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 2 }, {}, { 2 }, { 0, 2 }, { 0, 2 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, OUTPUT_PRIMARY, OUTPUT_SECONDARY, OUTPUT_ALL, OPEN, OMNI };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+
+		ALT_SIDE_CONFIGS[TYPE] = new SideConfig();
+		ALT_SIDE_CONFIGS[TYPE].numConfig = 2;
+		ALT_SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 2 }, {}, { 2 }, { 0, 2 }, { 0, 2 } };
+		ALT_SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, OPEN };
+		ALT_SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
@@ -143,7 +155,7 @@ public class TileTransposer extends TileMachineBase {
 			hasFluidHandler = false;
 			return false;
 		}
-		if (energyStorage.getEnergyStored() < TransposerManager.DEFAULT_ENERGY) {
+		if (energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		if (!inventory[2].isEmpty()) {
@@ -258,9 +270,6 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	public void update() {
 
-		if (extractMode) {
-			transferOutputFluid();
-		}
 		if (hasFluidHandler) {
 			updateHandler();
 		} else {
@@ -308,8 +317,7 @@ public class TileTransposer extends TileMachineBase {
 				return false;
 			}
 			TransposerRecipe recipe = TransposerManager.getFillRecipe(inventory[0], tank.getFluid());
-
-			if (recipe == null || tank.getFluidAmount() < recipe.getFluid().amount || energyStorage.getEnergyStored() < recipe.getEnergy()) {
+			if (recipe == null || tank.getFluidAmount() < recipe.getFluid().amount) {
 				return false;
 			}
 			if (inventory[0].getCount() < recipe.getInput().getCount()) {
@@ -319,16 +327,10 @@ public class TileTransposer extends TileMachineBase {
 				return true;
 			}
 			ItemStack output = recipe.getOutput();
-
-			if (!inventory[2].isItemEqual(output)) {
-				return false;
-			}
-			int result = inventory[2].getCount() + output.getCount();
-			return result <= output.getMaxStackSize();
+			return inventory[2].isItemEqual(output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
 		} else {
 			TransposerRecipe recipe = TransposerManager.getExtractRecipe(inventory[0]);
-
-			if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy()) {
+			if (recipe == null) {
 				return false;
 			}
 			if (inventory[0].getCount() < recipe.getInput().getCount()) {
@@ -341,14 +343,7 @@ public class TileTransposer extends TileMachineBase {
 				return true;
 			}
 			ItemStack output = recipe.getOutput();
-
-			if (output.isEmpty()) {
-				return true;
-			}
-			if (!inventory[2].isItemEqual(output)) {
-				return false;
-			}
-			return inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
+			return output.isEmpty() || inventory[2].isItemEqual(output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
 		}
 	}
 
@@ -358,17 +353,8 @@ public class TileTransposer extends TileMachineBase {
 		if (hasFluidHandler) {
 			return true;
 		}
-		TransposerRecipe recipe;
-
-		if (!extractMode) {
-			recipe = TransposerManager.getFillRecipe(inventory[1], tank.getFluid());
-		} else {
-			recipe = TransposerManager.getExtractRecipe(inventory[1]);
-		}
-		if (recipe == null) {
-			return false;
-		}
-		return recipe.getInput().getCount() <= inventory[1].getCount();
+		TransposerRecipe recipe = extractMode ? TransposerManager.getExtractRecipe(inventory[1]) : TransposerManager.getFillRecipe(inventory[1], tank.getFluid());
+		return recipe != null && recipe.getInput().getCount() <= inventory[1].getCount();
 	}
 
 	@Override
@@ -442,7 +428,7 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -460,8 +446,11 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
+		}
+		if (extractMode) {
+			transferOutputFluid();
 		}
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
@@ -477,9 +466,6 @@ public class TileTransposer extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
-			return;
-		}
 		if (tank.getFluidAmount() <= 0) {
 			return;
 		}
@@ -561,14 +547,14 @@ public class TileTransposer extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut1");
-		outputTrackerFluid = nbt.getInteger("TrackOut2");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
+		outputTrackerFluid = nbt.getInteger(CoreProps.TRACK_OUT_2);
 
 		if (!inventory[1].isEmpty() && inventory[1].hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
 			hasFluidHandler = true;
 		}
-		extractMode = nbt.getByte("Mode") == 1;
+		extractMode = nbt.getByte(CoreProps.MODE) == 1;
 		extractFlag = extractMode;
 		tank.readFromNBT(nbt);
 
@@ -585,10 +571,10 @@ public class TileTransposer extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut1", outputTracker);
-		nbt.setInteger("TrackOut2", outputTrackerFluid);
-		nbt.setByte("Mode", extractMode ? (byte) 1 : 0);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT_2, outputTrackerFluid);
+		nbt.setByte(CoreProps.MODE, extractMode ? (byte) 1 : 0);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
@@ -711,9 +697,10 @@ public class TileTransposer extends TileMachineBase {
 		}
 		inventory[slot] = stack;
 
-		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
-			stack.setCount(getInventoryStackLimit());
-		}
+		//		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
+		//			stack.setCount(getInventoryStackLimit());
+		//		}
+		markChunkDirty();
 	}
 
 	@Override
@@ -724,6 +711,7 @@ public class TileTransposer extends TileMachineBase {
 
 	/* ISidedTexture */
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
@@ -762,7 +750,7 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.machineTransposer;
+		return TEProps.enableSounds ? TESounds.machineTransposer : null;
 	}
 
 	/* CAPABILITIES */
@@ -788,30 +776,39 @@ public class TileTransposer extends TileMachineBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (extractMode || from == null || !allowInsertion(sideCache[from.ordinal()])) {
+					if (extractMode) {
 						return 0;
 					}
-					return tank.fill(resource, doFill);
+					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.fill(resource, doFill);
+					}
+					return 0;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (!extractMode || from == null || !isSecondaryOutput(sideCache[from.ordinal()])) {
+					if (!extractMode && isActive) {
 						return null;
 					}
-					return tank.drain(resource, doDrain);
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(resource, doDrain);
+					}
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (!extractMode || from == null || !isSecondaryOutput(sideCache[from.ordinal()])) {
+					if (!extractMode && isActive) {
 						return null;
 					}
-					return tank.drain(maxDrain, doDrain);
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(maxDrain, doDrain);
+					}
+					return null;
 				}
 			});
 		}

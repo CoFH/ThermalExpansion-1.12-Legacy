@@ -6,7 +6,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
-import cofh.thermalexpansion.util.managers.machine.FurnaceManager.ComparableItemStackFurnace;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
 import cofh.thermalexpansion.util.managers.machine.FurnaceManager.FurnaceRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import mezz.jei.api.IGuiHelper;
@@ -15,7 +15,6 @@ import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -24,10 +23,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
+
 public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
-	protected List<ItemStack> inputs;
+	protected List<List<ItemStack>> inputs;
 	protected List<ItemStack> outputs;
 	protected List<FluidStack> outputFluids;
 
@@ -49,8 +50,7 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 		List<FluidStack> recipeOutputFluids = new ArrayList<>();
 
-		ComparableItemStackFurnace instance = new ComparableItemStackFurnace(new ItemStack(Items.DIAMOND));
-		int oreID = instance.getOreID(recipe.getInput());
+		int oreID = FurnaceManager.convertInput(recipe.getInput()).oreID;
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));
@@ -61,7 +61,7 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 		switch (uId) {
 			case RecipeUidsTE.FURNACE_FOOD:
 			case RecipeUidsTE.FURNACE_ORE:
-				recipeOutputs.add(ItemHelper.cloneStack(recipe.getOutput(), recipe.getOutput().getCount() + 1));
+				recipeOutputs.add(ItemHelper.cloneStack(recipe.getOutput(), recipe.getOutput().getCount() + Math.max(1, recipe.getOutput().getCount() / 2)));
 				outputFluids = Collections.emptyList();
 				energy = recipe.getEnergy() * 3 / 2;
 				break;
@@ -77,7 +77,7 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 				energy = recipe.getEnergy();
 				break;
 		}
-		inputs = recipeInputs;
+		inputs = singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);
@@ -94,7 +94,7 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 
-		ingredients.setInputs(ItemStack.class, inputs);
+		ingredients.setInputLists(ItemStack.class, inputs);
 		ingredients.setOutputs(ItemStack.class, outputs);
 		ingredients.setOutputs(FluidStack.class, outputFluids);
 	}

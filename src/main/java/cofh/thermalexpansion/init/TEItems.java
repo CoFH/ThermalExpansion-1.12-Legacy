@@ -2,6 +2,8 @@ package cofh.thermalexpansion.init;
 
 import cofh.core.util.core.IInitializer;
 import cofh.thermalexpansion.item.*;
+import cofh.thermalfoundation.init.TFProps;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -27,6 +29,7 @@ public class TEItems {
 		itemAugment = new ItemAugment();
 
 		itemFlorb = new ItemFlorb();
+		itemMorb = new ItemMorb();
 
 		initList.add(itemCapacitor);
 		initList.add(itemReservoir);
@@ -36,10 +39,32 @@ public class TEItems {
 		initList.add(itemAugment);
 
 		initList.add(itemFlorb);
+		initList.add(itemMorb);
 
 		for (IInitializer init : initList) {
-			init.initialize();
+			init.preInit();
 		}
+		for (int i = 0; i < 5; i++) {
+			ItemStack iconStack;
+
+			if (ItemCapacitor.enable) {
+				iconStack = new ItemStack(itemCapacitor, 1, i);
+				TFProps.toolList.add(iconStack.copy());
+			}
+			if (ItemReservoir.enable) {
+				iconStack = new ItemStack(itemReservoir, 1, i);
+				TFProps.toolList.add(iconStack.copy());
+			}
+			if (ItemSatchel.enable) {
+				iconStack = new ItemStack(itemSatchel, 1, i);
+				TFProps.toolList.add(iconStack.copy());
+			}
+		}
+		TFProps.miscList.add(ItemFlorb.florbStandard.copy());
+		TFProps.miscList.add(ItemFlorb.florbMagmatic.copy());
+		TFProps.miscList.add(ItemMorb.morbStandard.copy());
+		TFProps.miscList.add(ItemMorb.morbReusable.copy());
+
 		MinecraftForge.EVENT_BUS.register(INSTANCE);
 	}
 
@@ -48,7 +73,7 @@ public class TEItems {
 	public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 
 		for (IInitializer init : initList) {
-			init.register();
+			init.initialize();
 		}
 	}
 
@@ -63,5 +88,6 @@ public class TEItems {
 	public static ItemAugment itemAugment;
 
 	public static ItemFlorb itemFlorb;
+	public static ItemMorb itemMorb;
 
 }

@@ -1,0 +1,109 @@
+{
+	"constants": [
+		{
+			"name": "hardened_glass",
+			"entry": {
+				"item": "thermalfoundation:glass",
+				"data": 3
+			}
+		},
+		{
+			"name": "sawdust",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 800
+			}
+		},
+		{
+			"name": "biomass",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 816
+			}
+		},
+		{
+			"name": "rich_biomass",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 817
+			}
+		},
+		{
+			"name": "bioblend",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 818
+			}
+		},
+		{
+			"name": "rich_bioblend",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 819
+			}
+		},
+		{
+			"name": "rosin",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 832
+			}
+		},
+		{
+			"name": "tar",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 833
+			}
+		},
+		{
+			"name": "slag",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 864
+			}
+		},
+		{
+			"name": "rich_slag",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 865
+			}
+		},
+		{
+			"name": "cinnabar",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 866
+			}
+		},
+		{
+			"name": "oil_clathrate",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 892
+			}
+		},
+		{
+			"name": "redstone_clathrate",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 893
+			}
+		},
+		{
+			"name": "glowstone_clathrate",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 894
+			}
+		},
+		{
+			"name": "ender_clathrate",
+			"entry": {
+				"item": "thermalfoundation:material",
+				"data": 895
+			}
+		}
+	]
+}

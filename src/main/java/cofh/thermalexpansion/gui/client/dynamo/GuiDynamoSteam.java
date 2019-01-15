@@ -2,7 +2,6 @@ package cofh.thermalexpansion.gui.client.dynamo;
 
 import cofh.core.gui.element.ElementDualScaled;
 import cofh.core.gui.element.ElementFluidTank;
-import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,7 +16,7 @@ public class GuiDynamoSteam extends GuiDynamoBase {
 
 		super(new ContainerDynamoSteam(inventory, tile), tile, inventory.player, TEXTURE);
 
-		myInfo = StringHelper.localize("tab.thermalexpansion.dynamo.steam.0") + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.steam.1");
+		generateInfo("tab.thermalexpansion.dynamo.steam");
 	}
 
 	@Override

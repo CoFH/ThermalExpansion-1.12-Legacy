@@ -1,0 +1,36 @@
+{
+	"smelter": [
+		{
+			"input": {
+				"item": "minecraft:cobblestone",
+				"count": 2
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"item": "minecraft:stonebrick"
+			},
+			"output2": {
+				"constant": "slag"
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:netherrack",
+				"count": 2
+			},
+			"input2": {
+				"item": "minecraft:soul_sand"
+			},
+			"output": {
+				"item": "minecraft:nether_brick",
+				"count": 2
+			},
+			"output2": {
+				"ore": "dustSulfur",
+				"chance": 25
+			}
+		}
+	]
+}

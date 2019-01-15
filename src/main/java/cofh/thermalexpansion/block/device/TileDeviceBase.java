@@ -1,7 +1,9 @@
 package cofh.thermalexpansion.block.device;
 
+import cofh.core.block.TileReconfigurable;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileReconfigurable;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -10,20 +12,31 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class TileDeviceBase extends TileReconfigurable {
 
 	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[Type.values().length];
+	public static final SideConfig[] ALT_SIDE_CONFIGS = new SideConfig[Type.values().length];
+
 	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[Type.values().length];
 
-	private static boolean enableSecurity = true;
+	protected static boolean enableSecurity = true;
+	public static boolean disableAutoInput = false;
+	public static boolean disableAutoOutput = false;
 
 	public static void config() {
 
 		String category = "Device";
 		String comment = "If TRUE, Devices are securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", true, comment);
+
+		comment = "If TRUE, most Devices will no longer have Auto-Input functionality. Not recommended, but knock yourself out.";
+		disableAutoInput = ThermalExpansion.CONFIG.get(category, "DisableAutoInput", disableAutoInput, comment);
+
+		comment = "If TRUE, most Devices will no longer have Auto-Output functionality. Not recommended, but knock yourself out.";
+		disableAutoOutput = ThermalExpansion.CONFIG.get(category, "DisableAutoOutput", disableAutoOutput, comment);
 	}
 
 	public TileDeviceBase() {
@@ -35,9 +48,21 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 	}
 
 	@Override
-	public String getTileName() {
+	protected Object getMod() {
 
-		return "tile.thermalexpansion.device." + Type.byMetadata(getType()).getName() + ".name";
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getModVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected String getTileName() {
+
+		return "tile.thermalexpansion.device." + Type.values()[getType()].getName() + ".name";
 	}
 
 	@Override
@@ -65,6 +90,16 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 	}
 
 	@Override
+	public void onRedstoneUpdate() {
+
+		boolean curActive = isActive;
+		if (!redstoneControlOrDisable()) {
+			isActive = false;
+		}
+		updateIfChanged(curActive);
+	}
+
+	@Override
 	public void setDefaultSides() {
 
 		sideCache = getDefaultSides();
@@ -82,6 +117,13 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 
 		level = 0;
 		hasRedstoneControl = true;
+
+		if (disableAutoInput) {
+			hasAutoInput = false;
+		}
+		if (disableAutoOutput) {
+			hasAutoOutput = false;
+		}
 	}
 
 	protected void updateIfChanged(boolean curActive) {
@@ -116,6 +158,7 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
@@ -129,6 +172,19 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 			return TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]];
 		}
 		return TETextures.DEVICE_SIDE;
+	}
+
+	/* IUpgradeable */
+	@Override
+	public boolean canUpgrade(ItemStack upgrade) {
+
+		return false;
+	}
+
+	@Override
+	public boolean installUpgrade(ItemStack upgrade) {
+
+		return false;
 	}
 
 	/* RENDERING */
@@ -145,19 +201,6 @@ public abstract class TileDeviceBase extends TileReconfigurable {
 	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
 
 		return 0xFFFFFFFF;
-	}
-
-	/* IUpgradeable */
-	@Override
-	public boolean canUpgrade(ItemStack upgrade) {
-
-		return false;
-	}
-
-	@Override
-	public boolean installUpgrade(ItemStack upgrade) {
-
-		return false;
 	}
 
 }

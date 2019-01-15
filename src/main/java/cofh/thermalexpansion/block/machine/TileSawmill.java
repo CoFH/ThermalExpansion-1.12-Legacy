@@ -1,7 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
@@ -35,6 +39,8 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileSawmill extends TileMachineBase {
 
 	private static final int TYPE = Type.SAWMILL.getMetadata();
@@ -49,6 +55,12 @@ public class TileSawmill extends TileMachineBase {
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 2 }, { 1, 2 }, { 0, 1, 2 }, { 0, 1, 2 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, OUTPUT_PRIMARY, OUTPUT_SECONDARY, OUTPUT_ALL, OPEN, OMNI };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+
+		ALT_SIDE_CONFIGS[TYPE] = new SideConfig();
+		ALT_SIDE_CONFIGS[TYPE].numConfig = 2;
+		ALT_SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 2 }, { 1, 2 }, { 0, 1, 2 }, { 0, 1, 2 } };
+		ALT_SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, OPEN };
+		ALT_SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
@@ -77,6 +89,7 @@ public class TileSawmill extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private SawmillRecipe curRecipe;
 	private int inputTracker;
 	private int outputTrackerPrimary;
 	private int outputTrackerSecondary;
@@ -104,30 +117,21 @@ public class TileSawmill extends TileMachineBase {
 	}
 
 	@Override
-	public void update() {
-
-		if (augmentTapper) {
-			transferOutputFluid();
-		}
-		super.update();
-	}
-
-	@Override
 	protected boolean canStart() {
 
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		SawmillRecipe recipe = SawmillManager.getRecipe(inventory[0]);
+		getRecipe();
 
-		if (recipe == null) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (inventory[0].getCount() < recipe.getInput().getCount()) {
+		if (inventory[0].getCount() < curRecipe.getInput().getCount()) {
 			return false;
 		}
-		ItemStack primaryItem = recipe.getPrimaryOutput();
-		ItemStack secondaryItem = recipe.getSecondaryOutput();
+		ItemStack primaryItem = curRecipe.getPrimaryOutput();
+		ItemStack secondaryItem = curRecipe.getSecondaryOutput();
 
 		if (!secondaryItem.isEmpty() && !inventory[2].isEmpty()) {
 			if (!augmentSecondaryNull) {
@@ -145,8 +149,25 @@ public class TileSawmill extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		SawmillRecipe recipe = SawmillManager.getRecipe(inventory[0]);
-		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
+			return false;
+		}
+		return curRecipe.getInput().getCount() <= inventory[0].getCount();
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = SawmillManager.getRecipe(inventory[0]);
 	}
 
 	@Override
@@ -155,21 +176,22 @@ public class TileSawmill extends TileMachineBase {
 		if (augmentTapper && TapperManager.mappingExists(inventory[0])) {
 			renderFluid = new FluidStack(TapperManager.getFluid(inventory[0]).copy(), 0);
 		}
-		processMax = SawmillManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		SawmillRecipe recipe = SawmillManager.getRecipe(inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		ItemStack primaryItem = recipe.getPrimaryOutput();
-		ItemStack secondaryItem = recipe.getSecondaryOutput();
+		ItemStack primaryItem = curRecipe.getPrimaryOutput();
+		ItemStack secondaryItem = curRecipe.getSecondaryOutput();
 
 		if (inventory[1].isEmpty()) {
 			inventory[1] = ItemHelper.cloneStack(primaryItem);
@@ -179,20 +201,15 @@ public class TileSawmill extends TileMachineBase {
 		if (!secondaryItem.isEmpty()) {
 			int modifiedChance = secondaryChance;
 
-			int recipeChance = recipe.getSecondaryOutputChance();
+			int recipeChance = curRecipe.getSecondaryOutputChance();
 			if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
 				if (inventory[2].isEmpty()) {
 					inventory[2] = ItemHelper.cloneStack(secondaryItem);
-
-					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-						inventory[2].grow(secondaryItem.getCount());
-					}
 				} else if (inventory[2].isItemEqual(secondaryItem)) {
 					inventory[2].grow(secondaryItem.getCount());
-
-					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-						inventory[2].grow(secondaryItem.getCount());
-					}
+				}
+				if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+					inventory[2].grow(secondaryItem.getCount());
 				}
 				if (inventory[2].getCount() > inventory[2].getMaxStackSize()) {
 					inventory[2].setCount(inventory[2].getMaxStackSize());
@@ -201,10 +218,9 @@ public class TileSawmill extends TileMachineBase {
 		}
 		if (augmentTapper && TapperManager.mappingExists(inventory[0])) {
 			FluidStack treeFluid = TapperManager.getFluid(inventory[0]).copy();
-			;
 			tank.fill(treeFluid, true);
 		}
-		inventory[0].shrink(recipe.getInput().getCount());
+		inventory[0].shrink(curRecipe.getInput().getCount());
 
 		if (inventory[0].getCount() <= 0) {
 			inventory[0] = ItemStack.EMPTY;
@@ -214,7 +230,7 @@ public class TileSawmill extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -232,8 +248,11 @@ public class TileSawmill extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
+		}
+		if (augmentTapper) {
+			transferOutputFluid();
 		}
 		int side;
 		if (!inventory[1].isEmpty()) {
@@ -263,7 +282,7 @@ public class TileSawmill extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		if (tank.getFluidAmount() <= 0) {
@@ -282,6 +301,15 @@ public class TileSawmill extends TileMachineBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void update() {
+
+		if (augmentTapper && timeCheckEighth()) {
+			transferOutput();
+		}
+		super.update();
 	}
 
 	/* GUI METHODS */
@@ -330,9 +358,9 @@ public class TileSawmill extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTrackerPrimary = nbt.getInteger("TrackOut1");
-		outputTrackerSecondary = nbt.getInteger("TrackOut2");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTrackerPrimary = nbt.getInteger(CoreProps.TRACK_OUT);
+		outputTrackerSecondary = nbt.getInteger(CoreProps.TRACK_OUT_2);
 		outputTrackerFluid = nbt.getInteger("TrackOut3");
 		tank.readFromNBT(nbt);
 
@@ -346,9 +374,9 @@ public class TileSawmill extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut1", outputTrackerPrimary);
-		nbt.setInteger("TrackOut2", outputTrackerSecondary);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTrackerPrimary);
+		nbt.setInteger(CoreProps.TRACK_OUT_2, outputTrackerSecondary);
 		nbt.setInteger("Trackout3", outputTrackerFluid);
 		tank.writeToNBT(nbt);
 		return nbt;
@@ -444,7 +472,7 @@ public class TileSawmill extends TileMachineBase {
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.machineSawmill;
+		return TEProps.enableSounds ? TESounds.machineSawmill : null;
 	}
 
 	/* CAPABILITIES */
@@ -477,20 +505,20 @@ public class TileSawmill extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideCache[from.ordinal()])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(resource, doDrain);
 					}
-					return tank.drain(resource, doDrain);
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideCache[from.ordinal()])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(maxDrain, doDrain);
 					}
-					return tank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}

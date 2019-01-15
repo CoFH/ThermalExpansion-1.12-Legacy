@@ -1,0 +1,93 @@
+{
+	"refinery": [
+		{
+			"type": "fossil_fuel",
+			"input": {
+				"fluid": "coal",
+				"amount": 200
+			},
+			"output": {
+				"fluid": "refined_oil",
+				"amount": 100
+			},
+			"output2": {
+				"constant": "tar",
+				"chance": 75
+			}
+		},
+		{
+			"type": "fossil_fuel",
+			"input": {
+				"fluid": "crude_oil",
+				"amount": 200
+			},
+			"output": {
+				"fluid": "refined_oil",
+				"amount": 150
+			},
+			"output2": {
+				"constant": "tar",
+				"chance": 50
+			}
+		},
+		{
+			"type": "fossil_fuel",
+			"input": {
+				"fluid": "refined_oil",
+				"amount": 150
+			},
+			"output": {
+				"fluid": "refined_fuel",
+				"amount": 100
+			},
+			"output2": {
+				"ore": "dustSulfur",
+				"chance": 50
+			}
+		},
+		{
+			"type": "bio_fuel",
+			"input": {
+				"fluid": "resin",
+				"amount": 200
+			},
+			"output": {
+				"fluid": "tree_oil",
+				"amount": 100
+			},
+			"output2": {
+				"constant": "rosin",
+				"chance": 50
+			}
+		},
+		{
+			"type": "bio_fuel",
+			"input": {
+				"fluid": "biocrude",
+				"amount": 200
+			},
+			"output": {
+				"fluid": "refined_biofuel",
+				"amount": 100
+			}
+		},
+		{
+			"//": "Immersive Petroleum"
+		},
+		{
+			"type": "fossil_fuel",
+			"input": {
+				"fluid": "oil",
+				"amount": 200
+			},
+			"output": {
+				"fluid": "refined_oil",
+				"amount": 150
+			},
+			"output2": {
+				"constant": "tar",
+				"chance": 50
+			}
+		}
+	]
+}

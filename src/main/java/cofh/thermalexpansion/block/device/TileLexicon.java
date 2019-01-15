@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.init.CoreProps;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -8,7 +10,7 @@ import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiLexicon;
 import cofh.thermalexpansion.gui.container.device.ContainerLexicon;
 import cofh.thermalfoundation.util.LexiconManager;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,6 +20,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Arrays;
 import java.util.Map;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileLexicon extends TileDeviceBase implements ITickable {
 
@@ -51,7 +55,7 @@ public class TileLexicon extends TileDeviceBase implements ITickable {
 	private int inputTracker;
 	private int outputTracker;
 
-	private Map<String, ItemStack> preferredStacks = new THashMap<>();
+	private Map<String, ItemStack> preferredStacks = new Object2ObjectOpenHashMap<>();
 
 	public TileLexicon() {
 
@@ -123,7 +127,7 @@ public class TileLexicon extends TileDeviceBase implements ITickable {
 
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -140,7 +144,7 @@ public class TileLexicon extends TileDeviceBase implements ITickable {
 
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		int side;
@@ -195,8 +199,8 @@ public class TileLexicon extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 
 		updatePreferredStacks();
 	}
@@ -206,8 +210,8 @@ public class TileLexicon extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 
 		return nbt;
 	}

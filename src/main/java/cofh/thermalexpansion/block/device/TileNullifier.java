@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.init.CoreProps;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -12,7 +14,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -22,9 +23,13 @@ import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileNullifier extends TileDeviceBase {
 
@@ -75,9 +80,11 @@ public class TileNullifier extends TileDeviceBase {
 	}
 
 	@Override
-	public boolean sendRedstoneUpdates() {
+	public void onRedstoneUpdate() {
 
-		return true;
+		boolean curActive = isActive;
+		isActive = redstoneControlOrDisable();
+		updateIfChanged(curActive);
 	}
 
 	protected boolean isSideAccessible(EnumFacing side) {
@@ -152,13 +159,15 @@ public class TileNullifier extends TileDeviceBase {
 		}
 		inventory[slot] = stack;
 
-		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
-			stack.setCount(getInventoryStackLimit());
-		}
+		//		if (!stack.isEmpty() && stack.getCount() > getInventoryStackLimit()) {
+		//			stack.setCount(getInventoryStackLimit());
+		//		}
+		markChunkDirty();
 	}
 
 	/* ISidedTexture */
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
@@ -167,30 +176,30 @@ public class TileNullifier extends TileDeviceBase {
 			} else if (side == 1) {
 				return TETextures.DEVICE_TOP;
 			}
-			return side != facing ? TETextures.DEVICE_SIDE : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.DEVICE_FACE[TYPE];
+			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.DEVICE_FACE[TYPE];
 		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : redstoneControlOrDisable() ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
 	}
 
-	@Override
-	public boolean hasFluidUnderlay() {
-
-		return true;
-	}
-
-	@Override
-	public FluidStack getRenderFluid() {
-
-		return new FluidStack(FluidRegistry.LAVA, 1);
-	}
-
-	@Override
-	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
-
-		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && redstoneControlOrDisable() ? FluidRegistry.LAVA.getColor() << 8 | 0xFF : super.getColorMask(layer, side);
-	}
+	//	@Override
+	//	public boolean hasFluidUnderlay() {
+	//
+	//		return true;
+	//	}
+	//
+	//	@Override
+	//	public FluidStack getRenderFluid() {
+	//
+	//		return new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
+	//	}
+	//
+	//	@Override
+	//	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
+	//
+	//		return layer == BlockRenderLayer.SOLID && side.ordinal() == facing && redstoneControlOrDisable() ? FluidRegistry.LAVA.getColor() << 8 | 0xFF : super.getColorMask(layer, side);
+	//	}
 
 	/* ISidedInventory */
 	@Override

@@ -1,7 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
@@ -36,13 +40,15 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileRefinery extends TileMachineBase {
 
 	private static final int TYPE = Type.REFINERY.getMetadata();
 	public static int basePower = 20;
 
-	public static final int OIL_ENERGY_MOD = 100;
-	public static final int OIL_FLUID_BOOST = 50;
+	public static final int SPEC_ENERGY_MOD = 100;
+	public static final int SPEC_FLUID_BOOST = 50;
 
 	public static void initialize() {
 
@@ -52,12 +58,18 @@ public class TileRefinery extends TileMachineBase {
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, OUTPUT_PRIMARY, OUTPUT_SECONDARY, OUTPUT_ALL, OPEN, OMNI };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 2, 3, 3, 3, 3 };
 
+		ALT_SIDE_CONFIGS[TYPE] = new SideConfig();
+		ALT_SIDE_CONFIGS[TYPE].numConfig = 2;
+		ALT_SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, {}, { 0 }, { 0 }, { 0 }, { 0 } };
+		ALT_SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, OPEN };
+		ALT_SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
-		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_REFINERY_OIL);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_REFINERY_FOSSIL);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_REFINERY_POTION);
 
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
@@ -80,6 +92,7 @@ public class TileRefinery extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private RefineryRecipe curRecipe;
 	private int outputTracker;
 	private int outputTrackerFluid;
 
@@ -88,7 +101,8 @@ public class TileRefinery extends TileMachineBase {
 	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, 0);
 
 	/* AUGMENTS */
-	protected boolean augmentOil;
+	protected boolean augmentFossil;
+	protected boolean augmentBio;
 	protected boolean augmentPotion;
 
 	public TileRefinery() {
@@ -103,14 +117,6 @@ public class TileRefinery extends TileMachineBase {
 	public int getType() {
 
 		return TYPE;
-	}
-
-	@Override
-	public void update() {
-
-		transferOutputFluid();
-
-		super.update();
 	}
 
 	@Override
@@ -129,19 +135,19 @@ public class TileRefinery extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (energyStorage.getEnergyStored() <= 0) {
+		if (energyStorage.getEnergyStored() <= 0 || outputTank.getSpace() <= 0) {
 			return false;
 		}
-		RefineryRecipe recipe = augmentPotion ? RefineryManager.getRecipePotion(inputTank.getFluid()) : RefineryManager.getRecipe(inputTank.getFluid());
+		getRecipe();
 
-		if (recipe == null) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (inputTank.getFluidAmount() < recipe.getInput().amount) {
+		if (inputTank.getFluidAmount() < curRecipe.getInput().amount) {
 			return false;
 		}
-		FluidStack outputFluid = recipe.getOutputFluid();
-		ItemStack outputItem = recipe.getOutputItem();
+		FluidStack outputFluid = curRecipe.getOutputFluid();
+		ItemStack outputItem = curRecipe.getOutputItem();
 
 		if (!outputItem.isEmpty() && !inventory[0].isEmpty()) {
 			if (!augmentSecondaryNull) {
@@ -159,20 +165,28 @@ public class TileRefinery extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		RefineryRecipe recipe;
-
-		if (augmentPotion) {
-			recipe = RefineryManager.getRecipePotion(inputTank.getFluid());
-		} else {
-			recipe = RefineryManager.getRecipe(inputTank.getFluid());
+		if (curRecipe == null) {
+			getRecipe();
 		}
-		return recipe != null;
+		return curRecipe != null;
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = augmentPotion ? RefineryManager.getRecipePotion(inputTank.getFluid()) : RefineryManager.getRecipe(inputTank.getFluid());
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = augmentPotion ? RefineryManager.getRecipePotion(inputTank.getFluid()).getEnergy() * energyMod / ENERGY_BASE : RefineryManager.getRecipe(inputTank.getFluid()).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
 		FluidStack prevStack = renderFluid.copy();
@@ -187,23 +201,24 @@ public class TileRefinery extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		RefineryRecipe recipe = augmentPotion ? RefineryManager.getRecipePotion(inputTank.getFluid()) : RefineryManager.getRecipe(inputTank.getFluid());
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		if (augmentOil && RefineryManager.isFossilFuel(recipe.getInput())) {
-			outputTank.fill(new FluidStack(recipe.getOutputFluid(), recipe.getOutputFluid().amount + OIL_FLUID_BOOST), true);
+		if (augmentFossil && RefineryManager.isFossilFuel(curRecipe.getInput()) || augmentBio && RefineryManager.isBioFuel(curRecipe.getInput())) {
+			outputTank.fill(new FluidStack(curRecipe.getOutputFluid(), curRecipe.getOutputFluid().amount + SPEC_FLUID_BOOST), true);
 		} else {
-			outputTank.fill(recipe.getOutputFluid(), true);
+			outputTank.fill(curRecipe.getOutputFluid(), true);
 		}
-		ItemStack outputItem = recipe.getOutputItem();
+		ItemStack outputItem = curRecipe.getOutputItem();
 
 		if (!outputItem.isEmpty()) {
 			int modifiedChance = secondaryChance;
 
-			int recipeChance = recipe.getChance();
+			int recipeChance = curRecipe.getChance();
 			if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
 				if (inventory[0].isEmpty()) {
 					inventory[0] = ItemHelper.cloneStack(outputItem);
@@ -223,15 +238,17 @@ public class TileRefinery extends TileMachineBase {
 				}
 			}
 		}
-		inputTank.drain(recipe.getInput().amount, true);
+		inputTank.drain(curRecipe.getInput().amount, true);
 	}
 
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
+		transferOutputFluid();
+
 		if (inventory[0].isEmpty()) {
 			return;
 		}
@@ -249,7 +266,7 @@ public class TileRefinery extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		if (outputTank.getFluidAmount() <= 0) {
@@ -268,6 +285,15 @@ public class TileRefinery extends TileMachineBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void update() {
+
+		if (timeCheckEighth()) {
+			transferOutputFluid();
+		}
+		super.update();
 	}
 
 	@Override
@@ -314,8 +340,8 @@ public class TileRefinery extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		outputTracker = nbt.getInteger("TrackOut1");
-		outputTrackerFluid = nbt.getInteger("TrackOut2");
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
+		outputTrackerFluid = nbt.getInteger(CoreProps.TRACK_OUT_2);
 
 		inputTank.readFromNBT(nbt.getCompoundTag("TankIn"));
 		outputTank.readFromNBT(nbt.getCompoundTag("TankOut"));
@@ -330,8 +356,8 @@ public class TileRefinery extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackOut1", outputTracker);
-		nbt.setInteger("TrackOut2", outputTrackerFluid);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT_2, outputTrackerFluid);
 
 		nbt.setTag("TankIn", inputTank.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("TankOut", outputTank.writeToNBT(new NBTTagCompound()));
@@ -399,7 +425,8 @@ public class TileRefinery extends TileMachineBase {
 
 		super.preAugmentInstall();
 
-		augmentOil = false;
+		augmentFossil = false;
+		augmentBio = false;
 		augmentPotion = false;
 	}
 
@@ -408,10 +435,16 @@ public class TileRefinery extends TileMachineBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-		if (!augmentOil && TEProps.MACHINE_REFINERY_OIL.equals(id)) {
-			augmentOil = true;
+		if (!augmentFossil && TEProps.MACHINE_REFINERY_FOSSIL.equals(id)) {
+			augmentFossil = true;
 			hasModeAugment = true;
-			energyMod += OIL_ENERGY_MOD;
+			energyMod += SPEC_ENERGY_MOD;
+			return true;
+		}
+		if (!augmentBio && TEProps.MACHINE_REFINERY_BIO.equals(id)) {
+			augmentBio = true;
+			hasModeAugment = true;
+			energyMod += SPEC_ENERGY_MOD;
 			return true;
 		}
 		if (!augmentPotion && TEProps.MACHINE_REFINERY_POTION.equals(id)) {
@@ -424,6 +457,7 @@ public class TileRefinery extends TileMachineBase {
 
 	/* ISidedTexture */
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
@@ -482,37 +516,39 @@ public class TileRefinery extends TileMachineBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return 0;
-					}
-					if (augmentPotion) {
-						if (!RefineryManager.recipeExistsPotion(resource)) {
+					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						if (augmentPotion) {
+							if (!RefineryManager.recipeExistsPotion(resource)) {
+								return 0;
+							}
+						} else if (!RefineryManager.recipeExists(resource)) {
 							return 0;
 						}
-					} else if (!RefineryManager.recipeExists(resource)) {
-						return 0;
+						return inputTank.fill(resource, doFill);
 					}
-					return inputTank.fill(resource, doFill);
+					return 0;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && isPrimaryOutput(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						FluidStack ret = outputTank.drain(resource, doDrain);
+						return ret != null ? ret : isActive ? null : inputTank.drain(resource, doDrain);
 					}
-					return outputTank.drain(resource, doDrain);
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && isPrimaryOutput(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						FluidStack ret = outputTank.drain(maxDrain, doDrain);
+						return ret != null ? ret : isActive ? null : inputTank.drain(maxDrain, doDrain);
 					}
-					return outputTank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}

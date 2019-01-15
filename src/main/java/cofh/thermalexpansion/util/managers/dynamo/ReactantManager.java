@@ -1,56 +1,53 @@
 package cofh.thermalexpansion.util.managers.dynamo;
 
 import cofh.core.inventory.ComparableItemStack;
-import cofh.thermalfoundation.init.TFFluids;
-import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
-import net.minecraft.init.Items;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import static java.util.Arrays.asList;
+
 public class ReactantManager {
 
-	private static Map<List<Integer>, Reaction> reactionMap = new THashMap<>();
-	private static Set<ComparableItemStack> validReactants = new THashSet<>();
-	private static Set<String> validFluids = new THashSet<>();
+	private static Map<List<Integer>, Reaction> reactionMap = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStack> validReactants = new ObjectOpenHashSet<>();
+	private static Set<String> validFluids = new ObjectOpenHashSet<>();
 
-	private static Set<ComparableItemStack> validReactantsElemental = new THashSet<>();
-	private static Set<String> validFluidsElemental = new THashSet<>();
-
-	static final ItemStack SUGAR = new ItemStack(Items.SUGAR);
-	static final ItemStack NETHER_WART = new ItemStack(Items.NETHER_WART);
-	static final ItemStack GUNPOWDER = new ItemStack(Items.GUNPOWDER);
-	static final ItemStack BLAZE_POWDER = new ItemStack(Items.BLAZE_POWDER);
-	static final ItemStack GHAST_TEAR = new ItemStack(Items.GHAST_TEAR);
+	private static Set<ComparableItemStack> validReactantsElemental = new ObjectOpenHashSet<>();
+	private static Set<String> validFluidsElemental = new ObjectOpenHashSet<>();
 
 	public static int DEFAULT_ENERGY = 100000;
 
 	public static Reaction getReaction(ItemStack reactant, FluidStack fluid) {
 
-		return reactant.isEmpty() || fluid == null ? null : reactionMap.get(Arrays.asList(new ComparableItemStack(reactant).hashCode(), fluid.getFluid().getName().hashCode()));
+		return reactant.isEmpty() || fluid == null ? null : reactionMap.get(asList(new ComparableItemStack(reactant).hashCode(), fluid.getFluid().getName().hashCode()));
 	}
 
 	public static Reaction getReaction(ItemStack reactant, Fluid fluid) {
 
-		return reactant.isEmpty() || fluid == null ? null : reactionMap.get(Arrays.asList(new ComparableItemStack(reactant).hashCode(), fluid.getName().hashCode()));
+		return reactant.isEmpty() || fluid == null ? null : reactionMap.get(asList(new ComparableItemStack(reactant).hashCode(), fluid.getName().hashCode()));
 	}
 
 	public static boolean reactionExists(ItemStack reactant, FluidStack fluid) {
 
-		return getReaction(reactant, fluid.getFluid()) != null;
+		return getReaction(reactant, fluid) != null;
 	}
 
 	public static boolean reactionExists(ItemStack reactant, Fluid fluid) {
 
 		return getReaction(reactant, fluid) != null;
+	}
+
+	public static boolean reactionExistsElemental(ItemStack reactant, Fluid fluid) {
+
+		return validReactantElemental(reactant) && validFluidElemental(fluid);
 	}
 
 	public static Reaction[] getReactionList() {
@@ -63,19 +60,14 @@ public class ReactantManager {
 		return !reactant.isEmpty() && validReactants.contains(new ComparableItemStack(reactant));
 	}
 
-	public static boolean validFluid(FluidStack fluid) {
-
-		return fluid != null && validFluids.contains(fluid.getFluid().getName());
-	}
-
-	public static boolean isElementalReaction(ItemStack reactant, FluidStack fluid) {
-
-		return validReactantElemental(reactant) && validFluidElemental(fluid);
-	}
-
 	public static boolean validReactantElemental(ItemStack reactant) {
 
 		return !reactant.isEmpty() && validReactantsElemental.contains(new ComparableItemStack(reactant));
+	}
+
+	public static boolean validFluid(FluidStack fluid) {
+
+		return fluid != null && validFluids.contains(fluid.getFluid().getName());
 	}
 
 	public static boolean validFluidElemental(FluidStack fluid) {
@@ -83,43 +75,22 @@ public class ReactantManager {
 		return fluid != null && validFluidsElemental.contains(fluid.getFluid().getName());
 	}
 
-	public static void initialize() {
+	public static boolean validFluidElemental(Fluid fluid) {
 
-		addReaction(SUGAR, TFFluids.fluidRedstone, 80000);
-		addReaction(NETHER_WART, TFFluids.fluidRedstone, 100000);
-		addReaction(GUNPOWDER, TFFluids.fluidRedstone, 100000);
-		addReaction(BLAZE_POWDER, TFFluids.fluidRedstone, 150000);
-		addReaction(GHAST_TEAR, TFFluids.fluidRedstone, 150000);
-
-		addReaction(SUGAR, TFFluids.fluidGlowstone, 100000);
-		addReaction(NETHER_WART, TFFluids.fluidGlowstone, 125000);
-		addReaction(GUNPOWDER, TFFluids.fluidGlowstone, 125000);
-		addReaction(BLAZE_POWDER, TFFluids.fluidGlowstone, 200000);
-		addReaction(GHAST_TEAR, TFFluids.fluidGlowstone, 200000);
-
-		addElementalReaction(ItemMaterial.dustPyrotheum, TFFluids.fluidCryotheum, 400000);
-		addElementalReaction(ItemMaterial.dustCryotheum, TFFluids.fluidPyrotheum, 400000);
-		addElementalReaction(ItemMaterial.dustAerotheum, TFFluids.fluidPetrotheum, 400000);
-		addElementalReaction(ItemMaterial.dustPetrotheum, TFFluids.fluidAerotheum, 400000);
-
-		loadReactions();
-	}
-
-	public static void loadReactions() {
-
+		return fluid != null && validFluidsElemental.contains(fluid.getName());
 	}
 
 	public static void refresh() {
 
-		Map<List<Integer>, Reaction> tempReactionMap = new THashMap<>(reactionMap.size());
-		Set<ComparableItemStack> tempSet = new THashSet<>();
-		Set<ComparableItemStack> tempSet2 = new THashSet<>();
+		Map<List<Integer>, Reaction> tempReactionMap = new Object2ObjectOpenHashMap<>(reactionMap.size());
+		Set<ComparableItemStack> tempSet = new ObjectOpenHashSet<>();
+		Set<ComparableItemStack> tempSet2 = new ObjectOpenHashSet<>();
 		Reaction tempReaction;
 
 		for (Entry<List<Integer>, Reaction> entry : reactionMap.entrySet()) {
 			tempReaction = entry.getValue();
 			ComparableItemStack reactant = new ComparableItemStack(tempReaction.reactant);
-			tempReactionMap.put(Arrays.asList(reactant.hashCode(), tempReaction.getFluidName().hashCode()), tempReaction);
+			tempReactionMap.put(asList(reactant.hashCode(), tempReaction.getFluidName().hashCode()), tempReaction);
 			tempSet.add(reactant);
 
 			if (validFluidsElemental.contains(tempReaction.getFluidName())) {
@@ -146,7 +117,7 @@ public class ReactantManager {
 			return false;
 		}
 		Reaction reaction = new Reaction(reactant, fluid, energy);
-		reactionMap.put(Arrays.asList(new ComparableItemStack(reactant).hashCode(), fluid.getName().hashCode()), reaction);
+		reactionMap.put(asList(new ComparableItemStack(reactant).hashCode(), fluid.getName().hashCode()), reaction);
 		validReactants.add(new ComparableItemStack(reactant));
 		validFluids.add(fluid.getName());
 		return true;
@@ -165,7 +136,14 @@ public class ReactantManager {
 	/* REMOVE REACTIONS */
 	public static boolean removeReaction(ItemStack reactant, Fluid fluid) {
 
-		return reactionMap.remove(Arrays.asList(new ComparableItemStack(reactant).hashCode(), fluid.getName().hashCode())) != null;
+		return reactionMap.remove(asList(new ComparableItemStack(reactant).hashCode(), fluid.getName().hashCode())) != null;
+	}
+
+	public static boolean removeElementalReaction(ItemStack reactant, Fluid fluid) {
+
+		validReactantsElemental.remove(new ComparableItemStack(reactant));
+		validFluidsElemental.remove(fluid.getName());
+		return true;
 	}
 
 	/* REACTION CLASS */

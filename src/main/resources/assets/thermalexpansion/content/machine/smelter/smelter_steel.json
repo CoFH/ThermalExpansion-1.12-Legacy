@@ -1,0 +1,94 @@
+{
+	"smelter": [
+		{
+			"input": {
+				"ore": "dustIron",
+				"count": 1
+			},
+			"input2": {
+				"ore": "dustCoal",
+				"count": 4
+			},
+			"output": {
+				"ore": "ingotSteel",
+				"count": 1
+			},
+			"energy": 4000
+		},
+		{
+			"input": {
+				"ore": "ingotIron",
+				"count": 1
+			},
+			"input2": {
+				"ore": "dustCoal",
+				"count": 4
+			},
+			"output": {
+				"ore": "ingotSteel",
+				"count": 1
+			},
+			"energy": 4400
+		},
+		{
+			"input": {
+				"ore": "dustIron",
+				"count": 1
+			},
+			"input2": {
+				"ore": "dustCharcoal",
+				"count": 4
+			},
+			"output": {
+				"ore": "ingotSteel",
+				"count": 1
+			},
+			"energy": 4000
+		},
+		{
+			"input": {
+				"ore": "ingotIron",
+				"count": 1
+			},
+			"input2": {
+				"ore": "dustCharcoal",
+				"count": 4
+			},
+			"output": {
+				"ore": "ingotSteel",
+				"count": 1
+			},
+			"energy": 4400
+		},
+		{
+			"input": {
+				"ore": "dustIron",
+				"count": 1
+			},
+			"input2": {
+				"ore": "fuelCoke",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotSteel",
+				"count": 1
+			},
+			"energy": 2000
+		},
+		{
+			"input": {
+				"ore": "ingotIron",
+				"count": 1
+			},
+			"input2": {
+				"ore": "fuelCoke",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotSteel",
+				"count": 1
+			},
+			"energy": 2400
+		}
+	]
+}

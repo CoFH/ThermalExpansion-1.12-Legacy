@@ -1,7 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.RenderHelper;
@@ -37,10 +41,12 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileCrucible extends TileMachineBase {
 
 	private static final int TYPE = Type.CRUCIBLE.getMetadata();
-	public static int basePower = 50;
+	public static int basePower = 40;
 
 	public static final int LAVA_MULTIPLIER = 10;
 	public static final int LAVA_ENERGY_MOD = 0;
@@ -52,6 +58,12 @@ public class TileCrucible extends TileMachineBase {
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 }, { 0 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, OUTPUT_ALL, OPEN, OMNI };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+
+		ALT_SIDE_CONFIGS[TYPE] = new SideConfig();
+		ALT_SIDE_CONFIGS[TYPE].numConfig = 2;
+		ALT_SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 }, { 0 } };
+		ALT_SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, OPEN };
+		ALT_SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false };
@@ -79,6 +91,7 @@ public class TileCrucible extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private CrucibleRecipe curRecipe;
 	private int inputTracker;
 	private int outputTrackerFluid;
 
@@ -103,14 +116,6 @@ public class TileCrucible extends TileMachineBase {
 	}
 
 	@Override
-	public void update() {
-
-		transferOutputFluid();
-
-		super.update();
-	}
-
-	@Override
 	public int getLightValue() {
 
 		return isActive ? renderFluid.getFluid().getLuminosity(renderFluid) : 0;
@@ -128,43 +133,59 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
+		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0 || tank.getSpace() <= 0) {
 			return false;
 		}
 		if (augmentLava && !CrucibleManager.isLava(inventory[0])) {
 			return false;
 		}
-		CrucibleRecipe recipe = CrucibleManager.getRecipe(inventory[0]);
+		getRecipe();
 
-		if (recipe == null) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (inventory[0].getCount() < recipe.getInput().getCount()) {
+		if (inventory[0].getCount() < curRecipe.getInput().getCount()) {
 			return false;
 		}
-		FluidStack output = recipe.getOutput();
+		FluidStack output = curRecipe.getOutput();
 		return tank.fill(output, false) == output.amount;
 	}
 
 	@Override
 	protected boolean hasValidInput() {
 
-		CrucibleRecipe recipe = CrucibleManager.getRecipe(inventory[0]);
-
 		if (augmentLava && !CrucibleManager.isLava(inventory[0])) {
 			return false;
 		}
-		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
+			return false;
+		}
+		return curRecipe.getInput().getCount() <= inventory[0].getCount();
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = CrucibleManager.getRecipe(inventory[0]);
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = CrucibleManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
 		FluidStack prevStack = renderFluid.copy();
-		renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput().copy();
+		renderFluid = curRecipe.getOutput().copy();
 		renderFluid.amount = 0;
 
 		if (!FluidHelper.isFluidEqual(prevStack, renderFluid)) {
@@ -175,13 +196,14 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		CrucibleRecipe recipe = CrucibleManager.getRecipe(inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		tank.fill(recipe.getOutput(), true);
+		tank.fill(curRecipe.getOutput(), true);
 		inventory[0].shrink(1);
 
 		if (inventory[0].getCount() <= 0) {
@@ -192,7 +214,7 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -207,11 +229,17 @@ public class TileCrucible extends TileMachineBase {
 		}
 	}
 
-	private void transferOutputFluid() {
+	@Override
+	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
+		transferOutputFluid();
+	}
+
+	private void transferOutputFluid() {
+
 		if (tank.getFluidAmount() <= 0) {
 			return;
 		}
@@ -228,6 +256,15 @@ public class TileCrucible extends TileMachineBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void update() {
+
+		if (timeCheckEighth()) {
+			transferOutput();
+		}
+		super.update();
 	}
 
 	/* GUI METHODS */
@@ -266,14 +303,15 @@ public class TileCrucible extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTrackerFluid = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTrackerFluid = nbt.getInteger(CoreProps.TRACK_OUT);
 		tank.readFromNBT(nbt);
 
+		getRecipe();
 		if (tank.getFluid() != null) {
 			renderFluid = tank.getFluid().copy();
-		} else if (CrucibleManager.getRecipe(inventory[0]) != null) {
-			renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput().copy();
+		} else if (curRecipe != null) {
+			renderFluid = curRecipe.getOutput().copy();
 		}
 	}
 
@@ -282,8 +320,8 @@ public class TileCrucible extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTrackerFluid);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTrackerFluid);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
@@ -400,6 +438,7 @@ public class TileCrucible extends TileMachineBase {
 
 	/* ISidedTexture */
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
@@ -438,7 +477,7 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.machineCrucible;
+		return TEProps.enableSounds ? TESounds.machineCrucible : null;
 	}
 
 	/* CAPABILITIES */
@@ -471,20 +510,20 @@ public class TileCrucible extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(resource, doDrain);
 					}
-					return tank.drain(resource, doDrain);
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(maxDrain, doDrain);
 					}
-					return tank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}

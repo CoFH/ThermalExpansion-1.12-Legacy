@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -112,7 +113,7 @@ public class BakeryTank implements ILayeredBlockBakery {
 		if (fluid.isGaseous(stack)) {
 			ccrs.alphaOverride = creative ? 224 : 32 + 192 * stack.amount / TileTank.CAPACITY[level];
 		} else if (!creative) {
-			fluidLevel = (int) Math.min(RENDER_LEVELS - 1, (long) stack.amount * RENDER_LEVELS / TileTank.getCapacity(level, holding));
+			fluidLevel = (int) Math.min(RENDER_LEVELS - 1, (long) stack.amount * RENDER_LEVELS / TileTank.getMaxCapacity(level, holding));
 		}
 		modelFluid[fluidLevel].render(ccrs, new IconTransformation(fluidTex));
 	}
@@ -121,18 +122,22 @@ public class BakeryTank implements ILayeredBlockBakery {
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess world, BlockPos pos) {
 
-		TileTank tank = (TileTank) world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-		if (tank == null) {
+		if (tile == null) {
 			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Null tile. Position: %s", pos));
+		} else if (!(tile instanceof TileTank)) {
+			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Tile is not an instance of TileTank, was %s. Pos: %s", tile.getClass().getName(), pos));
 		}
 		state = state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.OK);
-		state = state.withProperty(TEProps.TILE_TANK, tank);
+		state = state.withProperty(TEProps.TILE_TANK, (TileTank) tile);
 		return state;
 	}
 
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
+
+		List<BakedQuad> quads = new ArrayList<>();
 
 		if (face == null && !stack.isEmpty()) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
@@ -152,21 +157,23 @@ public class BakeryTank implements ILayeredBlockBakery {
 			renderFluid(ccrs, creative, level, holding, fluid);
 
 			buffer.finishDrawing();
-			return buffer.bake();
+			quads.addAll(buffer.bake());
 		}
-		return new ArrayList<>();
+		return quads;
 	}
 
 	/* ILayeredBlockBakery */
 	@Override
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 
+		List<BakedQuad> quads = new ArrayList<>();
+
 		if (face == null && state != null) {
 			TileTank tank = state.getValue(TEProps.TILE_TANK);
 			boolean creative = tank.isCreative;
 			int level = tank.getLevel();
 			int holding = tank.enchantHolding;
-			int mode = tank.enableAutoOutput ? 1 : 0;
+			int mode = tank.getTransferOut() ? 1 : 0;
 			boolean lock = tank.isLocked();
 			FluidStack fluidStack = tank.getTankFluid();
 
@@ -185,9 +192,9 @@ public class BakeryTank implements ILayeredBlockBakery {
 				renderFluid(ccrs, creative, level, holding, fluidStack);
 			}
 			buffer.finishDrawing();
-			return buffer.bake();
+			quads.addAll(buffer.bake());
 		}
-		return new ArrayList<>();
+		return quads;
 	}
 
 }

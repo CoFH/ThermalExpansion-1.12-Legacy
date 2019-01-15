@@ -6,17 +6,17 @@ import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
-import cofh.api.block.IConfigGui;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.StateMapper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.BakeryTank;
-import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
@@ -47,7 +47,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
 
-public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryProvider, IConfigGui {
+public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryProvider {
 
 	public BlockTank() {
 
@@ -78,8 +78,8 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
 		if (enable) {
-			if (TEProps.creativeTabShowAllLevels) {
-				for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
+			if (TEProps.creativeTabShowAllBlockLevels) {
+				for (int j = 0; j <= CoreProps.LEVEL_MAX; j++) {
 					items.add(itemBlock.setDefaultTag(new ItemStack(this), j));
 				}
 			} else {
@@ -91,9 +91,8 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 		}
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 
 		return new TileTank();
 	}
@@ -106,13 +105,13 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 			TileTank tile = (TileTank) world.getTileEntity(pos);
 
 			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
-			tile.enchantHolding = (byte) EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
+			tile.enchantHolding = (byte) MathHelper.clamp(EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack), 0, CoreEnchantments.holding.getMaxLevel());
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 
-			if (stack.getTagCompound().hasKey("Fluid")) {
-				FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
+			if (stack.getTagCompound().hasKey(CoreProps.FLUID)) {
+				FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag(CoreProps.FLUID));
 				tile.getTank().setFluid(fluid);
-				tile.lock = stack.getTagCompound().getBoolean("Lock");
+				tile.setLocked(stack.getTagCompound().getBoolean("Lock"));
 			}
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
@@ -153,25 +152,26 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 
 		TileTank tile = (TileTank) world.getTileEntity(pos);
 
-		if (tile != null) {
-			if (ItemHelper.isPlayerHoldingNothing(player)) {
-				if (player.isSneaking()) {
-					tile.setLocked(!tile.isLocked());
-					if (tile.isLocked()) {
-						world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.2F, 0.8F);
-					} else {
-						world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
-					}
-					return true;
+		if (tile == null || !tile.canPlayerAccess(player)) {
+			return false;
+		}
+		if (ItemHelper.isPlayerHoldingNothing(player)) {
+			if (player.isSneaking()) {
+				tile.setLocked(!tile.isLocked());
+				if (tile.isLocked()) {
+					world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.2F, 0.8F);
+				} else {
+					world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
 				}
-			}
-			ItemStack heldItem = player.getHeldItem(hand);
-			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-
-			if (FluidHelper.isFluidHandler(heldItem)) {
-				FluidHelper.interactWithHandler(heldItem, handler, player, hand);
 				return true;
 			}
+		}
+		ItemStack heldItem = player.getHeldItem(hand);
+		IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+
+		if (FluidHelper.isFluidHandler(heldItem)) {
+			FluidHelper.interactWithHandler(heldItem, handler, player, hand);
+			return true;
 		}
 		return false;
 	}
@@ -201,7 +201,7 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 			}
 			FluidStack fluid = tile.getTankFluid();
 			if (fluid != null) {
-				retTag.setTag("Fluid", fluid.writeToNBT(new NBTTagCompound()));
+				retTag.setTag(CoreProps.FLUID, fluid.writeToNBT(new NBTTagCompound()));
 				retTag.setBoolean("Lock", tile.isLocked());
 			}
 		}
@@ -244,12 +244,12 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(ModelBakery.defaultBlockKeyGenerator.generateKey(state));
 			TileTank tank = state.getValue(TEProps.TILE_TANK);
+			StringBuilder builder = new StringBuilder(ModelBakery.defaultBlockKeyGenerator.generateKey(state));
 			builder.append(",creative=").append(tank.isCreative);
 			builder.append(",level=").append(tank.getLevel());
 			builder.append(",holding=").append(tank.enchantHolding);
-			builder.append(",output=").append(tank.enableAutoOutput);
+			builder.append(",output=").append(tank.getTransferOut());
 			builder.append(",lock=").append(tank.isLocked());
 			FluidStack stack = tank.getTankFluid();
 
@@ -264,7 +264,7 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 			String fluidAppend = "";
 			if (stack.getTagCompound() != null) {
 
-				FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
+				FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag(CoreProps.FLUID));
 				if (fluid != null && fluid.amount > 0) {
 					fluidAppend = ",fluid=" + fluid.getFluid().getName() + ",amount=" + fluid.amount;
 				}
@@ -275,7 +275,7 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("tank");
 		ForgeRegistries.BLOCKS.register(this);
@@ -292,7 +292,7 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		tank = new ItemStack[5];
 

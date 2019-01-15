@@ -1,0 +1,64 @@
+{
+	"smelter": [
+		{
+			"input": {
+				"ore": "dustArdite",
+				"count": 1
+			},
+			"input2": {
+				"ore": "dustCobalt",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotManyullyn",
+				"count": 1
+			},
+			"energy": 6400
+		},
+		{
+			"input": {
+				"ore": "dustArdite",
+				"count": 1
+			},
+			"input2": {
+				"ore": "ingotCobalt",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotManyullyn",
+				"count": 1
+			},
+			"energy": 8000
+		},
+		{
+			"input": {
+				"ore": "ingotArdite",
+				"count": 1
+			},
+			"input2": {
+				"ore": "dustCobalt",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotManyullyn",
+				"count": 1
+			},
+			"energy": 8000
+		},
+		{
+			"input": {
+				"ore": "ingotArdite",
+				"count": 1
+			},
+			"input2": {
+				"ore": "ingotCobalt",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotManyullyn",
+				"count": 1
+			},
+			"energy": 9600
+		}
+	]
+}

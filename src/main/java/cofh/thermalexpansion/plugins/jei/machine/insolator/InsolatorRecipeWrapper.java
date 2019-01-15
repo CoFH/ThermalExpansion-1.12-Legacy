@@ -7,7 +7,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
-import cofh.thermalexpansion.util.managers.machine.InsolatorManager.ComparableItemStackInsolator;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.InsolatorRecipe;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import mezz.jei.api.IGuiHelper;
@@ -16,7 +16,6 @@ import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -55,8 +54,7 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeInputsPrimary = new ArrayList<>();
 		List<ItemStack> recipeInputsSecondary = new ArrayList<>();
 
-		ComparableItemStackInsolator instance = new ComparableItemStackInsolator(new ItemStack(Items.DIAMOND));
-		int oreID = instance.getOreID(recipe.getPrimaryInput());
+		int oreID = InsolatorManager.convertInput(recipe.getPrimaryInput()).oreID;
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputsPrimary.add(ItemHelper.cloneStack(ore, recipe.getPrimaryInput().getCount()));
@@ -64,7 +62,7 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 		} else {
 			recipeInputsPrimary.add(recipe.getPrimaryInput());
 		}
-		oreID = instance.getOreID(recipe.getSecondaryInput());
+		oreID = InsolatorManager.convertInput(recipe.getSecondaryInput()).oreID;
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputsSecondary.add(ItemHelper.cloneStack(ore, recipe.getSecondaryInput().getCount()));
@@ -72,8 +70,8 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 		} else {
 			recipeInputsSecondary.add(recipe.getSecondaryInput());
 		}
-		recipeInputs.add(recipeInputsPrimary);
 		recipeInputs.add(recipeInputsSecondary);
+		recipeInputs.add(recipeInputsPrimary);
 		recipeInputFluids.add(new FluidStack(FluidRegistry.WATER, recipe.getWater()));
 
 		List<ItemStack> recipeOutputs = new ArrayList<>();

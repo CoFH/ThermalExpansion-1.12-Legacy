@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -38,12 +39,11 @@ public class BakeryCell implements ILayeredBlockBakery {
 	static CCModel modelFrame = CCModel.quadModel(48);
 
 	static {
-
 		modelCenter.generateBlock(0, 0.15, 0.15, 0.15, 0.85, 0.85, 0.85).computeNormals();
 
 		Cuboid6 box = new Cuboid6(0, 0, 0, 1, 1, 1);
 		double inset = 0.1875;
-		modelFrame = CCModel.quadModel(48).generateBlock(0, box);
+		modelFrame.generateBlock(0, box);
 		CCModel.generateBackface(modelFrame, 0, modelFrame, 24, 24);
 		modelFrame.computeNormals();
 		for (int i = 24; i < 48; i++) {
@@ -90,18 +90,22 @@ public class BakeryCell implements ILayeredBlockBakery {
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess world, BlockPos pos) {
 
-		TileCell cell = (TileCell) world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-		if (cell == null) {
+		if (tile == null) {
 			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Null tile. Position: %s", pos));
+		} else if (!(tile instanceof TileCell)) {
+			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Tile is not an instance of TileCell, was %s. Pos: %s", tile.getClass().getName(), pos));
 		}
 		state = state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.OK);
-		state = state.withProperty(TEProps.TILE_CELL, cell);
+		state = state.withProperty(TEProps.TILE_CELL, (TileCell) tile);
 		return state;
 	}
 
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
+
+		List<BakedQuad> quads = new ArrayList<>();
 
 		if (face == null && !stack.isEmpty()) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
@@ -119,14 +123,16 @@ public class BakeryCell implements ILayeredBlockBakery {
 			renderCenter(ccrs);
 
 			buffer.finishDrawing();
-			return buffer.bake();
+			quads.addAll(buffer.bake());
 		}
-		return new ArrayList<>();
+		return quads;
 	}
 
 	/* ILayeredBlockBakery */
 	@Override
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
+
+		List<BakedQuad> quads = new ArrayList<>();
 
 		if (face == null && state != null) {
 			TileCell cell = state.getValue(TEProps.TILE_CELL);
@@ -151,9 +157,9 @@ public class BakeryCell implements ILayeredBlockBakery {
 				renderCenter(ccrs);
 			}
 			buffer.finishDrawing();
-			return buffer.bake();
+			quads.addAll(buffer.bake());
 		}
-		return new ArrayList<>();
+		return quads;
 	}
 
 }

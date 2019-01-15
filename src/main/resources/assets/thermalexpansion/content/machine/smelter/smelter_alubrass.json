@@ -1,0 +1,64 @@
+{
+	"smelter": [
+		{
+			"input": {
+				"ore": "dustAluminum",
+				"count": 3
+			},
+			"input2": {
+				"ore": "dustCopper",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotAlubrass",
+				"count": 4
+			},
+			"energy": 3200
+		},
+		{
+			"input": {
+				"ore": "dustAluminum",
+				"count": 3
+			},
+			"input2": {
+				"ore": "ingotCopper",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotAlubrass",
+				"count": 4
+			},
+			"energy": 3600
+		},
+		{
+			"input": {
+				"ore": "ingotAluminum",
+				"count": 3
+			},
+			"input2": {
+				"ore": "dustCopper",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotAlubrass",
+				"count": 4
+			},
+			"energy": 4400
+		},
+		{
+			"input": {
+				"ore": "ingotAluminum",
+				"count": 3
+			},
+			"input2": {
+				"ore": "ingotCopper",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotAlubrass",
+				"count": 4
+			},
+			"energy": 4800
+		}
+	]
+}

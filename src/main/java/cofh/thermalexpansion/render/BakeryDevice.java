@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -30,13 +31,16 @@ public class BakeryDevice extends CubeBakeryBase {
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess world, BlockPos pos) {
 
-		TileDeviceBase deviceBase = (TileDeviceBase) world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-		if (deviceBase == null) {
+		if (tile == null) {
 			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Null tile. Position: %s", pos));
+		} else if (!(tile instanceof TileDeviceBase)) {
+			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Tile is not an instance of TileDeviceBase, was %s. Pos: %s", tile.getClass().getName(), pos));
 		}
 		state = state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.OK);
-		state = state.withProperty(TEProps.TILE_DEVICE, deviceBase);
+		state = state.withProperty(TEProps.TILE_DEVICE, (TileDeviceBase) tile);
+		state = state.withProperty(TEProps.BAKERY_WORLD, world);
 		return state;
 	}
 
@@ -72,6 +76,7 @@ public class BakeryDevice extends CubeBakeryBase {
 			Block block = state.getBlock();
 			IWorldBlockTextureProvider provider = (IWorldBlockTextureProvider) block;
 			TileDeviceBase tile = state.getValue(TEProps.TILE_DEVICE);
+			IBlockAccess world = state.getValue(TEProps.BAKERY_WORLD);
 
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(0x07, DefaultVertexFormats.ITEM);
@@ -79,7 +84,7 @@ public class BakeryDevice extends CubeBakeryBase {
 			ccrs.reset();
 			ccrs.bind(buffer);
 
-			renderFace(ccrs, face, provider.getTexture(face, state, layer, tile.getWorld(), tile.getPos()), tile.getColorMask(layer, face));
+			renderFace(ccrs, face, provider.getTexture(face, state, layer, world, tile.getPos()), tile.getColorMask(layer, face));
 
 			buffer.finishDrawing();
 			quads.addAll(buffer.bake());

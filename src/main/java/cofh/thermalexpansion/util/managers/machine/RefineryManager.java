@@ -3,9 +3,8 @@ package cofh.thermalexpansion.util.managers.machine;
 import cofh.core.init.CoreProps;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalfoundation.init.TFFluids;
-import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionType;
@@ -17,9 +16,10 @@ import java.util.Set;
 
 public class RefineryManager {
 
-	private static TIntObjectHashMap<RefineryRecipe> recipeMap = new TIntObjectHashMap<>();
-	private static TIntObjectHashMap<RefineryRecipe> recipeMapPotion = new TIntObjectHashMap<>();
-	private static Set<String> oilFluids = new THashSet<>();
+	private static Int2ObjectOpenHashMap<RefineryRecipe> recipeMap = new Int2ObjectOpenHashMap<>();
+	private static Int2ObjectOpenHashMap<RefineryRecipe> recipeMapPotion = new Int2ObjectOpenHashMap<>();
+	private static Set<String> bioFluids = new ObjectOpenHashSet<>();
+	private static Set<String> fossilFluids = new ObjectOpenHashSet<>();
 
 	public static final int DEFAULT_ENERGY = 5000;
 
@@ -45,63 +45,59 @@ public class RefineryManager {
 
 	public static RefineryRecipe[] getRecipeList() {
 
-		return recipeMap.values(new RefineryRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new RefineryRecipe[0]);
 	}
 
 	public static RefineryRecipe[] getRecipeListPotion() {
 
-		return recipeMapPotion.values(new RefineryRecipe[recipeMapPotion.size()]);
+		return recipeMapPotion.values().toArray(new RefineryRecipe[0]);
 	}
 
 	public static boolean isFossilFuel(FluidStack fluid) {
 
-		return fluid != null && oilFluids.contains(fluid.getFluid().getName());
+		return fluid != null && fossilFluids.contains(fluid.getFluid().getName());
+	}
+
+	public static boolean isBioFuel(FluidStack fluid) {
+
+		return fluid != null && bioFluids.contains(fluid.getFluid().getName());
 	}
 
 	public static void initialize() {
 
-		int energy = DEFAULT_ENERGY;
+		int min = 2;
+		int max = 4;
 
-		/* FOSSIL FUELS */
-		{
-			addFossilFuel(TFFluids.fluidCoal);
-			addFossilFuel(TFFluids.fluidCrudeOil);
-			addFossilFuel(TFFluids.fluidRefinedOil);
+		addStrongPotionRecipes("leaping", min, max);
+		addStrongPotionRecipes("swiftness", min, max);
+		addStrongPotionRecipes("healing", min, max);
+		addStrongPotionRecipes("harming", min, max);
+		addStrongPotionRecipes("poison", min, max);
+		addStrongPotionRecipes("regeneration", min, max);
+		addStrongPotionRecipes("strength", min, max);
 
-			addRecipe(energy, new FluidStack(TFFluids.fluidCoal, 200), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar, 75);
-			addRecipe(energy, new FluidStack(TFFluids.fluidCrudeOil, 200), new FluidStack(TFFluids.fluidRefinedOil, 150), ItemMaterial.globTar, 50);
-			addRecipe(energy, new FluidStack(TFFluids.fluidRefinedOil, 150), new FluidStack(TFFluids.fluidFuel, 100), ItemMaterial.dustSulfur, 50);
-		}
+		addStrongPotionRecipes("haste", min, max);
+		addStrongPotionRecipes("resistance", min, max);
+		addStrongPotionRecipes("absorption", min, max);
+		addStrongPotionRecipes("luck", min, max);
+		addStrongPotionRecipes("unluck", min, max);
+		addStrongPotionRecipes("wither", min, max);
 
-		addRecipe(energy, new FluidStack(TFFluids.fluidResin, 100), new FluidStack(TFFluids.fluidTreeOil, 50), ItemMaterial.globRosin, 75);
+		min = 1;
+		max = 3;
 
-		addStrongPotionRecipes("leaping", CoreProps.POTION_MAX);
-		addStrongPotionRecipes("swiftness", CoreProps.POTION_MAX);
-		addStrongPotionRecipes("healing", CoreProps.POTION_MAX);
-		addStrongPotionRecipes("harming", CoreProps.POTION_MAX);
-		addStrongPotionRecipes("poison", CoreProps.POTION_MAX);
-		addStrongPotionRecipes("regeneration", CoreProps.POTION_MAX);
-		addStrongPotionRecipes("strength", CoreProps.POTION_MAX);
+		addStrongPotionRecipes("leaping", min, max, "+");
+		addStrongPotionRecipes("swiftness", min, max, "+");
+		addStrongPotionRecipes("poison", min, max, "+");
+		addStrongPotionRecipes("regeneration", min, max, "+");
+		addStrongPotionRecipes("strength", min, max, "+");
 
-		addStrongPotionRecipes("haste", 4);
-		addStrongPotionRecipes("resistance", CoreProps.POTION_MAX);
-		addStrongPotionRecipes("absorption", CoreProps.POTION_MAX);
-		addStrongPotionRecipes("wither", CoreProps.POTION_MAX);
-
-		/* LOAD RECIPES */
-		loadRecipes();
-	}
-
-	public static void loadRecipes() {
-
-		/* IMMERSIVE PETROLEUM */
-		{
-			Fluid oil = FluidRegistry.getFluid("oil");
-			if (oil != null) {
-				addFossilFuel(oil);
-				addRecipe(DEFAULT_ENERGY, new FluidStack(oil, 200), new FluidStack(TFFluids.fluidRefinedOil, 150), ItemMaterial.globTar, 50);
-			}
-		}
+		addStrongPotionRecipes("haste", min, max, "+");
+		addStrongPotionRecipes("resistance", min, max, "+");
+		addStrongPotionRecipes("absorption", min, max, "+");
+		addStrongPotionRecipes("luck", min, max, "+");
+		addStrongPotionRecipes("unluck", min, max, "+");
+		addStrongPotionRecipes("wither", min, max, "+");
 	}
 
 	public static void refresh() {
@@ -113,6 +109,9 @@ public class RefineryManager {
 
 		if (input == null || outputFluid == null || energy <= 0 || recipeExists(input)) {
 			return null;
+		}
+		if (outputItem.isEmpty()) {
+			chance = 0;
 		}
 		RefineryRecipe recipe = new RefineryRecipe(input, outputFluid, outputItem, energy, chance);
 		recipeMap.put(FluidHelper.getFluidHash(input), recipe);
@@ -157,26 +156,39 @@ public class RefineryManager {
 	}
 
 	/* HELPERS */
-	private static void addFossilFuel(Fluid fluid) {
+	public static void addBioFuel(Fluid fluid) {
 
-		if (fluid == null) {
+		if (!FluidRegistry.isFluidRegistered(fluid)) {
 			return;
 		}
-		oilFluids.add(fluid.getName());
+		bioFluids.add(fluid.getName());
 	}
 
-	public static void addStrongPotionRecipes(String baseName, int maxRank) {
+	public static void addFossilFuel(Fluid fluid) {
+
+		if (!FluidRegistry.isFluidRegistered(fluid)) {
+			return;
+		}
+		fossilFluids.add(fluid.getName());
+	}
+
+	public static void addStrongPotionRecipes(String baseName, int minRank, int maxRank) {
+
+		addStrongPotionRecipes(baseName, minRank, maxRank, "");
+	}
+
+	public static void addStrongPotionRecipes(String baseName, int minRank, int maxRank, String postfix) {
 
 		int baseAmount = CoreProps.BOTTLE_VOLUME / 5;
 		int inputAmount;
 		int outputAmount;
 
-		for (int i = maxRank; i > 2; i--) {
-			outputAmount = baseAmount + baseAmount * (CoreProps.POTION_MAX - i);
+		for (int i = maxRank; i > minRank; i--) {
+			outputAmount = baseAmount * (5 + minRank - i);
 			inputAmount = outputAmount + baseAmount;
 
-			PotionType inputType = getPotionType(baseName, i - 1);
-			PotionType outputType = getPotionType(baseName, i);
+			PotionType inputType = getPotionType(baseName, i - 1, postfix);
+			PotionType outputType = getPotionType(baseName, i, postfix);
 
 			if (inputType == PotionTypes.EMPTY || outputType == PotionTypes.EMPTY) {
 				continue;
@@ -195,22 +207,24 @@ public class RefineryManager {
 		}
 	}
 
-	public static PotionType getPotionType(String baseName, int rank) {
+	public static PotionType getPotionType(String baseName, int rank, String postfix) {
 
 		PotionType ret;
-
 		switch (rank) {
 			case 1:
-				ret = PotionType.getPotionTypeForName(baseName);
+				ret = PotionType.getPotionTypeForName("cofhcore:" + baseName + postfix);
+				if (ret == PotionTypes.EMPTY) { // Vanilla Potion
+					ret = PotionType.getPotionTypeForName("long_" + baseName);
+				}
 				break;
 			case 2:
-				ret = PotionType.getPotionTypeForName("cofhcore:" + baseName + 2);
+				ret = PotionType.getPotionTypeForName("cofhcore:" + baseName + 2 + postfix);
 				if (ret == PotionTypes.EMPTY) { // Vanilla Potion
 					ret = PotionType.getPotionTypeForName("strong_" + baseName);
 				}
 				break;
 			default:
-				ret = PotionType.getPotionTypeForName("cofhcore:" + baseName + rank);
+				ret = PotionType.getPotionTypeForName("cofhcore:" + baseName + rank + postfix);
 		}
 		return ret;
 	}

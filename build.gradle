@@ -1,3 +1,5 @@
+import java.util.regex.Pattern
+
 buildscript {
 	repositories {
 		jcenter()
@@ -47,18 +49,20 @@ repositories {
 }
 
 dependencies {
-	compile "cofh:RedstoneFlux:${config.rf_mc_version}-${config.rf_version}:deobf"
-	compile "cofh:CoFHCore:${config.mc_version}-${config.cofh_core_version}:deobf"
-	compile "cofh:ThermalFoundation:${config.mc_version}-${config.tf_version}:deobf"
+	deobfCompile "cofh:RedstoneFlux:${config.rf_mc_version}-${config.rf_version}:universal"
+    deobfCompile "cofh:CoFHCore:${config.mc_version}-${config.cofh_core_version}:universal"
+    deobfCompile "cofh:ThermalFoundation:${config.mc_version}-${config.tf_version}:universal"
 
-	compile "codechicken:CodeChickenLib:${config.ccl_mc_version}-${config.ccl_version}:deobf"
+    deobfCompile "codechicken:CodeChickenLib:${config.ccl_mc_version}-${config.ccl_version}:universal"
 	compile "mezz.jei:jei_${config.jei_mc_version}:${config.jei_version}"
 }
 
+//Pull the mod version from code.
+project.config.mod_version = pullVersion()
 version = "${project.config.mod_version}." + (System.getenv("BUILD_NUMBER") ?: "1")
+println "Starting build of ${archivesBaseName}. Version: ${version}"
+println "Using Forge ${config.forge_version}, for Minecraft ${config.mc_version}"
 
-println config.mc_version + "-" + config.forge_version
-// Setup the Forge/Minecraft plugin data. Specify the preferred Forge/Minecraft version here.
 minecraft {
 	version = config.mc_version + "-" + config.forge_version
 	mappings = config.mappings
@@ -94,10 +98,41 @@ task srcJar(type: Jar) {
 	classifier = 'sources'
 }
 
-// Tell artifact system about extra jars.
+task signJar(type: SignJar, dependsOn: reobfJar) {
+	onlyIf {
+		//Skip of keystore is missing.
+		project.hasProperty('cofh_keyStore')
+	}
+
+	if (project.hasProperty('cofh_keyStore')) {
+		keyStore = project.cofh_keyStore
+		alias = project.cofh_keyStoreAlias
+		storePass = project.cofh_keyStorePass
+		keyPass = project.cofh_keyStorePass
+		inputFile = jar.archivePath
+		outputFile = jar.archivePath
+	}
+}
+
+build.dependsOn signJar
+
 artifacts {
 	archives deobfJar
 	archives srcJar
+}
+
+def pullVersion() {
+	def file = file("src/main/java/cofh/thermalexpansion/ThermalExpansion.java")
+	def version = ""
+	def pattern = Pattern.compile("^\tpublic static final String VERSION = \"([\\d\\.]*)\";\$")
+	file.eachLine { String s ->
+		def matcher = pattern.matcher(s)
+		if (matcher.matches()) {
+			version = matcher.group(1)
+			return
+		}
+	}
+	return version
 }
 
 // Configure upload task.

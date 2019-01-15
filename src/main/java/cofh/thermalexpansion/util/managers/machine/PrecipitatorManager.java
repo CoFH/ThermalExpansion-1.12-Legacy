@@ -2,7 +2,7 @@ package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.util.ItemWrapper;
 import cofh.core.util.helpers.ItemHelper;
-import gnu.trove.map.hash.THashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -17,7 +17,7 @@ import java.util.Map.Entry;
 
 public class PrecipitatorManager {
 
-	private static Map<ItemWrapper, PrecipitatorRecipe> recipeMap = new THashMap<>();
+	private static Map<ItemWrapper, PrecipitatorRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
 	private static List<ItemStack> outputList = new ArrayList<>();
 
 	public static final int DEFAULT_ENERGY = 800;
@@ -55,7 +55,7 @@ public class PrecipitatorManager {
 
 	public static PrecipitatorRecipe[] getRecipeList() {
 
-		return recipeMap.values().toArray(new PrecipitatorRecipe[recipeMap.size()]);
+		return recipeMap.values().toArray(new PrecipitatorRecipe[0]);
 	}
 
 	public static void initialize() {
@@ -77,7 +77,7 @@ public class PrecipitatorManager {
 
 	public static void refresh() {
 
-		Map<ItemWrapper, PrecipitatorRecipe> tempMap = new THashMap<>(recipeMap.size());
+		Map<ItemWrapper, PrecipitatorRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
 		PrecipitatorRecipe tempRecipe;
 
 		for (Entry<ItemWrapper, PrecipitatorRecipe> entry : recipeMap.entrySet()) {

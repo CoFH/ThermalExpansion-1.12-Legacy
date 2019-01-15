@@ -48,8 +48,8 @@ public class RefineryRecipeWrapper extends BaseRecipeWrapper {
 
 		recipeInputFluids.add(recipe.getInput());
 
-		if (uId.equals(RecipeUidsTE.REFINERY_OIL)) {
-			recipeOutputFluids.add(new FluidStack(recipe.getOutputFluid(), recipe.getOutputFluid().amount + TileRefinery.OIL_FLUID_BOOST));
+		if (uId.equals(RecipeUidsTE.REFINERY_FOSSIL) || uId.equals(RecipeUidsTE.REFINERY_BIO)) {
+			recipeOutputFluids.add(new FluidStack(recipe.getOutputFluid(), recipe.getOutputFluid().amount + TileRefinery.SPEC_FLUID_BOOST));
 		} else {
 			recipeOutputFluids.add(recipe.getOutputFluid());
 		}

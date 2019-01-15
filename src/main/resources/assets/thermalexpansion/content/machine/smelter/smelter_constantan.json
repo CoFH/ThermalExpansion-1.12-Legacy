@@ -1,0 +1,64 @@
+{
+	"smelter": [
+		{
+			"input": {
+				"ore": "dustCopper",
+				"count": 1
+			},
+			"input2": {
+				"ore": "dustNickel",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotConstantan",
+				"count": 2
+			},
+			"energy": 1600
+		},
+		{
+			"input": {
+				"ore": "dustCopper",
+				"count": 1
+			},
+			"input2": {
+				"ore": "ingotNickel",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotConstantan",
+				"count": 2
+			},
+			"energy": 2000
+		},
+		{
+			"input": {
+				"ore": "ingotCopper",
+				"count": 1
+			},
+			"input2": {
+				"ore": "dustNickel",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotConstantan",
+				"count": 2
+			},
+			"energy": 2000
+		},
+		{
+			"input": {
+				"ore": "ingotCopper",
+				"count": 1
+			},
+			"input2": {
+				"ore": "ingotNickel",
+				"count": 1
+			},
+			"output": {
+				"ore": "ingotConstantan",
+				"count": 2
+			},
+			"energy": 2400
+		}
+	]
+}

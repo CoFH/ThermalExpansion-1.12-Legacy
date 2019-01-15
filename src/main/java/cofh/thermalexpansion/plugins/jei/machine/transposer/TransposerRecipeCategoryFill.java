@@ -4,28 +4,35 @@ import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
-import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager.TransposerRecipe;
+import cofh.thermalfoundation.init.TFFluids;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
+import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredientRegistry;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocus;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.singletonList;
+import static mezz.jei.api.recipe.IFocus.Mode.INPUT;
+import static mezz.jei.api.recipe.IFocus.Mode.OUTPUT;
 
 public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 
@@ -42,37 +49,52 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 
 		List<TransposerRecipeWrapper> recipes = new ArrayList<>();
 
+		List<TransposerRecipe> potionRecipes = new ArrayList<>();
+		List<TransposerRecipe> splashPotionRecipes = new ArrayList<>();
+		List<TransposerRecipe> lingeringPotionRecipes = new ArrayList<>();
+		List<TransposerRecipe> arrowRecipes = new ArrayList<>();
+		List<TransposerRecipe> florbRecipes = new ArrayList<>();
+
 		for (TransposerRecipe recipe : TransposerManager.getFillRecipeList()) {
+			if (TFFluids.isPotion(recipe.getFluid())) {
+				potionRecipes.add(recipe);
+				continue;
+			}
+			if (TFFluids.isSplashPotion(recipe.getFluid())) {
+				splashPotionRecipes.add(recipe);
+				continue;
+			}
+			if (TFFluids.isLingeringPotion(recipe.getFluid())) {
+				if (recipe.getInput().getItem().equals(Items.ARROW)) {
+					arrowRecipes.add(recipe);
+				} else {
+					lingeringPotionRecipes.add(recipe);
+				}
+				continue;
+			}
+			if (ItemFlorb.florbStandard.equals(recipe.getInput()) || ItemFlorb.florbMagmatic.equals(recipe.getInput())) {
+				florbRecipes.add(recipe);
+				continue;
+			}
 			recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_FILL));
 		}
-		List<ItemStack> ingredients = ingredientRegistry.getIngredients(ItemStack.class);
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, potionRecipes, RecipeUidsTE.TRANSPOSER_FILL));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, splashPotionRecipes, RecipeUidsTE.TRANSPOSER_FILL));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, lingeringPotionRecipes, RecipeUidsTE.TRANSPOSER_FILL));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, arrowRecipes, RecipeUidsTE.TRANSPOSER_FILL));
+		recipes.add(new TransposerRecipeWrapperMulti(guiHelper, florbRecipes, RecipeUidsTE.TRANSPOSER_FILL));
 
+		List<ItemStack> ingredients = ingredientRegistry.getIngredients(ItemStack.class);
 		for (ItemStack ingredient : ingredients) {
 			if (ingredient.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-				for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
-					addFillRecipe(ingredient, fluid, recipes, guiHelper);
+				TransposerRecipeWrapperContainer wrapper = new TransposerRecipeWrapperContainer(guiHelper, ingredient, RecipeUidsTE.TRANSPOSER_FILL);
+				if (wrapper.inputs.get(0).isEmpty() || wrapper.outputs.get(0).isEmpty() || wrapper.inputFluids.get(0).isEmpty()) {
+					continue;
 				}
-				//				TransposerRecipeWrapperContainer wrapper = new TransposerRecipeWrapperContainer(guiHelper, ingredient, RecipeUidsTE.TRANSPOSER_FILL);
-				//				if (!wrapper.inputs.isEmpty() && !wrapper.outputs.isEmpty() && !wrapper.inputFluids.isEmpty()) {
-				//					recipes.add(wrapper);
-				//				}
+				recipes.add(wrapper);
 			}
 		}
 		return recipes;
-	}
-
-	private static void addFillRecipe(ItemStack baseStack, Fluid fluid, List<TransposerRecipeWrapper> recipes, IGuiHelper guiHelper) {
-
-		ItemStack filledStack = baseStack.copy();
-		IFluidHandlerItem handler = filledStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
-		int fill = handler.fill(new FluidStack(fluid, Fluid.BUCKET_VOLUME), true);
-
-		if (fill > 0) {
-			FluidStack filledFluid = new FluidStack(fluid, fill);
-			filledStack = handler.getContainer();
-			TransposerRecipe recipe = new TransposerRecipe(baseStack, filledStack, filledFluid, TransposerManager.DEFAULT_ENERGY, 100);
-			recipes.add(new TransposerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.TRANSPOSER_FILL));
-		}
 	}
 
 	public TransposerRecipeCategoryFill(IGuiHelper guiHelper) {
@@ -80,7 +102,6 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 		super(guiHelper);
 
 		localizedName += " - " + StringHelper.localize("gui.thermalexpansion.jei.transposer.modeFill");
-
 		icon = guiHelper.createDrawable(GuiTransposer.TEXTURE, 176, 48, 16, 16);
 	}
 
@@ -98,21 +119,55 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 		List<List<ItemStack>> outputs = ingredients.getOutputs(ItemStack.class);
 		List<List<FluidStack>> fluids = ingredients.getInputs(FluidStack.class);
 
+		IFocus<?> focus = recipeLayout.getFocus();
+		if (focus != null) {
+			if (focus.getMode() == OUTPUT && focus.getValue() instanceof ItemStack) {
+				List<FluidStack> focusFluids = new ArrayList<>();
+				ItemStack output = (ItemStack) focus.getValue();
+				FluidStack contained = FluidHelper.getFluidStackFromHandler(output);
+				if (contained != null) {
+					for (FluidStack fluid : fluids.get(0)) {
+						if (FluidHelper.isFluidEqual(contained, fluid)) {
+							focusFluids.add(fluid);
+						}
+					}
+					if (focusFluids.size() != fluids.get(0).size()) {
+						fluids = singletonList(focusFluids);
+					}
+				}
+			} else if (focus.getMode() == INPUT && focus.getValue() instanceof FluidStack) {
+				List<ItemStack> focusOutputs = new ArrayList<>();
+				FluidStack fluid = (FluidStack) focus.getValue();
+				for (ItemStack stack : outputs.get(0)) {
+					FluidStack contained = FluidHelper.getFluidStackFromHandler(stack);
+					if (contained == null || FluidHelper.isFluidEqual(fluid, contained)) {
+						focusOutputs.add(stack);
+					}
+				}
+				if (focusOutputs.size() != inputs.get(0).size()) {
+					outputs = singletonList(focusOutputs);
+				}
+			}
+		}
+
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
+		Map<Integer, ? extends IGuiIngredient<FluidStack>> fluidIngredients = guiFluidStacks.getGuiIngredients();
+		recipeWrapper.setGuiFluids(fluidIngredients);
+
 		guiItemStacks.init(0, true, 30, 10);
 		guiItemStacks.init(1, false, 30, 41);
-		guiFluidStacks.init(0, true, 103, 1, 16, 60, TEProps.MAX_FLUID_LARGE, false, tankOverlay);
+		guiFluidStacks.init(0, true, 103, 1, 16, 60, Fluid.BUCKET_VOLUME, false, tankOverlay);
 
 		guiItemStacks.set(0, inputs.get(0));
 		guiItemStacks.set(1, outputs.get(0));
 		guiFluidStacks.set(0, fluids.get(0));
 
-		guiFluidStacks.addTooltipCallback((i, b, fluidStack, list) -> {
+		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
 
-			if (FluidHelper.isPotionFluid(fluidStack)) {
-				FluidHelper.addPotionTooltip(fluidStack, list);
+			if (FluidHelper.isPotionFluid(ingredient)) {
+				FluidHelper.addPotionTooltip(ingredient, tooltip);
 			}
 		});
 	}

@@ -7,22 +7,21 @@ import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ISteamInfo;
+import cofh.core.block.TileInventory;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.render.TextureHelper;
 import cofh.core.util.TimeTracker;
+import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyProvider;
 import cofh.redstoneflux.api.IEnergyReceiver;
 import cofh.redstoneflux.api.IEnergyStorage;
 import cofh.redstoneflux.impl.EnergyStorage;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileInventory;
-import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.init.TFFluids;
-import cofh.thermalfoundation.init.TFProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,22 +39,25 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IReconfigurableFacing, ISidedInventory, IEnergyInfo, ISteamInfo {
 
-	protected static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[Type.values().length];
-	protected static final HashSet<String>[] VALID_AUGMENTS = new HashSet[Type.values().length];
-
-	public static final int MIN_BASE_POWER = 10;
-	public static final int MAX_BASE_POWER = 200;
-	public static int[] POWER_SCALING = { 100, 150, 200, 250, 300 };
-	public static int[] CUSTOM_POWER_SCALING = { 100, 150, 250, 400, 600 };
+	protected static final int MIN_BASE_POWER = 10;
+	protected static final int MAX_BASE_POWER = 200;
+	protected static int[] POWER_SCALING = { 100, 150, 200, 250, 300 };
 
 	protected static boolean enableCreative = false;
 	protected static boolean enableSecurity = true;
-	protected static boolean customScaling = false;
-	protected static boolean smallStorage = false;
+	protected static boolean enableUpgrades = true;
+	protected static boolean customAugmentScaling = false;
+	protected static boolean customPowerScaling = false;
+
+	public static boolean enableClassicRecipes = false;
+	public static boolean enableUpgradeKitCrafting = false;
+	public static boolean smallStorage = false;
+	public static byte[] numAugments = { 0, 1, 2, 3, 4 };
 
 	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 	protected static final int ENERGY_BASE = 100;
@@ -77,57 +79,89 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		String comment = "If TRUE, Dynamos are securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get(category, "Securable", enableSecurity, comment);
 
+		comment = "If TRUE, Dynamos are upgradable. If disabled, be sure and change the Augment Progression.";
+		enableUpgrades = ThermalExpansion.CONFIG.get(category, "Upgradable", enableUpgrades, comment);
+
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
-		BlockDynamo.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockDynamo.enableClassicRecipes, comment);
+		enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", enableClassicRecipes, comment);
 
 		comment = "If TRUE, Dynamos can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
-		BlockDynamo.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockDynamo.enableUpgradeKitCrafting, comment);
+		enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", enableUpgradeKitCrafting, comment);
 
-		comment = "If TRUE, Dynamo RF scaling will use a custom set of values rather than default behavior. The default custom configuration provides a reasonable alternate progression.";
-		customScaling = ThermalExpansion.CONFIG.get(category, "CustomScaling", customScaling, comment);
+		comment = "If TRUE, Dynamo Augment Slot scaling will use a custom set of values rather than default behavior (1/level).";
+		customAugmentScaling = ThermalExpansion.CONFIG.get(category, "CustomAugmentScaling", customAugmentScaling, comment);
+
+		comment = "If TRUE, Dynamo RF/t (POWER) scaling will use a custom set of values rather than default behavior. The default custom configuration provides a reasonable alternate progression.";
+		customPowerScaling = ThermalExpansion.CONFIG.get(category, "CustomPowerScaling", customPowerScaling, comment);
 
 		comment = "If TRUE, Dynamos will have much smaller internal energy (RF) storage. Generation speed will no longer scale with internal energy.";
 		smallStorage = ThermalExpansion.CONFIG.get(category, "SmallStorage", smallStorage, comment);
 
-		category = "Dynamo.CustomScaling";
-		comment = "ADVANCED FEATURE - ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING.\nValues are expressed as a percentage of Base Power; Base Scale Factor is 100 percent.\nValues will be checked for validity and rounded down to the nearest 10.";
+		/* CUSTOM SCALING */
+		boolean validScaling;
+		byte[] customAugments = { 0, 1, 2, 3, 4 };
+		int[] customPowerScale = { 100, 150, 250, 400, 600 };
+		int[] customEnergyScale = { 100, 105, 110, 115, 120 };
 
+		category = "Dynamo.AugmentSlots";
+		comment = "Adjust the number of augments that Dynamos have at any given Level.\nProgression will be checked for validity - upgrading a block cannot result in fewer slots.";
 		ThermalExpansion.CONFIG.getCategory(category).setComment(comment);
-		boolean validScaling = true;
+		validScaling = true;
 
-		for (int i = TFProps.LEVEL_MIN + 1; i <= TFProps.LEVEL_MAX; i++) {
-			CUSTOM_POWER_SCALING[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, CUSTOM_POWER_SCALING[i], POWER_BASE + 10 * i, POWER_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Dynamos.");
+		for (int i = CoreProps.LEVEL_MIN; i <= CoreProps.LEVEL_MAX; i++) {
+			customAugments[i] = (byte) ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, customAugments[i], CoreProps.AUGMENT_MIN, CoreProps.AUGMENT_MAX, "Augment Slots for Level " + i + " Dynamos.");
 		}
-		for (int i = 1; i < CUSTOM_POWER_SCALING.length; i++) {
-			CUSTOM_POWER_SCALING[i] /= 10;
-			CUSTOM_POWER_SCALING[i] *= 10;
+		for (int i = 1; i < customAugments.length; i++) {
 
-			if (CUSTOM_POWER_SCALING[i] <= CUSTOM_POWER_SCALING[i - 1]) {
+			if (customAugments[i] < customAugments[i - 1]) {
 				validScaling = false;
 			}
 		}
-		if (customScaling) {
+		if (customAugmentScaling) {
 			if (!validScaling) {
 				ThermalExpansion.LOG.error(category + " settings are invalid. They will not be used.");
 			} else {
-				System.arraycopy(CUSTOM_POWER_SCALING, 0, POWER_SCALING, 0, POWER_SCALING.length);
+				System.arraycopy(customAugments, 0, numAugments, 0, numAugments.length);
+			}
+		}
+		category = "Dynamo.CustomPowerScaling";
+		comment = "ADVANCED FEATURE - ONLY EDIT IF YOU KNOW WHAT YOU ARE DOING.\nValues are expressed as a percentage of Base Power; Base Scale Factor is 100 percent.\nValues will be checked for validity and rounded down to the nearest 10.";
+		ThermalExpansion.CONFIG.getCategory(category).setComment(comment);
+		validScaling = true;
+
+		for (int i = CoreProps.LEVEL_MIN + 1; i <= CoreProps.LEVEL_MAX; i++) {
+			customPowerScale[i] = ThermalExpansion.CONFIG.getConfiguration().getInt("Level" + i, category, customPowerScale[i], POWER_BASE, POWER_BASE * ((i + 1) * (i + 1)), "Scale Factor for Level " + i + " Dynamos.");
+		}
+		for (int i = 1; i < customPowerScale.length; i++) {
+			customPowerScale[i] /= 10;
+			customPowerScale[i] *= 10;
+
+			if (customPowerScale[i] < customPowerScale[i - 1]) {
+				validScaling = false;
+			}
+		}
+		if (customPowerScaling) {
+			if (!validScaling) {
+				ThermalExpansion.LOG.error(category + " settings are invalid. They will not be used.");
+			} else {
+				System.arraycopy(customPowerScale, 0, POWER_SCALING, 0, POWER_SCALING.length);
 			}
 		}
 	}
 
-	byte facing = 1;
-	int fuelRF;
-	int maxFuelRF;
-	boolean hasModeAugment;
+	public byte facing = 1;
+	protected int fuelRF;
+	protected int maxFuelRF;
+	protected boolean hasModeAugment;
 
-	int compareTracker;
-	boolean cached = false;
-	IEnergyReceiver adjacentReceiver = null;
-	boolean adjacentHandler = false;
+	protected int compareTracker;
+	protected boolean cached = false;
+	protected IEnergyReceiver adjacentReceiver = null;
+	protected boolean adjacentHandler = false;
 
-	EnergyStorage energyStorage;
-	EnergyConfig energyConfig;
-	TimeTracker tracker = new TimeTracker();
+	protected EnergyStorage energyStorage;
+	protected EnergyConfig energyConfig;
+	protected TimeTracker tracker = new TimeTracker();
 
 	/* AUGMENTS */
 	protected boolean augmentCoilDuct;
@@ -138,18 +172,31 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	protected int renderCoil = 0;
 	protected int lastEnergy;
 
-	int energyMod = ENERGY_BASE;
+	protected int energyMod = ENERGY_BASE;
 
 	public TileDynamoBase() {
 
-		energyConfig = ENERGY_CONFIGS[this.getType()].copy();
+		energyConfig = getEnergyConfig().copy();
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 2);
+		Arrays.fill(augments, ItemStack.EMPTY);
 	}
 
 	@Override
-	public String getTileName() {
+	protected Object getMod() {
 
-		return "tile.thermalexpansion.dynamo." + Type.values()[getType()].getName() + ".name";
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getModVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected int getLevelRSControl() {
+
+		return TEProps.levelRedstoneControl;
 	}
 
 	@Override
@@ -174,7 +221,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public boolean canUpgrade(ItemStack upgrade) {
 
-		if (!AugmentHelper.isUpgradeItem(upgrade)) {
+		if (!AugmentHelper.isUpgradeItem(upgrade) || !enableUpgrades) {
 			return false;
 		}
 		UpgradeType uType = ((IUpgradeItem) upgrade.getItem()).getUpgradeType(upgrade);
@@ -183,12 +230,12 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		switch (uType) {
 			case INCREMENTAL:
 				if (uLevel == level + 1) {
-					return !BlockDynamo.enableClassicRecipes;
+					return !enableClassicRecipes;
 				}
 				break;
 			case FULL:
 				if (uLevel > level) {
-					return !BlockDynamo.enableClassicRecipes;
+					return !enableClassicRecipes;
 				}
 				break;
 			case CREATIVE:
@@ -203,7 +250,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	}
 
 	@Override
-	protected boolean setLevel(int level) {
+	public boolean setLevel(int level) {
 
 		if (super.setLevel(level)) {
 			energyConfig.setDefaultParams(getBasePower(this.level), smallStorage);
@@ -211,6 +258,12 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	protected int getNumAugmentSlots(int level) {
+
+		return numAugments[MathHelper.clamp(level, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX)];
 	}
 
 	@Override
@@ -270,7 +323,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 			}
 		}
 		if (timeCheck()) {
-			int curScale = getScaledEnergyStored(15);
+			int curScale = energyStorage.getEnergyStored() > 0 ? 1 + getScaledEnergyStored(14) : 0;
 			if (curScale != compareTracker) {
 				compareTracker = curScale;
 				callNeighborTileChange();
@@ -286,9 +339,13 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	}
 
 	/* COMMON METHODS */
+	protected abstract EnergyConfig getEnergyConfig();
+
+	protected abstract HashSet<String> getValidAugments();
+
 	protected int getBasePower(int level) {
 
-		return ENERGY_CONFIGS[getType()].maxPower * POWER_SCALING[MathHelper.clamp(level, TFProps.LEVEL_MIN, TFProps.LEVEL_MAX)] / POWER_BASE;
+		return getEnergyConfig().maxPower * POWER_SCALING[MathHelper.clamp(level, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX)] / POWER_BASE;
 	}
 
 	protected int calcEnergy() {
@@ -343,7 +400,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	protected void transferSteam() {
 
-		FluidHelper.insertFluidIntoAdjacentFluidHandler(world, pos, EnumFacing.values()[facing], new FluidStack(TFFluids.fluidSteam, energyConfig.maxPower), true);
+		FluidHelper.insertFluidIntoAdjacentFluidHandler(world, pos, EnumFacing.VALUES[facing], new FluidStack(TFFluids.fluidSteam, energyConfig.maxPower), true);
 	}
 
 	protected void transferEnergy() {
@@ -382,7 +439,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (curActive != isActive && !wasActive) {
 			updateLighting();
 			sendTilePacket(Side.CLIENT);
-		} else if (wasActive && tracker.hasDelayPassed(world, CoreProps.TILE_UPDATE_DELAY)) {
+		} else if (wasActive && tracker.hasDelayPassed(world, CoreProps.tileUpdateDelay)) {
 			wasActive = false;
 			updateLighting();
 			sendTilePacket(Side.CLIENT);
@@ -394,11 +451,13 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		return augmentBoiler ? 1 : 0;
 	}
 
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getCoilUnderlayTexture() {
 
 		return TextureHelper.getTexture(TFFluids.fluidSteam.getStill());
 	}
 
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getBaseUnderlayTexture() {
 
 		return TextureHelper.getTexture(FluidRegistry.WATER.getStill());
@@ -407,7 +466,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	/* GUI METHODS */
 	public int getScaledDuration(int scale) {
 
-		return 0;
+		return isActive ? scale : 0;
 	}
 
 	public IEnergyStorage getEnergyStorage() {
@@ -435,6 +494,11 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		return augmentBoiler;
 	}
 
+	public int getFuelEnergy(ItemStack stack) {
+
+		return 0;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -443,7 +507,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		energyStorage.readFromNBT(nbt);
 
-		facing = (byte) (nbt.getByte("Facing") % 6);
+		facing = (byte) (nbt.getByte(CoreProps.FACING) % 6);
 		fuelRF = nbt.getInteger("Fuel");
 	}
 
@@ -454,7 +518,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		energyStorage.writeToNBT(nbt);
 
-		nbt.setByte("Facing", facing);
+		nbt.setByte(CoreProps.FACING, facing);
 		nbt.setInteger("Fuel", fuelRF);
 		return nbt;
 	}
@@ -518,6 +582,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	/* HELPERS */
 	protected void preAugmentInstall() {
 
+		renderCoil = getCoil();
 		energyConfig.setDefaultParams(getBasePower(this.level), smallStorage);
 
 		energyMod = ENERGY_BASE;
@@ -559,7 +624,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (augmentThrottle && TEProps.DYNAMO_THROTTLE.equals(id)) {
 			return false;
 		}
-		return VALID_AUGMENTS_BASE.contains(id) || VALID_AUGMENTS[getType()].contains(id) || super.isValidAugment(type, id);
+		return getValidAugments().contains(id) || super.isValidAugment(type, id);
 	}
 
 	@Override

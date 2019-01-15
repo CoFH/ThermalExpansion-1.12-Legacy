@@ -2,35 +2,40 @@ package cofh.thermalexpansion.block.dynamo;
 
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
-import cofh.core.render.TextureHelper;
+import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoNumismatic;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoNumismatic;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.managers.dynamo.NumismaticManager;
-import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
 public class TileDynamoNumismatic extends TileDynamoBase {
 
-	private static final int TYPE = Type.NUMISMATIC.getMetadata();
+	protected static final EnergyConfig ENERGY_CONFIG = new EnergyConfig();
+	protected static final HashSet<String> VALID_AUGMENTS = new HashSet<>();
+
+	public static boolean enable = true;
 	public static int basePower = 40;
 
 	public static void initialize() {
 
-		VALID_AUGMENTS[TYPE] = new HashSet<>();
-		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_NUMISMATIC_GEM);
+		VALID_AUGMENTS.addAll(VALID_AUGMENTS_BASE);
+
+		VALID_AUGMENTS.add(TEProps.DYNAMO_NUMISMATIC_GEM);
 
 		GameRegistry.registerTileEntity(TileDynamoNumismatic.class, "thermalexpansion:dynamo_numismatic");
 
@@ -40,13 +45,11 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	public static void config() {
 
 		String category = "Dynamo.Numismatic";
-		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+		enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		String comment = "Adjust this value to change the Energy generation (in RF/t) for a Numismatic Dynamo. This base value will scale with block level and Augments.";
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
-
-		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
+		ENERGY_CONFIG.setDefaultParams(basePower, smallStorage);
 	}
 
 	/* AUGMENTS */
@@ -60,19 +63,33 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	}
 
 	@Override
-	public int getType() {
+	protected String getTileName() {
 
-		return TYPE;
+		return "tile.thermalexpansion.dynamo.numismatic.name";
 	}
 
+	@Override
+	protected EnergyConfig getEnergyConfig() {
+
+		return ENERGY_CONFIG;
+	}
+
+	@Override
+	protected HashSet<String> getValidAugments() {
+
+		return VALID_AUGMENTS;
+	}
+
+	@Override
 	protected boolean canStart() {
 
 		if (augmentGem) {
-			return NumismaticManager.getGemFuelEnergy(inventory[0]) > energyConfig.maxPower;
+			return NumismaticManager.getGemFuelEnergy(inventory[0]) > 0;
 		}
-		return NumismaticManager.getFuelEnergy(inventory[0]) > energyConfig.maxPower;
+		return NumismaticManager.getFuelEnergy(inventory[0]) > 0;
 	}
 
+	@Override
 	protected void processStart() {
 
 		if (augmentGem) {
@@ -85,9 +102,10 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getBaseUnderlayTexture() {
 
-		return TextureHelper.getTexture(TFFluids.fluidMana.getStill());
+		return TETextures.PORTAL_UNDERLAY;
 	}
 
 	/* GUI METHODS */
@@ -110,6 +128,12 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 			maxFuelRF = Math.max(fuelRF, NumismaticManager.DEFAULT_ENERGY);
 		}
 		return fuelRF * scale / maxFuelRF;
+	}
+
+	@Override
+	public int getFuelEnergy(ItemStack stack) {
+
+		return (augmentGem ? NumismaticManager.getGemFuelEnergy(stack) : NumismaticManager.getFuelEnergy(stack)) * energyMod / ENERGY_BASE;
 	}
 
 	/* NBT METHODS */

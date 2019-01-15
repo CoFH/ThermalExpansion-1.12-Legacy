@@ -2,6 +2,7 @@ package cofh.thermalexpansion.plugins.jei.machine.crucible;
 
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
 import cofh.thermalexpansion.init.TEProps;
@@ -32,6 +33,9 @@ public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWra
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Crucible", enable);
 
 		if (!enable) {
 			return;
@@ -82,7 +86,7 @@ public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWra
 		progress = Drawables.getDrawables(guiHelper).getProgress(2);
 		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_FLAME);
 		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
-		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK);
+		tankOverlay = Drawables.getDrawables(guiHelper).getTankLargeOverlay(Drawables.TANK);
 	}
 
 	@Nonnull
@@ -116,10 +120,10 @@ public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWra
 		guiItemStacks.set(0, inputs.get(0));
 		guiFluidStacks.set(0, outputs.get(0));
 
-		guiFluidStacks.addTooltipCallback((i, b, fluidStack, list) -> {
+		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
 
-			if (FluidHelper.isPotionFluid(fluidStack)) {
-				FluidHelper.addPotionTooltip(fluidStack, list);
+			if (FluidHelper.isPotionFluid(ingredient)) {
+				FluidHelper.addPotionTooltip(ingredient, tooltip);
 			}
 		});
 	}

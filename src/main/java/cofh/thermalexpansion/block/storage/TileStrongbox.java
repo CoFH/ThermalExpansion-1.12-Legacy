@@ -4,11 +4,11 @@ import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
+import cofh.core.block.TileInventory;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.gui.client.storage.GuiStrongbox;
 import cofh.thermalexpansion.gui.container.storage.ContainerStrongbox;
 import cofh.thermalexpansion.init.TETextures;
@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -56,10 +57,6 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockStrongbox.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockStrongbox.enableClassicRecipes, comment);
 
-		// TODO: Remove in 5.3.9.
-		if (ThermalExpansion.CONFIG.isOldConfig()) {
-			ThermalExpansion.CONFIG.removeProperty(category, "UpgradeKitCrafting");
-		}
 		comment = "If TRUE, Strongboxes can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockStrongbox.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockStrongbox.enableUpgradeKitCrafting, comment);
 	}
@@ -82,15 +79,27 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	}
 
 	@Override
-	public String getTileName() {
+	protected Object getMod() {
+
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getModVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected String getTileName() {
 
 		return "tile.thermalexpansion.storage.strongbox.name";
 	}
 
 	@Override
-	public int getType() {
+	public int getComparatorInputOverride() {
 
-		return 0;
+		return getAccess().isPublic() ? Container.calcRedstoneFromInventory(this) : 0;
 	}
 
 	@Override
@@ -240,6 +249,7 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 		return angle * Math.PI * -0.5;
 	}
 
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getBreakTexture() {
 
 		if (isCreative) {
@@ -269,7 +279,7 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 		super.readFromNBT(nbt);
 
-		facing = nbt.getByte("Facing");
+		facing = nbt.getByte(CoreProps.FACING);
 	}
 
 	@Override
@@ -277,7 +287,7 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 		super.writeToNBT(nbt);
 
-		nbt.setByte("Facing", facing);
+		nbt.setByte(CoreProps.FACING, facing);
 		nbt.setByte("EncHolding", enchantHolding);
 		return nbt;
 	}

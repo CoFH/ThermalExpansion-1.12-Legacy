@@ -2,9 +2,9 @@ package cofh.thermalexpansion.plugins.jei.machine.brewer;
 
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiBrewer;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeCategory;
@@ -21,6 +21,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -32,6 +33,9 @@ public class BrewerRecipeCategory extends BaseRecipeCategory<BrewerRecipeWrapper
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Brewer", enable);
 
 		if (!enable) {
 			return;
@@ -112,17 +116,17 @@ public class BrewerRecipeCategory extends BaseRecipeCategory<BrewerRecipeWrapper
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 		guiItemStacks.init(0, true, 69, 22);
-		guiFluidStacks.init(0, true, 22, 16, 16, 30, TEProps.MAX_FLUID_SMALL, false, tankOverlayInput);
-		guiFluidStacks.init(1, false, 126, 1, 16, 60, TEProps.MAX_FLUID_LARGE, false, tankOverlayOutput);
+		guiFluidStacks.init(0, true, 22, 16, 16, 30, Fluid.BUCKET_VOLUME, false, null);
+		guiFluidStacks.init(1, false, 126, 1, 16, 60, Fluid.BUCKET_VOLUME, false, null);
 
 		guiItemStacks.set(0, inputItems.get(0));
 		guiFluidStacks.set(0, inputFluids.get(0));
 		guiFluidStacks.set(1, outputFluids.get(0));
 
-		guiFluidStacks.addTooltipCallback((i, b, fluidStack, list) -> {
+		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
 
-			if (FluidHelper.isPotionFluid(fluidStack)) {
-				FluidHelper.addPotionTooltip(fluidStack, list);
+			if (FluidHelper.isPotionFluid(ingredient)) {
+				FluidHelper.addPotionTooltip(ingredient, tooltip);
 			}
 		});
 	}

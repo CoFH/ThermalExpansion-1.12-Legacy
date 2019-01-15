@@ -82,7 +82,7 @@ public class GuiCache extends GuiContainerCore {
 
 		super.updateElementInformation();
 
-		if (baseTile.storedStack.isEmpty()) {
+		if (baseTile.getStoredInstance().isEmpty()) {
 			lock.setDisabled();
 		} else {
 			lock.setActive();

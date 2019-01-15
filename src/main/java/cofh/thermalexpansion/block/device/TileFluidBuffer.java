@@ -1,14 +1,16 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiFluidBuffer;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,6 +30,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 	private static final int TYPE = Type.FLUID_BUFFER.getMetadata();
@@ -43,6 +47,8 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
+
+		LIGHT_VALUES[TYPE] = 5;
 
 		GameRegistry.registerTileEntity(TileFluidBuffer.class, "thermalexpansion:device_fluid_buffer");
 
@@ -86,17 +92,22 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
+	protected void setLevelFlags() {
+
+		level = 0;
+		hasRedstoneControl = true;
+	}
+
+	@Override
 	public void update() {
 
-		if (world.getTotalWorldTime() % CoreProps.TIME_CONSTANT_QUARTER != 0) {
-			return;
-		}
 		boolean curActive = isActive;
 
 		if (isActive) {
-			transferOutput();
-			transferInput();
-
+			if (world.getTotalWorldTime() % CoreProps.TIME_CONSTANT_QUARTER == 0) {
+				transferOutput();
+				transferInput();
+			}
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
 			}
@@ -108,7 +119,7 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 	protected void transferInput() {
 
-		if (!enableAutoInput || amountInput <= 0) {
+		if (!getTransferIn() || amountInput <= 0) {
 			return;
 		}
 		int side;
@@ -136,7 +147,7 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 	protected void transferOutput() {
 
-		if (!enableAutoOutput || amountOutput <= 0) {
+		if (!getTransferOut() || amountOutput <= 0) {
 			return;
 		}
 		int side;
@@ -169,7 +180,7 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	public FluidTankCore getTank(int tankIndex) {
@@ -183,8 +194,8 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 
 		amountInput = MathHelper.clamp(nbt.getInteger("AmountIn"), 0, 8000);
 		amountOutput = MathHelper.clamp(nbt.getInteger("AmountOut"), 0, 8000);
@@ -200,8 +211,8 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 
 		nbt.setInteger("AmountIn", amountInput);
 		nbt.setInteger("AmountOut", amountOutput);
@@ -331,16 +342,15 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return 0;
-					}
-					if (resource == null) {
-						return 0;
-					}
-					for (int j = 0; j < tanks.length && tanks[j].getSpace() > 0; j++) {
-						int toFill = tanks[j].fill(resource, doFill);
-						if (toFill > 0) {
-							return toFill;
+					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						if (resource == null) {
+							return 0;
+						}
+						for (int j = 0; j < tanks.length && tanks[j].getSpace() > 0; j++) {
+							int toFill = tanks[j].fill(new FluidStack(resource, Math.min(resource.amount, amountInput)), doFill);
+							if (toFill > 0) {
+								return toFill;
+							}
 						}
 					}
 					return 0;
@@ -350,16 +360,15 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
-					if (resource == null) {
-						return null;
-					}
-					for (int j = tanks.length - 1; j >= 0 && tanks[j].getFluidAmount() > 0; j--) {
-						FluidStack toDrain = tanks[j].drain(resource, doDrain);
-						if (toDrain != null) {
-							return toDrain;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						if (resource == null) {
+							return null;
+						}
+						for (int j = tanks.length - 1; j >= 0; j--) {
+							if (tanks[j].getFluidAmount() <= 0) {
+								continue;
+							}
+							return tanks[j].drain(new FluidStack(resource, Math.min(resource.amount, amountOutput)), doDrain);
 						}
 					}
 					return null;
@@ -369,13 +378,15 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
-					for (int j = tanks.length - 1; j >= 0 && tanks[j].getFluidAmount() > 0; j--) {
-						FluidStack toDrain = tanks[j].drain(maxDrain, doDrain);
-						if (toDrain != null) {
-							return toDrain;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						if (maxDrain <= 0) {
+							return null;
+						}
+						for (int j = tanks.length - 1; j >= 0; j--) {
+							if (tanks[j].getFluidAmount() <= 0) {
+								continue;
+							}
+							return tanks[j].drain(Math.min(maxDrain, amountOutput), doDrain);
 						}
 					}
 					return null;

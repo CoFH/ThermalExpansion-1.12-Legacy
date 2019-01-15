@@ -1,0 +1,39 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "builtin/generated",
+		"textures": {
+			"layer0": "thermalexpansion:items/morb/morb_standard"
+		},
+		"transform": "forge:default-item"
+	},
+	"variants": {
+		"full": {
+			"0": {
+			},
+			"1": {
+				"textures": {
+					"layer1": "thermalexpansion:items/morb/morb_mask_1",
+					"layer2": "thermalexpansion:items/morb/morb_mask_2"
+				}
+			}
+		},
+		"type": {
+			"standard": {
+				"textures": {
+					"layer0": "thermalexpansion:items/morb/morb_standard"
+				}
+			},
+			"reusable": {
+				"textures": {
+					"layer0": "thermalexpansion:items/morb/morb_reusable"
+				}
+			},
+			"stasis": {
+				"textures": {
+					"layer0": "thermalexpansion:items/morb/morb_stasis"
+				}
+			}
+		}
+	}
+}

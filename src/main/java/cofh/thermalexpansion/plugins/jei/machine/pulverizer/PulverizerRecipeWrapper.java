@@ -7,7 +7,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
-import cofh.thermalexpansion.util.managers.machine.PulverizerManager.ComparableItemStackPulverizer;
+import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
 import cofh.thermalexpansion.util.managers.machine.PulverizerManager.PulverizerRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import mezz.jei.api.IGuiHelper;
@@ -16,7 +16,6 @@ import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -25,10 +24,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
+
 public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
-	protected List<ItemStack> inputs;
+	protected List<List<ItemStack>> inputs;
 	protected List<FluidStack> inputFluids;
 	protected List<ItemStack> outputs;
 
@@ -52,8 +53,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 		List<FluidStack> recipeInputFluids = new ArrayList<>();
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 
-		ComparableItemStackPulverizer instance = new ComparableItemStackPulverizer(new ItemStack(Items.DIAMOND));
-		int oreID = instance.getOreID(recipe.getInput());
+		int oreID = PulverizerManager.convertInput(recipe.getInput()).oreID;
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));
@@ -74,7 +74,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 		if (recipe.getSecondaryOutput() != null) {
 			recipeOutputs.add(recipe.getSecondaryOutput());
 		}
-		inputs = recipeInputs;
+		inputs = singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		chance = recipe.getSecondaryOutputChance();
@@ -93,7 +93,7 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 
-		ingredients.setInputs(ItemStack.class, inputs);
+		ingredients.setInputLists(ItemStack.class, inputs);
 		ingredients.setInputs(FluidStack.class, inputFluids);
 		ingredients.setOutputs(ItemStack.class, outputs);
 	}

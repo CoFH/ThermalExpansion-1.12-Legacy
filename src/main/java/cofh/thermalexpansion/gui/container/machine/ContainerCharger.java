@@ -1,16 +1,16 @@
 package cofh.thermalexpansion.gui.container.machine;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotEnergy;
 import cofh.core.gui.slot.SlotRemoveOnly;
 import cofh.core.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.machine.TileCharger;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerCharger extends ContainerTEBase implements ISlotValidator {
+public class ContainerCharger extends ContainerTileAugmentable implements ISlotValidator {
 
 	TileCharger myTile;
 
@@ -30,5 +30,11 @@ public class ContainerCharger extends ContainerTEBase implements ISlotValidator 
 
 		return myTile.isItemValidForSlot(0, stack);
 	}
+
+	//	@Override
+	//	protected boolean supportsShiftClick(EntityPlayer player, int slotIndex) {
+	//
+	//		return supportsShiftClick(slotIndex);
+	//	}
 
 }

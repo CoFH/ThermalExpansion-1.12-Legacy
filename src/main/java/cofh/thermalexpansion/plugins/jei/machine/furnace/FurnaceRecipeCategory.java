@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.machine.furnace;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiFurnace;
 import cofh.thermalexpansion.plugins.jei.Drawables;
@@ -28,6 +29,9 @@ public class FurnaceRecipeCategory extends BaseRecipeCategory<FurnaceRecipeWrapp
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Furnace", enable);
 
 		if (!enable) {
 			return;
@@ -62,7 +66,7 @@ public class FurnaceRecipeCategory extends BaseRecipeCategory<FurnaceRecipeWrapp
 
 		List<FurnaceRecipeWrapper> recipes = new ArrayList<>();
 
-		for (FurnaceRecipe recipe : FurnaceManager.getRecipeList()) {
+		for (FurnaceRecipe recipe : FurnaceManager.getRecipeList(false)) {
 			recipes.add(new FurnaceRecipeWrapper(guiHelper, recipe));
 		}
 		return recipes;

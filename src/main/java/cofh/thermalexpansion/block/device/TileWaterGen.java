@@ -1,14 +1,17 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiWaterGen;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.init.TETextures;
@@ -32,8 +35,12 @@ import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+
+import static cofh.core.util.core.SideConfig.*;
 
 public class TileWaterGen extends TileDeviceBase implements ITickable {
 
@@ -61,18 +68,27 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		String category = "Device.WaterGen";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		String comment = "If TRUE, the Aqueous Accumulator will produce water very slowly even without adjacent source blocks.";
-		passiveGen = ThermalExpansion.CONFIG.get(category, "PassiveGeneration", false, comment);
+		String comment = "If TRUE, the Aqueous Accumulator will act as an Infinite Source and will also function in the Nether.";
+		infiniteSource = ThermalExpansion.CONFIG.get(category, "Infinite", infiniteSource, comment);
+
+		comment = "If TRUE, the Aqueous Accumulator will produce water very slowly even without adjacent source blocks.";
+		passiveGen = ThermalExpansion.CONFIG.get(category, "PassiveGeneration", passiveGen, comment);
+
+		//		comment = "If TRUE, the Aqueous Accumulator will only function in Rivers and Oceans.";
+		//		biomeRestriction = ThermalExpansion.CONFIG.get(category, "BiomeRestriction", biomeRestriction, comment);
 	}
 
 	private static final int TIME_CONSTANT = 40;
 	private static int genRate = 100 * TIME_CONSTANT;
 	private static int genRatePassive = 2 * TIME_CONSTANT;
+	private static boolean infiniteSource = false;
 	private static boolean passiveGen = false;
+	private static boolean biomeRestriction = false;
 
-	private int adjacentSources = -1;
+	private int targetWater = -1;
 	private int outputTracker;
 	private boolean inNether;
+	private boolean inBiome;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
 
@@ -84,6 +100,9 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
 		tank.setLock(FluidRegistry.WATER);
 
+		if (infiniteSource) {
+			tank.modifyFluidStored(tank.getCapacity());
+		}
 		hasAutoOutput = true;
 
 		enableAutoOutput = true;
@@ -111,10 +130,10 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		boolean curActive = isActive;
 
 		if (isActive) {
-			if (adjacentSources >= 2) {
-				tank.modifyFluidStored(genRate * (adjacentSources - 1));
-			} else {
-				if (world.isRaining() && world.canSeeSky(getPos())) {
+			if (!infiniteSource) {
+				if (targetWater >= 2) {
+					tank.modifyFluidStored(genRate * (targetWater - 1));
+				} else if (world.isRaining() && world.canSeeSky(getPos())) {
 					tank.modifyFluidStored(genRate);
 				} else if (passiveGen) {
 					tank.modifyFluidStored(genRatePassive);
@@ -126,7 +145,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		} else if (redstoneControlOrDisable() && !inNether) {
 			isActive = true;
 		}
-		if (adjacentSources < 0) {
+		if (targetWater < 0) {
 			updateValidity();
 		}
 		transferOutput();
@@ -136,32 +155,32 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 	protected void updateValidity() {
 
-		inNether = BiomeDictionary.hasType(world.getBiome(pos), BiomeDictionary.Type.NETHER);
-		adjacentSources = 0;
+		inNether = BiomeDictionary.hasType(world.getBiome(pos), BiomeDictionary.Type.NETHER) && !infiniteSource;
+		targetWater = 0;
 
 		if (isWater(world.getBlockState(pos.down()))) {
-			adjacentSources++;
+			targetWater++;
 		}
 		if (isWater(world.getBlockState(pos.up()))) {
-			adjacentSources++;
+			targetWater++;
 		}
 		if (isWater(world.getBlockState(pos.west()))) {
-			adjacentSources++;
+			targetWater++;
 		}
 		if (isWater(world.getBlockState(pos.east()))) {
-			adjacentSources++;
+			targetWater++;
 		}
 		if (isWater(world.getBlockState(pos.north()))) {
-			adjacentSources++;
+			targetWater++;
 		}
 		if (isWater(world.getBlockState(pos.south()))) {
-			adjacentSources++;
+			targetWater++;
 		}
 	}
 
 	protected void transferOutput() {
 
-		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
+		if (!getTransferOut() || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
@@ -171,7 +190,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
 				if (toDrain > 0) {
-					tank.drain(toDrain, true);
+					tank.drain(toDrain, !infiniteSource);
 					outputTracker = side;
 					break;
 				}
@@ -199,7 +218,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	@Override
@@ -221,9 +240,13 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		super.readFromNBT(nbt);
 
 		inNether = nbt.getBoolean("Hell");
-		adjacentSources = nbt.getInteger("Sources");
-		outputTracker = nbt.getInteger("TrackOut");
+		targetWater = nbt.getInteger("Sources");
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 		tank.readFromNBT(nbt);
+
+		if (infiniteSource) {
+			tank.modifyFluidStored(tank.getCapacity());
+		}
 	}
 
 	@Override
@@ -232,8 +255,8 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		super.writeToNBT(nbt);
 
 		nbt.setBoolean("Hell", inNether);
-		nbt.setInteger("Sources", adjacentSources);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger("Sources", targetWater);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
@@ -258,6 +281,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 	/* ISidedTexture */
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
@@ -273,17 +297,17 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		return TETextures.DEVICE_SIDE;
 	}
 
-	@Override
-	public boolean hasFluidUnderlay() {
-
-		return true;
-	}
-
-	@Override
-	public FluidStack getRenderFluid() {
-
-		return new FluidStack(FluidRegistry.WATER, 1);
-	}
+	//	@Override
+	//	public boolean hasFluidUnderlay() {
+	//
+	//		return true;
+	//	}
+	//
+	//	@Override
+	//	public FluidStack getRenderFluid() {
+	//
+	//		return new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
+	//	}
 
 	@Override
 	public int getColorMask(BlockRenderLayer layer, EnumFacing side) {
@@ -295,7 +319,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.deviceWaterGen;
+		return TEProps.enableSounds ? TESounds.deviceWaterGen : null;
 	}
 
 	/* CAPABILITIES */
@@ -328,20 +352,20 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return infiniteSource ? resource : tank.drain(resource, doDrain);
 					}
-					return tank.drain(resource, doDrain);
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return infiniteSource ? new FluidStack(tank.getFluid(), maxDrain) : tank.drain(maxDrain, doDrain);
 					}
-					return tank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}

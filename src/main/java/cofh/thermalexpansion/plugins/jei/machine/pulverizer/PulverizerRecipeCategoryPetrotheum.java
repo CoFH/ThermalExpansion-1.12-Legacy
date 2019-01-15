@@ -1,9 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.machine.pulverizer;
 
-import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
@@ -17,6 +15,7 @@ import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -40,7 +39,7 @@ public class PulverizerRecipeCategoryPetrotheum extends PulverizerRecipeCategory
 		List<PulverizerRecipeWrapper> recipes = new ArrayList<>();
 
 		for (PulverizerRecipe recipe : PulverizerManager.getRecipeList()) {
-			if (ItemHelper.isOre(recipe.getInput())) {
+			if (PulverizerManager.isOre(recipe.getInput())) {
 				recipes.add(new PulverizerRecipeWrapper(guiHelper, recipe, RecipeUidsTE.PULVERIZER_PETROTHEUM));
 			}
 		}
@@ -83,8 +82,13 @@ public class PulverizerRecipeCategoryPetrotheum extends PulverizerRecipeCategory
 		List<List<FluidStack>> inputFluids = ingredients.getInputs(FluidStack.class);
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-		guiFluidStacks.init(0, true, 141, 1, 16, 60, TEProps.MAX_FLUID_SMALL, false, tankOverlay);
+		guiFluidStacks.init(0, true, 141, 1, 16, 60, Fluid.BUCKET_VOLUME, false, null);
 		guiFluidStacks.set(0, inputFluids.get(0));
+
+		guiFluidStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+			tooltip.add(StringHelper.LIGHT_BLUE + StringHelper.localize("info.cofh.input"));
+		});
 	}
 
 }

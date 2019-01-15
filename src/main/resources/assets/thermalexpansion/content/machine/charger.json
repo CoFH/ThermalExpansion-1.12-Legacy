@@ -1,0 +1,24 @@
+{
+	"charger": [
+		{
+			"input": {
+				"item": "thermalfoundation:bait",
+				"data": 1
+			},
+			"output": {
+				"item": "thermalfoundation:bait",
+				"data": 2
+			}
+		},
+		{
+			"input": {
+				"item": "thermalfoundation:fertilizer",
+				"data": 1
+			},
+			"output": {
+				"item": "thermalfoundation:fertilizer",
+				"data": 2
+			}
+		}
+	]
+}

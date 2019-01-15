@@ -1,0 +1,106 @@
+{
+	"dynamo_compression": [
+		{
+			"fluid": "creosote",
+			"energy": 40000
+		},
+		{
+			"fluid": "coal",
+			"energy": 400000
+		},
+		{
+			"fluid": "crude_oil",
+			"energy": 400000
+		},
+		{
+			"fluid": "refined_oil",
+			"energy": 1000000
+		},
+		{
+			"fluid": "refined_fuel",
+			"energy": 1500000
+		},
+		{
+			"fluid": "tree_oil",
+			"energy": 400000
+		},
+		{
+			"fluid": "seed_oil",
+			"energy": 80000
+		},
+		{
+			"fluid": "refined_biofuel",
+			"energy": 800000
+		},
+		{
+			"//": "Actually Additions"
+		},
+		{
+			"fluid": "canolaoil",
+			"energy": 80000
+		},
+		{
+			"fluid": "refinedcanolaoil",
+			"energy": 200000
+		},
+		{
+			"fluid": "crystaloil",
+			"energy": 400000
+		},
+		{
+			"fluid": "empoweredoil",
+			"energy": 700000
+		},
+		{
+			"//": "Ender IO"
+		},
+		{
+			"fluid": "fire_water",
+			"energy": 750000
+		},
+		{
+			"fluid": "hootch",
+			"energy": 300000
+		},
+		{
+			"fluid": "rocket_fuel",
+			"energy": 1000000
+		},
+		{
+			"//": "Forestry"
+		},
+		{
+			"fluid": "bio.ethanol",
+			"energy": 500000
+		},
+		{
+			"//": "Immersive Engineering"
+		},
+		{
+			"fluid": "biodiesel",
+			"energy": 500000
+		},
+		{
+			"//": "Immersive Petroleum"
+		},
+		{
+			"fluid": "oil",
+			"energy": 400000
+		},
+		{
+			"fluid": "diesel",
+			"energy": 800000
+		},
+		{
+			"fluid": "gasoline",
+			"energy": 1200000
+		},
+		{
+			"//": "IndustrialCraft 2"
+		},
+		{
+			"fluid": "ic2biogas",
+			"energy": 50000
+		}
+	]
+}

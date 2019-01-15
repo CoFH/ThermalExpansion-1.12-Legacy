@@ -4,25 +4,26 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.machine.TileCompactor;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager;
 import cofh.thermalexpansion.util.managers.machine.CompactorManager.CompactorRecipe;
-import cofh.thermalexpansion.util.managers.machine.CompactorManager.ComparableItemStackCompactor;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
+
 public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 
 	/* Recipe */
-	protected List<ItemStack> inputs;
+	protected List<List<ItemStack>> inputs;
 	protected List<ItemStack> outputs;
 
 	/* Animation */
@@ -35,8 +36,7 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 
-		ComparableItemStackCompactor instance = new ComparableItemStackCompactor(new ItemStack(Items.DIAMOND));
-		int oreID = instance.getOreID(recipe.getInput());
+		int oreID = CompactorManager.convertInput(recipe.getInput()).oreID;
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().getCount()));
@@ -47,7 +47,7 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 		recipeOutputs.add(recipe.getOutput());
 
-		inputs = recipeInputs;
+		inputs = singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
 		energy = recipe.getEnergy();
@@ -64,7 +64,7 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 
-		ingredients.setInputs(ItemStack.class, inputs);
+		ingredients.setInputLists(ItemStack.class, inputs);
 		ingredients.setOutputs(ItemStack.class, outputs);
 	}
 

@@ -2,12 +2,13 @@ package cofh.thermalexpansion.block.storage;
 
 import codechicken.lib.model.ModelRegistryHelper;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
+import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.RenderStrongbox;
-import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -54,8 +55,8 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
 		if (enable) {
-			if (TEProps.creativeTabShowAllLevels) {
-				for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
+			if (TEProps.creativeTabShowAllBlockLevels) {
+				for (int j = 0; j <= CoreProps.LEVEL_MAX; j++) {
 					items.add(itemBlock.setDefaultTag(new ItemStack(this), j));
 				}
 			} else {
@@ -67,9 +68,8 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 		}
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 
 		return new TileStrongbox();
 	}
@@ -82,7 +82,7 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 			TileStrongbox tile = (TileStrongbox) world.getTileEntity(pos);
 
 			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
-			tile.enchantHolding = (byte) EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
+			tile.enchantHolding = (byte) MathHelper.clamp(EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack), 0, CoreEnchantments.holding.getMaxLevel());
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 
 			if (stack.getTagCompound().hasKey("Inventory")) {
@@ -167,14 +167,14 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 	public void registerModels() {
 
 		ModelResourceLocation location = new ModelResourceLocation(getRegistryName(), "normal");
-		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, location);//Suppresses model loading errors for #inventory.
+		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, location); // Suppresses model loading errors for #inventory.
 		ModelLoader.setCustomMeshDefinition(itemBlock, (stack) -> location);
 		ModelRegistryHelper.register(location, RenderStrongbox.INSTANCE);
 	}
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("strongbox");
 		ForgeRegistries.BLOCKS.register(this);
@@ -191,7 +191,7 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		strongbox = new ItemStack[5];
 

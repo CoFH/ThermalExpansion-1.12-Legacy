@@ -100,7 +100,7 @@ public class FisherManager {
 	}
 
 	/* HELPERS */
-	private static void addBait(ItemStack bait, int multiplier) {
+	public static void addBait(ItemStack bait, int multiplier) {
 
 		baitMap.put(new ComparableItemStack(bait), multiplier);
 	}

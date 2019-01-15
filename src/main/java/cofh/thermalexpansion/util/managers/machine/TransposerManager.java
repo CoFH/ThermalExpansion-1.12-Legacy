@@ -1,7 +1,9 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.init.CoreProps;
-import cofh.core.inventory.ComparableItemStackSafeNBT;
+import cofh.core.inventory.ComparableItemStack;
+import cofh.core.inventory.ComparableItemStackValidatedNBT;
+import cofh.core.inventory.OreValidator;
 import cofh.core.util.ItemWrapper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
@@ -10,44 +12,56 @@ import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import cofh.thermalfoundation.item.ItemMaterial;
-import gnu.trove.map.hash.THashMap;
-import gnu.trove.set.hash.THashSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import static java.util.Arrays.asList;
+
 public class TransposerManager {
 
-	private static Map<List<Integer>, TransposerRecipe> recipeMapFill = new THashMap<>();
-	private static Map<ComparableItemStackTransposer, TransposerRecipe> recipeMapExtract = new THashMap<>();
-	private static Map<ItemWrapper, ContainerOverride> containerOverrides = new THashMap<>();
-	private static Set<ComparableItemStackTransposer> validationSet = new THashSet<>();
+	private static Map<List<Integer>, TransposerRecipe> recipeMapFill = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, TransposerRecipe> recipeMapExtract = new Object2ObjectOpenHashMap<>();
+	private static Map<ItemWrapper, ContainerOverride> containerOverrides = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidatedNBT> validationSet = new ObjectOpenHashSet<>();
+	private static OreValidator oreValidator = new OreValidator();
+
+	static {
+		oreValidator.addPrefix(ComparableItemStack.BLOCK);
+		oreValidator.addPrefix(ComparableItemStack.ORE);
+		oreValidator.addPrefix(ComparableItemStack.DUST);
+		oreValidator.addPrefix(ComparableItemStack.INGOT);
+		oreValidator.addPrefix(ComparableItemStack.NUGGET);
+		oreValidator.addPrefix(ComparableItemStack.GEM);
+		oreValidator.addPrefix("seed");
+		oreValidator.addPrefix("crop");
+	}
 
 	public static final int DEFAULT_ENERGY = 400;
 
 	public static TransposerRecipe getFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return input.isEmpty() || fluid == null ? null : recipeMapFill.get(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), FluidHelper.getFluidHash(fluid)));
+		return input.isEmpty() || fluid == null ? null : recipeMapFill.get(asList(convertInput(input).hashCode(), FluidHelper.getFluidHash(fluid)));
 	}
 
 	public static TransposerRecipe getExtractRecipe(ItemStack input) {
 
-		return input.isEmpty() ? null : recipeMapExtract.get(new ComparableItemStackTransposer(input));
+		return input.isEmpty() ? null : recipeMapExtract.get(convertInput(input));
 	}
 
 	public static ContainerOverride getContainerOverride(ItemStack input) {
@@ -82,7 +96,18 @@ public class TransposerManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return !input.isEmpty() && validationSet.contains(new ComparableItemStackTransposer(input));
+		return !input.isEmpty() && validationSet.contains(convertInput(input));
+	}
+
+	public static void preInit() {
+
+		/* BUCKETS */
+		{
+			addContainerOverride(new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.BUCKET), 100);
+			addContainerOverride(new ItemStack(Items.LAVA_BUCKET), new ItemStack(Items.BUCKET), 100);
+			addContainerOverride(new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BUCKET), 100);
+			addContainerOverride(new ItemStack(ForgeModContainer.getInstance().universalBucket), new ItemStack(Items.BUCKET), 100);
+		}
 	}
 
 	public static void initialize() {
@@ -91,8 +116,8 @@ public class TransposerManager {
 		{
 			addFillRecipe(4000, new ItemStack(Blocks.COBBLESTONE), new ItemStack(Blocks.MOSSY_COBBLESTONE), new FluidStack(FluidRegistry.WATER, 250), false);
 			addFillRecipe(4000, new ItemStack(Blocks.STONEBRICK), new ItemStack(Blocks.STONEBRICK, 1, 1), new FluidStack(FluidRegistry.WATER, 250), false);
-			addFillRecipe(4000, new ItemStack(Blocks.SANDSTONE), new ItemStack(Blocks.END_STONE), new FluidStack(TFFluids.fluidEnder, 250), false);
-			addFillRecipe(4000, new ItemStack(Items.BRICK), new ItemStack(Items.NETHERBRICK), new FluidStack(FluidRegistry.LAVA, 250), false);
+			// addFillRecipe(4000, new ItemStack(Blocks.SANDSTONE), new ItemStack(Blocks.END_STONE), new FluidStack(TFFluids.fluidEnder, 250), false);
+			// addFillRecipe(4000, new ItemStack(Items.BRICK), new ItemStack(Items.NETHERBRICK), new FluidStack(FluidRegistry.LAVA, 250), false);
 
 			addExtractRecipe(2400, new ItemStack(Blocks.CACTUS), ItemStack.EMPTY, new FluidStack(FluidRegistry.WATER, 500), 0, false);
 			addExtractRecipe(2400, new ItemStack(Blocks.REEDS), new ItemStack(Items.SUGAR, 2), new FluidStack(FluidRegistry.WATER, 250), 0, false);
@@ -103,7 +128,7 @@ public class TransposerManager {
 			FluidStack water = new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
 
 			for (int i = 0; i < 16; i++) {
-				addFillRecipe(400, new ItemStack(Blocks.CONCRETE_POWDER, 1, i), new ItemStack(Blocks.CONCRETE, 1, i), water, false);
+				addFillRecipe(DEFAULT_ENERGY, new ItemStack(Blocks.CONCRETE_POWDER, 1, i), new ItemStack(Blocks.CONCRETE, 1, i), water, false);
 			}
 		}
 
@@ -129,12 +154,29 @@ public class TransposerManager {
 
 		/* ELEMENTAL */
 		{
-			FluidStack redstoneFluid = new FluidStack(TFFluids.fluidRedstone, 200);
+			FluidStack expFluid = new FluidStack(TFFluids.fluidExperience, 200);
 
-			addFillRecipe(4000, new ItemStack(Items.GLOWSTONE_DUST), new ItemStack(Items.BLAZE_POWDER), redstoneFluid, false);
-			addFillRecipe(4000, new ItemStack(Items.SNOWBALL), ItemHelper.cloneStack(ItemMaterial.dustBlizz, 1), redstoneFluid, false);
-			addFillRecipe(4000, new ItemStack(Blocks.SAND), ItemHelper.cloneStack(ItemMaterial.dustBlitz), redstoneFluid, false);
-			addFillRecipe(4000, ItemHelper.cloneStack(ItemMaterial.dustObsidian), ItemHelper.cloneStack(ItemMaterial.dustBasalz), redstoneFluid, false);
+			addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustSulfur, 2), new ItemStack(Items.BLAZE_POWDER), expFluid, false);
+			addFillRecipe(16000, ItemHelper.cloneStack(Items.SNOWBALL, 2), ItemMaterial.dustBlizz, expFluid, false);
+			addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustNiter, 2), ItemMaterial.dustBlitz, expFluid, false);
+			addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustObsidian, 2), ItemMaterial.dustBasalz, expFluid, false);
+
+			if (FluidRegistry.isFluidRegistered(CoreProps.ESSENCE)) {
+				expFluid = FluidRegistry.getFluidStack(CoreProps.ESSENCE, 200);
+
+				addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustSulfur, 2), new ItemStack(Items.BLAZE_POWDER), expFluid, false);
+				addFillRecipe(16000, ItemHelper.cloneStack(Items.SNOWBALL, 2), ItemMaterial.dustBlizz, expFluid, false);
+				addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustNiter, 2), ItemMaterial.dustBlitz, expFluid, false);
+				addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustObsidian, 2), ItemMaterial.dustBasalz, expFluid, false);
+			}
+			if (FluidRegistry.isFluidRegistered(CoreProps.XPJUICE)) {
+				expFluid = FluidRegistry.getFluidStack(CoreProps.XPJUICE, 200);
+
+				addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustSulfur, 2), new ItemStack(Items.BLAZE_POWDER), expFluid, false);
+				addFillRecipe(16000, ItemHelper.cloneStack(Items.SNOWBALL, 2), ItemMaterial.dustBlizz, expFluid, false);
+				addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustNiter, 2), ItemMaterial.dustBlitz, expFluid, false);
+				addFillRecipe(16000, ItemHelper.cloneStack(ItemMaterial.dustObsidian, 2), ItemMaterial.dustBasalz, expFluid, false);
+			}
 		}
 
 		/* CELLS */
@@ -147,16 +189,13 @@ public class TransposerManager {
 				addFillRecipe(16000, ItemFrame.frameCell4, ItemFrame.frameCell4Filled, redstoneFluid, false);
 			}
 		}
-
-		addFillRecipe(4000, new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Blocks.SPONGE, 1, 1), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), true);
-		addFillRecipe(2000, ItemHelper.cloneStack(ItemFertilizer.fertilizerBasic), ItemHelper.cloneStack(ItemFertilizer.fertilizerRich), new FluidStack(TFFluids.fluidSap, 200), false);
+		addFillRecipe(400, new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Blocks.SPONGE, 1, 1), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME), true);
 		addFillRecipe(400, new ItemStack(Items.BOWL), new ItemStack(Items.MUSHROOM_STEW), new FluidStack(TFFluids.fluidMushroomStew, 250), true);
 		addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(TFFluids.fluidExperience, 250), false);
 
-		addContainerOverride(new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.BUCKET), 100);
-		addContainerOverride(new ItemStack(Items.LAVA_BUCKET), new ItemStack(Items.BUCKET), 100);
-		addContainerOverride(new ItemStack(Items.MILK_BUCKET), new ItemStack(Items.BUCKET), 100);
-		addContainerOverride(new ItemStack(ForgeModContainer.getInstance().universalBucket), new ItemStack(Items.BUCKET), 100);
+		addFillRecipe(1600, ItemFertilizer.fertilizerBasic, ItemFertilizer.fertilizerRich, new FluidStack(TFFluids.fluidSap, 200), false);
+		addFillRecipe(800, ItemMaterial.dustBiomass, ItemMaterial.dustBiomassRich, new FluidStack(TFFluids.fluidSeedOil, 100), false);
+		addFillRecipe(800, ItemMaterial.dustBioblend, ItemMaterial.dustBioblendRich, new FluidStack(TFFluids.fluidSeedOil, 100), false);
 
 		/* LOAD POTIONS */
 		loadPotions();
@@ -166,79 +205,6 @@ public class TransposerManager {
 	}
 
 	public static void loadPotions() {
-
-		//		/* VANILLA */
-		//		{
-		//			addDefaultPotionRecipes(PotionTypes.MUNDANE);
-		//			addDefaultPotionRecipes(PotionTypes.THICK);
-		//			addDefaultPotionRecipes(PotionTypes.AWKWARD);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.NIGHT_VISION);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_NIGHT_VISION);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.INVISIBILITY);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_INVISIBILITY);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.LEAPING);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_LEAPING);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_LEAPING);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.FIRE_RESISTANCE);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_FIRE_RESISTANCE);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.SWIFTNESS);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_SWIFTNESS);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_SWIFTNESS);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.SLOWNESS);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_SLOWNESS);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.WATER_BREATHING);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_WATER_BREATHING);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.HEALING);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_HEALING);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.HARMING);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_HARMING);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.POISON);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_POISON);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_POISON);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.REGENERATION);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_REGENERATION);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_REGENERATION);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.STRENGTH);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_STRENGTH);
-		//			addDefaultPotionRecipes(PotionTypes.STRONG_STRENGTH);
-		//
-		//			addDefaultPotionRecipes(PotionTypes.WEAKNESS);
-		//			addDefaultPotionRecipes(PotionTypes.LONG_WEAKNESS);
-		//		}
-		//
-		//		/* COFH */
-		//		{
-		//			addDefaultPotionRecipes(CorePotions.haste);
-		//			addDefaultPotionRecipes(CorePotions.hasteLong);
-		//			addDefaultPotionRecipes(CorePotions.hasteStrong);
-		//
-		//			addDefaultPotionRecipes(CorePotions.resistance);
-		//			addDefaultPotionRecipes(CorePotions.resistanceLong);
-		//			addDefaultPotionRecipes(CorePotions.resistanceStrong);
-		//
-		//			addDefaultPotionRecipes(CorePotions.levitation);
-		//			addDefaultPotionRecipes(CorePotions.levitationLong);
-		//
-		//			addDefaultPotionRecipes(CorePotions.absorption);
-		//			addDefaultPotionRecipes(CorePotions.absorptionLong);
-		//			addDefaultPotionRecipes(CorePotions.absorptionStrong);
-		//
-		//			addDefaultPotionRecipes(CorePotions.wither);
-		//			addDefaultPotionRecipes(CorePotions.witherLong);
-		//			addDefaultPotionRecipes(CorePotions.witherStrong);
-		//		}
 
 		for (PotionType type : PotionType.REGISTRY) {
 
@@ -252,27 +218,35 @@ public class TransposerManager {
 
 		FluidStack cryoStack = new FluidStack(TFFluids.fluidCryotheum, 200);
 
-		addFillRecipe(2000, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(ItemMaterial.crystalCinnabar, 2), cryoStack, false);
+		addFillRecipe(2000, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(ItemMaterial.crystalCinnabar, 4), cryoStack, false);
+
+		if (FluidRegistry.isFluidRegistered(CoreProps.ESSENCE)) {
+			addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(FluidRegistry.getFluid(CoreProps.ESSENCE), 250), false);
+		}
+		if (FluidRegistry.isFluidRegistered(CoreProps.XPJUICE)) {
+			addFillRecipe(400, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Items.EXPERIENCE_BOTTLE), new FluidStack(FluidRegistry.getFluid(CoreProps.XPJUICE), 250), false);
+		}
+		addDefaultSeedOilRecipes();
 	}
 
 	public static void refresh() {
 
-		Map<List<Integer>, TransposerRecipe> tempFill = new THashMap<>(recipeMapFill.size());
-		Map<ComparableItemStackTransposer, TransposerRecipe> tempExtract = new THashMap<>(recipeMapExtract.size());
-		Map<ItemWrapper, ContainerOverride> tempOverrides = new THashMap<>(containerOverrides.size());
-		Set<ComparableItemStackTransposer> tempSet = new THashSet<>();
+		Map<List<Integer>, TransposerRecipe> tempFill = new Object2ObjectOpenHashMap<>(recipeMapFill.size());
+		Map<ComparableItemStackValidatedNBT, TransposerRecipe> tempExtract = new Object2ObjectOpenHashMap<>(recipeMapExtract.size());
+		Map<ItemWrapper, ContainerOverride> tempOverrides = new Object2ObjectOpenHashMap<>(containerOverrides.size());
+		Set<ComparableItemStackValidatedNBT> tempSet = new ObjectOpenHashSet<>();
 		TransposerRecipe tempRecipe;
 		ContainerOverride tempOverride;
 
 		for (Entry<List<Integer>, TransposerRecipe> entry : recipeMapFill.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackTransposer input = new ComparableItemStackTransposer(tempRecipe.input);
-			tempFill.put(Arrays.asList(input.hashCode(), FluidHelper.getFluidHash(tempRecipe.fluid)), tempRecipe);
+			ComparableItemStackValidatedNBT input = convertInput(tempRecipe.input);
+			tempFill.put(asList(input.hashCode(), FluidHelper.getFluidHash(tempRecipe.fluid)), tempRecipe);
 			tempSet.add(input);
 		}
-		for (Entry<ComparableItemStackTransposer, TransposerRecipe> entry : recipeMapExtract.entrySet()) {
+		for (Entry<ComparableItemStackValidatedNBT, TransposerRecipe> entry : recipeMapExtract.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackTransposer input = new ComparableItemStackTransposer(tempRecipe.input);
+			ComparableItemStackValidatedNBT input = convertInput(tempRecipe.input);
 			tempExtract.put(input, tempRecipe);
 			tempSet.add(input);
 		}
@@ -304,8 +278,8 @@ public class TransposerManager {
 			return null;
 		}
 		TransposerRecipe recipeFill = new TransposerRecipe(input, output, fluid, energy, 100);
-		recipeMapFill.put(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), FluidHelper.getFluidHash(fluid)), recipeFill);
-		validationSet.add(new ComparableItemStackTransposer(input));
+		recipeMapFill.put(asList(convertInput(input).hashCode(), FluidHelper.getFluidHash(fluid)), recipeFill);
+		validationSet.add(convertInput(input));
 
 		if (reversible) {
 			addExtractRecipe(energy, output, input, fluid, 100, false);
@@ -325,8 +299,8 @@ public class TransposerManager {
 			return null;
 		}
 		TransposerRecipe recipeExtraction = new TransposerRecipe(input, output, fluid, energy, chance);
-		recipeMapExtract.put(new ComparableItemStackTransposer(input), recipeExtraction);
-		validationSet.add(new ComparableItemStackTransposer(input));
+		recipeMapExtract.put(convertInput(input), recipeExtraction);
+		validationSet.add(convertInput(input));
 
 		if (reversible) {
 			addFillRecipe(energy, output, input, fluid, false);
@@ -337,15 +311,20 @@ public class TransposerManager {
 	/* REMOVE RECIPES */
 	public static TransposerRecipe removeFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return recipeMapFill.remove(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), FluidHelper.getFluidHash(fluid)));
+		return recipeMapFill.remove(asList(convertInput(input).hashCode(), FluidHelper.getFluidHash(fluid)));
 	}
 
 	public static TransposerRecipe removeExtractRecipe(ItemStack input) {
 
-		return recipeMapExtract.remove(new ComparableItemStackTransposer(input));
+		return recipeMapExtract.remove(convertInput(input));
 	}
 
 	/* HELPERS */
+	public static ComparableItemStackValidatedNBT convertInput(ItemStack stack) {
+
+		return new ComparableItemStackValidatedNBT(stack, oreValidator);
+	}
+
 	public static ContainerOverride addContainerOverride(ItemStack input, ItemStack output, int chance) {
 
 		if (input.isEmpty() || output.isEmpty() || chance <= 0) {
@@ -362,48 +341,24 @@ public class TransposerManager {
 
 	public static void addDefaultPotionRecipes(PotionType type) {
 
-		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(ItemHelper.cloneStack(Items.POTIONITEM, 1), type), getPotion(CoreProps.BOTTLE_VOLUME, type), true);
-		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(ItemHelper.cloneStack(Items.SPLASH_POTION, 1), type), getSplashPotion(CoreProps.BOTTLE_VOLUME, type), true);
-		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(ItemHelper.cloneStack(Items.LINGERING_POTION, 1), type), getLingeringPotion(CoreProps.BOTTLE_VOLUME, type), true);
-		addFillRecipe(DEFAULT_ENERGY, new ItemStack(Items.ARROW), PotionUtils.addPotionToItemStack(new ItemStack(Items.TIPPED_ARROW), type), getLingeringPotion(CoreProps.BOTTLE_VOLUME / 10, type), false);
+		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM, 1), type), TFFluids.getPotion(CoreProps.BOTTLE_VOLUME, type), true);
+		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION, 1), type), TFFluids.getSplashPotion(CoreProps.BOTTLE_VOLUME, type), true);
+		addFillRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.GLASS_BOTTLE), PotionUtils.addPotionToItemStack(new ItemStack(Items.LINGERING_POTION, 1), type), TFFluids.getLingeringPotion(CoreProps.BOTTLE_VOLUME, type), true);
+		addFillRecipe(DEFAULT_ENERGY, new ItemStack(Items.ARROW), PotionUtils.addPotionToItemStack(new ItemStack(Items.TIPPED_ARROW), type), TFFluids.getLingeringPotion(CoreProps.BOTTLE_VOLUME / 10, type), false);
 	}
 
-	public static FluidStack getPotion(int amount, PotionType type) {
+	public static void addDefaultSeedOilRecipes() {
 
-		if (type == PotionTypes.WATER) {
-			return new FluidStack(FluidRegistry.WATER, amount);
-		}
-		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotion, amount), type);
-	}
+		for (String name : OreDictionary.getOreNames()) {
+			if (name.startsWith("seed") && !name.startsWith("seeds")) {
+				List<ItemStack> seed = OreDictionary.getOres(name, false);
 
-	public static FluidStack getSplashPotion(int amount, PotionType type) {
-
-		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionSplash, amount), type);
-	}
-
-	public static FluidStack getLingeringPotion(int amount, PotionType type) {
-
-		return addPotionToFluidStack(new FluidStack(TFFluids.fluidPotionLingering, amount), type);
-	}
-
-	public static FluidStack addPotionToFluidStack(FluidStack stack, PotionType type) {
-
-		ResourceLocation resourcelocation = PotionType.REGISTRY.getNameForObject(type);
-
-		if (type == PotionTypes.EMPTY) {
-			if (stack.tag != null) {
-				stack.tag.removeTag("Potion");
-				if (stack.tag.hasNoTags()) {
-					stack.tag = null;
+				if (seed.isEmpty()) {
+					continue;
 				}
+				TransposerManager.addExtractRecipe(1600, ItemHelper.cloneStack(seed.get(0), 1), ItemStack.EMPTY, new FluidStack(TFFluids.fluidSeedOil, 50), 0, false);
 			}
-		} else {
-			if (stack.tag == null) {
-				stack.tag = new NBTTagCompound();
-			}
-			stack.tag.setString("Potion", resourcelocation.toString());
 		}
-		return stack;
 	}
 
 	/* RECIPE CLASS */
@@ -480,25 +435,6 @@ public class TransposerManager {
 			return chance;
 		}
 
-	}
-
-	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackTransposer extends ComparableItemStackSafeNBT {
-
-		public static final String CROP = "crop";
-		public static final String SEED = "seed";
-		public static final String GEM = "gem";
-
-		@Override
-		public boolean safeOreType(String oreName) {
-
-			return oreName.startsWith(CROP) || oreName.startsWith(SEED) || oreName.startsWith(GEM) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET);
-		}
-
-		public ComparableItemStackTransposer(ItemStack stack) {
-
-			super(stack);
-		}
 	}
 
 }

@@ -28,7 +28,7 @@ public interface IRenderBauble {
 	 * Called for the rendering of the bauble on the player. The player instance can be
 	 * acquired through the event parameter. Transformations are already applied for
 	 * the RenderType passed in. Make sure to check against the type parameter for
-	 * rendering.
+	 * rendering. 
 	 */
 	public void onPlayerBaubleRender(ItemStack stack, EntityPlayer player, RenderType type, float partialTicks);
 
@@ -42,10 +42,8 @@ public interface IRenderBauble {
 		 * Use for renders under {@link RenderType#BODY}.
 		 */
 		public static void rotateIfSneaking(EntityPlayer player) {
-
-			if (player.isSneaking()) {
+			if(player.isSneaking())
 				applySneakingRotation();
-			}
 		}
 
 		/**
@@ -53,7 +51,6 @@ public interface IRenderBauble {
 		 * Use for renders under {@link RenderType#BODY}.
 		 */
 		public static void applySneakingRotation() {
-
 			GlStateManager.translate(0F, 0.2F, 0F);
 			GlStateManager.rotate(90F / (float) Math.PI, 1.0F, 0.0F, 0.0F);
 		}
@@ -63,11 +60,9 @@ public interface IRenderBauble {
 		 * Use for renders under {@link RenderType#HEAD}.
 		 */
 		public static void translateToHeadLevel(EntityPlayer player) {
-
 			GlStateManager.translate(0, -player.getDefaultEyeHeight(), 0);
-			if (player.isSneaking()) {
+			if (player.isSneaking())
 				GlStateManager.translate(0.25F * MathHelper.sin(player.rotationPitch * (float) Math.PI / 180), 0.25F * MathHelper.cos(player.rotationPitch * (float) Math.PI / 180), 0F);
-			}
 		}
 
 		/**
@@ -75,7 +70,6 @@ public interface IRenderBauble {
 		 * Use for renders under {@link RenderType#HEAD}, and usually after calling {@link Helper#translateToHeadLevel(EntityPlayer)}.
 		 */
 		public static void translateToFace() {
-
 			GlStateManager.rotate(90F, 0F, 1F, 0F);
 			GlStateManager.rotate(180F, 1F, 0F, 0F);
 			GlStateManager.translate(0f, -4.35f, -1.27f);
@@ -86,7 +80,6 @@ public interface IRenderBauble {
 		 * Use for any render.
 		 */
 		public static void defaultTransforms() {
-
 			GlStateManager.translate(0.0, 3.0, 1.0);
 			GlStateManager.scale(0.55, 0.55, 0.55);
 		}
@@ -96,7 +89,6 @@ public interface IRenderBauble {
 		 * Use for renders under {@link RenderType#BODY}, and usually after calling {@link Helper#rotateIfSneaking(EntityPlayer)}.
 		 */
 		public static void translateToChest() {
-
 			GlStateManager.rotate(180F, 1F, 0F, 0F);
 			GlStateManager.translate(0F, -3.2F, -0.85F);
 		}
@@ -106,7 +98,6 @@ public interface IRenderBauble {
 		/**
 		 * Render Type for the player's body, translations apply on the player's rotation.
 		 * Sneaking is not handled and should be done during the render.
-		 *
 		 * @see IRenderBauble.Helper
 		 */
 		BODY,
@@ -114,7 +105,6 @@ public interface IRenderBauble {
 		/**
 		 * Render Type for the player's body, translations apply on the player's head rotations.
 		 * Sneaking is not handled and should be done during the render.
-		 *
 		 * @see IRenderBauble.Helper
 		 */
 		HEAD;

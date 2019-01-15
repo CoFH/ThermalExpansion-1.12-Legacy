@@ -6,7 +6,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
-import cofh.thermalexpansion.util.managers.machine.EnchanterManager.ComparableItemStackEnchanter;
+import cofh.thermalexpansion.util.managers.machine.EnchanterManager;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager.EnchanterRecipe;
 import cofh.thermalexpansion.util.managers.machine.EnchanterManager.Type;
 import cofh.thermalfoundation.init.TFFluids;
@@ -16,7 +16,6 @@ import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -31,6 +30,7 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 	protected List<FluidStack> inputFluids;
 	protected List<ItemStack> outputs;
 
+	protected String enchantName;
 	protected Type type;
 
 	/* Animation */
@@ -52,8 +52,7 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeInputsPrimary = new ArrayList<>();
 		List<ItemStack> recipeInputsSecondary = new ArrayList<>();
 
-		ComparableItemStackEnchanter instance = new ComparableItemStackEnchanter(new ItemStack(Items.DIAMOND));
-		int oreID = instance.getOreID(recipe.getPrimaryInput());
+		int oreID = EnchanterManager.convertInput(recipe.getPrimaryInput()).oreID;
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputsPrimary.add(ItemHelper.cloneStack(ore, recipe.getPrimaryInput().getCount()));
@@ -61,7 +60,7 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 		} else {
 			recipeInputsPrimary.add(recipe.getPrimaryInput());
 		}
-		oreID = instance.getOreID(recipe.getSecondaryInput());
+		oreID = EnchanterManager.convertInput(recipe.getSecondaryInput()).oreID;
 		if (oreID != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.oreProxy.getOreName(oreID), false)) {
 				recipeInputsSecondary.add(ItemHelper.cloneStack(ore, recipe.getSecondaryInput().getCount()));
@@ -82,6 +81,7 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 
 		energy = recipe.getEnergy();
 
+		enchantName = recipe.getEnchantName();
 		type = recipe.getType();
 
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);
@@ -112,6 +112,17 @@ public class EnchanterRecipeWrapper extends BaseRecipeWrapper {
 		progress.draw(minecraft, 69, 23);
 		speed.draw(minecraft, 34, 33);
 		energyMeter.draw(minecraft, 2, 8);
+	}
+
+	public void refresh() {
+
+		EnchanterRecipe recipe = EnchanterManager.getRecipe(inputs.get(0).get(0), inputs.get(1).get(0));
+
+		if (recipe == null) {
+			return;
+		}
+		outputs.clear();
+		outputs.add(recipe.getOutput());
 	}
 
 }

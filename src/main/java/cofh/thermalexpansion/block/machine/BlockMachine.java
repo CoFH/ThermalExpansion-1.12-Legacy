@@ -8,28 +8,18 @@ import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.FluidHelper;
+import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.helpers.ReconfigurableHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
-import cofh.thermalexpansion.plugins.jei.machine.centrifuge.CentrifugeRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.machine.charger.ChargerRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.machine.compactor.CompactorRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.machine.crucible.CrucibleRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.machine.furnace.FurnaceRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.machine.insolator.InsolatorRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.machine.pulverizer.PulverizerRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.machine.refinery.RefineryRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.machine.sawmill.SawmillRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.machine.smelter.SmelterRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.machine.transposer.TransposerRecipeCategory;
 import cofh.thermalexpansion.render.BakeryMachine;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
@@ -86,6 +76,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		// UnListed
 		builder.add(ModelErrorStateProperty.ERROR_STATE);
 		builder.add(TEProps.TILE_MACHINE);
+		builder.add(TEProps.BAKERY_WORLD);
 
 		return builder.build();
 	}
@@ -93,10 +84,10 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
-				if (TEProps.creativeTabShowAllLevels) {
-					for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
+				if (TEProps.creativeTabShowAllBlockLevels) {
+					for (int j = 0; j <= CoreProps.LEVEL_MAX; j++) {
 						items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i), j));
 					}
 				} else {
@@ -111,9 +102,15 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 
 	/* TYPE METHODS */
 	@Override
+	public String getUnlocalizedName(ItemStack stack) {
+
+		return "tile.thermalexpansion.machine." + Type.values()[ItemHelper.getItemDamage(stack)].getName() + ".name";
+	}
+
+	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
-		return this.getDefaultState().withProperty(VARIANT, Type.byMetadata(meta));
+		return this.getDefaultState().withProperty(VARIANT, Type.values()[meta]);
 	}
 
 	@Override
@@ -128,14 +125,15 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		return state.getValue(VARIANT).getMetadata();
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 
-		if (metadata >= Type.values().length) {
+		int meta = state.getBlock().getMetaFromState(state);
+
+		if (meta >= Type.values().length) {
 			return null;
 		}
-		switch (Type.byMetadata(metadata)) {
+		switch (Type.values()[meta]) {
 			case FURNACE:
 				return new TileFurnace();
 			case PULVERIZER:
@@ -183,12 +181,17 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 			tile.readAugmentsFromNBT(stack.getTagCompound());
 			tile.updateAugmentStatus();
-			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
+			tile.setEnergyStored(stack.getTagCompound().getInteger(CoreProps.ENERGY));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
 			int storedFacing = ReconfigurableHelper.getFacing(stack);
 			byte[] sideCache = ReconfigurableHelper.getSideCache(stack, tile.getDefaultSides());
 
+			for (int i = 0; i < sideCache.length; i++) {
+				if (sideCache[i] >= tile.getNumConfig(i)) {
+					sideCache[i] = 0;
+				}
+			}
 			tile.sideCache[0] = sideCache[0];
 			tile.sideCache[1] = sideCache[1];
 			tile.sideCache[facing] = 0;
@@ -220,14 +223,17 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 	@Override
 	public boolean onBlockActivatedDelegate(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-		TileEntity tile = world.getTileEntity(pos);
+		TileMachineBase tile = (TileMachineBase) world.getTileEntity(pos);
 
-		if (!(tile instanceof TileTransposer) && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+		if (tile == null || !tile.canPlayerAccess(player)) {
+			return false;
+		}
+		if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 			ItemStack heldItem = player.getHeldItem(hand);
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 
 			if (FluidHelper.isFluidHandler(heldItem)) {
-				FluidHelper.drainItemToHandler(heldItem, handler, player, hand);
+				FluidHelper.interactWithHandler(heldItem, handler, player, hand);
 				return true;
 			}
 		}
@@ -322,7 +328,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("machine");
 		ForgeRegistries.BLOCKS.register(this);
@@ -344,7 +350,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		TileTransposer.initialize();
 		TileCharger.initialize();
 		TileCentrifuge.initialize();
-		// TileCrafter.initialize();
+		TileCrafter.initialize();
 		TileBrewer.initialize();
 		TileEnchanter.initialize();
 		TilePrecipitator.initialize();
@@ -356,7 +362,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		machineFurnace = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FURNACE.getMetadata()));
 		machinePulverizer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.PULVERIZER.getMetadata()));
@@ -369,7 +375,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		machineTransposer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));
 		machineCharger = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
 		machineCentrifuge = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CENTRIFUGE.getMetadata()));
-		// machineCrafter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
+		machineCrafter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
 		machineBrewer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.BREWER.getMetadata()));
 		machineEnchanter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ENCHANTER.getMetadata()));
 		machinePrecipitator = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.PRECIPITATOR.getMetadata()));
@@ -386,7 +392,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 	private void addRecipes() {
 
 		String copperPart = "gearCopper";
-		String invarPart = "gearInvar";
 		String constantanPart = "gearConstantan";
 
 		// @formatter:off
@@ -401,8 +406,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', "dustRedstone",
 					'Y', Blocks.BRICK_BLOCK
 			);
-		} else {
-			FurnaceRecipeCategory.enable = false;
 		}
 		if (enable[Type.PULVERIZER.getMetadata()]) {
 			addShapedRecipe(machinePulverizer,
@@ -415,8 +418,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', Blocks.PISTON,
 					'Y', Items.FLINT
 			);
-		} else {
-			PulverizerRecipeCategory.enable = false;
 		}
 		if (enable[Type.SAWMILL.getMetadata()]) {
 			addShapedRecipe(machineSawmill,
@@ -426,11 +427,9 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'C', ItemFrame.frameMachine,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', "gearIron",
+					'X', ItemMaterial.partSawBlade,
 					'Y', "plankWood"
 			);
-		} else {
-			SawmillRecipeCategory.enable = false;
 		}
 		if (enable[Type.SMELTER.getMetadata()]) {
 			addShapedRecipe(machineSmelter,
@@ -438,13 +437,11 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameMachine,
-					'I', invarPart,
+					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', Items.BUCKET,
-					'Y', "ingotInvar"
+					'X', "gearInvar",
+					'Y', "sand"
 			);
-		}else {
-			SmelterRecipeCategory.enable = false;
 		}
 		if (enable[Type.INSOLATOR.getMetadata()]) {
 			addShapedRecipe(machineInsolator,
@@ -457,8 +454,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', "gearLumium",
 					'Y', "dirt"
 			);
-		}else {
-			InsolatorRecipeCategory.enable = false;
 		}
 		if (enable[Type.COMPACTOR.getMetadata()]) {
 			addShapedRecipe(machineCompactor,
@@ -471,8 +466,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', Blocks.PISTON,
 					'Y', "ingotBronze"
 			);
-		}else {
-			CompactorRecipeCategory.enable = false;
 		}
 		if (enable[Type.CRUCIBLE.getMetadata()]) {
 			addShapedRecipe(machineCrucible,
@@ -480,13 +473,11 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameMachine,
-					'I', invarPart,
+					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', ItemMaterial.powerCoilElectrum,
+					'X', "blockGlassHardened",
 					'Y', Blocks.NETHER_BRICK
 			);
-		}else {
-			CrucibleRecipeCategory.enable = false;
 		}
 		if (enable[Type.REFINERY.getMetadata()]) {
 			addShapedRecipe(machineRefinery,
@@ -494,13 +485,11 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameMachine,
-					'I', copperPart,
+					'I', constantanPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', "gearNickel",
 					'Y', "blockGlass"
 			);
-		} else {
-			RefineryRecipeCategory.enable = false;
 		}
 		if (enable[Type.TRANSPOSER.getMetadata()]) {
 			addShapedRecipe(machineTransposer,
@@ -508,13 +497,11 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameMachine,
-					'I', invarPart,
+					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', Items.BUCKET,
 					'Y', "blockGlass"
 			);
-		} else {
-			TransposerRecipeCategory.enable = false;
 		}
 		if (enable[Type.CHARGER.getMetadata()]) {
 			addShapedRecipe(machineCharger,
@@ -524,11 +511,9 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'C', ItemFrame.frameMachine,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', ItemMaterial.powerCoilElectrum,
+					'X', "gearLead",
 					'Y', ItemMaterial.powerCoilSilver
 			);
-		} else {
-			ChargerRecipeCategory.enable = false;
 		}
 		if (enable[Type.CENTRIFUGE.getMetadata()]) {
 			addShapedRecipe(machineCentrifuge,
@@ -541,21 +526,19 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', Items.COMPASS,
 					'Y', "ingotConstantan"
 			);
-		} else {
-			CentrifugeRecipeCategory.enable = false;
 		}
-//		if (enable[Type.CRAFTER.getMetadata()]) {
-//			addShapedRecipe(machineCrafter,
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', ItemFrame.frameMachine,
-//					'I', copperPart,
-//					'P', ItemMaterial.powerCoilGold,
-//					'X', "workbench",
-//					'Y', "gearTin"
-//			);
-//		}
+		if (enable[Type.CRAFTER.getMetadata()]) {
+			addShapedRecipe(machineCrafter,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameMachine,
+					'I', copperPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', "workbench",
+					'Y', "ingotTin"
+			);
+		}
 		if (enable[Type.BREWER.getMetadata()]) {
 			addShapedRecipe(machineBrewer,
 					" X ",
@@ -598,10 +581,10 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameMachine,
-					'I', invarPart,
+					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', Blocks.PISTON,
-					'Y', "blockGlass"
+					'X', "blockGlass",
+					'Y', "ingotInvar"
 			);
 		}
 		// @formatter:on
@@ -612,7 +595,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		if (!enableUpgradeKitCrafting) {
 			return;
 		}
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				ItemStack[] block = new ItemStack[5];
 
@@ -636,7 +619,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		if (!enableClassicRecipes) {
 			return;
 		}
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				ItemStack[] machine = new ItemStack[5];
 
@@ -697,7 +680,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		EXTRUDER(15, "extruder");
 		// @formatter:on
 
-		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
 
@@ -716,20 +698,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		public String getName() {
 
 			return this.name;
-		}
-
-		public static Type byMetadata(int metadata) {
-
-			if (metadata < 0 || metadata >= METADATA_LOOKUP.length) {
-				metadata = 0;
-			}
-			return METADATA_LOOKUP[metadata];
-		}
-
-		static {
-			for (Type type : values()) {
-				METADATA_LOOKUP[type.getMetadata()] = type;
-			}
 		}
 	}
 

@@ -3,13 +3,15 @@ package cofh.thermalexpansion.block.device;
 import cofh.api.core.IAccelerable;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.gui.GuiContainerCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.RenderHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice.Type;
 import cofh.thermalexpansion.gui.client.device.GuiHeatSink;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.managers.device.CoolantManager;
@@ -34,10 +36,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 	private static final int TYPE = Type.HEAT_SINK.getMetadata();
 	public static int fluidAmount = 100;
+
+	public static final int USE_FACTOR = 5;
 
 	public static void initialize() {
 
@@ -63,8 +69,6 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		String category = "Device.HeatSink";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
-
-	private static final int USE_FACTOR = 5;
 
 	private boolean cached;
 	private IAccelerable[] accelerables = new IAccelerable[6];
@@ -175,7 +179,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	@Override
@@ -302,6 +306,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 	/* ISidedTexture */
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
@@ -358,24 +363,30 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]]) || !CoolantManager.isValidCoolant(resource)) {
-						return 0;
+					if (CoolantManager.isValidCoolant(resource) && (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]]))) {
+						return tank.fill(resource, doFill);
 					}
-					return tank.fill(resource, doFill);
+					return 0;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					return tank.drain(resource, doDrain);
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(resource, doDrain);
+					}
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					return tank.drain(maxDrain, doDrain);
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(maxDrain, doDrain);
+					}
+					return null;
 				}
 			});
 		}

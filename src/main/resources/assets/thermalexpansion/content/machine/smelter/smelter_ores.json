@@ -1,0 +1,52 @@
+{
+	"smelter": [
+		{
+			"input": {
+				"ore": "oreLapis"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "gemLapis",
+				"count": 8
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"ore": "oreRedstone"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "dustRedstone",
+				"count": 8
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"ore": "oreQuartz"
+			},
+			"input2": {
+				"ore": "sand"
+			},
+			"output": {
+				"ore": "gemQuartz",
+				"count": 4
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 50
+			}
+		}
+	]
+}

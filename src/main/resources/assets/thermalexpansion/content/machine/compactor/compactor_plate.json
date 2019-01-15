@@ -1,0 +1,175 @@
+{
+	"compactor": [
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotIron"
+			},
+			"output": {
+				"ore": "plateIron"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotGold"
+			},
+			"output": {
+				"ore": "plateGold"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotCopper"
+			},
+			"output": {
+				"ore": "plateCopper"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotTin"
+			},
+			"output": {
+				"ore": "plateTin"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotSilver"
+			},
+			"output": {
+				"ore": "plateSilver"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotLead"
+			},
+			"output": {
+				"ore": "plateLead"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotAluminum"
+			},
+			"output": {
+				"ore": "plateAluminum"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotNickel"
+			},
+			"output": {
+				"ore": "plateNickel"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotPlatinum"
+			},
+			"output": {
+				"ore": "platePlatinum"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotIridium"
+			},
+			"output": {
+				"ore": "plateIridium"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotMithril"
+			},
+			"output": {
+				"ore": "plateMithril"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotSteel"
+			},
+			"output": {
+				"ore": "plateSteel"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotElectrum"
+			},
+			"output": {
+				"ore": "plateElectrum"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotInvar"
+			},
+			"output": {
+				"ore": "plateInvar"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotBronze"
+			},
+			"output": {
+				"ore": "plateBronze"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotConstantan"
+			},
+			"output": {
+				"ore": "plateConstantan"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotSignalum"
+			},
+			"output": {
+				"ore": "plateSignalum"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotLumium"
+			},
+			"output": {
+				"ore": "plateLumium"
+			}
+		},
+		{
+			"type": "plate",
+			"input": {
+				"ore": "ingotEnderium"
+			},
+			"output": {
+				"ore": "plateEnderium"
+			}
+		}
+	]
+}

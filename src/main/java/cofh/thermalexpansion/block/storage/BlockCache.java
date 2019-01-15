@@ -8,8 +8,8 @@ import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
-import cofh.api.block.IConfigGui;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.StateMapper;
 import cofh.core.util.helpers.ItemHelper;
@@ -20,7 +20,6 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.render.BakeryCache;
-import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
@@ -48,7 +47,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static cofh.core.util.helpers.RecipeHelper.*;
 
-public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryProvider, IWorldBlockTextureProvider, IConfigGui {
+public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryProvider, IWorldBlockTextureProvider {
 
 	public BlockCache() {
 
@@ -71,6 +70,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 		// UnListed
 		builder.add(ModelErrorStateProperty.ERROR_STATE);
 		builder.add(TEProps.TILE_CACHE);
+		builder.add(TEProps.BAKERY_WORLD);
 
 		return builder.build();
 	}
@@ -79,8 +79,8 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
 		if (enable) {
-			if (TEProps.creativeTabShowAllLevels) {
-				for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
+			if (TEProps.creativeTabShowAllBlockLevels) {
+				for (int j = 0; j <= CoreProps.LEVEL_MAX; j++) {
 					items.add(itemBlock.setDefaultTag(new ItemStack(this), j));
 				}
 			} else {
@@ -92,9 +92,8 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 		}
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 
 		return new TileCache();
 	}
@@ -108,6 +107,9 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 		}
 		TileCache tile = (TileCache) world.getTileEntity(pos);
 
+		if (tile == null || !tile.canPlayerAccess(player)) {
+			return;
+		}
 		int extractAmount = !player.isSneaking() && !player.capabilities.isCreativeMode ? 1 : 64;
 		ItemStack extract = tile.extractItem(extractAmount, true);
 		if (extract.isEmpty()) {
@@ -137,14 +139,13 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 			TileCache tile = (TileCache) world.getTileEntity(pos);
 
 			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
-			tile.enchantHolding = (byte) EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
+			tile.enchantHolding = (byte) MathHelper.clamp(EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack), 0, CoreEnchantments.holding.getMaxLevel());
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 
 			if (stack.getTagCompound().hasKey("Item")) {
-				ItemStack stored = ItemHelper.readItemStackFromNBT(stack.getTagCompound().getCompoundTag("Item"));
-
-				tile.setStoredItemType(stored, stored.getCount());
-				tile.lock = stack.getTagCompound().getBoolean("Lock");
+				ItemStack item = ItemHelper.readItemStackFromNBT(stack.getTagCompound().getCompoundTag("Item"));
+				tile.getHandler().setItem(item);
+				tile.setLocked(stack.getTagCompound().getBoolean("Lock"));
 			}
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
@@ -179,40 +180,40 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 
 		TileCache tile = (TileCache) world.getTileEntity(pos);
 
-		if (tile != null) {
-			if (ItemHelper.isPlayerHoldingNothing(player)) {
-				if (player.isSneaking()) {
-					tile.setLocked(!tile.isLocked());
-					if (tile.isLocked()) {
-						world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.2F, 0.8F);
-					} else {
-						world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
-					}
-					return true;
-				}
-			}
-			boolean playSound = false;
-
-			ItemStack heldItem = player.getHeldItem(hand);
-			ItemStack ret = tile.insertItem(heldItem, false);
-			long time = player.getEntityData().getLong("thermalexpansion:CacheClick"), currentTime = world.getTotalWorldTime();
-			player.getEntityData().setLong("thermalexpansion:CacheClick", currentTime);
-
-			if (!player.capabilities.isCreativeMode) {
-				if (ret != heldItem) {
-					player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
-					playSound = true;
-				}
-				if (!tile.getStoredItemType().isEmpty() && currentTime - time < 15) {
-					playSound &= !insertAllItemsFromPlayer(tile, player);
-				}
-			}
-			if (playSound) {
-				world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.1F, 0.7F);
-			}
-			return true;
+		if (tile == null || !tile.canPlayerAccess(player)) {
+			return false;
 		}
-		return false;
+		if (ItemHelper.isPlayerHoldingNothing(player)) {
+			if (player.isSneaking()) {
+				tile.setLocked(!tile.isLocked());
+				if (tile.isLocked()) {
+					world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.2F, 0.8F);
+				} else {
+					world.playSound(null, pos, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
+				}
+				return true;
+			}
+		}
+		boolean playSound = false;
+
+		ItemStack heldItem = player.getHeldItem(hand);
+		ItemStack ret = tile.insertItem(heldItem, false);
+		long time = player.getEntityData().getLong("thermalexpansion:CacheClick"), currentTime = world.getTotalWorldTime();
+		player.getEntityData().setLong("thermalexpansion:CacheClick", currentTime);
+
+		if (!player.capabilities.isCreativeMode) {
+			if (ret != heldItem) {
+				player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
+				playSound = true;
+			}
+			if (!tile.getStoredInstance().isEmpty() && currentTime - time < 15) {
+				playSound &= !insertAllItemsFromPlayer(tile, player);
+			}
+		}
+		if (playSound) {
+			world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 0.1F, 0.7F);
+		}
+		return true;
 	}
 
 	@Override
@@ -263,8 +264,8 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 			if (tile.enchantHolding > 0) {
 				CoreEnchantments.addEnchantment(retTag, CoreEnchantments.holding, tile.enchantHolding);
 			}
-			if (!tile.storedStack.isEmpty()) {
-				retTag.setTag("Item", ItemHelper.writeItemStackToNBT(tile.storedStack, tile.getStoredCount(), new NBTTagCompound()));
+			if (!tile.getStoredInstance().isEmpty()) {
+				retTag.setTag("Item", ItemHelper.writeItemStackToNBT(tile.getStoredInstance(), tile.getStoredCount(), new NBTTagCompound()));
 				retTag.setBoolean("Lock", tile.lock);
 			}
 		}
@@ -335,13 +336,13 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString() + "|" + state.getBlock().getMetaFromState(state));
 			TileCache tile = state.getValue(TEProps.TILE_CACHE);
+			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString() + "|" + state.getBlock().getMetaFromState(state));
 			builder.append(",creative=").append(tile.isCreative);
 			builder.append(",level=").append(tile.getLevel());
 			builder.append(",holding=").append(tile.enchantHolding);
 			builder.append(",facing=").append(tile.getFacing());
-			builder.append(",scale=").append(MathHelper.clamp(tile.getScaledItemsStored(9), 0, 8));
+			builder.append(",scale=").append(MathHelper.clamp(tile.getStoredCount() > 0 ? 1 + tile.getScaledItemsStored(8) : 0, 0, 8));
 			return builder.toString();
 		});
 
@@ -350,7 +351,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("cache");
 		ForgeRegistries.BLOCKS.register(this);
@@ -367,7 +368,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		cache = new ItemStack[5];
 

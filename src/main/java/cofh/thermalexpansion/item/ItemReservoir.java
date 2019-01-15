@@ -1,28 +1,39 @@
 package cofh.thermalexpansion.item;
 
-import baubles.api.cap.IBaublesItemHandler;
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.IBakeryProvider;
+import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.generation.IBakery;
 import cofh.api.fluid.IFluidContainerItem;
+import cofh.api.item.IColorableItem;
 import cofh.api.item.IMultiModeItem;
-import cofh.api.item.INBTCopyIngredient;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
 import cofh.core.item.ItemMulti;
 import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
+import cofh.core.util.RayTracer;
 import cofh.core.util.capabilities.FluidContainerItemWrapper;
 import cofh.core.util.core.IInitializer;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.render.item.ModelReservoir;
+import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import com.google.common.collect.Iterables;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import net.minecraft.client.renderer.block.model.ModelBakery;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -36,35 +47,32 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.*;
 
-public class ItemReservoir extends ItemMulti implements IInitializer, IMultiModeItem, IFluidContainerItem, IEnchantableItem, INBTCopyIngredient {
+@Optional.Interface (iface = "baubles.api.IBauble", modid = "baubles")
+public class ItemReservoir extends ItemMulti implements IInitializer, IBauble, IColorableItem, IEnchantableItem, IFluidContainerItem, IMultiModeItem, IBakeryProvider {
 
 	public ItemReservoir() {
 
 		super("thermalexpansion");
 
 		setUnlocalizedName("reservoir");
-		setCreativeTab(ThermalExpansion.tabItems);
+		setCreativeTab(ThermalExpansion.tabTools);
 
 		setHasSubtypes(true);
 		setMaxStackSize(1);
@@ -93,18 +101,9 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 
 		FluidStack fluid = getFluid(stack);
 		if (fluid != null) {
-			String color = StringHelper.LIGHT_GRAY;
-
-			if (fluid.getFluid().getRarity() == EnumRarity.UNCOMMON) {
-				color = StringHelper.YELLOW;
-			} else if (fluid.getFluid().getRarity() == EnumRarity.RARE) {
-				color = StringHelper.BRIGHT_BLUE;
-			} else if (fluid.getFluid().getRarity() == EnumRarity.EPIC) {
-				color = StringHelper.PINK;
-			}
+			String color = fluid.getFluid().getRarity().rarityColor.toString();
 			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName(fluid) + StringHelper.LIGHT_GRAY);
-
-			if (ItemHelper.getItemDamage(stack) == CREATIVE) {
+			if (isCreative(stack)) {
 				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));
 			} else {
 				tooltip.add(StringHelper.localize("info.cofh.level") + ": " + StringHelper.formatNumber(fluid.amount) + " / " + StringHelper.formatNumber(getCapacity(stack)) + " mB");
@@ -112,7 +111,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		} else {
 			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
 
-			if (ItemHelper.getItemDamage(stack) == CREATIVE) {
+			if (isCreative(stack)) {
 				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));
 			} else {
 				tooltip.add(StringHelper.localize("info.cofh.level") + ": 0 / " + StringHelper.formatNumber(getCapacity(stack)) + " mB");
@@ -123,9 +122,15 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		if (isInCreativeTab(tab)) {
+		if (enable && isInCreativeTab(tab)) {
 			for (int metadata : itemList) {
-				items.add(new ItemStack(this, 1, metadata));
+				if (metadata != CREATIVE) {
+					items.add(new ItemStack(this, 1, metadata));
+				} else {
+					if (TFProps.showCreativeItems) {
+						items.add(new ItemStack(this, 1, metadata));
+					}
+				}
 			}
 		}
 	}
@@ -136,10 +141,10 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (ServerHelper.isClientWorld(world) || CoreUtils.isFakePlayer(entity) || !isActive(stack)) {
 			return;
 		}
-		Iterable<ItemStack> equipment = Iterables.concat(entity.getEquipmentAndArmor(), getBaubles(entity));
+		Iterable<ItemStack> equipment = Iterables.concat(entity.getEquipmentAndArmor(), BaublesHelper.getBaubles(entity));
 
 		for (ItemStack equipmentStack : equipment) {
-			if (equipmentStack.equals(stack)) {
+			if (equipmentStack.equals(stack) || equipmentStack.getItem() == Items.BUCKET) {
 				continue;
 			}
 			if (FluidHelper.isFluidHandler(equipmentStack)) {
@@ -152,7 +157,13 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	@Override
-	public boolean isFull3D() {
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+
+		return !EnumEnchantmentType.BREAKABLE.equals(enchantment.type) && super.canApplyAtEnchantingTable(stack, enchantment);
+	}
+
+	@Override
+	public boolean isDamageable() {
 
 		return true;
 	}
@@ -164,15 +175,21 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	@Override
+	public boolean isFull3D() {
+
+		return true;
+	}
+
+	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 
-		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Fluid"));
+		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, CoreProps.FLUID));
 	}
 
 	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 
-		return ItemHelper.getItemDamage(stack) != CREATIVE;
+		return !isCreative(stack) && getFluidAmount(stack) > 0;
 	}
 
 	@Override
@@ -184,10 +201,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 
-		if (stack.getTagCompound() == null) {
-			EnergyHelper.setDefaultEnergyTag(stack, 0);
-		}
-		return 1.0D - (getFluidAmount(stack) / (double) getCapacity(stack));
+		return MathHelper.clamp(1.0D - ((double) getFluidAmount(stack) / (double) getCapacity(stack)), 0.0D, 1.0D);
 	}
 
 	@Override
@@ -222,16 +236,14 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (getSpace(stack) < Fluid.BUCKET_VOLUME) {
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 		}
-		RayTraceResult traceResult = this.rayTrace(world, player, false);
-		if (traceResult == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
+		RayTraceResult traceResult = RayTracer.retrace(player, true);
+		if (traceResult == null || traceResult.sideHit == null || traceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
 			return ActionResult.newResult(EnumActionResult.PASS, stack);
 		}
 		BlockPos pos = traceResult.getBlockPos();
 		if (world.isBlockModifiable(player, pos)) {
-			BlockPos targetPos = pos.offset(traceResult.sideHit);
-
-			if (player.canPlayerEdit(targetPos, traceResult.sideHit, stack)) {
-				FluidActionResult result = FluidUtil.tryPickUpFluid(stack, player, world, targetPos, traceResult.sideHit.getOpposite());
+			if (player.canPlayerEdit(pos, traceResult.sideHit, stack)) {
+				FluidActionResult result = FluidUtil.tryPickUpFluid(stack, player, world, pos, traceResult.sideHit);
 				if (result.isSuccess() && !player.capabilities.isCreativeMode) {
 					player.addStat(StatList.getObjectUseStats(this));
 					return ActionResult.newResult(EnumActionResult.SUCCESS, result.getResult());
@@ -253,8 +265,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		BlockPos pos = traceResult.getBlockPos();
 		if (world.isBlockModifiable(player, pos)) {
 			BlockPos targetPos = pos.offset(traceResult.sideHit);
-
-			if (player.canPlayerEdit(targetPos, traceResult.sideHit, stack)) {
+			if (player.canPlayerEdit(targetPos, traceResult.sideHit.getOpposite(), stack)) {
 				FluidActionResult result = FluidUtil.tryPlaceFluid(player, world, targetPos, stack, new FluidStack(getFluid(stack), Fluid.BUCKET_VOLUME));
 				if (result.isSuccess() && !player.capabilities.isCreativeMode) {
 					player.addStat(StatList.getObjectUseStats(this));
@@ -266,18 +277,13 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	/* HELPERS */
-	public boolean isActive(ItemStack stack) {
-
-		return stack.getTagCompound() != null && stack.getTagCompound().getBoolean("Active");
-	}
-
 	public boolean setActiveState(ItemStack stack, boolean state) {
 
 		if (getFluid(stack) != null) {
-			stack.getTagCompound().setBoolean("Active", state);
+			stack.getTagCompound().setBoolean(CoreProps.ACTIVE, state);
 			return true;
 		}
-		stack.getTagCompound().setBoolean("Active", false);
+		stack.getTagCompound().setBoolean(CoreProps.ACTIVE, false);
 		return false;
 	}
 
@@ -292,35 +298,47 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		return getCapacity(stack) - getFluidAmount(stack);
 	}
 
-	/* IModelRegister */
+	/* IBauble */
 	@Override
-	@SideOnly (Side.CLIENT)
-	public void registerModels() {
+	public BaubleType getBaubleType(ItemStack stack) {
 
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+		return BaubleType.TRINKET;
+	}
 
-		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
-			for (int active = 0; active < 2; active++) {
-				for (int mode = 0; mode < 2; mode++) {
-					ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", active, mode, entry.getValue().name)));
+	@Override
+	public void onWornTick(ItemStack stack, EntityLivingBase player) {
+
+		World world = player.world;
+
+		if (ServerHelper.isClientWorld(world) || !isActive(stack)) {
+			return;
+		}
+		Iterable<ItemStack> equipment = Iterables.concat(player.getEquipmentAndArmor(), BaublesHelper.getBaubles(player));
+
+		for (ItemStack equipmentStack : equipment) {
+			if (equipmentStack.equals(stack) || equipmentStack.getItem() == Items.BUCKET) {
+				continue;
+			}
+			if (FluidHelper.isFluidHandler(equipmentStack)) {
+				IFluidHandlerItem handler = FluidUtil.getFluidHandler(equipmentStack);
+				if (handler != null && getFluid(stack) != null) {
+					drain(stack, handler.fill(new FluidStack(getFluid(stack), Math.min(getFluidAmount(stack), Fluid.BUCKET_VOLUME)), true), true);
 				}
 			}
 		}
 	}
 
-	/* IMultiModeItem */
 	@Override
-	public void onModeChange(EntityPlayer player, ItemStack stack) {
+	public boolean willAutoSync(ItemStack stack, EntityLivingBase player) {
 
-		switch (getMode(stack)) {
-			case BUCKET_FILL:
-				player.world.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_FILL, SoundCategory.PLAYERS, 0.6F, 1.0F);
-				break;
-			case BUCKET_EMPTY:
-				player.world.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 0.6F, 1.0F);
-				break;
-		}
-		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.reservoir.d." + getMode(stack)));
+		return true;
+	}
+
+	/* IEnchantableItem */
+	@Override
+	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
+
+		return enchantment == CoreEnchantments.holding;
 	}
 
 	/* IFluidContainerItem */
@@ -330,10 +348,10 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (container.getTagCompound() == null) {
 			container.setTagCompound(new NBTTagCompound());
 		}
-		if (!container.getTagCompound().hasKey("Fluid")) {
+		if (!container.getTagCompound().hasKey(CoreProps.FLUID)) {
 			return null;
 		}
-		return FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
+		return FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag(CoreProps.FLUID));
 	}
 
 	@Override
@@ -354,7 +372,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (container.getTagCompound() == null) {
 			container.setTagCompound(new NBTTagCompound());
 		}
-		if (resource == null) {
+		if (resource == null || resource.amount <= 0) {
 			return 0;
 		}
 		int capacity = getCapacity(container);
@@ -362,16 +380,16 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (ItemHelper.getItemDamage(container) == CREATIVE) {
 			if (doFill) {
 				NBTTagCompound fluidTag = resource.writeToNBT(new NBTTagCompound());
-				fluidTag.setInteger("Amount", capacity - Fluid.BUCKET_VOLUME);
-				container.getTagCompound().setTag("Fluid", fluidTag);
+				fluidTag.setInteger(CoreProps.AMOUNT, capacity - Fluid.BUCKET_VOLUME);
+				container.getTagCompound().setTag(CoreProps.FLUID, fluidTag);
 			}
 			return resource.amount;
 		}
 		if (!doFill) {
-			if (!container.getTagCompound().hasKey("Fluid")) {
+			if (!container.getTagCompound().hasKey(CoreProps.FLUID)) {
 				return Math.min(capacity, resource.amount);
 			}
-			FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
+			FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag(CoreProps.FLUID));
 
 			if (stack == null) {
 				return Math.min(capacity, resource.amount);
@@ -381,19 +399,19 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 			}
 			return Math.min(capacity - stack.amount, resource.amount);
 		}
-		if (!container.getTagCompound().hasKey("Fluid")) {
+		if (!container.getTagCompound().hasKey(CoreProps.FLUID)) {
 			NBTTagCompound fluidTag = resource.writeToNBT(new NBTTagCompound());
 
 			if (capacity < resource.amount) {
-				fluidTag.setInteger("Amount", capacity);
-				container.getTagCompound().setTag("Fluid", fluidTag);
+				fluidTag.setInteger(CoreProps.AMOUNT, capacity);
+				container.getTagCompound().setTag(CoreProps.FLUID, fluidTag);
 				return capacity;
 			}
-			fluidTag.setInteger("Amount", resource.amount);
-			container.getTagCompound().setTag("Fluid", fluidTag);
+			fluidTag.setInteger(CoreProps.AMOUNT, resource.amount);
+			container.getTagCompound().setTag(CoreProps.FLUID, fluidTag);
 			return resource.amount;
 		}
-		NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag("Fluid");
+		NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag(CoreProps.FLUID);
 		FluidStack stack = FluidStack.loadFluidStackFromNBT(fluidTag);
 
 		if (!stack.isFluidEqual(resource)) {
@@ -407,7 +425,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		} else {
 			stack.amount = capacity;
 		}
-		container.getTagCompound().setTag("Fluid", stack.writeToNBT(fluidTag));
+		container.getTagCompound().setTag(CoreProps.FLUID, stack.writeToNBT(fluidTag));
 		return filled;
 	}
 
@@ -417,35 +435,43 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		if (container.getTagCompound() == null) {
 			container.setTagCompound(new NBTTagCompound());
 		}
-		if (!container.getTagCompound().hasKey("Fluid") || maxDrain == 0) {
+		if (!container.getTagCompound().hasKey(CoreProps.FLUID) || maxDrain == 0) {
 			return null;
 		}
-		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
+		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag(CoreProps.FLUID));
 
 		if (stack == null) {
 			return null;
 		}
-		boolean creative = ItemHelper.getItemDamage(container) == CREATIVE;
+		boolean creative = isCreative(container);
 		int drained = creative ? maxDrain : Math.min(stack.amount, maxDrain);
 
 		if (doDrain && !creative) {
 			if (maxDrain >= stack.amount) {
-				container.getTagCompound().removeTag("Fluid");
+				container.getTagCompound().removeTag(CoreProps.FLUID);
 				return stack;
 			}
-			NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag("Fluid");
-			fluidTag.setInteger("Amount", fluidTag.getInteger("Amount") - drained);
-			container.getTagCompound().setTag("Fluid", fluidTag);
+			NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag(CoreProps.FLUID);
+			fluidTag.setInteger(CoreProps.AMOUNT, fluidTag.getInteger(CoreProps.AMOUNT) - drained);
+			container.getTagCompound().setTag(CoreProps.FLUID, fluidTag);
 		}
 		stack.amount = drained;
 		return stack;
 	}
 
-	/* IEnchantableItem */
+	/* IMultiModeItem */
 	@Override
-	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
+	public void onModeChange(EntityPlayer player, ItemStack stack) {
 
-		return enchantment == CoreEnchantments.holding;
+		switch (getMode(stack)) {
+			case BUCKET_FILL:
+				player.world.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_FILL, SoundCategory.PLAYERS, 0.6F, 1.0F);
+				break;
+			case BUCKET_EMPTY:
+				player.world.playSound(null, player.getPosition(), SoundEvents.ITEM_BUCKET_EMPTY, SoundCategory.PLAYERS, 0.6F, 1.0F);
+				break;
+		}
+		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.reservoir.d." + getMode(stack)));
 	}
 
 	/* CAPABILITIES */
@@ -455,26 +481,43 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		return new FluidContainerItemWrapper(stack, this);
 	}
 
-	/* BAUBLES */
-	@CapabilityInject (IBaublesItemHandler.class)
-	private static Capability<IBaublesItemHandler> CAPABILITY_BAUBLES = null;
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
 
-	private static Iterable<ItemStack> getBaubles(Entity entity) {
+		ModelResourceLocation loc = new ModelResourceLocation(getRegistryName(), "inventory");
+		ModelLoader.setCustomMeshDefinition(this, stack -> loc);
+		ModelRegistryHelper.register(loc, new CCBakeryModel());
+		ModelBakery.registerItemKeyGenerator(this, stack -> {
+			int colour = ColorHelper.hasColor0(stack) ? 1 : 0;
+			int active = isActive(stack) ? 1 : 0;
+			int mode = getMode(stack);
+			String fluid_hash = "none";
+			if (stack.hasTagCompound() && stack.getTagCompound().hasKey(CoreProps.FLUID)) {
+				FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag(CoreProps.FLUID));
+				if (fluid != null) {
+					fluid_hash = Integer.toString(FluidHelper.getFluidHash(fluid));
+				}
+			}
 
-		if (CAPABILITY_BAUBLES == null) {
-			return Collections.emptyList();
-		}
-		IBaublesItemHandler handler = entity.getCapability(CAPABILITY_BAUBLES, null);
+			return String.format("%s|%s,color0=%s,mode=%s_%s,fluid=%s", getRegistryName(), stack.getMetadata(), colour, active, mode, fluid_hash);
+		});
+	}
 
-		if (handler == null) {
-			return Collections.emptyList();
-		}
-		return IntStream.range(0, handler.getSlots()).mapToObj(handler::getStackInSlot).filter(stack -> !stack.isEmpty()).collect(Collectors.toList());
+	/* IBakeryProvider */
+	@Override
+	public IBakery getBakery() {
+
+		return ModelReservoir.INSTANCE;
 	}
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
+
+		ForgeRegistries.ITEMS.register(setRegistryName("reservoir"));
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		config();
 
@@ -484,21 +527,18 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		reservoirSignalum = addEntryItem(3, "standard3", CAPACITY[3], EnumRarity.UNCOMMON);
 		reservoirResonant = addEntryItem(4, "standard4", CAPACITY[4], EnumRarity.RARE);
 
-		reservoirCreative = addEntryItem(CREATIVE, "creative", Fluid.BUCKET_VOLUME, EnumRarity.EPIC);
-
-		ThermalExpansion.proxy.addIModelRegister(this);
+		reservoirCreative = addEntryItem(CREATIVE, "creative", CAPACITY[4], EnumRarity.EPIC);
 
 		return true;
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		if (!enable) {
 			return false;
 		}
 		// @formatter:off
-
 		addShapedRecipe(reservoirBasic,
 				" R ",
 				"IXI",
@@ -509,8 +549,55 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 				'Y', ItemMaterial.redstoneServo
 		);
 
+		addShapedUpgradeRecipe(reservoirHardened,
+				" R ",
+				"IXI",
+				" Y ",
+				'I', "ingotInvar",
+				'R', "blockGlass",
+				'X', reservoirBasic,
+				'Y', "ingotCopper"
+		);
+		addShapedUpgradeRecipe(reservoirReinforced,
+				" R ",
+				"IXI",
+				" Y ",
+				'I', "ingotElectrum",
+				'R', "blockGlassHardened",
+				'X', reservoirHardened,
+				'Y', "ingotInvar"
+		);
+		addShapedUpgradeRecipe(reservoirSignalum,
+				" R ",
+				"IXI",
+				" Y ",
+				'I', "ingotSignalum",
+				'R', "dustCryotheum",
+				'X', reservoirReinforced,
+				'Y', "ingotElectrum"
+		);
+		addShapedUpgradeRecipe(reservoirResonant,
+				" R ",
+				"IXI",
+				" Y ",
+				'I', "ingotEnderium",
+				'R', "dustPyrotheum",
+				'X', reservoirSignalum,
+				'Y', "ingotSignalum"
+		);
 		// @formatter:on
 
+		addColorRecipe(reservoirBasic, reservoirBasic, "dye");
+		addColorRecipe(reservoirHardened, reservoirHardened, "dye");
+		addColorRecipe(reservoirReinforced, reservoirReinforced, "dye");
+		addColorRecipe(reservoirSignalum, reservoirSignalum, "dye");
+		addColorRecipe(reservoirResonant, reservoirResonant, "dye");
+
+		addColorRemoveRecipe(reservoirBasic, reservoirBasic);
+		addColorRemoveRecipe(reservoirHardened, reservoirHardened);
+		addColorRemoveRecipe(reservoirReinforced, reservoirReinforced);
+		addColorRemoveRecipe(reservoirSignalum, reservoirSignalum);
+		addColorRemoveRecipe(reservoirResonant, reservoirResonant);
 		return true;
 	}
 
@@ -522,7 +609,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 
 		int capacity = CAPACITY_BASE;
 		comment = "Adjust this value to change the amount of Fluid (in mB) stored by a Basic Reservoir. This base value will scale with item level.";
-		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, Fluid.BUCKET_VOLUME * 2, capacity * 10, comment);
 
 		for (int i = 0; i < CAPACITY.length; i++) {
 			CAPACITY[i] *= capacity;
@@ -553,7 +640,7 @@ public class ItemReservoir extends ItemMulti implements IInitializer, IMultiMode
 		return addItem(metadata, name, rarity);
 	}
 
-	private static TIntObjectHashMap<ItemReservoir.TypeEntry> typeMap = new TIntObjectHashMap<>();
+	private static Int2ObjectOpenHashMap<TypeEntry> typeMap = new Int2ObjectOpenHashMap<>();
 
 	public static final int BUCKET_FILL = 0;
 	public static final int BUCKET_EMPTY = 1;

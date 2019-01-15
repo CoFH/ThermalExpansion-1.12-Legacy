@@ -4,6 +4,7 @@ import cofh.core.inventory.ComparableItemStack;
 import cofh.core.inventory.ComparableItemStackNBT;
 import cofh.core.util.helpers.StringHelper;
 import cofh.redstoneflux.api.IEnergyContainerItem;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;
 import cofh.thermalexpansion.plugins.jei.Drawables;
@@ -34,6 +35,9 @@ public class ChargerRecipeCategory extends BaseRecipeCategory<ChargerRecipeWrapp
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Charger", enable);
 
 		if (!enable) {
 			return;
@@ -91,7 +95,7 @@ public class ChargerRecipeCategory extends BaseRecipeCategory<ChargerRecipeWrapp
 						}
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					ThermalExpansion.LOG.error("Exception thrown while getting Charger recipes.", e);
 				}
 			}
 		}

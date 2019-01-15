@@ -1,21 +1,18 @@
 package cofh.thermalexpansion.plugins;
 
-import cofh.core.util.ModPlugin;
 import cofh.core.util.helpers.ItemHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.managers.device.TapperManager;
+import cofh.thermalexpansion.util.managers.machine.EnchanterManager;
 import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Loader;
 
-public class PluginEvilCraft extends ModPlugin {
+public class PluginEvilCraft extends PluginTEBase {
 
 	public static final String MOD_ID = "evilcraft";
 	public static final String MOD_NAME = "EvilCraft";
@@ -25,80 +22,57 @@ public class PluginEvilCraft extends ModPlugin {
 		super(MOD_ID, MOD_NAME);
 	}
 
-	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public void initializeDelegate() {
 
-		String category = "Plugins";
-		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
-		enable = Loader.isModLoaded(MOD_ID) && ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
+		ItemStack bloodOrb = getItemStack("blood_orb", 1, 1);
+		ItemStack bloodWaxedCoal = getItemStack("blood_waxed_coal");
+		ItemStack darkGem = getItemStack("dark_gem");
+		ItemStack darkPowerGem = getItemStack("dark_power_gem");
+		ItemStack poisonSac = getItemStack("poison_sac");
 
-		if (!enable) {
-			return false;
+		ItemStack logUndead = getItemStack("undead_log");
+		ItemStack saplingUndead = getItemStack("undead_sapling");
+
+		Block blockLogUndead = getBlock("undead_log");
+		Block blockLeavesUndead = getBlock("undead_leaves");
+
+		Fluid fluidBlood = FluidRegistry.getFluid("evilcraftblood");
+
+		/* INSOLATOR */
+		{
+			int energy = InsolatorManager.DEFAULT_ENERGY;
+
+			InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingUndead, ItemHelper.cloneStack(logUndead, 6), new ItemStack(Blocks.DEADBUSH), 100);
 		}
-		return !error;
-	}
 
-	@Override
-	public boolean register() {
+		/* TRANSPOSER */
+		{
+			int energy = 2400;
 
-		if (!enable) {
-			return false;
-		}
-		try {
-			ItemStack logUndead = getItemStack("undead_log", 1, 0);
-
-			ItemStack saplingUndead = getItemStack("undead_sapling", 1, 0);
-
-			Block blockLogUndead = getBlock("undead_log");
-			Block blockLeavesUndead = getBlock("undead_leaves");
-
-			Fluid fluidBlood = FluidRegistry.getFluid("evilcraftblood");
-
-			/* INSOLATOR */
-			{
-				int energy = InsolatorManager.DEFAULT_ENERGY;
-
-				InsolatorManager.addDefaultTreeRecipe(energy * 2, saplingUndead, ItemHelper.cloneStack(logUndead, 6), ItemStack.EMPTY, 0);
+			if (fluidBlood != null) {
+				TransposerManager.addExtractRecipe(energy, logUndead, getItemStack("hardened_blood_shard"), new FluidStack(fluidBlood, 100), 25, false);
 			}
-
-			/* TRANSPOSER */
-			{
-				int energy = 2400;
-
-				if (fluidBlood != null) {
-					TransposerManager.addExtractRecipe(energy, logUndead, getItemStack("hardened_blood_shard"), new FluidStack(fluidBlood, 100), 25, false);
-				}
-			}
-
-			/* TAPPER */
-			{
-				if (fluidBlood != null) {
-					TapperManager.addItemMapping(logUndead, new FluidStack(fluidBlood, 10));
-
-					TapperManager.addBlockStateMapping(new ItemStack(blockLogUndead, 1, 1), new FluidStack(fluidBlood, 50));
-
-					addLeafMapping(blockLogUndead, 1, blockLeavesUndead, 0);
-				}
-			}
-		} catch (Throwable t) {
-			ThermalExpansion.LOG.error("Thermal Expansion: " + MOD_NAME + " Plugin encountered an error:", t);
-			error = true;
 		}
-		if (!error) {
-			ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
+
+		/* ENCHANTER */
+		{
+			EnchanterManager.addDefaultEnchantmentRecipe(bloodOrb, MOD_ID + ":life_stealing", 1);
+			EnchanterManager.addDefaultEnchantmentRecipe(poisonSac, MOD_ID + ":poison_tip", 2);
+			EnchanterManager.addDefaultEnchantmentRecipe(bloodWaxedCoal, MOD_ID + ":unusing", 3);
+			//			EnchanterManager.addDefaultEnchantmentRecipe(darkGem, MOD_ID + ":breaking", 1);
+			//			EnchanterManager.addDefaultEnchantmentRecipe(darkPowerGem, MOD_ID + ":vengeance", 1);
 		}
-		return !error;
-	}
 
-	/* HELPERS */
-	private void addLeafMapping(Block logBlock, int logMetadata, Block leafBlock, int leafMetadata) {
+		/* TAPPER */
+		{
+			if (fluidBlood != null) {
+				TapperManager.addItemMapping(logUndead, new FluidStack(fluidBlood, 10));
 
-		IBlockState logState = logBlock.getStateFromMeta(logMetadata);
+				TapperManager.addBlockStateMapping(new ItemStack(blockLogUndead, 1, 1), new FluidStack(fluidBlood, 50));
 
-		for (Boolean check_decay : BlockLeaves.CHECK_DECAY.getAllowedValues()) {
-			IBlockState leafState = leafBlock.getStateFromMeta(leafMetadata).withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE).withProperty(BlockLeaves.CHECK_DECAY, check_decay);
-			TapperManager.addLeafMapping(logState, leafState);
+				addLeafMapping(blockLogUndead, 1, blockLeavesUndead, 0);
+			}
 		}
 	}
 

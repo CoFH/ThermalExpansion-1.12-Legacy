@@ -27,7 +27,7 @@ public class MagmaticFuelWrapper extends BaseFuelWrapper {
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLAME);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		durationFill = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileDynamoMagmatic.basePower, StartDirection.TOP, true);
+		durationFill = guiHelper.createAnimatedDrawable(progressDrawable, Math.max(1, energy / TileDynamoMagmatic.basePower), StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.BOTTOM, false);
 	}
 

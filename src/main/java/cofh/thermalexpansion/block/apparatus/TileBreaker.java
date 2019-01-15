@@ -1,13 +1,15 @@
 package cofh.thermalexpansion.block.apparatus;
 
 import cofh.api.tileentity.IInventoryConnection;
-import cofh.core.entity.CoFHFakePlayer;
+import cofh.core.entity.FakePlayerCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.apparatus.BlockApparatus.Type;
 import cofh.thermalexpansion.gui.client.apparatus.GuiBreaker;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,6 +23,9 @@ import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Arrays;
+
+import static cofh.core.util.core.SideConfig.NONE;
+import static cofh.core.util.core.SideConfig.OUTPUT_ALL;
 
 public class TileBreaker extends TileApparatusBase implements IInventoryConnection, ITickable {
 
@@ -110,7 +115,7 @@ public class TileBreaker extends TileApparatusBase implements IInventoryConnecti
 					continue;
 				}
 			}
-			if (CoFHFakePlayer.isBlockBreakable(fakePlayer, world, target)) {
+			if (FakePlayerCore.isBlockBreakable(fakePlayer, world, target)) {
 				IBlockState state = world.getBlockState(target);
 				stuffedItems.addAll(BlockHelper.breakBlock(world, fakePlayer, target, state, 0, true, false));
 			}
@@ -127,7 +132,7 @@ public class TileBreaker extends TileApparatusBase implements IInventoryConnecti
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	/* CAPABILITIES */

@@ -1,0 +1,339 @@
+{
+	"smelter": [
+		{
+			"input": {
+				"ore": "dustLead",
+				"count": 1
+			},
+			"input2": {
+				"ore": "dustObsidian",
+				"count": 4
+			},
+			"output": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"energy_mod": 200
+		},
+		{
+			"input": {
+				"ore": "dustCopper",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass",
+				"data": 0,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustTin",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass",
+				"data": 1,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustSilver",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass",
+				"data": 2,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustLead",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass",
+				"data": 3,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustAluminum",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass",
+				"data": 4,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustNickel",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass",
+				"data": 5,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustPlatinum",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass",
+				"data": 6,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustIridium",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass",
+				"data": 7,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustSteel",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass_alloy",
+				"data": 0,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustElectrum",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass_alloy",
+				"data": 1,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustInvar",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass_alloy",
+				"data": 2,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustBronze",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass_alloy",
+				"data": 3,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustConstantan",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass_alloy",
+				"data": 4,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustSignalum",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass_alloy",
+				"data": 5,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustLumium",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass_alloy",
+				"data": 6,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		},
+		{
+			"input": {
+				"ore": "dustEnderium",
+				"count": 1
+			},
+			"input2": {
+				"constant": "hardened_glass",
+				"count": 2
+			},
+			"output": {
+				"item": "thermalfoundation:glass_alloy",
+				"data": 7,
+				"count": 2
+			},
+			"output2": {
+				"constant": "rich_slag",
+				"chance": 15
+			},
+			"energy_mod": 150
+		}
+	]
+}

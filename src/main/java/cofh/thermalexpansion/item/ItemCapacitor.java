@@ -1,10 +1,9 @@
 package cofh.thermalexpansion.item;
 
-import baubles.api.cap.IBaublesItemHandler;
-import cofh.api.item.IMultiModeItem;
-import cofh.api.item.INBTCopyIngredient;
+import baubles.api.BaubleType;
+import baubles.api.IBauble;
 import cofh.core.init.CoreEnchantments;
-import cofh.core.item.IEnchantableItem;
+import cofh.core.init.CoreProps;
 import cofh.core.item.ItemMultiRF;
 import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
@@ -13,14 +12,16 @@ import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.util.EnergyContainerItemWrapper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalfoundation.init.TFProps;
 import com.google.common.collect.Iterables;
-import gnu.trove.map.hash.TIntObjectHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
@@ -31,30 +32,29 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fml.common.Optional;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
+import static cofh.core.util.helpers.RecipeHelper.*;
 
-public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem, INBTCopyIngredient {
+@Optional.Interface (iface = "baubles.api.IBauble", modid = "baubles")
+public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble {
 
 	public ItemCapacitor() {
 
 		super("thermalexpansion");
 
 		setUnlocalizedName("capacitor");
-		setCreativeTab(ThermalExpansion.tabItems);
+		setCreativeTab(ThermalExpansion.tabTools);
 
 		setHasSubtypes(true);
 		setMaxStackSize(1);
@@ -80,7 +80,7 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 		}
 		tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.INSTANCE.getKey())));
 
-		if (ItemHelper.getItemDamage(stack) == CREATIVE) {
+		if (isCreative(stack)) {
 			tooltip.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
 			tooltip.add(StringHelper.localize("info.cofh.send") + ": " + StringHelper.formatNumber(getSend(stack)) + " RF/t");
 		} else {
@@ -92,13 +92,19 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		if (isInCreativeTab(tab)) {
+		if (enable && isInCreativeTab(tab)) {
 			for (int metadata : itemList) {
 				if (metadata != CREATIVE) {
-					items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), 0));
-					items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), getBaseCapacity(metadata)));
+					if (TFProps.showEmptyItems) {
+						items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), 0));
+					}
+					if (TFProps.showFullItems) {
+						items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), getBaseCapacity(metadata)));
+					}
 				} else {
-					items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), getBaseCapacity(metadata)));
+					if (TFProps.showCreativeItems) {
+						items.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(this, 1, metadata), getBaseCapacity(metadata)));
+					}
 				}
 			}
 		}
@@ -111,16 +117,17 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 			return;
 		}
 		Iterable<ItemStack> equipment;
+		EntityPlayer player = (EntityPlayer) entity;
 
 		switch (getMode(stack)) {
-			case HELD_ITEMS:
-				equipment = entity.getHeldEquipment();
+			case EQUIPMENT:
+				equipment = Iterables.concat(player.getEquipmentAndArmor(), BaublesHelper.getBaubles(player));
 				break;
-			case WORN_ITEMS:
-				equipment = Iterables.concat(entity.getArmorInventoryList(), getBaubles(entity));
+			case INVENTORY:
+				equipment = player.inventory.mainInventory;
 				break;
 			default:
-				equipment = Iterables.concat(entity.getEquipmentAndArmor(), getBaubles(entity));
+				equipment = Iterables.concat(Arrays.asList(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory, BaublesHelper.getBaubles(player)));
 		}
 		for (ItemStack equipmentStack : equipment) {
 			if (equipmentStack.equals(stack)) {
@@ -135,12 +142,6 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 				}
 			}
 		}
-	}
-
-	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-
-		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || getEnergyStored(oldStack) > 0 != getEnergyStored(newStack) > 0);
 	}
 
 	@Override
@@ -175,18 +176,13 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 	}
 
 	/* HELPERS */
-	public boolean isActive(ItemStack stack) {
-
-		return stack.getTagCompound() != null && stack.getTagCompound().getBoolean("Active");
-	}
-
 	public boolean setActiveState(ItemStack stack, boolean state) {
 
 		if (getEnergyStored(stack) > 0) {
-			stack.getTagCompound().setBoolean("Active", state);
+			stack.getTagCompound().setBoolean(CoreProps.ACTIVE, state);
 			return true;
 		}
-		stack.getTagCompound().setBoolean("Active", false);
+		stack.getTagCompound().setBoolean(CoreProps.ACTIVE, false);
 		return false;
 	}
 
@@ -227,20 +223,73 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 		return typeMap.get(metadata).capacity;
 	}
 
-	/* IModelRegister */
+	/* IBauble */
 	@Override
-	@SideOnly (Side.CLIENT)
-	public void registerModels() {
+	public BaubleType getBaubleType(ItemStack stack) {
 
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", this.getEnergyStored(stack) > 0 && this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
+		return BaubleType.TRINKET;
+	}
 
-		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
-			for (int active = 0; active < 2; active++) {
-				for (int mode = 0; mode < 3; mode++) {
-					ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("mode=%s_%s,type=%s", active, mode, entry.getValue().name)));
+	@Override
+	public void onWornTick(ItemStack stack, EntityLivingBase entity) {
+
+		World world = entity.world;
+
+		if (ServerHelper.isClientWorld(world) || !isActive(stack)) {
+			return;
+		}
+		Iterable<ItemStack> equipment;
+		EntityPlayer player = (EntityPlayer) entity;
+
+		switch (getMode(stack)) {
+			case EQUIPMENT:
+				equipment = Iterables.concat(entity.getEquipmentAndArmor(), BaublesHelper.getBaubles(entity));
+				break;
+			case INVENTORY:
+				equipment = player.inventory.mainInventory;
+				break;
+			default:
+				equipment = Iterables.concat(Arrays.asList(player.inventory.mainInventory, player.inventory.armorInventory, player.inventory.offHandInventory, BaublesHelper.getBaubles(player)));
+		}
+		for (ItemStack equipmentStack : equipment) {
+			if (equipmentStack.equals(stack)) {
+				continue;
+			}
+			if (EnergyHelper.isEnergyContainerItem(equipmentStack)) {
+				extractEnergy(stack, ((IEnergyContainerItem) equipmentStack.getItem()).receiveEnergy(equipmentStack, Math.min(getEnergyStored(stack), getSend(stack)), false), false);
+			} else if (EnergyHelper.isEnergyHandler(equipmentStack)) {
+				IEnergyStorage handler = EnergyHelper.getEnergyHandler(equipmentStack);
+				if (handler != null) {
+					extractEnergy(stack, handler.receiveEnergy(Math.min(getEnergyStored(stack), getSend(stack)), false), false);
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean willAutoSync(ItemStack stack, EntityLivingBase player) {
+
+		return true;
+	}
+
+	/* IEnergyContainerItem */
+	@Override
+	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
+
+		if (container.getTagCompound() == null) {
+			EnergyHelper.setDefaultEnergyTag(container, 0);
+		}
+		if (isCreative(container)) {
+			return maxExtract;
+		}
+		int stored = Math.min(container.getTagCompound().getInteger(CoreProps.ENERGY), getMaxEnergyStored(container));
+		int extract = Math.min(maxExtract, Math.min(stored, getSend(container)));
+
+		if (!simulate) {
+			stored -= extract;
+			container.getTagCompound().setInteger(CoreProps.ENERGY, stored);
+		}
+		return extract;
 	}
 
 	/* IMultiModeItem */
@@ -257,26 +306,6 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.capacitor.d." + getMode(stack)));
 	}
 
-	/* IEnergyContainerItem */
-	@Override
-	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
-
-		if (container.getTagCompound() == null) {
-			EnergyHelper.setDefaultEnergyTag(container, 0);
-		}
-		if (ItemHelper.getItemDamage(container) == CREATIVE) {
-			return maxExtract;
-		}
-		int stored = container.getTagCompound().getInteger("Energy");
-		int extract = Math.min(maxExtract, Math.min(stored, getSend(container)));
-
-		if (!simulate) {
-			stored -= extract;
-			container.getTagCompound().setInteger("Energy", stored);
-		}
-		return extract;
-	}
-
 	/* CAPABILITIES */
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
@@ -284,26 +313,30 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 		return new EnergyContainerItemWrapper(stack, this);
 	}
 
-	/* BAUBLES */
-	@CapabilityInject (IBaublesItemHandler.class)
-	private static Capability<IBaublesItemHandler> CAPABILITY_BAUBLES = null;
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
 
-	private static Iterable<ItemStack> getBaubles(Entity entity) {
+		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), String.format("color0=%s,mode=%s_%s,type=%s", ColorHelper.hasColor0(stack) ? 1 : 0, this.getEnergyStored(stack) > 0 && this.isActive(stack) ? 1 : 0, this.getMode(stack), typeMap.get(ItemHelper.getItemDamage(stack)).name)));
 
-		if (CAPABILITY_BAUBLES == null) {
-			return Collections.emptyList();
+		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
+			for (int color0 = 0; color0 < 2; color0++) {
+				for (int active = 0; active < 2; active++) {
+					for (int mode = 0; mode < 3; mode++) {
+						ModelBakery.registerItemVariants(this, new ModelResourceLocation(getRegistryName(), String.format("color0=%s,mode=%s_%s,type=%s", color0, active, mode, entry.getValue().name)));
+					}
+				}
+			}
 		}
-		IBaublesItemHandler handler = entity.getCapability(CAPABILITY_BAUBLES, null);
-
-		if (handler == null) {
-			return Collections.emptyList();
-		}
-		return IntStream.range(0, handler.getSlots()).mapToObj(handler::getStackInSlot).filter(stack -> !stack.isEmpty()).collect(Collectors.toList());
 	}
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
+
+		ForgeRegistries.ITEMS.register(setRegistryName("capacitor"));
+		ThermalExpansion.proxy.addIModelRegister(this);
 
 		config();
 
@@ -313,21 +346,18 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 		capacitorSignalum = addEntryItem(3, "standard3", EnumRarity.UNCOMMON);
 		capacitorResonant = addEntryItem(4, "standard4", EnumRarity.RARE);
 
-		capacitorCreative = addEntryItem(CREATIVE, "creative", SEND_CREATIVE, 0, CAPACITY[4], EnumRarity.EPIC);
-
-		ThermalExpansion.proxy.addIModelRegister(this);
+		capacitorCreative = addEntryItem(CREATIVE, "creative", SEND[4] * 10, 0, CAPACITY[4], EnumRarity.EPIC);
 
 		return true;
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		if (!enable) {
 			return false;
 		}
 		// @formatter:off
-
 		addShapedRecipe(capacitorBasic,
 				" R ",
 				"IXI",
@@ -337,9 +367,55 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 				'X', "ingotCopper",
 				'Y', "dustSulfur"
 		);
-
+		addShapedUpgradeRecipe(capacitorHardened,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotInvar",
+				'R', "dustRedstone",
+				'X', capacitorBasic,
+				'Y', "ingotTin"
+		);
+		addShapedUpgradeRecipe(capacitorReinforced,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotElectrum",
+				'R', "dustRedstone",
+				'X', capacitorHardened,
+				'Y', "blockGlassHardened"
+		);
+		addShapedUpgradeRecipe(capacitorSignalum,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotSignalum",
+				'R', "dustRedstone",
+				'X', capacitorReinforced,
+				'Y', "dustCryotheum"
+		);
+		addShapedUpgradeRecipe(capacitorResonant,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotEnderium",
+				'R', "dustRedstone",
+				'X', capacitorSignalum,
+				'Y', "dustPyrotheum"
+		);
 		// @formatter:on
 
+		addColorRecipe(capacitorBasic, capacitorBasic, "dye");
+		addColorRecipe(capacitorHardened, capacitorHardened, "dye");
+		addColorRecipe(capacitorReinforced, capacitorReinforced, "dye");
+		addColorRecipe(capacitorSignalum, capacitorSignalum, "dye");
+		addColorRecipe(capacitorResonant, capacitorResonant, "dye");
+
+		addColorRemoveRecipe(capacitorBasic, capacitorBasic);
+		addColorRemoveRecipe(capacitorHardened, capacitorHardened);
+		addColorRemoveRecipe(capacitorReinforced, capacitorReinforced);
+		addColorRemoveRecipe(capacitorSignalum, capacitorSignalum);
+		addColorRemoveRecipe(capacitorResonant, capacitorResonant);
 		return true;
 	}
 
@@ -351,15 +427,15 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 
 		int capacity = CAPACITY_BASE;
 		comment = "Adjust this value to change the amount of Energy (in RF) stored by a Basic Flux Capacitor. This base value will scale with item level.";
-		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, CAPACITY_MIN, CAPACITY_MAX, comment);
 
 		int recv = XFER_BASE * 2;
 		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be received by a Basic Flux Capacitor. This base value will scale with item level.";
-		recv = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseReceive", category, recv, recv / 10, recv * 10, comment);
+		recv = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseReceive", category, recv, XFER_MIN, XFER_MAX, comment);
 
 		int send = XFER_BASE;
 		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be sent by a Basic Flux Capacitor. This base value will scale with item level.";
-		send = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseSend", category, send, send / 10, send * 10, comment);
+		send = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseSend", category, send, XFER_MIN, XFER_MAX, comment);
 
 		for (int i = 0; i < CAPACITY.length; i++) {
 			CAPACITY[i] *= capacity;
@@ -402,19 +478,17 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 		return addItem(metadata, name, rarity);
 	}
 
-	private static TIntObjectHashMap<TypeEntry> typeMap = new TIntObjectHashMap<>();
+	private static Int2ObjectOpenHashMap<TypeEntry> typeMap = new Int2ObjectOpenHashMap<>();
 
-	public static final int HELD_ITEMS = 0;
-	public static final int WORN_ITEMS = 1;
+	public static final int EQUIPMENT = 0;
+	public static final int INVENTORY = 1;
 
 	public static final int CAPACITY_BASE = 1000000;
 	public static final int XFER_BASE = 1000;
-	public static final int CREATIVE = 32000;
 
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int[] RECV = { 1, 4, 9, 16, 25 };
 	public static final int[] SEND = { 1, 4, 9, 16, 25 };
-	public static final int SEND_CREATIVE = 25 * 10000;
 
 	public static boolean enable = true;
 
@@ -426,6 +500,5 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IMultiMo
 	public static ItemStack capacitorResonant;
 
 	public static ItemStack capacitorCreative;
-	public static ItemStack capacitorPotato;
 
 }

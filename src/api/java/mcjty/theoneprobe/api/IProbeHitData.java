@@ -12,19 +12,18 @@ import javax.annotation.Nullable;
  */
 public interface IProbeHitData {
 
-	BlockPos getPos();
+    BlockPos getPos();
 
-	Vec3d getHitVec();
+    Vec3d getHitVec();
 
-	EnumFacing getSideHit();
+    EnumFacing getSideHit();
 
-	/**
-	 * Access the client-side result of getPickBlock() for the given block. That way
-	 * you don't have to call this server side because that can sometimes be
-	 * problematic
-	 *
-	 * @return the picked block or null
-	 */
-	@Nullable
-	ItemStack getPickBlock();
+    /**
+     * Access the client-side result of getPickBlock() for the given block. That way
+     * you don't have to call this server side because that can sometimes be
+     * problematic
+     * @return the picked block or null
+     */
+    @Nullable
+    ItemStack getPickBlock();
 }

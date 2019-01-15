@@ -6,13 +6,14 @@ import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.helpers.BlockHelper;
+import cofh.core.util.helpers.ReconfigurableHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -62,6 +63,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		// UnListed
 		builder.add(ModelErrorStateProperty.ERROR_STATE);
 		builder.add(TEProps.TILE_APPARATUS);
+		builder.add(TEProps.BAKERY_WORLD);
 
 		return builder.build();
 	}
@@ -69,7 +71,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i)));
 			}
@@ -80,7 +82,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
-		return this.getDefaultState().withProperty(VARIANT, Type.byMetadata(meta));
+		return this.getDefaultState().withProperty(VARIANT, Type.values()[meta]);
 	}
 
 	@Override
@@ -95,14 +97,15 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		return state.getValue(VARIANT).getMetadata();
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 
-		if (metadata >= Type.values().length) {
+		int meta = state.getBlock().getMetaFromState(state);
+
+		if (meta >= Type.values().length) {
 			return null;
 		}
-		switch (Type.byMetadata(metadata)) {
+		switch (Type.values()[meta]) {
 			case BREAKER:
 				return new TileBreaker();
 			case COLLECTOR:
@@ -120,7 +123,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 
 			tile.readAugmentsFromNBT(stack.getTagCompound());
 			tile.updateAugmentStatus();
-			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
+			tile.setEnergyStored(stack.getTagCompound().getInteger(CoreProps.ENERGY));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
 			int storedFacing = ReconfigurableHelper.getFacing(stack);
@@ -171,12 +174,14 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 
 	/* IWorldBlockTextureProvider */
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
 		return side != EnumFacing.NORTH ? TETextures.APPARATUS_SIDE : TETextures.APPARATUS_FACE[stack.getMetadata() % Type.values().length];
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
 
 		TileEntity tileEntity = world.getTileEntity(pos);
@@ -205,7 +210,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("apparatus");
 		ForgeRegistries.BLOCKS.register(this);
@@ -224,7 +229,7 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		return true;
 	}
 
-	public boolean register() {
+	public boolean initialize() {
 
 		apparatusBreaker = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.BREAKER.getMetadata()));
 		apparatusCollector = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.COLLECTOR.getMetadata()));
@@ -247,16 +252,13 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		COLLECTOR(1, "collector");
 		// @formatter:on
 
-		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
-		private final int light;
 
 		Type(int metadata, String name, int light) {
 
 			this.metadata = metadata;
 			this.name = name;
-			this.light = light;
 		}
 
 		Type(int metadata, String name) {
@@ -273,25 +275,6 @@ public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorl
 		public String getName() {
 
 			return this.name;
-		}
-
-		public int getLight() {
-
-			return light;
-		}
-
-		public static Type byMetadata(int metadata) {
-
-			if (metadata < 0 || metadata >= METADATA_LOOKUP.length) {
-				metadata = 0;
-			}
-			return METADATA_LOOKUP[metadata];
-		}
-
-		static {
-			for (Type type : values()) {
-				METADATA_LOOKUP[type.getMetadata()] = type;
-			}
 		}
 	}
 

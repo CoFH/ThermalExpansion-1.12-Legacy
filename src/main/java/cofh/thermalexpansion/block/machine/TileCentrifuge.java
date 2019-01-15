@@ -1,7 +1,12 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -29,6 +34,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileCentrifuge extends TileMachineBase {
 
 	private static final int TYPE = Type.CENTRIFUGE.getMetadata();
@@ -42,11 +49,18 @@ public class TileCentrifuge extends TileMachineBase {
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, OUTPUT_PRIMARY, OUTPUT_SECONDARY, OUTPUT_ALL, OPEN, OMNI };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
+		ALT_SIDE_CONFIGS[TYPE] = new SideConfig();
+		ALT_SIDE_CONFIGS[TYPE].numConfig = 2;
+		ALT_SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2, 3, 4 }, {}, { 1, 2, 3, 4 }, { 0, 1, 2, 3, 4 }, { 0, 1, 2, 3, 4 } };
+		ALT_SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, OPEN };
+		ALT_SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { false, true, true, true, true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_CENTRIFUGE_MOBS);
 
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
@@ -70,11 +84,15 @@ public class TileCentrifuge extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private CentrifugeRecipe curRecipe;
 	private int inputTracker;
 	private int outputTracker;
 	private int outputTrackerFluid;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+
+	/* AUGMENTS */
+	protected boolean augmentMobs;
 
 	public TileCentrifuge() {
 
@@ -91,29 +109,21 @@ public class TileCentrifuge extends TileMachineBase {
 	}
 
 	@Override
-	public void update() {
-
-		transferOutputFluid();
-
-		super.update();
-	}
-
-	@Override
 	protected boolean canStart() {
 
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		CentrifugeRecipe recipe = CentrifugeManager.getRecipe(inventory[0]);
+		getRecipe();
 
-		if (recipe == null) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (inventory[0].getCount() < recipe.getInput().getCount()) {
+		if (inventory[0].getCount() < curRecipe.getInput().getCount()) {
 			return false;
 		}
-		FluidStack fluid = recipe.getFluid();
-		List<ItemStack> outputs = recipe.getOutput();
+		FluidStack fluid = curRecipe.getFluid();
+		List<ItemStack> outputs = curRecipe.getOutput();
 
 		if (outputs.isEmpty()) {
 			return fluid != null && tank.fill(fluid, false) == fluid.amount;
@@ -132,42 +142,74 @@ public class TileCentrifuge extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		CentrifugeRecipe recipe = CentrifugeManager.getRecipe(inventory[0]);
-		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
+			return false;
+		}
+		return curRecipe.getInput().getCount() <= inventory[0].getCount();
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = augmentMobs ? CentrifugeManager.getRecipeMob(inventory[0]) : CentrifugeManager.getRecipe(inventory[0]);
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = CentrifugeManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		CentrifugeRecipe recipe = CentrifugeManager.getRecipe(inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		List<ItemStack> outputs = recipe.getOutput();
-		List<Integer> chances = recipe.getChance();
+		List<ItemStack> outputs = curRecipe.getOutput();
+		List<Integer> chances = curRecipe.getChance();
 
-		for (int i = 0; i < outputs.size(); i++) {
-			if (world.rand.nextInt(secondaryChance) < chances.get(i)) {
-				if (inventory[i + 1].isEmpty()) {
-					inventory[i + 1] = ItemHelper.cloneStack(outputs.get(i));
-				} else {
-					inventory[i + 1].grow(outputs.get(i).getCount());
+		if (augmentMobs) {
+			for (int i = 0; i < outputs.size(); i++) {
+				for (int j = 0; j < outputs.get(i).getCount(); j++) {
+					if (world.rand.nextInt(secondaryChance + j * 10) < chances.get(i)) {
+						if (inventory[i + 1].isEmpty()) {
+							inventory[i + 1] = ItemHelper.cloneStack(outputs.get(i), 1);
+						} else {
+							inventory[i + 1].grow(1);
+						}
+					}
+				}
+			}
+		} else {
+			for (int i = 0; i < outputs.size(); i++) {
+				if (world.rand.nextInt(secondaryChance) < chances.get(i)) {
+					if (inventory[i + 1].isEmpty()) {
+						inventory[i + 1] = ItemHelper.cloneStack(outputs.get(i));
+					} else {
+						inventory[i + 1].grow(outputs.get(i).getCount());
+					}
 				}
 			}
 		}
-		FluidStack fluid = recipe.getFluid();
+		FluidStack fluid = curRecipe.getFluid();
 		tank.fill(fluid, true);
 
-		inventory[0].shrink(recipe.getInput().getCount());
+		inventory[0].shrink(curRecipe.getInput().getCount());
 
 		if (inventory[0].getCount() <= 0) {
 			inventory[0] = ItemStack.EMPTY;
@@ -177,7 +219,7 @@ public class TileCentrifuge extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -195,9 +237,11 @@ public class TileCentrifuge extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
+		transferOutputFluid();
+
 		int side;
 		boolean foundOutput = false;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
@@ -218,7 +262,7 @@ public class TileCentrifuge extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
+		if (tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
@@ -261,15 +305,20 @@ public class TileCentrifuge extends TileMachineBase {
 		return tank.getFluid();
 	}
 
+	public boolean augmentMobs() {
+
+		return augmentMobs;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut1");
-		outputTrackerFluid = nbt.getInteger("TrackOut2");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
+		outputTrackerFluid = nbt.getInteger(CoreProps.TRACK_OUT_2);
 		tank.readFromNBT(nbt);
 	}
 
@@ -278,9 +327,9 @@ public class TileCentrifuge extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut1", outputTracker);
-		nbt.setInteger("TrackOut2", outputTrackerFluid);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT_2, outputTrackerFluid);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
@@ -291,6 +340,7 @@ public class TileCentrifuge extends TileMachineBase {
 
 		PacketBase payload = super.getGuiPacket();
 
+		payload.addBool(augmentMobs);
 		payload.addFluidStack(tank.getFluid());
 		return payload;
 	}
@@ -300,14 +350,37 @@ public class TileCentrifuge extends TileMachineBase {
 
 		super.handleGuiPacket(payload);
 
+		augmentMobs = payload.getBool();
 		tank.setFluid(payload.getFluidStack());
+	}
+
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		augmentMobs = false;
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentMobs && TEProps.MACHINE_CENTRIFUGE_MOBS.equals(id)) {
+			augmentMobs = true;
+			hasModeAugment = true;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* IInventory */
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot != 0 || CentrifugeManager.recipeExists(stack);
+		return slot != 0 || (augmentMobs ? CentrifugeManager.recipeExistsMob(stack) : CentrifugeManager.recipeExists(stack));
 	}
 
 	/* CAPABILITIES */
@@ -340,20 +413,20 @@ public class TileCentrifuge extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(resource, doDrain);
 					}
-					return tank.drain(resource, doDrain);
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(maxDrain, doDrain);
 					}
-					return tank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}

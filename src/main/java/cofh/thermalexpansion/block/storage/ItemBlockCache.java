@@ -1,14 +1,14 @@
 package cofh.thermalexpansion.block.storage;
 
 import cofh.api.item.IInventoryContainerItem;
+import cofh.core.block.BlockCore;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.item.IEnchantableItem;
 import cofh.core.util.helpers.ItemHelper;
+import cofh.core.util.helpers.ReconfigurableHelper;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContainerItem, IEnchantableItem {
 
-	public ItemBlockCache(Block block) {
+	public ItemBlockCache(BlockCore block) {
 
 		super(block);
 		setMaxStackSize(1);
@@ -100,7 +100,11 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 	@Override
 	public int getSizeInventory(ItemStack container) {
 
-		return TileCache.getCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
+		// TODO: Cache Size Limiting
+		//		if (container.getTagCompound().hasKey("CapacityLimit")) {
+		//			return container.getTagCompound().getInteger("CapacityLimit");
+		//		}
+		return TileCache.getMaxCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
 	}
 
 	/* IEnchantableItem */

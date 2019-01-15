@@ -1,8 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -30,6 +33,8 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileBrewer extends TileMachineBase {
 
 	private static final int TYPE = Type.BREWER.getMetadata();
@@ -42,6 +47,12 @@ public class TileBrewer extends TileMachineBase {
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 }, {}, { 0 }, { 0 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, OUTPUT_ALL, INPUT_PRIMARY, INPUT_SECONDARY, OPEN, OMNI };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+
+		ALT_SIDE_CONFIGS[TYPE] = new SideConfig();
+		ALT_SIDE_CONFIGS[TYPE].numConfig = 2;
+		ALT_SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 }, { 0 } };
+		ALT_SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, OPEN };
+		ALT_SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false };
@@ -69,6 +80,7 @@ public class TileBrewer extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private BrewerRecipe curRecipe;
 	private int inputTracker;
 	private int inputTrackerFluid;
 	private int outputTrackerFluid;
@@ -92,49 +104,58 @@ public class TileBrewer extends TileMachineBase {
 	}
 
 	@Override
-	public void update() {
-
-		transferOutputFluid();
-
-		super.update();
-	}
-
-	@Override
 	protected boolean canStart() {
 
-		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
+		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0 || outputTank.getSpace() <= 0) {
 			return false;
 		}
-		BrewerRecipe recipe = BrewerManager.getRecipe(inventory[0], inputTank.getFluid());
+		getRecipe();
 
-		if (recipe == null) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (inventory[0].getCount() < recipe.getInput().getCount()) {
+		if (inventory[0].getCount() < curRecipe.getInput().getCount()) {
 			return false;
 		}
-		if (inputTank.getFluidAmount() < recipe.getInputFluid().amount) {
+		if (inputTank.getFluidAmount() < curRecipe.getInputFluid().amount) {
 			return false;
 		}
-		FluidStack outputFluid = recipe.getOutputFluid();
+		FluidStack outputFluid = curRecipe.getOutputFluid();
 		return outputTank.fill(outputFluid, false) == outputFluid.amount;
 	}
 
 	@Override
 	protected boolean hasValidInput() {
 
-		BrewerRecipe recipe = BrewerManager.getRecipe(inventory[0], inputTank.getFluid());
-		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
+			return false;
+		}
+		return curRecipe.getInput().getCount() <= inventory[0].getCount();
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = BrewerManager.getRecipe(inventory[0], inputTank.getFluid());
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = BrewerManager.getRecipe(inventory[0], inputTank.getFluid()).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
 		FluidStack prevStack = renderFluid.copy();
-		renderFluid = BrewerManager.getRecipe(inventory[0], inputTank.getFluid()).getOutputFluid().copy();
+		renderFluid = curRecipe.getOutputFluid().copy();
 		renderFluid.amount = 0;
 
 		if (!FluidHelper.isFluidEqual(prevStack, renderFluid)) {
@@ -145,16 +166,17 @@ public class TileBrewer extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		BrewerRecipe recipe = BrewerManager.getRecipe(inventory[0], inputTank.getFluid());
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		outputTank.fill(recipe.getOutputFluid(), true);
-		inputTank.drain(recipe.getInputFluid().amount, true);
+		outputTank.fill(curRecipe.getOutputFluid(), true);
+		inputTank.drain(curRecipe.getInputFluid().amount, true);
 
-		int count = recipe.getInput().getCount();
+		int count = curRecipe.getInput().getCount();
 
 		if (reuseChance > 0) {
 			if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
@@ -171,7 +193,7 @@ public class TileBrewer extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -186,11 +208,17 @@ public class TileBrewer extends TileMachineBase {
 		}
 	}
 
-	private void transferInputFluid() {
+	@Override
+	protected void transferOutput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferOut()) {
 			return;
 		}
+		transferOutputFluid();
+	}
+
+	private void transferInputFluid() {
+
 		if (inputTank.getSpace() <= 0) {
 			return;
 		}
@@ -213,9 +241,6 @@ public class TileBrewer extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
-			return;
-		}
 		if (outputTank.getFluidAmount() <= 0) {
 			return;
 		}
@@ -232,6 +257,15 @@ public class TileBrewer extends TileMachineBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void update() {
+
+		if (timeCheckEighth()) {
+			transferOutput();
+		}
+		super.update();
 	}
 
 	/* GUI METHODS */
@@ -269,7 +303,7 @@ public class TileBrewer extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
 		inputTrackerFluid = nbt.getInteger("TrackInFluid");
 		outputTrackerFluid = nbt.getInteger("TrackOutFluid");
 
@@ -282,7 +316,7 @@ public class TileBrewer extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
 		nbt.setInteger("TrackInFluid", inputTrackerFluid);
 		nbt.setInteger("TrackOutFluid", outputTrackerFluid);
 
@@ -347,19 +381,13 @@ public class TileBrewer extends TileMachineBase {
 	}
 
 	@Override
-	protected boolean isValidAugment(AugmentType type, String id) {
-
-		return super.isValidAugment(type, id);
-	}
-
-	@Override
 	protected boolean installAugmentToSlot(int slot) {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
 		if (TEProps.MACHINE_BREWER_REAGENT.equals(id)) {
 			reuseChance += 15;
-			energyMod += 10;
+			energyMod += 15;
 		}
 		return super.installAugmentToSlot(slot);
 	}
@@ -395,43 +423,47 @@ public class TileBrewer extends TileMachineBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return 0;
+					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						if (!BrewerManager.isFluidValid(resource)) {
+							return 0;
+						}
+						return inputTank.fill(resource, doFill);
 					}
-					if (!BrewerManager.isFluidValid(resource)) {
-						return 0;
-					}
-					return inputTank.fill(resource, doFill);
+					return 0;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (!isActive) {
-						if (from != null && allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						FluidStack ret = outputTank.drain(resource, doDrain);
+
+						if (ret != null) {
+							return ret;
+						}
+						if (!isActive && (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]]))) {
 							return inputTank.drain(resource, doDrain);
 						}
 					}
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
-					return outputTank.drain(resource, doDrain);
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (!isActive) {
-						if (from != null && allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						FluidStack ret = outputTank.drain(maxDrain, doDrain);
+
+						if (ret != null) {
+							return ret;
+						}
+						if (!isActive && (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]]))) {
 							return inputTank.drain(maxDrain, doDrain);
 						}
 					}
-					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return null;
-					}
-					return outputTank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}

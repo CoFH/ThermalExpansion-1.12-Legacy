@@ -2,6 +2,7 @@ package cofh.thermalexpansion.plugins.jei.dynamo.steam;
 
 import cofh.core.inventory.ComparableItemStack;
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.plugins.jei.Drawables;
@@ -27,6 +28,9 @@ public class SteamFuelCategory extends BaseFuelCategory<SteamFuelWrapper> {
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Dynamo.Steam", enable);
 
 		if (!enable) {
 			return;

@@ -77,10 +77,10 @@ public class ExtruderRecipeWrapper extends BaseRecipeWrapper {
 		JEIPluginTE.drawFluid(69, 31, inputFluids.get(1), 24, 8);
 
 		if (inputFluids.get(0).amount < Fluid.BUCKET_VOLUME) {
-			JEIPluginTE.drawFluid(22, 8 + 15, inputFluids.get(0), 16, 15);
+			JEIPluginTE.drawFluid(22, 8 + 23, inputFluids.get(0), 16, 7);
 		}
 		if (inputFluids.get(1).amount < Fluid.BUCKET_VOLUME) {
-			JEIPluginTE.drawFluid(46, 8 + 15, inputFluids.get(1), 16, 15);
+			JEIPluginTE.drawFluid(46, 8 + 23, inputFluids.get(1), 16, 7);
 		}
 		fluid.draw(minecraft, 69, 23);
 		progress.draw(minecraft, 69, 23);

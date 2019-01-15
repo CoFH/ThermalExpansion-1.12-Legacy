@@ -1,0 +1,121 @@
+{
+	"crucible": [
+		{
+			"input": {
+				"item": "minecraft:netherrack"
+			},
+			"output": {
+				"fluid": "lava",
+				"amount": 1000
+			},
+			"energy": 60000
+		},
+		{
+			"input": {
+				"item": "minecraft:magma"
+			},
+			"output": {
+				"fluid": "lava",
+				"amount": 1000
+			},
+			"energy": 40000
+		},
+		{
+			"input": {
+				"item": "minecraft:cobblestone"
+			},
+			"output": {
+				"fluid": "lava",
+				"amount": 1000
+			},
+			"energy": 300000
+		},
+		{
+			"input": {
+				"item": "minecraft:stone",
+				"data": 0
+			},
+			"output": {
+				"fluid": "lava",
+				"amount": 1000
+			},
+			"energy": 300000
+		},
+		{
+			"input": {
+				"item": "minecraft:stone",
+				"data": 1
+			},
+			"output": {
+				"fluid": "lava",
+				"amount": 1000
+			},
+			"energy": 300000
+		},
+		{
+			"input": {
+				"item": "minecraft:stone",
+				"data": 2
+			},
+			"output": {
+				"fluid": "lava",
+				"amount": 1000
+			},
+			"energy": 300000
+		},
+		{
+			"input": {
+				"item": "minecraft:stone",
+				"data": 3
+			},
+			"output": {
+				"fluid": "lava",
+				"amount": 1000
+			},
+			"energy": 300000
+		},
+		{
+			"input": {
+				"item": "minecraft:stone",
+				"data": 4
+			},
+			"output": {
+				"fluid": "lava",
+				"amount": 1000
+			},
+			"energy": 300000
+		},
+		{
+			"input": {
+				"item": "minecraft:stone",
+				"data": 5
+			},
+			"output": {
+				"fluid": "lava",
+				"amount": 1000
+			},
+			"energy": 300000
+		},
+		{
+			"input": {
+				"item": "minecraft:stone",
+				"data": 6
+			},
+			"output": {
+				"fluid": "lava",
+				"amount": 1000
+			},
+			"energy": 300000
+		},
+		{
+			"input": {
+				"item": "minecraft:obsidian"
+			},
+			"output": {
+				"fluid": "lava",
+				"amount": 1000
+			},
+			"energy": 300000
+		}
+	]
+}

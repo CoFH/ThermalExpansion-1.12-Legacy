@@ -7,16 +7,17 @@ import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.ModelErrorStateProperty;
 import codechicken.lib.model.bakery.generation.IBakery;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.StateMapper;
 import cofh.core.util.helpers.BlockHelper;
+import cofh.core.util.helpers.MathHelper;
+import cofh.core.util.helpers.ReconfigurableHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalexpansion.render.BakeryCell;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
@@ -71,8 +72,8 @@ public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryPro
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
 		if (enable) {
-			if (TEProps.creativeTabShowAllLevels) {
-				for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
+			if (TEProps.creativeTabShowAllBlockLevels) {
+				for (int j = 0; j <= CoreProps.LEVEL_MAX; j++) {
 					items.add(itemBlock.setDefaultTag(new ItemStack(this), j));
 				}
 			} else {
@@ -84,9 +85,8 @@ public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryPro
 		}
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 
 		return new TileCell();
 	}
@@ -99,11 +99,11 @@ public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryPro
 			TileCell tile = (TileCell) world.getTileEntity(pos);
 
 			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
-			tile.enchantHolding = (byte) EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
+			tile.enchantHolding = (byte) MathHelper.clamp(EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack), 0, CoreEnchantments.holding.getMaxLevel());
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 			tile.amountRecv = stack.getTagCompound().getInteger("Recv");
 			tile.amountSend = stack.getTagCompound().getInteger("Send");
-			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
+			tile.setEnergyStored(stack.getTagCompound().getInteger(CoreProps.ENERGY));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
 			int storedFacing = ReconfigurableHelper.getFacing(stack);
@@ -196,8 +196,8 @@ public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryPro
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(ModelBakery.defaultBlockKeyGenerator.generateKey(state));
 			TileCell cell = state.getValue(TEProps.TILE_CELL);
+			StringBuilder builder = new StringBuilder(ModelBakery.defaultBlockKeyGenerator.generateKey(state));
 			builder.append(",creative=").append(cell.isCreative);
 			builder.append(",level=").append(cell.getLevel());
 			builder.append(",holding=").append(cell.enchantHolding);
@@ -216,7 +216,7 @@ public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryPro
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("cell");
 		ForgeRegistries.BLOCKS.register(this);
@@ -233,7 +233,7 @@ public class BlockCell extends BlockTEBase implements IModelRegister, IBakeryPro
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		cell = new ItemStack[5];
 

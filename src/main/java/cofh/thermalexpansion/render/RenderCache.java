@@ -24,7 +24,7 @@ public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 	@Override
 	public void render(TileCache tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
-		if (tile.storedStack.isEmpty()) {
+		if (tile.getStoredInstance().isEmpty()) {
 			return;
 		}
 		if (tile.isLocked()) {
@@ -66,7 +66,7 @@ public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 			GlStateManager.popMatrix();
 		}
 		GlStateManager.pushMatrix();
-		RenderUtils.renderItemOnBlockSide(tile, tile.storedStack, tile.getFacing(), x, y, z);
+		RenderUtils.renderItemOnBlockSide(tile, tile.getStoredInstance(), tile.getFacing(), x, y, z);
 		GlStateManager.popMatrix();
 	}
 

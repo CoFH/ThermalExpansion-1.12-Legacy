@@ -1,0 +1,88 @@
+{
+	"sawmill": [
+		{
+			"input": {
+				"item": "minecraft:wooden_door"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 0,
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:spruce_door"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 1,
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:birch_door"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 2,
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:jungle_door"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 3,
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:acacia_door"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 4,
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 50
+			}
+		},
+		{
+			"input": {
+				"item": "minecraft:dark_oak_door"
+			},
+			"output": {
+				"item": "minecraft:planks",
+				"data": 5,
+				"count": 1
+			},
+			"output2": {
+				"constant": "sawdust",
+				"chance": 50
+			}
+		}
+	]
+}

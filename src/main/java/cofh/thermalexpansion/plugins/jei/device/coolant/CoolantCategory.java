@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.device.coolant;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.device.GuiHeatSink;
@@ -31,6 +32,9 @@ public class CoolantCategory extends BaseFuelCategory<CoolantWrapper> {
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get("Coolant", category, enable);
 
 		if (!enable) {
 			return;
@@ -101,7 +105,7 @@ public class CoolantCategory extends BaseFuelCategory<CoolantWrapper> {
 
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-		guiFluidStacks.init(0, true, 34, 8, 16, 30, 1000, false, null);
+		guiFluidStacks.init(0, true, 34, 8, 16, 30, Fluid.BUCKET_VOLUME, false, null);
 
 		guiFluidStacks.set(0, inputs.get(0));
 	}

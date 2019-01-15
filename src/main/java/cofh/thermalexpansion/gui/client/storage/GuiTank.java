@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.gui.client.storage;
 
 import cofh.core.gui.GuiContainerCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.element.ElementButton;
 import cofh.core.gui.element.ElementFluidTank;
 import cofh.core.gui.element.tab.TabBase;
@@ -10,10 +11,8 @@ import cofh.core.gui.element.tab.TabSecurity;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.storage.TileTank;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,7 +35,7 @@ public class GuiTank extends GuiContainerCore {
 
 	public GuiTank(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerTEBase(inventory, tile), TEXTURE);
+		super(new ContainerTileAugmentable(inventory, tile), TEXTURE);
 
 		baseTile = (TileTank) tile;
 		name = baseTile.getName();
@@ -86,7 +85,7 @@ public class GuiTank extends GuiContainerCore {
 
 		super.updateElementInformation();
 
-		if (baseTile.enableAutoOutput) {
+		if (baseTile.getTransferOut()) {
 			output.setToolTip(StringHelper.localize("gui.cofh.transferOutEnabled"));
 			output.setSheetX(176);
 			output.setHoverX(176);
@@ -102,15 +101,8 @@ public class GuiTank extends GuiContainerCore {
 			lock.setActive();
 		}
 		if (baseTile.isLocked()) {
-			String color = StringHelper.WHITE;
 			FluidStack fluid = baseTile.getTankFluid();
-			if (fluid.getFluid().getRarity() == EnumRarity.UNCOMMON) {
-				color = StringHelper.YELLOW;
-			} else if (fluid.getFluid().getRarity() == EnumRarity.RARE) {
-				color = StringHelper.BRIGHT_BLUE;
-			} else if (fluid.getFluid().getRarity() == EnumRarity.EPIC) {
-				color = StringHelper.PINK;
-			}
+			String color = fluid.getFluid().getRarity().rarityColor.toString();
 			lock.setToolTip(StringHelper.localize("info.cofh.locked") + ": " + color + StringHelper.localize(fluid.getFluid().getLocalizedName(fluid)) + StringHelper.END);
 			lock.setSheetX(176);
 			lock.setHoverX(176);

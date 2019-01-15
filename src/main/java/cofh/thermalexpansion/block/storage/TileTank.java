@@ -3,13 +3,13 @@ package cofh.thermalexpansion.block.storage;
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.ITileInfo;
+import cofh.core.block.TileAugmentableSecure;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileAugmentableSecure;
 import cofh.thermalexpansion.gui.client.storage.GuiTank;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -18,8 +18,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -35,7 +36,7 @@ import java.util.List;
 
 public class TileTank extends TileAugmentableSecure implements ITickable, ITileInfo {
 
-	public static final int CAPACITY_BASE = 20000;
+	public static final int CAPACITY_BASE = Fluid.BUCKET_VOLUME * 20;
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int RENDER_LEVELS = 100;
 
@@ -61,16 +62,12 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockTank.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockTank.enableClassicRecipes, comment);
 
-		// TODO: Remove in 5.3.9.
-		if (ThermalExpansion.CONFIG.isOldConfig()) {
-			ThermalExpansion.CONFIG.removeProperty(category, "UpgradeKitCrafting");
-		}
 		comment = "If TRUE, Tanks can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockTank.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockTank.enableUpgradeKitCrafting, comment);
 
 		int capacity = CAPACITY_BASE;
 		comment = "Adjust this value to change the amount of Fluid (in mB) stored by a Basic Tank. This base value will scale with block level.";
-		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, Fluid.BUCKET_VOLUME * 2, Fluid.BUCKET_VOLUME * 1000, comment);
 
 		for (int i = 0; i < CAPACITY.length; i++) {
 			CAPACITY[i] *= capacity;
@@ -87,18 +84,24 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	boolean cached = false;
 	boolean adjacentTanks[] = new boolean[2];
 
-	private FluidTankCore tank = new FluidTankCore(getCapacity(0, 0));
+	private FluidTankCore tank = new FluidTankCore(getMaxCapacity(0, 0));
 
 	@Override
-	public String getTileName() {
+	protected Object getMod() {
 
-		return "tile.thermalexpansion.storage.tank.name";
+		return ThermalExpansion.instance;
 	}
 
 	@Override
-	public int getType() {
+	protected String getModVersion() {
 
-		return 0;
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected String getTileName() {
+
+		return "tile.thermalexpansion.storage.tank.name";
 	}
 
 	@Override
@@ -165,7 +168,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 			transferFluid();
 		}
 		if (timeCheck()) {
-			int curScale = getScaledFluidStored(15);
+			int curScale = getTankFluidAmount() > 0 ? 1 + getScaledFluidStored(14) : 0;
 			if (curScale != compareTracker) {
 				compareTracker = curScale;
 				callNeighborTileChange();
@@ -224,7 +227,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	protected boolean setLevel(int level) {
 
 		if (super.setLevel(level)) {
-			tank.setCapacity(getCapacity(level, enchantHolding));
+			tank.setCapacity(getMaxCapacity(level, enchantHolding));
 
 			if (isCreative && getTankFluidAmount() > 0) {
 				tank.getFluid().amount = tank.getCapacity();
@@ -241,14 +244,14 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	}
 
 	/* COMMON METHODS */
-	public static int getCapacity(int level, int enchant) {
+	public static int getMaxCapacity(int level, int enchant) {
 
 		return CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * enchant) / 2;
 	}
 
 	protected void transferFluid() {
 
-		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
+		if (!getTransferOut() || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.DOWN, new FluidStack(tank.getFluid(), Math.min(getFluidTransfer(level), tank.getFluidAmount())), true);
@@ -308,23 +311,14 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		renderFlag = false;
 		boolean sendUpdate = false;
 
-		int curDisplayLevel = 0;
-
 		if (tank.getFluidAmount() > 0) {
-			curDisplayLevel = (int) (tank.getFluidAmount() / (float) getCapacity(level, enchantHolding) * (RENDER_LEVELS - 1));
-			if (curDisplayLevel == 0) {
-				curDisplayLevel = 1;
-			}
-			if (lastDisplayLevel == 0) {
+			int curDisplayLevel = (int) Math.max(1, (tank.getFluidAmount() / (float) getMaxCapacity(level, enchantHolding) * (RENDER_LEVELS - 1)));
+			if (lastDisplayLevel != curDisplayLevel) {
 				lastDisplayLevel = curDisplayLevel;
 				sendUpdate = true;
 			}
-		} else if (lastDisplayLevel != 0) {
+		} else {
 			lastDisplayLevel = 0;
-			sendUpdate = true;
-		}
-		if (lastDisplayLevel != curDisplayLevel) {
-			lastDisplayLevel = curDisplayLevel;
 			sendUpdate = true;
 		}
 		if (sendUpdate) {
@@ -343,7 +337,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	@Override
 	public Object getConfigGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	@Override
@@ -457,11 +451,11 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 			return;
 		}
 		if (tank.getFluid() != null) {
-			info.add(new TextComponentString(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.getFluidName(tank.getFluid())));
-			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + StringHelper.formatNumber(tank.getFluidAmount()) + "/" + StringHelper.formatNumber(tank.getCapacity()) + " mB"));
-			info.add(new TextComponentString(lock ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
+			info.add(new TextComponentTranslation("info.cofh.fluid").appendText(": " + StringHelper.getFluidName(tank.getFluid())));
+			info.add(new TextComponentTranslation("info.cofh.amount").appendText(": " + StringHelper.formatNumber(tank.getFluidAmount()) + "/" + StringHelper.formatNumber(tank.getCapacity()) + " mB"));
+			info.add(new TextComponentTranslation(lock ? "info.cofh.locked" : "info.cofh.unlocked"));
 		} else {
-			info.add(new TextComponentString(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty")));
+			info.add(new TextComponentTranslation("info.cofh.fluid").appendText(": ").appendSibling(new TextComponentTranslation("info.cofh.empty")));
 		}
 	}
 
@@ -489,18 +483,18 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 				public int fill(FluidStack resource, boolean doFill) {
 
 					if (isCreative) {
-						if (resource == null || from == EnumFacing.DOWN && !adjacentTanks[0] && enableAutoOutput) {
+						if (resource == null || from == EnumFacing.DOWN && !adjacentTanks[0] && getTransferOut()) {
 							return 0;
 						}
 						if (resource.isFluidEqual(tank.getFluid())) {
 							return 0;
 						}
-						tank.setFluid(new FluidStack(resource, getCapacity(level, enchantHolding)));
+						tank.setFluid(new FluidStack(resource, getMaxCapacity(level, enchantHolding)));
 						sendTilePacket(Side.CLIENT);
 						updateRender();
 						return 0;
 					}
-					if (resource == null || from == EnumFacing.DOWN && !adjacentTanks[0] && enableAutoOutput) {
+					if (resource == null || from == EnumFacing.DOWN && !adjacentTanks[0] && getTransferOut()) {
 						return 0;
 					}
 					renderFlag = true;
@@ -526,8 +520,11 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 						}
 						return resource.copy();
 					}
-					renderFlag = true;
-					return tank.drain(resource, doDrain);
+					FluidStack retStack = tank.drain(resource, doDrain);
+					if (retStack != null) {
+						renderFlag = true;
+					}
+					return retStack;
 				}
 
 				@Nullable
@@ -540,8 +537,11 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 						}
 						return new FluidStack(tank.getFluid(), maxDrain);
 					}
-					renderFlag = true;
-					return tank.drain(maxDrain, doDrain);
+					FluidStack retStack = tank.drain(maxDrain, doDrain);
+					if (retStack != null) {
+						renderFlag = true;
+					}
+					return retStack;
 				}
 			});
 		}

@@ -1,15 +1,16 @@
 package cofh.thermalexpansion.gui.container.storage;
 
 import cofh.api.item.IInventoryContainerItem;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotValidated;
 import cofh.core.util.helpers.MathHelper;
 import cofh.thermalexpansion.block.storage.TileStrongbox;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
-import gnu.trove.map.hash.THashMap;
 import invtweaks.api.container.ChestContainer;
+import invtweaks.api.container.ChestContainer.RowSizeCallback;
 import invtweaks.api.container.ContainerSection;
 import invtweaks.api.container.ContainerSectionCallback;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @ChestContainer ()
-public class ContainerStrongbox extends ContainerTEBase implements ISlotValidator {
+public class ContainerStrongbox extends ContainerTileAugmentable implements ISlotValidator {
 
 	int storageIndex;
 	int rowSize;
@@ -54,22 +55,6 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 	}
 
 	@Override
-	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
-
-		int xOffset = getPlayerInventoryHorizontalOffset();
-		int yOffset = getPlayerInventoryVerticalOffset();
-
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, xOffset + j * 18, yOffset + i * 18));
-			}
-		}
-		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventoryPlayer, i, xOffset + i * 18, yOffset + 58));
-		}
-	}
-
-	@Override
 	protected int getPlayerInventoryVerticalOffset() {
 
 		return 30 + 18 * MathHelper.clamp(storageIndex, 2, 9);
@@ -93,11 +78,19 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 		return myTile;
 	}
 
+	/* ISlotValidator */
+	@Override
+	public boolean isItemValid(ItemStack stack) {
+
+		return !stack.isEmpty() && (!(stack.getItem() instanceof IInventoryContainerItem) || ((IInventoryContainerItem) stack.getItem()).getSizeInventory(stack) <= 0);
+	}
+
+	/* INVENTORY TWEAKS */
 	@ContainerSectionCallback
 	@Optional.Method (modid = "inventorytweaks")
 	public Map<ContainerSection, List<Slot>> getContainerSections() {
 
-		Map<ContainerSection, List<Slot>> slotRefs = new THashMap<>();
+		Map<ContainerSection, List<Slot>> slotRefs = new Object2ObjectOpenHashMap<>();
 
 		slotRefs.put(ContainerSection.INVENTORY, inventorySlots.subList(0, 36));
 		slotRefs.put(ContainerSection.INVENTORY_NOT_HOTBAR, inventorySlots.subList(0, 27));
@@ -107,11 +100,11 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 		return slotRefs;
 	}
 
-	/* ISlotValidator */
-	@Override
-	public boolean isItemValid(ItemStack stack) {
+	@RowSizeCallback
+	@Optional.Method (modid = "inventorytweaks")
+	public int getRowSize() {
 
-		return !stack.isEmpty() && (!(stack.getItem() instanceof IInventoryContainerItem) || ((IInventoryContainerItem) stack.getItem()).getSizeInventory(stack) <= 0);
+		return rowSize;
 	}
 
 }

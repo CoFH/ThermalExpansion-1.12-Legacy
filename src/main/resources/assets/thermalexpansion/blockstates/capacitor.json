@@ -4,40 +4,50 @@
 		"model": "builtin/generated",
 		"textures": {
 			"layer0": "thermalexpansion:items/capacitor/capacitor_0",
-			"layer1": "thermalexpansion:items/capacitor/mode_0_0"
+			"layer1": "thermalexpansion:items/capacitor/mode_0_0",
+			"layer2": "thermalexpansion:items/blank"
 		},
 		"transform": "forge:default-item"
 	},
 	"variants": {
+		"color0": {
+			"0": {
+			},
+			"1": {
+				"textures": {
+					"layer2": "thermalexpansion:items/capacitor/capacitor_color_0"
+				}
+			}
+		},
 		"mode": {
 			"0_0": {
 				"textures": {
-					"layer1": "thermalexpansion:items/capacitor/mode_0_0"
+					"layer1": "thermalexpansion:items/capacitor/capacitor_mode_0_0"
 				}
 			},
 			"0_1": {
 				"textures": {
-					"layer1": "thermalexpansion:items/capacitor/mode_0_1"
+					"layer1": "thermalexpansion:items/capacitor/capacitor_mode_0_1"
 				}
 			},
 			"0_2": {
 				"textures": {
-					"layer1": "thermalexpansion:items/capacitor/mode_0_2"
+					"layer1": "thermalexpansion:items/capacitor/capacitor_mode_0_2"
 				}
 			},
 			"1_0": {
 				"textures": {
-					"layer1": "thermalexpansion:items/capacitor/mode_1_0"
+					"layer1": "thermalexpansion:items/capacitor/capacitor_mode_1_0"
 				}
 			},
 			"1_1": {
 				"textures": {
-					"layer1": "thermalexpansion:items/capacitor/mode_1_1"
+					"layer1": "thermalexpansion:items/capacitor/capacitor_mode_1_1"
 				}
 			},
 			"1_2": {
 				"textures": {
-					"layer1": "thermalexpansion:items/capacitor/mode_1_2"
+					"layer1": "thermalexpansion:items/capacitor/capacitor_mode_1_2"
 				}
 			}
 		},

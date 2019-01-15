@@ -12,6 +12,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.UUID;
 
@@ -21,7 +24,7 @@ public abstract class GuiDynamoBase extends GuiContainerCore {
 	protected UUID playerName;
 
 	protected TabBase energyTab;
-	protected TabBase steamTab;
+	protected TabSteam steamTab;
 
 	protected TabBase augmentTab;
 	protected TabBase redstoneTab;
@@ -46,7 +49,7 @@ public abstract class GuiDynamoBase extends GuiContainerCore {
 		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
 
 		// Right Side
-		steamTab = addTab(new TabSteam(this, baseTile, baseTile.isSteamProducer()));
+		steamTab = (TabSteam) addTab(new TabSteam(this, baseTile, baseTile.isSteamProducer()));
 		steamTab.setVisible(baseTile.showSteamTab());
 
 		augmentTab = addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
@@ -64,6 +67,14 @@ public abstract class GuiDynamoBase extends GuiContainerCore {
 		if (!myInfo.isEmpty()) {
 			addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.0")));
 		}
+		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	@Override
+	public void onGuiClosed() {
+
+		MinecraftForge.EVENT_BUS.unregister(this);
+		super.onGuiClosed();
 	}
 
 	@Override
@@ -78,6 +89,7 @@ public abstract class GuiDynamoBase extends GuiContainerCore {
 		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 		energyTab.setVisible(baseTile.showEnergyTab());
 		steamTab.setVisible(baseTile.showSteamTab());
+		steamTab.setProducer(baseTile.isSteamProducer());
 	}
 
 	@Override
@@ -86,6 +98,18 @@ public abstract class GuiDynamoBase extends GuiContainerCore {
 		super.updateElementInformation();
 
 		duration.setQuantity(baseTile.getScaledDuration(SPEED));
+	}
+
+	@SubscribeEvent
+	public void handleItemTooltipEvent(ItemTooltipEvent event) {
+
+		if (baseTile.isSteamProducer()) {
+			return;
+		}
+		int energy = baseTile.getFuelEnergy(event.getItemStack());
+		if (energy > 0) {
+			event.getToolTip().add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.cofh.energy") + ": " + StringHelper.getScaledNumber(energy) + " RF" + StringHelper.END);
+		}
 	}
 
 }

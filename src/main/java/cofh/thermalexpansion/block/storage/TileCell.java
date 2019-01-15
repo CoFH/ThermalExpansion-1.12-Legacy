@@ -2,6 +2,8 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
+import cofh.core.block.TilePowered;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
 import cofh.core.util.helpers.AugmentHelper;
@@ -10,9 +12,8 @@ import cofh.core.util.helpers.MathHelper;
 import cofh.redstoneflux.api.IEnergyProvider;
 import cofh.redstoneflux.impl.EnergyStorage;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.gui.client.storage.GuiCell;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -63,16 +64,12 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		comment = "If TRUE, 'Classic' Crafting is enabled - Non-Creative Upgrade Kits WILL NOT WORK in a Crafting Grid.";
 		BlockCell.enableClassicRecipes = ThermalExpansion.CONFIG.get(category, "ClassicCrafting", BlockCell.enableClassicRecipes, comment);
 
-		// TODO: Remove in 5.3.9.
-		if (ThermalExpansion.CONFIG.isOldConfig()) {
-			ThermalExpansion.CONFIG.removeProperty(category, "UpgradeKitCrafting");
-		}
 		comment = "If TRUE, Energy Cells can be upgraded in a Crafting Grid using Kits. If Classic Crafting is enabled, only the Creative Conversion Kit may be used in this fashion.";
 		BlockCell.enableUpgradeKitCrafting = ThermalExpansion.CONFIG.get(category, "UpgradeKitCrafting", BlockCell.enableUpgradeKitCrafting, comment);
 
 		int capacity = CAPACITY_BASE;
 		comment = "Adjust this value to change the amount of Energy (in RF) stored by a Basic Cell. This base value will scale with block level.";
-		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, capacity / 5, capacity * 5, comment);
+		capacity = ThermalExpansion.CONFIG.getConfiguration().getInt("BaseCapacity", category, capacity, 50000, capacity * 10, comment);
 
 		int recv = XFER_BASE;
 		comment = "Adjust this value to change the amount of Energy (in RF/t) that can be received by a Basic Cell. This base value will scale with block level.";
@@ -101,21 +98,33 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		super();
 
-		energyStorage = new EnergyStorage(getCapacity(0, 0));
+		energyStorage = new EnergyStorage(getMaxCapacity(0, 0));
 		setDefaultSides();
 		enableAutoOutput = true;
 	}
 
 	@Override
-	public String getTileName() {
+	protected Object getMod() {
+
+		return ThermalExpansion.instance;
+	}
+
+	@Override
+	protected String getModVersion() {
+
+		return ThermalExpansion.VERSION;
+	}
+
+	@Override
+	protected String getTileName() {
 
 		return "tile.thermalexpansion.storage.cell.name";
 	}
 
 	@Override
-	public int getType() {
+	protected int getLevelRSControl() {
 
-		return 0;
+		return TEProps.levelRedstoneControl;
 	}
 
 	@Override
@@ -127,7 +136,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public int getLightValue() {
 
-		return MathHelper.clamp(getScaledEnergyStored(9), 0, 8);
+		return MathHelper.clamp(energyStorage.getEnergyStored() > 0 ? 1 + getScaledEnergyStored(8) : 0, 0, 8);
 	}
 
 	@Override
@@ -190,7 +199,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		int curLevel = this.level;
 
 		if (super.setLevel(level)) {
-			energyStorage.setCapacity(getCapacity(level, enchantHolding));
+			energyStorage.setCapacity(getMaxCapacity(level, enchantHolding));
 			amountRecv = amountRecv * XFER_SCALE[level] / XFER_SCALE[curLevel];
 			amountSend = amountSend * XFER_SCALE[level] / XFER_SCALE[curLevel];
 
@@ -241,14 +250,14 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	}
 
 	/* COMMON METHODS */
-	public static int getCapacity(int level, int enchant) {
+	public static int getMaxCapacity(int level, int enchant) {
 
 		return CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * enchant) / 2;
 	}
 
 	public int getScaledEnergyStored(int scale) {
 
-		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
+		return MathHelper.round((long) energyStorage.getEnergyStored() * scale / getMaxCapacity(level, enchantHolding));
 	}
 
 	protected void transferEnergy() {
@@ -277,12 +286,12 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 	protected void updateTrackers() {
 
-		int curScale = getScaledEnergyStored(15);
+		int curScale = energyStorage.getEnergyStored() > 0 ? 1 + getScaledEnergyStored(14) : 0;
 		if (curScale != compareTracker) {
 			compareTracker = curScale;
 			callNeighborTileChange();
 		}
-		curScale = Math.min(8, getScaledEnergyStored(9));
+		curScale = energyStorage.getEnergyStored() > 0 ? 1 + Math.min(getScaledEnergyStored(8), 7) : 0;
 		if (meterTracker != curScale) {
 			meterTracker = curScale;
 			updateLighting();
@@ -300,7 +309,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	/* NBT METHODS */
@@ -315,7 +324,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		amountRecv = nbt.getInteger("Recv");
 		amountSend = nbt.getInteger("Send");
 
-		energyStorage = new EnergyStorage(getCapacity(level, enchantHolding));
+		energyStorage = new EnergyStorage(getMaxCapacity(level, enchantHolding));
 		energyStorage.readFromNBT(nbt);
 	}
 
@@ -325,7 +334,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		super.writeToNBT(nbt);
 
 		nbt.setByte("EncHolding", enchantHolding);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		nbt.setInteger("Recv", amountRecv);
 		nbt.setInteger("Send", amountSend);
 		return nbt;
@@ -396,6 +405,8 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		enchantHolding = payload.getByte();
 		amountRecv = payload.getInt();
 		amountSend = payload.getInt();
+
+		callBlockUpdate();
 	}
 
 	/* IEnergyReceiver */
@@ -504,6 +515,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
@@ -516,7 +528,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		if (side != facing) {
 			return TETextures.CONFIG_NONE;
 		}
-		return isCreative ? TETextures.CELL_METER_C : TETextures.CELL_METER[MathHelper.clamp(getScaledEnergyStored(9), 0, 8)];
+		return isCreative ? TETextures.CELL_METER_C : TETextures.CELL_METER[MathHelper.clamp(energyStorage.getEnergyStored() > 0 ? 1 + getScaledEnergyStored(8) : 0, 0, 8)];
 	}
 
 	/* CAPABILITIES */

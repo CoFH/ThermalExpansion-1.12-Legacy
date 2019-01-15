@@ -1,7 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.FluidHelper;
 import cofh.core.util.helpers.ItemHelper;
@@ -32,6 +36,8 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileFurnace extends TileMachineBase {
 
 	private static final int TYPE = Type.FURNACE.getMetadata();
@@ -48,6 +54,12 @@ public class TileFurnace extends TileMachineBase {
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 0, 1 }, { 0, 1 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, OUTPUT_ALL, OPEN, OMNI };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+
+		ALT_SIDE_CONFIGS[TYPE] = new SideConfig();
+		ALT_SIDE_CONFIGS[TYPE].numConfig = 2;
+		ALT_SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 0, 1 }, { 0, 1 } };
+		ALT_SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, OPEN };
+		ALT_SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false };
@@ -77,6 +89,7 @@ public class TileFurnace extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private FurnaceRecipe curRecipe;
 	private int inputTracker;
 	private int outputTracker;
 	private int outputTrackerFluid;
@@ -105,15 +118,6 @@ public class TileFurnace extends TileMachineBase {
 	}
 
 	@Override
-	public void update() {
-
-		if (augmentPyrolysis) {
-			transferOutputFluid();
-		}
-		super.update();
-	}
-
-	@Override
 	protected int calcEnergy() {
 
 		if (augmentPyrolysis) {
@@ -128,18 +132,18 @@ public class TileFurnace extends TileMachineBase {
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !ItemHelper.isOre(inventory[0])) {
+		if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !FurnaceManager.isOre(inventory[0])) {
 			return false;
 		}
-		FurnaceRecipe recipe = augmentPyrolysis ? FurnaceManager.getRecipePyrolysis(inventory[0]) : FurnaceManager.getRecipe(inventory[0]);
+		getRecipe();
 
-		if (recipe == null) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (inventory[0].getCount() < recipe.getInput().getCount()) {
+		if (inventory[0].getCount() < curRecipe.getInput().getCount()) {
 			return false;
 		}
-		ItemStack output = recipe.getOutput();
+		ItemStack output = curRecipe.getOutput();
 
 		return inventory[1].isEmpty() || inventory[1].isItemEqual(output) && inventory[1].getCount() + output.getCount() <= output.getMaxStackSize();
 	}
@@ -147,49 +151,61 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		FurnaceRecipe recipe;
-
-		if (augmentPyrolysis) {
-			recipe = FurnaceManager.getRecipePyrolysis(inventory[0]);
-		} else {
-			recipe = FurnaceManager.getRecipe(inventory[0]);
-			if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !ItemHelper.isOre(inventory[0])) {
-				return false;
-			}
+		if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !FurnaceManager.isOre(inventory[0])) {
+			return false;
 		}
-		return recipe != null && recipe.getInput().getCount() <= inventory[0].getCount();
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
+			return false;
+		}
+		return curRecipe.getInput().getCount() <= inventory[0].getCount();
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = FurnaceManager.getRecipe(inventory[0], augmentPyrolysis);
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = augmentPyrolysis ? FurnaceManager.getRecipePyrolysis(inventory[0]).getEnergy() * energyMod / ENERGY_BASE : FurnaceManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		FurnaceRecipe recipe = augmentPyrolysis ? FurnaceManager.getRecipePyrolysis(inventory[0]) : FurnaceManager.getRecipe(inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		ItemStack output = recipe.getOutput();
+		ItemStack output = curRecipe.getOutput();
 		if (inventory[1].isEmpty()) {
 			inventory[1] = ItemHelper.cloneStack(output);
 		} else {
 			inventory[1].grow(output.getCount());
 		}
 		if (augmentPyrolysis) {
-			tank.fill(new FluidStack(TFFluids.fluidCreosote, recipe.getCreosote()), true);
+			tank.fill(new FluidStack(TFFluids.fluidCreosote, curRecipe.getCreosote()), true);
 		} else {
-			if ((augmentFood && FurnaceManager.isFood(inventory[0]) || augmentOre && ItemHelper.isOre(inventory[0])) && inventory[1].getCount() < inventory[1].getMaxStackSize()) {
-				inventory[1].grow(output.getCount());
+			if ((augmentFood && FurnaceManager.isFood(inventory[0]) || augmentOre && FurnaceManager.isOre(inventory[0])) && inventory[1].getCount() < inventory[1].getMaxStackSize()) {
+				inventory[1].grow(Math.max(1, output.getCount() / 2));
 			}
 		}
-		inventory[0].shrink(recipe.getInput().getCount());
+		inventory[0].shrink(curRecipe.getInput().getCount());
 
 		if (inventory[0].getCount() <= 0) {
 			inventory[0] = ItemStack.EMPTY;
@@ -199,7 +215,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -217,8 +233,11 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
+		}
+		if (augmentPyrolysis) {
+			transferOutputFluid();
 		}
 		if (inventory[1].isEmpty()) {
 			return;
@@ -237,7 +256,7 @@ public class TileFurnace extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		if (tank.getFluidAmount() <= 0) {
@@ -256,6 +275,15 @@ public class TileFurnace extends TileMachineBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void update() {
+
+		if (augmentPyrolysis && timeCheckEighth()) {
+			transferOutputFluid();
+		}
+		super.update();
 	}
 
 	/* GUI METHODS */
@@ -309,8 +337,8 @@ public class TileFurnace extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTracker = nbt.getInteger("TrackIn");
-		outputTracker = nbt.getInteger("TrackOut");
+		inputTracker = nbt.getInteger(CoreProps.TRACK_IN);
+		outputTracker = nbt.getInteger(CoreProps.TRACK_OUT);
 		outputTrackerFluid = nbt.getInteger("TrackOutFluid");
 		tank.readFromNBT(nbt);
 	}
@@ -320,8 +348,8 @@ public class TileFurnace extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn", inputTracker);
-		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTracker);
+		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		nbt.setInteger("TrackOutFluid", outputTrackerFluid);
 		tank.writeToNBT(nbt);
 		return nbt;
@@ -333,6 +361,8 @@ public class TileFurnace extends TileMachineBase {
 
 		PacketBase payload = super.getGuiPacket();
 
+		payload.addBool(augmentFood);
+		payload.addBool(augmentOre);
 		payload.addBool(augmentPyrolysis);
 		payload.addFluidStack(tank.getFluid());
 		return payload;
@@ -343,6 +373,8 @@ public class TileFurnace extends TileMachineBase {
 
 		super.handleGuiPacket(payload);
 
+		augmentFood = payload.getBool();
+		augmentOre = payload.getBool();
 		augmentPyrolysis = payload.getBool();
 		flagPyrolysis = augmentPyrolysis;
 		tank.setFluid(payload.getFluidStack());
@@ -408,14 +440,14 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot != 0 || (augmentFood ? FurnaceManager.isFood(stack) : augmentOre ? ItemHelper.isOre(stack) && FurnaceManager.recipeExists(stack) : augmentPyrolysis ? FurnaceManager.recipeExistsPyrolysis(stack) : FurnaceManager.recipeExists(stack));
+		return slot != 0 || (augmentFood ? FurnaceManager.isFood(stack) : augmentOre ? FurnaceManager.isOre(stack) && FurnaceManager.recipeExists(stack, augmentPyrolysis) : FurnaceManager.recipeExists(stack, augmentPyrolysis));
 	}
 
 	/* ISoundSource */
 	@Override
 	public SoundEvent getSoundEvent() {
 
-		return TESounds.machineFurnace;
+		return TEProps.enableSounds ? TESounds.machineFurnace : null;
 	}
 
 	/* CAPABILITIES */
@@ -448,20 +480,20 @@ public class TileFurnace extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && sideCache[from.ordinal()] < 2) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(resource, doDrain);
 					}
-					return tank.drain(resource, doDrain);
+					return null;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && sideCache[from.ordinal()] < 2) {
-						return null;
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(maxDrain, doDrain);
 					}
-					return tank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}

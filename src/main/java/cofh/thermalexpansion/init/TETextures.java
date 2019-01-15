@@ -74,7 +74,7 @@ public class TETextures {
 		MACHINE_ACTIVE_PRECIPITATOR =		register(MACHINE_ACTIVE_ + "precipitator");
 		MACHINE_ACTIVE_EXTRUDER =			register(MACHINE_ACTIVE_ + "extruder");
 
-		MACHINE_ACTIVE_EXTRUDER_UNDERLAY =	register(MACHINE_ACTIVE_ + "extruder_underlay");
+		MACHINE_UNDERLAY_EXTRUDER =	        register(MACHINE_ + "underlay_extruder");
 
 		MACHINE_FRAME_TOP =                 register(MACHINE_ + "frame_top");
 		MACHINE_FRAME_BOTTOM =              register(MACHINE_ + "frame_bottom");
@@ -105,6 +105,9 @@ public class TETextures {
 		DEVICE_FACE_LEXICON =	    		register(DEVICE_FACE_ + "lexicon");
 		DEVICE_FACE_XP_COLLECTOR =    		register(DEVICE_FACE_ + "xp_collector");
 		DEVICE_FACE_DIFFUSER =    	    	register(DEVICE_FACE_ + "diffuser");
+		DEVICE_FACE_FACTORIZER =            register(DEVICE_FACE_ + "factorizer");
+		DEVICE_FACE_MOB_CATCHER =           register(DEVICE_FACE_ + "mob_catcher");
+		DEVICE_FACE_ITEM_COLLECTOR =        register(DEVICE_FACE_ + "item_collector");
 
 		DEVICE_ACTIVE_WATER_GEN =			register(DEVICE_ACTIVE_ + "water_gen");
 		DEVICE_ACTIVE_NULLIFIER =			register(DEVICE_ACTIVE_ + "nullifier");
@@ -116,6 +119,11 @@ public class TETextures {
 		DEVICE_ACTIVE_LEXICON =	        	register(DEVICE_ACTIVE_ + "lexicon");
 		DEVICE_ACTIVE_XP_COLLECTOR =      	register(DEVICE_ACTIVE_ + "xp_collector");
 		DEVICE_ACTIVE_DIFFUSER =        	register(DEVICE_ACTIVE_ + "diffuser");
+		DEVICE_ACTIVE_FACTORIZER =          register(DEVICE_ACTIVE_ + "factorizer");
+		DEVICE_ACTIVE_MOB_CATCHER =         register(DEVICE_ACTIVE_ + "mob_catcher");
+		DEVICE_ACTIVE_ITEM_COLLECTOR =      register(DEVICE_ACTIVE_ + "item_collector");
+
+		PORTAL_UNDERLAY =    register("blocks/portal");
 
         DEVICE_FRAME_TOP =                  register(DEVICE_ + "frame_top");
 		DEVICE_FRAME_SIDE =                 register(DEVICE_ + "frame_side");
@@ -123,7 +131,7 @@ public class TETextures {
 		DEVICE_FRAME_INNER =                register(DEVICE_ + "frame_inner");
 
 		/* DYNAMOS */
-		DYNAMO_COIL_REDSTONE =				register(DYNAMO_ + "coil_redstone");
+		DYNAMO_COIL_REDSTONE =				registerAnim(DYNAMO_ + "coil_redstone");
 		DYNAMO_COIL_STEAM =     		    register(DYNAMO_ + "coil_steam");
 
 		DYNAMO_STEAM =						register(DYNAMO_ + "steam");
@@ -172,6 +180,7 @@ public class TETextures {
 		CELL_CENTER_0 =                     register("blocks/redstone_block");
 		CELL_CENTER_1 =                     register("thermalfoundation:blocks/fluid/redstone_still");
 
+		/* TANKS */
 		TANK_BOTTOM_0_0 =                   register(TANK_ + "bottom_0_0");
 		TANK_BOTTOM_0_1 =                   register(TANK_ + "bottom_0_1");
 		TANK_BOTTOM_0_2 =                   register(TANK_ + "bottom_0_2");
@@ -209,6 +218,7 @@ public class TETextures {
 
 		TANK_SIDE_LOCK =                    register(TANK_ + "side_lock");
 
+		/* CACHES */
 		CACHE_BOTTOM_0 =                    register(CACHE_ + "bottom_0");
 		CACHE_BOTTOM_1 =                    register(CACHE_ + "bottom_1");
 		CACHE_BOTTOM_2 =                    register(CACHE_ + "bottom_2");
@@ -248,6 +258,7 @@ public class TETextures {
 		CACHE_METER_8 =                     register(CACHE_ + "meter_8");
 		CACHE_METER_C =                     register(CACHE_ + "meter_c");
 
+		/* STRONGBOXES */
 		STRONGBOX_TOP_0 =                   register(STRONGBOX_ + "top_0");
 		STRONGBOX_TOP_1 =                   register(STRONGBOX_ + "top_1");
 		STRONGBOX_TOP_2 =                   register(STRONGBOX_ + "top_2");
@@ -255,11 +266,31 @@ public class TETextures {
 		STRONGBOX_TOP_4 =                   register(STRONGBOX_ + "top_4");
 		STRONGBOX_TOP_C =                   register(STRONGBOX_ + "top_c");
 
+		/* LIGHTS */
+		ILLUMINATOR_CENTER_0 =              register("thermalfoundation:blocks/fluid/glowstone_still");
+		ILLUMINATOR_CENTER_1 =              register(BLOCKS_ + "light/illuminator_effect");
 		ILLUMINATOR_FRAME =                 register(BLOCKS_ + "light/illuminator_frame");
+		LAMP_CENTER =                       register(BLOCKS_ + "light/lamp_effect");
+		LAMP_HALO =                         register(BLOCKS_ + "light/lamp_halo");
 
-		FLORB =                             register(ITEMS_ + "florb/florb");
+		FLORB_STANDARD =                    register(ITEMS_ + "florb/florb_standard");
 		FLORB_MAGMATIC =                    register(ITEMS_ + "florb/florb_magmatic");
 		FLORB_MASK =                        register(ITEMS_ + "florb/florb_mask");
+
+		RESERVOIR_0 =                       register(ITEMS_ + "reservoir/reservoir_0");
+		RESERVOIR_1 =                       register(ITEMS_ + "reservoir/reservoir_1");
+		RESERVOIR_2 =                       register(ITEMS_ + "reservoir/reservoir_2");
+		RESERVOIR_3 =                       register(ITEMS_ + "reservoir/reservoir_3");
+		RESERVOIR_4 =                       register(ITEMS_ + "reservoir/reservoir_4");
+		RESERVOIR_C =                       register(ITEMS_ + "reservoir/reservoir_c");
+
+		RESERVOIR_MODE_0_0 =                register(ITEMS_ + "reservoir/reservoir_mode_0_0");
+		RESERVOIR_MODE_0_1 =                register(ITEMS_ + "reservoir/reservoir_mode_0_1");
+		RESERVOIR_MODE_1_0 =                register(ITEMS_ + "reservoir/reservoir_mode_1_0");
+		RESERVOIR_MODE_1_1 =                register(ITEMS_ + "reservoir/reservoir_mode_1_1");
+
+		RESERVOIR_COLOR_0 =                 register(ITEMS_ + "reservoir/reservoir_color_0");
+		RESERVOIR_MASK =                    register(ITEMS_ + "reservoir/reservoir_mask");
 
 		/* ARRAYS */
 		CONFIG = new TextureAtlasSprite[] {
@@ -339,7 +370,10 @@ public class TETextures {
 				DEVICE_FACE_FLUID_BUFFER,
 				DEVICE_FACE_LEXICON,
 				DEVICE_FACE_XP_COLLECTOR,
-				DEVICE_FACE_DIFFUSER
+				DEVICE_FACE_DIFFUSER,
+				DEVICE_FACE_FACTORIZER,
+				DEVICE_FACE_MOB_CATCHER,
+				DEVICE_FACE_ITEM_COLLECTOR
 		};
 
 		DEVICE_ACTIVE = new TextureAtlasSprite[] {
@@ -352,7 +386,10 @@ public class TETextures {
 				DEVICE_ACTIVE_FLUID_BUFFER,
 				DEVICE_ACTIVE_LEXICON,
 				DEVICE_ACTIVE_XP_COLLECTOR,
-				DEVICE_ACTIVE_DIFFUSER
+				DEVICE_ACTIVE_DIFFUSER,
+				DEVICE_ACTIVE_FACTORIZER,
+				DEVICE_ACTIVE_MOB_CATCHER,
+				DEVICE_ACTIVE_ITEM_COLLECTOR
 		};
 
 		DYNAMO_COIL = new TextureAtlasSprite[] {
@@ -512,6 +549,22 @@ public class TETextures {
 				STRONGBOX_TOP_4,
 				STRONGBOX_TOP_C
 		};
+
+		RESERVOIR = new TextureAtlasSprite[] {
+				RESERVOIR_0,
+				RESERVOIR_1,
+				RESERVOIR_2,
+				RESERVOIR_3,
+				RESERVOIR_4,
+				RESERVOIR_C
+		};
+
+		RESERVOIR_MODE = new TextureAtlasSprite[4];
+		RESERVOIR_MODE[0b00] = RESERVOIR_MODE_0_0;
+		RESERVOIR_MODE[0b01] = RESERVOIR_MODE_0_1;
+		RESERVOIR_MODE[0b10] = RESERVOIR_MODE_1_0;
+		RESERVOIR_MODE[0b11] = RESERVOIR_MODE_1_1;
+
 		// @formatter:on
 		CustomParticleHandler.addIgnoredSprite(CONFIG_NONE);
 	}
@@ -532,6 +585,15 @@ public class TETextures {
 		return register(sprite);
 	}
 
+	private static TextureAtlasSprite registerAnim(String sprite) {
+
+		if (TEProps.animatedDynamoCoilTexture) {
+			sprite += ANIM_POSTFIX;
+		}
+		return register(sprite);
+	}
+
+	private static String ANIM_POSTFIX = "_anim";
 	private static String CB_POSTFIX = "_cb";
 
 	private static final String BLOCKS_ = "thermalexpansion:blocks/";
@@ -614,7 +676,7 @@ public class TETextures {
 	public static TextureAtlasSprite MACHINE_ACTIVE_PRECIPITATOR;
 	public static TextureAtlasSprite MACHINE_ACTIVE_EXTRUDER;
 
-	public static TextureAtlasSprite MACHINE_ACTIVE_EXTRUDER_UNDERLAY;
+	public static TextureAtlasSprite MACHINE_UNDERLAY_EXTRUDER;
 
 	public static TextureAtlasSprite MACHINE_FRAME_TOP;
 	public static TextureAtlasSprite MACHINE_FRAME_SIDE;
@@ -646,6 +708,9 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_FACE_LEXICON;
 	public static TextureAtlasSprite DEVICE_FACE_XP_COLLECTOR;
 	public static TextureAtlasSprite DEVICE_FACE_DIFFUSER;
+	public static TextureAtlasSprite DEVICE_FACE_FACTORIZER;
+	public static TextureAtlasSprite DEVICE_FACE_MOB_CATCHER;
+	public static TextureAtlasSprite DEVICE_FACE_ITEM_COLLECTOR;
 
 	public static TextureAtlasSprite[] DEVICE_ACTIVE;
 	public static TextureAtlasSprite DEVICE_ACTIVE_WATER_GEN;
@@ -658,6 +723,9 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_ACTIVE_LEXICON;
 	public static TextureAtlasSprite DEVICE_ACTIVE_XP_COLLECTOR;
 	public static TextureAtlasSprite DEVICE_ACTIVE_DIFFUSER;
+	public static TextureAtlasSprite DEVICE_ACTIVE_FACTORIZER;
+	public static TextureAtlasSprite DEVICE_ACTIVE_MOB_CATCHER;
+	public static TextureAtlasSprite DEVICE_ACTIVE_ITEM_COLLECTOR;
 
 	public static TextureAtlasSprite DEVICE_FRAME_TOP;
 	public static TextureAtlasSprite DEVICE_FRAME_SIDE;
@@ -813,10 +881,33 @@ public class TETextures {
 	public static TextureAtlasSprite STRONGBOX_TOP_4;
 	public static TextureAtlasSprite STRONGBOX_TOP_C;
 
+	public static TextureAtlasSprite ILLUMINATOR_CENTER_0;
+	public static TextureAtlasSprite ILLUMINATOR_CENTER_1;
 	public static TextureAtlasSprite ILLUMINATOR_FRAME;
+	public static TextureAtlasSprite LAMP_CENTER;
+	public static TextureAtlasSprite LAMP_HALO;
 
-	public static TextureAtlasSprite FLORB;
+	public static TextureAtlasSprite FLORB_STANDARD;
 	public static TextureAtlasSprite FLORB_MAGMATIC;
 	public static TextureAtlasSprite FLORB_MASK;
+
+	public static TextureAtlasSprite[] RESERVOIR;
+	public static TextureAtlasSprite RESERVOIR_0;
+	public static TextureAtlasSprite RESERVOIR_1;
+	public static TextureAtlasSprite RESERVOIR_2;
+	public static TextureAtlasSprite RESERVOIR_3;
+	public static TextureAtlasSprite RESERVOIR_4;
+	public static TextureAtlasSprite RESERVOIR_C;
+
+	public static TextureAtlasSprite[] RESERVOIR_MODE;
+	public static TextureAtlasSprite RESERVOIR_MODE_0_0;
+	public static TextureAtlasSprite RESERVOIR_MODE_0_1;
+	public static TextureAtlasSprite RESERVOIR_MODE_1_0;
+	public static TextureAtlasSprite RESERVOIR_MODE_1_1;
+
+	public static TextureAtlasSprite RESERVOIR_COLOR_0;
+	public static TextureAtlasSprite RESERVOIR_MASK;
+
+	public static TextureAtlasSprite PORTAL_UNDERLAY;
 
 }

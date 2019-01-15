@@ -9,15 +9,14 @@ import codechicken.lib.model.bakery.generation.IBakery;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IModelRegister;
-import cofh.core.util.helpers.BlockHelper;
-import cofh.core.util.helpers.FluidHelper;
+import cofh.core.util.crafting.FluidIngredientFactory.FluidIngredient;
+import cofh.core.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalexpansion.render.BakeryDevice;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import cofh.thermalfoundation.item.tome.ItemTomeExperience;
 import cofh.thermalfoundation.item.tome.ItemTomeLexicon;
@@ -49,6 +48,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static cofh.core.util.helpers.RecipeHelper.addShapedFluidRecipe;
 import static cofh.core.util.helpers.RecipeHelper.addShapedRecipe;
 
 public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryProvider, IWorldBlockTextureProvider {
@@ -64,6 +64,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		setHardness(15.0F);
 		setResistance(25.0F);
 		setDefaultState(getBlockState().getBaseState().withProperty(VARIANT, Type.WATER_GEN));
+
+		configGui = true;
 	}
 
 	@Override
@@ -75,6 +77,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		// UnListed
 		builder.add(ModelErrorStateProperty.ERROR_STATE);
 		builder.add(TEProps.TILE_DEVICE);
+		builder.add(TEProps.BAKERY_WORLD);
 
 		return builder.build();
 	}
@@ -82,7 +85,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i)));
 			}
@@ -93,7 +96,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
-		return this.getDefaultState().withProperty(VARIANT, Type.byMetadata(meta));
+		return this.getDefaultState().withProperty(VARIANT, Type.values()[meta]);
 	}
 
 	@Override
@@ -108,14 +111,15 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		return state.getValue(VARIANT).getMetadata();
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 
-		if (metadata >= Type.values().length) {
+		int meta = state.getBlock().getMetaFromState(state);
+
+		if (meta >= Type.values().length) {
 			return null;
 		}
-		switch (Type.byMetadata(metadata)) {
+		switch (Type.values()[meta]) {
 			case WATER_GEN:
 				return new TileWaterGen();
 			case NULLIFIER:
@@ -136,6 +140,12 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 				return new TileXpCollector();
 			case DIFFUSER:
 				return new TileDiffuser();
+			case FACTORIZER:
+				return new TileFactorizer();
+			case MOB_CATCHER:
+				return new TileMobCatcher();
+			case ITEM_COLLECTOR:
+				return new TileItemCollector();
 			//			case CHUNK_LOADER:                      // TODO
 			//				return null;
 			default:
@@ -149,9 +159,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 
 		if (stack.getTagCompound() != null) {
 			TileDeviceBase tile = (TileDeviceBase) world.getTileEntity(pos);
-
-			// tile.readAugmentsFromNBT(stack.getTagCompound());
-			// tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
 			int storedFacing = ReconfigurableHelper.getFacing(stack);
@@ -188,14 +195,22 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 	@Override
 	public boolean onBlockActivatedDelegate(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-		TileEntity tile = world.getTileEntity(pos);
+		TileDeviceBase tile = (TileDeviceBase) world.getTileEntity(pos);
 
-		if (tile instanceof TileHeatSink) {
+		if (tile == null || !tile.canPlayerAccess(player)) {
+			return false;
+		}
+		if (ItemHelper.isPlayerHoldingNothing(player)) {
+			if (player.isSneaking() && tile.hasConfigGui() && ServerHelper.isServerWorld(world)) {
+				return tile.openConfigGui(player);
+			}
+		}
+		if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 			ItemStack heldItem = player.getHeldItem(hand);
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 
 			if (FluidHelper.isFluidHandler(heldItem)) {
-				FluidHelper.drainItemToHandler(heldItem, handler, player, hand);
+				FluidHelper.interactWithHandler(heldItem, handler, player, hand);
 				return true;
 			}
 		}
@@ -239,6 +254,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
 
 		TileEntity tileEntity = world.getTileEntity(pos);
@@ -266,8 +282,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString() + "|" + state.getBlock().getMetaFromState(state));
 			TileDeviceBase tile = state.getValue(TEProps.TILE_DEVICE);
+			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString() + "|" + state.getBlock().getMetaFromState(state));
 			builder.append("facing=").append(tile.getFacing());
 			builder.append(",active=").append(tile.isActive);
 			builder.append(",side_config={");
@@ -277,14 +293,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 			builder.append("}");
 			if (tile.hasFluidUnderlay() && tile.isActive) {
 				FluidStack stack = tile.getRenderFluid();
-				int code = 1;
-				if (stack != null) {//Create a hash not including the fluid amount.
-					code = 31 * code + stack.getFluid().hashCode();
-					if (stack.tag != null) {
-						code = 31 * code + stack.tag.hashCode();
-					}
-				}
-				builder.append(",fluid=").append(stack != null ? code : tile.getTexture(tile.getFacing(), 0).getIconName());
+				builder.append(",fluid=").append(stack != null ? FluidHelper.getFluidHash(stack) : tile.getTexture(tile.getFacing(), 0).getIconName());
 			}
 			return builder.toString();
 		});
@@ -292,7 +301,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("device");
 		ForgeRegistries.BLOCKS.register(this);
@@ -313,6 +322,9 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		TileLexicon.initialize();
 		TileXpCollector.initialize();
 		TileDiffuser.initialize();
+		TileFactorizer.initialize();
+		TileMobCatcher.initialize();
+		TileItemCollector.initialize();
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
@@ -320,7 +332,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		deviceWaterGen = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.WATER_GEN.getMetadata()));
 		deviceNullifier = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.NULLIFIER.getMetadata()));
@@ -332,6 +344,9 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		deviceLexicon = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.LEXICON.getMetadata()));
 		deviceExpCollector = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.XP_COLLECTOR.getMetadata()));
 		deviceDiffuser = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.DIFFUSER.getMetadata()));
+		deviceFactorizer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FACTORIZER.getMetadata()));
+		deviceMobCatcher = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.MOB_CATCHER.getMetadata()));
+		deviceItemCollector = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ITEM_COLLECTOR.getMetadata()));
 
 		addRecipes();
 
@@ -357,14 +372,14 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 			);
 		}
 		if (enable[Type.NULLIFIER.getMetadata()]) {
-			addShapedRecipe(deviceNullifier,
+			addShapedFluidRecipe(deviceNullifier,
 					" X ",
 					"YCY",
 					"IPI",
 					'C', ItemFrame.frameDevice,
 					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', Items.LAVA_BUCKET,
+					'X', new FluidIngredient("lava"),
 					'Y', Blocks.BRICK_BLOCK
 			);
 		}
@@ -376,7 +391,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'C', ItemFrame.frameDevice,
 					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', "blockCopper",
+					'X', "ingotCopper",
 					'Y', "ingotInvar"
 			);
 		}
@@ -388,8 +403,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'C', ItemFrame.frameDevice,
 					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', Items.BUCKET,
-					'Y', "ingotCopper"
+					'X', "ingotCopper",
+					'Y', "plankWood"
 			);
 		}
 		if (enable[Type.FISHER.getMetadata()]) {
@@ -412,8 +427,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'C', ItemFrame.frameDevice,
 					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', Blocks.HOPPER,
-					'Y', "dustRedstone"
+					'X', "chestWood",
+					'Y', "ingotTin"
 			);
 		}
 		if (enable[Type.FLUID_BUFFER.getMetadata()]) {
@@ -424,7 +439,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'C', ItemFrame.frameDevice,
 					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', Items.CAULDRON,
+					'X', "blockGlass",
 					'Y', "ingotCopper"
 			);
 		}
@@ -460,8 +475,44 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 					'C', ItemFrame.frameDevice,
 					'I', ironPart,
 					'P', ItemMaterial.redstoneServo,
-					'X', Blocks.DISPENSER,
+					'X', "blockGlassHardened",
 					'Y', "ingotSilver"
+			);
+		}
+		if (enable[Type.FACTORIZER.getMetadata()]) {
+			addShapedRecipe(deviceFactorizer,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameDevice,
+					'I', ironPart,
+					'P', ItemMaterial.redstoneServo,
+					'X', "workbench",
+					'Y', "ingotLead"
+			);
+		}
+		if (enable[Type.MOB_CATCHER.getMetadata()]) {
+			addShapedRecipe(deviceMobCatcher,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameDevice,
+					'I', ironPart,
+					'P', ItemMaterial.redstoneServo,
+					'X', Blocks.DISPENSER,
+					'Y', "ingotConstantan"
+			);
+		}
+		if (enable[Type.ITEM_COLLECTOR.getMetadata()]) {
+			addShapedRecipe(deviceItemCollector,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameDevice,
+					'I', ironPart,
+					'P', ItemMaterial.redstoneServo,
+					'X', Blocks.HOPPER,
+					'Y', "ingotTin"
 			);
 		}
 		// @formatter:on
@@ -481,24 +532,19 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		LEXICON(7, "lexicon"),
 		XP_COLLECTOR(8, "xp_collector"),
 		DIFFUSER(9, "diffuser"),
-		CHUNK_LOADER(10, "chunk_loader");
+		FACTORIZER(10, "factorizer"),
+		MOB_CATCHER(11, "mob_catcher"),
+		ITEM_COLLECTOR(12, "item_collector"),
+		CHUNK_LOADER(13, "chunk_loader");
 		// @formatter:on
 
-		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
-		private final int light;
-
-		Type(int metadata, String name, int light) {
-
-			this.metadata = metadata;
-			this.name = name;
-			this.light = light;
-		}
 
 		Type(int metadata, String name) {
 
-			this(metadata, name, 0);
+			this.metadata = metadata;
+			this.name = name;
 		}
 
 		public int getMetadata() {
@@ -510,25 +556,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 		public String getName() {
 
 			return this.name;
-		}
-
-		public int getLight() {
-
-			return light;
-		}
-
-		public static Type byMetadata(int metadata) {
-
-			if (metadata < 0 || metadata >= METADATA_LOOKUP.length) {
-				metadata = 0;
-			}
-			return METADATA_LOOKUP[metadata];
-		}
-
-		static {
-			for (Type type : values()) {
-				METADATA_LOOKUP[type.getMetadata()] = type;
-			}
 		}
 	}
 
@@ -545,8 +572,10 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IBakeryP
 	public static ItemStack deviceLexicon;
 	public static ItemStack deviceExpCollector;
 	public static ItemStack deviceDiffuser;
+	public static ItemStack deviceFactorizer;
+	public static ItemStack deviceMobCatcher;
+	public static ItemStack deviceItemCollector;
 	public static ItemStack deviceChunkLoader;
-	public static ItemStack deviceTrader;
 
 	public static ItemBlockDevice itemBlock;
 

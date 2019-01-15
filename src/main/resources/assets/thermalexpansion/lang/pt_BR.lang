@@ -121,15 +121,15 @@ info.thermalexpansion.augment.machineChargerWireless.a.0=Permite recarregar rapi
 info.thermalexpansion.augment.machineChargerWireless.b.0=Porém, não mais aceita, nem processa e nem carrega itens em si mesmo.
 info.thermalexpansion.augment.machineChargerWireless.c.0=Não excede a taxa de carregamento do Capacitor de Flux.
 
+info.thermalexpansion.augment.machineCompactorCoin.0=Compactador: Especialização
+info.thermalexpansion.augment.machineCompactorCoin.a.0=Permite a criação de moedas.
+info.thermalexpansion.augment.machineCompactorCoin.a.1=Moedas podem ser trocadas por bens e serviços.
+info.thermalexpansion.augment.machineCompactorCoin.c.0=A máquina deve estar no modo "moedas".
+
 info.thermalexpansion.augment.machineCompactorGear.0=Compactador: Especialização
 info.thermalexpansion.augment.machineCompactorGear.a.0=Permite a criação de engrenagens de maneira eficiente.
 info.thermalexpansion.augment.machineCompactorGear.a.1=Engrenagens são usadas na construção de inumeras coisas.
 info.thermalexpansion.augment.machineCompactorGear.c.0=A máquina deve ser colocada no modo "Engrenagens".
-
-info.thermalexpansion.augment.machineCompactorMint.0=Compactador: Especialização
-info.thermalexpansion.augment.machineCompactorMint.a.0=Permite a criação de moedas.
-info.thermalexpansion.augment.machineCompactorMint.a.1=Moedas podem ser trocadas por bens e serviços.
-info.thermalexpansion.augment.machineCompactorMint.c.0=A máquina deve estar no modo "moedas".
 
 info.thermalexpansion.augment.machineCrafterInput.0=Fabricador Sequencial: Funcionalidade
 info.thermalexpansion.augment.machineCrafterInput.a.0=Adiciona a capacidade de auto-injetar itens.
@@ -391,8 +391,8 @@ item.thermalexpansion.capacitor.standard2.name=Capacitor de Flux (Reforçado)
 item.thermalexpansion.capacitor.standard3.name=Capacitor de Flux (Signalo)
 item.thermalexpansion.capacitor.standard4.name=Capacitor de Flux (Resonante)
 
-item.thermalexpansion.florb.florb.name=Florb
-item.thermalexpansion.florb.florbMagmatic.name=Florb Magmático
+item.thermalexpansion.florb.standard.name=Florb
+item.thermalexpansion.florb.magmatic.name=Florb Magmático
 
 item.thermalexpansion.morb.reusable.name=Morb Reutilizável
 item.thermalexpansion.morb.standard.name=Morb

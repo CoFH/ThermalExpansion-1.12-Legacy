@@ -18,9 +18,7 @@ public class GuiSatchelFilter extends GuiContainerCore {
 
 	String texturePath;
 
-	int level;
 	boolean secure;
-
 	UUID playerName;
 	int filterIndex;
 
@@ -33,9 +31,7 @@ public class GuiSatchelFilter extends GuiContainerCore {
 
 		super(container);
 
-		level = ItemSatchel.getLevel(container.getFilterStack());
 		secure = SecurityHelper.isSecure(container.getFilterStack());
-
 		playerName = SecurityHelper.getID(inventory.player);
 		filterIndex = ItemSatchel.getLevel(container.getFilterStack());
 		texture = CoreProps.TEXTURE_FILTER[filterIndex];
@@ -45,7 +41,6 @@ public class GuiSatchelFilter extends GuiContainerCore {
 		allowUserInput = false;
 
 		xSize = 176;
-		ySize = filterIndex > 1 ? 202 : 184;
 
 		generateInfo("tab.thermalexpansion.storage.satchel_filter");
 	}
@@ -61,10 +56,10 @@ public class GuiSatchelFilter extends GuiContainerCore {
 		if (ItemSatchel.enableSecurity && secure) {
 			addTab(new TabSecurity(this, (ISecurable) inventorySlots, playerName));
 		}
-		buttonList = new ElementButton(this, 24, ySize - 118, "FilterList", 176, 0, 176, 20, 20, 20, texturePath);
-		buttonOre = new ElementButton(this, 60, ySize - 118, "FilterOre", 216, 0, 216, 20, 20, 20, texturePath);
-		buttonMeta = new ElementButton(this, 96, ySize - 118, "FilterMeta", 176, 60, 176, 80, 20, 20, texturePath);
-		buttonNbt = new ElementButton(this, 132, ySize - 118, "FilterNbt", 216, 60, 216, 80, 20, 20, texturePath);
+		buttonList = new ElementButton(this, 119, 20, "FilterList", 176, 0, 176, 20, 20, 20, texturePath);
+		buttonOre = new ElementButton(this, 145, 20, "FilterOre", 216, 0, 216, 20, 20, 20, texturePath);
+		buttonMeta = new ElementButton(this, 119, 46, "FilterMeta", 176, 60, 176, 80, 20, 20, texturePath);
+		buttonNbt = new ElementButton(this, 145, 46, "FilterNbt", 216, 60, 216, 80, 20, 20, texturePath);
 
 		addElement(buttonList);
 		addElement(buttonOre);

@@ -4,6 +4,7 @@ import cofh.core.inventory.ComparableItemStack;
 import cofh.core.inventory.ComparableItemStackNBT;
 import cofh.core.util.helpers.StringHelper;
 import cofh.redstoneflux.api.IEnergyContainerItem;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.plugins.jei.Drawables;
@@ -31,6 +32,9 @@ public class EnervationFuelCategory extends BaseFuelCategory<EnervationFuelWrapp
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Dynamo.Enervation", enable);
 
 		if (!enable) {
 			return;
@@ -87,7 +91,7 @@ public class EnervationFuelCategory extends BaseFuelCategory<EnervationFuelWrapp
 						}
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					ThermalExpansion.LOG.error("Exception thrown while getting Enervation Dynamo fuels.", e);
 				}
 			}
 		}

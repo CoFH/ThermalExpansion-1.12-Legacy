@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -30,13 +31,16 @@ public class BakeryCache extends CubeBakeryBase {
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess world, BlockPos pos) {
 
-		TileCache tileCache = (TileCache) world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
-		if (tileCache == null) {
+		if (tile == null) {
 			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Null tile. Position: %s", pos));
+		} else if (!(tile instanceof TileCache)) {
+			return state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.of("Tile is not an instance of TileCache, was %s. Pos: %s", tile.getClass().getName(), pos));
 		}
 		state = state.withProperty(ModelErrorStateProperty.ERROR_STATE, ErrorState.OK);
-		state = state.withProperty(TEProps.TILE_CACHE, tileCache);
+		state = state.withProperty(TEProps.TILE_CACHE, (TileCache) tile);
+		state = state.withProperty(TEProps.BAKERY_WORLD, world);
 		return state;
 	}
 
@@ -72,6 +76,7 @@ public class BakeryCache extends CubeBakeryBase {
 			Block block = state.getBlock();
 			IWorldBlockTextureProvider provider = (IWorldBlockTextureProvider) block;
 			TileCache tile = state.getValue(TEProps.TILE_CACHE);
+			IBlockAccess world = state.getValue(TEProps.BAKERY_WORLD);
 
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(0x07, DefaultVertexFormats.ITEM);
@@ -79,7 +84,7 @@ public class BakeryCache extends CubeBakeryBase {
 			ccrs.reset();
 			ccrs.bind(buffer);
 
-			renderFace(ccrs, face, provider.getTexture(face, state, layer, tile.getWorld(), tile.getPos()), 0xFFFFFFFF);
+			renderFace(ccrs, face, provider.getTexture(face, state, layer, world, tile.getPos()), 0xFFFFFFFF);
 
 			buffer.finishDrawing();
 			quads.addAll(buffer.bake());

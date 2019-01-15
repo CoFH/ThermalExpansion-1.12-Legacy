@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
+
 public class TransposerRecipeWrapperContainer extends TransposerRecipeWrapper {
 
 	public TransposerRecipeWrapperContainer(IGuiHelper guiHelper, ItemStack container, String uIdIn) {
@@ -28,45 +30,47 @@ public class TransposerRecipeWrapperContainer extends TransposerRecipeWrapper {
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 		List<FluidStack> recipeFluids = new ArrayList<>();
 
+		ItemStack inputStack = container.copy();
+		ItemStack outputStack;
+		IFluidHandlerItem handler = inputStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
-			ItemStack filledStack = container.copy();
-			IFluidHandlerItem handler = filledStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 			for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
 				int fill = handler.fill(new FluidStack(fluid, Fluid.BUCKET_VOLUME), true);
 				if (fill > 0) {
 					FluidStack filledFluid = new FluidStack(fluid, fill);
-					filledStack = handler.getContainer();
+					outputStack = handler.getContainer().copy();
 					recipeInputs.add(container);
-					recipeOutputs.add(filledStack);
+					recipeOutputs.add(outputStack);
 					recipeFluids.add(filledFluid);
+
+					handler.drain(Fluid.BUCKET_VOLUME, true);
 				}
 			}
 		} else {
-			ItemStack filledStack = container.copy();
-			IFluidHandlerItem handler = filledStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
 			for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
 				int fill = handler.fill(new FluidStack(fluid, Fluid.BUCKET_VOLUME), true);
 				if (fill > 0) {
-					filledStack = handler.getContainer().copy();
+					inputStack = handler.getContainer().copy();
 					FluidStack drainedFluid = handler.drain(Fluid.BUCKET_VOLUME, true);
 					if (drainedFluid != null) {
-						ItemStack drainedStack = handler.getContainer();
-						recipeInputs.add(filledStack);
-						recipeOutputs.add(drainedStack);
+						outputStack = handler.getContainer();
+						recipeInputs.add(inputStack);
+						recipeOutputs.add(outputStack);
 						recipeFluids.add(drainedFluid);
 					}
 				}
 			}
 		}
-		inputs = recipeInputs;
-		outputs = recipeOutputs;
+		inputs = singletonList(recipeInputs);
+		outputs = singletonList(recipeOutputs);
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
-			inputFluids = recipeFluids;
+			inputFluids = singletonList(recipeFluids);
 			outputFluids = Collections.emptyList();
 		} else {
 			inputFluids = Collections.emptyList();
-			outputFluids = recipeFluids;
+			outputFluids = singletonList(recipeFluids);
 		}
 		energy = TransposerManager.DEFAULT_ENERGY;
 

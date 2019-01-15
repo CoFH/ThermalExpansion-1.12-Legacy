@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.machine.transposer;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
@@ -20,6 +21,9 @@ public abstract class TransposerRecipeCategory extends BaseRecipeCategory<Transp
 
 	public static void register(IRecipeCategoryRegistration registry) {
 
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Transposer", enable);
+
 		if (!enable) {
 			return;
 		}
@@ -35,8 +39,6 @@ public abstract class TransposerRecipeCategory extends BaseRecipeCategory<Transp
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-
 		TransposerRecipeCategoryFill.initialize(registry);
 		TransposerRecipeCategoryExtract.initialize(registry);
 		registry.addRecipeClickArea(GuiTransposer.class, 112, 19, 24, 16, RecipeUidsTE.TRANSPOSER_FILL, RecipeUidsTE.TRANSPOSER_EXTRACT);

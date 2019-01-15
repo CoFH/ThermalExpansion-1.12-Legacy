@@ -1,14 +1,18 @@
 package cofh.thermalexpansion.plugins.jei.machine.compactor;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiCompactor;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeCategory;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager.CompactorRecipe;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -18,13 +22,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CompactorRecipeCategory extends BaseRecipeCategory<CompactorRecipeWrapper> {
+public class CompactorRecipeCategory extends BaseRecipeCategory<CompactorRecipeWrapper> {
 
 	public static boolean enable = true;
 
 	public static void register(IRecipeCategoryRegistration registry) {
+
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Compactor", enable);
 
 		if (!enable) {
 			return;
@@ -32,9 +40,8 @@ public abstract class CompactorRecipeCategory extends BaseRecipeCategory<Compact
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new CompactorRecipeCategoryPress(guiHelper));
-		registry.addRecipeCategories(new CompactorRecipeCategoryStorage(guiHelper));
-		registry.addRecipeCategories(new CompactorRecipeCategoryMint(guiHelper));
+		registry.addRecipeCategories(new CompactorRecipeCategory(guiHelper));
+		registry.addRecipeCategories(new CompactorRecipeCategoryCoin(guiHelper));
 		registry.addRecipeCategories(new CompactorRecipeCategoryGear(guiHelper));
 	}
 
@@ -43,11 +50,28 @@ public abstract class CompactorRecipeCategory extends BaseRecipeCategory<Compact
 		if (!enable) {
 			return;
 		}
-		CompactorRecipeCategoryPress.initialize(registry);
-		CompactorRecipeCategoryStorage.initialize(registry);
-		CompactorRecipeCategoryMint.initialize(registry);
+		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+
+		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.COMPACTOR);
+		registry.addRecipeClickArea(GuiCompactor.class, 79, 34, 24, 16, RecipeUidsTE.COMPACTOR, RecipeUidsTE.COMPACTOR_COIN, RecipeUidsTE.COMPACTOR_GEAR);
+		registry.addRecipeCatalyst(BlockMachine.machineCompactor, RecipeUidsTE.COMPACTOR);
+
+		CompactorRecipeCategoryCoin.initialize(registry);
 		CompactorRecipeCategoryGear.initialize(registry);
-		registry.addRecipeClickArea(GuiCompactor.class, 79, 34, 24, 16, RecipeUidsTE.COMPACTOR_PRESS, RecipeUidsTE.COMPACTOR_STORAGE, RecipeUidsTE.COMPACTOR_MINT, RecipeUidsTE.COMPACTOR_GEAR);
+	}
+
+	public static List<CompactorRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
+
+		List<CompactorRecipeWrapper> recipes = new ArrayList<>();
+
+		for (CompactorRecipe recipe : CompactorManager.getRecipeList(Mode.ALL)) {
+			recipes.add(new CompactorRecipeWrapper(guiHelper, recipe, RecipeUidsTE.COMPACTOR));
+		}
+		for (CompactorRecipe recipe : CompactorManager.getRecipeList(Mode.PLATE)) {
+			recipes.add(new CompactorRecipeWrapper(guiHelper, recipe, RecipeUidsTE.COMPACTOR));
+		}
+		return recipes;
 	}
 
 	protected IDrawableStatic progress;
@@ -63,10 +87,11 @@ public abstract class CompactorRecipeCategory extends BaseRecipeCategory<Compact
 		speed = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_COMPACT);
 	}
 
+	@Nonnull
 	@Override
-	public IDrawable getIcon() {
+	public String getUid() {
 
-		return icon;
+		return RecipeUidsTE.COMPACTOR;
 	}
 
 	@Override

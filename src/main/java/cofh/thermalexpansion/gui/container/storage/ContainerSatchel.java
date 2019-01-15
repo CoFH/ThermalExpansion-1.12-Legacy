@@ -11,13 +11,14 @@ import cofh.core.util.helpers.MathHelper;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.slot.SlotSatchelCreative;
+import cofh.thermalexpansion.gui.slot.SlotSatchelVoid;
 import cofh.thermalexpansion.item.ItemSatchel;
 import com.mojang.authlib.GameProfile;
-import gnu.trove.map.hash.THashMap;
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ChestContainer.RowSizeCallback;
 import invtweaks.api.container.ContainerSection;
 import invtweaks.api.container.ContainerSectionCallback;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -27,10 +28,13 @@ import net.minecraftforge.fml.common.Optional;
 import java.util.List;
 import java.util.Map;
 
-@ChestContainer ()
+@ChestContainer
 public class ContainerSatchel extends ContainerInventoryItem implements ISecurable, ISlotValidator {
 
 	static final String NAME = "item.thermalexpansion.satchel.name";
+
+	boolean isCreative;
+	boolean isVoid;
 
 	int storageIndex;
 	int rowSize;
@@ -38,6 +42,9 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	public ContainerSatchel(ItemStack stack, InventoryPlayer inventory) {
 
 		super(stack, inventory);
+
+		isCreative = ItemSatchel.isCreative(stack);
+		isVoid = ItemSatchel.isVoid(stack);
 
 		storageIndex = ItemSatchel.getStorageIndex(stack);
 		rowSize = MathHelper.clamp(storageIndex, 9, 14);
@@ -50,7 +57,11 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 
 		switch (storageIndex) {
 			case 0:
-				addSlotToContainer(new SlotSatchelCreative(this, containerWrapper, 0, 80, 26));
+				if (isVoid) {
+					addSlotToContainer(new SlotSatchelVoid(containerWrapper, 0, 80, 26));
+				} else {
+					addSlotToContainer(new SlotSatchelCreative(this, containerWrapper, 0, 80, 26));
+				}
 				rowSize = 1;
 				break;
 			case 1:
@@ -162,19 +173,12 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 		return containerWrapper.isItemValidForSlot(0, stack);
 	}
 
-	/* Inventory Tweaks */
-	@Optional.Method (modid = "inventorytweaks")
-	@RowSizeCallback
-	public int getRowSize() {
-
-		return rowSize;
-	}
-
+	/* INVENTORY TWEAKS */
 	@ContainerSectionCallback
 	@Optional.Method (modid = "inventorytweaks")
 	public Map<ContainerSection, List<Slot>> getContainerSections() {
 
-		Map<ContainerSection, List<Slot>> slotRefs = new THashMap<ContainerSection, List<Slot>>();
+		Map<ContainerSection, List<Slot>> slotRefs = new Object2ObjectOpenHashMap<>();
 
 		slotRefs.put(ContainerSection.INVENTORY, inventorySlots.subList(0, 36));
 		slotRefs.put(ContainerSection.INVENTORY_NOT_HOTBAR, inventorySlots.subList(0, 27));
@@ -182,6 +186,13 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 		slotRefs.put(ContainerSection.CHEST, inventorySlots.subList(36, inventorySlots.size()));
 
 		return slotRefs;
+	}
+
+	@RowSizeCallback
+	@Optional.Method (modid = "inventorytweaks")
+	public int getRowSize() {
+
+		return rowSize;
 	}
 
 }

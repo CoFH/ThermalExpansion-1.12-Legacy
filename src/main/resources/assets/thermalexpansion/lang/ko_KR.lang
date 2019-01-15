@@ -1,99 +1,629 @@
 #ko_KR
 
-achievement.thermalexpansion.florbMagmatic=세상이 불타는걸 보는건 어떤가요?
+gui.thermalexpansion.device.factorizer.modeCombine=모드: 결합
+gui.thermalexpansion.device.factorizer.modeSplit=모드: 분할
 
-info.thermalexpansion.augment.dynamoCoilDuct.0=다이나모에서 아이템과 액체를 내보내고 받을 수 있게 합니다.
+gui.thermalexpansion.device.item_buffer.decInput=입력 감소
+gui.thermalexpansion.device.item_buffer.decOutput=출력 감소
+gui.thermalexpansion.device.item_buffer.incInput=입력 증가
+gui.thermalexpansion.device.item_buffer.incOutput=출력 증가
 
-info.thermalexpansion.augment.dynamoThrottle.0=다이나모의 에너지출력을 0 까지 변경할 수 있게합니다.
+gui.thermalexpansion.device.mob_catcher.modeAll=모두 잡기
+gui.thermalexpansion.device.mob_catcher.modeFriendly=수동 잡기
+gui.thermalexpansion.device.mob_catcher.modeHostile=적 잡기
 
-info.thermalexpansion.augment.machineFurnaceFood.0=요리의 산출량을 늘립니다.
+gui.thermalexpansion.jei.centrifuge.mobChance=기초 기회
+gui.thermalexpansion.jei.centrifuge.mobNotice=나열된 수량까지 생산할 수 있습니다.
+gui.thermalexpansion.jei.factorizer.modeCombine=결합
+gui.thermalexpansion.jei.factorizer.modeSplit=분리
+gui.thermalexpansion.jei.transposer.modeEmpty=비어있음
+gui.thermalexpansion.jei.transposer.modeFill=가득있음
 
+gui.thermalexpansion.machine.crafter.clearRecipe=조합법 제거
+gui.thermalexpansion.machine.crafter.setRecipe=조합법 설치
+
+gui.thermalexpansion.machine.enchanter.modeLocked=비밀 슬롯 잠그기
+gui.thermalexpansion.machine.enchanter.modeUnlocked=비밀 슬롯 풀기
+
+gui.thermalexpansion.machine.insolator.modeLocked=비료 슬롯 잠그기
+gui.thermalexpansion.machine.insolator.modeUnlocked=비료 슬롯 풀기
+
+gui.thermalexpansion.machine.smelter.modeLocked=금속 액체 슬롯 잠그기
+gui.thermalexpansion.machine.smelter.modeUnlocked=금속 액체 슬롯 풀기
+
+gui.thermalexpansion.machine.transposer.modeEmpty=모드: 비어있음
+gui.thermalexpansion.machine.transposer.modeFill=모드: 가득있음
+gui.thermalexpansion.machine.transposer.modeLocked=모드 잠금
+
+gui.thermalexpansion.storage.cell.decRecv=RF 입력 감소
+gui.thermalexpansion.storage.cell.decSend=RF 출력 감소
+gui.thermalexpansion.storage.cell.incRecv=RF 입력 감소
+gui.thermalexpansion.storage.cell.incSend=RF 출력 감소
+
+info.thermalexpansion.augment.0=늘리기
+
+info.thermalexpansion.augment.dynamoBoiler.0=발전기: 출력 특징
+info.thermalexpansion.augment.dynamoBoiler.a.0=해당 발전기를 증기 보일러로 변환합니다.
+info.thermalexpansion.augment.dynamoBoiler.a.1=연료 효율을 높입니다.
+info.thermalexpansion.augment.dynamoBoiler.b.0=전력 생산을 조절할 수 없습니다.
+info.thermalexpansion.augment.dynamoBoiler.c.0=RF 대신 증기가 발생합니다.
+
+info.thermalexpansion.augment.dynamoCoilDuct.0=발전기: 측면 접근성
+info.thermalexpansion.augment.dynamoCoilDuct.a.0=코일을 삽입하고 추출할 수 있습니다.
+
+info.thermalexpansion.augment.dynamoCompressionBiofuel.0=압축 발전기: 특징
+info.thermalexpansion.augment.dynamoCompressionBiofuel.a.0=전력 생산 및 효율성을 크게 향상시킵니다.
+info.thermalexpansion.augment.dynamoCompressionBiofuel.b.0=오직 §2§o휘발유§r§4만 연료로 사용이 가능합니다.
+
+info.thermalexpansion.augment.dynamoCompressionCoolant.0=압축 발전기: 특징
+info.thermalexpansion.augment.dynamoCompressionCoolant.a.0=냉각제는 더 이상 작동을 위해 소비되지 않습니다.
+info.thermalexpansion.augment.dynamoCompressionCoolant.b.0=냉각제 일부가 있어야 합니다.
+info.thermalexpansion.augment.dynamoCompressionCoolant.c.0=냉각제가 강하면 효율이 높아집니다.
+
+info.thermalexpansion.augment.dynamoCompressionFuel.0=압축 발전기: 특징
+info.thermalexpansion.augment.dynamoCompressionFuel.a.0=전력 생산 및 효율성을 크게 향상시킵니다.
+info.thermalexpansion.augment.dynamoCompressionFuel.b.0=오직 §e§o정제유§r§4만 연료로 사용이 가능합니다.
+
+info.thermalexpansion.augment.dynamoEfficiency.0=발전기: 효율성 향상
+info.thermalexpansion.augment.dynamoEfficiency.a.0=더 많은 에너지(RF)가 연료에 의해 생산됩니다.
+
+info.thermalexpansion.augment.dynamoEnervationEnchant.0=탈력 발전기: 특징
+info.thermalexpansion.augment.dynamoEnervationEnchant.a.0=인첸트된 아이템을 연료로 사용할 수 있습니다.
+info.thermalexpansion.augment.dynamoEnervationEnchant.a.1=전력 생산 및 효율성을 크게 향상시킵니다.
+info.thermalexpansion.augment.dynamoEnervationEnchant.b.0=오직 인첸트된 아이템만 연료로 사용이 가능합니다.
+info.thermalexpansion.augment.dynamoEnervationEnchant.c.0=이 과정에서는 아이템이 파괴됩니다.
+
+info.thermalexpansion.augment.dynamoMagmaticCoolant.0=용암 발전기: 특징
+info.thermalexpansion.augment.dynamoMagmaticCoolant.a.0=전력 생산 및 효율성을 크게 향상시킵니다.
+info.thermalexpansion.augment.dynamoMagmaticCoolant.b.0=작동하려면 냉각제가 필요합니다.
+info.thermalexpansion.augment.dynamoMagmaticCoolant.c.0=냉각제가 강하면 효율이 높아집니다.
+
+info.thermalexpansion.augment.dynamoNumismaticGem.0=광석 발전기: 특징
+info.thermalexpansion.augment.dynamoNumismaticGem.a.0=다양한 원석을 연료로 사용할 수 있습니다.
+info.thermalexpansion.augment.dynamoNumismaticGem.a.1=전력 생산 및 효율성을 크게 향상시킵니다.
+info.thermalexpansion.augment.dynamoNumismaticGem.b.0=오직 원석만 연료로 사용할 수 있습니다.
+
+info.thermalexpansion.augment.dynamoPower.0=Dynamos: 출력 증가
+info.thermalexpansion.augment.dynamoPower.a.0=전력 생산(RF/t)을 증가시킵니다.
+
+info.thermalexpansion.augment.dynamoReactantElemental.0=반응 발전기: 특징
+info.thermalexpansion.augment.dynamoReactantElemental.a.0=전력 생산 및 효율성을 크게 향상시킵니다.
+info.thermalexpansion.augment.dynamoReactantElemental.b.0=요소 반응만 연료로 사용할 수 있습니다.
+
+info.thermalexpansion.augment.dynamoSteamTurbine.0=증기 발전기: 특징
+info.thermalexpansion.augment.dynamoSteamTurbine.a.0=전력 생산 및 효율성을 크게 향상시킵니다.
+info.thermalexpansion.augment.dynamoSteamTurbine.c.0=외부 요소에서 증기를 공급해야 합니다.
+
+info.thermalexpansion.augment.dynamoThrottle.0=발전기: 고급 조절
+info.thermalexpansion.augment.dynamoThrottle.a.0=플럭스코일 포화로 인한 RF손실을 방지합니다.
+
+info.thermalexpansion.augment.machineBrewerReagent.0=연금기: 효율성
+info.thermalexpansion.augment.machineBrewerReagent.a.0=시약을 소비하지 않을 수 있는 기회를 제공합니다.
+info.thermalexpansion.augment.machineBrewerReagent.b.0=작동당 추가 에너지가 필요합니다.
+
+info.thermalexpansion.augment.machineCentrifugeMobs.0=원심 분리기: 특징
+info.thermalexpansion.augment.machineCentrifugeMobs.a.0=몰브의 "처리"를 허용합니다.
+info.thermalexpansion.augment.machineCentrifugeMobs.a.1=몰브는 저장된 몹들로부터 아이템을 제공할 것입니다.
+info.thermalexpansion.augment.machineCentrifugeMobs.b.0=몰브는 오직 "처리"되어야 합니다.
+info.thermalexpansion.augment.machineCentrifugeMobs.c.0=모든 몹들이 양립할 수 있는 것은 아닙니다.
+
+info.thermalexpansion.augment.machineChargerRepair.0=에너지 주입기: 특징
+info.thermalexpansion.augment.machineChargerRepair.a.0=손상된 아이템을 수리할 수 있습니다.
+info.thermalexpansion.augment.machineChargerRepair.b.0=아이템을 더 이상 재충전하지 않습니다.
+info.thermalexpansion.augment.machineChargerRepair.c.0=지식의 진액을 공급해야 합니다.
+
+info.thermalexpansion.augment.machineChargerThroughput.0=에너지 주입기: 특징
+info.thermalexpansion.augment.machineChargerThroughput.a.0=충전가능한 아이템을 매우 빠르게 충전할 수 있습니다.
+info.thermalexpansion.augment.machineChargerThroughput.c.0=아이템 자체의 충전 속도를 초과할 수 없습니다.
+
+info.thermalexpansion.augment.machineChargerWireless.0=에너지 주입기: 특징
+info.thermalexpansion.augment.machineChargerWireless.a.0=플럭스 축전기의 무선 충전을 허용합니다.
+info.thermalexpansion.augment.machineChargerWireless.b.0=아이템을 더 이상 수락, 처리 또는 재충전할 수 없습니다.
+info.thermalexpansion.augment.machineChargerWireless.c.0=플럭스 축전기 자체의 충전 속도를 초과할 수 없습니다.
+
+info.thermalexpansion.augment.machineCompactorCoin.0=압축기: 특징
+info.thermalexpansion.augment.machineCompactorCoin.a.0=화폐를 생성할 수 있습니다.
+info.thermalexpansion.augment.machineCompactorCoin.a.1=화폐는 상품과 서비스로 교환할 수 있습니다.
+info.thermalexpansion.augment.machineCompactorCoin.c.0=기계가 판을 제조하지 않습니다.
+
+info.thermalexpansion.augment.machineCompactorGear.0=압축기: 특징
+info.thermalexpansion.augment.machineCompactorGear.a.0=톱니바퀴를 효율적으로 생성할 수 있습니다.
+info.thermalexpansion.augment.machineCompactorGear.a.1=톱니바퀴는 많은 것들을 만들 때 사용됩니다.
+info.thermalexpansion.augment.machineCompactorGear.c.0=기계가 판을 제조하지 않습니다.
+
+info.thermalexpansion.augment.machineCrafterInput.0=순차적 제작기: 기능
+info.thermalexpansion.augment.machineCrafterInput.a.0=지능형 자동 입력 기능을 추가합니다.
+info.thermalexpansion.augment.machineCrafterInput.c.0=각 제작 슬롯에 2개의 슬롯이 지정됩니다.
+
+info.thermalexpansion.augment.machineCrafterTank.0=순차적 제작기: 기능
+info.thermalexpansion.augment.machineCrafterTank.a.0=기계에 유체 탱크를 추가합니다.
+info.thermalexpansion.augment.machineCrafterTank.a.1=탱크의 액체는 조합법에 사용될 수 있습니다.
+info.thermalexpansion.augment.machineCrafterTank.c.0=모든 조합법이 호환되는 것은 아닙니다.
+
+info.thermalexpansion.augment.machineCrucibleAlloy.0=마그마 도가니: 특징
+info.thermalexpansion.augment.machineCrucibleAlloy.a.0=마그마 도가니: 특징
+info.thermalexpansion.augment.machineCrucibleAlloy.b.0=마그마 도가니: 특징
+
+info.thermalexpansion.augment.machineCrucibleLava.0=마그마 도가니: 특징
+info.thermalexpansion.augment.machineCrucibleLava.a.0=용암 생산 속도를 크게 높입니다.
+info.thermalexpansion.augment.machineCrucibleLava.b.0=용암만이 생성될 수 있습니다.
+
+info.thermalexpansion.augment.machineEnchanterEmpowered.0=신비의 요술기: 특징
+info.thermalexpansion.augment.machineEnchanterEmpowered.a.0=신비한 에너지에 초점을 맞추고 정렬하여 인첸트 힘을 극대화합니다.
+info.thermalexpansion.augment.machineEnchanterEmpowered.b.0=추가 요소가 필요합니다.
+
+info.thermalexpansion.augment.machineExtruderNoWater.0=불 압출기: 특징
+info.thermalexpansion.augment.machineExtruderNoWater.a.0=물은 더 이상 운전을 위해 소비되지 않습니다.
+
+info.thermalexpansion.augment.machineExtruderSedimentary.0=불 압출기: 특징
+info.thermalexpansion.augment.machineExtruderSedimentary.a.0=퇴적암 생성을 허용합니다.
+info.thermalexpansion.augment.machineExtruderSedimentary.c.0=알 수 없는 바위는 만들어 낼 수 없습니다.
+
+info.thermalexpansion.augment.machineFurnaceFood.0=레드스톤 화로: 특징
+info.thermalexpansion.augment.machineFurnaceFood.a.0=요리를 할 때 추가적인 음식을 얻습니다.
+info.thermalexpansion.augment.machineFurnaceFood.b.0=식품 아이템만 가공이 가능합니다.
+
+info.thermalexpansion.augment.machineFurnaceOre.0=레드스톤 화로: 특징
+info.thermalexpansion.augment.machineFurnaceOre.a.0=광석을 제련할 때 부산물을 얻습니다.
+info.thermalexpansion.augment.machineFurnaceOre.b.0=광석만 가공할 수 있습니다.
+info.thermalexpansion.augment.machineFurnaceOre.b.1=작동당 추가 에너지가 필요합니다.
+
+info.thermalexpansion.augment.machineFurnacePyrolysis.0=레드스톤 화로: 특징
+info.thermalexpansion.augment.machineFurnacePyrolysis.a.0=화쇄암 및 크레오소트 생산을 허용합니다.
+info.thermalexpansion.augment.machineFurnacePyrolysis.b.0=특정 아이템만 생산할 수 있습니다.
+info.thermalexpansion.augment.machineFurnacePyrolysis.b.1=처리 속도가 크게 저하됩니다.
+
+info.thermalexpansion.augment.machineInsolatorFertilizer.0=식물 절연기: 효율성
+info.thermalexpansion.augment.machineInsolatorFertilizer.a.0=비료를 소비하지 않을 수 있는 기회를 제공합니다.
+info.thermalexpansion.augment.machineInsolatorFertilizer.b.0=작동당 추가 에너지가 필요합니다.
+
+info.thermalexpansion.augment.machineInsolatorMonoculture.0=식물 절연기: 특징
+info.thermalexpansion.augment.machineInsolatorMonoculture.a.0=반비료 입력이 소비되지 않으므로 자동화가 개선됩니다.
+info.thermalexpansion.augment.machineInsolatorMonoculture.a.1=비료를 소비하지 않을 수 있는 약간의 기회를 제공합니다.
+info.thermalexpansion.augment.machineInsolatorMonoculture.b.0=작동당 추가 에너지가 필요합니다.
+info.thermalexpansion.augment.machineInsolatorMonoculture.b.1=2차 출력 가능성이 상당히 감소됩니다.
+
+info.thermalexpansion.augment.machineInsolatorTree.0=식물 절연기: 기능
+info.thermalexpansion.augment.machineInsolatorTree.a.0=나무를 기를 수 있습니다.
+info.thermalexpansion.augment.machineInsolatorTree.c.0=모든 묘목이 호환되는 것은 아닙니다.
+
+info.thermalexpansion.augment.machinePower.0=기계: 생산 속도
+info.thermalexpansion.augment.machinePower.a.0=최대 전력 사용량이 증가합니다.
+info.thermalexpansion.augment.machinePower.b.0=작동당 추가 에너지가 필요합니다.
+
+info.thermalexpansion.augment.machinePulverizerGeode.0=분쇄기: 특징
+info.thermalexpansion.augment.machinePulverizerGeode.a.0=특정 광석에서 지질을 추출할 수 있습니다.
+info.thermalexpansion.augment.machinePulverizerGeode.b.0=작동당 추가 에너지가 필요합니다.
+
+info.thermalexpansion.augment.machinePulverizerPetrotheum.0=분쇄기: 특징
+info.thermalexpansion.augment.machinePulverizerPetrotheum.a.0=광석으로부터의 산출량이 증가합니다.
+info.thermalexpansion.augment.machinePulverizerPetrotheum.b.0=작동당 추가 에너지가 필요합니다.
+info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=지각의 페트로티움을 공급해야 합니다.
+
+info.thermalexpansion.augment.machineRefineryBio.0=분별기: 특징
+info.thermalexpansion.augment.machineRefineryBio.a.0=바이오 연료에 대한 전환 효율성을 크게 높입니다.
+info.thermalexpansion.augment.machineRefineryBio.b.0=작동당 추가 에너지가 필요합니다.
+
+info.thermalexpansion.augment.machineRefineryFossil.0=분별기: 특징
+info.thermalexpansion.augment.machineRefineryFossil.a.0=화석 연료의 전환 효율성을 크게 높입니다.
+info.thermalexpansion.augment.machineRefineryFossil.b.0=작동당 추가 에너지가 필요합니다.
+
+info.thermalexpansion.augment.machineRefineryPotion.0=분별기: 특징
+info.thermalexpansion.augment.machineRefineryPotion.a.0=포션을 정제할 수 있습니다.
+info.thermalexpansion.augment.machineRefineryPotion.b.0=포션만 처리할 수 있습니다.
+
+info.thermalexpansion.augment.machineSawmillTapper.0=제재기: 특징
+info.thermalexpansion.augment.machineSawmillTapper.a.0=나무에서 유체를 추출할 수 있습니다.
+info.thermalexpansion.augment.machineSawmillTapper.b.0=작동당 추가 에너지가 필요합니다.
+
+info.thermalexpansion.augment.machineSecondary.0=기계: 2차 출력
+info.thermalexpansion.augment.machineSecondary.a.0=2차 생산의 가능성이 높아집니다.
+info.thermalexpansion.augment.machineSecondary.b.0=작동당 추가 에너지가 필요합니다.
+
+info.thermalexpansion.augment.machineSecondaryNull.0=기계: 2차 무효화
+info.thermalexpansion.augment.machineSecondaryNull.a.0=과도한 보조 출력을 제한합니다.
+info.thermalexpansion.augment.machineSecondaryNull.b.0=그들은 사라질 수 있습니다.
+
+info.thermalexpansion.augment.machineSmelterFlux.0=유도 용광로: 효율성
+info.thermalexpansion.augment.machineSmelterFlux.a.0=액체 금속을 사용하지 않을 수 있습니다.
+info.thermalexpansion.augment.machineSmelterFlux.b.0=작동당 추가 에너지가 필요합니다.
+
+info.thermalexpansion.augment.machineSmelterPyrotheum.0=유도 용광로: 특징
+info.thermalexpansion.augment.machineSmelterPyrotheum.a.0=광석으로부터의 산출량이 증가합니다.
+info.thermalexpansion.augment.machineSmelterPyrotheum.b.0=작동당 추가 에너지가 필요합니다.
+info.thermalexpansion.augment.machineSmelterPyrotheum.c.0=불타오르는 파이로시움이 공급되어야 합니다.
+
+info.thermalexpansion.augment.noticeAdvanced=이상 없습니다.
+info.thermalexpansion.augment.noticeCreative=크리에이티브 블록이 필요합니다.
+info.thermalexpansion.augment.noticeEnder=공명 블록이 필요합니다.
+info.thermalexpansion.augment.noticeMode=하나의 특징만 설치할 수 있습니다.
+
+info.thermalexpansion.apparatus.activator=더 많은 도구 팁을 설명할 수 있습니다.
+info.thermalexpansion.apparatus.breaker=쉽고 충분하게 블록을 부수세요.
+info.thermalexpansion.apparatus.collector=영역에서 아이템을 구합니다.
+
+info.thermalexpansion.capacitor.a.0=RF를 저장합니다. 장비와 아이템을 재충전할 수 있습니다.
+info.thermalexpansion.capacitor.b.0=§e충전 모드로 바꾸고 싶으면 (%s)을 누르세요.§r
+info.thermalexpansion.capacitor.c.0=활성화 사용
+info.thermalexpansion.capacitor.c.1=활성화 미사용
+info.thermalexpansion.capacitor.d.0=장비 충전
+info.thermalexpansion.capacitor.d.1=인벤토리 충전
+info.thermalexpansion.capacitor.d.2=아이템 충전
+
+info.thermalexpansion.coolant=냉각제
+
+info.thermalexpansion.device.diffuser=포션의 효과를 구역에 전달합니다.
+info.thermalexpansion.device.factorizer=다양한 아이템을 결합하고 분할합니다.
+info.thermalexpansion.device.fisher=물고기와 다른 수생 생물을 잡습니다.
+info.thermalexpansion.device.fluid_buffer=유체를 저장하고 수송합니다.
+info.thermalexpansion.device.heat_sink=인접한 블록의 작동 속도를 향상시킵니다.
+info.thermalexpansion.device.item_buffer=아이템을 저장하고 수송합니다.
+info.thermalexpansion.device.item_collector=구역의 아이템을 수집합니다.
+info.thermalexpansion.device.lexicon=동등한 형식으로 아이템을 교환합니다.
+info.thermalexpansion.device.mob_catcher=근처의 몹들을 포획합니다.
 info.thermalexpansion.device.nullifier=존재하는 모든 것을 제거합니다.
+info.thermalexpansion.device.tapper=나무에서 유체를 추출합니다.
+info.thermalexpansion.device.water_gen=주변에서 물을 퍼냅니다.
+info.thermalexpansion.device.xp_collector=구역의 경험을 수집합니다.
 
-info.thermalexpansion.dynamo.compression=액체 연료와 냉매가 필요합니다.
-info.thermalexpansion.dynamo.enervation=다양한 물체에서 RF를 추출합니다.
-info.thermalexpansion.dynamo.magmatic=뜨거운 액체가 필요합니다.
-info.thermalexpansion.dynamo.reactant=액체 연료와 고체 촉매가 필요합니다.
+info.thermalexpansion.dynamo.0=에너지(RF)를 생산합니다.
+info.thermalexpansion.dynamo.compression=액체 연료와 냉각제가 필요합니다.
+info.thermalexpansion.dynamo.enervation=다양한 물체로부터 플럭스를 추출합니다.
+info.thermalexpansion.dynamo.magmatic=뜨거운 유체가 필요합니다.
+info.thermalexpansion.dynamo.numismatic=화폐가 필요합니다.
+info.thermalexpansion.dynamo.reactant=유체 연료와 고체 반응제가 필요합니다.
 info.thermalexpansion.dynamo.steam=물과 고체 연료가 필요합니다.
 
+info.thermalexpansion.florb.a.0=대부분의 유체를 1000mB에 저장할 수 있습니다.
+info.thermalexpansion.florb.b.0=대부분의 뜨거운 유체를 1000mB에 저장할 수 있습니다.
+info.thermalexpansion.florb.c.0=§e§o유체 교환기§r§7를 채우세요.
+info.thermalexpansion.florb.c.1=네, 던져도 돼요.
+info.thermalexpansion.florb.d.0=이 유체는 공기보다 가볍습니다.
+info.thermalexpansion.florb.d.1=그 플로브는 더 멀리 여행할 것입니다.
+
+info.thermalexpansion.level.0=일반
+info.thermalexpansion.level.1=경화
+info.thermalexpansion.level.2=강화
+info.thermalexpansion.level.3=시그날륨
+info.thermalexpansion.level.4=공명
+info.thermalexpansion.level.creative=크리에이티브
+
+info.thermalexpansion.morb.a.0=이 상태에서 몹을 잡고 있습니다.
+info.thermalexpansion.morb.a.1=이 몰브는 재활용이 가능합니다.
+info.thermalexpansion.morb.b.0=몹을 향해 던져서 그것을 잡으세요.
+info.thermalexpansion.morb.b.1=잡은 몹을 풀어 주세요.
+info.thermalexpansion.morb.b.2=이 몰브는 일반적인 몹을 수용합니다.
+
+info.thermalexpansion.machine.brewer=포션을 만듭니다.
+info.thermalexpansion.machine.centrifuge=아이템을 구성 요소로 분리합니다.
 info.thermalexpansion.machine.charger=아이템에 RF를 충전합니다.
-info.thermalexpansion.machine.crucible=아이템을 액체로 녹입니다.
-info.thermalexpansion.machine.extruder=뜨거운 액체와 차가운 액체를 혼합합니다.
-info.thermalexpansion.machine.furnace=아이템을 굽습니다.
-info.thermalexpansion.machine.insolator=인공적인 햇빛으로 식물을 재배합니다.
-info.thermalexpansion.machine.precipitator=액체를 고체로 냉각시킵니다.
-info.thermalexpansion.machine.pulverizer=아이템을 분쇄합니다.
-info.thermalexpansion.machine.sawmill=목재를 추가로 얻을 수 있습니다.
-info.thermalexpansion.machine.smelter=합금 및 금속을 제련합니다. 두개의 입력 슬롯이 존재합니다.
-info.thermalexpansion.machine.transposer=액체와 액체 용기를 제어합니다.
+info.thermalexpansion.machine.compactor=아이템을 압축합니다.
+info.thermalexpansion.machine.crafter=아이템을 만듭니다.
+info.thermalexpansion.machine.crucible=아이템을 유체에 녹입니다.
+info.thermalexpansion.machine.enchanter=마법책과 스크롤을 만듭니다.
+info.thermalexpansion.machine.extruder=차가운 유체와 뜨거운 유체를 섞습니다.
+info.thermalexpansion.machine.furnace=아이템을 녹입니다.
+info.thermalexpansion.machine.insolator='태양'과 RF로 식물을 우립니다.
+info.thermalexpansion.machine.precipitator=유체를 고체로 얼립니다.
+info.thermalexpansion.machine.pulverizer=아이템을 파쇄합니다.
+info.thermalexpansion.machine.refinery=다른 제품에 유체를 정제합니다.
+info.thermalexpansion.machine.sawmill=추가적인 목재를 제공합니다.
+info.thermalexpansion.machine.smelter=합금과 금속을 부숩니다. 두 번 입력하세요.
+info.thermalexpansion.machine.transposer=유체와 유체 용기를 제조합니다.
 
-item.thermalexpansion.augment.dynamoCoilDuct.name=코일 수송 배관
-item.thermalexpansion.augment.dynamoThrottle.name=여기장 제한장치
+info.thermalexpansion.reservoir.a.0=유체를 저장하고 수송합니다. 장비를 재충전할 수 있습니다.
+info.thermalexpansion.reservoir.a.1=유체를 채우는데 사용합니다.
+info.thermalexpansion.reservoir.a.2=유체를 비우는데 사용합니다.
+info.thermalexpansion.reservoir.b.0=§e사용상태를 바꾸고 싶으면 (%s)을 누르세요§r
+info.thermalexpansion.reservoir.c.0=활성화 사용
+info.thermalexpansion.reservoir.c.1=활성화 미사용
+info.thermalexpansion.reservoir.d.0=사용상태: 가득있음
+info.thermalexpansion.reservoir.d.1=사용상태: 비어있음
+info.thermalexpansion.reservoir.d.2=장비 재충전
 
-item.thermalexpansion.augment.machineFurnaceFood.name=트리베션 챔버
+info.thermalexpansion.satchel.a.0=아이템을 저장하고 모읍니다.
+info.thermalexpansion.satchel.a.1=인벤토리로 수송할 때 사용합니다.
+info.thermalexpansion.satchel.a.2=구성을 위해 숨기는 동안 사용합니다.
+info.thermalexpansion.satchel.a.c=단일 아이템을 무제한으로 저장합니다.
+info.thermalexpansion.satchel.a.v=아이템을 제거합니다. 보안을 설정할 수 있습니다.
+info.thermalexpansion.satchel.b.0=§b자동 수집을 하고 싶으면 (%s)을 누르세요.§r
+info.thermalexpansion.satchel.b.1=§e자동 수집을 하고 싶지 않다면 (%s)을 누르세요.§r
+info.thermalexpansion.satchel.c.0=자동 수집 미사용
+info.thermalexpansion.satchel.c.1=자동 수집 사용
 
-item.thermalexpansion.florb.florb.name=플로브
-item.thermalexpansion.florb.florbMagmatic.name=마그마틱 플로브
+info.thermalexpansion.storage.cache=많은 양의 아이템을 저장합니다.
+info.thermalexpansion.storage.cell=많은 양의 RF를 저장합니다.
+info.thermalexpansion.storage.strongbox=아이템을 저장합니다.
+info.thermalexpansion.storage.tank=많은 양의 유체를 저장합니다.
+
+item.thermalexpansion.augment.apparatusDepth.name=깊이
+item.thermalexpansion.augment.apparatusRadius.name=반경
+
+item.thermalexpansion.augment.dynamoBoiler.name=보일러
+item.thermalexpansion.augment.dynamoCoilDuct.name=변속 코일
+item.thermalexpansion.augment.dynamoCompressionBiofuel.name=불안정한 매니폴드
+item.thermalexpansion.augment.dynamoCompressionCoolant.name=지속 냉각제
+item.thermalexpansion.augment.dynamoCompressionFuel.name=점화 플러그
+item.thermalexpansion.augment.dynamoEfficiency.name=연료 촉매기
+item.thermalexpansion.augment.dynamoEnervationEnchant.name=분리 추출기
+item.thermalexpansion.augment.dynamoMagmaticCoolant.name=비축 저장기
+item.thermalexpansion.augment.dynamoNumismaticGem.name=눈금 조정기
+item.thermalexpansion.augment.dynamoPower.name=보조 변속 코일
+item.thermalexpansion.augment.dynamoReactantElemental.name=원소 촉매제
+item.thermalexpansion.augment.dynamoSteamTurbine.name=터빈
+item.thermalexpansion.augment.dynamoThrottle.name=자극 제한기
+
+item.thermalexpansion.augment.machineBrewerReagent.name=회복 시약
+item.thermalexpansion.augment.machineCentrifugeMobs.name=유지기
+item.thermalexpansion.augment.machineChargerRepair.name=플럭스 복원기
+item.thermalexpansion.augment.machineChargerThroughput.name=플럭스 연결기
+item.thermalexpansion.augment.machineChargerWireless.name=포물선형 플럭시 연결기
+item.thermalexpansion.augment.machineCompactorCoin.name=화폐 생성기
+item.thermalexpansion.augment.machineCompactorGear.name=톱니바퀴 생성기
+item.thermalexpansion.augment.machineCrafterInput.name=패턴 확인기
+item.thermalexpansion.augment.machineCrafterTank.name=유체 제작기
+item.thermalexpansion.augment.machineCrucibleLava.name=용암 생성기
+item.thermalexpansion.augment.machineFurnaceFood.name=열분해 순환기
+item.thermalexpansion.augment.machineFurnaceOre.name=플럭스 산화제
+item.thermalexpansion.augment.machineFurnacePyrolysis.name=열분해 변환기
+item.thermalexpansion.augment.machineEnchanterEmpowered.name=재결합 집중기
+item.thermalexpansion.augment.machineExtruderNoWater.name=화성암 주입기
+item.thermalexpansion.augment.machineExtruderSedimentary.name=분해식 퇴적기
+item.thermalexpansion.augment.machineInsolatorFertilizer.name=영양 회복기
+item.thermalexpansion.augment.machineInsolatorMonoculture.name=단일 재배 순환기
+item.thermalexpansion.augment.machineInsolatorTree.name=묘목 주입기
+item.thermalexpansion.augment.machinePower.name=보조 수신 코일
+item.thermalexpansion.augment.machinePulverizerGeode.name=이질 텀블러
+item.thermalexpansion.augment.machinePulverizerPetrotheum.name=분쇄 강화기
+item.thermalexpansion.augment.machineRefineryBio.name=생물 연통
+item.thermalexpansion.augment.machineRefineryFossil.name=역류 기둥
+item.thermalexpansion.augment.machineRefineryPotion.name=화학 증류기
+item.thermalexpansion.augment.machineSawmillTapper.name=레신 퍼널
+item.thermalexpansion.augment.machineSmelterFlux.name=금속 회복기
+item.thermalexpansion.augment.machineSmelterPyrotheum.name=파이로 집광기
+item.thermalexpansion.augment.machineSecondary.name=보조 체
+item.thermalexpansion.augment.machineSecondaryNull.name=무효기
+
+item.thermalexpansion.capacitor.creative.name=크리에이티브 플럭스 축전기
+item.thermalexpansion.capacitor.standard0.name=플럭스 축전기
+item.thermalexpansion.capacitor.standard1.name=경화 플럭스 축전기
+item.thermalexpansion.capacitor.standard2.name=강화 플럭스 축전기
+item.thermalexpansion.capacitor.standard3.name=시그날륨 플럭스 축전기
+item.thermalexpansion.capacitor.standard4.name=공명 플럭스 축전기
+
+item.thermalexpansion.florb.standard.name=플로브
+item.thermalexpansion.florb.magmatic.name=마그마 플로브
+
+item.thermalexpansion.morb.reusable.name=재활용 몰브
+item.thermalexpansion.morb.standard.name=몰브
+
+item.thermalexpansion.frame.frameApparatus.name=기구 틀
+item.thermalexpansion.frame.frameCell.name=에너지 셀 틀
+item.thermalexpansion.frame.frameCell1.name=경화 셀 틀
+item.thermalexpansion.frame.frameCell2.name=빈 강화 셀 틀
+item.thermalexpansion.frame.frameCell3.name=빈 시그날륨 셀 틀
+item.thermalexpansion.frame.frameCell4.name=빈 공명 셀 틀
+item.thermalexpansion.frame.frameCell2Filled.name=강화 셀 틀
+item.thermalexpansion.frame.frameCell3Filled.name=시그날륨 셀 틀
+item.thermalexpansion.frame.frameCell4Filled.name=공명 셀 틀
+item.thermalexpansion.frame.frameDevice.name=장치 틀
+item.thermalexpansion.frame.frameLight.name=발광체 틀
+item.thermalexpansion.frame.frameMachine.name=기계 틀
+
+item.thermalexpansion.reservoir.creative.name=크리에이티브 저장기
+item.thermalexpansion.reservoir.standard0.name=저장기
+item.thermalexpansion.reservoir.standard1.name=경화 저장기
+item.thermalexpansion.reservoir.standard2.name=강화 저장기
+item.thermalexpansion.reservoir.standard3.name=시그날륨 저장기
+item.thermalexpansion.reservoir.standard4.name=공명 저장기
+
+item.thermalexpansion.satchel.creative.name=크리에이티브 책가방
+item.thermalexpansion.satchel.name=책가방
+item.thermalexpansion.satchel.standard0.name=기본 책가방
+item.thermalexpansion.satchel.standard1.name=경화 책가방
+item.thermalexpansion.satchel.standard2.name=강화 책가방
+item.thermalexpansion.satchel.standard3.name=시그날륨 책가방
+item.thermalexpansion.satchel.standard4.name=공명 책가방
+item.thermalexpansion.satchel.void.name=빈 책가방
 
 itemGroup.thermalexpansion.creativeTab=써멀 익스팬션
-itemGroup.thermalexpansion.creativeTabFlorbs=써멀 익스팬션: 플로브
-itemGroup.thermalexpansion.creativeTabItems=써멀 익스팬션: 아이템
+itemGroup.thermalexpansion.creativeTabFlorbs=써멀 익스팬션(플로브)
+itemGroup.thermalexpansion.creativeTabMorbs=써멀 익스팬션(몰브)
+itemGroup.thermalexpansion.creativeTabItems=써멀 익스팬션(아이템)
 
-tab.thermalexpansion.device.nullifier.0=모두 공허로 보내버립니다!
-tab.thermalexpansion.device.nullifier.1=액체조차 빠져나올 수 없는 섬뜩한 곳이죠.
+tab.thermalexpansion.apparatus.activator.0=그것은 잘게 썹니다! 갈라집니다! 뭔가를 쏟아 붓고, 뭔가를 던지죠!
+tab.thermalexpansion.apparatus.activator.1=무작위일지도, 아닐지도, 교활한 건지도 모르죠.
+tab.thermalexpansion.apparatus.activator.2=아주 다재 다능하군요!
+tab.thermalexpansion.apparatus.breaker.0=모든 것을 깨세요!
+tab.thermalexpansion.apparatus.breaker.1=정면에서 얼굴을 멀리하세요.
+tab.thermalexpansion.apparatus.collector.0=구역의 아이템을 선택합니다.
+tab.thermalexpansion.apparatus.collector.1=고정되지 않은 것은 모두 공정한 게임입니다!
+tab.thermalexpansion.apparatus.collector.2=아마도 당신의 인벤토리를 훔치지는 않을 것입니다. 어쩌면요.
 
-tab.thermalexpansion.dynamo.0=발전량은 에너지 수요량에 따라 변합니다.
-tab.thermalexpansion.dynamo.compression.0=액체연료를 이용해서 발전합니다.
-tab.thermalexpansion.dynamo.enervation.0=천연자원 혹은 저장소에서 에너지를 추출합니다.
-tab.thermalexpansion.dynamo.magmatic.0=뜨거운 액체를 이용해서 발전합니다.
-tab.thermalexpansion.dynamo.reactant.0=화학 반응을 이용해서 발전합니다.
-tab.thermalexpansion.dynamo.reactant.1=고체촉매와 액체연료가 필요합니다.
-tab.thermalexpansion.dynamo.steam.0=증기를 이용해서 발전합니다.
-tab.thermalexpansion.dynamo.steam.1=고체연료와 물을 이용해서 증기를 생산합니다.
+tab.thermalexpansion.device.diffuser.0=근처 구역 내에서 포션을 준비합니다.
+tab.thermalexpansion.device.diffuser.1=마시는 것에 비해 포션 지속성은 떨어집니다.
+tab.thermalexpansion.device.diffuser.2=어떤 시약들은 효과를 높일 것입니다.
+tab.thermalexpansion.device.factorizer.0=아이템을 더 작거나 큰 형식으로 결합하거나 분할합니다.
+tab.thermalexpansion.device.factorizer.1=버튼을 클릭하여 모드를 변경합니다.
+tab.thermalexpansion.device.factorizer.2=저장고를 교체하세요.
+tab.thermalexpansion.device.fisher.0=다양한 수생 생물을 포획합니다. 생산량을 늘리기 위해 미끼를 사용하세요.
+tab.thermalexpansion.device.fisher.1=수역에 위치해야 합니다.
+tab.thermalexpansion.device.fisher.2=낚싯대를 들어 올리세요.
+tab.thermalexpansion.device.fluid_buffer.0=유체를 저장하고 수송합니다. 자동으로 압축을 풀 수 있습니다.
+tab.thermalexpansion.device.fluid_buffer.1=유체 때문에 부랑자 같아요!
+tab.thermalexpansion.device.fluid_buffer.2=Shift키 또는 Ctrl키를 누른 상태에서 수량을 미세하게 조정합니다.
+tab.thermalexpansion.device.heat_sink.0=인접한 블록을 냉각하여 속도를 향상시킵니다.
+tab.thermalexpansion.device.heat_sink.1=그냥 냉각제를 채우고 작동을 지켜보세요!
+tab.thermalexpansion.device.heat_sink.2=냉각제는 효과의 정도가 다양합니다.
+tab.thermalexpansion.device.item_buffer.0=아이템을 저장하고 수송합니다. 자동으로 압축을 풀 수 있습니다.
+tab.thermalexpansion.device.item_buffer.1=부랑자보다 더 낫죠, 정말로요!
+tab.thermalexpansion.device.item_buffer.2=Shift키 또는 Ctrl키를 누른 상태에서 수량을 미세하게 조정합니다.
+tab.thermalexpansion.device.item_buffer.3=빈 손으로 몰래 빠져나갈 때 필터링을 구성하기 위해 사용합니다.
+tab.thermalexpansion.device.item_buffer_filter.0=이 블록에서 허용할 아이템을 구성합니다.
+tab.thermalexpansion.device.item_buffer_filter.1=보세요, 부랑자보다 훨씬 낫죠.
+tab.thermalexpansion.device.item_collector.0=인접구역에서 아이템을 선택합니다.
+tab.thermalexpansion.device.item_collector.1=선택하는 아이템을 제한하도록 구성할 수 있습니다.
+tab.thermalexpansion.device.item_collector.2=네, 이 블록은 형편없어요.
+tab.thermalexpansion.device.item_collector.3=빈 손으로 몰래 빠져나갈 때 필터링을 구성하기 위해 사용합니다.
+tab.thermalexpansion.device.item_collector_filter.0=이 블록에서 픽업할 아이템을 구성합니다.
+tab.thermalexpansion.device.item_collector_filter.1=엄밀히 말하면, 그것은 완전히 형편없지는 않습니다.
+tab.thermalexpansion.device.lexicon.0=동등한 아이템을 취소합니다.
+tab.thermalexpansion.device.lexicon.1=선호하는 아이템을 변환 배열에 넣습니다.
+tab.thermalexpansion.device.lexicon.2=아이템들은 더 높은 힘에 의해 제한될 수 있습니다.
+tab.thermalexpansion.device.mob_catcher.0=몰브를 사용하여 근처의 몹을 잡습니다.
+tab.thermalexpansion.device.mob_catcher.1=캡처 기본 설정을 변경하려면 버튼을 클릭하세요.
+tab.thermalexpansion.device.mob_catcher.2=다 잡아야 합니다!
+tab.thermalexpansion.device.nullifier.0=모든 것을 /dev/senull로 보냅니다!
+tab.thermalexpansion.device.nullifier.1=그곳은 끔찍한 곳이고, 유체조차도 빠져나갈 수 없습니다.
+tab.thermalexpansion.device.tapper.0=인접한 나무에서 유체를 추출합니다. 비료를 사용하여 생산량을 증가시킵니다.
+tab.thermalexpansion.device.tapper.1=모든 나무가 생산적이지는 않을 것입니다.
+tab.thermalexpansion.device.tapper.2=도끼를 내려 노세요.
+tab.thermalexpansion.device.water_gen.0=주변 환경에서 물을 추출합니다.
+tab.thermalexpansion.device.water_gen.1=이것을 빨리 하기 위해 물 웅덩이에 넣으세요.
+tab.thermalexpansion.device.water_gen.2=익사하지 마세요.
+tab.thermalexpansion.device.xp_collector.0=근처 구역에서 경험을 수집합니다.
+tab.thermalexpansion.device.xp_collector.1=경험은 다재다능한 유체 형태로 전환됩니다.
+tab.thermalexpansion.device.xp_collector.2=어떤 촉매들은 생산량을 증가시킬 것입니다.
 
-tab.thermalexpansion.machine.charger.0=RF를호환하는 아이템에 에너지를 충전합니다.
-tab.thermalexpansion.machine.charger.1=충전속도는 아이템에 따라 달라집니다.
-tab.thermalexpansion.machine.charger.2=윙윙거리는 소리를 잘들어보세요.
-tab.thermalexpansion.machine.crucible.0=고체를 액체로 녹입니다.
-tab.thermalexpansion.machine.crucible.1=고급기계들을 제작할때 매우 유용합니다.
-tab.thermalexpansion.machine.crucible.2=어린아이와 애완동물이 가까이 가지 않게 주의하세요.
-tab.thermalexpansion.machine.extruder.0=물과 용암을 혼합아여 다양한 종류의 화성암을 생성합니다.
-tab.thermalexpansion.machine.extruder.1=충분한 액체가 탱크에 있다면, 선택된 아이템을 제작합니다.
-tab.thermalexpansion.machine.extruder.2=마인크래프트 물리학은 참 웃겨요!
-tab.thermalexpansion.machine.furnace.0=물건을 굽습니다.
-tab.thermalexpansion.machine.furnace.1=음식을 조리할 때는 적은 에너지만을 사용됩니다.
-tab.thermalexpansion.machine.furnace.2=냠냠냠
-tab.thermalexpansion.machine.precipitator.0=다양한 액체를 얼립니다.
-tab.thermalexpansion.machine.precipitator.1=충분한 액체가 탱크에 있다면, 선택한 아이템을 제작합니다.
-tab.thermalexpansion.machine.precipitator.2=눈싸움 한 번 해보세요.
-tab.thermalexpansion.machine.pulverizer.0=물건을 분쇄하여 가공합니다.
-tab.thermalexpansion.machine.pulverizer.1=원석을 가공하고 아이템을 변환하는데 유용합니다.
-tab.thermalexpansion.machine.pulverizer.2=변환된 아이템은 일반적인방법으로 되돌릴 수 없습니다.
-tab.thermalexpansion.machine.sawmill.0=원목을 목재로 가공하고, 목제품을 재가공합니다.
-tab.thermalexpansion.machine.sawmill.1=손으로 하는것 보다 훨씬 효율적으로 가공합니다.
-tab.thermalexpansion.machine.sawmill.2=손 조심하세요!
-tab.thermalexpansion.machine.smelter.0=금속과 여러 물질을 매우 높은 온도에서 제련합니다.
-tab.thermalexpansion.machine.smelter.1=광석을 정제하고 고급기계를 제작할때 유용합니다.
-tab.thermalexpansion.machine.smelter.3=요리는 당연히 안되요.
-tab.thermalexpansion.machine.transposer.0=액체를 담을 수 있는 아이템에 액체를 주입하거나 추출해냅니다.
-tab.thermalexpansion.machine.transposer.1=버튼을 눌러서 주입모드에서 추출모드로, 추출모드에서 주입모드로 바꿀 수 있습니다.
-tab.thermalexpansion.machine.transposer.2=보통 거꾸로도 가능해요.
+tab.thermalexpansion.dynamo.0=발생률은 에너지 수요에 따라 달라집니다.
+tab.thermalexpansion.dynamo.compression.0=액체 연료와 냉각제를 사용하여 RF를 생성합니다.
+tab.thermalexpansion.dynamo.compression.1=냉각제가 강하면 효율이 높아집니다.
+tab.thermalexpansion.dynamo.enervation.0=자연 요소 또는 이를 저장하는 물체에서 직접 RF를 추출합니다.
+tab.thermalexpansion.dynamo.magmatic.0=극도로 뜨거운 액체를 사용하여 RF를 생성합니다.
+tab.thermalexpansion.dynamo.numismatic.0=경제적 재정 거래를 통해 RF를 생성합니다.
+tab.thermalexpansion.dynamo.numismatic.1=순수한 탐욕의 또 다른 차원으로의 관문일지도 모릅니다.
+tab.thermalexpansion.dynamo.numismatic.2=너무 깊이 생각하지 말고 동전만 넣으세요.
+tab.thermalexpansion.dynamo.reactant.0=화학적 반응을 사용하여 RF를 생성합니다.
+tab.thermalexpansion.dynamo.reactant.1=고체 반응제 및 유체 연료가 제공되어야 합니다.
+tab.thermalexpansion.dynamo.steam.0=증기를 사용하여 RF를 생성합니다.
+tab.thermalexpansion.dynamo.steam.1=고체 연료와 물은 증기를 발생시키는데 사용될 수 있습니다.
 
+tab.thermalexpansion.machine.brewer.0=포션을 만들고 액체을 뿌리세요.
+tab.thermalexpansion.machine.brewer.1=여러분은 이것들 중 몇 개를 연속적으로 원할지도 몰라요.
+tab.thermalexpansion.machine.brewer.2=병은 포함되지 않습니다.
+tab.thermalexpansion.machine.centrifuge.0=아이템을 해당 구성 요소로 구분합니다.
+tab.thermalexpansion.machine.centrifuge.1=일부 아이템의 경우 유체 구성 요소가 생성됩니다.
+tab.thermalexpansion.machine.centrifuge.2=승리를 향한 돌리기!
+tab.thermalexpansion.machine.charger.0=에너지를 호환되는 아이템에 주입합니다.
+tab.thermalexpansion.machine.charger.1=충전 속도는 아이템에 의해 제한될 수 있습니다.
+tab.thermalexpansion.machine.charger.2=콧노래를 부릅니다.
+tab.thermalexpansion.machine.compactor.0=아이템에 압력을 가하고 해당 형태를 변경합니다.
+tab.thermalexpansion.machine.compactor.1=고급 구성 요소를 만드는 데 유용합니다.
+tab.thermalexpansion.machine.compactor.2=분쇄기보다 더 순합니다.
+tab.thermalexpansion.machine.crafter.0=아이템을 조합대에 삽입하여 제작 방법을 설정합니다.
+tab.thermalexpansion.machine.crafter.1=확인 버튼을 누르고 가 버리세요!
+tab.thermalexpansion.machine.crafter.2=모든 조합법이 유효한 것은 아닙니다.
+tab.thermalexpansion.machine.crucible.0=고체 물질을 유체로 바꿉니다!
+tab.thermalexpansion.machine.crucible.1=고급 블록을 만들 때 매우 유용합니다.
+tab.thermalexpansion.machine.crucible.2=어린 아이들과 동물들로부터 멀리 떨어지세요.
+tab.thermalexpansion.machine.enchanter.0=책과 다른 비밀은 인첸트합니다.
+tab.thermalexpansion.machine.enchanter.1=특정한 인첸트 책을 얻는 데 유용합니다.
+tab.thermalexpansion.machine.enchanter.2=왼쪽 슬롯은 특정 아이템만 포함하도록 잠글 수 있습니다.
+tab.thermalexpansion.machine.enchanter.3=마법사여, 보세요.
+tab.thermalexpansion.machine.extruder.0=물과 용암을 혼합하여 다양한 종류의 암석을 만듭니다.
+tab.thermalexpansion.machine.extruder.1=탱크에 물과 용암이 충분히 있다면, 여러분은 선택된 아이템을 얻을 것입니다.
+tab.thermalexpansion.machine.extruder.2=마인크래프트 물리학은 재미있어요!
+tab.thermalexpansion.machine.furnace.0=RF를 사용하여 가공합니다.
+tab.thermalexpansion.machine.furnace.1=음식을 요리하는데 아주 적은 에너지를 사용합니다.
+tab.thermalexpansion.machine.furnace.2=오 아무것도 아닙니다.
+tab.thermalexpansion.machine.insolator.0=RF를 사용하여 식물에 영양소와 빛을 불어넣습니다.
+tab.thermalexpansion.machine.insolator.1=유기농법은 아닙니다.
+tab.thermalexpansion.machine.insolator.2=왼쪽 슬롯은 특정 아이템만 포함하도록 잠글 수 있습니다.
+tab.thermalexpansion.machine.insolator.3=기꺼이 빛납니다!
+tab.thermalexpansion.machine.precipitator.0=RF를 사용하여 유체를 얼리세요!
+tab.thermalexpansion.machine.precipitator.1=선택한 아이템은 탱크에 충분한 양의 유체가 있을 경우 얻을 수 있는 것입니다.
+tab.thermalexpansion.machine.precipitator.2=눈싸움합니다.
+tab.thermalexpansion.machine.pulverizer.0=어떤 것을 박살내면 다른 것이 됩니다.
+tab.thermalexpansion.machine.pulverizer.1=광석 처리나 아이템 전환에 유용합니다.
+tab.thermalexpansion.machine.pulverizer.2=이것은 일반적으로 되돌릴 수 없습니다.
+tab.thermalexpansion.machine.refinery.0=다양한 유체를 정제합니다.
+tab.thermalexpansion.machine.refinery.1=일부 유체는 고체 성분에 남게 됩니다.
+tab.thermalexpansion.machine.refinery.2=생산물은 마실 수 있거나 마실 수 없습니다.
+tab.thermalexpansion.machine.sawmill.0=나무를 판자로 자르고 나무 아이템을 재처리합니다.
+tab.thermalexpansion.machine.sawmill.1=나무를 최대한 활용하는 데 매우 유용합니다.
+tab.thermalexpansion.machine.sawmill.2=손을 씻으세요.
+tab.thermalexpansion.machine.smelter.0=금속과 고온을 필요로 하는 것들입니다.
+tab.thermalexpansion.machine.smelter.1=광석을 가공하고 고급 블록을 만드는 데 유용합니다.
+tab.thermalexpansion.machine.smelter.2=왼쪽 슬롯은 특정 아이템만 포함하도록 잠글 수 있습니다.
+tab.thermalexpansion.machine.smelter.3=절대 음식을 요리하지 않을 것입니다.
+tab.thermalexpansion.machine.transposer.0=유체를 담는 것을 채우거나 비웁니다.
+tab.thermalexpansion.machine.transposer.1=버튼을 클릭하여 모드를 변경합니다.
+tab.thermalexpansion.machine.transposer.2=일반적으로 되돌릴 수 있습니다.
+
+tab.thermalexpansion.storage.cache.0=
+tab.thermalexpansion.storage.cache.1=
+
+tab.thermalexpansion.storage.cell.0=RF를 저장하세요.
+tab.thermalexpansion.storage.cell.1=에너지 조절을 적절하게 하고 싶으면 Shift키 또는 Ctrl키를 누르세요.
+
+tab.thermalexpansion.storage.enchant=저장고 용량 증가에 인첸트될 수 있습니다.
+
+tab.thermalexpansion.storage.satchel.0=그것은 책가방입니다. 그것은 여러분이 더 많은 것들을 가지고 다닐 수 있게 해 줍니다.
+tab.thermalexpansion.storage.satchel.1=일부 개체를 저장하지 않습니다.
+
+tab.thermalexpansion.storage.satchel_c.0=그것은 책가방입니다. 그것은 여러분이 안에 넣은 것의 복사본을 만들어 냅니다.
+tab.thermalexpansion.storage.satchel_c.1=일부 개체를 저장하지 않습니다.
+tab.thermalexpansion.storage.satchel_c.2=그것은 모드처럼 "크리에이티브"입니다. 그렇게 영리한 것은 아니죠.
+
+tab.thermalexpansion.storage.satchel_filter.0=이 책가방에서 자동으로 픽업할 수 있는 아이템을 구성합니다.
+tab.thermalexpansion.storage.satchel_filter.1=인벤토리를 회수합니다!
+
+tab.thermalexpansion.storage.satchel_v.0=그것은 책가방입니다. 당신이 넣은 것은 영원히 사라집니다.
+tab.thermalexpansion.storage.satchel_v.1=여기에는 자동으로 선택되는 아이템이 포함됩니다.
+tab.thermalexpansion.storage.satchel_v.2=손 씼으세요!
+
+tab.thermalexpansion.storage.strongbox.0=그건 상자입니다! 그것은 물건들을 저장합니다. 글쎄, 대부분의 것들이죠.
+
+tab.thermalexpansion.storage.tank.0=탱크입니다! 그것은 액체를 저장합니다.
+tab.thermalexpansion.storage.tank.1=하단에서 자동으로 출력할 수 있습니다.
+
+tile.thermalexpansion.apparatus.breaker.name=지형 파쇄기
+tile.thermalexpansion.apparatus.collector.name=획득기
+
+tile.thermalexpansion.device.diffuser.name=공기 확산기
+tile.thermalexpansion.device.factorizer.name=공장기
+tile.thermalexpansion.device.fisher.name=수중 혼란기
+tile.thermalexpansion.device.fluid_buffer.name=유체 할당기
+tile.thermalexpansion.device.heat_sink.name=열음계
+tile.thermalexpansion.device.item_buffer.name=아이템 할당기
+tile.thermalexpansion.device.item_collector.name=진공기
+tile.thermalexpansion.device.lexicon.name=사전 변환기
+tile.thermalexpansion.device.mob_catcher.name=생물 수용기
 tile.thermalexpansion.device.nullifier.name=물체 제거기
+tile.thermalexpansion.device.tapper.name=나무 추출기
+tile.thermalexpansion.device.water_gen.name=수중 호흡기
+tile.thermalexpansion.device.xp_collector.name=통찰 축전기
 
-tile.thermalexpansion.dynamo.compression.name=압축 다이나모
-tile.thermalexpansion.dynamo.enervation.name=쇠약 다이나모
-tile.thermalexpansion.dynamo.magmatic.name=용암 다이나모
-tile.thermalexpansion.dynamo.reactant.name=반응 다이나모
-tile.thermalexpansion.dynamo.steam.name=증기 다이나모
+tile.thermalexpansion.dynamo.compression.name=압축 발전기
+tile.thermalexpansion.dynamo.enervation.name=탈력 발전기
+tile.thermalexpansion.dynamo.magmatic.name=용암 발전기
+tile.thermalexpansion.dynamo.numismatic.name=광석 발전기
+tile.thermalexpansion.dynamo.reactant.name=공명 발전기
+tile.thermalexpansion.dynamo.steam.name=증기 발전기
+tile.thermalexpansion.dynamo=발전기
 
-tile.thermalexpansion.machine.charger.name=전력 주입기
-tile.thermalexpansion.machine.crucible.name=융해 도가니
-tile.thermalexpansion.machine.extruder.name=화성암 생성기
+tile.thermalexpansion.machine.brewer.name=연금기
+tile.thermalexpansion.machine.centrifuge.name=원심 분리기
+tile.thermalexpansion.machine.charger.name=에너지 주입기
+tile.thermalexpansion.machine.compactor.name=압축기
+tile.thermalexpansion.machine.crafter.name=순차적 제작기
+tile.thermalexpansion.machine.crucible.name=마그마 도가니
+tile.thermalexpansion.machine.enchanter.name=신기의 요술기
+tile.thermalexpansion.machine.extruder.name=불 압출기
 tile.thermalexpansion.machine.furnace.name=레드스톤 화로
-tile.thermalexpansion.machine.insolator.name=햇빛 식물 생장기
+tile.thermalexpansion.machine.insolator.name=식물 절연기
 tile.thermalexpansion.machine.precipitator.name=동력 냉각기
 tile.thermalexpansion.machine.pulverizer.name=분쇄기
+tile.thermalexpansion.machine.refinery.name=분별기
 tile.thermalexpansion.machine.sawmill.name=제재기
-tile.thermalexpansion.machine.smelter.name=합금 제련기
-tile.thermalexpansion.machine.transposer.name=액체 운송기
+tile.thermalexpansion.machine.smelter.name=유도 용광로
+tile.thermalexpansion.machine.transposer.name=유체 수송기
+
+tile.thermalexpansion.light.lumium_lamp.name=루미움 램프
+tile.thermalexpansion.light.illuminator.name=발광석 조명기
+tile.thermalexpansion.light.radiant_lamp.name=빛나는 루미움 램프
+
+tile.thermalexpansion.storage.cache.name=캐시
+tile.thermalexpansion.storage.cell.name=에너지 셀
+tile.thermalexpansion.storage.strongbox.name=강력 상자
+tile.thermalexpansion.storage.tank.name=휴대용 탱크

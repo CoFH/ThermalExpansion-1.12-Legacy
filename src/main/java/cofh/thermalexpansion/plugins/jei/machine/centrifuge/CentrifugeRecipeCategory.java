@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.machine.centrifuge;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiCentrifuge;
 import cofh.thermalexpansion.init.TEProps;
@@ -32,6 +33,9 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 
 	public static void register(IRecipeCategoryRegistration registry) {
 
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Centrifuge", enable);
+
 		if (!enable) {
 			return;
 		}
@@ -39,6 +43,7 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipeCategories(new CentrifugeRecipeCategory(guiHelper));
+		registry.addRecipeCategories(new CentrifugeRecipeCategoryMobs(guiHelper));
 	}
 
 	public static void initialize(IModRegistry registry) {
@@ -50,8 +55,10 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.CENTRIFUGE);
-		registry.addRecipeClickArea(GuiCentrifuge.class, 72, 34, 24, 16, RecipeUidsTE.CENTRIFUGE);
+		registry.addRecipeClickArea(GuiCentrifuge.class, 72, 34, 24, 16, RecipeUidsTE.CENTRIFUGE, RecipeUidsTE.CENTRIFUGE_MOBS);
 		registry.addRecipeCatalyst(BlockMachine.machineCentrifuge, RecipeUidsTE.CENTRIFUGE);
+
+		CentrifugeRecipeCategoryMobs.initialize(registry);
 	}
 
 	public static List<CentrifugeRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
@@ -114,7 +121,7 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 		guiItemStacks.init(3, false, 96, 32);
 		guiItemStacks.init(4, false, 114, 32);
 
-		guiFluidStacks.init(0, false, 141, 1, 16, 60, TEProps.MAX_FLUID_LARGE, false, tankOverlay);
+		guiFluidStacks.init(0, false, 141, 1, 16, 60, TEProps.MAX_FLUID_SMALL, false, tankOverlay);
 
 		guiItemStacks.set(0, inputs.get(0));
 

@@ -10,14 +10,15 @@ import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Vector3;
+import cofh.core.init.CoreProps;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.helpers.BlockHelper;
 import cofh.core.util.helpers.FluidHelper;
+import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.BakeryDynamo;
-import cofh.thermalfoundation.init.TFProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import cofh.thermalfoundation.item.ItemUpgrade;
 import net.minecraft.block.material.Material;
@@ -104,10 +105,10 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
-				if (TEProps.creativeTabShowAllLevels) {
-					for (int j = 0; j <= TFProps.LEVEL_MAX; j++) {
+				if (TEProps.creativeTabShowAllBlockLevels) {
+					for (int j = 0; j <= CoreProps.LEVEL_MAX; j++) {
 						items.add(itemBlock.setDefaultTag(new ItemStack(this, 1, i), j));
 					}
 				} else {
@@ -122,9 +123,15 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 	/* TYPE METHODS */
 	@Override
+	public String getUnlocalizedName(ItemStack stack) {
+
+		return "tile.thermalexpansion.dynamo." + Type.values()[ItemHelper.getItemDamage(stack)].getName() + ".name";
+	}
+
+	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
-		return this.getDefaultState().withProperty(VARIANT, Type.byMetadata(meta));
+		return this.getDefaultState().withProperty(VARIANT, Type.values()[meta]);
 	}
 
 	@Override
@@ -139,14 +146,15 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 		return state.getValue(VARIANT).getMetadata();
 	}
 
-	/* ITileEntityProvider */
 	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+	public TileEntity createTileEntity(World world, IBlockState state) {
 
-		if (metadata >= Type.values().length) {
+		int meta = state.getBlock().getMetaFromState(state);
+
+		if (meta >= Type.values().length) {
 			return null;
 		}
-		switch (Type.values()[metadata]) {
+		switch (Type.values()[meta]) {
 			case STEAM:
 				return new TileDynamoSteam();
 			case MAGMATIC:
@@ -191,7 +199,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 			tile.readAugmentsFromNBT(stack.getTagCompound());
 			tile.updateAugmentStatus();
-			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
+			tile.setEnergyStored(stack.getTagCompound().getInteger(CoreProps.ENERGY));
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
@@ -232,12 +240,15 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
 
-		if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+		if (tile == null || !tile.canPlayerAccess(player)) {
+			return false;
+		}
+		if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 			ItemStack heldItem = player.getHeldItem(hand);
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 
 			if (FluidHelper.isFluidHandler(heldItem)) {
-				FluidHelper.drainItemToHandler(heldItem, handler, player, hand);
+				FluidHelper.interactWithHandler(heldItem, handler, player, hand);
 				return true;
 			}
 		}
@@ -295,8 +306,8 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 		ModelBakery.registerBlockKeyGenerator(this, state -> {
 
-			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
 			TileDynamoBase dynamo = state.getValue(TEProps.TILE_DYNAMO);
+			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
 			builder.append(",creative=").append(dynamo.isCreative);
 			builder.append(",level=").append(dynamo.getLevel());
 			builder.append(",facing=").append(dynamo.getFacing());
@@ -312,7 +323,7 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 	/* IInitializer */
 	@Override
-	public boolean initialize() {
+	public boolean preInit() {
 
 		this.setRegistryName("dynamo");
 		ForgeRegistries.BLOCKS.register(this);
@@ -332,11 +343,18 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 		ThermalExpansion.proxy.addIModelRegister(this);
 
+		enable[0] = TileDynamoSteam.enable;
+		enable[1] = TileDynamoMagmatic.enable;
+		enable[2] = TileDynamoCompression.enable;
+		enable[3] = TileDynamoReactant.enable;
+		enable[4] = TileDynamoEnervation.enable;
+		enable[5] = TileDynamoNumismatic.enable;
+
 		return true;
 	}
 
 	@Override
-	public boolean register() {
+	public boolean initialize() {
 
 		dynamoSteam = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.STEAM.getMetadata()));
 		dynamoMagmatic = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.MAGMATIC.getMetadata()));
@@ -359,67 +377,73 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 		if (enable[Type.STEAM.getMetadata()]) {
 			addShapedRecipe(dynamoSteam,
 					" C ",
-					"GIG",
-					"IRI",
+					"IGI",
+					"YXY",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearCopper",
 					'I', "ingotIron",
-					'R', "dustRedstone"
+					'X', "dustRedstone",
+					'Y', "ingotCopper"
 			);
 		}
 		if (enable[Type.MAGMATIC.getMetadata()]) {
 			addShapedRecipe(dynamoMagmatic,
 					" C ",
-					"GIG",
-					"IRI",
+					"IGI",
+					"YXY",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearInvar",
 					'I', "ingotIron",
-					'R', "dustRedstone"
+					'X', "dustRedstone",
+					'Y', "ingotInvar"
 			);
 		}
 		if (enable[Type.COMPRESSION.getMetadata()]) {
 			addShapedRecipe(dynamoCompression,
 					" C ",
-					"GIG",
-					"IRI",
+					"IGI",
+					"YXY",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearTin",
 					'I', "ingotIron",
-					'R', "dustRedstone"
+					'X', "dustRedstone",
+					'Y', "ingotTin"
 			);
 		}
 		if (enable[Type.REACTANT.getMetadata()]) {
 			addShapedRecipe(dynamoReactant,
 					" C ",
-					"GIG",
-					"IRI",
+					"IGI",
+					"YXY",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearLead",
 					'I', "ingotIron",
-					'R', "dustRedstone"
+					'X', "dustRedstone",
+					'Y', "ingotLead"
 			);
 		}
 		if (enable[Type.ENERVATION.getMetadata()]) {
 			addShapedRecipe(dynamoEnervation,
 					" C ",
-					"GIG",
-					"IRI",
+					"IGI",
+					"YXY",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearElectrum",
 					'I', "ingotIron",
-					'R', "dustRedstone"
+					'X', "dustRedstone",
+					'Y', "ingotElectrum"
 			);
 		}
 		if (enable[Type.NUMISMATIC.getMetadata()]) {
 			addShapedRecipe(dynamoNumismatic,
 					" C ",
-					"GIG",
-					"IRI",
+					"IGI",
+					"YXY",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearConstantan",
 					'I', "ingotIron",
-					'R', "dustRedstone"
+					'X', "dustRedstone",
+					'Y', "ingotConstantan"
 			);
 		}
 		// @formatter:on
@@ -427,10 +451,10 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 	private void addUpgradeRecipes() {
 
-		if (!enableUpgradeKitCrafting) {
+		if (!TileDynamoBase.enableUpgradeKitCrafting) {
 			return;
 		}
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				ItemStack[] block = new ItemStack[5];
 
@@ -451,10 +475,10 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 	private void addClassicRecipes() {
 
-		if (!enableClassicRecipes) {
+		if (!TileDynamoBase.enableClassicRecipes) {
 			return;
 		}
-		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.values().length; i++) {
 			if (enable[i]) {
 				ItemStack[] dynamo = new ItemStack[5];
 
@@ -505,7 +529,6 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 		NUMISMATIC(5, "numismatic");
 		// @formatter:on
 
-		private static final Type[] METADATA_LOOKUP = new Type[values().length];
 		private final int metadata;
 		private final String name;
 
@@ -525,25 +548,9 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryP
 
 			return this.name;
 		}
-
-		public static Type byMetadata(int metadata) {
-
-			if (metadata < 0 || metadata >= METADATA_LOOKUP.length) {
-				metadata = 0;
-			}
-			return METADATA_LOOKUP[metadata];
-		}
-
-		static {
-			for (Type type : values()) {
-				METADATA_LOOKUP[type.getMetadata()] = type;
-			}
-		}
 	}
 
 	public static boolean[] enable = new boolean[Type.values().length];
-	public static boolean enableClassicRecipes = false;
-	public static boolean enableUpgradeKitCrafting = false;
 
 	/* REFERENCES */
 	public static ItemStack dynamoSteam;

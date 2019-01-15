@@ -36,6 +36,8 @@ public class TEBlocks {
 		blockCache = new BlockCache();
 		blockStrongbox = new BlockStrongbox();
 
+		// blockLight = new BlockLight();
+
 		initList.add(blockMachine);
 		initList.add(blockApparatus);
 		initList.add(blockDevice);
@@ -46,8 +48,10 @@ public class TEBlocks {
 		initList.add(blockCache);
 		initList.add(blockStrongbox);
 
+		// initList.add(blockLight);
+
 		for (IInitializer init : initList) {
-			init.initialize();
+			init.preInit();
 		}
 		MinecraftForge.EVENT_BUS.register(INSTANCE);
 	}
@@ -57,7 +61,7 @@ public class TEBlocks {
 	public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 
 		for (IInitializer init : initList) {
-			init.register();
+			init.initialize();
 		}
 	}
 
@@ -73,5 +77,7 @@ public class TEBlocks {
 	public static BlockTank blockTank;
 	public static BlockCache blockCache;
 	public static BlockStrongbox blockStrongbox;
+
+	// public static BlockLight blockLight;
 
 }

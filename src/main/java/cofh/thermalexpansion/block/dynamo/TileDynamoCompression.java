@@ -1,19 +1,21 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.network.PacketBase;
 import cofh.core.render.TextureHelper;
+import cofh.core.util.core.EnergyConfig;
 import cofh.core.util.helpers.AugmentHelper;
+import cofh.core.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.managers.device.CoolantManager;
 import cofh.thermalexpansion.util.managers.dynamo.CompressionManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -34,16 +36,21 @@ import java.util.HashSet;
 
 public class TileDynamoCompression extends TileDynamoBase {
 
-	private static final int TYPE = Type.COMPRESSION.getMetadata();
+	protected static final EnergyConfig ENERGY_CONFIG = new EnergyConfig();
+	protected static final HashSet<String> VALID_AUGMENTS = new HashSet<>();
+
+	public static boolean enable = true;
 	public static int basePower = 40;
 	public static int fluidAmount = 100;
 
 	public static void initialize() {
 
-		VALID_AUGMENTS[TYPE] = new HashSet<>();
-		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_BOILER);
-		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COMPRESSION_COOLANT);
-		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COMPRESSION_FUEL);
+		VALID_AUGMENTS.addAll(VALID_AUGMENTS_BASE);
+
+		VALID_AUGMENTS.add(TEProps.DYNAMO_BOILER);
+		VALID_AUGMENTS.add(TEProps.DYNAMO_COMPRESSION_COOLANT);
+		VALID_AUGMENTS.add(TEProps.DYNAMO_COMPRESSION_FUEL);
+		VALID_AUGMENTS.add(TEProps.DYNAMO_COMPRESSION_BIOFUEL);
 
 		GameRegistry.registerTileEntity(TileDynamoCompression.class, "thermalexpansion:dynamo_compression");
 
@@ -53,13 +60,11 @@ public class TileDynamoCompression extends TileDynamoBase {
 	public static void config() {
 
 		String category = "Dynamo.Compression";
-		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+		enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		String comment = "Adjust this value to change the Energy generation (in RF/t) for a Compression Dynamo. This base value will scale with block level and Augments.";
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
-
-		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
+		ENERGY_CONFIG.setDefaultParams(basePower, smallStorage);
 	}
 
 	private FluidTankCore fuelTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
@@ -67,15 +72,29 @@ public class TileDynamoCompression extends TileDynamoBase {
 	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
 
 	private int coolantRF;
+	private int coolantFactor;
 
 	/* AUGMENTS */
 	protected boolean augmentCoolant;
 	protected boolean augmentFuel;
+	protected boolean augmentBiofuel;
 
 	@Override
-	public int getType() {
+	protected String getTileName() {
 
-		return TYPE;
+		return "tile.thermalexpansion.dynamo.compression.name";
+	}
+
+	@Override
+	protected EnergyConfig getEnergyConfig() {
+
+		return ENERGY_CONFIG;
+	}
+
+	@Override
+	protected HashSet<String> getValidAugments() {
+
+		return VALID_AUGMENTS;
 	}
 
 	@Override
@@ -94,11 +113,12 @@ public class TileDynamoCompression extends TileDynamoBase {
 	protected void processStart() {
 
 		if (fuelRF <= 0) {
-			fuelRF += CompressionManager.getFuelEnergy100mB(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
+			fuelRF += CompressionManager.getFuelEnergy100mB(fuelTank.getFluid()) * (energyMod + coolantFactor) / ENERGY_BASE;
 			fuelTank.drain(fluidAmount, true);
 		}
 		if (coolantRF <= 0) {
 			coolantRF += CoolantManager.getCoolantRF100mB(coolantTank.getFluid());
+			coolantFactor = augmentBoiler ? 0 : CoolantManager.getCoolantFactor(coolantTank.getFluid()) - CoolantManager.WATER_FACTOR;
 			coolantTank.drain(fluidAmount, true);
 		}
 	}
@@ -123,18 +143,13 @@ public class TileDynamoCompression extends TileDynamoBase {
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getBaseUnderlayTexture() {
 
 		return TextureHelper.getTexture(renderFluid.getFluid().getStill(renderFluid));
 	}
 
 	/* GUI METHODS */
-	@Override
-	public int getScaledDuration(int scale) {
-
-		return isActive ? scale : 0;
-	}
-
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
@@ -144,7 +159,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTileAugmentable(inventory, this);
 	}
 
 	@Override
@@ -156,6 +171,17 @@ public class TileDynamoCompression extends TileDynamoBase {
 		return coolantTank;
 	}
 
+	@Override
+	public int getFuelEnergy(ItemStack stack) {
+
+		FluidStack fluid = FluidHelper.getFluidForFilledItem(stack);
+
+		if (fluid == null || augmentFuel && !TFFluids.fluidFuel.equals(fluid.getFluid())) {
+			return 0;
+		}
+		return CompressionManager.isValidFuel(fluid) ? CompressionManager.getFuelEnergy(fluid) * (energyMod + coolantFactor) / ENERGY_BASE : 0;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -163,6 +189,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		super.readFromNBT(nbt);
 
 		coolantRF = nbt.getInteger("Coolant");
+		coolantFactor = nbt.getInteger("CoolantFactor");
 		fuelTank.readFromNBT(nbt.getCompoundTag("FuelTank"));
 		coolantTank.readFromNBT(nbt.getCompoundTag("CoolantTank"));
 
@@ -183,6 +210,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("Coolant", coolantRF);
+		nbt.setInteger("CoolantFactor", coolantFactor);
 		nbt.setTag("FuelTank", fuelTank.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("CoolantTank", coolantTank.writeToNBT(new NBTTagCompound()));
 		return nbt;
@@ -219,6 +247,10 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		fuelTank.setFluid(payload.getFluidStack());
 		coolantTank.setFluid(payload.getFluidStack());
+
+		if (!augmentBoiler) {
+			coolantFactor = Math.max(0, CoolantManager.getCoolantFactor(coolantTank.getFluid()) - 20);
+		}
 	}
 
 	@Override
@@ -243,6 +275,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		augmentCoolant = false;
 		augmentFuel = false;
+		augmentBiofuel = false;
 
 		fuelTank.clearLocked();
 		coolantTank.clearLocked();
@@ -253,11 +286,13 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		super.postAugmentInstall();
 
-		if (augmentFuel) {
-			fuelTank.setLock(TFFluids.fluidFuel);
-		}
 		if (augmentBoiler) {
 			coolantTank.setLock(FluidRegistry.WATER);
+			coolantFactor = 0;
+		} else if (augmentFuel) {
+			fuelTank.setLock(TFFluids.fluidFuel);
+		} else if (augmentBiofuel) {
+			fuelTank.setLock(TFFluids.fluidBiofuel);
 		}
 	}
 
@@ -286,6 +321,13 @@ public class TileDynamoCompression extends TileDynamoBase {
 			energyMod += 50;
 			return true;
 		}
+		if (!augmentFuel && TEProps.DYNAMO_COMPRESSION_BIOFUEL.equals(id)) {
+			augmentBiofuel = true;
+			hasModeAugment = true;
+			energyConfig.setDefaultParams(energyConfig.maxPower + 2 * getBasePower(this.level), smallStorage);
+			energyMod += 25;
+			return true;
+		}
 		return super.installAugmentToSlot(slot);
 	}
 
@@ -311,16 +353,15 @@ public class TileDynamoCompression extends TileDynamoBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
-						return 0;
-					}
-					if (CompressionManager.isValidFuel(resource)) {
-						return fuelTank.fill(resource, doFill);
-					}
-					if (augmentBoiler && resource.getFluid() == FluidRegistry.WATER) {
-						return coolantTank.fill(resource, doFill);
-					} else if (CoolantManager.isValidCoolant(resource)) {
-						return coolantTank.fill(resource, doFill);
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						if (CompressionManager.isValidFuel(resource)) {
+							return fuelTank.fill(resource, doFill);
+						}
+						if (augmentBoiler && resource.getFluid() == FluidRegistry.WATER) {
+							return coolantTank.fill(resource, doFill);
+						} else if (CoolantManager.isValidCoolant(resource)) {
+							return coolantTank.fill(resource, doFill);
+						}
 					}
 					return 0;
 				}
@@ -329,14 +370,13 @@ public class TileDynamoCompression extends TileDynamoBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
-						return null;
-					}
-					if (resource.equals(fuelTank.getFluid())) {
-						return fuelTank.drain(resource.amount, doDrain);
-					}
-					if (resource.equals(coolantTank.getFluid())) {
-						return coolantTank.drain(resource.amount, doDrain);
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						if (resource.equals(fuelTank.getFluid())) {
+							return fuelTank.drain(resource.amount, doDrain);
+						}
+						if (resource.equals(coolantTank.getFluid())) {
+							return coolantTank.drain(resource.amount, doDrain);
+						}
 					}
 					return null;
 				}
@@ -345,13 +385,11 @@ public class TileDynamoCompression extends TileDynamoBase {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (!augmentCoilDuct && from.ordinal() == facing) {
-						return null;
+					if (from == null || augmentCoilDuct || from.ordinal() != facing) {
+						FluidStack ret = fuelTank.drain(maxDrain, doDrain);
+						return ret != null ? ret : coolantTank.drain(maxDrain, doDrain);
 					}
-					if (fuelTank.getFluidAmount() <= 0) {
-						return coolantTank.drain(maxDrain, doDrain);
-					}
-					return fuelTank.drain(maxDrain, doDrain);
+					return null;
 				}
 			});
 		}

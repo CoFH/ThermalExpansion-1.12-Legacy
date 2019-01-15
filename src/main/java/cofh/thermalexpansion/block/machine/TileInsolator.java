@@ -2,7 +2,11 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketBase;
+import cofh.core.util.core.EnergyConfig;
+import cofh.core.util.core.SideConfig;
+import cofh.core.util.core.SlotConfig;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -31,6 +35,8 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import static cofh.core.util.core.SideConfig.*;
+
 public class TileInsolator extends TileMachineBase {
 
 	private static final int TYPE = Type.INSOLATOR.getMetadata();
@@ -45,6 +51,12 @@ public class TileInsolator extends TileMachineBase {
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 }, { 0, 1, 2, 3 }, { 0, 1, 2, 3 } };
 		SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, INPUT_ALL, OUTPUT_PRIMARY, OUTPUT_SECONDARY, OUTPUT_ALL, INPUT_PRIMARY, INPUT_SECONDARY, OPEN, OMNI };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+
+		ALT_SIDE_CONFIGS[TYPE] = new SideConfig();
+		ALT_SIDE_CONFIGS[TYPE].numConfig = 2;
+		ALT_SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 }, { 0, 1, 2, 3 }, { 0, 1, 2, 3 } };
+		ALT_SIDE_CONFIGS[TYPE].sideTypes = new int[] { NONE, OPEN };
+		ALT_SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false, false };
@@ -77,6 +89,7 @@ public class TileInsolator extends TileMachineBase {
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
 
+	private InsolatorRecipe curRecipe;
 	private int inputTrackerPrimary;
 	private int inputTrackerSecondary;
 	private int outputTrackerPrimary;
@@ -117,25 +130,28 @@ public class TileInsolator extends TileMachineBase {
 		if (inventory[0].isEmpty() || inventory[1].isEmpty() || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		InsolatorRecipe recipe = InsolatorManager.getRecipe(inventory[1], inventory[0]);
+		getRecipe();
 
-		if (recipe == null || tank.getFluidAmount() < recipe.getWater()) {
+		if (curRecipe == null) {
 			return false;
 		}
-		if (recipe.getType() == InsolatorManager.Type.TREE && !augmentTree) {
+		if (tank.getFluidAmount() < curRecipe.getWater()) {
+			return false;
+		}
+		if (curRecipe.getType() == InsolatorManager.Type.TREE && !augmentTree) {
 			return false;
 		}
 		if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
-			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
+			if (curRecipe.getPrimaryInput().getCount() > inventory[1].getCount() || curRecipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
 				return false;
 			}
 		} else {
-			if (recipe.getPrimaryInput().getCount() > inventory[0].getCount() || recipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
+			if (curRecipe.getPrimaryInput().getCount() > inventory[0].getCount() || curRecipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
 				return false;
 			}
 		}
-		ItemStack primaryItem = recipe.getPrimaryOutput();
-		ItemStack secondaryItem = recipe.getSecondaryOutput();
+		ItemStack primaryItem = curRecipe.getPrimaryOutput();
+		ItemStack secondaryItem = curRecipe.getSecondaryOutput();
 
 		if (!secondaryItem.isEmpty() && !inventory[3].isEmpty()) {
 			if (!augmentSecondaryNull) {
@@ -153,46 +169,55 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		InsolatorRecipe recipe = InsolatorManager.getRecipe(inventory[1], inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			return false;
 		}
 		if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
-			if (recipe.getPrimaryInput().getCount() > inventory[1].getCount() || recipe.getSecondaryInput().getCount() > inventory[0].getCount()) {
-				return false;
-			}
+			return curRecipe.getPrimaryInput().getCount() <= inventory[1].getCount() && curRecipe.getSecondaryInput().getCount() <= inventory[0].getCount();
 		} else {
-			if (recipe.getPrimaryInput().getCount() > inventory[0].getCount() || recipe.getSecondaryInput().getCount() > inventory[1].getCount()) {
-				return false;
-			}
+			return curRecipe.getPrimaryInput().getCount() <= inventory[0].getCount() && curRecipe.getSecondaryInput().getCount() <= inventory[1].getCount();
 		}
-		return true;
+	}
+
+	@Override
+	protected void clearRecipe() {
+
+		curRecipe = null;
+	}
+
+	@Override
+	protected void getRecipe() {
+
+		curRecipe = InsolatorManager.getRecipe(inventory[1], inventory[0]);
 	}
 
 	@Override
 	protected void processStart() {
 
-		processMax = InsolatorManager.getRecipe(inventory[1], inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = curRecipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		InsolatorRecipe recipe = InsolatorManager.getRecipe(inventory[1], inventory[0]);
-
-		if (recipe == null) {
+		if (curRecipe == null) {
+			getRecipe();
+		}
+		if (curRecipe == null) {
 			processOff();
 			return;
 		}
-		tank.modifyFluidStored(-recipe.getWater());
-		ItemStack primaryItem = recipe.getPrimaryOutput();
-		ItemStack secondaryItem = recipe.getSecondaryOutput();
-		boolean hasFertilizer = recipe.hasFertilizer();
+		tank.modifyFluidStored(-curRecipe.getWater());
+		ItemStack primaryItem = curRecipe.getPrimaryOutput();
+		ItemStack secondaryItem = curRecipe.getSecondaryOutput();
+		boolean hasFertilizer = curRecipe.hasFertilizer();
 
 		if (hasFertilizer) { // Fertilizer is *always* secondary input, if present.
-			ItemStack input = recipe.getPrimaryInput();
+			ItemStack input = curRecipe.getPrimaryInput();
 
 			if (inventory[2].isEmpty()) {
 				inventory[2] = ItemHelper.cloneStack(primaryItem);
@@ -202,31 +227,26 @@ public class TileInsolator extends TileMachineBase {
 			if (!secondaryItem.isEmpty()) {
 				int modifiedChance = secondaryChance;
 
-				int recipeChance = recipe.getSecondaryOutputChance();
+				int recipeChance = curRecipe.getSecondaryOutputChance();
 				if (augmentMonoculture && secondaryItem.isItemEqual(input)) {
 					recipeChance -= 100;
 				}
 				if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
 					if (inventory[3].isEmpty()) {
 						inventory[3] = ItemHelper.cloneStack(secondaryItem);
-
-						if (world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-							inventory[3].grow(secondaryItem.getCount());
-						}
 					} else if (inventory[3].isItemEqual(secondaryItem)) {
 						inventory[3].grow(secondaryItem.getCount());
-
-						if (world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-							inventory[3].grow(secondaryItem.getCount());
-						}
+					}
+					if (world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+						inventory[3].grow(secondaryItem.getCount());
 					}
 					if (inventory[3].getCount() > inventory[3].getMaxStackSize()) {
 						inventory[3].setCount(inventory[3].getMaxStackSize());
 					}
 				}
 			}
-			int countInput = augmentMonoculture ? 0 : recipe.getPrimaryInput().getCount();
-			int countFertilizer = recipe.getSecondaryInput().getCount();
+			int countInput = augmentMonoculture ? 0 : curRecipe.getPrimaryInput().getCount();
+			int countFertilizer = curRecipe.getSecondaryInput().getCount();
 
 			if (reuseChance > 0) {
 				if (InsolatorManager.isItemFertilizer(inventory[0])) {
@@ -258,7 +278,7 @@ public class TileInsolator extends TileMachineBase {
 			if (!secondaryItem.isEmpty()) {
 				int modifiedChance = secondaryChance;
 
-				int recipeChance = recipe.getSecondaryOutputChance();
+				int recipeChance = curRecipe.getSecondaryOutputChance();
 				if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
 					if (inventory[3].isEmpty()) {
 						inventory[3] = ItemHelper.cloneStack(secondaryItem);
@@ -278,8 +298,8 @@ public class TileInsolator extends TileMachineBase {
 					}
 				}
 			}
-			int count1 = recipe.getPrimaryInput().getCount();
-			int count2 = recipe.getSecondaryInput().getCount();
+			int count1 = curRecipe.getPrimaryInput().getCount();
+			int count2 = curRecipe.getSecondaryInput().getCount();
 
 			if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
 				inventory[1].shrink(count1);
@@ -300,7 +320,7 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!enableAutoInput) {
+		if (!getTransferIn()) {
 			return;
 		}
 		int side;
@@ -327,7 +347,7 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
+		if (!getTransferOut()) {
 			return;
 		}
 		int side;
@@ -415,8 +435,8 @@ public class TileInsolator extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		inputTrackerPrimary = nbt.getInteger("TrackIn1");
-		inputTrackerSecondary = nbt.getInteger("TrackIn2");
+		inputTrackerPrimary = nbt.getInteger(CoreProps.TRACK_IN);
+		inputTrackerSecondary = nbt.getInteger(CoreProps.TRACK_IN_2);
 		outputTrackerPrimary = nbt.getInteger("Tracker1");
 		outputTrackerSecondary = nbt.getInteger("Tracker2");
 		lockPrimary = nbt.getBoolean("SlotLock");
@@ -428,8 +448,8 @@ public class TileInsolator extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("TrackIn1", inputTrackerPrimary);
-		nbt.setInteger("TrackIn2", inputTrackerSecondary);
+		nbt.setInteger(CoreProps.TRACK_IN, inputTrackerPrimary);
+		nbt.setInteger(CoreProps.TRACK_IN_2, inputTrackerSecondary);
 		nbt.setInteger("Tracker1", outputTrackerPrimary);
 		nbt.setInteger("Tracker2", outputTrackerSecondary);
 		nbt.setBoolean("SlotLock", lockPrimary);
@@ -510,7 +530,7 @@ public class TileInsolator extends TileMachineBase {
 
 		if (TEProps.MACHINE_INSOLATOR_FERTILIZER.equals(id)) {
 			reuseChance += 20;
-			energyMod += 5;
+			energyMod += 15;
 		}
 		if (!augmentMonoculture && TEProps.MACHINE_INSOLATOR_MONOCULTURE.equals(id)) {
 			augmentMonoculture = true;
@@ -564,10 +584,11 @@ public class TileInsolator extends TileMachineBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
-						return 0;
-					}
 					return tank.fill(resource, doFill);
+					//					if (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+					//						return tank.fill(resource, doFill);
+					//					}
+					//					return 0;
 				}
 
 				@Nullable
@@ -577,7 +598,10 @@ public class TileInsolator extends TileMachineBase {
 					if (isActive) {
 						return null;
 					}
-					return tank.drain(resource, doDrain);
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(resource, doDrain);
+					}
+					return null;
 				}
 
 				@Nullable
@@ -587,7 +611,10 @@ public class TileInsolator extends TileMachineBase {
 					if (isActive) {
 						return null;
 					}
-					return tank.drain(maxDrain, doDrain);
+					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+						return tank.drain(maxDrain, doDrain);
+					}
+					return null;
 				}
 			});
 		}

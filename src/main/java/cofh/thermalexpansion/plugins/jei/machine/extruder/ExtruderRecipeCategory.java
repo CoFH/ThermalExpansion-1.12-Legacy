@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.machine.extruder;
 
 import cofh.core.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.init.TEProps;
@@ -32,6 +33,9 @@ public class ExtruderRecipeCategory extends BaseRecipeCategory<ExtruderRecipeWra
 
 	public static void register(IRecipeCategoryRegistration registry) {
 
+		String category = "Plugins.JEI";
+		enable = ThermalExpansion.CONFIG_CLIENT.get(category, "Machine.Extruder", enable);
+
 		if (!enable) {
 			return;
 		}
@@ -39,6 +43,7 @@ public class ExtruderRecipeCategory extends BaseRecipeCategory<ExtruderRecipeWra
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipeCategories(new ExtruderRecipeCategory(guiHelper));
+		registry.addRecipeCategories(new ExtruderRecipeCategorySedimentary(guiHelper));
 	}
 
 	public static void initialize(IModRegistry registry) {
@@ -50,15 +55,17 @@ public class ExtruderRecipeCategory extends BaseRecipeCategory<ExtruderRecipeWra
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.EXTRUDER);
-		registry.addRecipeClickArea(GuiExtruder.class, 85, 26, 24, 16, RecipeUidsTE.EXTRUDER);
+		registry.addRecipeClickArea(GuiExtruder.class, 85, 26, 24, 16, RecipeUidsTE.EXTRUDER, RecipeUidsTE.EXTRUDER_SEDIMENTARY);
 		registry.addRecipeCatalyst(BlockMachine.machineExtruder, RecipeUidsTE.EXTRUDER);
+
+		ExtruderRecipeCategorySedimentary.initialize(registry);
 	}
 
 	public static List<ExtruderRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<ExtruderRecipeWrapper> recipes = new ArrayList<>();
 
-		for (ExtruderRecipe recipe : ExtruderManager.getRecipeList()) {
+		for (ExtruderRecipe recipe : ExtruderManager.getRecipeList(false)) {
 			recipes.add(new ExtruderRecipeWrapper(guiHelper, recipe));
 		}
 		return recipes;

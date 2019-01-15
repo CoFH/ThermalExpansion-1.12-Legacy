@@ -4,7 +4,9 @@
 		"model": "builtin/generated",
 		"textures": {
 			"layer0": "thermalexpansion:items/satchel/satchel_0",
-			"layer1": "thermalexpansion:items/satchel/access_public"
+			"layer1": "thermalexpansion:items/satchel/access_public",
+			"layer2": "thermalexpansion:items/blank",
+			"layer3": "thermalexpansion:items/blank"
 		},
 		"transform": "forge:default-item"
 	},
@@ -12,22 +14,40 @@
 		"access": {
 			"public": {
 				"textures": {
-					"layer1": "thermalexpansion:items/satchel/access_public"
+					"layer1": "thermalexpansion:items/satchel/satchel_access_public"
 				}
 			},
 			"friends": {
 				"textures": {
-					"layer1": "thermalexpansion:items/satchel/access_friends"
+					"layer1": "thermalexpansion:items/satchel/satchel_access_friends"
 				}
 			},
 			"team": {
 				"textures": {
-					"layer1": "thermalexpansion:items/satchel/access_team"
+					"layer1": "thermalexpansion:items/satchel/satchel_access_team"
 				}
 			},
 			"private": {
 				"textures": {
-					"layer1": "thermalexpansion:items/satchel/access_private"
+					"layer1": "thermalexpansion:items/satchel/satchel_access_private"
+				}
+			}
+		},
+		"color0": {
+			"0": {
+			},
+			"1": {
+				"textures": {
+					"layer2": "thermalexpansion:items/satchel/satchel_color_0"
+				}
+			}
+		},
+		"color1": {
+			"0": {
+			},
+			"1": {
+				"textures": {
+					"layer3": "thermalexpansion:items/satchel/satchel_color_1"
 				}
 			}
 		},
@@ -55,6 +75,11 @@
 			"standard4": {
 				"textures": {
 					"layer0": "thermalexpansion:items/satchel/satchel_4"
+				}
+			},
+			"void": {
+				"textures": {
+					"layer0": "thermalexpansion:items/satchel/satchel_v"
 				}
 			},
 			"creative": {

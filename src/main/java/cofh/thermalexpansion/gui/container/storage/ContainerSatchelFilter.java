@@ -37,8 +37,8 @@ public class ContainerSatchelFilter extends ContainerCore implements IFilterable
 		int slots = ItemSatchel.getFilterSize(stack);
 		int rowSize = slots / rows;
 
-		int xOffset = 89 - 9 * rowSize;
-		int yOffset = filterIndex == 0 ? 26 : 17;
+		int xOffset = 62 - 9 * rowSize;
+		int yOffset = 44 - 9 * rows;
 
 		bindPlayerInventory(inventory);
 
@@ -70,7 +70,7 @@ public class ContainerSatchelFilter extends ContainerCore implements IFilterable
 	@Override
 	protected int getPlayerInventoryVerticalOffset() {
 
-		return filterIndex > 1 ? 120 : 102;
+		return 84;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.storage;
 
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
+import cofh.core.block.BlockCore;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.init.CoreProps;
 import cofh.core.item.IEnchantableItem;
@@ -8,9 +9,6 @@ import cofh.core.util.helpers.*;
 import cofh.redstoneflux.api.IEnergyContainerItem;
 import cofh.redstoneflux.util.EnergyContainerItemWrapper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import cofh.thermalfoundation.init.TFProps;
-import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -24,7 +22,7 @@ import java.util.List;
 
 public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerItem, IEnchantableItem {
 
-	public ItemBlockCell(Block block) {
+	public ItemBlockCell(BlockCore block) {
 
 		super(block);
 		setMaxStackSize(1);
@@ -51,10 +49,10 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	public ItemStack setCreativeTag(ItemStack stack) {
 
 		if (stack.getTagCompound() == null) {
-			setDefaultTag(stack, TFProps.LEVEL_MAX);
+			setDefaultTag(stack, CoreProps.LEVEL_MAX);
 		}
 		ReconfigurableHelper.setSideCache(stack, TileCell.CREATIVE_SIDES);
-		EnergyHelper.setDefaultEnergyTag(stack, TileCell.CAPACITY[TFProps.LEVEL_MAX]);
+		EnergyHelper.setDefaultEnergyTag(stack, TileCell.CAPACITY[CoreProps.LEVEL_MAX]);
 		stack.getTagCompound().setBoolean("Creative", true);
 		return stack;
 	}
@@ -97,7 +95,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 
-		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
+		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, CoreProps.ENERGY));
 	}
 
 	@Override
@@ -124,7 +122,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		if (stack.getTagCompound() == null) {
 			setDefaultTag(stack);
 		}
-		return 1D - ((double) stack.getTagCompound().getInteger("Energy") / (double) getMaxEnergyStored(stack));
+		return MathHelper.clamp(1.0D - ((double) stack.getTagCompound().getInteger(CoreProps.ENERGY) / (double) getMaxEnergyStored(stack)), 0.0D, 1.0D);
 	}
 
 	/* IEnergyContainerItem */
@@ -136,12 +134,12 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		}
 		int level = getLevel(container);
 
-		int stored = container.getTagCompound().getInteger("Energy");
+		int stored = Math.min(container.getTagCompound().getInteger(CoreProps.ENERGY), getMaxEnergyStored(container));
 		int receive = Math.min(maxReceive, Math.min(getMaxEnergyStored(container) - stored, TileCell.RECV[level]));
 
 		if (!simulate) {
 			stored += receive;
-			container.getTagCompound().setInteger("Energy", stored);
+			container.getTagCompound().setInteger(CoreProps.ENERGY, stored);
 		}
 		return receive;
 	}
@@ -150,16 +148,16 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
 		if (isCreative(container)) {
-			return Math.min(maxExtract, TileCell.SEND[TFProps.LEVEL_MAX]);
+			return Math.min(maxExtract, TileCell.SEND[CoreProps.LEVEL_MAX]);
 		}
 		int level = getLevel(container);
 
-		int stored = container.getTagCompound().getInteger("Energy");
+		int stored = Math.min(container.getTagCompound().getInteger(CoreProps.ENERGY), getMaxEnergyStored(container));
 		int extract = Math.min(maxExtract, Math.min(stored, TileCell.SEND[level]));
 
 		if (!simulate) {
 			stored -= extract;
-			container.getTagCompound().setInteger("Energy", stored);
+			container.getTagCompound().setInteger(CoreProps.ENERGY, stored);
 		}
 		return extract;
 	}
@@ -170,13 +168,13 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		if (container.getTagCompound() == null) {
 			setDefaultTag(container);
 		}
-		return container.getTagCompound().getInteger("Energy");
+		return Math.min(container.getTagCompound().getInteger(CoreProps.ENERGY), getMaxEnergyStored(container));
 	}
 
 	@Override
 	public int getMaxEnergyStored(ItemStack container) {
 
-		return TileCell.getCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
+		return TileCell.getMaxCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
 	}
 
 	/* IEnchantableItem */

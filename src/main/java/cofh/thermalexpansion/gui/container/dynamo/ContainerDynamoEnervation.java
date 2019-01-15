@@ -1,14 +1,14 @@
 package cofh.thermalexpansion.gui.container.dynamo;
 
+import cofh.core.gui.container.ContainerTileAugmentable;
 import cofh.core.gui.slot.ISlotValidator;
 import cofh.core.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.dynamo.TileDynamoEnervation;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerDynamoEnervation extends ContainerTEBase implements ISlotValidator {
+public class ContainerDynamoEnervation extends ContainerTileAugmentable implements ISlotValidator {
 
 	TileDynamoEnervation myTile;
 
