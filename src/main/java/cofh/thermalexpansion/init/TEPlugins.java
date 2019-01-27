@@ -65,6 +65,7 @@ public class TEPlugins {
 		pluginTraverse = new PluginTraverse();
 		pluginTropicraft = new PluginTropicraft();
 		pluginTwilightForest = new PluginTwilightForest();
+		pluginUndergroundBiomes = new PluginUndergroundBiomes();
 
 		initList.add(pluginTOP);
 
@@ -112,6 +113,7 @@ public class TEPlugins {
 		initList.add(pluginTraverse);
 		initList.add(pluginTropicraft);
 		initList.add(pluginTwilightForest);
+		initList.add(pluginUndergroundBiomes);
 
 		for (IInitializer init : initList) {
 			init.preInit();
@@ -174,5 +176,6 @@ public class TEPlugins {
 	private static PluginTraverse pluginTraverse;
 	private static PluginTropicraft pluginTropicraft;
 	private static PluginTwilightForest pluginTwilightForest;
+	private static PluginUndergroundBiomes pluginUndergroundBiomes;
 
 }
