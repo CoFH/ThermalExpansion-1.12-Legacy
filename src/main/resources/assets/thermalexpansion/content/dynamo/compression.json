@@ -37,7 +37,7 @@
 		},
 		{
 			"fluid": "fuel_dense",
-			"energy": 1600000
+			"energy": 2400000
 		},
 		{
 			"fluid": "fuel_gaseous",
