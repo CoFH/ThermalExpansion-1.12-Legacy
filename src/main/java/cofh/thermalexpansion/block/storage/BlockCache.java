@@ -107,10 +107,10 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 		}
 		TileCache tile = (TileCache) world.getTileEntity(pos);
 
-		if (tile == null || !tile.canPlayerAccess(player)) {
+		if (tile == null || !tile.canPlayerAccess(player) || tile.getStoredInstance().isEmpty()) {
 			return;
 		}
-		int extractAmount = !player.isSneaking() && !player.capabilities.isCreativeMode ? 1 : 64;
+		int extractAmount = !player.isSneaking() && !player.capabilities.isCreativeMode ? 1 : tile.getStoredInstance().getMaxStackSize();
 		ItemStack extract = tile.extractItem(extractAmount, true);
 		if (extract.isEmpty()) {
 			return;

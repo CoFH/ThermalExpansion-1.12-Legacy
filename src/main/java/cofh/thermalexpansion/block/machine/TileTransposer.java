@@ -327,7 +327,7 @@ public class TileTransposer extends TileMachineBase {
 				return true;
 			}
 			ItemStack output = recipe.getOutput();
-			return inventory[2].isItemEqual(output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
+			return ItemHelper.itemsIdentical(inventory[2], output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
 		} else {
 			TransposerRecipe recipe = TransposerManager.getExtractRecipe(inventory[0]);
 			if (recipe == null) {
@@ -343,7 +343,7 @@ public class TileTransposer extends TileMachineBase {
 				return true;
 			}
 			ItemStack output = recipe.getOutput();
-			return output.isEmpty() || inventory[2].isItemEqual(output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
+			return output.isEmpty() || ItemHelper.itemsIdentical(inventory[2], output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
 		}
 	}
 

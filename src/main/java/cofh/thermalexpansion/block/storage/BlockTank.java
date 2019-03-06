@@ -255,6 +255,7 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 
 			if (stack != null) {
 				builder.append(",fluid=").append(stack.hashCode());
+				builder.append(",amount=").append(stack.amount);
 			}
 			return builder.toString();
 		});

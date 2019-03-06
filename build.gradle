@@ -5,7 +5,7 @@ buildscript {
 		jcenter()
 		maven {
 			name = "forge"
-			url = "http://files.minecraftforge.net/maven"
+			url = "https://files.minecraftforge.net/maven"
 		}
 	}
 	dependencies {
@@ -36,15 +36,15 @@ configFile.withReader {
 repositories {
 	maven {
 		name = "CoFH Maven"
-		url = "http://maven.covers1624.net"
+		url = "https://maven.covers1624.net"
 	}
 	maven {
 		name = "ChickenBones Maven"
-		url = "http://chickenbones.net/maven/"
+		url = "https://chickenbones.net/maven/"
 	}
 	maven {
 		name = "JEI Maven"
-		url = "http://dvs1.progwml6.com/files/maven"
+		url = "https://dvs1.progwml6.com/files/maven"
 	}
 }
 
@@ -142,7 +142,7 @@ uploadArchives {
 			if (project.hasProperty("local_maven") || project.hasProperty("maven_pass")) {
 				if (project.hasProperty("maven_pass")) {
 					println "Uploading to remote maven."
-					repository(url: "http://maven_upload.covers1624.net/") {
+					repository(url: "https://maven_upload.covers1624.net/") {
 						authentication(userName: "cofh", password: project.getProperty("maven_pass"))
 					}
 				} else {
