@@ -78,7 +78,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 
 	byte facing = 3;
 
-	public byte enchantHolding;
+	public short enchantHolding;
 	boolean lock = false;
 
 	private CacheItemHandler handler;
@@ -175,7 +175,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 	/* COMMON METHODS */
 	public static int getMaxCapacity(int level, int enchant) {
 
-		return CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * enchant) / 2;
+		return (int) Math.max(CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * (double) enchant) / 2, 0);
 	}
 
 	public CacheItemHandler getHandler() {
@@ -273,7 +273,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
-		enchantHolding = nbt.getByte("EncHolding");
+		enchantHolding = nbt.getShort("EncHolding");
 
 		super.readFromNBT(nbt);
 
@@ -287,7 +287,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 
 		super.writeToNBT(nbt);
 
-		nbt.setByte("EncHolding", enchantHolding);
+		nbt.setShort("EncHolding", enchantHolding);
 		nbt.setByte(CoreProps.FACING, facing);
 		handler.writeToNBT(nbt);
 		return nbt;
@@ -331,7 +331,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 
 		PacketBase payload = super.getTilePacket();
 
-		payload.addByte(enchantHolding);
+		payload.addShort(enchantHolding);
 		payload.addByte(facing);
 		payload.addBool(lock);
 		payload.addItemStack(ItemHelper.cloneStack(getStoredInstance()));
@@ -356,7 +356,7 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 
 		super.handleTilePacket(payload);
 
-		enchantHolding = payload.getByte();
+		enchantHolding = payload.getShort();
 		facing = payload.getByte();
 		lock = payload.getBool();
 		handler.setItem(payload.getItemStack(), payload.getInt());

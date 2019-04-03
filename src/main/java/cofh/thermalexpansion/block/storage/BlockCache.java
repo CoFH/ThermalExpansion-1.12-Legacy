@@ -139,7 +139,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 			TileCache tile = (TileCache) world.getTileEntity(pos);
 
 			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
-			tile.enchantHolding = (byte) MathHelper.clamp(EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack), 0, CoreEnchantments.holding.getMaxLevel());
+			tile.enchantHolding = (short) MathHelper.clamp(EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack), 0, Short.MAX_VALUE);
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 
 			if (stack.getTagCompound().hasKey("Item")) {
