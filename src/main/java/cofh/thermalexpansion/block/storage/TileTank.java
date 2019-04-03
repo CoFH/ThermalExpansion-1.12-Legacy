@@ -77,7 +77,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	private int compareTracker;
 	private int lastDisplayLevel;
 
-	public byte enchantHolding;
+	public short enchantHolding;
 
 	boolean lock = false;
 	boolean renderFlag = true;
@@ -246,7 +246,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	/* COMMON METHODS */
 	public static int getMaxCapacity(int level, int enchant) {
 
-		return CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * enchant) / 2;
+		return (int) Math.max(CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * (double) enchant) / 2, 0);
 	}
 
 	protected void transferFluid() {
@@ -356,7 +356,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
-		enchantHolding = nbt.getByte("EncHolding");
+		enchantHolding = nbt.getShort("EncHolding");
 
 		super.readFromNBT(nbt);
 
@@ -369,7 +369,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		super.writeToNBT(nbt);
 
-		nbt.setByte("EncHolding", enchantHolding);
+		nbt.setShort("EncHolding", enchantHolding);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
@@ -413,7 +413,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		PacketBase payload = super.getTilePacket();
 
-		payload.addByte(enchantHolding);
+		payload.addShort(enchantHolding);
 		payload.addBool(lock);
 		payload.addFluidStack(tank.getFluid());
 
@@ -436,7 +436,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		super.handleTilePacket(payload);
 
-		enchantHolding = payload.getByte();
+		enchantHolding = payload.getShort();
 		lock = payload.getBool();
 		tank.setFluid(payload.getFluidStack());
 
