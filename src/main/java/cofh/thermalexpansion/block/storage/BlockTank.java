@@ -105,7 +105,7 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 			TileTank tile = (TileTank) world.getTileEntity(pos);
 
 			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
-			tile.enchantHolding = (short) MathHelper.clamp(EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack), 0, Byte.MAX_VALUE);
+			tile.enchantHolding = (short) MathHelper.clamp(EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack), 0, Short.MAX_VALUE);
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 
 			if (stack.getTagCompound().hasKey(CoreProps.FLUID)) {
