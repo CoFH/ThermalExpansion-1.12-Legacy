@@ -90,7 +90,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	private int meterTracker;
 	private int outputTracker;
 
-	public byte enchantHolding;
+	public short enchantHolding;
 	public int amountRecv;
 	public int amountSend;
 
@@ -252,7 +252,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	/* COMMON METHODS */
 	public static int getMaxCapacity(int level, int enchant) {
 
-		return CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * enchant) / 2;
+		return (int) Math.max(CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * (double) enchant) / 2, 0);
 	}
 
 	public int getScaledEnergyStored(int scale) {
@@ -316,7 +316,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
-		enchantHolding = nbt.getByte("EncHolding");
+		enchantHolding = nbt.getShort("EncHolding");
 
 		super.readFromNBT(nbt);
 
@@ -333,7 +333,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		super.writeToNBT(nbt);
 
-		nbt.setByte("EncHolding", enchantHolding);
+		nbt.setShort("EncHolding", enchantHolding);
 		nbt.setInteger(CoreProps.TRACK_OUT, outputTracker);
 		nbt.setInteger("Recv", amountRecv);
 		nbt.setInteger("Send", amountSend);
@@ -380,7 +380,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		PacketBase payload = super.getTilePacket();
 
-		payload.addByte(enchantHolding);
+		payload.addShort(enchantHolding);
 		payload.addInt(amountRecv);
 		payload.addInt(amountSend);
 
@@ -402,7 +402,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		super.handleTilePacket(payload);
 
-		enchantHolding = payload.getByte();
+		enchantHolding = payload.getShort();
 		amountRecv = payload.getInt();
 		amountSend = payload.getInt();
 
