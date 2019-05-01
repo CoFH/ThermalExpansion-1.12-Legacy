@@ -33,6 +33,41 @@
 			"energy": 800000
 		},
 		{
+			"//": "BuildCraft Energy"
+		},
+		{
+			"fluid": "fuel_dense",
+			"energy": 2400000
+		},
+		{
+			"fluid": "fuel_gaseous",
+			"energy": 200000
+		},
+		{
+			"fluid": "fuel_light",
+			"energy": 800000
+		},
+		{
+			"fluid": "fuel_mixed_heavy",
+			"energy": 640000
+		},
+		{
+			"fluid": "fuel_mixed_light",
+			"energy": 320000
+		},
+		{
+			"fluid": "oil_dense",
+			"energy": 1600000
+		},
+		{
+			"fluid": "oil_distilled",
+			"energy": 400000
+		},
+		{
+			"fluid": "oil_heavy",
+			"energy": 1000000
+		},
+		{
 			"//": "Actually Additions"
 		},
 		{

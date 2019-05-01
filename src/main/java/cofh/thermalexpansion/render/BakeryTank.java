@@ -111,7 +111,7 @@ public class BakeryTank implements ILayeredBlockBakery {
 		int fluidLevel = RENDER_LEVELS - 1;
 
 		if (fluid.isGaseous(stack)) {
-			ccrs.alphaOverride = creative ? 224 : 32 + 192 * stack.amount / TileTank.CAPACITY[level];
+			ccrs.alphaOverride = creative ? 224 : 32 + Math.max(192 * stack.amount / TileTank.getMaxCapacity(level, holding), 192);
 		} else if (!creative) {
 			fluidLevel = (int) Math.min(RENDER_LEVELS - 1, (long) stack.amount * RENDER_LEVELS / TileTank.getMaxCapacity(level, holding));
 		}

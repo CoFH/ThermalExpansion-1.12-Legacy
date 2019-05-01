@@ -128,9 +128,6 @@ public class SmelterManager {
 				recipe = recipeMap.get(asList(querySecondary, query));
 			}
 		}
-		if (recipe == null) {
-			return null;
-		}
 		return recipe;
 	}
 

@@ -231,7 +231,7 @@ public class BlockLight extends BlockTEBase implements IModelRegister, IBakeryPr
 		// @formatter:off
 		ILLUMINATOR(0, "illuminator"),
 		LUMIUM_LAMP(1, "lumium_lamp"),
-		RADIANT_LAMP(2, "radiant_lamp");;
+		RADIANT_LAMP(2, "radiant_lamp");
 		// @formatter:on
 
 		private final int metadata;

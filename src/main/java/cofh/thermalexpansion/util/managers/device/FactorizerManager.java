@@ -127,7 +127,7 @@ public class FactorizerManager {
 			String oreType;
 			for (String oreName : OreDictionary.getOreNames()) {
 				if (oreName.startsWith("ingot")) {
-					oreType = oreName.substring(5, oreName.length());
+					oreType = oreName.substring(5);
 					addDefaultRecipe(ItemHelper.getOre("ingot" + oreType), ItemHelper.getOre("block" + oreType));
 					addDefaultRecipe(ItemHelper.getOre("nugget" + oreType), ItemHelper.getOre("ingot" + oreType));
 				}

@@ -401,7 +401,7 @@ public class BlockTank extends BlockTEBase implements IModelRegister, IBakeryPro
 	public static boolean enableUpgradeKitCrafting = false;
 
 	/* REFERENCES */
-	public static ItemStack tank[];
+	public static ItemStack[] tank;
 	public static ItemStack tankCreative;
 	public static ItemBlockTank itemBlock;
 

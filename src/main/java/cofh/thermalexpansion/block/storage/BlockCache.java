@@ -476,7 +476,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IBakeryPr
 	public static boolean enableUpgradeKitCrafting = false;
 
 	/* REFERENCES */
-	public static ItemStack cache[];
+	public static ItemStack[] cache;
 	public static ItemStack cacheCreative;
 	public static ItemBlockCache itemBlock;
 

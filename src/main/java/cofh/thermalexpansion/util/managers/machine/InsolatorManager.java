@@ -65,9 +65,6 @@ public class InsolatorManager {
 		if (recipe == null) {
 			recipe = recipeMap.get(asList(querySecondary, query));
 		}
-		if (recipe == null) {
-			return null;
-		}
 		return recipe;
 	}
 
@@ -187,7 +184,7 @@ public class InsolatorManager {
 
 		for (String name : oreNameList) {
 			if (name.startsWith("seed")) {
-				oreName = name.substring(4, name.length());
+				oreName = name.substring(4);
 				addDefaultOreDictionaryRecipe(oreName);
 			}
 		}

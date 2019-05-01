@@ -37,8 +37,8 @@ public class EnchanterManager {
 
 	public static final ItemStack ITEM_BOOK = new ItemStack(Items.BOOK);
 
-	public static final int DEFAULT_ENERGY[] = { 4000, 12000, 24000, 40000, 60000 };
-	public static final int DEFAULT_EXPERIENCE[] = { 500, 1500, 3000, 5000, 7500 };
+	public static final int[] DEFAULT_ENERGY = { 4000, 12000, 24000, 40000, 60000 };
+	public static final int[] DEFAULT_EXPERIENCE = { 500, 1500, 3000, 5000, 7500 };
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
 
@@ -64,9 +64,6 @@ public class EnchanterManager {
 
 		if (recipe == null) {
 			recipe = recipeMap.get(asList(querySecondary, query));
-		}
-		if (recipe == null) {
-			return null;
 		}
 		return recipe;
 	}

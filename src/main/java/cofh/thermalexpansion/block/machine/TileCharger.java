@@ -46,7 +46,7 @@ import static cofh.core.util.core.SideConfig.*;
 public class TileCharger extends TileMachineBase {
 
 	private static final int TYPE = Type.CHARGER.getMetadata();
-	private static final int ENERGY_TRANSFER[] = new int[] { 1, 4, 9, 16, 25 };
+	private static final int[] ENERGY_TRANSFER = new int[] { 1, 4, 9, 16, 25 };
 	public static int basePower = 40;
 
 	public static int repairEnergy = 500;

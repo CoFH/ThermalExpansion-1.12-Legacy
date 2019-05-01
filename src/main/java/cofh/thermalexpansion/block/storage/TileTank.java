@@ -82,7 +82,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	boolean lock = false;
 	boolean renderFlag = true;
 	boolean cached = false;
-	boolean adjacentTanks[] = new boolean[2];
+	boolean[] adjacentTanks = new boolean[2];
 
 	private FluidTankCore tank = new FluidTankCore(getMaxCapacity(0, 0));
 

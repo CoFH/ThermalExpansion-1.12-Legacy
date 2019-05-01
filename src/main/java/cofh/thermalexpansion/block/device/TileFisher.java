@@ -68,7 +68,7 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		boostCycles = ThermalExpansion.CONFIG.getConfiguration().getInt("BaitDuration", category, boostCycles, 2, 64, comment);
 	}
 
-	private static final int TARGET_WATER[] = { 10, 20, 30 };
+	private static final int[] TARGET_WATER = { 10, 20, 30 };
 	private static final int TIME_CONSTANT = 7200;
 
 	private static boolean requireBait = false;

@@ -125,10 +125,10 @@ public class PulverizerManager {
 			String oreType;
 			for (String oreName : OreDictionary.getOreNames()) {
 				if (oreName.startsWith("ore") || oreName.startsWith("gem")) {
-					oreType = oreName.substring(3, oreName.length());
+					oreType = oreName.substring(3);
 					addDefaultRecipes(oreType, "");
 				} else if (oreName.startsWith("dust")) {
-					oreType = oreName.substring(4, oreName.length());
+					oreType = oreName.substring(4);
 					addDefaultRecipes(oreType, "");
 				}
 			}

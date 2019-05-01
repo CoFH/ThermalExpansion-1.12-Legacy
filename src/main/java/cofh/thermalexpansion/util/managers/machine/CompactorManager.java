@@ -90,13 +90,13 @@ public class CompactorManager {
 
 		for (String oreName : oreNames) {
 			if (oreName.startsWith("plate")) {
-				oreType = oreName.substring(5, oreName.length());
+				oreType = oreName.substring(5);
 				addDefaultPlateRecipe(oreType);
 			} else if (oreName.startsWith("gear")) {
-				oreType = oreName.substring(4, oreName.length());
+				oreType = oreName.substring(4);
 				addDefaultGearRecipe(oreType);
 			} else if (oreName.startsWith("coin")) {
-				oreType = oreName.substring(4, oreName.length());
+				oreType = oreName.substring(4);
 				addDefaultCoinRecipe(oreType);
 			}
 		}

@@ -297,7 +297,7 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 	public static boolean enableUpgradeKitCrafting = false;
 
 	/* REFERENCES */
-	public static ItemStack strongbox[];
+	public static ItemStack[] strongbox;
 	public static ItemStack strongboxCreative;
 	public static ItemBlockStrongbox itemBlock;
 
