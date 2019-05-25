@@ -45,7 +45,7 @@ import java.util.HashSet;
 public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IReconfigurableFacing, ISidedInventory, IEnergyInfo, ISteamInfo {
 
 	protected static final int MIN_BASE_POWER = 10;
-	protected static final int MAX_BASE_POWER = 200;
+	protected static final int MAX_BASE_POWER = 1000;
 	protected static int[] POWER_SCALING = { 100, 150, 200, 250, 300 };
 
 	protected static boolean enableCreative = false;

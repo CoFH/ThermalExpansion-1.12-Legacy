@@ -43,7 +43,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public static final int[] LIGHT_VALUES = new int[Type.values().length];
 
 	public static final int MIN_BASE_POWER = 10;
-	public static final int MAX_BASE_POWER = 200;
+	public static final int MAX_BASE_POWER = 5000;
 	public static int[] POWER_SCALING = { 100, 150, 200, 250, 300 };
 	public static int[] ENERGY_SCALING = { 100, 100, 100, 100, 100 };
 	public static byte[] NUM_AUGMENTS = { 0, 1, 2, 3, 4 };
