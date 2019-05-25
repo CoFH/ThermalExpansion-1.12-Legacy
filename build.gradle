@@ -40,7 +40,7 @@ repositories {
 	}
 	maven {
 		name = "ChickenBones Maven"
-		url = "https://chickenbones.net/maven/"
+		url = "http://chickenbones.net/maven/"
 	}
 	maven {
 		name = "JEI Maven"
