@@ -619,6 +619,9 @@ tile.thermalexpansion.machine.sawmill.name=製材機
 tile.thermalexpansion.machine.smelter.name=誘導加熱炉
 tile.thermalexpansion.machine.transposer.name=液体転移機
 
+tile.thermalexpansion.light.lumium_lamp.name=ルミウム灯
+tile.thermalexpansion.light.illuminator.name=グロウストーンイルミネーター
+tile.thermalexpansion.light.radiant_lamp.name=放射ルミウム灯
 tile.thermalexpansion.storage.cache.name=キャッシュ
 tile.thermalexpansion.storage.cell.name=エネルギーセル
 tile.thermalexpansion.storage.strongbox.name=金庫
