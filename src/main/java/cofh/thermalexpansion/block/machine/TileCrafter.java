@@ -636,8 +636,9 @@ public class TileCrafter extends TileMachineBase {
 
 			for (int i = 0; i < 9; i++) {
 				if (craftSlots[i] > 0) {
-					myTile.craftMatrix.setInventorySlotContents(i, ItemHelper.cloneStack(myTile.inventory[craftSlots[i] - 1], 1));
-					myTile.inventory[craftSlots[i] - 1].shrink(1);
+					int itemSize = getStackSize(craftIngredients[i]);
+					myTile.craftMatrix.setInventorySlotContents(i, ItemHelper.cloneStack(myTile.inventory[craftSlots[i] - 1], itemSize));
+					myTile.inventory[craftSlots[i] - 1].shrink(itemSize);
 					if (myTile.inventory[craftSlots[i] - 1].getCount() <= 0) {
 						myTile.inventory[craftSlots[i] - 1] = ItemStack.EMPTY;
 					}
@@ -690,7 +691,7 @@ public class TileCrafter extends TileMachineBase {
 					}
 					for (int j = 0; j < SLOT_OUTPUT; j++) {
 						if (craftIngredients[i].apply(myTile.inventory[j]) && myTile.inventory[j].getCount() - craftCount[j] > 0) {
-							craftCount[j]++;
+							craftCount[j] += getStackSize(craftIngredients[i]);
 							craftSlots[i] = j + 1;
 							continue scan;
 						}
@@ -699,6 +700,12 @@ public class TileCrafter extends TileMachineBase {
 				}
 			}
 			return true;
+		}
+		
+		private int getStackSize(Ingredient entry)
+		{
+			ItemStack[] items = entry.getMatchingStacks();
+			return items == null || items.length <= 0 ? 1 : items[0].getCount();
 		}
 
 		private boolean isFalseBucket(int slot) {
