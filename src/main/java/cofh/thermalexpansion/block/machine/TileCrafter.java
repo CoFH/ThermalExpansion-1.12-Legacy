@@ -690,8 +690,9 @@ public class TileCrafter extends TileMachineBase {
 						}
 					}
 					for (int j = 0; j < SLOT_OUTPUT; j++) {
-						if (craftIngredients[i].apply(myTile.inventory[j]) && myTile.inventory[j].getCount() - craftCount[j] > 0) {
-							craftCount[j] += getStackSize(craftIngredients[i]);
+						int itemSize = getStackSize(craftIngredients[i]);
+						if (craftIngredients[i].apply(myTile.inventory[j]) && myTile.inventory[j].getCount() - craftCount[j] >= itemSize) {
+							craftCount[j] += itemSize;
 							craftSlots[i] = j + 1;
 							continue scan;
 						}
