@@ -315,7 +315,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IColorableIt
 					ItemStack slot = inv.getStackInSlot(i);
 					if (slot.isEmpty()) {
 						inv.setInventorySlotContents(i, eventItem.copy());
-						eventItem.setCount(0);
+						eventItem.setCount(Math.max(eventItem.getCount() - inv.getInventoryStackLimit(),0));
 					} else if (ItemHandlerHelper.canItemStacksStack(eventItem, slot)) {
 						int fill = slot.getMaxStackSize() - slot.getCount();
 						if (fill > eventItem.getCount()) {
