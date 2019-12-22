@@ -618,6 +618,10 @@ tile.thermalexpansion.machine.sawmill.name=Лесопилка
 tile.thermalexpansion.machine.smelter.name=Индукционная плавильня
 tile.thermalexpansion.machine.transposer.name=Распределитель жидкостей
 
+tile.thermalexpansion.light.lumium_lamp.name=Люминесцентная лампа
+tile.thermalexpansion.light.illuminator.name=Светокаменный светильник
+tile.thermalexpansion.light.radiant_lamp.name=Излучающая люминесцентная лампа
+
 tile.thermalexpansion.storage.cache.name=Ящик
 tile.thermalexpansion.storage.cell.name=Энергетическая ячейка
 tile.thermalexpansion.storage.strongbox.name=Сейф
