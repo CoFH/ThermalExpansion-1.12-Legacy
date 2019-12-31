@@ -46,6 +46,8 @@ public class TEPlugins {
 		pluginExtraAlchemy = new PluginExtraAlchemy();
 		pluginExU2 = new PluginExU2();
 		pluginFamiliarFauna = new PluginFamiliarFauna();
+		pluginGTC = new PluginGTC();
+		pluginGTCX = new PluginGTCX();
 		pluginIC2 = new PluginIC2();
 		pluginIceAndFire = new PluginIceAndFire();
 		pluginImmersiveEngineering = new PluginImmersiveEngineering();
@@ -94,6 +96,8 @@ public class TEPlugins {
 		initList.add(pluginExtraAlchemy);
 		initList.add(pluginExU2);
 		initList.add(pluginFamiliarFauna);
+		initList.add(pluginGTC);
+		initList.add(pluginGTCX);
 		initList.add(pluginIC2);
 		initList.add(pluginIceAndFire);
 		initList.add(pluginImmersiveEngineering);
@@ -157,6 +161,8 @@ public class TEPlugins {
 	private static PluginExtraAlchemy pluginExtraAlchemy;
 	private static PluginExU2 pluginExU2;
 	private static PluginFamiliarFauna pluginFamiliarFauna;
+	private static PluginGTC pluginGTC;
+	private static PluginGTCX pluginGTCX;
 	private static PluginIC2 pluginIC2;
 	private static PluginIceAndFire pluginIceAndFire;
 	private static PluginImmersiveEngineering pluginImmersiveEngineering;
