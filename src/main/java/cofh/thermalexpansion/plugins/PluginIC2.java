@@ -10,10 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Loader;
 
 public class PluginIC2 extends PluginTEBase {
 
 	public static final String MOD_ID = "ic2";
+	public static final String MOD_ID_CLASSIC = "ic2-classic-spmod";
 	public static final String MOD_NAME = "IndustrialCraft 2";
 
 	public PluginIC2() {
@@ -35,17 +37,21 @@ public class PluginIC2 extends PluginTEBase {
 
 		/* INSOLATOR */
 		{
-			ItemStack logRubber = getItemStack("rubber_wood", 1, 0);
-			ItemStack saplingRubber = getItemStack("sapling", 1, 0);
+			String name = Loader.isModLoaded(MOD_ID_CLASSIC) ? "blockrubwood" : "rubber_wood";
+			ItemStack logRubber = getItemStack(name, 1, 0);
+			name = Loader.isModLoaded(MOD_ID_CLASSIC) ? "blockrubsapling" : "sapling";
+			ItemStack saplingRubber = getItemStack(name, 1, 0);
 
 			InsolatorManager.addDefaultTreeRecipe(saplingRubber, ItemHelper.cloneStack(logRubber, 6), saplingRubber);
 		}
 
 		/* COMPACTOR */
 		{
-			ItemStack coalBall = getItemStack("crafting", 1, 16);
-			ItemStack coalBallCompressed = getItemStack("crafting", 1, 17);
-			ItemStack coalChunk = getItemStack("crafting", 1, 18);
+			String name = Loader.isModLoaded(MOD_ID_CLASSIC) ? "itemmisc" : "crafting";
+			int metaBase  = Loader.isModLoaded(MOD_ID_CLASSIC) ? 250 : 16;
+			ItemStack coalBall = getItemStack(name, 1, metaBase);
+			ItemStack coalBallCompressed = getItemStack(name, 1, metaBase + 1);
+			ItemStack coalChunk = getItemStack(name, 1, metaBase + 2);
 
 			int energy = CompactorManager.DEFAULT_ENERGY;
 
