@@ -155,7 +155,7 @@ public class TileInsolator extends TileMachineBase {
 
 		if (!secondaryItem.isEmpty() && !inventory[3].isEmpty()) {
 			if (!augmentSecondaryNull) {
-				if (!inventory[3].isItemEqual(secondaryItem)) {
+				if (!ItemHelper.itemsIdentical(inventory[3], secondaryItem)) {
 					return false;
 				}
 				if (inventory[3].getCount() + secondaryItem.getCount() > secondaryItem.getMaxStackSize()) {
@@ -163,7 +163,7 @@ public class TileInsolator extends TileMachineBase {
 				}
 			}
 		}
-		return inventory[2].isEmpty() || inventory[2].isItemEqual(primaryItem) && inventory[2].getCount() + primaryItem.getCount() <= primaryItem.getMaxStackSize();
+		return inventory[2].isEmpty() || ItemHelper.itemsIdentical(inventory[2], primaryItem) && inventory[2].getCount() + primaryItem.getCount() <= primaryItem.getMaxStackSize();
 	}
 
 	@Override

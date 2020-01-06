@@ -111,7 +111,7 @@ public class TileCompactor extends TileMachineBase {
 		}
 		ItemStack output = recipe.getOutput();
 
-		return inventory[1].isEmpty() || inventory[1].isItemEqual(output) && inventory[1].getCount() + output.getCount() <= output.getMaxStackSize();
+		return inventory[1].isEmpty() || ItemHelper.itemsIdentical(inventory[1], output) && inventory[1].getCount() + output.getCount() <= output.getMaxStackSize();
 	}
 
 	@Override

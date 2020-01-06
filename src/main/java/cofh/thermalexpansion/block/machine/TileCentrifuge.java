@@ -134,7 +134,7 @@ public class TileCentrifuge extends TileMachineBase {
 		boolean valid = true;
 		for (int i = 0; i < outputs.size(); i++) {
 			ItemStack output = outputs.get(i);
-			valid &= inventory[i + 1].isEmpty() || inventory[i + 1].isItemEqual(output) && inventory[i + 1].getCount() + output.getCount() <= output.getMaxStackSize();
+			valid &= inventory[i + 1].isEmpty() || ItemHelper.itemsIdentical(inventory[i + 1], output) && inventory[i + 1].getCount() + output.getCount() <= output.getMaxStackSize();
 		}
 		return valid;
 	}

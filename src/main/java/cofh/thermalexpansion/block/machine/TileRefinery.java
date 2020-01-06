@@ -66,9 +66,9 @@ public class TileRefinery extends TileMachineBase {
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { false, false };
-		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
 		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_REFINERY_FOSSIL);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_REFINERY_POTION);
 
@@ -226,7 +226,7 @@ public class TileRefinery extends TileMachineBase {
 					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
 						inventory[0].grow(outputItem.getCount());
 					}
-				} else if (inventory[0].isItemEqual(outputItem)) {
+				} else if (ItemHelper.itemsIdentical(inventory[0], outputItem)) {
 					inventory[0].grow(outputItem.getCount());
 
 					if (recipeChance > modifiedChance && world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
@@ -533,9 +533,18 @@ public class TileRefinery extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+					if (from == null) {
 						FluidStack ret = outputTank.drain(resource, doDrain);
 						return ret != null ? ret : isActive ? null : inputTank.drain(resource, doDrain);
+					} else {
+						int type = sideConfig.sideTypes[sideCache[from.ordinal()]];
+						if (allowExtraction(type)) {
+							if (isPrimaryInput(type)) {
+								return inputTank.drain(resource, doDrain);
+							} else if (isPrimaryOutput(type)) {
+								return outputTank.drain(resource, doDrain);
+							}
+						}
 					}
 					return null;
 				}
@@ -544,9 +553,18 @@ public class TileRefinery extends TileMachineBase {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+					if (from == null) {
 						FluidStack ret = outputTank.drain(maxDrain, doDrain);
 						return ret != null ? ret : isActive ? null : inputTank.drain(maxDrain, doDrain);
+					} else {
+						int type = sideConfig.sideTypes[sideCache[from.ordinal()]];
+						if (allowExtraction(type)) {
+							if (isPrimaryInput(type)) {
+								return inputTank.drain(maxDrain, doDrain);
+							} else if (isPrimaryOutput(type)) {
+								return outputTank.drain(maxDrain, doDrain);
+							}
+						}
 					}
 					return null;
 				}

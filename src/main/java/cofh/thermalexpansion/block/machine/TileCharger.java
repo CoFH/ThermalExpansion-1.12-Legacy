@@ -433,7 +433,7 @@ public class TileCharger extends TileMachineBase {
 					return false;
 				}
 				ItemStack output = recipe.getOutput();
-				return inventory[2].isEmpty() || inventory[2].isItemEqual(output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
+				return inventory[2].isEmpty() || ItemHelper.itemsIdentical(inventory[2], output) && inventory[2].getCount() + output.getCount() <= output.getMaxStackSize();
 			}
 		}
 		if (inventory[0].isEmpty() || energyStorage.getEnergyStored() <= 0) {

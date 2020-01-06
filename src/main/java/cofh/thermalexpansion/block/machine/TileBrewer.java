@@ -436,14 +436,17 @@ public class TileBrewer extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+					if (from == null) {
 						FluidStack ret = outputTank.drain(resource, doDrain);
-
-						if (ret != null) {
-							return ret;
-						}
-						if (!isActive && (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]]))) {
-							return inputTank.drain(resource, doDrain);
+						return ret != null ? ret : isActive ? null : inputTank.drain(resource, doDrain);
+					} else {
+						int type = sideConfig.sideTypes[sideCache[from.ordinal()]];
+						if (allowExtraction(type)) {
+							if (isPrimaryInput(type)) {
+								return inputTank.drain(resource, doDrain);
+							} else if (isPrimaryOutput(type)) {
+								return outputTank.drain(resource, doDrain);
+							}
 						}
 					}
 					return null;
@@ -453,14 +456,17 @@ public class TileBrewer extends TileMachineBase {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from == null || allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
+					if (from == null) {
 						FluidStack ret = outputTank.drain(maxDrain, doDrain);
-
-						if (ret != null) {
-							return ret;
-						}
-						if (!isActive && (from == null || allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]]))) {
-							return inputTank.drain(maxDrain, doDrain);
+						return ret != null ? ret : isActive ? null : inputTank.drain(maxDrain, doDrain);
+					} else {
+						int type = sideConfig.sideTypes[sideCache[from.ordinal()]];
+						if (allowExtraction(type)) {
+							if (isPrimaryInput(type)) {
+								return inputTank.drain(maxDrain, doDrain);
+							} else if (isPrimaryOutput(type)) {
+								return outputTank.drain(maxDrain, doDrain);
+							}
 						}
 					}
 					return null;

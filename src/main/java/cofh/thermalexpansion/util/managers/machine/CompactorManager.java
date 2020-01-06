@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStackValidated;
+import cofh.core.inventory.ComparableItemStackValidatedNBT;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -13,11 +13,11 @@ import java.util.Set;
 
 public class CompactorManager {
 
-	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapAll = new Object2ObjectOpenHashMap<>();
-	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapPlate = new Object2ObjectOpenHashMap<>();
-	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapCoin = new Object2ObjectOpenHashMap<>();
-	private static Map<ComparableItemStackValidated, CompactorRecipe> recipeMapGear = new Object2ObjectOpenHashMap<>();
-	private static Set<ComparableItemStackValidated> validationSet = new ObjectOpenHashSet<>();
+	private static Map<ComparableItemStackValidatedNBT, CompactorRecipe> recipeMapAll = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, CompactorRecipe> recipeMapPlate = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, CompactorRecipe> recipeMapCoin = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, CompactorRecipe> recipeMapGear = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidatedNBT> validationSet = new ObjectOpenHashSet<>();
 
 	public static final int DEFAULT_ENERGY = 4000;
 
@@ -26,7 +26,7 @@ public class CompactorManager {
 		if (input.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackValidated query = new ComparableItemStackValidated(input);
+		ComparableItemStackValidatedNBT query = new ComparableItemStackValidatedNBT(input);
 		CompactorRecipe recipe = null;
 
 		switch (mode) {
@@ -79,7 +79,7 @@ public class CompactorManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return !input.isEmpty() && validationSet.contains(new ComparableItemStackValidated(input));
+		return !input.isEmpty() && validationSet.contains(new ComparableItemStackValidatedNBT(input));
 	}
 
 	public static void initialize() {
@@ -104,34 +104,34 @@ public class CompactorManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackValidated, CompactorRecipe> tempAll = new Object2ObjectOpenHashMap<>(recipeMapAll.size());
-		Map<ComparableItemStackValidated, CompactorRecipe> tempPlate = new Object2ObjectOpenHashMap<>(recipeMapPlate.size());
-		Map<ComparableItemStackValidated, CompactorRecipe> tempMint = new Object2ObjectOpenHashMap<>(recipeMapCoin.size());
-		Map<ComparableItemStackValidated, CompactorRecipe> tempGear = new Object2ObjectOpenHashMap<>(recipeMapGear.size());
-		Set<ComparableItemStackValidated> tempSet = new ObjectOpenHashSet<>();
+		Map<ComparableItemStackValidatedNBT, CompactorRecipe> tempAll = new Object2ObjectOpenHashMap<>(recipeMapAll.size());
+		Map<ComparableItemStackValidatedNBT, CompactorRecipe> tempPlate = new Object2ObjectOpenHashMap<>(recipeMapPlate.size());
+		Map<ComparableItemStackValidatedNBT, CompactorRecipe> tempMint = new Object2ObjectOpenHashMap<>(recipeMapCoin.size());
+		Map<ComparableItemStackValidatedNBT, CompactorRecipe> tempGear = new Object2ObjectOpenHashMap<>(recipeMapGear.size());
+		Set<ComparableItemStackValidatedNBT> tempSet = new ObjectOpenHashSet<>();
 		CompactorRecipe tempRecipe;
 
-		for (Map.Entry<ComparableItemStackValidated, CompactorRecipe> entry : recipeMapAll.entrySet()) {
+		for (Map.Entry<ComparableItemStackValidatedNBT, CompactorRecipe> entry : recipeMapAll.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackValidated input = new ComparableItemStackValidated(tempRecipe.input);
+			ComparableItemStackValidatedNBT input = new ComparableItemStackValidatedNBT(tempRecipe.input);
 			tempPlate.put(input, tempRecipe);
 			tempSet.add(input);
 		}
-		for (Map.Entry<ComparableItemStackValidated, CompactorRecipe> entry : recipeMapPlate.entrySet()) {
+		for (Map.Entry<ComparableItemStackValidatedNBT, CompactorRecipe> entry : recipeMapPlate.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackValidated input = new ComparableItemStackValidated(tempRecipe.input);
+			ComparableItemStackValidatedNBT input = new ComparableItemStackValidatedNBT(tempRecipe.input);
 			tempPlate.put(input, tempRecipe);
 			tempSet.add(input);
 		}
-		for (Map.Entry<ComparableItemStackValidated, CompactorRecipe> entry : recipeMapCoin.entrySet()) {
+		for (Map.Entry<ComparableItemStackValidatedNBT, CompactorRecipe> entry : recipeMapCoin.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackValidated input = new ComparableItemStackValidated(tempRecipe.input);
+			ComparableItemStackValidatedNBT input = new ComparableItemStackValidatedNBT(tempRecipe.input);
 			tempMint.put(input, tempRecipe);
 			tempSet.add(input);
 		}
-		for (Map.Entry<ComparableItemStackValidated, CompactorRecipe> entry : recipeMapGear.entrySet()) {
+		for (Map.Entry<ComparableItemStackValidatedNBT, CompactorRecipe> entry : recipeMapGear.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackValidated input = new ComparableItemStackValidated(tempRecipe.input);
+			ComparableItemStackValidatedNBT input = new ComparableItemStackValidatedNBT(tempRecipe.input);
 			tempGear.put(input, tempRecipe);
 			tempSet.add(input);
 		}
@@ -159,19 +159,19 @@ public class CompactorManager {
 
 		switch (mode) {
 			case ALL:
-				recipeMapAll.put(new ComparableItemStackValidated(input), recipe);
+				recipeMapAll.put(new ComparableItemStackValidatedNBT(input), recipe);
 				break;
 			case PLATE:
-				recipeMapPlate.put(new ComparableItemStackValidated(input), recipe);
+				recipeMapPlate.put(new ComparableItemStackValidatedNBT(input), recipe);
 				break;
 			case COIN:
-				recipeMapCoin.put(new ComparableItemStackValidated(input), recipe);
+				recipeMapCoin.put(new ComparableItemStackValidatedNBT(input), recipe);
 				break;
 			case GEAR:
-				recipeMapGear.put(new ComparableItemStackValidated(input), recipe);
+				recipeMapGear.put(new ComparableItemStackValidatedNBT(input), recipe);
 				break;
 		}
-		validationSet.add(new ComparableItemStackValidated(input));
+		validationSet.add(new ComparableItemStackValidatedNBT(input));
 		return recipe;
 	}
 
@@ -180,20 +180,20 @@ public class CompactorManager {
 
 		switch (mode) {
 			case ALL:
-				return recipeMapAll.remove(new ComparableItemStackValidated(input));
+				return recipeMapAll.remove(new ComparableItemStackValidatedNBT(input));
 			case PLATE:
-				return recipeMapPlate.remove(new ComparableItemStackValidated(input));
+				return recipeMapPlate.remove(new ComparableItemStackValidatedNBT(input));
 			case COIN:
-				return recipeMapCoin.remove(new ComparableItemStackValidated(input));
+				return recipeMapCoin.remove(new ComparableItemStackValidatedNBT(input));
 			default:
-				return recipeMapGear.remove(new ComparableItemStackValidated(input));
+				return recipeMapGear.remove(new ComparableItemStackValidatedNBT(input));
 		}
 	}
 
 	/* HELPERS */
-	public static ComparableItemStackValidated convertInput(ItemStack stack) {
+	public static ComparableItemStackValidatedNBT convertInput(ItemStack stack) {
 
-		return new ComparableItemStackValidated(stack);
+		return new ComparableItemStackValidatedNBT(stack);
 	}
 
 	private static void addDefaultPlateRecipe(String oreType) {

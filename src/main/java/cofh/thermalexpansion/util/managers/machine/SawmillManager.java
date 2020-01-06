@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.inventory.ComparableItemStack;
-import cofh.core.inventory.ComparableItemStackValidated;
+import cofh.core.inventory.ComparableItemStackValidatedNBT;
 import cofh.core.inventory.InventoryCraftingFalse;
 import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
@@ -19,7 +19,7 @@ import java.util.Map.Entry;
 
 public class SawmillManager {
 
-	private static Map<ComparableItemStackValidated, SawmillRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Map<ComparableItemStackValidatedNBT, SawmillRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -41,7 +41,7 @@ public class SawmillManager {
 		if (input.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackValidated query = convertInput(input);
+		ComparableItemStackValidatedNBT query = convertInput(input);
 
 		SawmillRecipe recipe = recipeMap.get(query);
 
@@ -125,10 +125,10 @@ public class SawmillManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackValidated, SawmillRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Map<ComparableItemStackValidatedNBT, SawmillRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
 		SawmillRecipe tempRecipe;
 
-		for (Entry<ComparableItemStackValidated, SawmillRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackValidatedNBT, SawmillRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
 			tempMap.put(convertInput(tempRecipe.input), tempRecipe);
 		}
@@ -164,9 +164,9 @@ public class SawmillManager {
 	}
 
 	/* HELPERS */
-	public static ComparableItemStackValidated convertInput(ItemStack stack) {
+	public static ComparableItemStackValidatedNBT convertInput(ItemStack stack) {
 
-		return new ComparableItemStackValidated(stack, oreValidator);
+		return new ComparableItemStackValidatedNBT(stack, oreValidator);
 	}
 
 	public static void addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {

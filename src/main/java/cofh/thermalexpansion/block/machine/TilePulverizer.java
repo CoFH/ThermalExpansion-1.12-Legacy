@@ -149,7 +149,7 @@ public class TilePulverizer extends TileMachineBase {
 
 		if (!secondaryItem.isEmpty() && !inventory[2].isEmpty()) {
 			if (!augmentSecondaryNull) {
-				if (!inventory[2].isItemEqual(secondaryItem)) {
+				if (!ItemHelper.itemsIdentical(inventory[2], secondaryItem)) {
 					return false;
 				}
 				if (inventory[2].getCount() + secondaryItem.getCount() > secondaryItem.getMaxStackSize()) {
@@ -157,7 +157,7 @@ public class TilePulverizer extends TileMachineBase {
 				}
 			}
 		}
-		return inventory[1].isEmpty() || inventory[1].isItemEqual(primaryItem) && inventory[1].getCount() + (augmentPetrotheumCheck ? getPetrotheumOutputAmount(primaryItem) : primaryItem.getCount()) <= primaryItem.getMaxStackSize();
+		return inventory[1].isEmpty() || ItemHelper.itemsIdentical(inventory[1], primaryItem) && inventory[1].getCount() + (augmentPetrotheumCheck ? getPetrotheumOutputAmount(primaryItem) : primaryItem.getCount()) <= primaryItem.getMaxStackSize();
 	}
 
 	@Override

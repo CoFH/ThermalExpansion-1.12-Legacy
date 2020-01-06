@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.inventory.ComparableItemStackValidated;
+import cofh.core.inventory.ComparableItemStackValidatedNBT;
 import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
@@ -22,9 +22,9 @@ import static java.util.Arrays.asList;
 
 public class InsolatorManager {
 
-	private static Map<List<ComparableItemStackValidated>, InsolatorRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
-	private static Set<ComparableItemStackValidated> validationSet = new ObjectOpenHashSet<>();
-	private static Set<ComparableItemStackValidated> lockSet = new ObjectOpenHashSet<>();
+	private static Map<List<ComparableItemStackValidatedNBT>, InsolatorRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidatedNBT> validationSet = new ObjectOpenHashSet<>();
+	private static Set<ComparableItemStackValidatedNBT> lockSet = new ObjectOpenHashSet<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -45,8 +45,8 @@ public class InsolatorManager {
 		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return false;
 		}
-		ComparableItemStackValidated query = convertInput(primaryInput);
-		ComparableItemStackValidated querySecondary = convertInput(secondaryInput);
+		ComparableItemStackValidatedNBT query = convertInput(primaryInput);
+		ComparableItemStackValidatedNBT querySecondary = convertInput(secondaryInput);
 
 		InsolatorRecipe recipe = recipeMap.get(asList(query, querySecondary));
 		return recipe == null && recipeMap.get(asList(querySecondary, query)) != null;
@@ -57,8 +57,8 @@ public class InsolatorManager {
 		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackValidated query = convertInput(primaryInput);
-		ComparableItemStackValidated querySecondary = convertInput(secondaryInput);
+		ComparableItemStackValidatedNBT query = convertInput(primaryInput);
+		ComparableItemStackValidatedNBT querySecondary = convertInput(secondaryInput);
 
 		InsolatorRecipe recipe = recipeMap.get(asList(query, querySecondary));
 
@@ -192,14 +192,14 @@ public class InsolatorManager {
 
 	public static void refresh() {
 
-		Map<List<ComparableItemStackValidated>, InsolatorRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
-		Set<ComparableItemStackValidated> tempSet = new ObjectOpenHashSet<>();
+		Map<List<ComparableItemStackValidatedNBT>, InsolatorRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Set<ComparableItemStackValidatedNBT> tempSet = new ObjectOpenHashSet<>();
 		InsolatorRecipe tempRecipe;
 
-		for (Entry<List<ComparableItemStackValidated>, InsolatorRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<List<ComparableItemStackValidatedNBT>, InsolatorRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackValidated primary = convertInput(tempRecipe.primaryInput);
-			ComparableItemStackValidated secondary = convertInput(tempRecipe.secondaryInput);
+			ComparableItemStackValidatedNBT primary = convertInput(tempRecipe.primaryInput);
+			ComparableItemStackValidatedNBT secondary = convertInput(tempRecipe.secondaryInput);
 
 			tempMap.put(asList(primary, secondary), tempRecipe);
 			tempSet.add(primary);
@@ -211,9 +211,9 @@ public class InsolatorManager {
 		validationSet.clear();
 		validationSet = tempSet;
 
-		Set<ComparableItemStackValidated> tempSet2 = new ObjectOpenHashSet<>();
-		for (ComparableItemStackValidated entry : lockSet) {
-			ComparableItemStackValidated lock = convertInput(new ItemStack(entry.item, entry.stackSize, entry.metadata));
+		Set<ComparableItemStackValidatedNBT> tempSet2 = new ObjectOpenHashSet<>();
+		for (ComparableItemStackValidatedNBT entry : lockSet) {
+			ComparableItemStackValidatedNBT lock = convertInput(new ItemStack(entry.item, entry.stackSize, entry.metadata));
 			tempSet2.add(lock);
 		}
 		lockSet.clear();
@@ -277,9 +277,9 @@ public class InsolatorManager {
 	}
 
 	/* HELPERS */
-	public static ComparableItemStackValidated convertInput(ItemStack stack) {
+	public static ComparableItemStackValidatedNBT convertInput(ItemStack stack) {
 
-		return new ComparableItemStackValidated(stack, oreValidator);
+		return new ComparableItemStackValidatedNBT(stack, oreValidator);
 	}
 
 	private static void addFertilizer(ItemStack fertilizer) {

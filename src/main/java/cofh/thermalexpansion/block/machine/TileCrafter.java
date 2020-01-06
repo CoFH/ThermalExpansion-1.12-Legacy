@@ -566,7 +566,7 @@ public class TileCrafter extends TileMachineBase {
 		private int[] craftSlots = new int[9];
 		private Ingredient[] craftIngredients;
 
-		private boolean isItemStackRecipe = false;
+		private boolean isSpecificRecipe = false;
 		private ItemStack[] craftStacks = new ItemStack[9];
 
 		public static CrafterRecipe getRecipe(IRecipe recipe, TileCrafter tile) {
@@ -615,7 +615,7 @@ public class TileCrafter extends TileMachineBase {
 				}
 				System.arraycopy(sortedRecipe, 0, myTile.inventory, 20, 9);
 			} else if (recipe instanceof RecipeTippedArrow) {
-				isItemStackRecipe = true;
+				isSpecificRecipe = true;
 				for (int i = 0; i < 9; i++) {
 					if (myTile.inventory[SLOT_CRAFTING_START + i].isEmpty()) {
 						craftStacks[i] = ItemStack.EMPTY;
@@ -636,8 +636,9 @@ public class TileCrafter extends TileMachineBase {
 
 			for (int i = 0; i < 9; i++) {
 				if (craftSlots[i] > 0) {
-					myTile.craftMatrix.setInventorySlotContents(i, ItemHelper.cloneStack(myTile.inventory[craftSlots[i] - 1], 1));
-					myTile.inventory[craftSlots[i] - 1].shrink(1);
+					int stackSize = getStackSize(craftIngredients[i]);
+					myTile.craftMatrix.setInventorySlotContents(i, ItemHelper.cloneStack(myTile.inventory[craftSlots[i] - 1], stackSize));
+					myTile.inventory[craftSlots[i] - 1].shrink(stackSize);
 					if (myTile.inventory[craftSlots[i] - 1].getCount() <= 0) {
 						myTile.inventory[craftSlots[i] - 1] = ItemStack.EMPTY;
 					}
@@ -659,14 +660,14 @@ public class TileCrafter extends TileMachineBase {
 			ItemStack tankStack = myTile.getTankAsBucket();
 			int tankCount = 0;
 
-			if (isItemStackRecipe) {
+			if (isSpecificRecipe) {
 				scan:
 				for (int i = 0; i < 9; i++) {
 					if (craftStacks[i].equals(ItemStack.EMPTY)) {
 						continue;
 					}
 					for (int j = 0; j < SLOT_OUTPUT; j++) {
-						if (ItemHelper.itemsIdentical(craftStacks[i], myTile.inventory[j]) && myTile.inventory[j].getCount() - craftCount[j] > 0) {
+						if (ItemHelper.itemsIdentical(craftStacks[i], myTile.inventory[j]) && myTile.inventory[j].getCount() - craftCount[j] >= 1) {
 							craftCount[j]++;
 							craftSlots[i] = j + 1;
 							continue scan;
@@ -681,7 +682,7 @@ public class TileCrafter extends TileMachineBase {
 						continue;
 					}
 					if (!tankStack.isEmpty()) {
-						if (craftIngredients[i].apply(tankStack) && myTile.tank.getFluidAmount() - tankCount > 0) {
+						if (craftIngredients[i].apply(tankStack) && myTile.tank.getFluidAmount() - tankCount >= Fluid.BUCKET_VOLUME) {
 							tankCount += Fluid.BUCKET_VOLUME;
 							craftSlots[i] = -1;
 							myTile.usingTank = true;
@@ -689,8 +690,9 @@ public class TileCrafter extends TileMachineBase {
 						}
 					}
 					for (int j = 0; j < SLOT_OUTPUT; j++) {
-						if (craftIngredients[i].apply(myTile.inventory[j]) && myTile.inventory[j].getCount() - craftCount[j] > 0) {
-							craftCount[j]++;
+						int stackSize = getStackSize(craftIngredients[i]);
+						if (craftIngredients[i].apply(myTile.inventory[j]) && myTile.inventory[j].getCount() - craftCount[j] >= stackSize) {
+							craftCount[j] += stackSize;
 							craftSlots[i] = j + 1;
 							continue scan;
 						}
@@ -701,6 +703,12 @@ public class TileCrafter extends TileMachineBase {
 			return true;
 		}
 
+		private int getStackSize(Ingredient entry) {
+
+			ItemStack[] items = entry.getMatchingStacks();
+			return items == null || items.length <= 0 ? 1 : items[0].getCount();
+		}
+
 		private boolean isFalseBucket(int slot) {
 
 			return craftSlots[slot] == -1;
@@ -708,7 +716,7 @@ public class TileCrafter extends TileMachineBase {
 
 		private boolean validStack(ItemStack stack, int slot) {
 
-			if (isItemStackRecipe) {
+			if (isSpecificRecipe) {
 				return ItemHelper.itemsIdentical(stack, craftStacks[slot]);
 			}
 			return craftIngredients[slot].apply(stack);

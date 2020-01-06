@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.inventory.ComparableItemStack;
-import cofh.core.inventory.ComparableItemStackValidated;
+import cofh.core.inventory.ComparableItemStackValidatedNBT;
 import cofh.core.inventory.OreValidator;
 import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.StringHelper;
@@ -26,9 +26,9 @@ import static java.util.Arrays.asList;
 
 public class SmelterManager {
 
-	private static Map<List<ComparableItemStackValidated>, SmelterRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
-	private static Set<ComparableItemStackValidated> validationSet = new ObjectOpenHashSet<>();
-	private static Set<ComparableItemStackValidated> lockSet = new ObjectOpenHashSet<>();
+	private static Map<List<ComparableItemStackValidatedNBT>, SmelterRecipe> recipeMap = new Object2ObjectOpenHashMap<>();
+	private static Set<ComparableItemStackValidatedNBT> validationSet = new ObjectOpenHashSet<>();
+	private static Set<ComparableItemStackValidatedNBT> lockSet = new ObjectOpenHashSet<>();
 	private static OreValidator oreValidator = new OreValidator();
 
 	static {
@@ -62,8 +62,8 @@ public class SmelterManager {
 
 	private static SmelterRecipe getRecipeFwd(ItemStack primaryInput, ItemStack secondaryInput) {
 
-		ComparableItemStackValidated query = convertInput(primaryInput);
-		ComparableItemStackValidated querySecondary = convertInput(secondaryInput);
+		ComparableItemStackValidatedNBT query = convertInput(primaryInput);
+		ComparableItemStackValidatedNBT querySecondary = convertInput(secondaryInput);
 
 		SmelterRecipe recipe = recipeMap.get(asList(query, querySecondary));
 
@@ -80,8 +80,8 @@ public class SmelterManager {
 
 	//	private static SmelterRecipe getRecipeRev(ItemStack primaryInput, ItemStack secondaryInput) {
 	//
-	//		ComparableItemStackValidated query = convertInput(primaryInput);
-	//		ComparableItemStackValidated querySecondary = convertInput(secondaryInput);
+	//		ComparableItemStackValidatedNBT query = convertInput(primaryInput);
+	//		ComparableItemStackValidatedNBT querySecondary = convertInput(secondaryInput);
 	//
 	//		SmelterRecipe recipe = recipeMap.get(asList(querySecondary, query));
 	//
@@ -109,8 +109,8 @@ public class SmelterManager {
 		if (primaryInput.isEmpty() || secondaryInput.isEmpty()) {
 			return null;
 		}
-		ComparableItemStackValidated query = convertInput(primaryInput);
-		ComparableItemStackValidated querySecondary = convertInput(secondaryInput);
+		ComparableItemStackValidatedNBT query = convertInput(primaryInput);
+		ComparableItemStackValidatedNBT querySecondary = convertInput(secondaryInput);
 
 		SmelterRecipe recipe = recipeMap.get(asList(query, querySecondary));
 
@@ -146,7 +146,7 @@ public class SmelterManager {
 		if (input.isEmpty()) {
 			return false;
 		}
-		ComparableItemStackValidated query = convertInput(input);
+		ComparableItemStackValidatedNBT query = convertInput(input);
 		if (validationSet.contains(query)) {
 			return true;
 		}
@@ -320,8 +320,10 @@ public class SmelterManager {
 				}
 			}
 			for (HorseArmor armor : HorseArmor.values()) {
-				ingot = ItemHelper.getOre(armor.ingot);
-				addRecycleRecipe(energy, armor.armor, ingot, 2, false);
+				if (armor.enable) {
+					ingot = ItemHelper.getOre(armor.ingot);
+					addRecycleRecipe(energy, armor.armor, ingot, 2, false);
+				}
 			}
 		}
 
@@ -348,14 +350,14 @@ public class SmelterManager {
 
 	public static void refresh() {
 
-		Map<List<ComparableItemStackValidated>, SmelterRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
-		Set<ComparableItemStackValidated> tempSet = new ObjectOpenHashSet<>();
+		Map<List<ComparableItemStackValidatedNBT>, SmelterRecipe> tempMap = new Object2ObjectOpenHashMap<>(recipeMap.size());
+		Set<ComparableItemStackValidatedNBT> tempSet = new ObjectOpenHashSet<>();
 		SmelterRecipe tempRecipe;
 
-		for (Entry<List<ComparableItemStackValidated>, SmelterRecipe> entry : recipeMap.entrySet()) {
+		for (Entry<List<ComparableItemStackValidatedNBT>, SmelterRecipe> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackValidated primary = convertInput(tempRecipe.primaryInput);
-			ComparableItemStackValidated secondary = convertInput(tempRecipe.secondaryInput);
+			ComparableItemStackValidatedNBT primary = convertInput(tempRecipe.primaryInput);
+			ComparableItemStackValidatedNBT secondary = convertInput(tempRecipe.secondaryInput);
 
 			tempMap.put(asList(primary, secondary), tempRecipe);
 			tempSet.add(primary);
@@ -367,9 +369,9 @@ public class SmelterManager {
 		validationSet.clear();
 		validationSet = tempSet;
 
-		Set<ComparableItemStackValidated> tempSet2 = new ObjectOpenHashSet<>();
-		for (ComparableItemStackValidated entry : lockSet) {
-			ComparableItemStackValidated lock = convertInput(new ItemStack(entry.item, entry.stackSize, entry.metadata));
+		Set<ComparableItemStackValidatedNBT> tempSet2 = new ObjectOpenHashSet<>();
+		for (ComparableItemStackValidatedNBT entry : lockSet) {
+			ComparableItemStackValidatedNBT lock = convertInput(new ItemStack(entry.item, entry.stackSize, entry.metadata));
 			tempSet2.add(lock);
 		}
 		lockSet.clear();
@@ -407,9 +409,9 @@ public class SmelterManager {
 	}
 
 	/* HELPERS */
-	public static ComparableItemStackValidated convertInput(ItemStack stack) {
+	public static ComparableItemStackValidatedNBT convertInput(ItemStack stack) {
 
-		return new ComparableItemStackValidated(stack, oreValidator);
+		return new ComparableItemStackValidatedNBT(stack, oreValidator);
 	}
 
 	private static void addFlux(ItemStack flux) {
