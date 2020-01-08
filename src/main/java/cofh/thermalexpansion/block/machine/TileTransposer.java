@@ -297,8 +297,8 @@ public class TileTransposer extends TileMachineBase {
 			return false;
 		}
 		if (!hasFluidHandler && FluidHelper.isFluidHandler(inventory[0])) {
-			if (!extractMode && TransposerManager.fillRecipeExists(inventory[0], tank.getFluid())) {
-				// There is a specific recipe for this! Do not use FluidHandler stuff.
+			if (!extractMode && (tank.getFluidAmount() <= 0 || TransposerManager.fillRecipeExists(inventory[0], tank.getFluid()))) {
+				// There is (or might be) a specific recipe for this! Do not use FluidHandler stuff.
 			} else if (extractMode && TransposerManager.extractRecipeExists(inventory[0])) {
 				// There is a specific recipe for this! Do not use FluidHandler stuff.
 			} else {
