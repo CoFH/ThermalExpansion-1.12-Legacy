@@ -85,9 +85,14 @@ public class TileInsolator extends TileMachineBase {
 		String comment = "Adjust this value to change the Energy consumption (in RF/t) for a Phytogenic Insolator. This base value will scale with block level and Augments.";
 		basePower = ThermalExpansion.CONFIG.getConfiguration().getInt("BasePower", category, basePower, MIN_BASE_POWER, MAX_BASE_POWER, comment);
 
+		comment = "Should upgrades preserve inputs for custom recipes?";
+		preserveCustom = ThermalExpansion.CONFIG.get(category, "PreserveCustom", preserveCustom, comment);
+
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
 		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower, smallStorage);
 	}
+
+	private static boolean preserveCustom = true;
 
 	private InsolatorRecipe curRecipe;
 	private int inputTrackerPrimary;
@@ -216,31 +221,31 @@ public class TileInsolator extends TileMachineBase {
 		ItemStack secondaryItem = curRecipe.getSecondaryOutput();
 		boolean hasFertilizer = curRecipe.hasFertilizer();
 
-		if (hasFertilizer) { // Fertilizer is *always* secondary input, if present.
+		if (hasFertilizer || preserveCustom){ // Fertilizer is *always* secondary input, if present.
 			ItemStack input = curRecipe.getPrimaryInput();
 
-			if (inventory[2].isEmpty()) {
+			if(inventory[2].isEmpty()){
 				inventory[2] = ItemHelper.cloneStack(primaryItem);
-			} else {
+			}else{
 				inventory[2].grow(primaryItem.getCount());
 			}
-			if (!secondaryItem.isEmpty()) {
+			if(!secondaryItem.isEmpty()){
 				int modifiedChance = secondaryChance;
 
 				int recipeChance = curRecipe.getSecondaryOutputChance();
-				if (augmentMonoculture && secondaryItem.isItemEqual(input)) {
+				if(augmentMonoculture && secondaryItem.isItemEqual(input)){
 					recipeChance -= 100;
 				}
-				if (recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance) {
-					if (inventory[3].isEmpty()) {
+				if(recipeChance >= 100 || world.rand.nextInt(modifiedChance) < recipeChance){
+					if(inventory[3].isEmpty()){
 						inventory[3] = ItemHelper.cloneStack(secondaryItem);
-					} else if (inventory[3].isItemEqual(secondaryItem)) {
+					}else if(inventory[3].isItemEqual(secondaryItem)){
 						inventory[3].grow(secondaryItem.getCount());
 					}
-					if (world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+					if(world.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance){
 						inventory[3].grow(secondaryItem.getCount());
 					}
-					if (inventory[3].getCount() > inventory[3].getMaxStackSize()) {
+					if(inventory[3].getCount() > inventory[3].getMaxStackSize()){
 						inventory[3].setCount(inventory[3].getMaxStackSize());
 					}
 				}
@@ -248,27 +253,11 @@ public class TileInsolator extends TileMachineBase {
 			int countInput = augmentMonoculture ? 0 : curRecipe.getPrimaryInput().getCount();
 			int countFertilizer = curRecipe.getSecondaryInput().getCount();
 
-			if (reuseChance > 0) {
-				if (InsolatorManager.isItemFertilizer(inventory[0])) {
-					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
-						inventory[0].shrink(countFertilizer);
-					}
-					inventory[1].shrink(countInput);
-				} else {
-					if (world.rand.nextInt(SECONDARY_BASE) >= reuseChance) {
-						inventory[1].shrink(countFertilizer);
-					}
-					inventory[0].shrink(countInput);
-				}
-			} else {
-				if (InsolatorManager.isItemFertilizer(inventory[0])) {
-					inventory[0].shrink(countFertilizer);
-					inventory[1].shrink(countInput);
-				} else {
-					inventory[1].shrink(countFertilizer);
-					inventory[0].shrink(countInput);
-				}
+			int fertilizerSlot = InsolatorManager.isItemFertilizer(inventory[1]) ? 1 : 0;
+			if(reuseChance <= 0 || world.rand.nextInt(SECONDARY_BASE) >= reuseChance){
+				inventory[fertilizerSlot].shrink(countFertilizer);
 			}
+			inventory[1 - fertilizerSlot].shrink(countInput);
 		} else {
 			if (inventory[2].isEmpty()) {
 				inventory[2] = ItemHelper.cloneStack(primaryItem);
