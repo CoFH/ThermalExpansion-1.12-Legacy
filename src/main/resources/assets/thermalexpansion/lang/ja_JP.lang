@@ -86,7 +86,7 @@ info.thermalexpansion.augment.dynamoNumismaticGem.b.0=宝石だけが燃料と�
 info.thermalexpansion.augment.dynamoPower.0=ダイナモ：出力上昇
 info.thermalexpansion.augment.dynamoPower.a.0=RFの生成量(RF/t)が増加します。
 
-info.thermalexpansion.augment.dynamoReactantElemental.0=反応発電機：特化
+info.thermalexpansion.augment.dynamoReactantElemental.0=反応ダイナモ：特化
 info.thermalexpansion.augment.dynamoReactantElemental.a.0=エネルギー生成量と生成効率を大幅に増加させます。
 info.thermalexpansion.augment.dynamoReactantElemental.b.0=四大元素の反応物質だけが燃料として使用できます。
 
@@ -95,7 +95,7 @@ info.thermalexpansion.augment.dynamoSteamTurbine.a.0=エネルギー生成量を
 info.thermalexpansion.augment.dynamoSteamTurbine.c.0=蒸気を外部から供給する必要があります。
 
 info.thermalexpansion.augment.dynamoThrottle.0=ダイナモ：上級絞り弁
-info.thermalexpansion.augment.dynamoThrottle.a.0=RFの貯蓄量がいっぱいになった時に発電機の稼働を止めます。
+info.thermalexpansion.augment.dynamoThrottle.a.0=RFの貯蓄量がいっぱいになった時にダイナモの稼働を止めます。
 
 info.thermalexpansion.augment.machineBrewerReagent.0=錬金的醸造機：効率化
 info.thermalexpansion.augment.machineBrewerReagent.a.0=一定確率で試薬を消費しないようになります。
