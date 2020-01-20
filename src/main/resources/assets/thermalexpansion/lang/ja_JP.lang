@@ -148,7 +148,7 @@ info.thermalexpansion.augment.machineCrucibleLava.0=溶岩るつぼ：特化
 info.thermalexpansion.augment.machineCrucibleLava.a.0=溶岩の生成速度が大幅に増加します。
 info.thermalexpansion.augment.machineCrucibleLava.b.0=溶岩のみを生成するようになります。
 
-info.thermalexpansion.augment.machineEnchanterEmpowered.0=神秘的エンチャンター：特化
+info.thermalexpansion.augment.machineEnchanterEmpowered.0=高位エンチャンター：特化
 info.thermalexpansion.augment.machineEnchanterEmpowered.a.0=最大レベルのエンチャントにするために、エンチャントエネルギーを調整します。
 info.thermalexpansion.augment.machineEnchanterEmpowered.b.0=追加の材料が必要になります。
 
@@ -410,12 +410,12 @@ item.thermalexpansion.frame.frameDevice.name=デバイスフレーム
 item.thermalexpansion.frame.frameLight.name=照明フレーム
 item.thermalexpansion.frame.frameMachine.name=マシンフレーム
 
-item.thermalexpansion.reservoir.creative.name=液体容器(クリエイティブ)
-item.thermalexpansion.reservoir.standard0.name=液体容器(ベーシック)
-item.thermalexpansion.reservoir.standard1.name=液体容器(ハーデンド)
-item.thermalexpansion.reservoir.standard2.name=液体容器(レインフォースド)
-item.thermalexpansion.reservoir.standard3.name=液体容器(シグナルム)
-item.thermalexpansion.reservoir.standard4.name=液体容器(レゾナント)
+item.thermalexpansion.reservoir.creative.name=リザーバー(クリエイティブ)
+item.thermalexpansion.reservoir.standard0.name=リザーバー(ベーシック)
+item.thermalexpansion.reservoir.standard1.name=リザーバー(ハーデンド)
+item.thermalexpansion.reservoir.standard2.name=リザーバー(レインフォースド)
+item.thermalexpansion.reservoir.standard3.name=リザーバー(シグナルム)
+item.thermalexpansion.reservoir.standard4.name=リザーバー(レゾナント)
 
 item.thermalexpansion.satchel.creative.name=サッチェル(クリエイティブ)
 item.thermalexpansion.satchel.name=サッチェル
@@ -608,7 +608,7 @@ tile.thermalexpansion.machine.charger.name=エネルギー充填機
 tile.thermalexpansion.machine.compactor.name=圧縮機
 tile.thermalexpansion.machine.crafter.name=自動クラフター
 tile.thermalexpansion.machine.crucible.name=溶岩るつぼ
-tile.thermalexpansion.machine.enchanter.name=神秘的エンチャンター
+tile.thermalexpansion.machine.enchanter.name=高位エンチャンター
 tile.thermalexpansion.machine.extruder.name=火成岩生成機
 tile.thermalexpansion.machine.furnace.name=レッドストーンかまど
 tile.thermalexpansion.machine.insolator.name=植物成長促進機
