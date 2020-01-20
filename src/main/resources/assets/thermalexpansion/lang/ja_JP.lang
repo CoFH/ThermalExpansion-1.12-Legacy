@@ -42,59 +42,59 @@ gui.thermalexpansion.storage.cell.incSend=RF流出量を増やす：
 
 info.thermalexpansion.augment.0=オーグメント
 
-info.thermalexpansion.augment.dynamoBoiler.0=発電機：出力特化
-info.thermalexpansion.augment.dynamoBoiler.a.0=発電機を蒸気ボイラーにします。
+info.thermalexpansion.augment.dynamoBoiler.0=ダイナモ：出力特化
+info.thermalexpansion.augment.dynamoBoiler.a.0=ダイナモを蒸気ボイラーにします。
 info.thermalexpansion.augment.dynamoBoiler.a.1=燃料効率が増加します。
 info.thermalexpansion.augment.dynamoBoiler.b.0=生成を停止できなくなります。
 info.thermalexpansion.augment.dynamoBoiler.c.0=RFの代わりに蒸気を生産するようになります。
 
-info.thermalexpansion.augment.dynamoCoilDuct.0=発電機：アクセス可能面追加
-info.thermalexpansion.augment.dynamoCoilDuct.a.0=発電機のコイル側からの搬入や搬出を可能にします。
+info.thermalexpansion.augment.dynamoCoilDuct.0=ダイナモ：アクセス可能面追加
+info.thermalexpansion.augment.dynamoCoilDuct.a.0=ダイナモのコイル側からの搬入や搬出を可能にします。
 
-info.thermalexpansion.augment.dynamoCompressionBiofuel.0=圧縮発電機：特化
+info.thermalexpansion.augment.dynamoCompressionBiofuel.0=圧縮ダイナモ：特化
 info.thermalexpansion.augment.dynamoCompressionBiofuel.a.0=エネルギー生成量と生成効率を大幅に増加させます。
 info.thermalexpansion.augment.dynamoCompressionBiofuel.b.0=§2§oグラソリン§r§4だけが燃料として使用できます。
 
-info.thermalexpansion.augment.dynamoCompressionCoolant.0=圧縮発電機：特化
+info.thermalexpansion.augment.dynamoCompressionCoolant.0=圧縮ダイナモ：特化
 info.thermalexpansion.augment.dynamoCompressionCoolant.a.0=冷却材を消費しなくなります。
 info.thermalexpansion.augment.dynamoCompressionCoolant.b.0=ただし、冷却材は入れる必要があります。
 info.thermalexpansion.augment.dynamoCompressionCoolant.c.0=強力な冷却材はより高い効果を生み出します。
 
-info.thermalexpansion.augment.dynamoCompressionFuel.0=圧縮発電機：特化
+info.thermalexpansion.augment.dynamoCompressionFuel.0=圧縮ダイナモ：特化
 info.thermalexpansion.augment.dynamoCompressionFuel.a.0=エネルギー生成量と生成効率を大幅に増加させます。
 info.thermalexpansion.augment.dynamoCompressionFuel.b.0=§e§o改質燃料§r§4だけが燃料として使用できます。
 
-info.thermalexpansion.augment.dynamoEfficiency.0=発電機：効率上昇
+info.thermalexpansion.augment.dynamoEfficiency.0=ダイナモ：効率上昇
 info.thermalexpansion.augment.dynamoEfficiency.a.0=燃料当たりのRF生成量を増加させます。
 
-info.thermalexpansion.augment.dynamoEnervationEnchant.0=抽出発電機：特化
+info.thermalexpansion.augment.dynamoEnervationEnchant.0=抽出ダイナモ：特化
 info.thermalexpansion.augment.dynamoEnervationEnchant.a.0=燃料にエンチャントされたアイテムを使用するようになります。
 info.thermalexpansion.augment.dynamoEnervationEnchant.a.1=エネルギー生成量と生成効率を大幅に増加させます。
 info.thermalexpansion.augment.dynamoEnervationEnchant.b.0=エンチャントされたアイテムだけが燃料として使用できます。
 info.thermalexpansion.augment.dynamoEnervationEnchant.c.0=投入されたアイテムはなくなります。
 
-info.thermalexpansion.augment.dynamoMagmaticCoolant.0=溶岩発電機：特化
+info.thermalexpansion.augment.dynamoMagmaticCoolant.0=溶岩ダイナモ：特化
 info.thermalexpansion.augment.dynamoMagmaticCoolant.a.0=エネルギー生成量と生成効率を大幅に増加させます。
 info.thermalexpansion.augment.dynamoMagmaticCoolant.b.0=冷却材が必要になります。
 info.thermalexpansion.augment.dynamoMagmaticCoolant.c.0=強力な冷却材はより高い効果を生み出します。
 
-info.thermalexpansion.augment.dynamoNumismaticGem.0=貨幣発電機：特化
+info.thermalexpansion.augment.dynamoNumismaticGem.0=貨幣ダイナモ：特化
 info.thermalexpansion.augment.dynamoNumismaticGem.a.0=様々な宝石を燃料として使用するようになります。
 info.thermalexpansion.augment.dynamoNumismaticGem.a.1=エネルギー生成量と生成効率を大幅に増加させます。
 info.thermalexpansion.augment.dynamoNumismaticGem.b.0=宝石だけが燃料として使用できます。
 
-info.thermalexpansion.augment.dynamoPower.0=発電機：出力上昇
+info.thermalexpansion.augment.dynamoPower.0=ダイナモ：出力上昇
 info.thermalexpansion.augment.dynamoPower.a.0=RFの生成量(RF/t)が増加します。
 
 info.thermalexpansion.augment.dynamoReactantElemental.0=反応発電機：特化
 info.thermalexpansion.augment.dynamoReactantElemental.a.0=エネルギー生成量と生成効率を大幅に増加させます。
 info.thermalexpansion.augment.dynamoReactantElemental.b.0=四大元素の反応物質だけが燃料として使用できます。
 
-info.thermalexpansion.augment.dynamoSteamTurbine.0=蒸気発電機：特化
+info.thermalexpansion.augment.dynamoSteamTurbine.0=蒸気ダイナモ：特化
 info.thermalexpansion.augment.dynamoSteamTurbine.a.0=エネルギー生成量を大幅に増加させます。
 info.thermalexpansion.augment.dynamoSteamTurbine.c.0=蒸気を外部から供給する必要があります。
 
-info.thermalexpansion.augment.dynamoThrottle.0=発電機：上級絞り弁
+info.thermalexpansion.augment.dynamoThrottle.0=ダイナモ：上級絞り弁
 info.thermalexpansion.augment.dynamoThrottle.a.0=RFの貯蓄量がいっぱいになった時に発電機の稼働を止めます。
 
 info.thermalexpansion.augment.machineBrewerReagent.0=錬金的醸造機：効率化
@@ -131,24 +131,24 @@ info.thermalexpansion.augment.machineCompactorGear.a.0=歯車を効率的に作�
 info.thermalexpansion.augment.machineCompactorGear.a.1=歯車は多くのアイテムを作成する時に使われます。
 info.thermalexpansion.augment.machineCompactorGear.c.0=プレートを作成できなくなります。
 
-info.thermalexpansion.augment.machineCrafterInput.0=自動クラフト機：機能変化
+info.thermalexpansion.augment.machineCrafterInput.0=自動クラフター：機能変化
 info.thermalexpansion.augment.machineCrafterInput.a.0=知的な自動入力機能を追加します。
 info.thermalexpansion.augment.machineCrafterInput.c.0=各クラフトエリアに特定の入力スロットが紐付くようになります。
 
-info.thermalexpansion.augment.machineCrafterTank.0=自動クラフト機：機能変化
+info.thermalexpansion.augment.machineCrafterTank.0=自動クラフター：機能変化
 info.thermalexpansion.augment.machineCrafterTank.a.0=マシンに液体タンクを追加します。
 info.thermalexpansion.augment.machineCrafterTank.a.1=タンクの液体をクラフトに使用できます。
 info.thermalexpansion.augment.machineCrafterTank.c.0=全てのレシピに対応しているわけではありません。
 
-info.thermalexpansion.augment.machineCrucibleAlloy.0=溶融るつぼ：特化
-info.thermalexpansion.augment.machineCrucibleAlloy.a.0=溶融るつぼ：特化
-info.thermalexpansion.augment.machineCrucibleAlloy.b.0=溶融るつぼ：特化
+info.thermalexpansion.augment.machineCrucibleAlloy.0=溶岩るつぼ：特化
+info.thermalexpansion.augment.machineCrucibleAlloy.a.0=溶岩るつぼ：特化
+info.thermalexpansion.augment.machineCrucibleAlloy.b.0=溶岩るつぼ：特化
 
-info.thermalexpansion.augment.machineCrucibleLava.0=溶融るつぼ：特化
+info.thermalexpansion.augment.machineCrucibleLava.0=溶岩るつぼ：特化
 info.thermalexpansion.augment.machineCrucibleLava.a.0=溶岩の生成速度が大幅に増加します。
 info.thermalexpansion.augment.machineCrucibleLava.b.0=溶岩のみを生成するようになります。
 
-info.thermalexpansion.augment.machineEnchanterEmpowered.0=エンチャント刻印機：特化
+info.thermalexpansion.augment.machineEnchanterEmpowered.0=神秘的エンチャンター：特化
 info.thermalexpansion.augment.machineEnchanterEmpowered.a.0=最大レベルのエンチャントにするために、エンチャントエネルギーを調整します。
 info.thermalexpansion.augment.machineEnchanterEmpowered.b.0=追加の材料が必要になります。
 
@@ -200,15 +200,15 @@ info.thermalexpansion.augment.machinePulverizerPetrotheum.a.0=生成物の歩留
 info.thermalexpansion.augment.machinePulverizerPetrotheum.b.0=1回の作業毎に要求されるエネルギーが増加します。
 info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=地動のペトロジウムが必要になります。
 
-info.thermalexpansion.augment.machineRefineryBio.0=液体精製機：特化
+info.thermalexpansion.augment.machineRefineryBio.0=液体蒸留器：特化
 info.thermalexpansion.augment.machineRefineryBio.a.0=バイオ燃料の精製効率が大幅に増加します。
 info.thermalexpansion.augment.machineRefineryBio.b.0=1回の作業毎に要求されるエネルギーが増加します。
 
-info.thermalexpansion.augment.machineRefineryFossil.0=精製蒸留機：特化
+info.thermalexpansion.augment.machineRefineryFossil.0=液体蒸留機：特化
 info.thermalexpansion.augment.machineRefineryFossil.a.0=化石燃料の精製効率が大幅に増加します。
 info.thermalexpansion.augment.machineRefineryFossil.b.0=1回の作業毎に要求されるエネルギーが増加します。
 
-info.thermalexpansion.augment.machineRefineryPotion.0=精製蒸留機：特化
+info.thermalexpansion.augment.machineRefineryPotion.0=液体蒸留機：特化
 info.thermalexpansion.augment.machineRefineryPotion.a.0=ポーションの効果を高めることができるようになります。
 info.thermalexpansion.augment.machineRefineryPotion.b.0=ポーションのみを取り扱うようになります。
 
@@ -351,7 +351,7 @@ item.thermalexpansion.augment.dynamoNumismaticGem.name=宝石鑑定
 item.thermalexpansion.augment.dynamoPower.name=補助伝導コイル
 item.thermalexpansion.augment.dynamoReactantElemental.name=四大元素触媒
 item.thermalexpansion.augment.dynamoSteamTurbine.name=タービン化
-item.thermalexpansion.augment.dynamoThrottle.name=発電リミッタ
+item.thermalexpansion.augment.dynamoThrottle.name=発電リミッター
 
 item.thermalexpansion.augment.machineBrewerReagent.name=試薬回収
 item.thermalexpansion.augment.machineCentrifugeMobs.name=モーブ処理
@@ -384,12 +384,12 @@ item.thermalexpansion.augment.machineSmelterPyrotheum.name=熱濃縮
 item.thermalexpansion.augment.machineSecondary.name=補助フィルター
 item.thermalexpansion.augment.machineSecondaryNull.name=消滅室
 
-item.thermalexpansion.capacitor.creative.name=フラックスキャパシタ (クリエイティブ)
-item.thermalexpansion.capacitor.standard0.name=フラックスキャパシタ (ベーシック)
-item.thermalexpansion.capacitor.standard1.name=フラックスキャパシタ (ハーデンド)
-item.thermalexpansion.capacitor.standard2.name=フラックスキャパシタ (レインフォースド)
-item.thermalexpansion.capacitor.standard3.name=フラックスキャパシタ (シグナルム)
-item.thermalexpansion.capacitor.standard4.name=フラックスキャパシタ (レゾナント)
+item.thermalexpansion.capacitor.creative.name=フラックスキャパシター(クリエイティブ)
+item.thermalexpansion.capacitor.standard0.name=フラックスキャパシター(ベーシック)
+item.thermalexpansion.capacitor.standard1.name=フラックスキャパシター(ハーデンド)
+item.thermalexpansion.capacitor.standard2.name=フラックスキャパシター(レインフォースド)
+item.thermalexpansion.capacitor.standard3.name=フラックスキャパシター(シグナルム)
+item.thermalexpansion.capacitor.standard4.name=フラックスキャパシター(レゾナント)
 
 item.thermalexpansion.florb.standard.name=フローブ
 item.thermalexpansion.florb.magmatic.name=耐熱フローブ
@@ -397,34 +397,34 @@ item.thermalexpansion.florb.magmatic.name=耐熱フローブ
 item.thermalexpansion.morb.reusable.name=再利用可能モーブ
 item.thermalexpansion.morb.standard.name=モーブ
 
-item.thermalexpansion.frame.frameApparatus.name=器具フレーム
+item.thermalexpansion.frame.frameApparatus.name=機器フレーム
 item.thermalexpansion.frame.frameCell.name=エネルギーセルフレーム
 item.thermalexpansion.frame.frameCell1.name=ハーデンドセルフレーム
-item.thermalexpansion.frame.frameCell2.name=レインフォースドセルフレーム (空)
-item.thermalexpansion.frame.frameCell3.name=シグナルムセルフレーム (空)
-item.thermalexpansion.frame.frameCell4.name=レゾナントセルフレーム (空)
-item.thermalexpansion.frame.frameCell2Filled.name=レインフォースドセルフレーム (充填済み)
-item.thermalexpansion.frame.frameCell3Filled.name=シグナルムセルフレーム (充填済み)
-item.thermalexpansion.frame.frameCell4Filled.name=レゾナントセルフレーム (充填済み)
-item.thermalexpansion.frame.frameDevice.name=装置フレーム
+item.thermalexpansion.frame.frameCell2.name=レインフォースドセルフレーム(空)
+item.thermalexpansion.frame.frameCell3.name=シグナルムセルフレーム(空)
+item.thermalexpansion.frame.frameCell4.name=レゾナントセルフレーム(空)
+item.thermalexpansion.frame.frameCell2Filled.name=レインフォースドセルフレーム(充填済み)
+item.thermalexpansion.frame.frameCell3Filled.name=シグナルムセルフレーム(充填済み)
+item.thermalexpansion.frame.frameCell4Filled.name=レゾナントセルフレーム(充填済み)
+item.thermalexpansion.frame.frameDevice.name=デバイスフレーム
 item.thermalexpansion.frame.frameLight.name=照明フレーム
-item.thermalexpansion.frame.frameMachine.name=機械フレーム
+item.thermalexpansion.frame.frameMachine.name=マシンフレーム
 
-item.thermalexpansion.reservoir.creative.name=水筒 (クリエイティブ)
-item.thermalexpansion.reservoir.standard0.name=水筒 (ベーシック)
-item.thermalexpansion.reservoir.standard1.name=水筒 (ハーデンド)
-item.thermalexpansion.reservoir.standard2.name=水筒 (レインフォースド)
-item.thermalexpansion.reservoir.standard3.name=水筒 (シグナルム)
-item.thermalexpansion.reservoir.standard4.name=水筒 (レゾナント)
+item.thermalexpansion.reservoir.creative.name=液体容器(クリエイティブ)
+item.thermalexpansion.reservoir.standard0.name=液体容器(ベーシック)
+item.thermalexpansion.reservoir.standard1.name=液体容器(ハーデンド)
+item.thermalexpansion.reservoir.standard2.name=液体容器(レインフォースド)
+item.thermalexpansion.reservoir.standard3.name=液体容器(シグナルム)
+item.thermalexpansion.reservoir.standard4.name=液体容器(レゾナント)
 
-item.thermalexpansion.satchel.creative.name=サッチェル (クリエイティブ)
+item.thermalexpansion.satchel.creative.name=サッチェル(クリエイティブ)
 item.thermalexpansion.satchel.name=サッチェル
-item.thermalexpansion.satchel.standard0.name=サッチェル (ベーシック)
-item.thermalexpansion.satchel.standard1.name=サッチェル (ハーデンド)
-item.thermalexpansion.satchel.standard2.name=サッチェル (レインフォースド)
-item.thermalexpansion.satchel.standard3.name=サッチェル (シグナルム)
-item.thermalexpansion.satchel.standard4.name=サッチェル (レゾナント)
-item.thermalexpansion.satchel.void.name=サッチェル (ヴォイド)
+item.thermalexpansion.satchel.standard0.name=サッチェル(ベーシック)
+item.thermalexpansion.satchel.standard1.name=サッチェル(ハーデンド)
+item.thermalexpansion.satchel.standard2.name=サッチェル(レインフォースド)
+item.thermalexpansion.satchel.standard3.name=サッチェル(シグナルム)
+item.thermalexpansion.satchel.standard4.name=サッチェル(レゾナント)
+item.thermalexpansion.satchel.void.name=サッチェル(ヴォイド)
 
 itemGroup.thermalexpansion.creativeTab=Thermal Expansion
 itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: フローブ
@@ -574,52 +574,56 @@ tab.thermalexpansion.storage.satchel_v.2=手を見てください！
 
 tab.thermalexpansion.storage.strongbox.0=箱です！アイテムを保存します。ほとんどのアイテムを格納できます。
 
-tab.thermalexpansion.storage.tank.0=タンクです！液体を保存します。
-tab.thermalexpansion.storage.tank.1=下面から液体を自動搬出できます。
+tab.thermalexpansion.storage.tank.0=タンクです！流体（液体と気体）を保存します。
+tab.thermalexpansion.storage.tank.1=下面から流体を自動搬出できます。
 
-tile.thermalexpansion.apparatus.breaker.name=地形破壊装置
+tile.thermalexpansion.apparatus.breaker.name=地形破壊機
 tile.thermalexpansion.apparatus.collector.name=アイテム収集器
 
 tile.thermalexpansion.device.diffuser.name=ポーション散布器
 tile.thermalexpansion.device.factorizer.name=分割結合器
-tile.thermalexpansion.device.fisher.name=魚類捕獲器
-tile.thermalexpansion.device.fluid_buffer.name=液体分配器
-tile.thermalexpansion.device.heat_sink.name=吸熱器
+tile.thermalexpansion.device.fisher.name=水産捕獲器
+tile.thermalexpansion.device.fluid_buffer.name=流体分配器
+tile.thermalexpansion.device.heat_sink.name=ヒートシンク
 tile.thermalexpansion.device.item_buffer.name=アイテム分配器
 tile.thermalexpansion.device.item_collector.name=アイテム吸引器
 tile.thermalexpansion.device.lexicon.name=辞書等価交換器
-tile.thermalexpansion.device.mob_catcher.name=生物捕獲器
+tile.thermalexpansion.device.mob_catcher.name=モブ捕獲器
 tile.thermalexpansion.device.nullifier.name=消滅器
 tile.thermalexpansion.device.tapper.name=樹液抽出器
 tile.thermalexpansion.device.water_gen.name=水生成器
 tile.thermalexpansion.device.xp_collector.name=経験値収集器
 
-tile.thermalexpansion.dynamo.compression.name=圧縮発電機
-tile.thermalexpansion.dynamo.enervation.name=抽出発電機
-tile.thermalexpansion.dynamo.magmatic.name=高温発電機
-tile.thermalexpansion.dynamo.numismatic.name=貨幣発電機
-tile.thermalexpansion.dynamo.reactant.name=反応発電機
-tile.thermalexpansion.dynamo.steam.name=蒸気発電機
-tile.thermalexpansion.dynamo=発電機
+tile.thermalexpansion.dynamo.compression.name=圧縮ダイナモ
+tile.thermalexpansion.dynamo.enervation.name=抽出ダイナモ
+tile.thermalexpansion.dynamo.magmatic.name=溶岩ダイナモ
+tile.thermalexpansion.dynamo.numismatic.name=貨幣ダイナモ
+tile.thermalexpansion.dynamo.reactant.name=反応ダイナモ
+tile.thermalexpansion.dynamo.steam.name=蒸気ダイナモ
+tile.thermalexpansion.dynamo=ダイナモ
 
 tile.thermalexpansion.machine.brewer.name=錬金的醸造機
 tile.thermalexpansion.machine.centrifuge.name=遠心分離器
 tile.thermalexpansion.machine.charger.name=エネルギー充填機
 tile.thermalexpansion.machine.compactor.name=圧縮機
-tile.thermalexpansion.machine.crafter.name=自動クラフト機
-tile.thermalexpansion.machine.crucible.name=溶融るつぼ
-tile.thermalexpansion.machine.enchanter.name=エンチャント刻印機
+tile.thermalexpansion.machine.crafter.name=自動クラフトター
+tile.thermalexpansion.machine.crucible.name=溶岩るつぼ
+tile.thermalexpansion.machine.enchanter.name=神秘的エンチャンター
 tile.thermalexpansion.machine.extruder.name=火成岩生成機
 tile.thermalexpansion.machine.furnace.name=レッドストーンかまど
 tile.thermalexpansion.machine.insolator.name=植物成長促進機
-tile.thermalexpansion.machine.precipitator.name=液体氷結機
+tile.thermalexpansion.machine.precipitator.name=製氷凍結機
 tile.thermalexpansion.machine.pulverizer.name=粉砕機
-tile.thermalexpansion.machine.refinery.name=液体精製機
+tile.thermalexpansion.machine.refinery.name=液体蒸留器
 tile.thermalexpansion.machine.sawmill.name=製材機
 tile.thermalexpansion.machine.smelter.name=誘導加熱炉
-tile.thermalexpansion.machine.transposer.name=液体転移機
+tile.thermalexpansion.machine.transposer.name=流体転移機
+
+tile.thermalexpansion.light.lumium_lamp.name=ルミウムランプ
+tile.thermalexpansion.light.illuminator.name=グロウストーン照明器
+tile.thermalexpansion.light.radiant_lamp.name=まばゆいルミウムランプ
 
 tile.thermalexpansion.storage.cache.name=キャッシュ
 tile.thermalexpansion.storage.cell.name=エネルギーセル
-tile.thermalexpansion.storage.strongbox.name=金庫
-tile.thermalexpansion.storage.tank.name=携帯タンク
+tile.thermalexpansion.storage.strongbox.name=ストロングボックス
+tile.thermalexpansion.storage.tank.name=ポータブルタンク
