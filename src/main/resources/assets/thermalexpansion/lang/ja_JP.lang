@@ -62,7 +62,7 @@ info.thermalexpansion.augment.dynamoCompressionCoolant.c.0=強力な冷却材は
 
 info.thermalexpansion.augment.dynamoCompressionFuel.0=圧縮ダイナモ：特化
 info.thermalexpansion.augment.dynamoCompressionFuel.a.0=エネルギー生成量と生成効率を大幅に増加させます。
-info.thermalexpansion.augment.dynamoCompressionFuel.b.0=§e§o改質燃料§r§4だけが燃料として使用できます。
+info.thermalexpansion.augment.dynamoCompressionFuel.b.0=§e§o精製燃料§r§4だけが燃料として使用できます。
 
 info.thermalexpansion.augment.dynamoEfficiency.0=ダイナモ：効率上昇
 info.thermalexpansion.augment.dynamoEfficiency.a.0=燃料当たりのRF生成量を増加させます。
@@ -97,7 +97,7 @@ info.thermalexpansion.augment.dynamoSteamTurbine.c.0=蒸気を外部から供給
 info.thermalexpansion.augment.dynamoThrottle.0=ダイナモ：上級絞り弁
 info.thermalexpansion.augment.dynamoThrottle.a.0=RFの貯蓄量がいっぱいになった時にダイナモの稼働を止めます。
 
-info.thermalexpansion.augment.machineBrewerReagent.0=錬金的醸造機：効率化
+info.thermalexpansion.augment.machineBrewerReagent.0=錬金術醸造機：効率化
 info.thermalexpansion.augment.machineBrewerReagent.a.0=一定確率で試薬を消費しないようになります。
 info.thermalexpansion.augment.machineBrewerReagent.b.0=1回の作業毎に要求されるエネルギーが増加します。
 
@@ -107,16 +107,16 @@ info.thermalexpansion.augment.machineCentrifugeMobs.a.1=モーブは中のmobの
 info.thermalexpansion.augment.machineCentrifugeMobs.b.0=モーブのみを処理するようになります。
 info.thermalexpansion.augment.machineCentrifugeMobs.c.0=すべてのmobが対応しているわけではありません。
 
-info.thermalexpansion.augment.machineChargerRepair.0=エネルギー充填機：特化
+info.thermalexpansion.augment.machineChargerRepair.0=エネルギー充電機：特化
 info.thermalexpansion.augment.machineChargerRepair.a.0=ダメージを受けたアイテムを修復できるようになります。
 info.thermalexpansion.augment.machineChargerRepair.b.0=RFの充電ができなくなります。
 info.thermalexpansion.augment.machineChargerRepair.c.0=修復には知識の雫が必要です。
 
-info.thermalexpansion.augment.machineChargerThroughput.0=エネルギー充填機：特化
+info.thermalexpansion.augment.machineChargerThroughput.0=エネルギー充電機：特化
 info.thermalexpansion.augment.machineChargerThroughput.a.0=RFの充電速度を大幅に高速化させます。
 info.thermalexpansion.augment.machineChargerThroughput.c.0=アイテム自身の充電可能速度を越えることはありません。
 
-info.thermalexpansion.augment.machineChargerWireless.0=エネルギー充填機：特化
+info.thermalexpansion.augment.machineChargerWireless.0=エネルギー充電機：特化
 info.thermalexpansion.augment.machineChargerWireless.a.0=フラックスキャパシターへの高速なワイヤレス充電が可能になります。
 info.thermalexpansion.augment.machineChargerWireless.b.0=エネルギー充填機にアイテムを入れて充電することはできなくなります。
 info.thermalexpansion.augment.machineChargerWireless.c.0=フラックスキャパシター自身の充電可能速度を超えることはありません。
@@ -156,7 +156,7 @@ info.thermalexpansion.augment.machineExtruderNoWater.0=火成岩生成機：特�
 info.thermalexpansion.augment.machineExtruderNoWater.a.0=水を消費しなくなります。
 
 info.thermalexpansion.augment.machineExtruderSedimentary.0=火成岩生成機：特化
-info.thermalexpansion.augment.machineExtruderSedimentary.a.0=堆積岩(砂など)を生成するようになります。
+info.thermalexpansion.augment.machineExtruderSedimentary.a.0=砕屑物(砂など)を生成するようになります。
 info.thermalexpansion.augment.machineExtruderSedimentary.c.0=火成岩を生成できなくなります。
 
 info.thermalexpansion.augment.machineFurnaceFood.0=レッドストーンかまど：特化
@@ -198,7 +198,7 @@ info.thermalexpansion.augment.machinePulverizerGeode.b.0=1回の作業毎に要�
 info.thermalexpansion.augment.machinePulverizerPetrotheum.0=粉砕機：特化
 info.thermalexpansion.augment.machinePulverizerPetrotheum.a.0=生成物の歩留まりが良くなります。
 info.thermalexpansion.augment.machinePulverizerPetrotheum.b.0=1回の作業毎に要求されるエネルギーが増加します。
-info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=地動のペトロジウムが必要になります。
+info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=地殻変動のペトロジウムが必要になります。
 
 info.thermalexpansion.augment.machineRefineryBio.0=液体精製機：特化
 info.thermalexpansion.augment.machineRefineryBio.a.0=バイオ燃料の精製効率が大幅に増加します。
@@ -355,7 +355,7 @@ item.thermalexpansion.augment.dynamoThrottle.name=発電リミッター
 
 item.thermalexpansion.augment.machineBrewerReagent.name=反応剤再生利用
 item.thermalexpansion.augment.machineCentrifugeMobs.name=モーブ処理
-item.thermalexpansion.augment.machineChargerRepair.name=フラックス修復
+item.thermalexpansion.augment.machineChargerRepair.name=フラックス再構築
 item.thermalexpansion.augment.machineChargerThroughput.name=フラックス充電高速化
 item.thermalexpansion.augment.machineChargerWireless.name=ワイヤレスフラックス充電機能
 item.thermalexpansion.augment.machineCompactorCoin.name=貨幣用プレス
@@ -367,13 +367,13 @@ item.thermalexpansion.augment.machineFurnaceFood.name=トリベクションチ�
 item.thermalexpansion.augment.machineFurnaceOre.name=フラックス陽極酸化処理
 item.thermalexpansion.augment.machineFurnacePyrolysis.name=熱分解化
 item.thermalexpansion.augment.machineEnchanterEmpowered.name=組み換えフォーカス
-item.thermalexpansion.augment.machineExtruderNoWater.name=火砕屑物成形用金型
+item.thermalexpansion.augment.machineExtruderNoWater.name=火砕物成形用金型
 item.thermalexpansion.augment.machineExtruderSedimentary.name=砕屑物堆積機能
 item.thermalexpansion.augment.machineInsolatorFertilizer.name=養分再生利用
 item.thermalexpansion.augment.machineInsolatorMonoculture.name=単一栽培サイクル
 item.thermalexpansion.augment.machineInsolatorTree.name=苗木充電機
 item.thermalexpansion.augment.machinePower.name=補助受信コイル
-item.thermalexpansion.augment.machinePulverizerGeode.name=ジオードタンブラー
+item.thermalexpansion.augment.machinePulverizerGeode.name=晶洞タンブラー
 item.thermalexpansion.augment.machinePulverizerPetrotheum.name=地殻変動起動装置
 item.thermalexpansion.augment.machineRefineryBio.name=バイオ触媒煙道
 item.thermalexpansion.augment.machineRefineryFossil.name=還流塔
@@ -602,9 +602,9 @@ tile.thermalexpansion.dynamo.reactant.name=反応ダイナモ
 tile.thermalexpansion.dynamo.steam.name=蒸気ダイナモ
 tile.thermalexpansion.dynamo=ダイナモ
 
-tile.thermalexpansion.machine.brewer.name=錬金的醸造機
+tile.thermalexpansion.machine.brewer.name=錬金術醸造機
 tile.thermalexpansion.machine.centrifuge.name=遠心分離器
-tile.thermalexpansion.machine.charger.name=エネルギー充填機
+tile.thermalexpansion.machine.charger.name=エネルギー充電器
 tile.thermalexpansion.machine.compactor.name=圧縮機
 tile.thermalexpansion.machine.crafter.name=自動クラフター
 tile.thermalexpansion.machine.crucible.name=溶岩るつぼ
