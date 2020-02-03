@@ -333,14 +333,14 @@ info.thermalexpansion.satchel.c.1=自動収集：有効
 
 info.thermalexpansion.storage.cache=1つのアイテムをたくさん収納できます。
 info.thermalexpansion.storage.cell=大量のRFを貯蔵することが出来ます。
-info.thermalexpansion.storage.strongbox=アイテムを収納します。アクセス制限を設定できます。
+info.thermalexpansion.storage.strongbox=アイテムを収納します。回収してもアイテムを保持します。
 info.thermalexpansion.storage.tank=大量の液体を貯蔵できます。
 
 item.thermalexpansion.augment.apparatusDepth.name=WIP
 item.thermalexpansion.augment.apparatusRadius.name=WIP
 
 item.thermalexpansion.augment.dynamoBoiler.name=ボイラー化
-item.thermalexpansion.augment.dynamoCoilDuct.name=伝導コイル導管化
+item.thermalexpansion.augment.dynamoCoilDuct.name=伝導コイルのダクト化
 item.thermalexpansion.augment.dynamoCompressionBiofuel.name=撹拌用多岐管
 item.thermalexpansion.augment.dynamoCompressionCoolant.name=閉回路冷却
 item.thermalexpansion.augment.dynamoCompressionFuel.name=点火プラグ
