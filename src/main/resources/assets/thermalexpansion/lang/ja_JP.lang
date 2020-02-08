@@ -22,14 +22,14 @@ gui.thermalexpansion.jei.transposer.modeFill=充填
 gui.thermalexpansion.machine.crafter.clearRecipe=レシピを消去する
 gui.thermalexpansion.machine.crafter.setRecipe=レシピを設定する
 
-gui.thermalexpansion.machine.enchanter.modeLocked=書物スロット：ロック
-gui.thermalexpansion.machine.enchanter.modeUnlocked=書物スロット：未ロック
+gui.thermalexpansion.machine.enchanter.modeLocked=アルカナスロット：ロック
+gui.thermalexpansion.machine.enchanter.modeUnlocked=アルカナスロット：アンロック
 
 gui.thermalexpansion.machine.insolator.modeLocked=肥料スロット：ロック
-gui.thermalexpansion.machine.insolator.modeUnlocked=肥料スロット：未ロック
+gui.thermalexpansion.machine.insolator.modeUnlocked=肥料スロット：アンロック
 
 gui.thermalexpansion.machine.smelter.modeLocked=融剤スロット：ロック
-gui.thermalexpansion.machine.smelter.modeUnlocked=融剤スロット：未ロック
+gui.thermalexpansion.machine.smelter.modeUnlocked=融剤スロット：アンロック
 
 gui.thermalexpansion.machine.transposer.modeEmpty=モード：抽出
 gui.thermalexpansion.machine.transposer.modeFill=モード：充填
@@ -516,7 +516,7 @@ tab.thermalexpansion.machine.crafter.2=全てのレシピが使えるわけで�
 tab.thermalexpansion.machine.crucible.0=固体を液体に変換します。
 tab.thermalexpansion.machine.crucible.1=上位のブロックの作成に有用です。
 tab.thermalexpansion.machine.crucible.2=小さい子供やペットから離してご使用下さい。
-tab.thermalexpansion.machine.enchanter.0=本や他の神秘的なものをエンチャントします。
+tab.thermalexpansion.machine.enchanter.0=本やその他のアルカナをエンチャントします。
 tab.thermalexpansion.machine.enchanter.1=特定のエンチャントの本が欲しい場合に有用です。
 tab.thermalexpansion.machine.enchanter.2=左のスロットは特定のアイテムのみが入るようロックできます。
 tab.thermalexpansion.machine.enchanter.3=これが魔法工学だ。
@@ -608,7 +608,7 @@ tile.thermalexpansion.machine.charger.name=エネルギー充電器
 tile.thermalexpansion.machine.compactor.name=圧縮機
 tile.thermalexpansion.machine.crafter.name=自動クラフター
 tile.thermalexpansion.machine.crucible.name=溶岩るつぼ
-tile.thermalexpansion.machine.enchanter.name=秘儀エンチャンター
+tile.thermalexpansion.machine.enchanter.name=アルカナエンチャンター
 tile.thermalexpansion.machine.extruder.name=火成岩生成機
 tile.thermalexpansion.machine.furnace.name=レッドストーンかまど
 tile.thermalexpansion.machine.insolator.name=植物成長促進機
