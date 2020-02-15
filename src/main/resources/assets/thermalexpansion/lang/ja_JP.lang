@@ -97,7 +97,7 @@ info.thermalexpansion.augment.dynamoSteamTurbine.c.0=蒸気を外部から供給
 info.thermalexpansion.augment.dynamoThrottle.0=ダイナモ：上級絞り弁
 info.thermalexpansion.augment.dynamoThrottle.a.0=RFの貯蓄量がいっぱいになった時にダイナモの稼働を止めます。
 
-info.thermalexpansion.augment.machineBrewerReagent.0=錬金術醸造機：効率化
+info.thermalexpansion.augment.machineBrewerReagent.0=錬金術的醸造機：効率化
 info.thermalexpansion.augment.machineBrewerReagent.a.0=一定確率で試薬を消費しないようになります。
 info.thermalexpansion.augment.machineBrewerReagent.b.0=1回の作業毎に要求されるエネルギーが増加します。
 
@@ -118,7 +118,7 @@ info.thermalexpansion.augment.machineChargerThroughput.c.0=アイテム自身の
 
 info.thermalexpansion.augment.machineChargerWireless.0=エネルギー充電機：特化
 info.thermalexpansion.augment.machineChargerWireless.a.0=フラックスキャパシターへの高速なワイヤレス充電が可能になります。
-info.thermalexpansion.augment.machineChargerWireless.b.0=エネルギー充填機にアイテムを入れて充電することはできなくなります。
+info.thermalexpansion.augment.machineChargerWireless.b.0=エネルギー充電機にアイテムを入れて充電することはできなくなります。
 info.thermalexpansion.augment.machineChargerWireless.c.0=フラックスキャパシター自身の充電可能速度を超えることはありません。
 
 info.thermalexpansion.augment.machineCompactorCoin.0=圧縮機：特化
@@ -148,7 +148,7 @@ info.thermalexpansion.augment.machineCrucibleLava.0=溶岩るつぼ：特化
 info.thermalexpansion.augment.machineCrucibleLava.a.0=溶岩の生成速度が大幅に増加します。
 info.thermalexpansion.augment.machineCrucibleLava.b.0=溶岩のみを生成するようになります。
 
-info.thermalexpansion.augment.machineEnchanterEmpowered.0=秘儀エンチャンター：特化
+info.thermalexpansion.augment.machineEnchanterEmpowered.0=神秘術的エンチャンター：特化
 info.thermalexpansion.augment.machineEnchanterEmpowered.a.0=最大レベルのエンチャントにするために、エンチャントエネルギーを調整します。
 info.thermalexpansion.augment.machineEnchanterEmpowered.b.0=追加の材料が必要になります。
 
@@ -602,13 +602,13 @@ tile.thermalexpansion.dynamo.reactant.name=反応ダイナモ
 tile.thermalexpansion.dynamo.steam.name=蒸気ダイナモ
 tile.thermalexpansion.dynamo=ダイナモ
 
-tile.thermalexpansion.machine.brewer.name=錬金術醸造機
+tile.thermalexpansion.machine.brewer.name=錬金術的醸造機
 tile.thermalexpansion.machine.centrifuge.name=遠心分離器
 tile.thermalexpansion.machine.charger.name=エネルギー充電器
 tile.thermalexpansion.machine.compactor.name=圧縮機
 tile.thermalexpansion.machine.crafter.name=自動クラフター
 tile.thermalexpansion.machine.crucible.name=溶岩るつぼ
-tile.thermalexpansion.machine.enchanter.name=アルカナエンチャンター
+tile.thermalexpansion.machine.enchanter.name=神秘術的エンチャンター
 tile.thermalexpansion.machine.extruder.name=火成岩生成機
 tile.thermalexpansion.machine.furnace.name=レッドストーンかまど
 tile.thermalexpansion.machine.insolator.name=植物成長促進機
