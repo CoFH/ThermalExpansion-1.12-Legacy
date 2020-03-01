@@ -50,15 +50,19 @@ public class CompactorRecipeCategory extends BaseRecipeCategory<CompactorRecipeW
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.COMPACTOR);
-		registry.addRecipeClickArea(GuiCompactor.class, 79, 34, 24, 16, RecipeUidsTE.COMPACTOR, RecipeUidsTE.COMPACTOR_COIN, RecipeUidsTE.COMPACTOR_GEAR);
-		registry.addRecipeCatalyst(BlockMachine.machineCompactor, RecipeUidsTE.COMPACTOR);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.COMPACTOR);
+			registry.addRecipeClickArea(GuiCompactor.class, 79, 34, 24, 16, RecipeUidsTE.COMPACTOR, RecipeUidsTE.COMPACTOR_COIN, RecipeUidsTE.COMPACTOR_GEAR);
+			registry.addRecipeCatalyst(BlockMachine.machineCompactor, RecipeUidsTE.COMPACTOR);
 
-		CompactorRecipeCategoryCoin.initialize(registry);
-		CompactorRecipeCategoryGear.initialize(registry);
+			CompactorRecipeCategoryCoin.initialize(registry);
+			CompactorRecipeCategoryGear.initialize(registry);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
+		}
 	}
 
 	public static List<CompactorRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

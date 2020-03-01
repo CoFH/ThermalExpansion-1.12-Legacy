@@ -46,12 +46,16 @@ public class SteamFuelCategory extends BaseFuelCategory<SteamFuelWrapper> {
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.DYNAMO_STEAM);
-		registry.addRecipeClickArea(GuiDynamoSteam.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_STEAM);
-		registry.addRecipeCatalyst(BlockDynamo.dynamoSteam, RecipeUidsTE.DYNAMO_STEAM);
+			registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.DYNAMO_STEAM);
+			registry.addRecipeClickArea(GuiDynamoSteam.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_STEAM);
+			registry.addRecipeCatalyst(BlockDynamo.dynamoSteam, RecipeUidsTE.DYNAMO_STEAM);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null fuel!", t);
+		}
 	}
 
 	public static List<SteamFuelWrapper> getRecipes(IModRegistry registry, IGuiHelper guiHelper) {

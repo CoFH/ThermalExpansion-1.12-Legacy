@@ -53,12 +53,16 @@ public class ChargerRecipeCategory extends BaseRecipeCategory<ChargerRecipeWrapp
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.CHARGER);
-		registry.addRecipeClickArea(GuiCharger.class, 79, 53, 18, 16, RecipeUidsTE.CHARGER);
-		registry.addRecipeCatalyst(BlockMachine.machineCharger, RecipeUidsTE.CHARGER);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.CHARGER);
+			registry.addRecipeClickArea(GuiCharger.class, 79, 53, 18, 16, RecipeUidsTE.CHARGER);
+			registry.addRecipeCatalyst(BlockMachine.machineCharger, RecipeUidsTE.CHARGER);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
+		}
 	}
 
 	public static List<ChargerRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

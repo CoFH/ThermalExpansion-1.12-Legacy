@@ -50,12 +50,16 @@ public class EnervationFuelCategory extends BaseFuelCategory<EnervationFuelWrapp
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.DYNAMO_ENERVATION);
-		registry.addRecipeClickArea(GuiDynamoEnervation.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_ENERVATION);
-		registry.addRecipeCatalyst(BlockDynamo.dynamoEnervation, RecipeUidsTE.DYNAMO_ENERVATION);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.DYNAMO_ENERVATION);
+			registry.addRecipeClickArea(GuiDynamoEnervation.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_ENERVATION);
+			registry.addRecipeCatalyst(BlockDynamo.dynamoEnervation, RecipeUidsTE.DYNAMO_ENERVATION);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null fuel!", t);
+		}
 	}
 
 	public static List<EnervationFuelWrapper> getRecipes(IGuiHelper guiHelper) {

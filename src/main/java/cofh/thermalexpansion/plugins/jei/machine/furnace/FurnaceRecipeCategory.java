@@ -50,16 +50,20 @@ public class FurnaceRecipeCategory extends BaseRecipeCategory<FurnaceRecipeWrapp
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.FURNACE);
-		registry.addRecipeClickArea(GuiFurnace.class, 79, 34, 24, 16, RecipeUidsTE.FURNACE, RecipeUidsTE.FURNACE_FOOD, RecipeUidsTE.FURNACE_ORE, RecipeUidsTE.FURNACE_PYROLYSIS);
-		registry.addRecipeCatalyst(BlockMachine.machineFurnace, RecipeUidsTE.FURNACE);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.FURNACE);
+			registry.addRecipeClickArea(GuiFurnace.class, 79, 34, 24, 16, RecipeUidsTE.FURNACE, RecipeUidsTE.FURNACE_FOOD, RecipeUidsTE.FURNACE_ORE, RecipeUidsTE.FURNACE_PYROLYSIS);
+			registry.addRecipeCatalyst(BlockMachine.machineFurnace, RecipeUidsTE.FURNACE);
 
-		FurnaceRecipeCategoryFood.initialize(registry);
-		FurnaceRecipeCategoryOre.initialize(registry);
-		FurnaceRecipeCategoryPyrolysis.initialize(registry);
+			FurnaceRecipeCategoryFood.initialize(registry);
+			FurnaceRecipeCategoryOre.initialize(registry);
+			FurnaceRecipeCategoryPyrolysis.initialize(registry);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
+		}
 	}
 
 	public static List<FurnaceRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.machine.extruder;
 
+import cofh.thermalexpansion.block.machine.TileBrewer;
 import cofh.thermalexpansion.block.machine.TileExtruder;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
@@ -57,8 +58,10 @@ public class ExtruderRecipeWrapper extends BaseRecipeWrapper {
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_COMPACT);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileExtruder.basePower, StartDirection.LEFT, true);
-		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileExtruder.basePower, StartDirection.LEFT, false);
+		int basePower = TileExtruder.basePower;
+
+		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, Math.max(10, energy / basePower), StartDirection.LEFT, true);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, Math.max(10, energy / basePower), StartDirection.LEFT, false);
 		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}

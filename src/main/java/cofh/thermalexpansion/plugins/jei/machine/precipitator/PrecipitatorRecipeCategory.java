@@ -50,12 +50,16 @@ public class PrecipitatorRecipeCategory extends BaseRecipeCategory<PrecipitatorR
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.PRECIPITATOR);
-		registry.addRecipeClickArea(GuiPrecipitator.class, 85, 26, 24, 16, RecipeUidsTE.PRECIPITATOR);
-		registry.addRecipeCatalyst(BlockMachine.machinePrecipitator, RecipeUidsTE.PRECIPITATOR);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.PRECIPITATOR);
+			registry.addRecipeClickArea(GuiPrecipitator.class, 85, 26, 24, 16, RecipeUidsTE.PRECIPITATOR);
+			registry.addRecipeCatalyst(BlockMachine.machinePrecipitator, RecipeUidsTE.PRECIPITATOR);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
+		}
 	}
 
 	public static List<PrecipitatorRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

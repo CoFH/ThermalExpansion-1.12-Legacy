@@ -75,23 +75,27 @@ public class EnchanterRecipeCategory extends BaseRecipeCategory<EnchanterRecipeW
 		if (!enable) {
 			return;
 		}
-		IRecipeRegistry recipeRegistry = JEIPluginTE.jeiRuntime.getRecipeRegistry();
+		try {
+			IRecipeRegistry recipeRegistry = JEIPluginTE.jeiRuntime.getRecipeRegistry();
 
-		List<EnchanterRecipeWrapper> enchanterRecipeWrappers = recipeRegistry.getRecipeWrappers(categoryStandard);
-		for (EnchanterRecipeWrapper wrapper : enchanterRecipeWrappers) {
-			recipeRegistry.removeRecipe(wrapper, RecipeUidsTE.ENCHANTER);
-		}
-		enchanterRecipeWrappers.clear();
-
-		for (EnchanterRecipe recipe : EnchanterManager.getRecipeList()) {
-			if (recipe.getType() == Type.STANDARD) {
-				enchanterRecipeWrappers.add(new EnchanterRecipeWrapper(JEIPluginTE.guiHelper, recipe));
+			List<EnchanterRecipeWrapper> enchanterRecipeWrappers = recipeRegistry.getRecipeWrappers(categoryStandard);
+			for (EnchanterRecipeWrapper wrapper : enchanterRecipeWrappers) {
+				recipeRegistry.removeRecipe(wrapper, RecipeUidsTE.ENCHANTER);
 			}
+			enchanterRecipeWrappers.clear();
+
+			for (EnchanterRecipe recipe : EnchanterManager.getRecipeList()) {
+				if (recipe.getType() == Type.STANDARD) {
+					enchanterRecipeWrappers.add(new EnchanterRecipeWrapper(JEIPluginTE.guiHelper, recipe));
+				}
+			}
+			for (EnchanterRecipeWrapper wrapper : enchanterRecipeWrappers) {
+				recipeRegistry.addRecipe(wrapper, RecipeUidsTE.ENCHANTER);
+			}
+			// EnchanterRecipeCategoryEmpowered.refresh(registry);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
 		}
-		for (EnchanterRecipeWrapper wrapper : enchanterRecipeWrappers) {
-			recipeRegistry.addRecipe(wrapper, RecipeUidsTE.ENCHANTER);
-		}
-		// EnchanterRecipeCategoryEmpowered.refresh(registry);
 	}
 
 	public static List<EnchanterRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

@@ -48,14 +48,18 @@ public class SawmillRecipeCategory extends BaseRecipeCategory<SawmillRecipeWrapp
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.SAWMILL);
-		registry.addRecipeClickArea(GuiSawmill.class, 79, 34, 24, 16, RecipeUidsTE.SAWMILL, RecipeUidsTE.SAWMILL_TAPPER);
-		registry.addRecipeCatalyst(BlockMachine.machineSawmill, RecipeUidsTE.SAWMILL);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.SAWMILL);
+			registry.addRecipeClickArea(GuiSawmill.class, 79, 34, 24, 16, RecipeUidsTE.SAWMILL, RecipeUidsTE.SAWMILL_TAPPER);
+			registry.addRecipeCatalyst(BlockMachine.machineSawmill, RecipeUidsTE.SAWMILL);
 
-		SawmillRecipeCategoryTapper.initialize(registry);
+			SawmillRecipeCategoryTapper.initialize(registry);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
+		}
 	}
 
 	public static List<SawmillRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

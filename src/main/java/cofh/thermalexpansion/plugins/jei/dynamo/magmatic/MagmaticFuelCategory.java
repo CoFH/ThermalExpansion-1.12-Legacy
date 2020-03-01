@@ -48,12 +48,16 @@ public class MagmaticFuelCategory extends BaseFuelCategory<MagmaticFuelWrapper> 
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.DYNAMO_MAGMATIC);
-		registry.addRecipeClickArea(GuiDynamoMagmatic.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_MAGMATIC);
-		registry.addRecipeCatalyst(BlockDynamo.dynamoMagmatic, RecipeUidsTE.DYNAMO_MAGMATIC);
+			registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.DYNAMO_MAGMATIC);
+			registry.addRecipeClickArea(GuiDynamoMagmatic.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_MAGMATIC);
+			registry.addRecipeCatalyst(BlockDynamo.dynamoMagmatic, RecipeUidsTE.DYNAMO_MAGMATIC);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null fuel!", t);
+		}
 	}
 
 	public static List<MagmaticFuelWrapper> getRecipes(IModRegistry registry, IGuiHelper guiHelper) {

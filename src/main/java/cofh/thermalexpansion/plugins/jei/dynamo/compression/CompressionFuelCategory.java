@@ -48,12 +48,16 @@ public class CompressionFuelCategory extends BaseFuelCategory<CompressionFuelWra
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.DYNAMO_COMPRESSION);
-		registry.addRecipeClickArea(GuiDynamoCompression.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_COMPRESSION);
-		registry.addRecipeCatalyst(BlockDynamo.dynamoCompression, RecipeUidsTE.DYNAMO_COMPRESSION);
+			registry.addRecipes(getRecipes(registry, guiHelper), RecipeUidsTE.DYNAMO_COMPRESSION);
+			registry.addRecipeClickArea(GuiDynamoCompression.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_COMPRESSION);
+			registry.addRecipeCatalyst(BlockDynamo.dynamoCompression, RecipeUidsTE.DYNAMO_COMPRESSION);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null fuel!", t);
+		}
 	}
 
 	public static List<CompressionFuelWrapper> getRecipes(IModRegistry registry, IGuiHelper guiHelper) {

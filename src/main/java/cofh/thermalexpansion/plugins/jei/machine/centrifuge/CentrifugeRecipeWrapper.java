@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.machine.centrifuge;
 
 import cofh.core.util.helpers.ItemHelper;
+import cofh.thermalexpansion.block.machine.TileBrewer;
 import cofh.thermalexpansion.block.machine.TileCentrifuge;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
@@ -70,7 +71,9 @@ public class CentrifugeRecipeWrapper extends BaseRecipeWrapper {
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_SPIN);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileCentrifuge.basePower, StartDirection.LEFT, false);
+		int basePower = TileCentrifuge.basePower;
+
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, Math.max(10, energy / basePower), StartDirection.LEFT, false);
 		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}

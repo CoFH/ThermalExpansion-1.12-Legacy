@@ -48,14 +48,18 @@ public class PulverizerRecipeCategory extends BaseRecipeCategory<PulverizerRecip
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.PULVERIZER);
-		registry.addRecipeClickArea(GuiPulverizer.class, 79, 34, 24, 16, RecipeUidsTE.PULVERIZER, RecipeUidsTE.PULVERIZER_PETROTHEUM);
-		registry.addRecipeCatalyst(BlockMachine.machinePulverizer, RecipeUidsTE.PULVERIZER);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.PULVERIZER);
+			registry.addRecipeClickArea(GuiPulverizer.class, 79, 34, 24, 16, RecipeUidsTE.PULVERIZER, RecipeUidsTE.PULVERIZER_PETROTHEUM);
+			registry.addRecipeCatalyst(BlockMachine.machinePulverizer, RecipeUidsTE.PULVERIZER);
 
-		PulverizerRecipeCategoryPetrotheum.initialize(registry);
+			PulverizerRecipeCategoryPetrotheum.initialize(registry);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
+		}
 	}
 
 	public static List<PulverizerRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

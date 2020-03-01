@@ -51,14 +51,18 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.CENTRIFUGE);
-		registry.addRecipeClickArea(GuiCentrifuge.class, 72, 34, 24, 16, RecipeUidsTE.CENTRIFUGE, RecipeUidsTE.CENTRIFUGE_MOBS);
-		registry.addRecipeCatalyst(BlockMachine.machineCentrifuge, RecipeUidsTE.CENTRIFUGE);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.CENTRIFUGE);
+			registry.addRecipeClickArea(GuiCentrifuge.class, 72, 34, 24, 16, RecipeUidsTE.CENTRIFUGE, RecipeUidsTE.CENTRIFUGE_MOBS);
+			registry.addRecipeCatalyst(BlockMachine.machineCentrifuge, RecipeUidsTE.CENTRIFUGE);
 
-		CentrifugeRecipeCategoryMobs.initialize(registry);
+			CentrifugeRecipeCategoryMobs.initialize(registry);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
+		}
 	}
 
 	public static List<CentrifugeRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

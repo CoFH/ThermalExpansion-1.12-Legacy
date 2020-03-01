@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.machine.precipitator;
 
+import cofh.thermalexpansion.block.machine.TileBrewer;
 import cofh.thermalexpansion.block.machine.TilePrecipitator;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
@@ -54,8 +55,10 @@ public class PrecipitatorRecipeWrapper extends BaseRecipeWrapper {
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_SNOWFLAKE);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TilePrecipitator.basePower, StartDirection.LEFT, true);
-		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TilePrecipitator.basePower, StartDirection.LEFT, false);
+		int basePower = TilePrecipitator.basePower;
+
+		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, Math.max(10, energy / basePower), StartDirection.LEFT, true);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, Math.max(10, energy / basePower), StartDirection.LEFT, false);
 		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}

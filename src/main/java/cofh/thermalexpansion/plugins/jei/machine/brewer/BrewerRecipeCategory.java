@@ -51,12 +51,16 @@ public class BrewerRecipeCategory extends BaseRecipeCategory<BrewerRecipeWrapper
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.BREWER);
-		registry.addRecipeClickArea(GuiBrewer.class, 112, 34, 24, 16, RecipeUidsTE.BREWER);
-		registry.addRecipeCatalyst(BlockMachine.machineBrewer, RecipeUidsTE.BREWER);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.BREWER);
+			registry.addRecipeClickArea(GuiBrewer.class, 112, 34, 24, 16, RecipeUidsTE.BREWER);
+			registry.addRecipeCatalyst(BlockMachine.machineBrewer, RecipeUidsTE.BREWER);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
+		}
 	}
 
 	public static List<BrewerRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

@@ -52,14 +52,18 @@ public class CrucibleRecipeCategory extends BaseRecipeCategory<CrucibleRecipeWra
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.CRUCIBLE);
-		registry.addRecipeClickArea(GuiCrucible.class, 103, 34, 24, 16, RecipeUidsTE.CRUCIBLE, RecipeUidsTE.CRUCIBLE_LAVA);
-		registry.addRecipeCatalyst(BlockMachine.machineCrucible, RecipeUidsTE.CRUCIBLE);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.CRUCIBLE);
+			registry.addRecipeClickArea(GuiCrucible.class, 103, 34, 24, 16, RecipeUidsTE.CRUCIBLE, RecipeUidsTE.CRUCIBLE_LAVA);
+			registry.addRecipeCatalyst(BlockMachine.machineCrucible, RecipeUidsTE.CRUCIBLE);
 
-		CrucibleRecipeCategoryLava.initialize(registry);
+			CrucibleRecipeCategoryLava.initialize(registry);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
+		}
 	}
 
 	public static List<CrucibleRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

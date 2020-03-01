@@ -54,16 +54,20 @@ public class RefineryRecipeCategory extends BaseRecipeCategory<RefineryRecipeWra
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.REFINERY);
-		registry.addRecipeClickArea(GuiRefinery.class, 76, 34, 24, 16, RecipeUidsTE.REFINERY, RecipeUidsTE.REFINERY_FOSSIL, RecipeUidsTE.REFINERY_BIO, RecipeUidsTE.REFINERY_POTION);
-		registry.addRecipeCatalyst(BlockMachine.machineRefinery, RecipeUidsTE.REFINERY);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.REFINERY);
+			registry.addRecipeClickArea(GuiRefinery.class, 76, 34, 24, 16, RecipeUidsTE.REFINERY, RecipeUidsTE.REFINERY_FOSSIL, RecipeUidsTE.REFINERY_BIO, RecipeUidsTE.REFINERY_POTION);
+			registry.addRecipeCatalyst(BlockMachine.machineRefinery, RecipeUidsTE.REFINERY);
 
-		RefineryRecipeCategoryFossil.initialize(registry);
-		// RefineryRecipeCategoryBio.initialize(registry);
-		RefineryRecipeCategoryPotion.initialize(registry);
+			RefineryRecipeCategoryFossil.initialize(registry);
+			// RefineryRecipeCategoryBio.initialize(registry);
+			RefineryRecipeCategoryPotion.initialize(registry);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
+		}
 	}
 
 	public static List<RefineryRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

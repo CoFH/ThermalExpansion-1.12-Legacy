@@ -50,14 +50,18 @@ public class ReactantFuelCategory extends BaseFuelCategory<ReactantFuelWrapper> 
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.DYNAMO_REACTANT);
-		registry.addRecipeClickArea(GuiDynamoReactant.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_REACTANT, RecipeUidsTE.DYNAMO_REACTANT_ELEMENTAL);
-		registry.addRecipeCatalyst(BlockDynamo.dynamoReactant, RecipeUidsTE.DYNAMO_REACTANT);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.DYNAMO_REACTANT);
+			registry.addRecipeClickArea(GuiDynamoReactant.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_REACTANT, RecipeUidsTE.DYNAMO_REACTANT_ELEMENTAL);
+			registry.addRecipeCatalyst(BlockDynamo.dynamoReactant, RecipeUidsTE.DYNAMO_REACTANT);
 
-		ReactantFuelCategoryElemental.initialize(registry);
+			ReactantFuelCategoryElemental.initialize(registry);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null fuel!", t);
+		}
 	}
 
 	public static List<ReactantFuelWrapper> getRecipes(IGuiHelper guiHelper) {

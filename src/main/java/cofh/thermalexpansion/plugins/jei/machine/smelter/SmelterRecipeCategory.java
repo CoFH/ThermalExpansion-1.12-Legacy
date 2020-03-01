@@ -48,14 +48,18 @@ public class SmelterRecipeCategory extends BaseRecipeCategory<SmelterRecipeWrapp
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.SMELTER);
-		registry.addRecipeClickArea(GuiSmelter.class, 79, 34, 24, 16, RecipeUidsTE.SMELTER, RecipeUidsTE.SMELTER_PYROTHEUM);
-		registry.addRecipeCatalyst(BlockMachine.machineSmelter, RecipeUidsTE.SMELTER);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.SMELTER);
+			registry.addRecipeClickArea(GuiSmelter.class, 79, 34, 24, 16, RecipeUidsTE.SMELTER, RecipeUidsTE.SMELTER_PYROTHEUM);
+			registry.addRecipeCatalyst(BlockMachine.machineSmelter, RecipeUidsTE.SMELTER);
 
-		SmelterRecipeCategoryPyrotheum.initialize(registry);
+			SmelterRecipeCategoryPyrotheum.initialize(registry);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
+		}
 	}
 
 	public static List<SmelterRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

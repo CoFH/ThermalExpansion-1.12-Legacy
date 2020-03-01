@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.machine.compactor;
 
 import cofh.core.util.helpers.ItemHelper;
+import cofh.thermalexpansion.block.machine.TileBrewer;
 import cofh.thermalexpansion.block.machine.TileCompactor;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.machine.BaseRecipeWrapper;
@@ -56,7 +57,9 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_COMPACT);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileCompactor.basePower, StartDirection.LEFT, false);
+		int basePower = TileCompactor.basePower;
+
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, Math.max(10, energy / basePower), StartDirection.LEFT, false);
 		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}

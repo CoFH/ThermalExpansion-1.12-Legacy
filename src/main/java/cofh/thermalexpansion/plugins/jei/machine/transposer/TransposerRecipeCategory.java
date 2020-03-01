@@ -39,9 +39,13 @@ public abstract class TransposerRecipeCategory extends BaseRecipeCategory<Transp
 		if (!enable) {
 			return;
 		}
-		TransposerRecipeCategoryFill.initialize(registry);
-		TransposerRecipeCategoryExtract.initialize(registry);
-		registry.addRecipeClickArea(GuiTransposer.class, 112, 19, 24, 16, RecipeUidsTE.TRANSPOSER_FILL, RecipeUidsTE.TRANSPOSER_EXTRACT);
+		try {
+			TransposerRecipeCategoryFill.initialize(registry);
+			TransposerRecipeCategoryExtract.initialize(registry);
+			registry.addRecipeClickArea(GuiTransposer.class, 112, 19, 24, 16, RecipeUidsTE.TRANSPOSER_FILL, RecipeUidsTE.TRANSPOSER_EXTRACT);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
+		}
 	}
 
 	protected IDrawableStatic speed;

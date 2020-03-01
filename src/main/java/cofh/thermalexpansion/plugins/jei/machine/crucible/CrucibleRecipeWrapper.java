@@ -73,8 +73,8 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 			energy *= 100 + TileCrucible.LAVA_ENERGY_MOD;
 			energy /= 100;
 		}
-		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / basePower, StartDirection.LEFT, true);
-		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / basePower, StartDirection.LEFT, false);
+		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, Math.max(10, energy / basePower), StartDirection.LEFT, true);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, Math.max(10, energy / basePower), StartDirection.LEFT, false);
 		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 

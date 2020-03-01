@@ -51,14 +51,18 @@ public class ExtruderRecipeCategory extends BaseRecipeCategory<ExtruderRecipeWra
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.EXTRUDER);
-		registry.addRecipeClickArea(GuiExtruder.class, 85, 26, 24, 16, RecipeUidsTE.EXTRUDER, RecipeUidsTE.EXTRUDER_SEDIMENTARY);
-		registry.addRecipeCatalyst(BlockMachine.machineExtruder, RecipeUidsTE.EXTRUDER);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.EXTRUDER);
+			registry.addRecipeClickArea(GuiExtruder.class, 85, 26, 24, 16, RecipeUidsTE.EXTRUDER, RecipeUidsTE.EXTRUDER_SEDIMENTARY);
+			registry.addRecipeCatalyst(BlockMachine.machineExtruder, RecipeUidsTE.EXTRUDER);
 
-		ExtruderRecipeCategorySedimentary.initialize(registry);
+			ExtruderRecipeCategorySedimentary.initialize(registry);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null recipe!", t);
+		}
 	}
 
 	public static List<ExtruderRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

@@ -46,14 +46,18 @@ public class NumismaticFuelCategory extends BaseFuelCategory<NumismaticFuelWrapp
 		if (!enable) {
 			return;
 		}
-		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+		try {
+			IJeiHelpers jeiHelpers = registry.getJeiHelpers();
+			IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.DYNAMO_NUMISMATIC);
-		registry.addRecipeClickArea(GuiDynamoNumismatic.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_NUMISMATIC, RecipeUidsTE.DYNAMO_NUMISMATIC_GEM);
-		registry.addRecipeCatalyst(BlockDynamo.dynamoNumismatic, RecipeUidsTE.DYNAMO_NUMISMATIC);
+			registry.addRecipes(getRecipes(guiHelper), RecipeUidsTE.DYNAMO_NUMISMATIC);
+			registry.addRecipeClickArea(GuiDynamoNumismatic.class, 115, 35, 16, 16, RecipeUidsTE.DYNAMO_NUMISMATIC, RecipeUidsTE.DYNAMO_NUMISMATIC_GEM);
+			registry.addRecipeCatalyst(BlockDynamo.dynamoNumismatic, RecipeUidsTE.DYNAMO_NUMISMATIC);
 
-		NumismaticFuelCategoryGem.initialize(registry);
+			NumismaticFuelCategoryGem.initialize(registry);
+		} catch (Throwable t) {
+			ThermalExpansion.LOG.error("Bad/null fuel!", t);
+		}
 	}
 
 	public static List<NumismaticFuelWrapper> getRecipes(IGuiHelper guiHelper) {
