@@ -11,6 +11,7 @@ import cofh.core.util.helpers.ItemHelper;
 import cofh.core.util.helpers.ServerHelper;
 import cofh.core.util.helpers.WrenchHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -183,7 +184,7 @@ public abstract class BlockTEBase extends BlockCoreTile implements IConfigGui {
 
 		TileNameable tile = (TileNameable) world.getTileEntity(pos);
 
-		if (tile instanceof TileAugmentableSecure && ((TileAugmentableSecure) tile).isCreative && !CoreUtils.isOp(player)) {
+		if (tile instanceof TileAugmentableSecure && (!TEProps.allowNonOPDisassembly && ((TileAugmentableSecure) tile).isCreative && !CoreUtils.isOp(player))) {
 			return false;
 		}
 		return super.canDismantle(world, pos, state, player);
