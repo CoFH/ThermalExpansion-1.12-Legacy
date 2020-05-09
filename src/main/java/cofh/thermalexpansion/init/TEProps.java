@@ -62,6 +62,11 @@ public class TEProps {
 
 		comment = "This sets the minimum upgradeable block tier for Redstone Control functionality.";
 		levelRedstoneControl = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelRedstoneControl", category, levelRedstoneControl, CoreProps.LEVEL_MIN, CoreProps.LEVEL_MAX, comment);
+
+		category = "Device";
+
+		comment = "If TRUE, Creative versions of Blocks can be disassembled without server operator permissions.";
+		allowNonOPDisassembly = ThermalExpansion.CONFIG.getConfiguration().getBoolean("AllowNonOPDisassembly", category, allowNonOPDisassembly, comment);
 	}
 
 	private static void configClient() {
@@ -276,6 +281,8 @@ public class TEProps {
 	public static boolean creativeTabHideMorbs = false;
 
 	public static boolean enableSounds = true;
+
+	public static boolean allowNonOPDisassembly = false;
 
 	/* UPGRADE */
 	public static int levelAutoInput = 0;
