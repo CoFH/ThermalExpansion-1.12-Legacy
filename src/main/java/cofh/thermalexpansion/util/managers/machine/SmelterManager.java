@@ -49,6 +49,7 @@ public class SmelterManager {
 		oreValidator.addExact("itemSlag");
 		oreValidator.addExact("itemSlagRich");
 		oreValidator.addExact("itemCinnabar");
+		oreValidator.addExact("itemSilicon");
 		oreValidator.addExact("fuelCoke");
 	}
 
