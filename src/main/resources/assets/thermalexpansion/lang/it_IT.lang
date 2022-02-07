@@ -41,6 +41,7 @@ gui.thermalexpansion.storage.cell.incRecv=Aumenta l'Entrata di RF di
 gui.thermalexpansion.storage.cell.incSend=Aumenta l'Uscita di RF di
 
 info.thermalexpansion.augment.0=Aumentamento
+info.thermalexpansion.semicolon=: 
 
 info.thermalexpansion.augment.dynamoBoiler.0=Dinamo: Output Specializzazione di Uscita
 info.thermalexpansion.augment.dynamoBoiler.a.0=Converte un Dinamo applicabile in una Caldaia a Vapore.

@@ -41,6 +41,7 @@ gui.thermalexpansion.storage.cell.incRecv=Increase RF Input by
 gui.thermalexpansion.storage.cell.incSend=Increase RF Output by
 
 info.thermalexpansion.augment.0=Augment
+info.thermalexpansion.semicolon=: 
 
 info.thermalexpansion.augment.dynamoBoiler.0=Dynamos: Output Specialization
 info.thermalexpansion.augment.dynamoBoiler.a.0=Converts an applicable Dynamo into a Steam Boiler.

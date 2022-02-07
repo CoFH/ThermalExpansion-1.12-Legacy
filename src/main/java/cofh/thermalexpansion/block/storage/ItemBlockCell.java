@@ -79,9 +79,9 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		if (isCreative(stack)) {
 			tooltip.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
 		} else {
-			tooltip.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(getEnergyStored(stack)) + " / " + StringHelper.getScaledNumber(getMaxEnergyStored(stack)) + " RF");
+			tooltip.add(StringHelper.localize("info.cofh.charge") + StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.getScaledNumber(getEnergyStored(stack)) + " / " + StringHelper.getScaledNumber(getMaxEnergyStored(stack)) + " RF");
 		}
-		tooltip.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + StringHelper.formatNumber(stack.getTagCompound().getInteger("Send")) + "/" + StringHelper.formatNumber(stack.getTagCompound().getInteger("Recv")) + " RF/t");
+		tooltip.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.formatNumber(stack.getTagCompound().getInteger("Send")) + "/" + StringHelper.formatNumber(stack.getTagCompound().getInteger("Recv")) + " RF/t");
 
 		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}

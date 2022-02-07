@@ -67,11 +67,11 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 		FluidStack fluid = getFluid(stack);
 		if (fluid != null) {
 			String color = fluid.getFluid().getRarity().rarityColor.toString();
-			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName(fluid) + StringHelper.LIGHT_GRAY);
+			tooltip.add(StringHelper.localize("info.cofh.fluid") + StringHelper.localize("info.thermalexpansion.semicolon") + color + fluid.getFluid().getLocalizedName(fluid) + StringHelper.LIGHT_GRAY);
 			if (isCreative(stack)) {
 				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));
 			} else {
-				tooltip.add(StringHelper.localize("info.cofh.level") + ": " + StringHelper.formatNumber(fluid.amount) + " / " + StringHelper.formatNumber(getCapacity(stack)) + " mB");
+				tooltip.add(StringHelper.localize("info.cofh.level") + StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.formatNumber(fluid.amount) + " / " + StringHelper.formatNumber(getCapacity(stack)) + " mB");
 			}
 			if (isLocked(stack)) {
 				tooltip.add(StringHelper.YELLOW + StringHelper.localize("info.cofh.locked"));
@@ -79,7 +79,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 				tooltip.add(StringHelper.YELLOW + StringHelper.localize("info.cofh.unlocked"));
 			}
 		} else {
-			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
+			tooltip.add(StringHelper.localize("info.cofh.fluid") + StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.localize("info.cofh.empty"));
 
 			if (isCreative(stack)) {
 				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));

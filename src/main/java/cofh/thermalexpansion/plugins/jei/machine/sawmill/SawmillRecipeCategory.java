@@ -121,7 +121,7 @@ public class SawmillRecipeCategory extends BaseRecipeCategory<SawmillRecipeWrapp
 			guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
 
 				if (slotIndex == 2) {
-					tooltip.add(StringHelper.localize("info.cofh.chance") + ": " + recipeWrapper.chance + "%");
+					tooltip.add(StringHelper.localize("info.cofh.chance") + StringHelper.localize("info.thermalexpansion.semicolon") + recipeWrapper.chance + "%");
 				}
 			});
 		}

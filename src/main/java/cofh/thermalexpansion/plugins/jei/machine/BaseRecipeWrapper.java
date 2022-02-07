@@ -26,7 +26,7 @@ public abstract class BaseRecipeWrapper extends BlankRecipeWrapper {
 		List<String> tooltip = new ArrayList<>();
 
 		if (energyMeter != null && mouseX > 2 && mouseX < 15 && mouseY > 8 && mouseY < 49) {
-			tooltip.add(StringHelper.localize("info.cofh.energy") + ": " + StringHelper.formatNumber(energy) + " RF");
+			tooltip.add(StringHelper.localize("info.cofh.energy") + StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.formatNumber(energy) + " RF");
 		}
 		return tooltip;
 	}

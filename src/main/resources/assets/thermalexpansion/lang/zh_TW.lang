@@ -29,6 +29,8 @@ info.thermalexpansion.machine.sawmill=增產木材。
 info.thermalexpansion.machine.smelter=冶煉合金和金屬。兩個輸入。
 info.thermalexpansion.machine.transposer=處理液體與液體容器。
 
+info.thermalexpansion.semicolon=：
+
 item.thermalexpansion.augment.dynamoCoilDuct.name=傳輸線圈管道
 item.thermalexpansion.augment.dynamoThrottle.name=節流閥裝置
 

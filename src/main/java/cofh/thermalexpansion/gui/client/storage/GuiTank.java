@@ -103,7 +103,7 @@ public class GuiTank extends GuiContainerCore {
 		if (baseTile.isLocked()) {
 			FluidStack fluid = baseTile.getTankFluid();
 			String color = fluid.getFluid().getRarity().rarityColor.toString();
-			lock.setToolTip(StringHelper.localize("info.cofh.locked") + ": " + color + StringHelper.localize(fluid.getFluid().getLocalizedName(fluid)) + StringHelper.END);
+			lock.setToolTip(StringHelper.localize("info.cofh.locked") + StringHelper.localize("info.thermalexpansion.semicolon") + color + StringHelper.localize(fluid.getFluid().getLocalizedName(fluid)) + StringHelper.END);
 			lock.setSheetX(176);
 			lock.setHoverX(176);
 		} else {

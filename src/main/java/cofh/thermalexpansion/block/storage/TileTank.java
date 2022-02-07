@@ -451,11 +451,11 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 			return;
 		}
 		if (tank.getFluid() != null) {
-			info.add(new TextComponentTranslation("info.cofh.fluid").appendText(": " + StringHelper.getFluidName(tank.getFluid())));
-			info.add(new TextComponentTranslation("info.cofh.amount").appendText(": " + StringHelper.formatNumber(tank.getFluidAmount()) + "/" + StringHelper.formatNumber(tank.getCapacity()) + " mB"));
+			info.add(new TextComponentTranslation("info.cofh.fluid").appendText(StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.getFluidName(tank.getFluid())));
+			info.add(new TextComponentTranslation("info.cofh.amount").appendText(StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.formatNumber(tank.getFluidAmount()) + "/" + StringHelper.formatNumber(tank.getCapacity()) + " mB"));
 			info.add(new TextComponentTranslation(lock ? "info.cofh.locked" : "info.cofh.unlocked"));
 		} else {
-			info.add(new TextComponentTranslation("info.cofh.fluid").appendText(": ").appendSibling(new TextComponentTranslation("info.cofh.empty")));
+			info.add(new TextComponentTranslation("info.cofh.fluid").appendText(StringHelper.localize("info.thermalexpansion.semicolon")).appendSibling(new TextComponentTranslation("info.cofh.empty")));
 		}
 	}
 

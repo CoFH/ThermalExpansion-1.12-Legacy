@@ -89,7 +89,7 @@ public class CentrifugeRecipeCategoryMobs extends CentrifugeRecipeCategory {
 					if (recipeWrapper.outputs.get(slotIndex - 1).getCount() > 1) {
 						tooltip.add(StringHelper.localize("gui.thermalexpansion.jei.centrifuge.mobNotice"));
 					}
-					tooltip.add(StringHelper.localize("gui.thermalexpansion.jei.centrifuge.mobChance") + ": " + recipeWrapper.chance.get(slotIndex - 1) + "%");
+					tooltip.add(StringHelper.localize("gui.thermalexpansion.jei.centrifuge.mobChance") + StringHelper.localize("info.thermalexpansion.semicolon")ngHelper.localize("info.thermalexpansion.semicolon")ngHelper.localize("info.thermalexpansion.semicolon") + recipeWrapper.chance.get(slotIndex - 1) + "%");
 				}
 			}
 		});

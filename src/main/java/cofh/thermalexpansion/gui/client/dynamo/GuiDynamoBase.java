@@ -108,7 +108,7 @@ public abstract class GuiDynamoBase extends GuiContainerCore {
 		}
 		int energy = baseTile.getFuelEnergy(event.getItemStack());
 		if (energy > 0) {
-			event.getToolTip().add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.cofh.energy") + ": " + StringHelper.getScaledNumber(energy) + " RF" + StringHelper.END);
+			event.getToolTip().add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.cofh.energy") + StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.getScaledNumber(energy) + " RF" + StringHelper.END);
 		}
 	}
 

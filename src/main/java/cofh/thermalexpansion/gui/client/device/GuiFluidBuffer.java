@@ -132,7 +132,7 @@ public class GuiFluidBuffer extends GuiDeviceBase {
 			if (myTile.locks[i]) {
 				FluidStack fluid = myTile.getTank(i).getFluid();
 				String color = fluid.getFluid().getRarity().rarityColor.toString();
-				lock[i].setToolTip(StringHelper.localize("info.cofh.locked") + ": " + color + StringHelper.localize(fluid.getFluid().getLocalizedName(fluid)) + StringHelper.END);
+				lock[i].setToolTip(StringHelper.localize("info.cofh.locked") + StringHelper.localize("info.thermalexpansion.semicolon") + color + StringHelper.localize(fluid.getFluid().getLocalizedName(fluid)) + StringHelper.END);
 				lock[i].setSheetX(176);
 				lock[i].setHoverX(176);
 			} else {

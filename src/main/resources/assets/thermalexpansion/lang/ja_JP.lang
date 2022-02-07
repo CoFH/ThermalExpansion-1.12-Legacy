@@ -41,6 +41,7 @@ gui.thermalexpansion.storage.cell.incRecv=RF流入量を増やす：
 gui.thermalexpansion.storage.cell.incSend=RF流出量を増やす：
 
 info.thermalexpansion.augment.0=オーグメント
+info.thermalexpansion.semicolon=：
 
 info.thermalexpansion.augment.dynamoBoiler.0=発電機：出力特化
 info.thermalexpansion.augment.dynamoBoiler.a.0=発電機を蒸気ボイラーにします。

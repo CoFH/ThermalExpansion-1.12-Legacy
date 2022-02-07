@@ -66,7 +66,7 @@ public class CoolantWrapper extends BaseFuelWrapper {
 		//		List<String> tooltip = new ArrayList<>();
 		//
 		//		if (mouseX > 71 && mouseX < 84 && mouseY > 7 && mouseY < 48) {
-		//			tooltip.add(StringHelper.localize("info.cofh.energy") + ": " + StringHelper.formatNumber(energy) + " TC");
+		//			tooltip.add(StringHelper.localize("info.cofh.energy") + StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.formatNumber(energy) + " TC");
 		//		}
 		//		return tooltip;
 	}

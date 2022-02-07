@@ -52,7 +52,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 
-		return StringHelper.localize("info.thermalexpansion.augment.0") + ": " + super.getItemStackDisplayName(stack);
+		return StringHelper.localize("info.thermalexpansion.augment.0") + StringHelper.localize("info.thermalexpansion.semicolon") + super.getItemStackDisplayName(stack);
 	}
 
 	@Override

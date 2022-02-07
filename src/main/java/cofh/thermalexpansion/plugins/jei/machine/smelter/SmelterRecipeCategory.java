@@ -123,7 +123,7 @@ public class SmelterRecipeCategory extends BaseRecipeCategory<SmelterRecipeWrapp
 			guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
 
 				if (slotIndex == 3) {
-					tooltip.add(StringHelper.localize("info.cofh.chance") + ": " + recipeWrapper.chance + "%");
+					tooltip.add(StringHelper.localize("info.cofh.chance") + StringHelper.localize("info.thermalexpansion.semicolon") + recipeWrapper.chance + "%");
 				}
 			});
 		}

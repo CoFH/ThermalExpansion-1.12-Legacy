@@ -153,7 +153,7 @@ public class TransposerRecipeCategoryExtract extends TransposerRecipeCategory {
 		guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
 
 			if (slotIndex == 1 && recipeWrapper.chance < 100) {
-				tooltip.add(StringHelper.localize("info.cofh.chance") + ": " + recipeWrapper.chance + "%");
+				tooltip.add(StringHelper.localize("info.cofh.chance") + StringHelper.localize("info.thermalexpansion.semicolon") + recipeWrapper.chance + "%");
 			}
 		});
 
