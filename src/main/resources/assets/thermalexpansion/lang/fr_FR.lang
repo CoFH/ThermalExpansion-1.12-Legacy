@@ -41,6 +41,7 @@ gui.thermalexpansion.storage.cell.incRecv=Augmenter entrée RF par
 gui.thermalexpansion.storage.cell.incSend=Augmenter sortie RF par
 
 info.thermalexpansion.augment.0=Amélioration 
+info.thermalexpansion.semicolon=: 
 
 info.thermalexpansion.augment.dynamoBoiler.0=Dynamos : spécialisation de sortie
 info.thermalexpansion.augment.dynamoBoiler.a.0=Convertit une dynamo compatible en une chaudière à vapeur.

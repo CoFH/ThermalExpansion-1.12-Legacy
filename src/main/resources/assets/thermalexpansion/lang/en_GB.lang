@@ -7,6 +7,8 @@ info.thermalexpansion.augment.machineFurnaceFood=Redstone Furnace: Specialisatio
 
 info.thermalexpansion.light.1=Can be almost any colour you wish.
 
+info.thermalexpansion.semicolon=: 
+
 tab.thermalexpansion.light.1=Colour and mode may be adjusted with sliders.
 
 tile.thermalexpansion.machine.pulverizer.name=Pulveriser

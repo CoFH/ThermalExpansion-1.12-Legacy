@@ -41,6 +41,7 @@ gui.thermalexpansion.storage.cell.incRecv=RF 입력 감소
 gui.thermalexpansion.storage.cell.incSend=RF 출력 감소
 
 info.thermalexpansion.augment.0=늘리기
+info.thermalexpansion.semicolon=：
 
 info.thermalexpansion.augment.dynamoBoiler.0=발전기: 출력 특징
 info.thermalexpansion.augment.dynamoBoiler.a.0=해당 발전기를 증기 보일러로 변환합니다.

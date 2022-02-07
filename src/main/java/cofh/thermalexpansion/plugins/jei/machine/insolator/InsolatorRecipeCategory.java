@@ -140,7 +140,7 @@ public class InsolatorRecipeCategory extends BaseRecipeCategory<InsolatorRecipeW
 			guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
 
 				if (slotIndex == 3) {
-					tooltip.add(StringHelper.localize("info.cofh.chance") + ": " + recipeWrapper.chance + "%");
+					tooltip.add(StringHelper.localize("info.cofh.chance") + StringHelper.localize("info.thermalexpansion.semicolon")ngHelper.localize("info.thermalexpansion.semicolon") + recipeWrapper.chance + "%");
 				}
 			});
 		}

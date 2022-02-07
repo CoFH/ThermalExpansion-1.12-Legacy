@@ -138,7 +138,7 @@ public class CentrifugeRecipeCategory extends BaseRecipeCategory<CentrifugeRecip
 
 			if (!recipeWrapper.chance.isEmpty() && slotIndex >= 1 && slotIndex <= 4) {
 				if (recipeWrapper.chance.get(slotIndex - 1) < 100) {
-					tooltip.add(StringHelper.localize("info.cofh.chance") + ": " + recipeWrapper.chance.get(slotIndex - 1) + "%");
+					tooltip.add(StringHelper.localize("info.cofh.chance") + StringHelper.localize("info.thermalexpansion.semicolon") + recipeWrapper.chance.get(slotIndex - 1) + "%");
 				}
 			}
 		});

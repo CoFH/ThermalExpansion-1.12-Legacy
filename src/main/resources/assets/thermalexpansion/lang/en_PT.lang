@@ -35,6 +35,7 @@ info.thermalexpansion.multimeter=Use a multimetarr whilst skulking to configure.
 info.thermalexpansion.wrench=Wrench whilst skulking to dismantle.
 
 #Items
+info.thermalexpansion.semicolon=: 
 item.thermalexpansion.augment.dynamoEfficiency0.name=Extra Widgetbox
 item.thermalexpansion.augment.dynamoEfficiency1.name=Better Flux Linkage
 item.thermalexpansion.augment.dynamoEfficiency2.name=CryoCoil Regulatorr

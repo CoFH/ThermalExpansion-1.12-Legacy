@@ -46,7 +46,7 @@ gui.thermalexpansion.storage.cell.maxRecv=Max Input
 gui.thermalexpansion.storage.cell.maxSend=Max Output
 
 info.thermalexpansion.augment.0=Verbesserung
-
+info.thermalexpansion.semicolon=: 
 
 
 

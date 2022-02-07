@@ -431,11 +431,11 @@ public class TileCache extends TileAugmentableSecure implements IReconfigurableF
 			return;
 		}
 		if (!getStoredInstance().isEmpty()) {
-			info.add(new TextComponentTranslation("info.cofh.item").appendText(": " + StringHelper.getItemName(getStoredInstance())));
-			info.add(new TextComponentTranslation("info.cofh.amount").appendText(": " + StringHelper.formatNumber(getStoredCount()) + "/" + StringHelper.formatNumber(handler.capacity)));
+			info.add(new TextComponentTranslation("info.cofh.item").appendText(StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.getItemName(getStoredInstance())));
+			info.add(new TextComponentTranslation("info.cofh.amount").appendText(StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.formatNumber(getStoredCount()) + "/" + StringHelper.formatNumber(handler.capacity)));
 			info.add(new TextComponentTranslation(lock ? "info.cofh.locked" : "info.cofh.unlocked"));
 		} else {
-			info.add(new TextComponentTranslation("info.cofh.item").appendText(": ").appendSibling(new TextComponentTranslation("info.cofh.empty")));
+			info.add(new TextComponentTranslation("info.cofh.item").appendText(StringHelper.localize("info.thermalexpansion.semicolon")).appendSibling(new TextComponentTranslation("info.cofh.empty")));
 		}
 	}
 

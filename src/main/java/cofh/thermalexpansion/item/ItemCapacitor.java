@@ -82,10 +82,10 @@ public class ItemCapacitor extends ItemMultiRF implements IInitializer, IBauble 
 
 		if (isCreative(stack)) {
 			tooltip.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
-			tooltip.add(StringHelper.localize("info.cofh.send") + ": " + StringHelper.formatNumber(getSend(stack)) + " RF/t");
+			tooltip.add(StringHelper.localize("info.cofh.send") + StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.formatNumber(getSend(stack)) + " RF/t");
 		} else {
-			tooltip.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(getEnergyStored(stack)) + " / " + StringHelper.getScaledNumber(getMaxEnergyStored(stack)) + " RF");
-			tooltip.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + StringHelper.formatNumber(getSend(stack)) + "/" + StringHelper.formatNumber(getReceive(stack)) + " RF/t");
+			tooltip.add(StringHelper.localize("info.cofh.charge") + StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.getScaledNumber(getEnergyStored(stack)) + " / " + StringHelper.getScaledNumber(getMaxEnergyStored(stack)) + " RF");
+			tooltip.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.formatNumber(getSend(stack)) + "/" + StringHelper.formatNumber(getReceive(stack)) + " RF/t");
 		}
 	}
 

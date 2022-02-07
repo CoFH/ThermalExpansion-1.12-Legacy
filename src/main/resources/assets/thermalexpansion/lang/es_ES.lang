@@ -11,6 +11,8 @@ info.thermalexpansion.augment.dynamoThrottle.0=Activa la salida minima del dynam
 
 info.thermalexpansion.augment.machineFurnaceFood.0=Incrementa la salida de Comida.
 
+info.thermalexpansion.semicolon=: 
+
 info.thermalexpansion.dynamo.compression=Require cobustibles en estado liquido y refrigerantes liquidos.
 info.thermalexpansion.dynamo.enervation=Extrae el flux de objetos varios.
 info.thermalexpansion.dynamo.magmatic=Require fluidos calientes.

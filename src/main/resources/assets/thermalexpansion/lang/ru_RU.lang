@@ -41,6 +41,7 @@ gui.thermalexpansion.storage.cell.incRecv=Увеличение входа RF н�
 gui.thermalexpansion.storage.cell.incSend=Увеличение выхода RF на
 
 info.thermalexpansion.augment.0=Расширение
+info.thermalexpansion.semicolon=: 
 
 info.thermalexpansion.augment.dynamoBoiler.0=Генератор: Специализация выхода
 info.thermalexpansion.augment.dynamoBoiler.a.0=Преобразует подходящий генератор в паровой котел.

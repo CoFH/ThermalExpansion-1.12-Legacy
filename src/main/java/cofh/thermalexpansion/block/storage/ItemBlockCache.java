@@ -60,9 +60,9 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.storage.cache"));
 
 		if (isCreative(stack)) {
-			tooltip.add(StringHelper.localize("info.cofh.capacity") + ": " + StringHelper.localize("info.cofh.infinite"));
+			tooltip.add(StringHelper.localize("info.cofh.capacity") + StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.localize("info.cofh.infinite"));
 		} else {
-			tooltip.add(StringHelper.localize("info.cofh.capacity") + ": " + StringHelper.formatNumber(getSizeInventory(stack)));
+			tooltip.add(StringHelper.localize("info.cofh.capacity") + StringHelper.localize("info.thermalexpansion.semicolon") + StringHelper.formatNumber(getSizeInventory(stack)));
 		}
 		if (stack.getTagCompound().hasKey("Item")) {
 			ItemStack stored = ItemHelper.readItemStackFromNBT(stack.getTagCompound().getCompoundTag("Item"));
